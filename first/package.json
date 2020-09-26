@@ -1,0 +1,19 @@
+{
+  "name": "first-ch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "test": "node_modules/.bin/jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Cyber4sPopo/challengeme"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^26.0.1",
+    "puppeteer": "^4.0.0"
+  }
+}
