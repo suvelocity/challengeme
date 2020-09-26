@@ -15,6 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     name: ${{ github.event.inputs.name }}
     steps:
-    - run: |
-        echo "Hello ${{ github.event.inputs.name }}!"
-        echo "- in ${{ github.event.inputs.home }}!"
+    - name: a1a1
+      run: npm i
+      working-directory: .github/workflows/first/
+    - name: b1b1b1
+      run: clone https://github.com/Cyber4sPopo/solutionme ./app
+      working-directory: .github/workflows/first/
+        
+    
