@@ -7,6 +7,7 @@ const path = 'file://' + __dirname + '/app/index.html'
 let page;
 let browser;
 
+
 const secondTaskText = 'second task input';
 jest.setTimeout(10000);
 const projectName = 'Todo App';
@@ -20,7 +21,7 @@ describe(projectName, () => {
     await browser.close();
   });
   test('The todo list should be empty first', async () => {
-    const elements = await page.$$('.todoText');
-    expect(elements.length).toBe(0);
+    const currentTitle = await page.title();
+    expect(currentTitle).toBe('Tickets Manager');
   });
 })

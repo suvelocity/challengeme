@@ -26,14 +26,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: a1a1
       run: npm i
-      working-directory: ./first/
+      working-directory: ./.github/workflows/first/
     - name: Also clone wiki # work around for West or Github Checkout Action limitation of private repos
       uses: actions/checkout@v2
       with:
         repository: Cyber4sPopo/solutionme
-        path: ./first/app
+        path: ./.github/workflows/first/app
     - name: c2c2c2c2
       run: npm run test
-      working-directory: ./first/
-        
-    
+      working-directory: ./.github/workflows/first/
