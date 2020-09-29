@@ -7,6 +7,7 @@ const path = 'file://' + __dirname + '/app/index.html'
 let page;
 let browser;
 
+
 const secondTaskText = 'second task input';
 jest.setTimeout(10000);
 const projectName = 'Todo App';
