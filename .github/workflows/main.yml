@@ -23,23 +23,23 @@ jobs:
     name: ${{ github.event.inputs.name }}
     steps:
     - uses: actions/checkout@v2
-    - name: Run tests (Node.js ${{ matrix.node-version }})
+    - name: Run challenge (Node.js ${{ matrix.node-version }})
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Also clone wiki # work around for West or Github Checkout Action limitation of private repos
+    - name: Clone tests repo
       uses: actions/checkout@v2
       with:
         repository: ${{ github.event.inputs.testRepo }}
         path: ./
-    - name: a1a1
+    - name: Install dependencies
       run: npm ci
       working-directory: ./
-    - name: Also clone wiki # work around for West or Github Checkout Action limitation of private repos
+    - name: Clone app repo
       uses: actions/checkout@v2
       with:
         repository: ${{ github.event.inputs.solutionRepo }}
-        path: ./_app
-    - name: c2c2c2c2
+        path: ./_cloned-app
+    - name: Run test on cloned app
       run: npm run test
       working-directory: ./
