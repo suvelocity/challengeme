@@ -25,7 +25,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: a1a1
-      run: npm i
+      run: npm ci
       working-directory: ./.github/workflows/first/
     - name: Also clone wiki # work around for West or Github Checkout Action limitation of private repos
       uses: actions/checkout@v2
