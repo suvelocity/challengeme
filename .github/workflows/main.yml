@@ -29,7 +29,6 @@ jobs:
       working-directory: ./first/
     - name: Also clone wiki # work around for West or Github Checkout Action limitation of private repos
       uses: actions/checkout@v2
-      working-directory: ./first/
       with:
         repository: Cyber4sPopo/solutionme
         path: ./app
