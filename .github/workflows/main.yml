@@ -30,7 +30,7 @@ jobs:
     - name: Also clone wiki # work around for West or Github Checkout Action limitation of private repos
       uses: actions/checkout@v2
       with:
-        repository: Cyber4sPopo/solutionme
+        repository: ${{ github.event.inputs.repo }}
         path: ./.github/workflows/first/app
     - name: c2c2c2c2
       run: npm run test
