@@ -11,10 +11,19 @@ on:
         required: false
 
 jobs:
-  say_hello:
+  build:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x]
     name: ${{ github.event.inputs.name }}
     steps:
+    - uses: actions/checkout@v2
+    - name: Run tests (Node.js ${{ matrix.node-version }})
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
     - name: a1a1
       run: npm i
       working-directory: ./first/
