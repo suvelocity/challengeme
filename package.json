@@ -1,0 +1,19 @@
+{
+  "name": "challengeme",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cyber4sPopo/challengeme.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Cyber4sPopo/challengeme/issues"
+  },
+  "homepage": "https://github.com/Cyber4sPopo/challengeme#readme"
+}
