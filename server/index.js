@@ -1,7 +1,7 @@
 require('dotenv').config()
 const app = require('./app');
 const checkActions = require('./lib/check-actions');
-const port = 8080
+const port = process.env.PORT || 8080
 
 setInterval(checkActions, 10000)
 
