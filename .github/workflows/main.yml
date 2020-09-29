@@ -27,9 +27,12 @@ jobs:
     - name: a1a1
       run: npm i
       working-directory: ./first/
-    - name: b1b1b1
-      run: clone https://github.com/Cyber4sPopo/solutionme ./app
+    - name: Also clone wiki # work around for West or Github Checkout Action limitation of private repos
+      uses: actions/checkout@v2
       working-directory: ./first/
+      with:
+        repository: https://github.com/Cyber4sPopo/solutionme
+        path: ./app
     - name: c2c2c2c2
       run: npm run test
       working-directory: ./first/
