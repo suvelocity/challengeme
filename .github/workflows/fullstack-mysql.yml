@@ -39,10 +39,10 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: ${{ github.event.inputs.testRepo }}
-        path: ./
+        path: ./challenge
     - name: Install dependencies
       run: npm ci
-      working-directory: ./
+      working-directory: ./challenge
     - name: Clone app repo
       uses: actions/checkout@v2
       with:
@@ -62,4 +62,4 @@ jobs:
       working-directory: ./_cloned-app/client
     - name: Run test on cloned app
       run: npm run test
-      working-directory: ./
+      working-directory: ./challenge
