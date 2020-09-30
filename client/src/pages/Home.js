@@ -8,26 +8,25 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import network from '../services/network';
 import ChallengeCard from '../components/ChallengeCard';
+import { Typography } from '@material-ui/core';
 
 
 const ApplyDialog = ({ open, onClose, onSubmit }) => {
   const [solutionRepository, setSolutionRepository] = useState('');
   return (
     <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
-      <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+      <DialogTitle id="form-dialog-title">Apply</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          To subscribe to this website, please enter your email address here. We will send updates
-          occasionally.
+          Please type the Github solution repository in this format: owner/repo
         </DialogContentText>
         <TextField
           autoFocus
           margin="dense"
-          id="name"
+          id="repoPath"
           value={solutionRepository}
           onChange={({ target: { value } }) => setSolutionRepository(value)}
-          label="Email Address"
-          type="email"
+          label="Owner/repo"
           fullWidth
         />
       </DialogContent>
@@ -36,7 +35,7 @@ const ApplyDialog = ({ open, onClose, onSubmit }) => {
           Cancel
         </Button>
         <Button onClick={() => onSubmit(solutionRepository)} color="primary">
-          Subscribe
+          Apply
         </Button>
       </DialogActions>
     </Dialog>
@@ -67,7 +66,9 @@ export default function HomePage() {
 
   return (
     <div style={{ padding: 30 }}>
-      <div>Caption</div>
+      <Typography variant="h5" gutterBottom>
+        Challenges
+      </Typography>
       {challenges.map(challenge => (
         <ChallengeCard
           key={challenge.id}

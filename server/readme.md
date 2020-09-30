@@ -27,3 +27,7 @@ service mysql restart
 Hope this may help
 
 Thank you.
+
+
+
+tenal to db: gcloud compute ssh --zone us-central1-a instance-1 -- -L 3305:localhost:3306

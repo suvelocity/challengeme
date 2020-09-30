@@ -45,6 +45,7 @@ const SubmissionsTable = ({ challengeId }) => {
 const useStyles = makeStyles((theme) => ({
   root: {
     // maxWidth: 800,
+    marginBottom: 20,
   },
   media: {
     height: 0,
@@ -86,7 +87,7 @@ export default function ChallengeCard({
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
+          <IconButton disabled aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
@@ -107,10 +108,10 @@ export default function ChallengeCard({
         <IconButton onClick={onApply} aria-label="Apply challenge">
           <PublishIcon />
         </IconButton>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+        <IconButton disabled aria-label="add to favorites">
+          <FavoriteIcon  />
         </IconButton>
-        <IconButton aria-label="share">
+        <IconButton disabled aria-label="share">
           <ShareIcon />
         </IconButton>
         <IconButton

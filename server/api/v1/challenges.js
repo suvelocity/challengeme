@@ -41,6 +41,10 @@ router.post('/:challengeId/apply', async (req, res) => {
     return res.json({ error: 'already success' })
   }
 
+  if(submission.state !== 'FAIl') {
+    await submission.update({ state: 'PENDING' })
+  }
+
   try {
     const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
       ref: 'master',

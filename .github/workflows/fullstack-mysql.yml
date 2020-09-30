@@ -1,0 +1,65 @@
+name: Manually triggered workflow
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: 'Person to greet'
+        required: true
+        default: 'Mona the Octocat'
+      testRepo:
+        description: 'location'
+        required: false
+      solutionRepo:
+        description: 'location'
+        required: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: test_db
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    strategy:
+      matrix:
+        node-version: [10.x]
+    name: ${{ github.event.inputs.name }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run challenge (Node.js ${{ matrix.node-version }})
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Clone tests repo
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ github.event.inputs.testRepo }}
+        path: ./
+    - name: Install dependencies
+      run: npm ci
+      working-directory: ./
+    - name: Clone app repo
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ github.event.inputs.solutionRepo }}
+        path: ./_cloned-app
+    - name: Install solution client dependencies
+      run: npm ci
+      working-directory: ./_cloned-app/client
+    - name: Install solution server dependencies
+      run: npm ci
+      working-directory: ./_cloned-app/server
+    - name: Run db migration
+      run: NODE_ENV=test npx sequelize db:migrate
+      working-directory: ./_cloned-app/server
+    - name: Run solution client dependencies
+      run: npm start & npx wait-on http://localhost:3000
+      working-directory: ./_cloned-app/client
+    - name: Run test on cloned app
+      run: npm run test
+      working-directory: ./
