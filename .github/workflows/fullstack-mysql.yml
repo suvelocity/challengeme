@@ -54,9 +54,15 @@ jobs:
     - name: Install solution server dependencies
       run: npm ci
       working-directory: ./_cloned-app/server
-    - name: Run db migration
-      run: NODE_ENV=test npx sequelize db:migrate
+      continue-on-error: true
+    - name: Init server solution dependencies
+      run: npm run init
       working-directory: ./_cloned-app/server
+      continue-on-error: true
+    - name: Start server solution dependencies
+      run: npm start
+      working-directory: ./_cloned-app/server
+      continue-on-error: true
     - name: Run solution client dependencies
       run: npm start & npx wait-on http://localhost:3000
       working-directory: ./_cloned-app/client
