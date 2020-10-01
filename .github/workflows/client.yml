@@ -16,15 +16,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: db_test
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       matrix:
         node-version: [10.x]
@@ -48,27 +39,16 @@ jobs:
       with:
         repository: ${{ github.event.inputs.solutionRepo }}
         path: ./_cloned-app
-    - name: Install solution client dependencies
+    - name: Install solution dependencies
       run: npm ci
-      working-directory: ./_cloned-app/client
-    - name: Init client solution
+      working-directory: ./_cloned-app/
+    - name: Init solution
       run: npm run init
-      working-directory: ./_cloned-app/client
+      working-directory: ./_cloned-app/
       continue-on-error: true
-    - name: Install solution server dependencies
-      run: npm ci
-      working-directory: ./_cloned-app/server
-    - name: Init server solution dependencies
-      run: npm run init
-      working-directory: ./_cloned-app/server
-      continue-on-error: true
-    - name: Start server solution dependencies
-      run: npm start
-      working-directory: ./_cloned-app/server
-      continue-on-error: true
-    - name: Run solution client dependencies
+    - name: Run solution web server
       run: npm start & npx wait-on http://localhost:3000
-      working-directory: ./_cloned-app/client
+      working-directory: ./_cloned-app/
     - name: Run test on cloned app
       run: npm run test
       working-directory: ./challenge
