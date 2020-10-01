@@ -83,7 +83,7 @@ export default function ChallengeCard({
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            R
+            P
           </Avatar>
         }
         action={
