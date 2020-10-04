@@ -62,10 +62,10 @@ jobs:
       run: npm run init
       working-directory: ./_cloned-app/server
       continue-on-error: true
-    - name: Start server solution dependencies
-      run: npm start
-      working-directory: ./_cloned-app/server
-      continue-on-error: true
+    # - name: Start server solution dependencies
+    #   run: npm start & npx wait-on http://localhost:8080
+    #   working-directory: ./_cloned-app/server
+    #   continue-on-error: true
     - name: Run solution client dependencies
       run: npm start & npx wait-on http://localhost:3000
       working-directory: ./_cloned-app/client
