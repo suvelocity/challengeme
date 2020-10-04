@@ -13,11 +13,19 @@ module.exports = async () => {
   const rawIds = await fs.readFile('checked-actions-memory.json');
   const checkedIds = JSON.parse(rawIds);
   await Promise.all(data.workflow_runs.filter(run => !checkedIds[run.id]).map(async (run) => {
-    const { data } = await axios.get(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/runs/${run.id}/jobs`, {
-      headers: {
-        Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
-      }
-    });
+    let data;
+    try {
+
+      const response = await axios.get(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/runs/${run.id}/jobs`, {
+        headers: {
+          Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
+        }
+      });
+      data = response.data;
+    } catch (e) {
+      console.log('error', e);
+      return;
+    }
 
     if(!data || !data.jobs || !data.jobs[0]) {
       checkedIds[run.id] = true;
