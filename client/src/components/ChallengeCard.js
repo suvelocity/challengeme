@@ -3,7 +3,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-// import CardMedia from '@material-ui/core/CardMedia';
+import CardMedia from '@material-ui/core/CardMedia';
+
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
@@ -44,7 +45,7 @@ const SubmissionsTable = ({ challengeId }) => {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // maxWidth: 800,
+    // maxWidth: 600,
     marginBottom: 20,
   },
   media: {
@@ -70,6 +71,7 @@ export default function ChallengeCard({
   name,
   description,
   repositoryName,
+  cover,
   challengeId,
   onApply,
   expanded,
@@ -94,11 +96,11 @@ export default function ChallengeCard({
         title={name}
         subheader={createdAt}
       />
-      {/* <CardMedia
+      <CardMedia
         className={classes.media}
-        image="/static/images/cards/paella.jpg"
+        image={cover}
         title="Paella dish"
-      /> */}
+      />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
           {description}

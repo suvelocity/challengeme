@@ -65,13 +65,14 @@ export default function HomePage() {
   }
 
   return (
-    <div style={{ padding: 30 }}>
+    <div style={{ padding: 30, maxWidth: 840, margin: 'auto' }}>
       <Typography variant="h5" gutterBottom>
         Challenges
       </Typography>
       {challenges.map(challenge => (
         <ChallengeCard
           key={challenge.id}
+          cover={challenge.cover}
           challengeId={challenge.id}
           expanded={expandedChallenge === challenge.id}
           setExpanded={() => setExpandedChallenge(currentExpanded => {

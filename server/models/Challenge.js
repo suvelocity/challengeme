@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.STRING,
     type: DataTypes.STRING,
     repositoryName: DataTypes.STRING,
+    cover: DataTypes.STRING,
   }, {
     sequelize,
     paranoid: true,
