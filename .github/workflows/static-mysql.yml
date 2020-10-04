@@ -56,10 +56,10 @@ jobs:
       run: npm run init
       working-directory: ./_cloned-app/
       continue-on-error: true
-    - name: Start solution
-      run: npm start
-      working-directory: ./_cloned-app/
-      continue-on-error: true
+    # - name: Start solution
+    #   run: npm start
+    #   working-directory: ./_cloned-app/
+    #   continue-on-error: true
     - name: Run test on cloned app
       run: npm run test
       working-directory: ./challenge
