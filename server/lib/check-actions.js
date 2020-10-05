@@ -37,13 +37,13 @@ module.exports = async () => {
     try {
       submission = await Submission.findByPk(parseInt(submissionId));
     } catch (e) {
-      console.log('e', e)
-      checkedIds[run.id] = true;
+      console.log('error on', submissionId , e)
+      // checkedIds[run.id] = true;
       return;
     }
 
     if (!submission) {
-      checkedIds[run.id] = true;
+      // checkedIds[run.id] = true;
       return;
     }
 
