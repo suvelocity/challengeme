@@ -1,4 +1,4 @@
-name: Manually triggered workflow
+name: full stack
 on:
   workflow_dispatch:
     inputs:

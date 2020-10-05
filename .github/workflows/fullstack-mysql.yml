@@ -1,4 +1,4 @@
-name: Manually triggered workflow
+name: full stack mysql
 on:
   workflow_dispatch:
     inputs:
