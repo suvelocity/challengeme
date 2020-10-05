@@ -28,7 +28,7 @@ module.exports = async () => {
     }
 
     if(!data || !data.jobs || !data.jobs[0]) {
-      checkedIds[run.id] = true;
+      // checkedIds[run.id] = true;
       return;
     }
 
