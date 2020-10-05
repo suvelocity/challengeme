@@ -62,7 +62,7 @@ router.post('/:challengeId/apply', async (req, res) => {
 
     res.json({ status })
   } catch (e) {
-    console.log(e)
+    console.log('aaaa', e.message)
 
     res.json({ status: 500, error: e })
   }

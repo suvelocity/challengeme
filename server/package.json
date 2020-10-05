@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "node_modules/.bin/sequelize db:migrate"
   },
   "repository": {
     "type": "git",
@@ -17,7 +18,9 @@
   },
   "homepage": "https://github.com/Cyber4sPopo/challengeme#readme",
   "nodemonConfig": {
-    "ignore": ["checked-actions-memory.json"]
+    "ignore": [
+      "checked-actions-memory.json"
+    ]
   },
   "dependencies": {
     "axios": "^0.20.0",

@@ -3,12 +3,22 @@ const fs = require('fs').promises;
 
 const { Submission } = require('../models');
 module.exports = async () => {
-  console.log('check')
-  const { data } = await axios.get(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/runs`, {
-    headers: {
-      Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
+  console.log('Runs check started')
+  let data;
+  try {
+
+    const allRunsResponse = await axios.get(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/runs`, {
+      headers: {
+        Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
+      }
+    });
+    data = allRunsResponse.data;
+  } catch (e) {
+    if (e.response.status === 401) {
+      console.log('Fail with 401 - probably you don\'t set the GITHUB_ACCESS_TOKEN correctly')
+      return;
     }
-  });
+  }
 
   const rawIds = await fs.readFile('checked-actions-memory.json');
   const checkedIds = JSON.parse(rawIds);
