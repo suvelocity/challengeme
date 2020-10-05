@@ -13,7 +13,7 @@ on:
         description: 'location'
         required: false
 
-        
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -56,3 +56,4 @@ jobs:
     - name: Run test on cloned app
       run: npm run test
       working-directory: ./challenge
+
