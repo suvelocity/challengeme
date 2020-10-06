@@ -1,2 +1,4 @@
 server/checked-actions-memory.json
 checked-actions-memory.json
+.env
+node_modules
