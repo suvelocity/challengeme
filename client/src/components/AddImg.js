@@ -99,13 +99,13 @@ const baseStyle = {
         <p>Drag 'n' drop some files here, or click to select files</p>
         <em>(Only *.jpeg and *.png images will be accepted)</em>
       </div>
-      <Cropper preview=".img-preview"  src={file} />
+      {/* <Cropper preview=".img-preview"  src={file} /> */}
       <ImageCropper 
             cropper={true} 
             preview={true} 
             onCrop={onCrop} 
             onChange={onChange}
-            aspectRatio={1/ 1}
+            aspectRatio={400/ 150}
         />
       <aside>
         <h4>Accepted files</h4>
