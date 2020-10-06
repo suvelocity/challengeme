@@ -11,10 +11,10 @@ PAY ATTENSION to create Pull Request to dev/your base branch and not to main
 
 
 ## setting the envioremnt
-fork this repo and clone
-cd server && npm i
-cd ../client && npm i
-create new db for development - default name is challenge (can change by .env file)
-run migration: npm run migrate (in server folder)
-run seeds npx sequelize db:seed:all
-change NAME_OF_YOUR_ENV in .env file
+_fork this repo and clone
+_cd server && npm i
+_cd ../client && npm i
+_create new db for development - default name is challenge (can change by .env file)
+_run migration: npm run migrate (in server folder)
+_run seeds npx sequelize db:seed:all
+_change NAME_OF_YOUR_ENV in .env file
