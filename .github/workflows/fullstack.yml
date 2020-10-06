@@ -63,4 +63,3 @@ jobs:
     - name: Run test on cloned app
       run: npm run test
       working-directory: ./challenge
-      
