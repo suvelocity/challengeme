@@ -4,6 +4,7 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
+import AddImg from "../components/AddImg";
 import Home from './Home';
 
 export default function Router() {
@@ -11,7 +12,8 @@ export default function Router() {
     <BrowserRouter>
       <Switch>
         <Route path="/">
-          <Home />
+          {/* <Home /> */}
+          <AddImg />
         </Route>
       </Switch>
     </BrowserRouter>
