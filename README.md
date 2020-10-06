@@ -1,13 +1,12 @@
-THAT BRANCH SHOULD ALWAYS WORK (with npm start at the ./client, and npm run dev at the ./server), ONLY PULL REQUESTS , NO PUSH OR WORKING ON THAT BRANCH
+THAT BRANCH SHOULD ALWAYS WORK (with npm start at the ./client, and npm run dev at the ./server), ONLY PULL REQUESTS , NO PUSH OR WORKING ON THAT BRANCH </br>
 
 
-BRANCH OUT!!
+BRANCH OUT!!</br>
 
-example 
-"feauture-test"
+example: "feature-test" </br> </br>
 
-branch out from dev or the branch that you need
-PAY ATTENSION to create Pull Request to dev/your base branch and not to main
+branch out from dev or the branch that you need</br>
+PAY ATTENTION to create Pull Request to dev/your base branch and not to main
 
 
 ## setting the envioremnt
