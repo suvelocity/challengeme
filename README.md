@@ -5,6 +5,7 @@
 - cd server && npm i
 - cd ../client && npm i
 - create new db for development - default name is `challenge` (can change by .env file)
+- run npx `sequelize db:create`
 - run migration: `npm run migrate` (in server folder)
 - run seeds `npx sequelize db:seed:all`
 - change NAME_OF_YOUR_ENV in .env file
