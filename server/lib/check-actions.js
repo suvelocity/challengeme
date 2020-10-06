@@ -42,7 +42,7 @@ module.exports = async () => {
       return;
     }
 
-    const submissionId = data.jobs[0].name.replace('aa', '');
+    const submissionId = data.jobs[0].name.replace(`aa${process.env.ENV_NAME}`, '');
     let submission; 
     try {
       submission = await Submission.findByPk(parseInt(submissionId));
