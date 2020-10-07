@@ -64,14 +64,14 @@ jobs:
         webhook_url: ${{ github.event.inputs.webhookUrl }}
         webhook_secret: ${{ github.event.inputs.webhookSecret }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
-jobs:
-  build:
+
+  second_job:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [10.x]
     name: onFail
-    dependsOn: ${{ github.event.inputs.name }}
+    dependsOn: build
     condition: failed()
     steps:    
     - name: Webhook
