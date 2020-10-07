@@ -65,6 +65,11 @@ jobs:
         webhook_secret: ${{ github.event.inputs.webhookSecret }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
 
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]
     name: onFail
     dependsOn: ${{ github.event.inputs.name }}
     condition: failed()
