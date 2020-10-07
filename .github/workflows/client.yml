@@ -57,6 +57,10 @@ jobs:
       working-directory: ./challenge
     - name: Webhook
       uses: distributhor/workflow-webhook@v1
-      with:
-        url: ${{ github.event.inputs.webhook }}
-        json: '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
+      env:
+        webhook_url: ${{ github.event.inputs.webhook }}
+        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
+    
+    #    json: '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
+    #    webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
+    #    url: ${{ github.event.inputs.webhook }}
