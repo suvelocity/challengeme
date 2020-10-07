@@ -9,9 +9,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import HomeIcon from '@material-ui/icons/Home';
 import { Link } from "react-router-dom"
-
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -69,12 +68,6 @@ const useStyles = makeStyles((theme) => ({
       display: 'flex',
     },
   },
-  sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
 }));
 
 export default function PrimarySearchAppBar() {
@@ -83,24 +76,13 @@ export default function PrimarySearchAppBar() {
 
   const isMenuOpen = Boolean(anchorEl);
 
-//   const handleProfileMenuOpen = (event) => {
-//     setAnchorEl(event.currentTarget);
-//   };
-
-  const handleNavBarMenuOpen = (event) => {
+  const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-
-
-  const handleNavBarMenuClose = () => {
+  const handleMenuClose = () => {
     setAnchorEl(null);
   };
-
-//   const handleMenuClose = () => {
-//     setAnchorEl(null);
-//   };
-
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -111,30 +93,47 @@ export default function PrimarySearchAppBar() {
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isMenuOpen}
-      onClose={handleNavBarMenuClose}
+      onClose={handleMenuClose}
     >
-      
 
       
-      <Link to="/statistics/users">
-      <MenuItem onClick={handleNavBarMenuClose}>User Statistics</MenuItem>
-      </Link>
+      
+        <Link to="/statistics">
+        <IconButton
+            aria-label="home"
+            onClick={handleMenuClose}
+        >
+            <HomeIcon />
+        </IconButton>
+        </Link>
+      
+        <Link to="/statistics/users">
+            <MenuItem onClick={handleMenuClose}>User Statistics</MenuItem>
+        </Link>
 
-      <Link to="/statistics/profile">
-      <MenuItem onClick={handleNavBarMenuClose}>Profile Statistics</MenuItem>
-      </Link>
+        <Link to="/statistics/profile">
+            <MenuItem onClick={handleMenuClose}>Profile Statistics</MenuItem>
+        </Link>
 
-      <Link to="/statistics/insights">
-      <MenuItem onClick={handleNavBarMenuClose}>Insights Statistics</MenuItem>
-      </Link>
+        <Link to="/statistics/insights">
+            <MenuItem onClick={handleMenuClose}>Insights Statistics</MenuItem>
+        </Link>
 
-      <Link to="/statistics/teams">
-      <MenuItem onClick={handleNavBarMenuClose}>Teams</MenuItem>
-      </Link>
+        <Link to="/statistics/teams">
+            <MenuItem onClick={handleMenuClose}>Teams</MenuItem>
+        </Link>
 
+
+        <Link to="/statistics">
+        <IconButton
+            aria-label="home"
+            onClick={handleMenuClose}
+        >
+            <HomeIcon />
+        </IconButton>
+        </Link>
     </Menu>
   );
-
 
   return (
     <div className={classes.grow}>
@@ -145,21 +144,21 @@ export default function PrimarySearchAppBar() {
             aria-label="Statistics Navbar Menu"
             aria-controls={menuId}
             className={classes.menuButton}
-            onClick={handleNavBarMenuOpen}
             color="inherit"
+            onClick={handleMenuOpen}
             aria-haspopup="true"
           >
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Challenge Me Statistics
+          Challenge Me Statistics
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
-              placeholder="Search Challenge"
+              placeholder="Search…"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -169,16 +168,6 @@ export default function PrimarySearchAppBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleNavBarMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
           </div>
         </Toolbar>
       </AppBar>
