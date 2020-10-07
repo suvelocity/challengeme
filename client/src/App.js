@@ -7,7 +7,7 @@ import Charts from './components/charts/Charts';
 function App() {
   return (
     <>
-    <Charts/>
+    {/* <Charts/> */}
     <Router />
     </>
   );
