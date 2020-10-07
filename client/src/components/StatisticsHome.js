@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Charts from './charts/Charts';
+
 const useStyles = makeStyles((theme) => ({
    
     grid: {
@@ -47,10 +48,10 @@ const challengeData = {
     rawData: [
       {
         label: 'data1',// name of the line (one or two words)
-        backgroundColor: 'gold',//raw color
+        backgroundColor: ['purple','blue', 'green', 'red', 'yellow'],//raw color
         borderColor: 'cyan',//use the same as background color
         fill: false, // change the line chart
-        data: [85, 83, 80, 78, 75], // array of values for Y axis (numbers)
+        data: [85, 83, 80, 78, 75, 0], // array of values for Y axis (numbers)
       }
         // you can add as many object as you wand, each one will a different line with different color
     ]
@@ -107,35 +108,35 @@ const userData = {
         backgroundColor: 'red',//raw color
         borderColor: 'red',//use the same as background color
         fill: false, // change the line chart
-        data: [65, 59, 80, 81, 56], // array of values for Y axis (numbers)
+        data: [40, 59, 80, 81, 88], // array of values for Y axis (numbers)
       },
       {
         label: 'User2',// name of the line (one or two words)
         backgroundColor: 'green',//raw color
         borderColor: 'green',//use the same as background color
         fill: false, // change the line chart
-        data: [44, 50, 86, 61, 56], // array of values for Y axis (numbers)
+        data: [44, 50, 57, 61, 66], // array of values for Y axis (numbers)
       },
       {
         label: 'User3',// name of the line (one or two words)
         backgroundColor: 'blue',//raw color
         borderColor: 'blue',//use the same as background color
         fill: false, // change the line chart
-        data: [44, 50, 86, 61, 56], // array of values for Y axis (numbers)
+        data: [23, 25, 37, 47, 49], // array of values for Y axis (numbers)
       },
       {
         label: 'User4',// name of the line (one or two words)
         backgroundColor: 'yellow',//raw color
         borderColor: 'yellow',//use the same as background color
         fill: false, // change the line chart
-        data: [44, 50, 86, 61, 56], // array of values for Y axis (numbers)
+        data: [22, 31, 35, 50, 59], // array of values for Y axis (numbers)
       },
       {
         label: 'User5',// name of the line (one or two words)
         backgroundColor: 'black',//raw color
         borderColor: 'black',//use the same as background color
         fill: false, // change the line chart
-        data: [44, 50, 86, 61, 56], // array of values for Y axis (numbers)
+        data: [25, 35, 45, 62, 84 ], // array of values for Y axis (numbers)
       },
         // you can add as many object as you wand, each one will a different line with different color
     ]

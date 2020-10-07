@@ -9,6 +9,7 @@ import StatisticsHome from '../components/StatisticsHome';
 import UserStatistics from '../components/UserStatistics';
 import TeamStatistics from '../components/TeamStatistics';
 import Insights from '../components/Insights';
+import ButtonAppBar from '../components/Navigation/NavbarMock';
 
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -20,6 +21,7 @@ function Statistics() {
     const classes = useStyles()
     return (
         <Router>
+            <ButtonAppBar />
             <Grid className={classes.root} container>
                 <Grid xs={12}>
                     <NavBarStatistics />
