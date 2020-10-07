@@ -70,7 +70,6 @@ jobs:
     #    url: ${{ github.event.inputs.webhook }}
 
   buildsecond:
-    if: failed()
     runs-on: ubuntu-latest
     strategy:
       matrix:
