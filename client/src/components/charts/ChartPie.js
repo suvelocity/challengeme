@@ -1,12 +1,12 @@
 import React from 'react';
-import {Pie, Doughnut} from 'react-chartjs-2';
+import {Pie} from 'react-chartjs-2';
 
 function ChartPie({data}){
     const state = {
       labels: data.labels,
       datasets: [
         {
-          label: data.types,
+          label: data.label,
           backgroundColor: [
             '#B21F00',
             '#C9DE00',
