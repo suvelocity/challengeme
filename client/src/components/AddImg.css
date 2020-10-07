@@ -1,9 +1,17 @@
+.upload-img-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-/* .image-upload{
-
-    width:0px;
-    height: 0px;
-} */
-.croper-drag-box{
-    width:900px
 }
+.upload-img-secondary-container{
+    padding-top: 150px;
+    width: 60vw;
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
