@@ -12,7 +12,10 @@ on:
       solutionRepo:
         description: 'location'
         required: false
-      webhook:
+      webhookUrl:
+        description: 'location'
+        required: false
+      webhookSecret:
         description: 'location'
         required: false
 
@@ -59,8 +62,8 @@ jobs:
       uses: distributhor/workflow-webhook@v1
       env:
         webhook_url: ${{ github.event.inputs.webhook }}
+        webhook_secret: ${{ github.event.inputs.webhook }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
-    
     #    json: '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
     #    webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
     #    url: ${{ github.event.inputs.webhook }}
