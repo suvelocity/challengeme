@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import  ChallengeCard from "./ChallengeCard"
+import  ChooseCategory from "./ChooseCategory"
 import { fade ,makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import network from '../services/network';
@@ -70,56 +70,83 @@ const useStyles = makeStyles((theme) => ({
 const Search =() => {
   const classes = useStyles();
   const [searching,setSearching]  = useState(false)
+  const [openFilter,setOpenFilter]  = useState(false)
   const [results,setResults]  = useState([])
-  const [query, setQuery] = useState('')
-  
-  const Search= (e) => {
-    const {value} = e.target
-    if(value.length === 0){
-      setSearching(false)
-      setResults([])
-      return
-    }
-    setSearching(true)
+  const [filters,setFilters]  = useState({categories:[]})
+  // console.log(filters)
+  const search= (e) => {
+    let {value} = e.target
+    if(!value.length){return setResults([])}
+    if(value==='*'){ value =''}
     try{
-      network.get(`/api/v1/challenges?challengeName=${value}`)
+      console.log(`${filters.categories.join(',')}`)
+      network.get(`/api/v1/challenges?challengeName=${value}&categories=${filters.categories.join(',')}`)
       .then(({data})=>{
         setResults(data)
       })
     }catch(error){
-
+      console.error(error)
     }
   }
   const closeSearch= () => {
     setResults([])
     setSearching(false)
   }
-
-const searchInput = <div 
-className={classes.search}>
-<div className={classes.searchIcon}>
-  <SearchIcon />
-</div>
-  <InputBase
-  id={'searchBar'}
-  onChange={Search}
-  placeholder="Search…"
-  classes={{
-    root: classes.inputRoot,
-    input: classes.inputInput,
-  }}
-  inputProps={{ 'aria-label': 'search' }}
-  />
-</div>
+  const exitSearch = (e) => {
+    const {key,target} = e
+    if(!target.value.length){
+      if(key==='Escape'){
+        closeSearch()
+        target.blur()
+      }
+    }
+  }
+  const resultsList = (results&&results.length>0
+    ?results.map((results)=>{
+      return <div key={results.name}>{results.name}</div>
+    })
+    :'no results found')
+  
+    const addFilters = (name,newFilter) => {
+      const updated= {...filters}
+      updated[name] = newFilter
+      console.log(updated)
+      setOpenFilter(false)
+      setFilters(updated)
+    }
+  const searchInput = <div 
+  className={classes.search}>
+    <div className={classes.searchIcon}>
+      <SearchIcon />
+    </div>
+    <InputBase
+      id={'searchBar'}
+      placeholder={searching?'press esc to close':'Search'}
+      onFocus={()=>{setSearching(true)}}
+      onChange={search}
+      onKeyUp={exitSearch}
+      autoComplete='off'
+      classes={{
+        root: classes.inputRoot,
+        input: classes.inputInput,
+      }}
+      inputProps={{ 'aria-label': 'search' }}
+    />
+  </div>
 
   return (
     <div id='search'>
       {searchInput}
       <div id='searchResults' className={searching?'open':'closed'}>
-        <button onClick={closeSearch} >close</button>
-        {results.map((results)=>{
-          return <div key={results.name}>{results.name}</div>
-        })}
+        <div>
+        {openFilter
+          ?<ChooseCategory updateFilters={addFilters}/>
+          :<button onClick={() => {setOpenFilter(true)}}>
+            Choose Category 
+          </button>}
+        </div>
+        {/* <button onClick={closeSearch} >[X]</button> */}
+        {resultsList}
       </div>
     </div>
   );
