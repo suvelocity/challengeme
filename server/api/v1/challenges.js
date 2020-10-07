@@ -13,8 +13,9 @@ router.get('/', async (req, res) => {
   const challengeName = req.query.challengeName;
   const firstWordCondition = challengeName ? {name: { [Op.like]: `${challengeName}%`} } : null;
   const otherWordsCondition = challengeName ? {name: { [Op.like]: `% ${challengeName}%`} } : null;
+  const secondLetterCondition = challengeName ? {name: { [Op.like]: `+${challengeName}%`} } : null;
   const condition = firstWordCondition ||  firstWordCondition ? 
-  { [Op.or]: [firstWordCondition,otherWordsCondition] } : null
+  { [Op.or]: [firstWordCondition,otherWordsCondition,secondLetterCondition] } : null
 
   const allChallenges = await Challenge.findAll({where: condition});
   res.json(allChallenges)
