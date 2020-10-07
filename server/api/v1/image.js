@@ -4,15 +4,18 @@ const router = Router();
 
 router.get('/', async (req, res) => { // /api/v1/image?id=
     let challengeId = req.query.id ;
-    const image = await Image.find({
-        where: {challengeId}
-    });
-    res.json(image)
+    try{
+        const image = await Image.findOne({
+            where: {challengeId}
+        });
+        res.json(image)
+    }
+    catch(e){res.send("Something went wrong")}
 });
 router.post('/', async (req, res) => { // /api/v1/image
     let image = req.body ;
     try {
-        const checkIfExists = await Image.find({
+        const checkIfExists = await Image.findOne({
             where: {challengeId: image.challengeId}
         });
     
@@ -23,7 +26,7 @@ router.post('/', async (req, res) => { // /api/v1/image
             res.status(400).send('This challenge already own an image');
         }
     } catch(e) { 
-        res.status(400).send('Something went wrong');
+        res.status(400).send({'Something went wrong':e.message});
     }
 });
 
