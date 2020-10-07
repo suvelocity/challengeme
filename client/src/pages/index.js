@@ -5,13 +5,14 @@ import {
   Route,
 } from "react-router-dom";
 import Home from './Home';
+import Register from './Register/Register';
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/">
-          <Home />
+          <Register />
         </Route>
       </Switch>
     </BrowserRouter>
