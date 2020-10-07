@@ -17,23 +17,9 @@ usersRouter.post("/register", async (req, res) => {
   });
   if (checkUser) return res.status(409).send("user name already exists");
   const hashPassword = await bcrypt.hash(req.body.password, 10);
-  const newUser = {
-    userName: req.body.userName,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    password: hashPassword,
-    email: req.body.email,
-    birthDate: req.body.birthDate,
-    country: req.body.country,
-    city: req.body.city,
-    phoneNumber: req.body.phoneNumber,
-    githubAccount: req.body.githubAccount,
-    reasonOfRegistration: req.body.reasonOfRegistration,
-    securityQuestion: req.body.securityQuestion,
-    securityAnswer: req.body.securityAnswer,
-  };
+  req.body.password = hashPassword;
   // create new user
-  await User.create(newUser);
+  await User.create(req.body);
   res.status(201).json({ message: "Register Success" });
 });
 
@@ -60,7 +46,7 @@ usersRouter.post("/login", async (req, res) => {
   const body = {
     accessToken: accessToken,
     refreshToken: refreshToken,
-    userDetails: currentUser, //מה שבאלהם!!!!!
+    userDetails: currentUser,
   };
   res.status(200).json(body);
 });
@@ -81,7 +67,7 @@ usersRouter.post("/token", async (req, res) => {
     console.log(decoded);
     delete decoded.iat;
     const accessToken = generateToken(decoded);
-    res.status(200).json({ token: accessToken });
+    res.json({ token: accessToken });
   });
 });
 
@@ -104,7 +90,7 @@ usersRouter.post("/logout", async (req, res) => {
 // validate token
 usersRouter.post("/info", checkToken, (req, res) => {
   console.log(req.decoded);
-  res.status(200).json({ message: "success get sensitive info" });
+  res.json({ message: "success get sensitive info" });
 });
 
 function checkToken(req, res, next) {
