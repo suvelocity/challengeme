@@ -8,6 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import network from '../services/network';
 import ChallengeCard from '../components/ChallengeCard';
+import Search from '../components/Search';
 import { Typography } from '@material-ui/core';
 
 

@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+
+#searchResults{
+  height:100px;
+  width: 200px;
+  background:red;
+
+}
+#searchResults.closed{
+visibility: hidden;
+
+}
