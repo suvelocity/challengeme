@@ -26,6 +26,7 @@ jobs:
       matrix:
         node-version: [10.x]
     name: ${{ github.event.inputs.name }}
+  - job: Tests
     steps:
     - uses: actions/checkout@v2
     - name: Run challenge (Node.js ${{ matrix.node-version }})
@@ -58,12 +59,25 @@ jobs:
     - name: Run test on cloned app
       run: npm run test
       working-directory: ./challenge
+
+  - job: onSuccess
+    dependsOn: Tests
+    condition: succeeded()
     - name: Webhook
       uses: distributhor/workflow-webhook@v1
       env:
         webhook_url: ${{ github.event.inputs.webhookUrl }}
         webhook_secret: ${{ github.event.inputs.webhookSecret }}
-        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
+        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}, "success":"true"" }'
+  - job: onFail
+    dependsOn: Tests
+    condition: failed()
+    - name: Webhook
+      uses: distributhor/workflow-webhook@v1
+      env:
+        webhook_url: ${{ github.event.inputs.webhookUrl }}
+        webhook_secret: ${{ github.event.inputs.webhookSecret }}
+        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}, "success":"false"" }'
     #    json: '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
     #    webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
     #    url: ${{ github.event.inputs.webhook }}
