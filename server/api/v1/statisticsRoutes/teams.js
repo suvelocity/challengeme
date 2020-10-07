@@ -3,8 +3,8 @@ const router = Router()
 const { Submission, Challenge } = require('../../../models');
 
 
-router.get('/top-users', async (req, res) => {
-    res.send('hello world users')
+router.get('/', async (req, res) => {
+    res.send('hello world teams')
   })
 
 module.exports = router;
