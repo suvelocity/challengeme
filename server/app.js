@@ -11,9 +11,9 @@ app.use(express.json())
 
 app.use('/api/v1/', require('./api/v1'))
 
-app.use(express.static(path.join(__dirname, "..", "client", 'build')))
-app.use('/', (req, res, next) => {
-  res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
-});
+// app.use(express.static(path.join(__dirname, "..", "client", 'build')))
+// app.use('/', (req, res, next) => {
+//   res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
+// });
 
 module.exports = app;

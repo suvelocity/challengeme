@@ -4,17 +4,7 @@ import {Line} from 'react-chartjs-2';
 function ChartLine({data}){
     const state = {
         labels: data.labels ,
-        datasets: [
-          {
-            label: data.type,
-            fill: true,
-            lineTension: 0.5,
-            backgroundColor: 'rgba(75,192,192,1)',
-            borderColor: 'rgba(0,0,0,1)',
-            borderWidth: 2,
-            data: data.data
-          }
-        ]
+        datasets: data.rawData
       }
 
     return(
@@ -29,6 +19,7 @@ function ChartLine({data}){
             },
             legend:{
               display:true,
+              backgroundColor: 'rgba(75,192,192,1)',
               position:'right'
             }
           }}

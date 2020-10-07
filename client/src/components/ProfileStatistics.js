@@ -25,6 +25,7 @@ function ProfileStatistics({ params }) {
 //         axios.get(`statistic/profile/${params.id}`).then(r => r.data).then(r => {setInfo(r)});
 //     };
 
+
     const classes = useStyles();
 
   return (
