@@ -29,6 +29,18 @@ function Confirm({ prevStep, values }) {
         <ListItem style={{ textAlign: 'center' }}>
           <ListItemText primary="Phone Number" secondary={values.phoneNumber} />
         </ListItem>
+        <ListItem style={{ textAlign: 'center' }}>
+          <ListItemText primary="Sign Up Reason" secondary={values.signUpReason} />
+        </ListItem>
+        <ListItem style={{ textAlign: 'center' }}>
+          <ListItemText primary="GitHub Account" secondary={values.gitHub} />
+        </ListItem>
+        <ListItem style={{ textAlign: 'center' }}>
+          <ListItemText primary="Security Question" secondary={values.securityQuestion} />
+        </ListItem>
+        <ListItem style={{ textAlign: 'center' }}>
+          <ListItemText primary="Security Answer" secondary={values.securityAnswer} />
+        </ListItem>
       </List>
       <button onClick={prevStep}>Back</button>
       <button onClick={() => {alert(`welcome ${values.userName}`)}} >Confirm</button>
