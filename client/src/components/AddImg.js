@@ -5,7 +5,7 @@ import network from "../services/network"
 import '@synapsestudios/react-drop-n-crop/lib/react-drop-n-crop.min.css';
 import { Button } from '@material-ui/core';
 const makeBlobed = async (img) =>{
-    const  preBlobedImg  = await fetch(img.src)
+    const  preBlobedImg  = await fetch(img)
     const blobedImg = await preBlobedImg.blob()
     return blobedImg
 }
@@ -16,18 +16,10 @@ const [blobedImg,setBlobedImg] = useState(null)
 const [loading,setLoading] = useState(true)
 
 const onChange = async value => {
-    // fetch(value.src)
-    // .then(res => res.blob())
-    // // .then(res=>setBlobedImg(res))
-    // .then(res => )
-    const blobed = await makeBlobed(value)
-
-    const sendBlobed = await  network.post("/api/v1/image",{
-        challengeId:4,img:blobed
+     await  network.post("/api/v1/image",{
+        challengeId:4,img:value.src
     })
-    console.log(sendBlobed.data);
     setLoading(false)
-
     setFile(value);
   };
 
@@ -35,11 +27,8 @@ const onChange = async value => {
     (async ()=>{
         if(!loading){
             const {data : image } = await network.get("/api/v1/image?id=4")
-            console.log(image);
-            const newBlob = new Blob(image.img.data, {type: 'image/jpeg'});
-            console.log(newBlob);
-            const hey = URL.createObjectURL(newBlob);
-            console.log(hey);
+            const hi = await makeBlobed(image.img)
+            const hey = URL.createObjectURL(hi);
             setBlobedImg(hey)
         }
     })()
