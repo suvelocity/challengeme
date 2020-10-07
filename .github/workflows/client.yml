@@ -60,7 +60,7 @@ jobs:
       run: npm run test
       working-directory: ./challenge
     - name: Webhook
-      if: ${{ failed() || cancled() }}
+      if: ${{ failure() || cancelled() }}
       uses: distributhor/workflow-webhook@v1
       env:
         webhook_url: ${{ github.event.inputs.webhookUrl }}
