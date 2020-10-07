@@ -83,8 +83,8 @@ function Insights() {
     return (
         <div className={classes.main}>
         <div className={classes.grid}>
-            <div id="SubmissionPerDayChart" className={classes.div} style={{gridArea: 'headChart', ...imageStyle}}>submissions per day<br/> <Charts width={'650px'} height={'650px'} chart={[0,1]} data={data}/></div>
-            <div id="SubmissionTotalChart" className={classes.div} style={{gridArea: 'smallChart', ...imageStyle}}>total sumition number<br /><span className={classes.span}>1349</span></div>
+            <div  className={classes.div} style={{gridArea: 'headChart', ...imageStyle}}><span id="SubmissionPerDayChart">submissions per day</span><br/><Charts width={'650px'} height={'650px'} chart={[0,1]} data={data}/></div>
+            <div id="SubmissionTotalChart" className={classes.div} style={{gridArea: 'smallChart', ...imageStyle}}>total submition number<br /><span className={classes.span}>1349</span></div>
             <div id="challengesByTypeChart" className={classes.div} style={{gridArea: 'sideChart',  ...imageStyle}}>challenges per type <br/> <Charts width={'450px'} height={'450px'} chart={[0,1,2]} data={data}/></div>  
             <div id="challengesMostSubChart" className={classes.div} style={{gridArea: 'leftChart', ...imageStyle}}>challenges with most submitions<br/> <Charts width={'300px'} height={'300px'} chart={[2]} data={data}/></div>
             <div id="challengesMostSuccessChart" className={classes.div} style={{gridArea: 'rightChart', ...imageStyle}}>challenges with most success rate<br/> <Charts width={'300px'} height={'300px'} chart={[2]} data={data}/></div>

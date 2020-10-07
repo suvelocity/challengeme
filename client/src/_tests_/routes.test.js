@@ -1,15 +1,13 @@
 const puppeteer = require('puppeteer');
 
+
+jest.setTimeout(15000);
+describe("All the routes are working together", () => {
 let page;
 let browser;
-jest.setTimeout(30000);
-describe("All the routes are working together", () => {
-	beforeAll(async () => {
+	beforeEach(async () => {
 		//open a chromium browser
-		browser = await puppeteer.launch({ args: [
-			`--window-size=1280,768`,
-		  ]
-		  });
+		browser = await puppeteer.launch({slowMo: 45, headless: false});
 		//open a new page within that browser
 		page = await browser.newPage();
 		const screenSize = {
@@ -29,9 +27,8 @@ describe("All the routes are working together", () => {
 		await page.waitForSelector("#Insights");
 		await page.click("#Insights");
 		await page.waitForSelector("#SubmissionPerDayChart");
-		let SubmissionPerDayChart =await page.evaluate(
-			() => document.querySelector("#SubmissionPerDayChart").innerText
-		);
+		let result = await page.$('#SubmissionPerDayChart');
+		let SubmissionPerDayChart = await (await result.getProperty('innerText')).jsonValue();
 		console.log('asdasdsada', SubmissionPerDayChart);
 		expect(SubmissionPerDayChart).toBe('submissions per day')	
   })
