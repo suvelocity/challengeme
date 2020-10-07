@@ -7,25 +7,28 @@ import TeamStatistics from '../components/TeamStatistics';
 import Insights from '../components/Insights';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import ProfileStatistics from '../components/ProfileStatistics';
 
 const useStyles = makeStyles({
 });
 function Statistics() {
     const classes = useStyles()
-    return (
+    return (<>
         <Router>
             <Grid className={classes.root} container>
                 <Grid xs={12}>
                     <NavBarStatistics />
                 </Grid>
             <Switch>
-                <Route exact path="/statistic" component={StatisticsHome} />
-                <Route path="/statistic/users" component={UserStatistics}/>
-                <Route path="/statistic/teams" component={TeamStatistics} />
-                <Route path="/statistic/insights" component={Insights} />
+                <Route path="/" exact component={StatisticsHome}/>
+                <Route path="/users" component={UserStatistics}/>
+                <Route path="/teams" component={TeamStatistics} />
+                <Route path="/insights" component={Insights} />
+                <Route path="/profile" component={ProfileStatistics} />
             </Switch>
            </Grid>
         </Router>
+        <div>this is statistics</div></>
             
         
     )
