@@ -1,12 +1,22 @@
 const { Router } = require('express');
 const axios = require('axios');
+const { Sequelize } = require('sequelize');
+const Op = Sequelize.Op;
+
 
 const { Submission, Challenge } = require('../../models');
 
 const router = Router();
 
 router.get('/', async (req, res) => {
-  const allChallenges = await Challenge.findAll();
+
+  const challengeName = req.query.challengeName;
+  const firstWordCondition = challengeName ? {name: { [Op.like]: `${challengeName}%`} } : null;
+  const otherWordsCondition = challengeName ? {name: { [Op.like]: `% ${challengeName}%`} } : null;
+  const condition = firstWordCondition ||  firstWordCondition ? 
+  { [Op.or]: [firstWordCondition,otherWordsCondition] } : null
+
+  const allChallenges = await Challenge.findAll({where: condition});
   res.json(allChallenges)
 })
 
