@@ -9,7 +9,7 @@ function UserDetails({ nextStep, handleChange, values}) {
       <input type='email' value={values.email} placeholder='Enter Email' onChange={handleChange('email')} /> <br />
       <input type='password' value={values.password} placeholder='Enter Password' onChange={handleChange('password')} /> <br />
       <input type='password' value={values.confirmPassword} placeholder='Confirm Password' onChange={handleChange('confirmPassword')} /> <br />
-      <button onClick={nextStep}>Continue</button>
+      <button onClick={nextStep}>Next</button>
     </div>
   )
 }
