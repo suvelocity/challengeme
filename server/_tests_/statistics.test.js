@@ -4,9 +4,10 @@ const app = require("../app");
 //model for bulkCreate
 require("mysql2/node_modules/iconv-lite").encodingExists("foo");
 
-const { Submission, Challenge } = require("../models");
+const { Submission, Challenge, User } = require("../models");
 const challenges = require("./mocks/challenges");
 const submissions = require("./mocks/submissions");
+const users = require("./mocks/users");
 
 //mock data
 
@@ -15,10 +16,14 @@ describe("get the all insights", () => {
       console.log("process.env.NODE_ENV", process.env.NODE_ENV);
       await Challenge.destroy({ truncate: true, force: true });
       await Submission.destroy({ truncate: true, force: true });
+      await User.destroy({ truncate: true, force: true });
       const challengesRes = await Challenge.bulkCreate(challenges);
       expect(challengesRes.length).toBe(3);
       const submissionsRes = await Submission.bulkCreate(submissions);
       expect(submissionsRes.length).toBe(6);
+      const userRes = await User.bulkCreate(users);
+      console.log(userRes);
+      expect(userRes.length).toBe(3);
     });
   
     afterAll(async () => {
