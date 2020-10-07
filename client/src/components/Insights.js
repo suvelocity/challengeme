@@ -1,5 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import Charts from './charts/Charts';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -15,22 +16,22 @@ const useStyles = makeStyles((theme) => ({
       height: 'inherit',
       width: 'inherit',
       gridTemplate: `
-      'headChart headChart smallChart' 100px 
-      'headChart headChart sideChart' 100px
-      'leftChart rightChart sideChart' 100px
-      'bottomChart bottomChart bottomChart' 100px / 150px 150px 250px;`
+      'headChart headChart smallChart' 200px 
+      'headChart headChart sideChart' 200px
+      'leftChart rightChart sideChart' 200px
+      'bottomChart bottomChart bottomChart' 150px / 350px 350px 450px;`
     },
     div: {
         textAlign: 'center',
+        alignContent: 'center',
         fontWeight: 'bold',
         backgroundColor: 'lightgray',
         borderRadius: '20px',
         boxShadow: '6px 6px 12px black'
     },
     main: {
-        marginTop: '70px',
         display: 'grid',
-        padding: '30px',
+        padding: '10px',
         alignContent: 'center',
         justifyItems: 'center',
         alignItems: 'center',
@@ -42,9 +43,7 @@ const useStyles = makeStyles((theme) => ({
 function Insights() {
     const classes = useStyles();
 
-    const imageStyle = {backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover'};
+    const imageStyle = {backgroundColor: 'lightgray'}
 
     // useEffect(() =>  getInfo , [])
     //     const [info , setInfo] = useState(null);
@@ -53,17 +52,39 @@ function Insights() {
     //     axios.get(`statistic/insights`).then(r => r.data).then(r => {setInfo(r)});
     // };
 
+    const data={
+        labels: ['January', 'February', 'March','April', 'May'], // array of values for x axis (strings)
+        title: 'test', // title for the chart
+        rawData: [
+        //   {
+        //     label: 'data1',// name of the line (one or two words)
+        //     backgroundColor: 'red',//raw color
+        //     borderColor: 'red',//use the same as background color
+        //     fill: false, // change the line chart
+        //     data: [65, 59, 80, 81, 56], // array of values for Y axis (numbers)
+        //   },
+          {
+            label: 'data1',// name of the line (one or two words)
+            backgroundColor: 'green',//raw color
+            borderColor: 'green',//use the same as background color
+            fill: false, // change the line chart
+            data: [44, 50, 86, 61, 56], // array of values for Y axis (numbers)
+          }
+            // you can add as many object as you wand, each one will a different line with different color
+        ]
+    } 
 
     return (
         <div className={classes.main}>
         <div className={classes.grid}>
-            <div className={classes.div} style={{gridArea: 'headChart', backgroundImage: 'url(https://www.mindtools.com/media/Diagrams/Charts-and-Graphs-5.jpg)' , ...imageStyle}}>submitions per day</div>
-            <div className={classes.div} style={{gridArea: 'smallChart', backgroundImage: 'url(https://www.luminafoundation.org/wp-content/uploads/2019/03/chart-pie3.jpg)' , ...imageStyle}}>total sumition number</div>
-            <div className={classes.div} style={{gridArea: 'sideChart', backgroundImage: 'url(https://images.theconversation.com/files/326025/original/file-20200407-31007-dits9d.png?ixlib=rb-1.1.0&q=45&auto=format&w=1000&fit=clip)' , ...imageStyle}}>anouther graph</div>  
-            <div className={classes.div} style={{gridArea: 'leftChart', backgroundImage: 'url(https://cdn-skill.splashmath.com/panel-uploads/GlossaryTerm/0053540d59ee4824b70187bce47ef0e4/1551236725_Drawing-a-bar-graph-to-represent-the-data.png)' , ...imageStyle}}>challenges with most submitions</div>
-            <div className={classes.div} style={{gridArea: 'rightChart', backgroundImage: 'url(https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRgSfZTw02gCzDZYTtUkd0eFRLfhVItCYT8Tg&usqp=CAU)' , ...imageStyle}}>challenges with most success rate</div>
-            <div className={classes.div} style={{gridArea: 'bottomChart', backgroundImage: 'url(https://www.wireshark.org/docs/wsug_html_chunked/wsug_graphics/ws-stats-iographs.png)' , ...imageStyle}}>challenges per type</div>
+            <div className={classes.div} style={{gridArea: 'headChart', ...imageStyle}}>submitions per day <br/> <Charts width={100} height={50} options={{ maintainAspectRatio: true }} chart={[0,1,2]} data={data}/></div>
+            <div className={classes.div} style={{gridArea: 'smallChart', ...imageStyle}}>total sumition number</div>
+            <div className={classes.div} style={{gridArea: 'sideChart',  ...imageStyle}}>anouther graph</div>  
+            <div className={classes.div} style={{gridArea: 'leftChart', ...imageStyle}}>challenges with most submitions</div>
+            <div className={classes.div} style={{gridArea: 'rightChart', ...imageStyle}}>challenges with most success rate</div>
+            <div className={classes.div} style={{gridArea: 'bottomChart', ...imageStyle}}>challenges per type</div>
         </div>
+        
         </div>
     )
 }
