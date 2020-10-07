@@ -31,7 +31,7 @@ export default function Login() {
         console.log(username);
         console.log(password);
         //request to server
-        //axios.post("/loginEndPoint", {username: username, password:password})
+        axios.post("/loginEndPoint", { username: username, password: password })
     }
 
     return (
@@ -46,7 +46,7 @@ export default function Login() {
             <br />
             <span>don't have an account yet?</span>
             <Link to='/register'>
-                <button >Sign up</button>
+                <button id='signUp'>Sign up</button>
             </Link>
             <br />
             <button>Log in with google</button>

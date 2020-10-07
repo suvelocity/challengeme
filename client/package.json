@@ -18,7 +18,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "node_modules/.bin/jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -37,6 +37,8 @@
     ]
   },
   "devDependencies": {
+    "nock": "^13.0.4",
+    "nock-puppeteer": "^1.0.2",
     "puppeteer": "^5.3.1"
   }
 }
