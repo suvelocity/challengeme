@@ -54,4 +54,16 @@ router.get("/challenges-type", async (req, res) => {
   res.json(challengeType);
 });
 
+// router.get("/sub-by-date", async (req, res) => {
+//   const challengeType = await Submission.findAll({
+//     attributes: {
+//       include: [[sequelize.fn("COUNT", sequelize.col("type")), "count_type"]],
+//     },
+//     group: ["type"],
+//     order: [[sequelize.fn("COUNT", sequelize.col("type")), "DESC"]],
+//     limit: 10,
+//   });
+//   res.json(challengeType);
+// });
+
 module.exports = router;

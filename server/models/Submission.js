@@ -6,6 +6,10 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.Challenge, {
         foreignKey: "challenge_id",
       });
+
+      this.belongsTo(models.User, {
+        foreignKey: "userId",
+      });
     }
   }
   Submission.init(
