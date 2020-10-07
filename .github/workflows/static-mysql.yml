@@ -18,7 +18,7 @@ on:
       webhookSecret:
         description: 'location'
         required: false
-        
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -74,11 +74,11 @@ jobs:
       env:
         webhook_url: ${{ github.event.inputs.webhookUrl }}
         webhook_secret: ${{ github.event.inputs.webhookSecret }}
-        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":"true" }'
+        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":true }'
     - name: onFailure
       if: ${{ failure() || cancelled() }}
       uses: distributhor/workflow-webhook@v1
       env:
         webhook_url: ${{ github.event.inputs.webhookUrl }}
         webhook_secret: ${{ github.event.inputs.webhookSecret }}
-        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":"false" }'
+        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":false }'
