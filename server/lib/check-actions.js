@@ -41,8 +41,13 @@ module.exports = async () => {
       // checkedIds[run.id] = true;
       return;
     }
-
-    const submissionId = data.jobs[0].name.replace(`aa${process.env.ENV_NAME}`, '');
+    //const finalIndex = //index === -1 ? data.jobs[0].name.lastIndexOf(string2): index;
+    //const string2 = 'Submition';
+    //const submissionId = data.jobs[0].name.replace(`aa${process.env.ENV_NAME}`, '');
+    const string1 = 'Submission';
+    const index = data.jobs[0].name.lastIndexOf(string1);
+    const stringLength = string1.length;//index === -1 ? string2.length : string1.length;
+    const submissionId = data.jobs[0].name.slice(index+stringLength);
     let submission; 
     try {
       submission = await Submission.findByPk(parseInt(submissionId));

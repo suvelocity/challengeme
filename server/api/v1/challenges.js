@@ -49,9 +49,10 @@ router.post('/:challengeId/apply', async (req, res) => {
     const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
       ref: 'master',
       inputs: {
-        name: `aa${process.env.ENV_NAME}${submission.id}`,
+        name: `${solutionRepository}-Submission${submission.id}`,
         testRepo: challenge.repositoryName,
-        solutionRepo: solutionRepository
+        solutionRepo: solutionRepository/* ,
+        webhook:'https://api.ngrok.com' */
       }
     }, {
       headers: {
