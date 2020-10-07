@@ -60,10 +60,9 @@ jobs:
       run: npm run test
       working-directory: ./challenge
     - name: onSuccess
-      uses: distributhor/workflow-webhook@v1
+      uses: ZBejavu/httpWebhook@v1.1
       env:
-        webhook_url: ${{ github.event.inputs.webhookUrl }}
-        webhook_secret: ${{ github.event.inputs.webhookSecret }}
+        url: ${{ github.event.inputs.webhookUrl }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":true }'
     - name: onFailure
       if: ${{ failure() || cancelled() }}
