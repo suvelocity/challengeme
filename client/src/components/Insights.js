@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     div: {
         textAlign: 'center',
         alignContent: 'center',
+        padding: '20px',
         fontWeight: 'bold',
         backgroundColor: 'lightgray',
         borderRadius: '20px',
@@ -37,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         gridTemplateColumns: 'auto',
         width: '100%'
+    },
+    span: {
+        fontSize: '30px'
     }
 }));
 
@@ -77,12 +81,12 @@ function Insights() {
     return (
         <div className={classes.main}>
         <div className={classes.grid}>
-            <div className={classes.div} style={{gridArea: 'headChart', ...imageStyle}}>submitions per day <br/> <Charts width={100} height={50} options={{ maintainAspectRatio: true }} chart={[0,1,2]} data={data}/></div>
-            <div className={classes.div} style={{gridArea: 'smallChart', ...imageStyle}}>total sumition number</div>
-            <div className={classes.div} style={{gridArea: 'sideChart',  ...imageStyle}}>anouther graph</div>  
-            <div className={classes.div} style={{gridArea: 'leftChart', ...imageStyle}}>challenges with most submitions</div>
-            <div className={classes.div} style={{gridArea: 'rightChart', ...imageStyle}}>challenges with most success rate</div>
-            <div className={classes.div} style={{gridArea: 'bottomChart', ...imageStyle}}>challenges per type</div>
+            <div className={classes.div} style={{gridArea: 'headChart', ...imageStyle}}>submitions per day <br/> <Charts width={'650px'} height={'650px'} chart={[0,1]} data={data}/></div>
+            <div className={classes.div} style={{gridArea: 'smallChart', ...imageStyle}}>total sumition number<br /><span className={classes.span}>1349</span></div>
+            <div className={classes.div} style={{gridArea: 'sideChart',  ...imageStyle}}>challenges per type <br/> <Charts width={'450px'} height={'450px'} chart={[0,1,2]} data={data}/></div>  
+            <div className={classes.div} style={{gridArea: 'leftChart', ...imageStyle}}>challenges with most submitions<br/> <Charts width={'300px'} height={'300px'} chart={[2]} data={data}/></div>
+            <div className={classes.div} style={{gridArea: 'rightChart', ...imageStyle}}>challenges with most success rate<br/> <Charts width={'300px'} height={'300px'} chart={[2]} data={data}/></div>
+            <div className={classes.div} style={{gridArea: 'bottomChart', ...imageStyle}}></div>
         </div>
         
         </div>

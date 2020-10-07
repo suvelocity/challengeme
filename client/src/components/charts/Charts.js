@@ -7,7 +7,8 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import DonutSmallIcon from '@material-ui/icons/DonutSmall';
 import TimelineIcon from '@material-ui/icons/Timeline';
-import './charts.css'
+import './charts.css';
+import { makeStyles } from '@material-ui/core/styles';
 
 function Charts(props) {
     const [chartType,setChartType] = useState(props.chart[0])
@@ -35,9 +36,17 @@ function Charts(props) {
                 return <ChartBar data = {chartsData.Bar} />
         }
     }
-    
+    const useStyles = makeStyles((theme) => ({
+        chart: {
+            position: 'relative',
+            width: props.width,
+            height: props.height,
+            margin: 'auto'
+        }
+    }));
+    const classes = useStyles();
   return (
-    <div className="chartComponent">
+    <div className={classes.chart}>
         <div className="chart">
             {
                 selectChart()         

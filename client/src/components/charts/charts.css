@@ -1,8 +1,8 @@
 .chartComponent{
-    position: relative;
-    width: 650px;
-    height: 650px;
-    margin: auto;
+    /* position: relative;
+    width: inherit;
+    height: inherit;
+    margin: auto; */
 }
 .chartNavBar{
     background-color: transparent!important;
