@@ -21,11 +21,12 @@ on:
 
 
 jobs:
-- job: ${{ github.event.inputs.name }}
+  buildfirst:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [10.x]
+    name: ${{ github.event.inputs.name }}
     steps:
     - uses: actions/checkout@v2
     - name: Run challenge (Node.js ${{ matrix.node-version }})
