@@ -42,4 +42,16 @@ router.get("/top-success", async (req, res) => {
   res.json(sub);
 });
 
+router.get("/challenges-type", async (req, res) => {
+  const challengeType = await Challenge.findAll({
+    attributes: {
+      include: [[sequelize.fn("COUNT", sequelize.col("type")), "count_type"]],
+    },
+    group: ["type"],
+    order: [[sequelize.fn("COUNT", sequelize.col("type")), "DESC"]],
+    limit: 10,
+  });
+  res.json(challengeType);
+});
+
 module.exports = router;
