@@ -7,7 +7,7 @@ export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState([]);
+  const [error, setError] = useState({});
 
   const updateField = (e) => {
     switch (e.currentTarget.name) {
@@ -23,11 +23,7 @@ export default function Login() {
     }
   };
 
-  useEffect(() => {
-    console.log(rememberMe);
-  }, [rememberMe]);
-
-  const loginFunc = (e) => {
+  const loginFunc = async (e) => {
     const formErrors = {};
     e.preventDefault();
     if (/\W/.test(username)) {
@@ -48,15 +44,20 @@ export default function Login() {
       return;
     }
     //request to server
-    axios.post("/loginEndPoint", { username: username, password: password });
+    const { data: response } = await axios.post("/login", {
+      username: username,
+      password: password,
+      rememberMe: rememberMe,
+    });
     //if success -> set cookies
-    let loggedIn = false;
-    if (loggedIn) {
-      Cookies.set("AT_Token", "fdkfmdkognfs");
-      Cookies.set("RT_Token", "dfndgnr439r4j");
-    } else {
-      setError({ msg: "random server error" });
+    if (response.message) {
+      setError({ msg: response.message });
+      return;
     }
+
+    Cookies.set("AT_Token", response.accessToken);
+    Cookies.set("RT_Token", response.refreshToken);
+
     //redirect to home
     // <Route exact path="/">
     //     {loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />}
