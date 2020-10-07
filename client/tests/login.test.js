@@ -26,7 +26,7 @@ describe('Client Tests', () => {
 
         await page.waitForSelector("#username-field", { visible: true });
         await page.type("#username-field", "Test");
-        await page.type("#password-field", "Test");
+        await page.type("#password-field", "Test123");
         const button = await page.$("#login-button");
         button.click();
         await timeout(2000);
