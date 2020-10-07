@@ -154,7 +154,7 @@ export default function NavBarStatistics() {
 
             <ListItem button key={route.text} >
             
-              <ListItemIcon onClick={handleDrawerClose}> 
+              <ListItemIcon id={route.name} onClick={handleDrawerClose}> 
                   {route.iconComp}
               </ListItemIcon>
 
@@ -166,7 +166,7 @@ export default function NavBarStatistics() {
         <Divider />
         <List>
     
-        <Link to="/statistics">
+        <Link id="home" to="/statistics">
           <ListItem button key="Home Statistics">
           <ListItemIcon onClick={handleDrawerClose}>
             <HomeOutlinedIcon />
