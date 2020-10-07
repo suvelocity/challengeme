@@ -13,9 +13,9 @@ export default function NewChallengeForm() {
   }, [])
 
   const openOptions = async () => {
-  const { data: types } = await network.get('/api/v1/challenges') // change api
+  const { data: types } = await network.get('/api/v1/new-challenge/type') // change api
   setOptionsArray(types.map(type =>
-    <MenuItem value={type.type}>{type.type}</MenuItem>
+    <MenuItem value={type}>{type}</MenuItem>
     ))
   }
 

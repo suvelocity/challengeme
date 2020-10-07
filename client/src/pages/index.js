@@ -14,7 +14,7 @@ export default function Router() {
         <Route exact path="/">
           <Home />
         </Route>
-        <Route path="/add_challenge">
+        <Route path="/add-challenge">
           <AddChallenge />
         </Route>
       </Switch>
