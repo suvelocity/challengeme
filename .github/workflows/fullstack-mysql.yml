@@ -12,6 +12,12 @@ on:
       solutionRepo:
         description: 'location'
         required: false
+      webhookUrl:
+        description: 'location'
+        required: false
+      webhookSecret:
+        description: 'location'
+        required: false
 
 jobs:
   build:
@@ -72,3 +78,16 @@ jobs:
     - name: Run test on cloned app
       run: npm run test
       working-directory: ./challenge
+    - name: onSuccess
+      uses: distributhor/workflow-webhook@v1
+      env:
+        webhook_url: ${{ github.event.inputs.webhookUrl }}
+        webhook_secret: ${{ github.event.inputs.webhookSecret }}
+        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":"true" }'
+    - name: onFailure
+      if: ${{ failure() || cancelled() }}
+      uses: distributhor/workflow-webhook@v1
+      env:
+        webhook_url: ${{ github.event.inputs.webhookUrl }}
+        webhook_secret: ${{ github.event.inputs.webhookSecret }}
+        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":"false" }'
