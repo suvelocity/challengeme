@@ -56,7 +56,7 @@ jobs:
       run: npm run test
       working-directory: ./challenge
     - name: Webhook
-      uses: distributhor/workflow-webhook
+      uses: distributhor/workflow-webhook@v1
       with:
         url: ${{ github.event.inputs.webhook }}
         json: '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
