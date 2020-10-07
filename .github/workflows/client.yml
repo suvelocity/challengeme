@@ -59,30 +59,36 @@ jobs:
     - name: Run test on cloned app
       run: npm run test
       working-directory: ./challenge
-    - name: Webhook
-      if: ${{ failure() || cancelled() }}
+    - name: onSuccess
       uses: distributhor/workflow-webhook@v1
       env:
         webhook_url: ${{ github.event.inputs.webhookUrl }}
         webhook_secret: ${{ github.event.inputs.webhookSecret }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":"false" }'
-    #    json: '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
-    #    webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-    #    url: ${{ github.event.inputs.webhook }}
-
-  onSuccess:
-    needs: tests
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [10.x]
-    name: whenFail
-    steps:
-    - name: Webhook
+    - name: onFailure
+      if: ${{ failure() || cancelled() }}
       uses: distributhor/workflow-webhook@v1
       env:
         webhook_url: ${{ github.event.inputs.webhookUrl }}
         webhook_secret: ${{ github.event.inputs.webhookSecret }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":"true" }'
+    #    json: '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
+    #    webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
+    #    url: ${{ github.event.inputs.webhook }}
+
+  # onSuccess:
+  #   needs: tests
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version: [10.x]
+  #   name: onSuccess
+  #   steps:
+  #   - name: Webhook
+  #     uses: distributhor/workflow-webhook@v1
+  #     env:
+  #       webhook_url: ${{ github.event.inputs.webhookUrl }}
+  #       webhook_secret: ${{ github.event.inputs.webhookSecret }}
+  #       data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":"true" }'
 
 
