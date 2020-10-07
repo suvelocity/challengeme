@@ -19,11 +19,9 @@ on:
         description: 'location'
         required: false
 
-stages:
-- stage: A
+
   jobs:
-  - job: A1
-    build:
+    buildfirst:
       runs-on: ubuntu-latest
       strategy:
         matrix:
@@ -71,11 +69,8 @@ stages:
     #    webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
     #    url: ${{ github.event.inputs.webhook }}
 
-- stage: B
-  condition: failed()
-  jobs:
-  - job: A1
-    build:
+    buildsecond:
+      condition: failed()
       runs-on: ubuntu-latest
       strategy:
         matrix:
