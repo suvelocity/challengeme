@@ -37,17 +37,19 @@ module.exports = async () => {
       return;
     }
 
-    if(!data || !data.jobs || !data.jobs[0]) {
+    if (!data || !data.jobs || !data.jobs[0]) {
       // checkedIds[run.id] = true;
       return;
     }
 
     const submissionId = data.jobs[0].name.replace(`aa${process.env.ENV_NAME}`, '');
-    let submission; 
+    let submission;
     try {
-      submission = await Submission.findByPk(parseInt(submissionId));
+      if (!isNaN(submissionId)) {
+        submission = await Submission.findByPk(parseInt(submissionId));
+      }
     } catch (e) {
-      console.log('error on', submissionId , e)
+      console.log('error on', submissionId, e)
       // checkedIds[run.id] = true;
       return;
     }
