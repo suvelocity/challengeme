@@ -73,7 +73,7 @@ const Search =() => {
   const [openFilter,setOpenFilter]  = useState(false)
   const [results,setResults]  = useState([])
   const [filters,setFilters]  = useState({categories:[]})
-  // console.log(filters)
+
   const search= (e) => {
     let {value} = e.target
     if(!value.length){return setResults([])}
@@ -140,7 +140,7 @@ const Search =() => {
       <div id='searchResults' className={searching?'open':'closed'}>
         <div>
         {openFilter
-          ?<ChooseCategory updateFilters={addFilters}/>
+          ?<ChooseCategory formerSelection={filters.categories}updateFilters={addFilters}/>
           :<button onClick={() => {setOpenFilter(true)}}>
             Choose Category 
           </button>}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-const ChooseCategory =({updateFilters}) => {
-  const [selected,setSelected]  = useState([])
+const ChooseCategory =({ formerSelection , updateFilters }) => {
+  const [selected,setSelected]  = useState(formerSelection)
     const categories = [
       'React',
       'Node.js',
