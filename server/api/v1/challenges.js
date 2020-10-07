@@ -44,22 +44,25 @@ router.post('/:challengeId/apply', async (req, res) => {
   if(submission.state !== 'FAIL') {
     await submission.update({ state: 'PENDING' })
   }
-
+/* ,
+        webhook:'https://api.ngrok.com' */
   try {
+    const urltoSet = process.env.MY_URL.concat('/api/v1/submissions');
+    console.log(urltoSet);
     const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
-      ref: 'master',
+      ref: 'coreTask',
       inputs: {
         name: `${solutionRepository}-Submission${submission.id}`,
         testRepo: challenge.repositoryName,
-        solutionRepo: solutionRepository/* ,
-        webhook:'https://api.ngrok.com' */
+        solutionRepo: solutionRepository,
+        webhook: urltoSet
       }
     }, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
       }
-    })
+    }) 
 
     res.json({ status })
   } catch (e) {

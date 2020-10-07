@@ -4,6 +4,8 @@ const fs = require('fs').promises;
 const { Submission } = require('../models');
 module.exports = async () => {
   console.error('url', process.env.MY_URL);
+  const urltoSet = process.env.MY_URL.concat('/api/v1/submissions');
+  console.log(urltoSet)
   console.log('Runs check started')
   let data;
   try {
