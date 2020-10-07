@@ -23,6 +23,7 @@ stages:
 - stage: A
   jobs:
   - job: A1
+    build:
       runs-on: ubuntu-latest
       strategy:
         matrix:
@@ -74,6 +75,7 @@ stages:
   condition: failed()
   jobs:
   - job: A1
+    build:
       runs-on: ubuntu-latest
       strategy:
         matrix:
