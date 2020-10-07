@@ -5,13 +5,14 @@ import {
   Route,
 } from "react-router-dom";
 import Home from './Home';
+
 import Statistics from './Statistics';
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact>
+        <Route exact path="/" >
           <Home />
         </Route>
         <Route path="/statistics">

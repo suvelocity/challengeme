@@ -13,22 +13,22 @@ const useStyles = makeStyles({
 });
 function Statistics() {
     const classes = useStyles()
-    return (<>
+    return (
         <Router>
             <Grid className={classes.root} container>
                 <Grid xs={12}>
                     <NavBarStatistics />
                 </Grid>
             <Switch>
-                <Route path="/" exact component={StatisticsHome}/>
-                <Route path="/users" component={UserStatistics}/>
-                <Route path="/teams" component={TeamStatistics} />
-                <Route path="/insights" component={Insights} />
-                <Route path="/profile" component={ProfileStatistics} />
+                <Route exact path="/statistics" component={StatisticsHome}/>
+                <Route path="/statistics/users" component={UserStatistics}/>
+                <Route path="/statistics/teams" component={TeamStatistics} />
+                <Route path="/statistics/insights" component={Insights} />
+                <Route path="/statistics/profile" component={ProfileStatistics} />
             </Switch>
            </Grid>
         </Router>
-        <div>this is statistics</div></>
+       
             
         
     )

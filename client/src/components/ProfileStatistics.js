@@ -17,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
 
 function ProfileStatistics({ params }) {
 
-    useEffect(getInfo, []);
 
+useEffect(() =>  getInfo , [])
     const [info , setInfo] = useState(null);
 
     const getInfo = () => {
