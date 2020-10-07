@@ -2,25 +2,26 @@ import React, { useState } from 'react';
 import UserDetails from './UserDetails';
 import PersonalDetails from './PersonalDetails';
 import Confirm from './Confirm';
-import ExtraDetails from './ExtraDetails';
+import Security from './Security';
+import Extras from './Extras';
 
 function Register() {
   const [errors, setErrors] = useState([]);
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(1);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [birthDate, setBirthDate] = useState('');
   const [country, setCountry] = useState('');
   const [city, setCity] = useState('');
+  const [birthDate, setBirthDate] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [signUpReason, setSignUpReason] = useState('Choose your sign-up reason...');
-  const [gitHub, setGitHub] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [securityQuestion, setSecurityQuestion] = useState('Choose Security Question...');
   const [securityAnswer, setSecurityAnswer] = useState('');
+  const [signUpReason, setSignUpReason] = useState('Choose your sign-up reason...');
+  const [gitHub, setGitHub] = useState('');
 
 
   const nextStep = () => {
@@ -31,23 +32,24 @@ function Register() {
 
     let tempErrs = [];
     if (step === 1) {
-      if (firstName.length < 1 || !onlyLettersRegex.test(firstName)) tempErrs.push("First name  must contain only letters");
-      if (lastName.length < 1 || !onlyLettersRegex.test(lastName)) tempErrs.push( "Last name  must contain only letters.");
-      if (userName.length < 1 || !onlyLettersAndNumbersRegex.test(userName)) tempErrs.push( "Username  must contain only letters and numbers.");
-      if (email.length < 1) tempErrs.push( "Email required.");
-      if (!validateEmailRegex.test(email)) tempErrs.push( "Email invalid.");
-      if (password.length < 6) tempErrs.push( "Password needs to be at least 6 characters.");
-      if (password !== confirmPassword) tempErrs.push( "Passwords must be identical.");
+      if (firstName.length < 1 || !onlyLettersRegex.test(firstName)) tempErrs.push({field: 'firstName', message: "First name  must contain only letters"});
+      if (lastName.length < 1 || !onlyLettersRegex.test(lastName)) tempErrs.push({field: 'lastName', message: "Last name  must contain only letters."});
+      if (userName.length < 1 || !onlyLettersAndNumbersRegex.test(userName)) tempErrs.push({field: 'userName', message: "Username must contain only letters and numbers."});
+      if (email.length < 1) tempErrs.push({field: 'email', message: "Email required."});
+      if (!validateEmailRegex.test(email)) tempErrs.push({field: 'email', message: "Email invalid."});
     } else if (step === 2) {
-      if (birthDate.length < 1) tempErrs.push("Birth date required");
-      if (country.length < 1 || !onlyLettersRegex.test(country)) tempErrs.push("Country must contain only letters");
-      if (city.length < 1 || !onlyLettersRegex.test(city)) tempErrs.push("City must contain only letters");
-      if (phoneNumber.length < 1 || !onlyNumbersRegex.test(phoneNumber)) tempErrs.push("Only numbers allowed in phone number.");
+      if (country.length < 1 || !onlyLettersRegex.test(country)) tempErrs.push({field: 'country', message: "Country must contain only letters"});
+      if (city.length < 1 || !onlyLettersRegex.test(city)) tempErrs.push({field: 'city', message: "City must contain only letters"});
+      if (birthDate.length < 1) tempErrs.push({field: 'birthDate', message: "Birth date required"});
+      if (phoneNumber.length < 1 || !onlyNumbersRegex.test(phoneNumber)) tempErrs.push({field: 'phoneNumber', message: "Only numbers allowed in phone number."});
     } else if (step === 3) {
-        if (signUpReason === 'Choose your sign-up reason...') tempErrs.push('Sign up reason must be chosen.');
-        if (gitHub.length < 1 || !onlyLettersAndNumbersRegex.test(gitHub)) tempErrs.push('GitHub account is Invalid.');
-        if (securityQuestion === 'Choose Security Question...') tempErrs.push('Security question must be chosen.');
-        if (securityAnswer.length < 2) tempErrs.push('Security answer must be longer.');
+      if (password.length < 6) tempErrs.push({field: 'password', message: "Password needs to be at least 6 characters."});
+      if (password !== confirmPassword) tempErrs.push({field: 'confirmPassword', message: "Passwords must be identical."});
+      if (securityQuestion === 'Choose Security Question...') tempErrs.push({field: 'securityQuestion', message: 'Security question must be chosen.'});
+      if (securityAnswer.length < 2) tempErrs.push({field: 'securityAnswer', message: 'Security answer must be longer.'});
+    } else if (step === 4) {
+      if (signUpReason === 'Choose your sign-up reason...') tempErrs.push({field: 'signUpReason', message: 'Sign up reason must be chosen.'});
+      if (gitHub.length < 1 || !onlyLettersAndNumbersRegex.test(gitHub)) tempErrs.push({field: 'gitHub', message: 'GitHub account is invalid.'});
     }
     if (tempErrs.length === 0) {
       setStep(step + 1);
@@ -110,6 +112,8 @@ function Register() {
     }
   }
 
+  const values = { firstName, lastName, userName, email, password, confirmPassword, birthDate, country, city, phoneNumber, signUpReason, gitHub, securityQuestion, securityAnswer };
+  
   const multiForm = () => {
     switch (step) {
       case 1: return (
@@ -128,7 +132,7 @@ function Register() {
         />
       );
       case 3: return (
-        <ExtraDetails
+        <Security
           nextStep={nextStep}
           prevStep={prevStep}
           handleChange={handleChange}
@@ -136,6 +140,14 @@ function Register() {
         />
       );
       case 4: return (
+        <Extras
+          nextStep={nextStep}
+          prevStep={prevStep}
+          handleChange={handleChange}
+          values={values}
+        />
+      );
+      case 5: return (
         <Confirm
           prevStep={prevStep}
           values={values}
@@ -144,14 +156,12 @@ function Register() {
     }
   }
 
-  const values = { firstName, lastName, userName, email, password, confirmPassword, birthDate, country, city, phoneNumber, signUpReason, gitHub, securityQuestion, securityAnswer };
-
   return (
     <div>
       {multiForm()}
       <div>
         {errors && errors.map(err => (
-          <p key={err}>{err}</p>
+          <p key={err.message}>{err.message}</p>
         ))}
       </div>
     </div>

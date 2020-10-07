@@ -1,15 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-function ExtraDetails({values, handleChange, prevStep, nextStep}) {
+function Security({values, handleChange, prevStep, nextStep}) {
   return (
     <div>
-      <select defaultValue={values.signUpReason} name={values.signUpReason} onChange={handleChange('signUpReason')}> 
-        <option disabled value={values.signUpReason}>Choose your sign-up reason...</option>
-        <option value='Student' >Student</option>
-        <option value='Challenge Myself'>Challenge Myself</option>
-        <option value='Other'>Other</option>
-      </select><br />
-      <input type='text' value={values.gitHub} placeholder='Enter your GitHub Account Username' onChange={handleChange('gitHub')}/> <br />
+      <input type='password' value={values.password} placeholder='Enter Password' onChange={handleChange('password')} /> <br />
+      <input type='password' value={values.confirmPassword} placeholder='Confirm Password' onChange={handleChange('confirmPassword')} /> <br />
       <select defaultValue={values.securityQuestion} name={values.securityQuestion} placeholder='Enter security question' onChange={handleChange('securityQuestion')} >
         <option disabled value={values.securityQuestion}>Choose Security Question...</option>
         <option value='Q1'>Q 1</option>
@@ -25,4 +20,4 @@ function ExtraDetails({values, handleChange, prevStep, nextStep}) {
   )
 }
 
-export default ExtraDetails
+export default Security
