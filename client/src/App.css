@@ -56,3 +56,7 @@
 .newChallengeForm .header{
   margin-top: 2vh;
 }
+
+.displayErrors {
+  white-space: pre;
+}

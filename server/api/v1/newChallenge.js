@@ -6,22 +6,17 @@ const fs = require('fs');
 
 const router = Router();
 
-router.get('/', async (req, res) => {
-    const allChallenges = await Challenge.findAll();
-    res.json(allChallenges)
-})
-
 //router Post
 //+
 //router Get - Validation
-router.post(`/challenge`,async(req,res) => {
+router.post(`/`,async(req,res) => {
     try{
         const newRepo = req.body.repositoryName;
-        try{
-            await axios.get(`https://api.github.com/repos/${newRepo}`)
-        }catch(err){
-             return res.status(400).send('Repo not found')
-        }
+        // try{
+        //     await axios.get(`https://api.github.com/repos/${newRepo}`)
+        // }catch(err){
+        //      return res.status(400).send('Repo not found')
+        // }
         const check = await Challenge.findOne({
             where:{
                 repositoryName: newRepo
