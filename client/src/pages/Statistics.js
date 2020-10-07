@@ -1,10 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import NavBarStatistics from "../components/NavBarStatistics";
-import StatisticsHome from '../components/StatisticsHome';
-import UserStatistics from '../components/UserStatistics';
-import TeamStatistics from '../components/TeamStatistics';
-import Insights from '../components/Insights';
+import { NavBarStatistics, StatisticsHome, UserStatistics, TeamStatistics, Insights} from './components'
+
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ProfileStatistics from '../components/ProfileStatistics';
