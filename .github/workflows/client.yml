@@ -66,13 +66,13 @@ jobs:
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
 
   second_job:
+    dependsOn: build
+    condition: failed()
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [10.x]
     name: onFail
-    dependsOn: build
-    condition: failed()
     steps:    
     - name: Webhook
       uses: distributhor/workflow-webhook@v1
