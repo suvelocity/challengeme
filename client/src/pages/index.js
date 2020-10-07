@@ -13,6 +13,11 @@ export default function Router() {
         <Route path="/">
           <Home />
         </Route>
+        <Route path="/challenges/:challengeId">
+          <ChallengePage/>
+        </Route>
+
+        
       </Switch>
     </BrowserRouter>
   );
