@@ -37,7 +37,7 @@ function StatisticsHome() {
                 <Paper className={classes.paper}>Top rated challenges</Paper>
             </Grid>
         <Grid container xs={6} spacing={5} direction="column"  >
-            <Grid item  >
+            <Grid item >
                 <Paper className={classes.paper}>Top Users</Paper>
             </Grid>
             <Grid item>
