@@ -78,6 +78,7 @@ function Insights() {
             // you can add as many object as you wand, each one will a different line with different color
         ]
     } 
+    
 
     return (
         <div className={classes.main}>
