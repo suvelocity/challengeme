@@ -64,6 +64,22 @@ jobs:
         webhook_url: ${{ github.event.inputs.webhookUrl }}
         webhook_secret: ${{ github.event.inputs.webhookSecret }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
+
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]
+    name: onFail
+    dependsOn: ${{ github.event.inputs.name }}
+    condition: failed()
+    steps:    
+    - name: Webhook
+      uses: distributhor/workflow-webhook@v1
+      env:
+        webhook_url: ${{ github.event.inputs.webhookUrl }}
+        webhook_secret: ${{ github.event.inputs.webhookSecret }}
+        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
     #    json: '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
     #    webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
     #    url: ${{ github.event.inputs.webhook }}
