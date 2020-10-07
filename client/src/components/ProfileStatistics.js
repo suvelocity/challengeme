@@ -15,14 +15,16 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-function ProfileStatistics({ params }) 
-{
-    // useEffect(() =>  getInfo , [])
-    //     const [info , setInfo] = useState(null);
+function ProfileStatistics({ params }) {
 
-    // const getInfo = () => {
-    //     axios.get(`statistic/profile/${params.id}`).then(r => r.data).then(r => {setInfo(r)});
-    // };
+
+// useEffect(() =>  getInfo , [])
+//     const [info , setInfo] = useState(null);
+
+//     const getInfo = () => {
+//         axios.get(`statistic/profile/${params.id}`).then(r => r.data).then(r => {setInfo(r)});
+//     };
+
 
     const classes = useStyles();
 

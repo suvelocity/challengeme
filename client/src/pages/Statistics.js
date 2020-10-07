@@ -1,8 +1,10 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 //import { NavBarStatistics, StatisticsHome, UserStatistics, TeamStatistics, Insights} from '../components';
 
 import NavBarStatistics from '../components/NavBarStatistics';
+
 import StatisticsHome from '../components/StatisticsHome';
 import UserStatistics from '../components/UserStatistics';
 import TeamStatistics from '../components/TeamStatistics';
