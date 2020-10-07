@@ -16,16 +16,15 @@ router.get('/', async (req, res) => {
 //router Get - Validation
 router.post(`/challenge`,async(req,res) => {
     try{
-        const newRepo = req.body.repository_name;
-        console.log(req.body);
-        const { data } =  await axios.get(`https://api.github.com/repos/${newRepo}`)
-        if (data.message === 'Not Found')
-        {
-            return res.status(400).send('Repo not found')
+        const newRepo = req.body.repositoryName;
+        try{
+            await axios.get(`https://api.github.com/repos/${newRepo}`)
+        }catch(err){
+             return res.status(400).send('Repo not found')
         }
         const check = await Challenge.findOne({
             where:{
-                repository_name: newRepo
+                repositoryName: newRepo
             }
         })
         if(check){
@@ -34,7 +33,7 @@ router.post(`/challenge`,async(req,res) => {
         const newChallenge = await Challenge.create(req.body);
         res.status(200).send(newChallenge);
     }catch(err){
-        res.send(err.message)
+        res.send("Bad request.")
     }
 })
 
