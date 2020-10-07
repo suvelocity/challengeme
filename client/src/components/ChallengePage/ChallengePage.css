@@ -37,6 +37,16 @@ img {
 }
 .challenge-description-wrapper {
   margin: 10px;
+  font-size: 10px;
+  color: rgb(63, 63, 63);
+}
+.challenge-description {
+  font-size: 15px;
+  color: black;
+  margin-top: 10px;
+}
+.challenge-label {
+  padding-right: 5px;
 }
 .submit-btn {
   float: right;

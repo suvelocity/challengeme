@@ -59,24 +59,10 @@ function ChallengePage() {
       <div className='challenge-description-wrapper'>
         <div className='challenge-rawdata'>
           <span className='challenge-created-at'>
-            Created at:{" "}
-            <Chip
-              label={normalizeDate(challenge.createdAt) + " "}
-              component='a'
-              color='primary'
-              href='#chip'
-              clickable
-            />
+            Created at: {normalizeDate(challenge.createdAt) + " "}
           </span>
           <span className='challenge-updated-at'>
-            Updated at:{" "}
-            <Chip
-              label={normalizeDate(challenge.updatedAt)}
-              color='primary'
-              component='a'
-              href='#chip'
-              clickable
-            />
+            Updated at: {normalizeDate(challenge.updatedAt)}
           </span>
         </div>
         <div className='challenge-description'>
