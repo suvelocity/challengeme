@@ -5,13 +5,17 @@ import {
   Route,
 } from "react-router-dom";
 import Home from './Home';
+import AddChallenge from './AddChallenge.js';
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/">
+        <Route exact path="/">
           <Home />
+        </Route>
+        <Route path="/add_challenge">
+          <AddChallenge />
         </Route>
       </Switch>
     </BrowserRouter>

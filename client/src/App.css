@@ -36,3 +36,23 @@
     transform: rotate(360deg);
   }
 }
+
+.newChallenge {
+  display: flex;
+  justify-content: center;
+}
+
+.newChallengeForm {
+  width: 30vw;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: white;
+  margin-top: 20vh;
+}
+
+.newChallengeForm .header{
+  margin-top: 2vh;
+}
