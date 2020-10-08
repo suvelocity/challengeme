@@ -17,7 +17,7 @@ const ChooseCategory =({ formerSelection , submitFilter }) => {
     // a=[{title:<string>,value:<string>},{title:<string>,value:<string>}]
     // b={action:<string>, option(what you clicked): {title:<string>,value:<string>} , name(name of the Selector):<string>}
     console.log(a,b)
-    submitFilter('labels',a.map(x=>x.value))
+    submitFilter('labels',a?a.map(x=>x.value):[])
   }
 
   const submit= () => {
