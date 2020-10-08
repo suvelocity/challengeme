@@ -4,12 +4,17 @@ const usersRouter = Router();
 const { User, RefreshToken } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const checkToken = require('../../helpers/checkToken');
 
-// Register 
+//need to check if github
+
+// register request
 usersRouter.post("/register", async (req, res) => {
   // if user name already exist return error
-  const checkUser = await userIsExist(req.body.userName);
+  const checkUser = await User.findOne({
+    where: {
+      userName: req.body.userName,
+    },
+  });
   if (checkUser) return res.status(409).send("user name already exists");
   const hashPassword = await bcrypt.hash(req.body.password, 10);
   const hashAnswer = await bcrypt.hash(req.body.securityAnswer, 10);
@@ -33,18 +38,11 @@ usersRouter.post("/register", async (req, res) => {
   res.status(201).json({ message: "Register Success" });
 });
 
-// Check if user exist
-usersRouter.post("/userexist", async (req, res) => {
-  const currentUser = await userIsExist(req.body.userName);
-  if (currentUser) return res.status(409).json({ message: "user name already exists" });
-  res.json({ notExist: true });
-});
-
-// Log In
+//Log In
 usersRouter.post("/login", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser)
-    return res.status(404).json({ message: "User or Password incorrect" });
+    return res.status(404).json({ message: "Cannot Find User" });
   const validPass = await bcrypt.compare(
     req.body.password,
     currentUser.password
@@ -61,14 +59,14 @@ usersRouter.post("/login", async (req, res) => {
     token: refreshToken,
   });
   const body = {
+    remember: req.body.rememberMe,
     accessToken: accessToken,
     refreshToken: refreshToken,
     userDetails: currentUser,
   };
-  res.json(body);
+  res.status(200).json(body);
 });
 
-//Get new access token
 usersRouter.post("/token", async (req, res) => {
   const refreshToken = req.body.token;
   if (!refreshToken)
@@ -85,7 +83,7 @@ usersRouter.post("/token", async (req, res) => {
     delete decoded.iat;
     delete decoded.exp;
     const accessToken = generateToken(decoded);
-    res.json({ token: accessToken });
+    res.status(200).json({ token: accessToken });
   });
 });
 
@@ -102,22 +100,25 @@ usersRouter.post("/logout", async (req, res) => {
 
   if (!result)
     return res.status(400).json({ message: "Refresh Token is required" });
-  res.json({ message: "User Logged Out Successfully" });
+  res.status(200).json({ message: "User Logged Out Successfully" });
 });
 
 // validate token
 usersRouter.post("/info", checkToken, (req, res) => {
-  res.json({ message: "success get sensitive info" });
+  res.status(200).json({ message: "success get sensitive info" });
 });
 
-// Geting Sequrity Question
+//Geting Sequrity Question
 usersRouter.post("/getquestion", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
-  if (!currentUser) return res.status(404).json({ message: "Cannot Find User" });
-  res.json({ securityQuestion: currentUser.securityQuestion });
+  if (!currentUser)
+    return res.status(404).json({ message: "Cannot Find User" });
+  res
+    .status(200)
+    .json({ securityQuestion: currentUser.securityQuestion });
 });
 
-// Validate Answer
+//Validate Answer
 usersRouter.post("/validateanswer", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser)
@@ -127,24 +128,21 @@ usersRouter.post("/validateanswer", async (req, res) => {
     currentUser.securityAnswer
   );
   if (!validAnswer) return res.status(403).json({ message: "Wrong Answer" });
-  const resetToken = jwt.sign(currentUser, process.env.RESET_PASSWORD_TOKEN, { expiresIn: "300s" });
-  res.json({ resetToken });
+  const token = jwt.sign(currentUser, process.env.RESET_PASSWORD_TOKEN, { expiresIn: "300s" });
+  res.json({ token });
 });
-
-// Password Update
-usersRouter.patch("/passwordupdate", async (req, res) => {
-  const resetToken = req.body.resetToken;
-  if (!resetToken) return res.status(400).json({ message: "Reset Token Required" });
-  jwt.verify(resetToken, process.env.RESET_PASSWORD_TOKEN, async (err, decoded) => {
+//Password Update
+usersRouter.put("/passwordupdate", async (req, res) => {
+  jwt.verify(req.body.token, process.env.RESET_PASSWORD_TOKEN, async (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Token" });
     const hashPassword = await bcrypt.hash(req.body.password, 10);
     await User.update({ password: hashPassword }, {
       where: {
-        userName: decoded.userName
+        userName: decoded.userName 
       }
     });
-    res.json({ message: "Changed Password Sucsessfuly" });
-  });
+    res.status(200).json({ message: "Changed Password Sucsessfuly" });
+});
 });
 
 async function userIsExist(userName) {
@@ -153,7 +151,23 @@ async function userIsExist(userName) {
       userName: userName,
     },
   });
-  return user.dataValues;
+  if (user) {
+    return user.dataValues;
+  } else {
+    return user
+  }
+
+}
+
+function checkToken(req, res, next) {
+  let token = req.headers["authorization"];
+  token = token && token.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "Access Token Required" });
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    if (err) return res.status(403).json({ message: "Invalid Access Token" });
+    req.user = decoded;
+    next();
+  });
 }
 
 function generateToken(user) {
