@@ -85,7 +85,7 @@ export default function ChallengeCard({
   const classes = useStyles();
   const link = `/challenges/${challengeId}`;
   return (
-    <Link to={link}>
+    <Link to={link} style={{ textDecoration: 'none' }}>
       <Card className={classes.root}>
         <CardHeader
           avatar={

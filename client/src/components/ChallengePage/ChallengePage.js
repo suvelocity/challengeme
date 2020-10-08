@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+// import axios from 'axios'
+import network from '../../services/network'
 import { Button, Link } from "@material-ui/core";
-import axios from "axios";
 import Rating from "@material-ui/lab/Rating";
 import Chip from "@material-ui/core/Chip";
 //import SubmitModal from "./SubmitModal";
@@ -27,29 +28,52 @@ const challenge = {
 
 const challengeParamId = 3; //Mock until we merge shahar
 
+const makeBlobed = async (img) =>{
+  const  preBlobedImg  = await fetch(img)
+  const blobedImg = await preBlobedImg.blob()
+  return blobedImg
+}
+
 function ChallengePage() {
+
+  //const [challengeInfo,setChallengeInfo] = useState('');
+  const [blobedImg, setBlobedImg] = useState("")
+  
+  const setImg = async () => {
+    const { data } = await network.get(`/api/v1/images?id=${1}`)
+    // console.log(data);
+    const blobed = await makeBlobed(data.img)
+    const imgURL = URL.createObjectURL(blobed);
+    console.log(imgURL);
+    setBlobedImg(imgURL)
+  }
+  useEffect(() => {
+    //setChallengeInfo(axios.get('url:id').data);
+    setImg()
+// =======
   // const [challenge, setChallenge] = useState({});
 
-  useEffect(() => {
-    const fetchChallenge = async () => {
-      try {
-        const { data: challengeFromServer } = await axios.get(
-          `/api/v1/challenges/${challengeParamId}`
-        );
-        console.table(challenge);
-        // setChallenge(challengeFromServer);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchChallenge();
+  // useEffect(() => {
+  //   const fetchChallenge = async () => {
+  //     try {
+  //       const { data: challengeFromServer } = await axios.get(
+  //         `/api/v1/challenges/${challengeParamId}`
+  //       );
+  //       console.table(challenge);
+  //       // setChallenge(challengeFromServer);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchChallenge();
+// >>>>>>> 36f2077c2c283d389024cb3a91620c0a4000d5e0
   }, []);
 
   return challenge ? (
     <div className="challenge-wrapper">
       <div className="challenge-header">
         <h1 className="challenge-name">{challenge.name}</h1>
-        <img className="challenge-img" src={challenge.cover} />
+        <img className="challenge-img" src={blobedImg} />
 
         <Button color="primary" href={challenge.githubLink}>
           To Github!
@@ -73,9 +97,9 @@ function ChallengePage() {
             Updated at: {normalizeDate(challenge.updatedAt)}
           </span>
         </div>
-        <div className="challenge-description">
+        <div className='challenge-description'>
           {challenge.label.map((tag, index) => (
-            <span key={index} className="challenge-label">
+            <span className='challenge-label' key={index}>
               <Chip
                 color="primary"
                 label={tag}
