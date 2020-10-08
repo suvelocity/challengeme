@@ -59,6 +59,20 @@ describe("Register & Login Tests", () => {
     done();
   });
 
+  test("User not Found In Login", async (done) => {
+    const registerResponse = await request(server)
+      .post("/api/v1/auth/register")
+      .send(mockUser.reg);
+    expect(registerResponse.status).toBe(201);
+
+    const invalidLoginResponse = await request(server)
+      .post("/api/v1/auth/login")
+      .send({ userName: "supposed", password: "toFail" });
+    expect(invalidLoginResponse.status).toBe(404);
+
+    done();
+  });
+
   // user logout
   test("User Can Logout", async (done) => {
     const registerResponse = await request(server)
