@@ -15,9 +15,7 @@ on:
       webhookUrl:
         description: 'location'
         required: false
-      webhookSecret:
-        description: 'location'
-        required: false
+
 
 
 

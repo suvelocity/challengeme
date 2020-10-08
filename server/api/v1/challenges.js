@@ -55,8 +55,7 @@ router.post('/:challengeId/apply', async (req, res) => {
         name: `${solutionRepository}-Submission${submission.id}`,
         testRepo: challenge.repositoryName,
         solutionRepo: solutionRepository,
-        webhookUrl: urltoSet,
-        webhookSecret: process.env.WEBHOOK_SECRET
+        webhookUrl: urltoSet
       }
     }, {
       headers: {
