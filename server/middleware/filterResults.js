@@ -1,7 +1,7 @@
 const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
 module.exports = function(req,res,next){
-  const {challengeName,categories} = req.query;
+  const {challengeName,categories,labels} = req.query;
   console.log(challengeName)
   const conditionArray = []
   if(challengeName){
@@ -18,11 +18,12 @@ module.exports = function(req,res,next){
     const list = categories.split(',')
     conditionArray.push({category : {[Op.in]:list} })
   }
-  
+
   const condition = {
     [Op.and]: conditionArray
   }
   req.condition = condition
+  req.labels = labels && labels.split(',')
   next()
 }
 // module.exports = function(req,res,next){

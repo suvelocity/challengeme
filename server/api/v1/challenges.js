@@ -4,14 +4,31 @@ const filterResults = require('../../middleware/filterResults');
 const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
 
-const { Submission, Challenge, Label } = require('../../models');
+const { Submission, Challenge, Label, labels_to_challenge } = require('../../models');
 
 const router = Router();
 
 router.get('/',filterResults, async (req, res) => {
-  const {condition} = req
-  const allChallenges = await Challenge.findAll({where: condition});
-  res.json(allChallenges)
+  const {condition,labels} = req
+  console.log(labels);
+  const allChallenges = await Challenge.findAll({
+    where: condition,
+    include: [Label]
+  });
+  if(labels){
+    const filterChallenges = allChallenges.filter((challenge)=>{
+      // challenge.Labels[t].id === labels[j]  
+      // return challenge ;
+      return labels.some((label)=>{
+        return challenge.Labels.some((x)=>{
+          return x.id == label  ;
+        })
+      })
+    });
+    res.json(filterChallenges);
+  } else {
+    res.json(allChallenges)
+  }
 })
 
 router.get('/labels', async (req, res) => {
