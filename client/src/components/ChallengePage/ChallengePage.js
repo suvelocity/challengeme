@@ -28,7 +28,7 @@ const challenge = {
 const challengeParamId = 3; //Mock until we merge shahar
 
 function ChallengePage() {
-  const [challenge, setChallenge] = useState({});
+  // const [challenge, setChallenge] = useState({});
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -37,7 +37,7 @@ function ChallengePage() {
           `/api/v1/challenges/${challengeParamId}`
         );
         console.table(challenge);
-        setChallenge(challengeFromServer);
+        // setChallenge(challengeFromServer);
       } catch (error) {
         console.log(error);
       }
