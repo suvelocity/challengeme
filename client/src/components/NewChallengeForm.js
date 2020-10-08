@@ -162,14 +162,14 @@ export default function NewChallengeForm() {
       <Typography variant='h5' gutterBottom className='newChallengeFormheader'>
         New Challenge
       </Typography>
-      <TextField id='name' className='newChallengeFormFeild' label='Challenge name' onChange={event => setRepoName(event.target.value)}/><br />
-      <TextField id='repo' className='newChallengeFormFeild' label='Challenge link' onChange={event => setRepoLink(event.target.value)}/><br />
-      <TextareaAutosize className='descriptionTextArea' aria-label='Description' rowsMin={6} placeholder='Challenge description...' onChange={event => setRepoDescription(event.target.value)}/><br />
+        <TextField id='name' autoComplete="off" className='newChallengeFormFeild' label='Challenge name' onChange={event => setRepoName(event.target.value)}/><br />
+        <TextField id='repo' autoComplete="off" className='newChallengeFormFeild' label='Challenge link' onChange={event => setRepoLink(event.target.value)}/><br />
+        <TextareaAutosize className='descriptionTextArea' autoComplete="off" aria-label='Description' rowsMin={6} placeholder='Challenge description...' onChange={event => setRepoDescription(event.target.value)}/><br />
 
       <AddImg file={file} handleChange={handleFile}/><br />
 
       <FormControl className={classes.formControl}>
-        <InputLabel id='Challenge type'>Challenge type</InputLabel>
+          <InputLabel id='Challenge type'>Challenge type</InputLabel>
         <Select
           labelId='Challenge type'
           id='Challenge type'
