@@ -1,18 +1,9 @@
-describe('My First Test', () => {
-    it('Does not do much!', () => {
-      expect(true).to.equal(true)
-    })
-    it('Does not do much 2!', () => {
-      expect(1).to.equal(1)
-    })
-  })
-  describe('The Statics Page', () => {
+describe('Client Tests', () => {
+    
     it('successfully loads', () => {
-      cy.visit('http://localhost:3000/statistics') // change URL to match your dev URL
-    })
-  })
+        cy.visit('http://localhost:3000/statistics') // change URL to match your dev URL
+      })
 
-  describe('Client Tests', () => {
     it('Check NavBar Links', () => {
       cy.visit('http://localhost:3000/statistics')
       const insights = cy.get('#Insights').click()
