@@ -15,7 +15,7 @@ async function establishConnection(){
   app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
   })
-  setInterval(checkActions, 10000) // todo: Make Submissions Update without Me
+ // setInterval(checkActions, 10000) // todo: Make Submissions Update without Me
 }
 establishConnection();  // node env development
 

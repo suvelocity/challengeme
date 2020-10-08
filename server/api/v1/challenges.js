@@ -52,7 +52,7 @@ router.post('/:challengeId/apply', async (req, res) => {
     const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
       ref: 'meiron-try',
       inputs: {
-        name: `${solutionRepository}-Submission${submission.id}`,
+        //name: `${solutionRepository}-Submission${submission.id}`,
         testRepo: challenge.repositoryName,
         solutionRepo: solutionRepository,
         webhookUrl: urltoSet

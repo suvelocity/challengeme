@@ -2,10 +2,10 @@ name: static type
 on:
   workflow_dispatch:
     inputs:
-      name:
-        description: 'Solution repository name and submissions number'
-        required: true
-        default: 'Submission number'
+      # name:
+      #   description: 'Solution repository name and submissions number'
+      #   required: true
+      #   default: 'Submission number'
       testRepo:
         description: 'Testing repository'
         required: false
@@ -64,11 +64,13 @@ jobs:
     - name: onSuccess
       uses: fjogeleit/http-request-action@master
       with:
+        method: 'PUT'
         url: ${{ github.event.inputs.webhookUrl }}
-        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":true }'
+        data:  '{ "success":true }'
     - name: onFailure
       if: ${{ failure() || cancelled() }}
       uses: fjogeleit/http-request-action@master
       with:
+        method: 'PUT'
         url: ${{ github.event.inputs.webhookUrl }}
-        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":false }'
+        data:  '{ "success":false }'
