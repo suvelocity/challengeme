@@ -5,7 +5,6 @@ const bcrypt = require("bcrypt");
 
 const mockUser = require("./mocks/users");
 
-//login logout and register tests
 
 describe("Register & Login Tests", () => {
   beforeAll(async () => {
@@ -19,7 +18,6 @@ describe("Register & Login Tests", () => {
     await server.close();
   });
 
-  // user register
   test("User Can Reset Password", async (done) => {
 
     const questionResponse = await request(server)
