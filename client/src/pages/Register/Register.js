@@ -37,7 +37,7 @@ function Register() {
     if (step === 1) {
       if (firstName.length < 1 || !onlyLettersRegex.test(firstName)) tempErrs.push({ field: 'firstName', message: "First name must contain only letters." });
       if (lastName.length < 1 || !onlyLettersRegex.test(lastName)) tempErrs.push({ field: 'lastName', message: "Last name  must contain only letters." });
-      if (userName.length < 6 || !onlyLettersAndNumbersRegex.test(userName)) tempErrs.push({ field: 'userName', message: "Username must contain only letters and numbers and be longer then 6 characters." });
+      if (userName.length <= 6 && userName.length > 32|| !onlyLettersAndNumbersRegex.test(userName)) tempErrs.push({ field: 'userName', message: "Username must contain only letters and numbers and be longer then 6 characters." });
       if (email.length < 1) tempErrs.push({ field: 'email', message: "Email required." });
       if (!validateEmailRegex.test(email)) tempErrs.push({ field: 'email', message: "Email invalid." });
     } else if (step === 2) {
