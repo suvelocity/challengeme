@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Submission, {
         foreignKey: "userId",
       });
+      this.belongsToMany(models.Teams,{through:'UsersTeams'});
     }
   }
   User.init(
