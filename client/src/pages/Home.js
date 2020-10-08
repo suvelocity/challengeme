@@ -20,7 +20,7 @@ export default function HomePage() {
 
   return (
     <div >
-      <div className ={darkMode?"dark-home-page":"light-home-page"}>
+      <div className ={!darkMode?"dark-home-page":"light-home-page"}>
       {challenges.map(challenge => (
         <ChallengeCard
           key={challenge.id}

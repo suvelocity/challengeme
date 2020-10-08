@@ -38,7 +38,7 @@ export default function ChallengeCard({
   })
 
   return (
-    <div className={darkMode?"dark-challenge-card":"light-challenge-card"}>
+    <div className={!darkMode?"dark-challenge-card":"light-challenge-card"}>
       <div className="challenge-card-creator-homepage">
         <Tooltip title={repositoryName.split("/")[0]}>
         <Avatar style={{backgroundColor:"#F5AF5D",marginRight:50}}>{repositoryName.slice(0,2)}</Avatar>
@@ -59,7 +59,7 @@ export default function ChallengeCard({
         </div>
         <Rating readOnly name="disabled" value={4}  />
       </div>
-      <div className={darkMode?"challenge-card-description-homepage":"challenge-card-description-homepage-light"}>
+      <div className={!darkMode?"challenge-card-description-homepage":"challenge-card-description-homepage-light"}>
         {/* description.slice(0,100) */}
         word-wrap: break-word ssssssssssssssssssssssssssssshas been replaced with overflow-wrap: brsseask-wo      
         </div>
