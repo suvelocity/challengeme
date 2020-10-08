@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect  } from "react-router-dom";
 import { Logged } from "../context/LoggedInContext";
 import Home from "./Home";
 import Register from "./Register/Register";
@@ -36,14 +36,17 @@ export default function Router() {
         !logged ? 
           <Logged.Provider value={{ logged, setLogged }}>
             <Switch>
-              <Route path="/register">
+              <Route exact path="/register">
                 <Register />
               </Route>
-              <Route path="/login">
+              <Route exact path="/login">
                 <Login />
               </Route>
-              <Route path="/auth">
+              <Route exact path="/auth">
                 <VlidatingMail />
+              </Route>
+              <Route path="*">
+                <Redirect to='/login' />
               </Route>
             </Switch>
           </Logged.Provider>
@@ -52,6 +55,9 @@ export default function Router() {
             <Switch>
               <Route exact path="/">
                 <Home />
+              </Route>
+              <Route path="*">
+                <Redirect to='/' />
               </Route>
             </Switch>
           </Logged.Provider>
