@@ -69,18 +69,18 @@ jobs:
         url: ${{ github.event.inputs.webhookUrl }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":false }'
 
-  secondjob:
-    needs: tests
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [10.x]
-    name: Test Job Functionality
-    steps:
-    - name: onSuccess
-      uses: fjogeleit/http-request-action@master
-      with:
-        url: ${{ github.event.inputs.webhookUrl }}
-        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":true }'
+  # secondjob:
+  #   needs: tests
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node-version: [10.x]
+  #   name: Test Job Functionality
+  #   steps:
+  #   - name: onSuccess
+  #     uses: fjogeleit/http-request-action@master
+  #     with:
+  #       url: ${{ github.event.inputs.webhookUrl }}
+  #       data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":true }'
         
 
