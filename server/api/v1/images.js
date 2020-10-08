@@ -2,8 +2,10 @@ const { Router } = require('express');
 const { Image } = require('../../models');
 const ImageRouter = Router();
 
+
 ImageRouter.get('/', async (req, res) => { // /api/v1/image?id=
     let challengeId = req.query.id ;
+
     try{
         const image = await Image.findOne({
             where: {challengeId}
