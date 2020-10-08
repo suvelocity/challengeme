@@ -1,5 +1,5 @@
 'use strict';
-const usersTeams = require('../_tests_/statistics/mocks/usersTeams');
+const usersTeams = require('../_tests_/statistics/seeders/seedFiles');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
