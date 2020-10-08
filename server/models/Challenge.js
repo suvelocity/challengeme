@@ -9,6 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+    static associate(models) {
+      this.belongsToMany(models.Label,{
+        through: 'labels_to_challenges',
+        foreignKey: 'challenge_id'
+      });
+    }
   };
   Challenge.init({
     name: DataTypes.STRING,
