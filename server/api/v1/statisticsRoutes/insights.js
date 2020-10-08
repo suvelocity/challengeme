@@ -1,8 +1,8 @@
-const { Router } = require("express");
+const { Router, request } = require("express");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const router = Router();
-const { Submission, Challenge } = require("../../../models");
+const { Submission, Challenge, Review } = require("../../../models");
 
 router.get("/top-challenges", async (req, res) => {
   const sub = await Submission.findAll({
@@ -58,7 +58,7 @@ router.get("/challenges-type", async (req, res) => {
 
 router.get("/sub-by-date", async (req, res) => {
   const subByDate = await Submission.findAll({
-    group: [sequelize.fn("DAY", sequelize.col("created_at"))],
+    group: [sequelize.fn("DAY", sequelize.col("createdAt"))],
     attributes: [
       [sequelize.fn("COUNT", sequelize.col("id")), "countByDay"],
       "createdAt",
@@ -70,6 +70,28 @@ router.get("/sub-by-date", async (req, res) => {
     },
   });
   res.json(subByDate);
+});
+
+router.get("/challenges-by-reviews", async (req, res) => {
+
+  let allChallenges = await Review.findAll({
+    attributes: [[sequelize.fn('AVG', sequelize.col('rating')), 'ratingAVG']],
+    include: {
+      model: Challenge,
+    },
+    group: ['challenge_id'],
+    order: [[sequelize.fn('AVG', sequelize.col('rating')), 'DESC']],
+    limit: 5
+  })
+
+  allChallenges = allChallenges.map(element => {
+
+    element.dataValues.ratingAVG = Number(element.dataValues.ratingAVG)
+    return element
+
+  });
+
+  res.json(allChallenges)
 });
 
 module.exports = router;

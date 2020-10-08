@@ -1,0 +1,12 @@
+
+@media only screen and (max-width: 650px) {
+    .header-link-title {
+      font-size: 0px;
+      /* display: 'none'; */
+    }
+  }
+  
+  .link-rout {
+    text-decoration: none;
+  }
+  
