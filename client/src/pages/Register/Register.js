@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import UserDetails from './UserDetails';
 import PersonalDetails from './PersonalDetails';
 import Confirm from './Confirm';
@@ -187,6 +187,7 @@ function Register() {
   return (
     <div>
       {multiForm()}
+      <p>Have an existing account? <Link to='/login'>Login Here</Link></p>
       <div>
         {errors && errors.map(err => (
           <p key={err.message}>{err.message}</p>
