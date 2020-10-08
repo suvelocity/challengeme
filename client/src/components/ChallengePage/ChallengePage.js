@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios'
 import network from '../../services/network'
 import { Button, Link } from "@material-ui/core";
-
+import axios from "axios";
 import Rating from "@material-ui/lab/Rating";
 import Chip from "@material-ui/core/Chip";
 //import SubmitModal from "./SubmitModal";
@@ -26,12 +26,8 @@ const challenge = {
   rating: 3.7,
   isSaved: true,
 };
-const normalizeDate = (dateTime) => {
-  //"2020-10-04T12:00:00.000Z";
-  const date = dateTime.split("T")[0];
-  return date;
-};
-const challengeId = 3; //Mock until we merge shahar
+
+const challengeParamId = 3; //Mock until we merge shahar
 
 const makeBlobed = async (img) =>{
   const  preBlobedImg  = await fetch(img)
@@ -40,6 +36,7 @@ const makeBlobed = async (img) =>{
 }
 
 function ChallengePage() {
+
   //const [challengeInfo,setChallengeInfo] = useState('');
   const [blobedImg, setBlobedImg] = useState("")
   
@@ -53,32 +50,50 @@ function ChallengePage() {
     //setChallengeInfo(axios.get('url:id').data);
     setImg()
     console.log(blobedImg);
-  }, []);
-  return challenge ? (
-    <div className='challenge-wrapper'>
-      <div className='challenge-header'>
-        <h1 className='challenge-name'>{challenge.name}</h1>
-        <img className='challenge-img' src={challenge.cover} />
+// =======
+  // const [challenge, setChallenge] = useState({});
 
-        <Button color='primary' href={challenge.githubLink}>
+  // useEffect(() => {
+  //   const fetchChallenge = async () => {
+  //     try {
+  //       const { data: challengeFromServer } = await axios.get(
+  //         `/api/v1/challenges/${challengeParamId}`
+  //       );
+  //       console.table(challenge);
+  //       // setChallenge(challengeFromServer);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchChallenge();
+// >>>>>>> 36f2077c2c283d389024cb3a91620c0a4000d5e0
+  }, []);
+
+  return challenge ? (
+    <div className="challenge-wrapper">
+      <div className="challenge-header">
+        <h1 className="challenge-name">{challenge.name}</h1>
+        <img className="challenge-img" src={challenge.cover} />
+
+        <Button color="primary" href={challenge.githubLink}>
           To Github!
         </Button>
-        <div className='challenge-rating'>
+        <div className="challenge-rating">
           <Rating
-            name='half-rating-read'
+            name="half-rating-read"
             defaultValue={3}
             precision={0.5}
             readOnly
           />
         </div>
-        <span className='challenge-difficulty'></span>
+        <span className="challenge-difficulty"></span>
       </div>
-      <div className='challenge-description-wrapper'>
-        <div className='challenge-rawdata'>
-          <span className='challenge-created-at'>
+      <div className="challenge-description-wrapper">
+        <div className="challenge-rawdata">
+          <span className="challenge-created-at">
             Created at: {normalizeDate(challenge.createdAt) + " "}
           </span>
-          <span className='challenge-updated-at'>
+          <span className="challenge-updated-at">
             Updated at: {normalizeDate(challenge.updatedAt)}
           </span>
         </div>
@@ -86,16 +101,16 @@ function ChallengePage() {
           {challenge.label.map((tag, index) => (
             <span className='challenge-label' key={index}>
               <Chip
-                color='primary'
+                color="primary"
                 label={tag}
-                component='a'
-                href='#chip'
+                component="a"
+                href="#chip"
                 clickable
               />
             </span>
           ))}
-          <p className='challenge-description'>{challenge.description}</p>
-          <Button color='primary' className='submit-btn'>
+          <p className="challenge-description">{challenge.description}</p>
+          <Button color="primary" className="submit-btn">
             Submit
           </Button>
         </div>
@@ -110,4 +125,9 @@ function ChallengePage() {
   );
 }
 
+function normalizeDate(dateTime) {
+  //"2020-10-04T12:00:00.000Z";
+  const date = dateTime.split("T")[0];
+  return date;
+}
 export default ChallengePage;

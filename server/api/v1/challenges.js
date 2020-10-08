@@ -1,72 +1,95 @@
-const { Router } = require('express');
-const axios = require('axios');
+const { Router } = require("express");
+const axios = require("axios");
 
-const { Submission, Challenge } = require('../../models');
+const { Submission, Challenge } = require("../../models");
 
-const router = Router();
+const challengeRouter = Router();
 
-router.get('/', async (req, res) => {
-  const allChallenges = await Challenge.findAll();
-  res.json(allChallenges)
-})
+challengeRouter.get("/", async (req, res) => {
+  try {
+    const allChallenges = await Challenge.findAll();
+    res.json(allChallenges);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
-router.get('/:challengeId/submissions', async (req, res) => {
-  const { challengeId } = req.params;
-  const allSubmission = await Submission.findAll({ where: {
-    challengeId
-  } });
-  res.json(allSubmission)
-})
+challengeRouter.get("/:challengeId", async (req, res) => {
+  try {
+    const challenge = await Challenge.findOne({
+      where: { id: req.params.challengeId },
+    });
+    res.json(challenge);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+challengeRouter.get("/:challengeId/submissions", async (req, res) => {
+  try {
+    const { challengeId } = req.params;
+    const allSubmission = await Submission.findAll({
+      where: {
+        challengeId,
+      },
+    });
+    res.json(allSubmission);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 
-router.post('/:challengeId/apply', async (req, res) => {
+challengeRouter.post("/:challengeId/apply", async (req, res) => {
   const { solutionRepository } = req.body;
   const challengeId = req.params.challengeId;
   const challenge = await Challenge.findByPk(challengeId);
   let submission = await Submission.findOne({
     where: {
-      solutionRepository
-    }
+      solutionRepository,
+    },
   });
   if (!submission) {
     submission = await Submission.create({
       challengeId,
-      state: 'PENDING',
-      solutionRepository
+      state: "PENDING",
+      solutionRepository,
     });
-  } else if (submission.state === 'PENDING') {
-    return res.json({ error: 'already exist' })
+  } else if (submission.state === "PENDING") {
+    return res.json({ error: "already exist" });
   }
 
-  if (submission.state === 'SUCCESS') {
-    return res.json({ error: 'already success' })
+  if (submission.state === "SUCCESS") {
+    return res.json({ error: "already success" });
   }
 
-  if(submission.state !== 'FAIL') {
-    await submission.update({ state: 'PENDING' })
+  if (submission.state !== "FAIL") {
+    await submission.update({ state: "PENDING" });
   }
 
   try {
-    const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
-      ref: 'master',
-      inputs: {
-        name: `aa${process.env.ENV_NAME}${submission.id}`,
-        testRepo: challenge.repositoryName,
-        solutionRepo: solutionRepository
+    const { status } = await axios.post(
+      `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
+      {
+        ref: "master",
+        inputs: {
+          name: `aa${process.env.ENV_NAME}${submission.id}`,
+          testRepo: challenge.repositoryName,
+          solutionRepo: solutionRepository,
+        },
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
+        },
       }
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
-      }
-    })
+    );
 
-    res.json({ status })
+    res.json({ status });
   } catch (e) {
-    console.log('aaaa', e.message)
+    console.log("aaaa", e.message);
 
-    res.json({ status: 500, error: e })
+    res.json({ status: 500, error: e });
   }
+});
 
-})
-
-module.exports = router;
+module.exports = challengeRouter;
