@@ -26,6 +26,7 @@ module.exports = [
               name: "corona-manager"
           }
       ],
+      countSub: 7,
       createdAt: 2020-10-06,
       updatedAt: 2020-10-06,
       deletedAt: null,
@@ -57,6 +58,7 @@ module.exports = [
               name: "jwt-solution"
           }
       ],
+      countSub: 6,
       createdAt: 2020-10-06,
       updatedAt: 2020-10-06,
       deletedAt: null,

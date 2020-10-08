@@ -8,8 +8,7 @@ module.exports = [
       createdAt: 2020-10-06,
       updatedAt: 2020-10-06,
       deletedAt: null,
-      challenge_id = 1,
-      count_sub: 3,
+      countSub: 3,
       challenge: {
           name: "JWT - Node.js",
       }
@@ -23,8 +22,7 @@ module.exports = [
         createdAt: 2020-10-09,
         updatedAt: 2020-10-09,
         deletedAt: null,
-        challenge_id = 2,
-        count_sub: w,
+        countSub: 2,
         challenge: {
             name: "corona-manager",
         }

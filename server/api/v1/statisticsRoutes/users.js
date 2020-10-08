@@ -6,7 +6,7 @@ const { Submission, Challenge, User } = require("../../../models");
 router.get("/top-users", async (req, res) => {
   const topUsers = await Submission.findAll({
     attributes: {
-      include: [[sequelize.fn("COUNT", sequelize.col("user_id")), "countSubmissions"]],
+      include: [[sequelize.fn("COUNT", sequelize.col("user_id")), "countSub"]],
     },
     include: {
       model: User,
