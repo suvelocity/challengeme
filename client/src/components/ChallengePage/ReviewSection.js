@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import Review from "./Review.js";
 import axios from "axios";
 
-const data = [{name:"asd", status:"fdgfdg", submittedAt:"3434"}];
+const data = [{author:"author", title:"title", createdAt:"date", content:"sadsadsadasdasd", rating:4}];
 
 function ReviewSection() {
 	
