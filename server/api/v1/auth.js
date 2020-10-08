@@ -17,6 +17,7 @@ usersRouter.post("/register", async (req, res) => {
   });
   if (checkUser) return res.status(409).send("user name already exists");
   const hashPassword = await bcrypt.hash(req.body.password, 10);
+  const hashAnswer = await bcrypt.hash(req.body.securityAnswer, 10);
   const newUser = {
     userName: req.body.userName,
     firstName: req.body.firstName,
@@ -30,7 +31,7 @@ usersRouter.post("/register", async (req, res) => {
     githubAccount: req.body.githubAccount,
     reasonOfRegistration: req.body.reasonOfRegistration,
     securityQuestion: req.body.securityQuestion,
-    securityAnswer: req.body.securityAnswer,
+    securityAnswer: hashAnswer,
   };
   // create new user
   await User.create(newUser);
@@ -38,13 +39,10 @@ usersRouter.post("/register", async (req, res) => {
 });
 
 usersRouter.post("/login", async (req, res) => {
-  const currentUser = await User.findOne({
-    where: {
-      userName: req.body.userName,
-    },
-  });
+  const currentUser = await userIsExist(req.body.userName);
   if (!currentUser)
     return res.status(404).json({ message: "Cannot Find User" });
+  console.log(currentUser);
   const validPass = await bcrypt.compare(
     req.body.password,
     currentUser.password
@@ -106,11 +104,7 @@ usersRouter.post("/info", checkToken, (req, res) => {
 });
 //sequrity question
 usersRouter.post("/getquestion", async (req, res) => {
-  const currentUser = await User.findOne({
-    where: {
-      userName: req.body.userName,
-    },
-  });
+  const currentUser = await userIsExist(req.body.userName);
   if (!currentUser)
     return res.status(404).json({ message: "Cannot Find User" });
   res
@@ -118,17 +112,32 @@ usersRouter.post("/getquestion", async (req, res) => {
     .json({ securityQuestion: currentUser.dataValues.securityQuestion });
 });
 
-// //returned answer
-// usersRouter.post("/returnedanswer", async (req, res) => {
-//   const returnedAnswer = req.body.answer;
-
-//   res.status(200).json({ message: "success get sensitive info" });
-// });
+//returned answer
+usersRouter.post("/returnedanswer", async (req, res) => {
+  const currentUser = await userIsExist(req.body.userName);
+  if (!currentUser)
+    return res.status(404).json({ message: "Cannot Find User" });
+  const validAnswer = await bcrypt.compare(
+    req.body.securityAnswer,
+    currentUser.securityAnswer
+  );
+  if (!validAnswer) return res.status(403).json({ message: "Wrong Answer" });
+  res.status(200).json({ message: "success get sensitive info" });
+});
 
 // //password update
 // usersRouter.put("/paswwordupdate", (req, res) => {
 //   res.status(200).json({ message: "success get sensitive info" });
 // });
+
+async function userIsExist(userName) {
+  const user = await User.findOne({
+    where: {
+      userName: userName,
+    },
+  });
+  return user;
+}
 
 function checkToken(req, res, next) {
   let token = req.headers["authorization"];
