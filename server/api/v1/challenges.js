@@ -50,7 +50,7 @@ router.post('/:challengeId/apply', async (req, res) => {
     const urltoSet = process.env.MY_URL.concat('/api/v1/submissions');
     //console.log(urltoSet);
     const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
-      ref: 'main',
+      ref: 'coreTask',
       inputs: {
         name: `${solutionRepository}-Submission${submission.id}`,
         testRepo: challenge.repositoryName,
