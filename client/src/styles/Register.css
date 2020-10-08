@@ -1,0 +1,43 @@
+.containerHeaderRegister {
+    margin-bottom: 450px;
+    /* position: absolute; */
+}
+
+.registerHeader {
+    border-radius: 4px;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.356);
+    text-align: center;
+    color: white;
+    width: 450px;
+    height: 160px;
+    background: linear-gradient(
+        90deg,
+        rgb(49, 92, 171) 0%,
+        rgb(69, 125, 199) 100%
+    );
+    display: flex;
+    flex-direction: column;
+}
+
+.registerTitle {
+    font-size: 40px;
+}
+
+.registerBody {
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.972);
+    border-radius: 5px;
+    width: 600px;
+    height: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.548);
+}
+
+.containerUserDetails,
+.containerPersonalDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
