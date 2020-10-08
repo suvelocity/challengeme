@@ -8,7 +8,7 @@ router.get("/top-challenges", async (req, res) => {
   const sub = await Submission.findAll({
     attributes: {
       include: [
-        [sequelize.fn("COUNT", sequelize.col("challenge_id")), "count_sub"],
+        [sequelize.fn("COUNT", sequelize.col("challenge_id")), "countSub"],
       ],
     },
     include: {
