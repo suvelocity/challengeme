@@ -2,7 +2,7 @@ require('dotenv').config()
 const ngrok = require('ngrok');
 const app = require('./app');
 const checkActions = require('./lib/check-actions');
-const port = process.env.PORT || 4040
+const port = process.env.PORT || 8080
 
 async function establishConnection(){
   //const apiUrl = ngrok.getUrl();
