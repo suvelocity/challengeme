@@ -82,6 +82,5 @@ jobs:
         with:
         url: ${{ github.event.inputs.webhookUrl }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":true }'
-      - name: second Step
         
 
