@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node_modules/.bin/jest",
     "migrate": "node_modules/.bin/sequelize db:migrate",
     "dev": "nodemon index.js"
   },
@@ -34,6 +34,8 @@
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
-    "sequelize-cli": "^6.2.0"
+    "sequelize-cli": "^6.2.0",
+    "jest": "^24.9.0",
+    "supertest": "^4.0.2"
   }
 }
