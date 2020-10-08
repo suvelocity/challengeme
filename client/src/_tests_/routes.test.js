@@ -22,7 +22,7 @@ let browser;
 		await browser.close();
 	});
 
-	test("Insight component test", async () => {
+	test("Insight component can be reached by click on the insight icon, and display the charts", async () => {
 		// click on the insight icon in the navbar and render to the insight page
 		await page.waitForSelector("#Insights");
 		await page.click("#Insights");
