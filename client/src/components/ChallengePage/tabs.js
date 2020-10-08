@@ -59,7 +59,7 @@ export default function ChallengeTabs(props) {
   };
 
   return (
-    <div style = {{width:"725px", height:"1000px", backgroundColor:"lightskyblue"}} className={classes.root}>
+    <div style = {{width:"725px", height:"300px", backgroundColor:"lightskyblue", overflowY:"auto"}} className={classes.root}>
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Submissions" {...a11yProps(0)} />

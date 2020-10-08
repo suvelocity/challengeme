@@ -26,9 +26,9 @@ function SubmissionTable(props) {
 				bold = {true}/>
 				{subArr.map((item,i)=> 
 						<Submission className="submission" key={i} 
-						name = {item.name} 
-						status = {item.status} 
-						submittedAt = {item.submittedAt}
+						name = {item.solutionRepository.split('/')[0]} 
+						status = {item.state} 
+						submittedAt = {item.updatedAt.split('T').join(' ').split('.')[0]}
 						bold = {false}/>)}
 			</div>;
 }
