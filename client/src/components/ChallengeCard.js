@@ -37,7 +37,7 @@ const SubmissionsTable = ({ challengeId }) => {
   return <div>
     {
       submissions.map(submission => (<div>
-        {submission.solutionRepository} -> {submission.state}
+        {submission.solutionRepository} {'->'} {submission.state}
       </div>))
     }
   </div>
