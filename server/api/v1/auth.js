@@ -64,6 +64,7 @@ usersRouter.post("/userexist", async (req, res) => {
   res.json({ notExist: true });
 });
 
+// Validate Token
 usersRouter.get("/validateToken", checkToken, (req, res) => {
   res.json({ valid: true })
 })

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Logged } from "../context/LoggedInContext";
 import Home from "./Home";
@@ -17,8 +17,8 @@ export default function Router() {
     (async () => {
       if (Cookies.get('accessToken')) {
         try {
-          const { data } = await axios.get("/api/v1/auth/validate");
-          setIsLogged(data);
+          const { data } = await network.get("/api/v1/auth/validateToken");
+          setLogged(data);
           setLoading(false);
         } catch (e) {
           setLoading(false);
@@ -28,7 +28,7 @@ export default function Router() {
         setLoading(false);
       }
     })();
-  }, [cookies]);
+  }, []);
 
   return (
     <BrowserRouter>
