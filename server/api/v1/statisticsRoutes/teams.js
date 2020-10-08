@@ -80,12 +80,25 @@ router.get('/top', async (req, res) => {
 
     router.get('/last-week-submissions', async (req, res) => {
       try{
+        const thisUser= await User.findOne({
+          where:{
+            id:1
+          },
+          include:[
+            {
+              model:Teams,
+              through:{
+                attributes:[]
+              }
+            }
+          ]
+        })
         const team = await Teams.findAll({
           raw:true,
-          group:[sequelize.fn("DAY", sequelize.col("created_at"))],
+          // group:[sequelize.fn("DAY", sequelize.col("created_at"))],
           attributes: ['id','name',[sequelize.fn("COUNT", "submissions.id"), "teamSubmissions"]],
           where:{
-            id: 1
+            id: thisUser.Teams[0].id
           },
           include:[
             {
