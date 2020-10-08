@@ -1,4 +1,4 @@
-const { Router } = require("express");
+const { Router, request } = require("express");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const router = Router();
@@ -74,19 +74,24 @@ router.get("/sub-by-date", async (req, res) => {
 
 router.get("/challenges-by-reviews", async (req, res) => {
 
-  const allChallenges = await Challenge.findAll()
-
-  const challengesAVG = await Review.getRatingAVG()
-
-  const allChallengesWithAVG = allChallenges.map(challenge => {
-    console.log(challengesAVG[challengesAVG.findIndex(element => element.dataValues.challengeId === challenge.id)].dataValues.ratingAVG)
-    challenge.dataValues['ratingAVG'] = Number(challengesAVG[challengesAVG.findIndex(element => element.dataValues.challengeId === challenge.id)].dataValues.ratingAVG)
-    return challenge;
+  let allChallenges = await Review.findAll({
+    attributes: [[sequelize.fn('AVG', sequelize.col('rating')), 'ratingAVG']],
+    include: {
+      model: Challenge,
+    },
+    group: ['challenge_id'],
+    order: [[sequelize.fn('AVG', sequelize.col('rating')), 'DESC']],
+    limit: 5
   })
 
-  allChallengesWithAVG.sort((challenge1, challenge2) => challenge2.dataValues.ratingAVG - challenge1.dataValues.ratingAVG)
+  allChallenges = allChallenges.map(element => {
 
-  res.status(200).json(allChallengesWithAVG.slice(0, 5));
+    element.dataValues.ratingAVG = Number(element.dataValues.ratingAVG)
+    return element
+
+  });
+
+  res.json(allChallenges)
 });
 
 module.exports = router;

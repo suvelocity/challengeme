@@ -72,10 +72,10 @@ describe("insights tests", () => {
   it('can get top 5 challenges by rating AVG', async () => {
     const { body } = await request(app).get("/api/v1/statistics/insights/challenges-by-reviews").expect(200)
     expect(body.length).toBe(3)
-    expect(body[0].ratingAVG).toBe(4)
+    expect(body[0].ratingAVG).toBe(4.0000)
     expect(body[1].ratingAVG).toBe(2.6667)
-    expect(body[0].id).toBe(1)
-    expect(body[2].name).toBe(challenges[2].name)
+    expect(body[0].Challenge.id).toBe(1)
+    expect(body[2].Challenge.name).toBe(challenges[2].name)
   })
 
 });
