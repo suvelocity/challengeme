@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import ChallengePage from "../components/ChallengePage/ChallengePage";
+
 import Home from "./Home";
 
 export default function Router() {
@@ -11,6 +12,7 @@ export default function Router() {
           <Home />
         </Route>
         <Route path="/challenges" component={ChallengePage} />
+
       </Switch>
     </BrowserRouter>
   );
