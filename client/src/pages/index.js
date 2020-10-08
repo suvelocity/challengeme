@@ -4,6 +4,7 @@ import { Logged } from '../context/LoggedInContext';
 import Home from './Home';
 import Register from './Register/Register';
 import Login from './Login';
+import Forgot from './Forgot/Forgot';
 
 export default function Router() {
   const [logged, setLogged] = useState(false);
@@ -18,6 +19,9 @@ export default function Router() {
             </Route>
             <Route path="/login">
               <Login />
+            </Route>
+            <Route path="/forgotpassword">
+              <Forgot />
             </Route>
           </Switch>
         </Logged.Provider>
