@@ -2,19 +2,7 @@ import React, { useState } from "react";
 import axios from "../../services/network";
 
 export default function Identify(props) {
-  const [userName, setUserName] = useState("");
-  const [error, setError] = useState("");
-
-  const getQuestion = async () => {
-    try {
-      const { data } = await axios.post("/api/v1/auth/getquestion", {
-        userName,
-      });
-      props.setQuestion(data.securityQuestion);
-    } catch (e) {
-      setError(e.response.data.message);
-    }
-  };
+  const { data, setData } = props;
 
   return (
     <div>
@@ -22,11 +10,14 @@ export default function Identify(props) {
       <input
         name="userName"
         type="text"
-        value={userName}
-        onChange={(e) => setUserName(e.target.value)}
+        value={data.userName}
+        onChange={(e) =>
+          setData((prev) => {
+            prev.userName = e.target.value;
+            return prev;
+          })
+        }
       />
-      <button onClick={getQuestion} />
-      <div name="error-box">{error}</div>
     </div>
   );
 }

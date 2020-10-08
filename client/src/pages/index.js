@@ -20,6 +20,9 @@ export default function Router() {
             <Route path="/login">
               <Login />
             </Route>
+            <Route path="/reset-password">
+              <Forgot />
+            </Route>
           </Switch>
         </Logged.Provider>
       ) : (

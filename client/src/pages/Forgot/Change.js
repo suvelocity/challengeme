@@ -1,12 +1,34 @@
-import React from 'react';
+import React from "react";
 
-export default function Change({ prevStep, newPassword, handleChange }) {
-    return (
-        <div>
-            <input type='password' value={newPassword} onChange={handleChange('newPassword')} placeholder='Enter New Password' /> <br />
-            <input type='password' placeholder='Confirm Password' /> <br />
-            <button onClick={prevStep}>Back</button>
-            <button>Change Password</button>
-        </div>
-    )
+export default function Change({ data, setData }) {
+  return (
+    <div>
+      Enter new password{" "}
+      <input
+        type="password"
+        value={data.newPassword}
+        onChange={(e) =>
+          setData((prev) => {
+            prev.newPassword = e.target.value;
+            return prev;
+          })
+        }
+        placeholder="Enter New Password"
+      />{" "}
+      <br />
+      Confirm your password{" "}
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        value={data.confirmPassword}
+        onChange={(e) =>
+          setData((prev) => {
+            prev.confirmPassword = e.target.value;
+            return prev;
+          })
+        }
+      />
+      <br />
+    </div>
+  );
 }
