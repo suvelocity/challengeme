@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import network from '../services/network';
 import AddImg from './AddImg';
+import Swal from 'sweetalert2';
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, InputLabel, MenuItem, FormControl, Select, TextField, TextareaAutosize, Button } from '@material-ui/core';
@@ -59,12 +60,12 @@ export default function NewChallengeForm() {
       newBadInput.push(`* Repository's Link is not valid. Check the suggestions below:
       - Type the Github repository in this format: owner/repo
       - Change your repository to public
-      - Check for type errors.\n  Don't use hebrew letters`);
+      - Check for type errors.\n  Don't use Hebrew letters`);
     }
     if(repoDescription.length < 20 || !!repoDescription.match(spaces) || !!repoDescription.match(hebrew)) {
       newBadInput.push("* Repository's Description is too short (minimum 20 characters).\n  Don't use hebrew letters");
-    } else if(repoDescription.length > 1000 || repoDescription.match(hebrew)) {
-      newBadInput.push("* Repository's Description is too long (maximum 1000 characters).\n  Don't use hebrew letters");
+    } else if(repoDescription.length > 500 || repoDescription.match(hebrew)) {
+      newBadInput.push("* Repository's Description is too long (maximum 500 characters).\n  Don't use hebrew letters");
     }
     if(!repoType) {
       newBadInput.push("* Repository's type not selected");
@@ -109,10 +110,51 @@ export default function NewChallengeForm() {
         setBadInput(newBadInput);
         setTimeout(() => {
           return setBadInput([]);
-        }, 5000);
+        }, 11000);
       });  
     }
   }
+
+  const handleFile = (value) =>{
+    if(value.src)
+    {
+      let i = new Image()
+      i.src = value.src
+  
+      i.onload = () => {
+        const width = i.width
+        const height = i.height
+        console.log(width, " ", height);
+        if (width < 800) {
+          Swal.fire("invalid image width", "", "error")
+          setFile({})
+        }
+        else if (height < 300) {
+          Swal.fire("invalid image height", "", "error")
+          setFile({})
+        }
+        else {
+          console.log(value.src.offsetHeight,);
+          setFile(value);
+        }
+      }
+    }
+    else{
+      setFile({})
+    }
+  }
+
+  const handleReset = () =>{
+    setBadInput([])
+    setRepoName('')
+    setRepoLink('')
+    setRepoDescription('')
+    setRepoType('')
+    setFile({})
+    setBadInput([])
+  }
+
+
 
   return (
   <div className={`newChallenge ${darkMode ? 'darkMode' : 'lightMode'}`}>
@@ -124,7 +166,7 @@ export default function NewChallengeForm() {
       <TextField id='repo' className='newChallengeFormFeild' label='Challenge link' onChange={event => setRepoLink(event.target.value)}/><br />
       <TextareaAutosize className='descriptionTextArea' aria-label='Description' rowsMin={6} placeholder='Challenge description...' onChange={event => setRepoDescription(event.target.value)}/><br />
 
-      <AddImg file={file} handleChange={value => setFile(value)}/><br />
+      <AddImg file={file} handleChange={handleFile}/><br />
 
       <FormControl className={classes.formControl}>
         <InputLabel id='Challenge type'>Challenge type</InputLabel>
@@ -144,7 +186,7 @@ export default function NewChallengeForm() {
       <br />
       <div className='newChallengeFormButtons'>
         <Button variant='contained' color='primary' type='submit' onClick={handleSubmit}>submit</Button>
-        <Button variant='contained' color='secondary' type='reset' /*onClick={handleReset}*/>clear values</Button>
+        <Button variant='contained' color='secondary' type='reset' onClick={handleReset}>clear values</Button>
       </div>
     </form>
   </div>
