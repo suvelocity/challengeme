@@ -39,22 +39,40 @@
 
 .newChallenge {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+
 }
 
 .newChallengeForm {
-  width: 30vw;
-  height: 60vh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   background-color: white;
-  margin-top: 20vh;
+  width: 70vw;
 }
 
-.newChallengeForm .header{
-  margin-top: 2vh;
+.newChallengeFormheader{
+  padding-top: 2vh;
+}
+
+.descriptionTextArea {
+  min-width: 40vw;
+  max-width: 65vw;
+  max-height: 30vh;
+}
+
+.newChallengeFormFeild {
+  width: 40vw;
+}
+
+.newChallengeFormButtons {
+  display: flex;
+  justify-content: space-evenly;
+  width: 40vw;
 }
 
 .displayErrors {
