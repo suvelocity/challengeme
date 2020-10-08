@@ -119,7 +119,8 @@ function Header() {
               inputProps={{ 'aria-label': 'search' }}
             />
           </div>
-          <div style={{ flex: 1 }}></div> {/* Make space between the search input and the rest of the header. Do not change */}
+          <div style={{ flex: 1 }}></div> 
+          {/* Make space between the search input and the rest of the header. */}
           <Button color='inherit'>
             <div
               style={{
