@@ -77,9 +77,9 @@ jobs:
         node-version: [10.x]
     name: Test Job Functionality
     steps:
-      - name: onSuccess
-        uses: fjogeleit/http-request-action@master
-        with:
+    - name: onSuccess
+      uses: fjogeleit/http-request-action@master
+      with:
         url: ${{ github.event.inputs.webhookUrl }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":true }'
         
