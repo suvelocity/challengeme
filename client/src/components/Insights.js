@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect , useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Charts from './charts/Charts';
 import axios from 'axios';
@@ -8,28 +8,26 @@ const useStyles = makeStyles((theme) => ({
    
     grid: {
       display: 'grid',
-      gridGap: '20px',
+      gridGap: '40px',
       textAlign: 'center',
       alignContent: 'center',
       justifyContent: 'center',
-      backgroundColor: 'lightblue',
       padding: '10px',
       height: 'inherit',
       width: 'inherit',
       gridTemplate: `
-      'headChart headChart smallChart' 200px 
-      'headChart headChart sideChart' 200px
-      'leftChart rightChart sideChart' 200px
-      'bottomChart bottomChart bottomChart' 150px / 350px 350px 450px;`
+      'headChart headChart smallChart' 22vh 
+      'headChart headChart sideChart' 22vh
+      'leftChart rightChart sideChart' 22vh / 18vw 18vw 40vw;`
     },
     div: {
         textAlign: 'center',
         alignContent: 'center',
         padding: '20px',
         fontWeight: 'bold',
-        backgroundColor: 'lightgray',
-        borderRadius: '20px',
-        boxShadow: '6px 6px 12px black'
+        backgroundColor: '#C4DBF6',
+        
+        boxShadow: '15px 15px 0px #303C6C'
     },
     main: {
         display: 'grid',
@@ -38,7 +36,8 @@ const useStyles = makeStyles((theme) => ({
         justifyItems: 'center',
         alignItems: 'center',
         gridTemplateColumns: 'auto',
-        width: '100%'
+        width: '100%',
+        backgroundColor: 'lightblue',
     },
     span: {
         fontSize: '30px'
@@ -47,15 +46,20 @@ const useStyles = makeStyles((theme) => ({
 
 function Insights() {
     const classes = useStyles();
+    
+    const getInfo = () => {
+        axios.get(`http://localhost:8080/api/v1/statistics/insights/top-challenges`).then(r => r.data).then(r => {setChallengesTop(r)});
+        axios.get(`http://localhost:8080/api/v1/statistics/insights/challenges-type`).then(r => r.data).then(r => {setChallengesType(r)});
+        axios.get(`http://localhost:8080/api/v1/statistics/insights/top-success`).then(r => r.data).then(r => {setChallengesSuccess(r)});
+    };
+    
+    useEffect(getInfo , []);
+    
+    const [challengesTop , setChallengesTop] = useState(null);
+    const [challengesSuccess , setChallengesSuccess] = useState(null);
+    const [challengesType , setChallengesType] = useState(null);
 
-    const imageStyle = {backgroundColor: 'lightgray'}
-
-    // useEffect(() =>  getInfo , [])
-    //     const [info , setInfo] = useState(null);
-
-    // const getInfo = () => {
-    //     axios.get(`statistic/insights`).then(r => r.data).then(r => {setInfo(r)});
-    // };
+    
 
     const data={
         labels: ['January', 'February', 'March','April', 'May'], // array of values for x axis (strings)
@@ -78,17 +82,58 @@ function Insights() {
             // you can add as many object as you wand, each one will a different line with different color
         ]
     } 
-    console.log("INSIGHT");
+    
+    
+    const topChallengesData={
+        labels: challengesTop && challengesTop.map(e => e.challengeId.toString()), // array of values for x axis (strings)
+        title: 'Top Challenges (most submitions)',
+        rawData: [
+          {
+            label: 'submitions',
+            backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'],
+            borderColor: 'black',
+            fill: false, 
+            data: challengesTop && [...challengesTop.map(e => e.countSub) , 0], // array of values for Y axis (numbers)
+          }
+        ]
+    } 
+
+    const challengesTypeData={
+        labels: challengesType && challengesType.map(e => e.type), // array of values for x axis (strings)
+        title: 'Challenges by Type',
+        rawData: [
+          {
+            label: 'types',
+            backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'],
+            borderColor: 'black',
+            fill: false, 
+            data: challengesType && [...challengesType.map(e => e.countType) , 0], // array of values for Y axis (numbers)
+          }
+        ]
+    } 
+
+    const challengesSuccessData={
+        labels: challengesSuccess && challengesSuccess.map(e => e.challengeId.toString()), // array of values for x axis (strings)
+        title: 'Challenges by Type',
+        rawData: [
+          {
+            label: 'types',
+            backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'],
+            borderColor: 'black',
+            fill: false, 
+            data: challengesSuccess && [...challengesSuccess.map(e => e.countSub) , 0], // array of values for Y axis (numbers)
+          }
+        ]
+    } 
 
     return (
         <div className={classes.main}>
         <div className={classes.grid}>
-            <div  className={classes.div} style={{gridArea: 'headChart', ...imageStyle}}><span id="SubmissionPerDayChart">submissions per day</span><br/><Charts width={'650px'} height={'650px'} chart={[0,1]} data={data}/></div>
-            <div id="SubmissionTotalChart" className={classes.div} style={{gridArea: 'smallChart', ...imageStyle}}>total submition number<br /><span className={classes.span}>1349</span></div>
-            <div id="challengesByTypeChart" className={classes.div} style={{gridArea: 'sideChart',  ...imageStyle}}>challenges per type <br/> <Charts width={'450px'} height={'450px'} chart={[0,1,2]} data={data}/></div>  
-            <div id="challengesMostSubChart" className={classes.div} style={{gridArea: 'leftChart', ...imageStyle}}>challenges with most submitions<br/> <Charts width={'300px'} height={'300px'} chart={[2]} data={data}/></div>
-            <div id="challengesMostSuccessChart" className={classes.div} style={{gridArea: 'rightChart', ...imageStyle}}>challenges with most success rate<br/> <Charts width={'300px'} height={'300px'} chart={[2]} data={data}/></div>
-            <div id="SubmissionChart" className={classes.div} style={{gridArea: 'bottomChart', ...imageStyle}}></div>
+            <div  className={classes.div} style={{gridArea: 'headChart'}}><Charts width={'38vw'} height={'38vh'} chart={[0,1]} data={data}/></div>
+            <div id="SubmissionTotalChart" className={classes.div} style={{gridArea: 'smallChart'}}>total submition number<br /><span className={classes.span}>1349</span></div>
+            <div id="challengesByTypeChart" className={classes.div} style={{gridArea: 'sideChart'}}><Charts width={'38vw'} height={'38vh'} chart={[0,2]} data={challengesSuccessData}/></div>  
+            <div id="challengesMostSubChart" className={classes.div} style={{gridArea: 'leftChart'}}><Charts width={'13vw'} height={'13vw'} chart={[0 , 2]} data={topChallengesData}/></div>
+            <div id="challengesMostSuccessChart" className={classes.div} style={{gridArea: 'rightChart'}}><Charts width={'13vw'} height={'13vh'} chart={[0 , 2]} data={challengesTypeData}/></div>
         </div>
         
         </div>
