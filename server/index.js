@@ -2,12 +2,12 @@ require('dotenv').config()
 const ngrok = require('ngrok');
 const app = require('./app');
 const checkActions = require('./lib/check-actions');
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 4040
 
 async function establishConnection(){
   //const apiUrl = ngrok.getUrl();
   console.log(process.env.NODE_ENV)
-  if(process.env.NODE_ENV === 'development'){
+  if(process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test'){
     const url = await ngrok.connect(port);
     process.env.MY_URL = url; 
   }

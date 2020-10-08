@@ -9,6 +9,10 @@ router.get('/', async (req, res) => {
   const allChallenges = await Challenge.findAll();
   res.json(allChallenges)
 })
+router.get('/all', async (req, res) => {
+  const allSubmissions = await Submission.findAll();
+  res.json(allSubmissions)
+})
 
 router.get('/:challengeId/submissions', async (req, res) => {
   const { challengeId } = req.params;
