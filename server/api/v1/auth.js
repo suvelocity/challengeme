@@ -1,20 +1,17 @@
+require('dotenv').config()
 const { Router } = require("express");
 const usersRouter = Router();
 const { User, RefreshToken } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const checkToken = require('../../helpers/checkToken');
+const mailer = require('../../helpers/communicator');
 
-ACCESS_TOKEN_SECRET = "MATAN";
-REFRESH_TOKEN_SECRET = "ITAI";
-
-// register request
+// Register 
 usersRouter.post("/register", async (req, res) => {
   // if user name already exist return error
-  const checkUser = await User.findOne({
-    where: {
-      userName: req.body.userName,
-    },
-  });
+  const checkUser = await userIsExist(req.body.userName);
+
   if (checkUser) return res.status(409).send("user name already exists");
   const hashPassword = await bcrypt.hash(req.body.password, 10);
   const newUser = {
@@ -32,27 +29,62 @@ usersRouter.post("/register", async (req, res) => {
     securityQuestion: req.body.securityQuestion,
     securityAnswer: req.body.securityAnswer,
   };
-  // create new user
-  await User.create(newUser);
-  res.status(201).json({ message: "Register Success" });
+  // send validation mail
+  // await User.create(newUser);
+  const mailedToken = jwt.sign(newUser, process.env.EMAIL_TOKEN_SECRET)
+  mailer.sendHTMLMail(req.body.email, "Validate your E-mail", `<p>
+  Conregulation Challenger, and welcome! You are now offically a part of challenge me
+  community! To start challenging your friends and undertake challenges
+  yourself, click on the buttom bellow.
+</p>
+<form action="http://localhost:3000/auth">
+<input name="token" value="${mailedToken}" type="hidden">
+  <button style="width: 200px; background-color: purple; color: white;">GET SHWIFFTY</button>
+</form>`, (err, info) => {
+    if (err) {
+      res.status(400).json({ message: 'Email Invalid' })
+    } else {
+      res.json({ message: "Waiting For Mail Validation" })
+    }
+  });
 });
 
+// Create User
+usersRouter.post('/createuser', async (req, res) => {
+  const newUser = jwt.decode(req.body.token, process.env.EMAIL_TOKEN_SECRET);
+  delete newUser.iat;
+  await User.create(newUser);
+  res.status(201).json({ message: "Register Success" });
+})
+
+// Check if user exist
+usersRouter.post("/userexist", async (req, res) => {
+  const currentUser = await userIsExist(req.body.userName);
+  if (currentUser) return res.status(409).json({ message: "user name already exists" });
+  res.json({ notExist: true });
+});
+
+// Validate Token
+usersRouter.get("/validateToken", checkToken, (req, res) => {
+  res.json({ valid: true })
+})
+
+// Log In
 usersRouter.post("/login", async (req, res) => {
-  const currentUser = await User.findOne({
-    where: {
-      userName: req.body.userName,
-    },
-  });
+  const currentUser = await userIsExist(req.body.userName);
   if (!currentUser)
-    return res.status(404).json({ message: "Cannot Find User" });
+    return res.status(404).json({ message: "User or Password incorrect" });
   const validPass = await bcrypt.compare(
     req.body.password,
     currentUser.password
   );
   if (!validPass)
     return res.status(403).json({ message: "User or Password incorrect" });
-  const refreshToken = jwt.sign(currentUser.dataValues, REFRESH_TOKEN_SECRET);
-  const accessToken = generateToken(currentUser.dataValues);
+  const expired = req.body.rememberMe ? "365 days" : "24h";
+  const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: expired
+  });
+  const accessToken = generateToken(currentUser);
   await RefreshToken.create({
     userName: currentUser.userName,
     token: refreshToken,
@@ -62,9 +94,10 @@ usersRouter.post("/login", async (req, res) => {
     refreshToken: refreshToken,
     userDetails: currentUser,
   };
-  res.status(200).json(body);
+  res.json(body);
 });
 
+//Get new access token
 usersRouter.post("/token", async (req, res) => {
   const refreshToken = req.body.token;
   if (!refreshToken)
@@ -75,16 +108,17 @@ usersRouter.post("/token", async (req, res) => {
     },
   });
   if (!validRefreshToken)
-    return res.status(403).json({ message: "Invalid Refresh Token" });
-  jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, (err, decoded) => {
+    return res.status(401).json({ message: "Invalid Refresh Token" });
+  jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Refresh Token" });
     delete decoded.iat;
+    delete decoded.exp;
     const accessToken = generateToken(decoded);
-    res.status(200).json({ token: accessToken });
+    res.json({ token: accessToken });
   });
 });
 
-// logout request
+// Logout request
 usersRouter.post("/logout", async (req, res) => {
   if (!req.body.token)
     return res.status(400).json({ message: "Refresh Token Required" });
@@ -97,27 +131,67 @@ usersRouter.post("/logout", async (req, res) => {
 
   if (!result)
     return res.status(400).json({ message: "Refresh Token is required" });
-  res.status(200).json({ message: "User Logged Out Successfully" });
+  res.json({ message: "User Logged Out Successfully" });
 });
 
 // validate token
 usersRouter.post("/info", checkToken, (req, res) => {
-  res.status(200).json({ message: "success get sensitive info" });
+  res.json({ message: "success get sensitive info" });
 });
 
-function checkToken(req, res, next) {
-  let token = req.headers["authorization"];
-  token = token && token.split(" ")[1];
-  if (!token) return res.status(401).json({ message: "Access Token Required" });
-  jwt.verify(token, ACCESS_TOKEN_SECRET, (err, decoded) => {
-    if (err) return res.status(403).json({ message: "Invalid Access Token" });
-    req.decoded = decoded;
-    next();
+// Geting Sequrity Question
+usersRouter.post("/getquestion", async (req, res) => {
+  const currentUser = await userIsExist(req.body.userName);
+  if (!currentUser) return res.status(404).json({ message: "Cannot Find User" });
+  res.json({ securityQuestion: currentUser.securityQuestion });
+});
+
+// Validate Answer
+usersRouter.post("/validateanswer", async (req, res) => {
+  const currentUser = await userIsExist(req.body.userName);
+  if (!currentUser)
+    return res.status(404).json({ message: "Cannot Find User" });
+  const validAnswer = await bcrypt.compare(
+    req.body.securityAnswer,
+    currentUser.securityAnswer
+  );
+  if (!validAnswer) return res.status(403).json({ message: "Wrong Answer" });
+  const resetToken = jwt.sign(currentUser, process.env.RESET_PASSWORD_TOKEN, { expiresIn: "300s" });
+  res.json({ resetToken });
+});
+
+// Password Update
+usersRouter.patch("/passwordupdate", async (req, res) => {
+  const resetToken = req.body.resetToken;
+  if (!resetToken) return res.status(400).json({ message: "Reset Token Required" });
+  jwt.verify(resetToken, process.env.RESET_PASSWORD_TOKEN, async (err, decoded) => {
+    if (err) return res.status(403).json({ message: "Invalid Token" });
+    const hashPassword = await bcrypt.hash(req.body.password, 10);
+    await User.update({ password: hashPassword }, {
+      where: {
+        userName: decoded.userName
+      }
+    });
+    res.json({ message: "Changed Password Sucsessfuly" });
   });
+});
+
+async function userIsExist(userName) {
+  const user = await User.findOne({
+    where: {
+      userName: userName,
+    },
+  });
+  if (user) {
+    return user.dataValues;
+  } else {
+    return user
+  }
+
 }
 
 function generateToken(user) {
-  return jwt.sign(user, ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "900s" });
 }
 
 module.exports = usersRouter;
