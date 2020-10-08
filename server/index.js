@@ -9,11 +9,3 @@ app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
 
-Submission.findAll({
-  attributes:[Sequelize.fn('COUNT', Sequelize.col('id'))],
-  where: {
-    created_at: {
-      [Op.gte]: moment().subtract(5, 'days').toDate()
-    }
-  }
-})
