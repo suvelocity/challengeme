@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Charts from "./charts/Charts";
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -103,53 +104,67 @@ const teamData = {
     // you can add as many object as you wand, each one will a different line with different color
   ],
 };
-const userData = {
-  labels: ["January", "February", "March", "April", "May"], // array of values for x axis (strings)
-  title: "Top Users", // title for the chart
-  rawData: [
-    {
-      label: "User1", // name of the line (one or two words)
-      backgroundColor: "red", //raw color
-      borderColor: "red", //use the same as background color
-      fill: false, // change the line chart
-      data: [40, 59, 80, 81, 88], // array of values for Y axis (numbers)
-    },
-    {
-      label: "User2", // name of the line (one or two words)
-      backgroundColor: "green", //raw color
-      borderColor: "green", //use the same as background color
-      fill: false, // change the line chart
-      data: [44, 50, 57, 61, 66], // array of values for Y axis (numbers)
-    },
-    {
-      label: "User3", // name of the line (one or two words)
-      backgroundColor: "blue", //raw color
-      borderColor: "blue", //use the same as background color
-      fill: false, // change the line chart
-      data: [23, 25, 37, 47, 49], // array of values for Y axis (numbers)
-    },
-    {
-      label: "User4", // name of the line (one or two words)
-      backgroundColor: "yellow", //raw color
-      borderColor: "yellow", //use the same as background color
-      fill: false, // change the line chart
-      data: [22, 31, 35, 50, 59], // array of values for Y axis (numbers)
-    },
-    {
-      label: "User5", // name of the line (one or two words)
-      backgroundColor: "black", //raw color
-      borderColor: "black", //use the same as background color
-      fill: false, // change the line chart
-      data: [25, 35, 45, 62, 84], // array of values for Y axis (numbers)
-    },
-    // you can add as many object as you wand, each one will a different line with different color
-  ],
-};
+
 
 function StatisticsHome() {
   const classes = useStyles();
-
   const imageStyle = { backgroundColor: "lightgray" };
+  const [topChallengesData, setTopChallengesData] = useState([]);
+  const [topUsersData, setTopUsersData] = useState([]);
+  const [topTeamsData, setTopTeamsData] = useState([]);
+
+  const challengeData = {
+    labels: topChallengesData && topChallengesData.map(index => index.Challenge.name), // array of values for x axis (strings)
+    title: "Top Rated Challenges", // title for the chart
+    rawData: [
+      {
+        label: "Submitions", // name of the line (one or two words)
+        backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'], //raw color
+        borderColor: "cyan", //use the same as background color
+        fill: false, // change the line chart
+        data: topChallengesData && [...topChallengesData.map(index => index.countSub), 0], // array of values for Y axis (numbers)
+      },
+      // you can add as many object as you wand, each one will a different line with different color
+    ],
+  };
+  const userData = {
+    labels: topUsersData && topUsersData.map(index => index.User ? index.User.userName : 'Itay'), // array of values for x axis (strings)
+    title: "Top Users", // title for the chart
+    rawData: [
+      {
+        label: "Submitions", // name of the line (one or two words)
+        backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'], //raw color
+        borderColor: "cyan", //use the same as background color
+        fill: false, // change the line chart
+        data: topUsersData && [...topUsersData.map(index => index.countSub), 0], // array of values for Y axis (numbers)
+      },
+      // you can add as many object as you wand, each one will a different line with different color
+    ],
+  };
+
+
+  useEffect(() => {
+   getChallengesData();
+   getTeamsData();
+   getUsersData();
+  }, []);
+
+  const getChallengesData = async () => {
+    const { data: challengeInfo } = await axios.get('/api/v1/statistics/insights/top-challenges');
+    setTopChallengesData(challengeInfo);
+  };
+  const getTeamsData = async () => {
+    const { data: teamsInfo } = await axios.get('/api/v1/statistics/users/top-users');
+    console.log(teamsInfo)
+  };
+  const getUsersData = async () => {
+    const { data: usersInfo } = await axios.get('/api/v1/statistics/users/top-users');
+    setTopUsersData(usersInfo)
+    // console.log(usersInfo[0].User.userName)
+  };
+  
+
+
 
   return (
     <div className={classes.main}>
@@ -172,7 +187,7 @@ function StatisticsHome() {
           <Charts
             width={"450px"}
             height={"70px"}
-            chart={[0, 1]}
+            chart={[0, 2]}
             data={userData}
           />
         </div>
