@@ -4,7 +4,6 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import AddImg from "../components/AddImg";
 import Home from './Home';
 import AddChallenge from './AddChallenge.js';
 
