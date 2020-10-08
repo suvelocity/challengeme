@@ -18,12 +18,12 @@ describe('Client Tests', () => {
 
     test('input validation', async () => {
         await page.goto("http://localhost:3000/login");
-        await page.waitForSelector("#username-field", { visible: true });
-        const usernameInput = await page.$('#username-field');
-        const passwordInput = await page.$('#password-field');
+        await page.waitForSelector("#usernameField", { visible: true });
+        const usernameInput = await page.$('#usernameField');
+        const passwordInput = await page.$('#passwordField');
         await usernameInput.type("Test1%2")
         await passwordInput.type("Test12345")
-        const button = await page.$("#login-button");
+        const button = await page.$("#loginButton");
         button.click();
         await timeout(2000);
         const textContent = await page.evaluate(() => document.querySelector('#errorBox').textContent);
@@ -54,10 +54,10 @@ describe('Client Tests', () => {
             .post("/login")
             .reply(200);
 
-        await page.waitForSelector("#username-field", { visible: true });
-        await page.type("#username-field", "Test123");
-        await page.type("#password-field", "Test12345");
-        const button = await page.$("#login-button");
+        await page.waitForSelector("#usernameField", { visible: true });
+        await page.type("#usernameField", "Test123");
+        await page.type("#passwordField", "Test12345");
+        const button = await page.$("#loginButton");
         button.click();
         await timeout(2000);
         expect(login.isDone()).toBe(true);
