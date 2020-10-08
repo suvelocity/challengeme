@@ -3,7 +3,7 @@ const { Image } = require('../../models');
 const router = Router();
 
 router.get('/', async (req, res) => { // /api/v1/image?id=
-    let challengeId = req.query.id ;
+    let challengeId = req.query.id;
     try{
         const image = await Image.findOne({
             where: {challengeId}
@@ -13,7 +13,7 @@ router.get('/', async (req, res) => { // /api/v1/image?id=
     catch(e){res.status(500).send("Something went wrong")}
 });
 router.post('/', async (req, res) => { // /api/v1/image
-    let image = req.body ;
+    let image = req.body;
     try {
         const checkIfExists = await Image.findOne({
             where: {challengeId: image.challengeId}
