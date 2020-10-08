@@ -1,42 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import network from '../services/network';
 import Selector from 'react-select'
-const ChooseCategory =({ formerSelection , updateFilters }) => {
+const ChooseCategory =({ formerSelection , submitFilter }) => {
   const [labels,setLabels]  = useState([])
   const [selected,setSelected]  = useState()
   function getLabels(){
     network.get(`/api/v1/challenges/labels`)
     .then(({data})=>{
+      console.log(data)
       setLabels(data)
     })  
   }
   useEffect(getLabels,[])
+  
+  const selectionChange = (a,b)=>{
+    // a=[{title:<string>,value:<string>},{title:<string>,value:<string>}]
+    // b={action:<string>, option(what you clicked): {title:<string>,value:<string>} , name(name of the Selector):<string>}
+    console.log(a,b)
+    submitFilter('labels',a.map(x=>x.value))
+  }
 
-  // const selectCategory= (e) => {
-  //   const {target} = e 
-  //   const {value,checked} = target
-  //   console.log(checked)
-  //   if(checked){
-  //     const newSelection = [...selected]
-  //     newSelection.push(value)
-  //     console.log(newSelection)
-  //     setSelected(newSelection)
-  //   }else{
-  //     const newSelection = [...selected]
-  //     .filter(category=>category!==value)
-  //     setSelected(newSelection)
-  //   }
-  // }
-  // const selectAllCategories = (e)=>{
-  //   const {checked} =e.target
-  //   if(checked){
-  //     setSelected(categories)
-  //   }else{
-  //     setSelected([])
-  //   }
-  // }
   const submit= () => {
-    updateFilters('categories',selected)
+    // updateFilters('categories',selected)
   }
   return (
     // <div className='filter'>
@@ -45,11 +30,8 @@ const ChooseCategory =({ formerSelection , updateFilters }) => {
     <Selector 
     isMulti
     name='labels'
-    
-    options={labels.map(label=>{
-       return { label,value:label.toLowerCase() 
-      } 
-    })}/>
+    onChange={selectionChange}
+    options={labels}/>
     //   {/* <button onClick={submit}>confirm</button> 
     //   </div>
     // </div> */}

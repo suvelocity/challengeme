@@ -16,7 +16,7 @@ router.get('/',filterResults, async (req, res) => {
 
 router.get('/labels', async (req, res) => {
   const allLabels = await Label.findAll();
-  res.json(allLabels.map(label=>label.name))
+  res.json(allLabels.map(({id,name})=>{return{label:name,value:id}}))
 })
 
 router.get('/:challengeId/submissions', async (req, res) => {

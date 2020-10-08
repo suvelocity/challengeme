@@ -73,15 +73,19 @@ const Search =() => {
   const [searching,setSearching]  = useState(false)
   const [openFilter,setOpenFilter]  = useState(false)
   const [results,setResults]  = useState([])
-  const [filters,setFilters]  = useState({categories:[]})
+  const [filters,setFilters]  = useState({categories:[],labels:[]})
 
   const search= (e) => {
     let {value} = e.target
     if(!value.length){return setResults([])}
     if(value==='*'){ value =''}
     try{
-      console.log(`${filters.categories.join(',')}`)
-      network.get(`/api/v1/challenges?challengeName=${value}&categories=${filters.categories.join(',')}`)
+      const nameQuery=`challengeName=${value}`
+      const categoryQuery = `categories=${filters.categories.join(',')}`
+      const labelsQuery = `labels=${filters.labels.join(',')}`
+      const url = `/api/v1/challenges?${nameQuery}&${categoryQuery}&${labelsQuery}`
+      console.log(url)
+      network.get(url)
       .then(({data})=>{
         setResults(data)
       })
@@ -139,9 +143,9 @@ const Search =() => {
     <div id='search'>
       {searchInput}
       <div id='searchResults' className={searching?'open':'closed'}>
-        <ChooseLabels/>
+        <ChooseLabels submitFilter={addFilters}/>
         {openFilter
-          ?<ChooseCategory formerSelection={filters.categories}updateFilters={addFilters}/>
+          ?<ChooseCategory formerSelection={filters.categories} submitFilter={addFilters}/>
           :<button onClick={() => {setOpenFilter(true)}}>
             Choose Category 
           </button>}

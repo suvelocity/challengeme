@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const ChooseCategory =({ formerSelection , updateFilters }) => {
+const ChooseCategory =({ formerSelection , submitFilter }) => {
   const [selected,setSelected]  = useState(formerSelection)
     const categories = [
       'React',
@@ -43,7 +43,7 @@ const ChooseCategory =({ formerSelection , updateFilters }) => {
     }
   }
   const submit= () => {
-    updateFilters('categories',selected)
+    submitFilter('categories',selected)
   }
   return (
     <div className='filter'>
