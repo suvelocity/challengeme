@@ -38,8 +38,12 @@ const useStyles = makeStyles((theme) => ({
 function Security({ values, handleChange }) {
     const classes = useStyles();
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const handleClickShowPassword = () => {
         setShowPassword((prev) => !prev);
+    };
+    const handleClickShowConfirmPassword = () => {
+        setShowConfirmPassword((prev) => !prev);
     };
     return (
         <div className="containerSecurity">
@@ -53,11 +57,23 @@ function Security({ values, handleChange }) {
                 </InputLabel>
                 <Input
                     value={values.password}
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     onChange={handleChange("password")}
                     endAdornment={
                         <InputAdornment position="end">
-                            <LockOutlinedIcon style={{ opacity: "0.7" }} />
+                            <IconButton
+                                style={{ opacity: "0.7" }}
+                                aria-label="toggle password visibility"
+                                onMouseDown={handleClickShowPassword}
+                                onMouseUp={handleClickShowPassword}
+                            >
+                                {showPassword ? (
+                                    <Visibility />
+                                ) : (
+                                    <VisibilityOff />
+                                )}
+                            </IconButton>
+                            <LockIcon style={{ opacity: "0.7" }} />
                         </InputAdornment>
                     }
                 />
@@ -72,7 +88,7 @@ function Security({ values, handleChange }) {
                 </InputLabel>
                 <Input
                     value={values.confirmPassword}
-                    type={showPassword ? "text" : "password"}
+                    type={showConfirmPassword ? "text" : "password"}
                     onChange={handleChange("confirmPassword")}
                     color="secondary"
                     endAdornment={
@@ -80,10 +96,10 @@ function Security({ values, handleChange }) {
                             <IconButton
                                 style={{ opacity: "0.7" }}
                                 aria-label="toggle password visibility"
-                                onMouseDown={handleClickShowPassword}
-                                onMouseUp={handleClickShowPassword}
+                                onMouseDown={handleClickShowConfirmPassword}
+                                onMouseUp={handleClickShowConfirmPassword}
                             >
-                                {showPassword ? (
+                                {showConfirmPassword ? (
                                     <Visibility />
                                 ) : (
                                     <VisibilityOff />

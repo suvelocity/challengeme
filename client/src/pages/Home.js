@@ -76,7 +76,6 @@ export default function HomePage() {
       value.setLogged(false);
       Cookies.remove("refreshToken")
       Cookies.remove("accessToken")
-      alert(response.message)
     } catch (error) {
       console.error(error)
     }

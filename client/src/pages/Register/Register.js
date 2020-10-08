@@ -43,17 +43,18 @@ function Register() {
     const nextStep = async () => {
         const validateEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
         const onlyLettersRegex = /^[a-zA-Z]*$/;
+        const onlyLettersAndSpacesRegex = /^[a-zA-Z\s]*$/;
         const onlyLettersAndNumbersRegex = /^[A-Za-z0-9]*$/;
         const onlyNumbersRegex = /^[0-9]*$/;
 
         let tempErrs = [];
         if (step === 1) {
-            if (firstName.length < 1 || !onlyLettersRegex.test(firstName))
+            if (firstName.length < 1 || !onlyLettersAndSpacesRegex.test(firstName))
                 tempErrs.push({
                     field: "firstName",
                     message: "First name must contain only letters.",
                 });
-            if (lastName.length < 1 || !onlyLettersRegex.test(lastName))
+            if (lastName.length < 1 || !onlyLettersAndSpacesRegex.test(lastName))
                 tempErrs.push({
                     field: "lastName",
                     message: "Last name  must contain only letters.",
@@ -92,12 +93,12 @@ function Register() {
             if (!validateEmailRegex.test(email))
                 tempErrs.push({ field: "email", message: "Email invalid." });
         } else if (step === 2) {
-            if (country.length < 1 || !onlyLettersRegex.test(country))
+            if (country.length < 1 || !onlyLettersAndSpacesRegex.test(country))
                 tempErrs.push({
                     field: "country",
                     message: "Country must contain only letters",
                 });
-            if (city.length < 1 || !onlyLettersRegex.test(city))
+            if (city.length < 1 || !onlyLettersAndSpacesRegex.test(city))
                 tempErrs.push({
                     field: "city",
                     message: "City must contain only letters",
@@ -280,8 +281,8 @@ function Register() {
                 return <Security handleChange={handleChange} values={values} />;
             case 4:
                 return <Extras handleChange={handleChange} values={values} />;
-            // case 5:
-            //     return <Confirm handleSubmit={handleSubmit} values={values} />;
+            case 5:
+                return <Confirm email={email} />;
             default:
                 return (
                     <UserDetails
