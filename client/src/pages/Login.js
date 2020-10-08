@@ -57,13 +57,6 @@ export default function Login() {
 
     Cookies.set("AT_Token", response.accessToken);
     Cookies.set("RT_Token", response.refreshToken);
-
-    //redirect to home
-    // <Route exact path="/">
-    //     {loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />}
-    // </Route>
-
-    //else print error to user
   };
 
   return (
