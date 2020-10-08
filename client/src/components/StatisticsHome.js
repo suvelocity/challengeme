@@ -41,26 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const challengeData = {
-  labels: [
-    "Challenge1",
-    "Challenge2",
-    "Challenge3",
-    "Challenge4",
-    "Challenge5",
-  ], // array of values for x axis (strings)
-  title: "Top Rated Challenges", // title for the chart
-  rawData: [
-    {
-      label: "data1", // name of the line (one or two words)
-      backgroundColor: ["purple", "blue", "green", "red", "yellow"], //raw color
-      borderColor: "cyan", //use the same as background color
-      fill: false, // change the line chart
-      data: [85, 83, 80, 78, 75, 0], // array of values for Y axis (numbers)
-    },
-    // you can add as many object as you wand, each one will a different line with different color
-  ],
-};
+
 
 const teamData = {
   labels: ["January", "February", "March", "April", "May"], // array of values for x axis (strings)
