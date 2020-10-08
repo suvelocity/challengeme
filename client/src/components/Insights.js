@@ -1,7 +1,9 @@
+
 import React, {useEffect , useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Charts from './charts/Charts';
 import axios from 'axios';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,9 +49,9 @@ function Insights() {
     const classes = useStyles();
     
     const getInfo = () => {
-        axios.get(`http://localhost:8080/api/v1/statistics/insights/top-challenges`).then(r => r.data).then(r => {setChallengesTop(r)});
-        axios.get(`http://localhost:8080/api/v1/statistics/insights/challenges-type`).then(r => r.data).then(r => {setChallengesType(r)});
-        axios.get(`http://localhost:8080/api/v1/statistics/insights/top-success`).then(r => r.data).then(r => {setChallengesSuccess(r)});
+        axios.get(`http://localhost:8080/api/v1/statistics/insights/top-challenges`).then(r => r.data).then(r => {setChallengesTop(r); setLoading(false)});
+        axios.get(`http://localhost:8080/api/v1/statistics/insights/challenges-type`).then(r => r.data).then(r => {setChallengesType(r); setLoading(false)});
+        axios.get(`http://localhost:8080/api/v1/statistics/insights/top-success`).then(r => r.data).then(r => {setChallengesSuccess(r); setLoading(false)});
     };
     
     useEffect(getInfo , []);
@@ -57,7 +59,7 @@ function Insights() {
     const [challengesTop , setChallengesTop] = useState(null);
     const [challengesSuccess , setChallengesSuccess] = useState(null);
     const [challengesType , setChallengesType] = useState(null);
-
+    const [loading, setLoading] = useState(true)
     
 
     const data={
@@ -124,19 +126,62 @@ function Insights() {
           }
         ]
     } 
-
+    
     return (
-        <div className={classes.main}>
-        <div className={classes.grid}>
-            <div  className={classes.div} style={{gridArea: 'headChart'}}><Charts width={'36vw'} height={'36vh'} chart={[0,1]} data={data}/></div>
-            <div id="SubmissionTotalChart" className={classes.div} style={{gridArea: 'smallChart'}}>total submition number<br /><span className={classes.span}>1349</span></div>
-            <div id="challengesByTypeChart" className={classes.div} style={{gridArea: 'sideChart'}}><Charts width={'38vw'} height={'38vh'} chart={[0,2]} data={challengesSuccessData}/></div>  
-            <div id="challengesMostSubChart" className={classes.div} style={{gridArea: 'leftChart'}}><Charts width={'13vw'} height={'13vw'} chart={[0 , 2]} data={topChallengesData}/></div>
-            <div id="challengesMostSuccessChart" className={classes.div} style={{gridArea: 'rightChart'}}><Charts width={'13vw'} height={'13vh'} chart={[0 , 2]} data={challengesTypeData}/></div>
-        </div>
-        
-        </div>
-    )
+    <div className={classes.main}>
+      <div className={classes.grid}>
+        {loading ? (
+          <div className={classes.root}>
+            <CircularProgress />
+          </div>
+        ) : (
+         
+          <div  className={classes.div} style={{gridArea: 'headChart'}}><Charts width={'36vw'} height={'36vh'} chart={[0,1]} data={data}/></div>
+      )
+ {loading ? (
+       <div className={classes.root}>
+            <CircularProgress />
+          </div>
+        ) : (
+                       <div id="SubmissionTotalChart" className={classes.div} style={{gridArea: 'smallChart'}}>total submition number<br /><span className={classes.span}>1349</span></div>
+
+        )}
+        {loading ? (
+          <div className={classes.root}>
+            <CircularProgress />
+          </div>
+        ) : (
+                      <div id="challengesByTypeChart" className={classes.div} style={{gridArea: 'sideChart'}}><Charts width={'38vw'} height={'38vh'} chart={[0,2]} data={challengesSuccessData}/></div>  
+
+        )}
+        {loading ? (
+          <div className={classes.root}>
+            <CircularProgress />
+          </div>
+        ) : (
+                     <div id="challengesMostSubChart" className={classes.div} style={{gridArea: 'leftChart'}}><Charts width={'13vw'} height={'13vw'} chart={[0 , 2]} data={topChallengesData}/></div>
+
+        )}
+        {loading ? (
+          <div className={classes.root}>
+            <CircularProgress />
+          </div>
+        ) : (
+                      <div id="challengesMostSubChart" className={classes.div} style={{gridArea: 'leftChart'}}><Charts width={'13vw'} height={'13vw'} chart={[0 , 2]} data={topChallengesData}/></div>
+
+        )}
+        {loading ? (
+          <div className={classes.root}>
+            <CircularProgress />
+          </div>
+        ) : (
+                 <div id="challengesMostSuccessChart" className={classes.div} style={{gridArea: 'rightChart'}}><Charts width={'13vw'} height={'13vh'} chart={[0 , 2]} data={challengesTypeData}/></div>
+
+        )}
+      </div>
+    </div>
+  );
+
 }
 
 export default Insights;
