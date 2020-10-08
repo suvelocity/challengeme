@@ -41,15 +41,17 @@ function ChallengePage() {
   
   const setImg = async () => {
     const { data } = await network.get(`/api/v1/images?id=${1}`)
-    // console.log(data);
+    console.log(data);
     const blobed = await makeBlobed(data.img)
     const imgURL = URL.createObjectURL(blobed);
-    console.log(imgURL);
+    // console.log(imgURL);
     setBlobedImg(imgURL)
   }
   useEffect(() => {
     //setChallengeInfo(axios.get('url:id').data);
+    // console.log(blobedImg);
     setImg()
+    console.log(blobedImg);
 // =======
   // const [challenge, setChallenge] = useState({});
 
@@ -69,11 +71,11 @@ function ChallengePage() {
 // >>>>>>> 36f2077c2c283d389024cb3a91620c0a4000d5e0
   }, []);
 
-  return challenge ? (
+  return challenge && blobedImg ? (
     <div className="challenge-wrapper">
       <div className="challenge-header">
         <h1 className="challenge-name">{challenge.name}</h1>
-        <img className="challenge-img" src={blobedImg} />
+        <img className="challenge-img" src={blobedImg} alt="this is an image alt"/>
 
         <Button color="primary" href={challenge.githubLink}>
           To Github!
