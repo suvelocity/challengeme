@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import UserDetails from './UserDetails';
 import PersonalDetails from './PersonalDetails';
 import Confirm from './Confirm';
@@ -24,6 +25,8 @@ function Register() {
   const [signUpReason, setSignUpReason] = useState('');
   const [gitHub, setGitHub] = useState('');
 
+  const location = useHistory()
+
   const nextStep = () => {
     const validateEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
     const onlyLettersRegex = /^[a-zA-Z]*$/;
@@ -32,24 +35,24 @@ function Register() {
 
     let tempErrs = [];
     if (step === 1) {
-      if (firstName.length < 1 || !onlyLettersRegex.test(firstName)) tempErrs.push({field: 'firstName', message: "First name  must contain only letters"});
-      if (lastName.length < 1 || !onlyLettersRegex.test(lastName)) tempErrs.push({field: 'lastName', message: "Last name  must contain only letters."});
-      if (userName.length < 1 || !onlyLettersAndNumbersRegex.test(userName)) tempErrs.push({field: 'userName', message: "Username must contain only letters and numbers."});
-      if (email.length < 1) tempErrs.push({field: 'email', message: "Email required."});
-      if (!validateEmailRegex.test(email)) tempErrs.push({field: 'email', message: "Email invalid."});
+      if (firstName.length < 1 || !onlyLettersRegex.test(firstName)) tempErrs.push({ field: 'firstName', message: "First name  must contain only letters" });
+      if (lastName.length < 1 || !onlyLettersRegex.test(lastName)) tempErrs.push({ field: 'lastName', message: "Last name  must contain only letters." });
+      if (userName.length < 1 || !onlyLettersAndNumbersRegex.test(userName)) tempErrs.push({ field: 'userName', message: "Username must contain only letters and numbers." });
+      if (email.length < 1) tempErrs.push({ field: 'email', message: "Email required." });
+      if (!validateEmailRegex.test(email)) tempErrs.push({ field: 'email', message: "Email invalid." });
     } else if (step === 2) {
-      if (country.length < 1 || !onlyLettersRegex.test(country)) tempErrs.push({field: 'country', message: "Country must contain only letters"});
-      if (city.length < 1 || !onlyLettersRegex.test(city)) tempErrs.push({field: 'city', message: "City must contain only letters"});
-      if (birthDate.length < 1) tempErrs.push({field: 'birthDate', message: "Birth date required"});
-      if (phoneNumber.length < 1 || !onlyNumbersRegex.test(phoneNumber)) tempErrs.push({field: 'phoneNumber', message: "Only numbers allowed in phone number."});
+      if (country.length < 1 || !onlyLettersRegex.test(country)) tempErrs.push({ field: 'country', message: "Country must contain only letters" });
+      if (city.length < 1 || !onlyLettersRegex.test(city)) tempErrs.push({ field: 'city', message: "City must contain only letters" });
+      if (birthDate.length < 1) tempErrs.push({ field: 'birthDate', message: "Birth date required" });
+      if (phoneNumber.length < 1 || !onlyNumbersRegex.test(phoneNumber)) tempErrs.push({ field: 'phoneNumber', message: "Only numbers allowed in phone number." });
     } else if (step === 3) {
-      if (password.length < 6) tempErrs.push({field: 'password', message: "Password needs to be at least 6 characters."});
-      if (password !== confirmPassword) tempErrs.push({field: 'confirmPassword', message: "Passwords must be identical."});
-      if (securityQuestion === '') tempErrs.push({field: 'securityQuestion', message: 'Security question must be chosen.'});
-      if (securityAnswer.length < 2) tempErrs.push({field: 'securityAnswer', message: 'Security answer must be longer.'});
+      if (password.length < 6) tempErrs.push({ field: 'password', message: "Password needs to be at least 6 characters." });
+      if (password !== confirmPassword) tempErrs.push({ field: 'confirmPassword', message: "Passwords must be identical." });
+      if (securityQuestion === '') tempErrs.push({ field: 'securityQuestion', message: 'Security question must be chosen.' });
+      if (securityAnswer.length < 2) tempErrs.push({ field: 'securityAnswer', message: 'Security answer must be longer.' });
     } else if (step === 4) {
-      if (signUpReason === '') tempErrs.push({field: 'signUpReason', message: 'Sign up reason must be chosen.'});
-      if (gitHub.length < 1 || !onlyLettersAndNumbersRegex.test(gitHub)) tempErrs.push({field: 'gitHub', message: 'GitHub account is invalid.'});
+      if (signUpReason === '') tempErrs.push({ field: 'signUpReason', message: 'Sign up reason must be chosen.' });
+      if (gitHub.length < 1 || !onlyLettersAndNumbersRegex.test(gitHub)) tempErrs.push({ field: 'gitHub', message: 'GitHub account is invalid.' });
     }
     if (tempErrs.length === 0) {
       setStep(step + 1);
@@ -64,7 +67,7 @@ function Register() {
     setErrors([]);
   }
 
-  const handelSubmit = async () => {
+  const handleSubmit = async () => {
     try {
       const { data: regRes } = await network.post('/api/v1/auth/register', {
         firstName,
@@ -81,8 +84,11 @@ function Register() {
         securityQuestion,
         securityAnswer
       });
+      if (regRes) {
+        location.push('/login')
+      }
     } catch (err) {
-      setErrors([...errors, {field: 'server', message: err.message}])
+      setErrors([...errors, { field: 'server', message: err.message }])
     }
   }
 
@@ -134,7 +140,7 @@ function Register() {
   }
 
   const values = { firstName, lastName, userName, email, password, confirmPassword, birthDate, country, city, phoneNumber, signUpReason, gitHub, securityQuestion, securityAnswer };
-  
+
   const multiForm = () => {
     switch (step) {
       case 1: return (
@@ -171,7 +177,7 @@ function Register() {
       case 5: return (
         <Confirm
           prevStep={prevStep}
-          handelSubmit={handelSubmit}
+          handleSubmit={handleSubmit}
           values={values}
         />
       );
@@ -196,5 +202,5 @@ export default Register
 
  // /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
       //   email,
-      
+
       // (/[^a-zA-Z -]/.test(fieldValue))

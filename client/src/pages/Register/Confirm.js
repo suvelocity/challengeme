@@ -44,7 +44,6 @@ function Confirm({ prevStep, values, handleSubmit }) {
       </List>
       <button onClick={prevStep}>Back</button>
       <button onClick={handleSubmit} >Confirm</button>
-
     </div>
   )
 }

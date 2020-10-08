@@ -78,7 +78,6 @@ usersRouter.post("/token", async (req, res) => {
     return res.status(403).json({ message: "Invalid Refresh Token" });
   jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Refresh Token" });
-    console.log(decoded);
     delete decoded.iat;
     const accessToken = generateToken(decoded);
     res.status(200).json({ token: accessToken });
@@ -103,7 +102,6 @@ usersRouter.post("/logout", async (req, res) => {
 
 // validate token
 usersRouter.post("/info", checkToken, (req, res) => {
-  console.log(req.decoded);
   res.status(200).json({ message: "success get sensitive info" });
 });
 

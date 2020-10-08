@@ -1,20 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from "../services/network";
+import { Logged } from '../context/LoggedInContext';
 
 export default function Login() {
-  const [username, setUsername] = useState("");
+  const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState({});
 
+  const location = useHistory()
+
+  const value = useContext(Logged);
+  
   const updateField = (e) => {
     switch (e.currentTarget.name) {
       case "password":
         setPassword(e.currentTarget.value);
         break;
-      case "username":
+      case "userName":
         setUsername(e.currentTarget.value);
         break;
       case "rememberMe":
@@ -26,26 +32,23 @@ export default function Login() {
   const loginFunc = async (e) => {
     const formErrors = {};
     e.preventDefault();
-    if (/\W/.test(username)) {
-      formErrors.username = "invalid username";
+    if (/\W/.test(userName)) {
+      formErrors.userName = "invalid userName";
     }
-    if (username.length < 6 || username.length > 32) {
-      formErrors.username = "username must be 6-32 characters long";
+    if (userName.length < 6 || userName.length > 32) {
+      formErrors.userName = "userName must be 6-32 characters long";
     }
 
-    if (password.length < 8) {
+    if (password.length < 5) {
       formErrors.password = "password must be at least 8 characters long";
     }
-    console.log(username);
-    console.log(password);
-    if (formErrors.password || formErrors.username) {
-      console.log(formErrors);
+    if (formErrors.password || formErrors.userName) {
       setError(formErrors);
       return;
     }
     //request to server
-    const { data: response } = await axios.post("/login", {
-      username: username,
+    const { data: response } = await axios.post("/api/v1/auth/login", {
+      userName: userName,
       password: password,
       rememberMe: rememberMe,
     });
@@ -54,9 +57,10 @@ export default function Login() {
       setError({ msg: response.message });
       return;
     }
-
-    Cookies.set("AT_Token", response.accessToken);
-    Cookies.set("RT_Token", response.refreshToken);
+    Cookies.set("accessToken", response.accessToken);
+    Cookies.set("refreshToken", response.refreshToken);
+    value.setLogged(true);
+    location.push('/')
   };
 
   return (
@@ -66,9 +70,9 @@ export default function Login() {
       <form onSubmit={loginFunc}>
         <input
           type="text"
-          id="username-field"
-          name="username"
-          value={username}
+          id="userName-field"
+          name="userName"
+          value={userName}
           required
           onChange={updateField}
         />
@@ -100,7 +104,7 @@ export default function Login() {
 
       {
         <div style={{ backgroundColor: "red" }}>
-          {error.username || error.password || error.msg}
+          {error.userName || error.password || error.msg}
         </div>
       }
     </div>
