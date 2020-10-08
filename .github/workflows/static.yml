@@ -64,16 +64,14 @@ jobs:
       run: npm run test
       working-directory: ./challenge
     - name: onSuccess
-      uses: distributhor/workflow-webhook@v1
-      env:
-        webhook_url: ${{ github.event.inputs.webhookUrl }}
-        webhook_secret: ${{ github.event.inputs.webhookSecret }}
+      uses: fjogeleit/http-request-action@master
+      with:
+        url: ${{ github.event.inputs.webhookUrl }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":true }'
     - name: onFailure
       if: ${{ failure() || cancelled() }}
-      uses: distributhor/workflow-webhook@v1
-      env:
-        webhook_url: ${{ github.event.inputs.webhookUrl }}
-        webhook_secret: ${{ github.event.inputs.webhookSecret }}
+      uses: fjogeleit/http-request-action@master
+      with:
+        url: ${{ github.event.inputs.webhookUrl }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":false }'
 
