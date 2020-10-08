@@ -74,7 +74,7 @@ export default function Login() {
         if (/\W/.test(userName)) {
             formErrors.userName = "invalid userName";
         }
-        if (userName.length < 6 ||  userName.length > 32) {
+        if (userName.length < 6 || userName.length > 32) {
             formErrors.userName = "userName must be 6-32 characters long";
         }
 
@@ -127,7 +127,7 @@ export default function Login() {
                             </InputLabel>
                             <Input
                                 type="text"
-                                id="userName-field"
+                                id="userNameField"
                                 name="userName"
                                 // color="secondary"
                                 value={userName}
@@ -152,7 +152,7 @@ export default function Login() {
                                 Password
                             </InputLabel>
                             <Input
-                                id="password-field"
+                                id="passwordField"
                                 name="password"
                                 value={password}
                                 required
@@ -198,7 +198,7 @@ export default function Login() {
                         )}
                         <Button
                             type="submit"
-                            id="login-button"
+                            id="loginButton"
                             className={classes.loginButton}
                         >
                             Log in
@@ -215,7 +215,7 @@ export default function Login() {
                         />
                         <div>
                             <span>don't have an account yet?</span>
-                            <Link to="/register">Sign up</Link>
+                            <Link to="/register" id='signUp'>Sign up</Link>
                         </div>
                     </div>
                 </form>
