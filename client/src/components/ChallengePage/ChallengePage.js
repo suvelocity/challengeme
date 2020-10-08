@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
+import {useParams} from 'react-router-dom';
 // import axios from 'axios'
 import network from "../../services/network";
+
 import { Button, Link } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import Chip from "@material-ui/core/Chip";
+
+import ChallengeTabs from "./Tabs";
+//import SubmitModal from "./SubmitModal";
+
 import SubmitModal from "./SubmitModal";
+
 // import ChallengePage from "./ChallengePage";
 //import SubmissionTable from "./SubmissionTable";
+
 import "./ChallengePage.css";
 
 const challenge = {
@@ -36,6 +44,10 @@ const makeBlobed = async img => {
 };
 
 function ChallengePage() {
+
+  // const [challenge, setChallenge] = useState({});
+  const params = useParams();
+
 	//const [challengeInfo,setChallengeInfo] = useState('');
 	const [blobedImg, setBlobedImg] = useState("");
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,6 +83,7 @@ function ChallengePage() {
 		//   fetchChallenge();
 		// >>>>>>> 36f2077c2c283d389024cb3a91620c0a4000d5e0
 	}, []);
+
 
 	function handleModalClose() {
 		setIsModalOpen(false);
@@ -136,23 +149,52 @@ function ChallengePage() {
 					</div>
 				</div>
 
-				<div className="challenge-right-wrapper">
-					<div className="challenge-title-description">
-						<h1>{challenge.name}</h1>
-						<div className="challenge-description">
-							<p>{challenge.description}</p>
-						</div>
-					</div>
-					<div className="challenge-table">table modal</div>
-					<div className="challenge-submit-btn">
-						<Button
+        <Button color="primary" href={challenge.githubLink}>
+          To Github!
+        </Button>
+        <div className="challenge-rating">
+          <Rating
+            name="half-rating-read"
+            defaultValue={3}
+            precision={0.5}
+            readOnly
+          />
+        </div>
+        <span className="challenge-difficulty"></span>
+      </div>
+      <div className="challenge-description-wrapper">
+        <div className="challenge-rawdata">
+          <span className="challenge-created-at">
+            Created at: {normalizeDate(challenge.createdAt) + " "}
+          </span>
+          <span className="challenge-updated-at">
+            Updated at: {normalizeDate(challenge.updatedAt)}
+          </span>
+        </div>
+        <div className="challenge-description">
+          {challenge.label.map((tag, index) => (
+            <span key={index} className="challenge-label">
+              <Chip
+                color="primary"
+                label={tag}
+                component="a"
+                href="#chip"
+                clickable
+              />
+            </span>
+          ))}
+          <p className="challenge-description">{challenge.description}</p>
+          {/* change prop to params.id */}
+          <ChallengeTabs challengeId = {challengeParamId}/>
+          <Button
 							color="primary"
 							className="submit-btn"
 							onClick={setIsModalOpen}>
 							Submit
 						</Button>
-					</div>
-				</div>
+        </div>
+      </div>
+
 
 				<SubmitModal
 					isOpen={isModalOpen}

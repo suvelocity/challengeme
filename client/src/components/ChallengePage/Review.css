@@ -1,0 +1,41 @@
+.review {
+    display: grid;
+    grid-template-columns: 1.7fr 1.3fr;
+    grid-template-rows: 0.9fr 2fr 1fr;
+    gap: 0px 0px;
+    grid-template-areas:
+      "title createdAt"
+      "content content"
+      "rating author";
+    margin-bottom: 15px;
+    border: 1px solid black;
+    height: 150px;
+    background-color: white;
+  }
+  #title { 
+      grid-area: title;
+      margin-left: 20px; 
+      font-weight: 900;
+    }
+  #content { 
+      grid-area: content;
+      margin-left: 20px; 
+      margin-right: 20px;
+      margin-top: 10px;
+      word-wrap: break-word;
+    }
+  #createdAt { 
+      grid-area: createdAt; 
+      justify-self: end;
+      margin-right:20px;
+    }
+  #rating { 
+      grid-area: rating; 
+      margin-left: 20px;
+    }
+  #author { 
+      grid-area: author; 
+      justify-self: end;
+      margin-right:20px;
+    }
+

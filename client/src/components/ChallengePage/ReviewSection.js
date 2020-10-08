@@ -1,18 +1,33 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import Review from "./Review.js";
+import axios from "axios";
 
-function ReviewSection() {
-	// TODO : fetch all the reviews of current challenge : GET /api/v1/challenge/:challengeId/review
-	// TODO : fetch all the reviews of current challenge : POST /api/v1/challenge/:challengeId/review
-	// TODO : fetch all the reviews of current challenge : PUT /api/v1/challenge/:challengeId/review
-	// TODO : fetch all the reviews of current challenge : DELETE /api/v1/challenge/:challengeId/review
+
+const data = [{author:"author", title:"title", createdAt:"date", content:"sadsadsadasdasd", rating:4}];
+
+function ReviewSection(props) {
+	
+	const [revArr, setRevArr] = useState([]);
+
+	const getReviews = async () => {
+		const reviews = await axios.get(`/api/v1/reviews/byChallenge/${props.challengeId}`).then((res) => res.data);
+		const filteredRevs = reviews.filter(item => item.title !== undefined && item.content !== undefined);
+		setRevArr(filteredRevs);
+	}
+
+	useEffect(() => {
+		getReviews();
+	}, []);
 
 	return (
 		<div>
-			{/* render all the review with map */}
-			{/* TODO: create a review Componenet thats */}
-			<Review />
-			{/* Create a component that contain new Review Form */}
+			{revArr.map((item,i)=> 
+						<Review key={i} 
+						author = {item.author} 
+						createdAt = {item.createdAt} 
+						title = {item.title}
+						content = {item.content}
+						rating = {item.rating}/>)}
 		</div>
 	);
 }
