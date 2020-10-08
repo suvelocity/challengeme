@@ -40,7 +40,7 @@ function Register() {
     const [signUpReason, setSignUpReason] = useState("");
     const [gitHub, setGitHub] = useState("");
 
-    const nextStep = () => {
+    const nextStep = async () => {
         const validateEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
         const onlyLettersRegex = /^[a-zA-Z]*$/;
         const onlyLettersAndNumbersRegex = /^[A-Za-z0-9]*$/;
@@ -58,6 +58,24 @@ function Register() {
                     field: "lastName",
                     message: "Last name  must contain only letters.",
                 });
+            if (
+                userName.length < 6 ||
+                !onlyLettersAndNumbersRegex.test(userName)
+            )
+                tempErrs.push({
+                    field: "userName",
+                    message:
+                        "Username must contain only letters and numbers and be longer then 6 characters.",
+                });
+            try {
+                const { data } = await network.post('/api/v1/auto/userexist', {userName});
+            } catch (e) {
+                tempErrs.push({
+                    field: "userName",
+                    message:
+                        "Username already exists.",
+                });
+            }
             if (
                 userName.length < 6 ||
                 !onlyLettersAndNumbersRegex.test(userName)

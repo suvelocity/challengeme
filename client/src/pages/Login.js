@@ -87,14 +87,11 @@ export default function Login() {
         }
         //request to server
         try {
-
             const { data: response } = await axios.post("/api/v1/auth/login", {
                 userName: userName,
                 password: password,
                 rememberMe: rememberMe
             })
-            Cookies.set("accessToken", response.accessToken);
-            Cookies.set("refreshToken", response.refreshToken);
             value.setLogged(true);
             location.push("/");
         } catch (e) {

@@ -9,8 +9,6 @@ const getToken = () => {
 
 network.interceptors.request.use(
   config => {
-    // Do something before request is sent
-
     config.headers["authorization"] = "bearer " + getToken();
     return config;
   }

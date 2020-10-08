@@ -50,11 +50,14 @@ usersRouter.post("/register", async (req, res) => {
 });
 
 // Create User
-usersRouter.post('/createuser', async (req, res) => {
-  const newUser = jwt.decode(req.body.token, process.env.EMAIL_TOKEN_SECRET);
-  delete newUser.iat;
-  await User.create(newUser);
-  res.status(201).json({ message: "Register Success" });
+usersRouter.post('/createuser', (req, res) => {
+  jwt.verify(req.body.token, process.env.EMAIL_TOKEN_SECRET, async (err, decoded) => {
+    if (err) return res.status(403).json({ message: "Invalid Token" });
+    delete decoded.iat;
+    delete decoded.exp;
+    await User.create(decoded);
+    res.status(201).json({ message: "Register Success" });
+  });
 })
 
 // Check if user exist
@@ -89,12 +92,10 @@ usersRouter.post("/login", async (req, res) => {
     userName: currentUser.userName,
     token: refreshToken,
   });
-  const body = {
-    accessToken: accessToken,
-    refreshToken: refreshToken,
-    userDetails: currentUser,
-  };
-  res.json(body);
+
+  res.cookie('accessToken', accessToken)
+  res.cookie('refreshToken', refreshToken)
+  res.json({userDetails: currentUser});
 });
 
 //Get new access token

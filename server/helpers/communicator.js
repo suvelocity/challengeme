@@ -1,12 +1,10 @@
 const nodemailer = require("nodemailer");
 
 myCon = {
-    host: 'smtp.mail.yahoo.com',
-    port: 465,
-    service: 'yahoo',
+    service: 'gmail',
     auth: {
-        user: 'suvelocity@yahoo.com',
-        pass: 'woqfikymfbaoievm'
+        user: 'suvelocity@gmail.com',
+        pass: 'yozwryyfgcrsneor'
     }
 }
 
