@@ -1,53 +1,178 @@
 * {
+  box-sizing: border-box;
 }
-img {
-  /* align-content: center; */
-  display: block;
-  /* width: 90%; */
-  margin-left: auto;
-  margin-right: auto;
+body {
+  overflow-y: auto;
+}
+body::-webkit-scrollbar {
+  display: none;
 }
 
+.fullpage-wrapper {
+  /* border: 3px solid blueviolet; */
+  /* display: flex;
+  flex-direction: row; */
+  height: 100%;
+}
+.navbar {
+  height: 50px;
+  position: fixed;
+  background-color: #46505a;
+  top: 0;
+  min-width: 100%;
+}
 .challenge-wrapper {
+  background: linear-gradient(#ffffff, rgb(235, 240, 255));
+  min-width: 100%;
+  min-height: 1230px;
+  height: fit-content;
   color: black;
-  /* background: linear-gradient(#130920d3, rgb(9, 2, 15)); */
-  background: linear-gradient(#ffffff, rgb(207, 207, 207));
-  /* background-color: #f5f5f5; */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 150;
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+}
+@media screen and (max-width: 1000px) {
+  .challenge-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+.challenge-left-wrapper {
   display: flex;
   flex-direction: column;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  padding: 3px;
-  height: 99vh;
+  height: 100%;
 }
-.challenge-header {
+.challenge-right-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
-.challenge-wrapper div {
-  /* border: 2px solid black; */
+
+.challenge-left-wrapper div {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
 }
-.challenge-rating {
-  margin: 3px;
-  align-items: baseline;
-  align-self: flex-end;
-  float: right;
+.challenge-right-wrapper div {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
 }
-.challenge-name {
-  color: black;
+
+.challenge-img-div {
+  min-height: 320px;
+}
+
+.challenge-img {
+  width: 100%;
+  height: 100%;
+  box-shadow: 0px 3px 4px 4px #00000073;
+  border-radius: 8px;
+  /* object-fit: contain; */
+}
+
+.challenge-rawdata {
+  font-size: 20px;
+  border-radius: 10px;
+  background-color: #7cb8f0;
+  height: fit-content;
   font-weight: 500;
-  text-align: center;
 }
-.challenge-description-wrapper {
-  margin: 10px;
-  font-size: 10px;
-  color: rgb(63, 63, 63);
+.challenge-rawdata span {
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
 }
-.challenge-description {
-  font-size: 15px;
-  color: black;
-  margin-top: 10px;
+
+.challenge-labels {
+  width: 90%;
+}
+.challenge-labels a {
+  font-size: 24px;
+  color: #ffffff;
+  text-decoration: none;
+  margin-bottom: 5px;
 }
 .challenge-label {
   padding-right: 5px;
 }
-.submit-btn {
-  float: right;
+
+.challenge-rating {
+  flex-grow: 1;
+}
+.challenge-github-btn {
+  height: 100px;
+}
+.challenge-github-btn a {
+  font-size: 26px;
+  border: 2px solid #3a1e85;
+  width: 100%;
+  height: 100%;
+}
+.challenge-github-btn a:hover {
+  background-color: #3a1e85;
+  color: white;
+  font-size: 26px;
+  width: 100%;
+  height: 100%;
+  align-self: flex-end;
+}
+.challenge-title-description {
+  min-height: 240px;
+  height: fit-content;
+  margin-bottom: 0;
+}
+h1 {
+  font-size: 40px;
+  margin-top: 0;
+  margin-bottom: 50px;
+  color: black;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+.challenge-description {
+  min-height: 225px;
+  height: 225px;
+  background-color: #7cb8f0;
+  color: black;
+  min-width: 100%;
+}
+
+.challenge-description p {
+  font-size: 24px;
+  font-weight: normal;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+.challenge-table {
+  font-size: 24px;
+  font-weight: normal;
+  background-color: #7cb8f0;
+  max-height: 725px;
+  flex-grow: 1;
+}
+
+.challenge-submit-btn {
+  height: 100px;
+}
+.challenge-submit-btn button {
+  font-size: 26px;
+  border: 2px solid #3a1e85;
+  width: 100%;
+  height: 100%;
+}
+.challenge-submit-btn button:hover {
+  background-color: #3a1e85;
+  color: white;
 }

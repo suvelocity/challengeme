@@ -13,7 +13,7 @@ const challenge = {
   cover: "https://storage.googleapis.com/challenges-cover/tvv_f.png",
   createdAt: "2020-10-04T12:00:00.000Z",
   deletedAt: null,
-  description: "in this challenge we will build some shit",
+  description: "in this challenge we up cloneup clone this and start hirluling",
   githubLink: "https://github.com/suvelocity/TV-shows-boilerplate",
   id: 4,
   name: "React - Tv shows",
@@ -71,56 +71,86 @@ function ChallengePage() {
 // >>>>>>> 36f2077c2c283d389024cb3a91620c0a4000d5e0
   }, []);
 
-  return challenge && blobedImg ? (
-    <div className="challenge-wrapper">
-      <div className="challenge-header">
-        <h1 className="challenge-name">{challenge.name}</h1>
-        <img className="challenge-img" src={blobedImg} alt="this is an image alt"/>
+  return challenge ? (
+    <div className='fullpage-wrapper'>
+      <div className='navbar'>im navbar</div>
+      <div className='challenge-wrapper'>
+        <div className='challenge-left-wrapper'>
+          <div className='challenge-img-div'>
+            <img className='challenge-img' src={challenge.cover} />
+          </div>
+          <div className='challenge-rawdata'>
+            <span className='challenge-created-by'>
+              <p> created by: </p> <p>user name</p>
+            </span>
+            <span className='challenge-created-at'>
+              <p> Created at: </p>{" "}
+              <p>{normalizeDate(challenge.createdAt) + " "} </p>
+            </span>
+            <span className='challenge-updated-at'>
+              <p> Updated at: </p> <p>{normalizeDate(challenge.updatedAt)}</p>
+            </span>
+          </div>
+          <div className='challenge-labels'>
+            <h2>Labels:</h2>
+            <span className='challenge-label'>
 
-        <Button color="primary" href={challenge.githubLink}>
-          To Github!
-        </Button>
-        <div className="challenge-rating">
-          <Rating
-            name="half-rating-read"
-            defaultValue={3}
-            precision={0.5}
-            readOnly
-          />
-        </div>
-        <span className="challenge-difficulty"></span>
-      </div>
-      <div className="challenge-description-wrapper">
-        <div className="challenge-rawdata">
-          <span className="challenge-created-at">
-            Created at: {normalizeDate(challenge.createdAt) + " "}
-          </span>
-          <span className="challenge-updated-at">
-            Updated at: {normalizeDate(challenge.updatedAt)}
-          </span>
-        </div>
-        <div className='challenge-description'>
-          {challenge.label.map((tag, index) => (
-            <span className='challenge-label' key={index}>
               <Chip
-                color="primary"
-                label={tag}
-                component="a"
-                href="#chip"
+                color='secondary'
+                label='difficulty'
+                component='a'
+                href='#chip'
                 clickable
               />
             </span>
-          ))}
-          <p className="challenge-description">{challenge.description}</p>
-          <Button color="primary" className="submit-btn">
-            Submit
-          </Button>
+            {challenge.label.map((tag, index) => (
+              <span key={index} className='challenge-label'>
+                <Chip
+                  color='primary'
+                  label={tag}
+                  component='a'
+                  href='#chip'
+                  clickable
+                />
+              </span>
+            ))}
+          </div>
+          <div className='challenge-rating'>
+            <h2>Rating:</h2>
+            <Rating
+              name='half-rating-read'
+              defaultValue={3}
+              precision={0.5}
+              readOnly
+              size='large'
+            />
+          </div>
+          <div className='challenge-github-btn'>
+            <Button color='primary' href={challenge.githubLink}>
+              To Github!
+            </Button>
+          </div>
         </div>
-      </div>
 
-      {/* <SubmitModal /> */}
-      {/* <SubmissionTable /> */}
-      {/* <ReviewsSection /> */}
+        <div className='challenge-right-wrapper'>
+          <div className='challenge-title-description'>
+            <h1>{challenge.name}</h1>
+            <div className='challenge-description'>
+              <p>{challenge.description}</p>
+            </div>
+          </div>
+          <div className='challenge-table'>table modal</div>
+          <div className='challenge-submit-btn'>
+            <Button color='primary' className='submit-btn'>
+              Submit
+            </Button>
+          </div>
+        </div>
+
+        {/* <SubmitModal /> */}
+        {/* <SubmissionTable /> */}
+        {/* <ReviewsSection /> */}
+      </div>
     </div>
   ) : (
     <div>Loading</div>
