@@ -9,13 +9,15 @@ body::-webkit-scrollbar {
 }
 
 .fullpage-wrapper {
+  display: flex;
+  flex-direction: column;
   /* border: 3px solid blueviolet; */
   /* display: flex;
   flex-direction: row; */
   height: 100%;
 }
 .navbar {
-  height: 50px;
+  height: 5vh;
   position: fixed;
   background-color: #46505a;
   top: 0;
@@ -24,17 +26,17 @@ body::-webkit-scrollbar {
 .challenge-wrapper {
   background: linear-gradient(#ffffff, rgb(235, 240, 255));
   min-width: 100%;
-  min-height: 1230px;
+  height: 100vh;
   height: fit-content;
   color: black;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-weight: 150;
-  margin-top: 50px;
+  font-weight: normal;
+  margin-top: 5vh;
   display: grid;
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: 1fr 1.4fr;
 }
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1200px) {
   .challenge-wrapper {
     grid-template-columns: 1fr;
   }
@@ -55,28 +57,28 @@ body::-webkit-scrollbar {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 15px;
-  margin-bottom: 15px;
   border-radius: 10px;
+  /*  border: 1px dotted red; */
 }
 .challenge-right-wrapper div {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 15px;
-  margin-bottom: 15px;
+
   border-radius: 10px;
+  /* border: 1px dotted red; */
 }
 
 .challenge-img-div {
-  min-height: 320px;
+  margin-top: 2vh;
+  min-height: 38vh;
 }
 
 .challenge-img {
   width: 100%;
   height: 100%;
   box-shadow: 0px 3px 4px 4px #00000073;
-  border-radius: 8px;
+  border-radius: 10px;
   /* object-fit: contain; */
 }
 
@@ -85,7 +87,7 @@ body::-webkit-scrollbar {
   border-radius: 10px;
   background-color: #7cb8f0;
   height: fit-content;
-  font-weight: 500;
+  margin-top: 2vh;
 }
 .challenge-rawdata span {
   display: flex;
@@ -94,7 +96,7 @@ body::-webkit-scrollbar {
 }
 
 .challenge-labels {
-  width: 90%;
+  margin-top: 2vh;
 }
 .challenge-labels a {
   font-size: 24px;
@@ -105,12 +107,17 @@ body::-webkit-scrollbar {
 .challenge-label {
   padding-right: 5px;
 }
+.challenge-label a {
+  padding: 5px;
+}
 
 .challenge-rating {
   flex-grow: 1;
+  margin-top: 2vh;
 }
 .challenge-github-btn {
   height: 100px;
+  margin-bottom: 1.5vh;
 }
 .challenge-github-btn a {
   font-size: 26px;
@@ -126,23 +133,23 @@ body::-webkit-scrollbar {
   height: 100%;
   align-self: flex-end;
 }
+
 .challenge-title-description {
-  min-height: 240px;
-  height: fit-content;
-  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+  /* height: fit-content; */
+  /* margin-bottom: 0; */
 }
 h1 {
   font-size: 40px;
-  margin-top: 0;
-  margin-bottom: 50px;
   color: black;
   text-align: center;
-  margin-top: 10px;
-  margin-bottom: 0px;
 }
 .challenge-description {
-  min-height: 225px;
-  height: 225px;
+  flex-grow: 1;
+  height: 100%;
+  /* min-height: 100%; */
   background-color: #7cb8f0;
   color: black;
   min-width: 100%;
@@ -150,21 +157,23 @@ h1 {
 
 .challenge-description p {
   font-size: 24px;
-  font-weight: normal;
-  padding-left: 3px;
-  padding-right: 3px;
+
+  padding-left: 15px;
+  padding-right: 15px;
 }
 
-.challenge-table {
+.challenge-solution-table {
+  margin-top: 3vh;
   font-size: 24px;
-  font-weight: normal;
-  background-color: #7cb8f0;
-  max-height: 725px;
+  /* background-color: #7cb8f0; */
+  /* max-height: 725px; */
   flex-grow: 1;
+  /* margin-top: 3vh; */
 }
 
 .challenge-submit-btn {
   height: 100px;
+  margin-bottom: 1.5vh;
 }
 .challenge-submit-btn button {
   font-size: 26px;
