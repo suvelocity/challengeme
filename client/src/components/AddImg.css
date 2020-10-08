@@ -1,0 +1,17 @@
+.upload-img-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.upload-img-secondary-container{
+    padding-top: 150px;
+    width: 60vw;
+    height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
