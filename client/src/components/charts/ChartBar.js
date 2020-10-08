@@ -18,7 +18,7 @@ function ChartBar({data}) {
               fontSize:20
             },
             legend:{
-              display:true,
+              display:false,
               position:'right'
             }
           }}

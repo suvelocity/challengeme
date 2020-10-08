@@ -84,7 +84,7 @@ function Insights() {
     
     
     const topChallengesData={
-        labels: challengesTop && challengesTop.map(e => e.challengeId.toString()), // array of values for x axis (strings)
+        labels: challengesTop && challengesTop.map(e => e.Challenge.name), // array of values for x axis (strings)
         title: 'Top Challenges (most submitions)',
         rawData: [
           {
@@ -112,8 +112,8 @@ function Insights() {
     } 
 
     const challengesSuccessData={
-        labels: challengesSuccess && challengesSuccess.map(e => e.challengeId.toString()), // array of values for x axis (strings)
-        title: 'Challenges by Type',
+        labels: challengesSuccess && challengesSuccess.map(e => e.Challenge.name), // array of values for x axis (strings)
+        title: 'Challenges With Most Success',
         rawData: [
           {
             label: 'types',
@@ -128,7 +128,7 @@ function Insights() {
     return (
         <div className={classes.main}>
         <div className={classes.grid}>
-            <div  className={classes.div} style={{gridArea: 'headChart'}}><Charts width={'38vw'} height={'38vh'} chart={[0,1]} data={data}/></div>
+            <div  className={classes.div} style={{gridArea: 'headChart'}}><Charts width={'36vw'} height={'36vh'} chart={[0,1]} data={data}/></div>
             <div id="SubmissionTotalChart" className={classes.div} style={{gridArea: 'smallChart'}}>total submition number<br /><span className={classes.span}>1349</span></div>
             <div id="challengesByTypeChart" className={classes.div} style={{gridArea: 'sideChart'}}><Charts width={'38vw'} height={'38vh'} chart={[0,2]} data={challengesSuccessData}/></div>  
             <div id="challengesMostSubChart" className={classes.div} style={{gridArea: 'leftChart'}}><Charts width={'13vw'} height={'13vw'} chart={[0 , 2]} data={topChallengesData}/></div>
