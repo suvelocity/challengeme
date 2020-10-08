@@ -42,7 +42,7 @@
   transition: .65s;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   height:90vh;
   width:96vw;
   left:1.2vw;
@@ -50,8 +50,14 @@
   position:fixed;
   z-index:3;
   overflow: hidden;
-  color:white;
   background-color: #fff;;
+}
+#searchResults>.display{
+  color:white;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+
 }
 #searchResults.closed{
   border-radius:  0 0 50% 50%;
@@ -61,6 +67,7 @@
   left:50vw; */
   /* visibility: hidden; */
 }
+
 /* #searchResults button{
   transition: .2s;
 align-self: flex-end;

@@ -4,7 +4,7 @@ const filterResults = require('../../middleware/filterResults');
 const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
 
-const { Submission, Challenge } = require('../../models');
+const { Submission, Challenge, Label } = require('../../models');
 
 const router = Router();
 
@@ -12,6 +12,11 @@ router.get('/',filterResults, async (req, res) => {
   const {condition} = req
   const allChallenges = await Challenge.findAll({where: condition});
   res.json(allChallenges)
+})
+
+router.get('/labels', async (req, res) => {
+  const allLabels = await Label.findAll();
+  res.json(allLabels.map(label=>label.name))
 })
 
 router.get('/:challengeId/submissions', async (req, res) => {

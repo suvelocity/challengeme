@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import  ChooseCategory from "./ChooseCategory"
 import { fade ,makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import network from '../services/network';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
+import  ChooseCategory from "./ChooseCategory"
+import  ChooseLabels from "./ChooseLabels"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -138,15 +139,15 @@ const Search =() => {
     <div id='search'>
       {searchInput}
       <div id='searchResults' className={searching?'open':'closed'}>
-        <div>
+        <ChooseLabels/>
         {openFilter
           ?<ChooseCategory formerSelection={filters.categories}updateFilters={addFilters}/>
           :<button onClick={() => {setOpenFilter(true)}}>
             Choose Category 
           </button>}
-        </div>
-        {/* <button onClick={closeSearch} >[X]</button> */}
+        <div className='display'>
         {resultsList}
+        </div>
       </div>
     </div>
   );
