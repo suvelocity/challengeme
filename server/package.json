@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node_modules/.bin/jest --runInBand --forceExit",
     "migrate": "node_modules/.bin/sequelize db:migrate",
     "dev": "nodemon node index.js"
   },
@@ -27,9 +27,11 @@
     "axios": "^0.20.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jest": "^26.5.2",
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.4",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "sequelize-cli": "^6.2.0"
