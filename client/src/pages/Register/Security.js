@@ -15,18 +15,18 @@ import LockIcon from "@material-ui/icons/Lock";
 
 const useStyles = makeStyles((theme) => ({
     password: {
-        marginTop: "80px",
-        // marginBottom: "20px",
+        marginTop: "60px",
+        marginBottom: "10px",
         width: "320px",
     },
     confirmPassword: {
         // marginTop: "80px",
-        marginBottom: "20px",
+        marginBottom: "30px",
         width: "320px",
     },
     question: {
         // marginTop: "80px",
-        // marginBottom: "20px",
+        marginBottom: "10px",
         width: "320px",
     },
     answer: {

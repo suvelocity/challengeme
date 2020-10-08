@@ -13,18 +13,18 @@ import Email from "@material-ui/icons/Email";
 // } from "@material-ui/pickers";
 const useStyles = makeStyles((theme) => ({
     country: {
-        marginTop: "80px",
-        // marginBottom: "20px",
+        marginTop: "60px",
+        marginBottom: "10px",
         width: "320px",
     },
     city: {
         // marginTop: "80px",
-        // marginBottom: "20px",
+        marginBottom: "20px",
         width: "320px",
     },
     birthDate: {
         // marginTop: "80px",
-        // marginBottom: "20px",
+        marginBottom: "10px",
         // width: "320px",
     },
     phoneNumber: {
