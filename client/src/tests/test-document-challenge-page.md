@@ -11,14 +11,16 @@ Here there will be all the tests we currently have, and the ones we plan to add!
 
 ### On Work
 
-- None
+- Submissions has date, name and status.
 
 ### Planned
 
 - Can change between 2 tables, submisions and reviews. the review should show 5 recent reviews and submissions should show 5 recent reviews.
 - Pressing tag should search all challenges wirh the same tag.
 - Each review has the review text, the date when it was published, stars, title, uploader name / avatar.
-- Submissions has date, name and status.
 - Sending a new review / submissions, shows it in the first location on its table. 
 - After sending a rating, the rating updates (rating counts how many people rated it).
 
+### Nock to-add
+- Submissions nock
+- Reviews nock

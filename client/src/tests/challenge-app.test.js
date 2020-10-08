@@ -54,6 +54,11 @@ const mockData = {
     repo: 'This is not a valid repo!',
     rating: 'To send an answer, you must rate the challenge!',
   },
+  submission: {
+    status: 'success',
+    name: 'Tamer',
+    submittedAt: '08/10/2020',
+  },
 };
 
 const projectName = 'Challenge - Page Client';
@@ -137,7 +142,7 @@ describe(`${projectName} - test suite`, () => {
     expect(response.ok()).toBe(true);
   });
 
-  it('Form validation, cannot send without required inputs.', async () => {
+  it('Form validation, cannot send without required inputs', async () => {
     await page.waitForSelector('.submit-btn');
     await page.click('.submit-btn');
     await page.waitForSelector('#repoInput');
@@ -174,6 +179,29 @@ describe(`${projectName} - test suite`, () => {
     await page.type('#reviewContentInput', mockData.badAnswer.content);
     await page.click('#submit-answer'); // Add id to last submit button
   });
+
+  it('Submissions has date, name and status', async () => {
+    await page.waitForSelector('.ChallengeTable'); //need to add id
+    await page.waitForSelector('.submissionTab'); //need to add id / className
+    await page.click('.submissionTab'); //need to add id / className
+
+    let status = await page.$eval(
+      '#status', //need to add id for submission status
+      (status) => status.innerText
+    );
+    expect(status).toBe(mockData.submission.status);
+
+    let name = await page.$eval(
+      '#name', //need to add id for submission name
+      (name) => name.innerText
+    );
+    expect(name).toBe(mockData.submission.name);
+
+    let submittedAt = await page.$eval(
+      '#submittedAt', //need to add id for submission submittedAt
+      (submittedAt) => submittedAt.innerText
+    );
+    expect(submittedAt).toBe(mockData.submission.submittedAt);
+    done();
+  });
 });
-
-
