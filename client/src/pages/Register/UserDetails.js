@@ -9,18 +9,18 @@ import Email from "@material-ui/icons/Email";
 
 const useStyles = makeStyles((theme) => ({
     firstName: {
-        marginTop: "80px",
-        // marginBottom: "20px",
+        marginTop: "60px",
+        marginBottom: "10px",
         width: "320px",
     },
     lastName: {
         // marginTop: "80px",
-        // marginBottom: "20px",
+        marginBottom: "10px",
         width: "320px",
     },
     userName: {
         // marginTop: "80px",
-        // marginBottom: "20px",
+        marginBottom: "10px",
         width: "320px",
     },
     email: {
