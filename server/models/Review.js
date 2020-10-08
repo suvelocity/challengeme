@@ -4,11 +4,16 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Review extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
+
+    static async getRatingAVG() {
+      const reviewsAvgByChallenge = await this.findAll({
+        group: ['challengeId'],
+        attributes: ['challengeId', [sequelize.fn('AVG', sequelize.col('rating')), 'ratingAVG']]
+      })
+
+      return reviewsAvgByChallenge
+    }
+
     static associate(models) {
       this.belongsTo(models.User, {
         foreignKey: 'userId'

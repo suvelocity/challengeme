@@ -2,7 +2,7 @@ const { Router } = require("express");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const router = Router();
-const { Submission, Challenge } = require("../../../models");
+const { Submission, Challenge, Review } = require("../../../models");
 
 router.get("/top-challenges", async (req, res) => {
   const sub = await Submission.findAll({
@@ -70,6 +70,23 @@ router.get("/sub-by-date", async (req, res) => {
     },
   });
   res.json(subByDate);
+});
+
+router.get("/challenges-by-reviews", async (req, res) => {
+
+  const allChallenges = await Challenge.findAll()
+
+  const challengesAVG = await Review.getRatingAVG()
+
+  const allChallengesWithAVG = allChallenges.map(challenge => {
+    console.log(challengesAVG[challengesAVG.findIndex(element => element.dataValues.challengeId === challenge.id)].dataValues.ratingAVG)
+    challenge.dataValues['ratingAVG'] = Number(challengesAVG[challengesAVG.findIndex(element => element.dataValues.challengeId === challenge.id)].dataValues.ratingAVG)
+    return challenge;
+  })
+
+  allChallengesWithAVG.sort((challenge1, challenge2) => challenge2.dataValues.ratingAVG - challenge1.dataValues.ratingAVG)
+
+  res.json(allChallengesWithAVG.slice(0, 5));
 });
 
 module.exports = router;
