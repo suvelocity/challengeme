@@ -25,9 +25,8 @@ const useStyles = makeStyles((theme) => ({
         alignContent: 'center',
         padding: '20px',
         fontWeight: 'bold',
-        backgroundColor: '#C4DBF6',
-        
-        boxShadow: '15px 15px 0px #303C6C'
+        backgroundImage: 'radial-gradient(circle, lightgray, #85DCB0)',
+        boxShadow: '15px 15px 0px #379683'
     },
     main: {
         display: 'grid',
@@ -37,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         gridTemplateColumns: 'auto',
         width: '100%',
-        backgroundColor: 'lightblue',
+        backgroundColor: '#41B3A3',
     },
     span: {
         fontSize: '30px'
