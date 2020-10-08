@@ -47,7 +47,7 @@ router.post('/:challengeId/apply', async (req, res) => {
 /* ,
         webhook:'https://api.ngrok.com' */
   try {
-    const urltoSet = process.env.MY_URL.concat('/api/v1/submissions');
+    const urltoSet = process.env.MY_URL.concat(`/api/v1/webhook/submission/${submission.id}`);
     //console.log(urltoSet);
     const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
       ref: 'coreTask',

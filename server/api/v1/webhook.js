@@ -13,7 +13,7 @@ const index = data.jobs[0].name.lastIndexOf(string1);
 const stringLength = string1.length;//index === -1 ? string2.length : string1.length;
 const submissionId = data.jobs[0].name.slice(index+stringLength); */
 
-router.post('/submission/:id', (req, res) => {
+router.put('/submission/:id', (req, res) => {
     console.error(req.params.id);
     console.error(req.body);
     res.json('success');
