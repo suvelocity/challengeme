@@ -6,6 +6,8 @@ import Chip from "@material-ui/core/Chip";
 //import SubmitModal from "./SubmitModal";
 // import ChallengePage from "./ChallengePage";
 //import SubmissionTable from "./SubmissionTable";
+import ChallengeTabs from "./tabs";
+
 import "./ChallengePage.css";
 
 const challenge = {
@@ -86,6 +88,8 @@ function ChallengePage() {
             </span>
           ))}
           <p className="challenge-description">{challenge.description}</p>
+          {/* add props to ChallengeTabs: submission and comments */}
+          <ChallengeTabs submissions = "submissions" comments = "comments"/>
           <Button color="primary" className="submit-btn">
             Submit
           </Button>
