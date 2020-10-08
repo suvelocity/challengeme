@@ -111,7 +111,7 @@ export default function ChallengeCard({
           <PublishIcon />
         </IconButton>
         <IconButton disabled aria-label="add to favorites">
-          <FavoriteIcon  />
+          <FavoriteIcon />
         </IconButton>
         <IconButton disabled aria-label="share">
           <ShareIcon />

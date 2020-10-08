@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Home from './Home';
 import Register from './Register/Register';
+import Login from './Login';
 
 export default function Router() {
   const [logged, setLogged] = useState(false);
@@ -22,8 +23,11 @@ export default function Router() {
         </Route> */}
       </Switch> :
       <Switch>
-        <Route path="/">
+        <Route exact path="/">
           <Home />
+        </Route>
+        <Route path="/login">
+          <Login />
         </Route>
       </Switch>
     }
