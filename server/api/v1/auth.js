@@ -63,6 +63,7 @@ usersRouter.post('/createuser', (req, res) => {
 // Check if user exist
 usersRouter.post("/userexist", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
+  console.log(currentUser);
   if (currentUser) return res.status(409).json({ message: "user name already exists" });
   res.json({ notExist: true });
 });

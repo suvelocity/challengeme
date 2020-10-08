@@ -68,13 +68,15 @@ function Register() {
                         "Username must contain only letters and numbers and be longer then 6 characters.",
                 });
             try {
-                const { data } = await network.post('/api/v1/auto/userexist', {userName});
+                const { data } = await network.post('/api/v1/auth/userexist', { userName });
             } catch (e) {
-                tempErrs.push({
-                    field: "userName",
-                    message:
-                        "Username already exists.",
-                });
+                if (e.response.status === 409) {
+                    tempErrs.push({
+                        field: "userName",
+                        message:
+                            "Username already exists.",
+                    });
+                }
             }
             if (
                 userName.length < 6 ||
