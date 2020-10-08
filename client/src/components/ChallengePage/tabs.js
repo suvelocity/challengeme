@@ -4,11 +4,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import PhoneIcon from '@material-ui/icons/Phone';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import PersonPinIcon from '@material-ui/icons/PersonPin';
+import HelpIcon from '@material-ui/icons/Help';
+import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
+import ThumbDown from '@material-ui/icons/ThumbDown';
+import ThumbUp from '@material-ui/icons/ThumbUp';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import SubmissionTable from "./SubmissionTable";
 import ReviewSection from "./ReviewSection";
-
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -17,8 +23,8 @@ function TabPanel(props) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      id={`scrollable-force-tabpanel-${index}`}
+      aria-labelledby={`scrollable-force-tab-${index}`}
       {...other}
     >
       {value === index && (
@@ -38,19 +44,20 @@ TabPanel.propTypes = {
 
 function a11yProps(index) {
   return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    id: `scrollable-force-tab-${index}`,
+    'aria-controls': `scrollable-force-tabpanel-${index}`,
   };
 }
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    width: '100%',
     backgroundColor: theme.palette.background.paper,
   },
 }));
 
-export default function ChallengeTabs(props) {
+export default function ScrollableTabsButtonForce(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
@@ -59,9 +66,17 @@ export default function ChallengeTabs(props) {
   };
 
   return (
-    <div style = {{width:"725px", height:"300px", backgroundColor:"lightskyblue", overflowY:"auto"}} className={classes.root}>
-      <AppBar position="static">
-        <Tabs value={value} onChange={handleChange}>
+    <div className={classes.root} style = {{width:"725px", height:"300px", backgroundColor:"lightskyblue", overflowY:"auto"}}>
+      <AppBar position="static" color="default">
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="on"
+          indicatorColor="primary"
+          textColor="primary"
+          aria-label="scrollable force tabs example"
+        >
           <Tab label="Submissions" {...a11yProps(0)} />
           <Tab label="Reviews" {...a11yProps(1)} />
         </Tabs>
