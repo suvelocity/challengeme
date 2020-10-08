@@ -10,6 +10,7 @@ challengeRouter.get("/", async (req, res) => {
     const allChallenges = await Challenge.findAll();
     res.json(allChallenges);
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 });

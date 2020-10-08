@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+// import axios from 'axios'
+import network from '../../services/network'
 import { Button, Link } from "@material-ui/core";
-import axios from "axios";
 import Rating from "@material-ui/lab/Rating";
 import Chip from "@material-ui/core/Chip";
 //import SubmitModal from "./SubmitModal";
@@ -27,22 +28,47 @@ const challenge = {
 
 const challengeParamId = 3; //Mock until we merge shahar
 
+const makeBlobed = async (img) =>{
+  const  preBlobedImg  = await fetch(img)
+  const blobedImg = await preBlobedImg.blob()
+  return blobedImg
+}
+
 function ChallengePage() {
+
+  //const [challengeInfo,setChallengeInfo] = useState('');
+  const [blobedImg, setBlobedImg] = useState("")
+  
+  const setImg = async () => {
+    const { data } = await network.get(`/api/v1/images?id=${1}`)
+    console.log(data);
+    const blobed = await makeBlobed(data.img)
+    const imgURL = URL.createObjectURL(blobed);
+    // console.log(imgURL);
+    setBlobedImg(imgURL)
+  }
+  useEffect(() => {
+    //setChallengeInfo(axios.get('url:id').data);
+    // console.log(blobedImg);
+    setImg()
+    console.log(blobedImg);
+// =======
   // const [challenge, setChallenge] = useState({});
 
-  useEffect(() => {
-    const fetchChallenge = async () => {
-      try {
-        const { data: challengeFromServer } = await axios.get(
-          `/api/v1/challenges/${challengeParamId}`
-        );
-        console.table(challenge);
-        // setChallenge(challengeFromServer);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchChallenge();
+  // useEffect(() => {
+  //   const fetchChallenge = async () => {
+  //     try {
+  //       const { data: challengeFromServer } = await axios.get(
+  //         `/api/v1/challenges/${challengeParamId}`
+  //       );
+  //       console.table(challenge);
+  //       // setChallenge(challengeFromServer);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchChallenge();
+// >>>>>>> 36f2077c2c283d389024cb3a91620c0a4000d5e0
   }, []);
 
   return challenge ? (
@@ -68,6 +94,7 @@ function ChallengePage() {
           <div className='challenge-labels'>
             <h2>Labels:</h2>
             <span className='challenge-label'>
+
               <Chip
                 color='secondary'
                 label='difficulty'
