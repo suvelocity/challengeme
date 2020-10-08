@@ -21,16 +21,16 @@ import axios from 'axios';
 function TeamStatistics({ id }) {
 
     // states
-    const [team, setTeam] = useState(null);
-    
+    // const [team, setTeam] = useState(null);
+    console.log("TEAMS");
     //effect
-    useEffect(() => getInfo(id), []);
+    // useEffect(() => getInfo(id), []);
     
     //functions
-    const getInfo = async () => {
-        const { data } = await axios.get(`/teams/${id}`);
-        setTeam(data);
-    };
+    // const getInfo = async () => {
+    //     const { data } = await axios.get(`/teams/${id}`);
+    //     setTeam(data);
+    // };
 
       const classes = useStyles();
 

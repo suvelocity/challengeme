@@ -145,10 +145,11 @@ const userData = {
 
 function StatisticsHome() {
     const classes = useStyles();
-
+    console.log("HOME");
     const imageStyle = {backgroundColor: 'lightgray'};
 
     return (
+      
         <div className={classes.main}>
         <div className={classes.grid}>
             <div className={classes.div} style={{gridArea: 'headChart', ...imageStyle}}><Charts width={'600px'} height={'2000px'} chart={[0,2]} data={challengeData}/></div>
