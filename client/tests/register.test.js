@@ -69,6 +69,13 @@ describe('Client Tests', () => {
         linkTexts = await page.$$eval(".errors",
             elements => elements.map(item => item.textContent))
         expect(linkTexts[2]).toBe('Birth date must be in the past.')
+        button = await page.$("#nextStep");
+        button.click();
+        await timeout(1000);
+        const signUpInput = await page.$('#signUp');
+        const linkInput = await page.$('#link');
+        const dateInput = await page.$('#date');
+        const phoneInput = await page.$('#phone');
     }, 30000)
 })
 
