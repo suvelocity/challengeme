@@ -2,6 +2,7 @@ const { Router } = require('express');
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const router = Router()
+
 const { Submission, Teams, User, UsersTeams } = require('../../../models');
 
 
@@ -14,6 +15,7 @@ router.get('/top', async (req, res) => {
       include:[
         {
           model:User,
+
           attributes:[],
           through:{
             attributes:[]
@@ -28,6 +30,7 @@ router.get('/top', async (req, res) => {
         }
       ]
     })
+
     res.send(topTeam)
   }catch(err){
     res.status(400).send(err)
@@ -138,3 +141,5 @@ router.get('/top', async (req, res) => {
       })
 
 module.exports = router;
+
+

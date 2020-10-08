@@ -1,0 +1,53 @@
+module.exports = [
+    {
+        first_name: "michael",
+        last_name: "byalsky",
+        user_name: "miki",
+        email: "miki@gmail.com",
+        password: "blabla96",
+        birth_date: new Date('1996/04/01'),
+        country: "israel",
+        city: "jerusalem",
+        phone_number: "0546666666",
+        github_account: "miki.github",
+        reason_of_registration: "cats videos",
+        security_question: "dog",
+        security_answer: "budy",
+        created_at: new Date(),
+        updated_at: new Date()
+    },
+    {
+        first_name: "roy",
+        last_name: "shnitzer",
+        user_name: "shnizel",
+        email: "shnizel@gmail.com",
+        password: "shnizel1",
+        birth_date: new Date('1997/04/01'),
+        country: "israel",
+        city: "tuval",
+        phone_number: "0546666668",
+        github_account: "shnizel.github",
+        reason_of_registration: "coding",
+        security_question: "favorate library",
+        security_answer: "sequelize",
+        created_at: new Date(),
+        updated_at: new Date()
+    },
+    {
+        first_name: "david",
+        last_name: "boostrap",
+        user_name: "boosty",
+        email: "boosty@gmail.com",
+        password: "boosty0",
+        birth_date: new Date('1997/04/01'),
+        country: "gamadim",
+        city: "gamzo",
+        phone_number: "0546666667",
+        github_account: "david.github",
+        reason_of_registration: "design",
+        security_question: "favorate library",
+        security_answer: "boostrap",
+        created_at: new Date(),
+        updated_at: new Date()
+    }
+]
