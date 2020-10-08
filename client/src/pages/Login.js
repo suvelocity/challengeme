@@ -99,7 +99,7 @@ export default function Login() {
       <br />
 
       {
-        <div style={{ backgroundColor: "red" }}>
+        <div id='errorBox' style={{ backgroundColor: "red" }}>
           {error.username || error.password || error.msg}
         </div>
       }
