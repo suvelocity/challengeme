@@ -6,23 +6,28 @@ import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import PeopleIcon from "@material-ui/icons/People";
 import Email from "@material-ui/icons/Email";
+// import {
+//     MuiPickersUtilsProvider,
+//     KeyboardTimePicker,
+//     KeyboardDatePicker,
+// } from "@material-ui/pickers";
 const useStyles = makeStyles((theme) => ({
-    firstName: {
+    country: {
+        marginTop: "80px",
+        // marginBottom: "20px",
+        width: "320px",
+    },
+    city: {
         // marginTop: "80px",
         // marginBottom: "20px",
         width: "320px",
     },
-    lastName: {
+    birthDate: {
         // marginTop: "80px",
         // marginBottom: "20px",
-        width: "320px",
+        // width: "320px",
     },
-    userName: {
-        // marginTop: "80px",
-        // marginBottom: "20px",
-        width: "320px",
-    },
-    email: {
+    phoneNumber: {
         // marginTop: "80px",
         // marginBottom: "20px",
         width: "320px",
@@ -69,10 +74,24 @@ function PersonalDetails({ values, handleChange, prevStep, nextStep }) {
             </FormControl>
             <label>Enter Birth Date</label>
             <input
+            className={classes.birthDate}
                 type="date"
                 value={values.birthDate}
                 onChange={handleChange("birthDate")}
             />
+            {/* <KeyboardDatePicker
+                disableToolbar
+                variant="inline"
+                format="MM/dd/yyyy"
+                margin="normal"
+                id="date-picker-inline"
+                label="Date picker inline"
+                // value={selectedDate}
+                // onChange={handleDateChange}
+                KeyboardButtonProps={{
+                    "aria-label": "change date",
+                }}
+            /> */}
             <FormControl className={classes.phoneNumber}>
                 <InputLabel style={{ color: "grey" }}>Phone Number</InputLabel>
                 <Input
@@ -90,8 +109,6 @@ function PersonalDetails({ values, handleChange, prevStep, nextStep }) {
                     }
                 />
             </FormControl>
-            <button onClick={prevStep}>Back</button>
-            <button onClick={nextStep}>Next</button>
         </div>
     );
 }
