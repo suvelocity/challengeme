@@ -10,8 +10,7 @@ function ReviewSection(props) {
 	const [revArr, setRevArr] = useState([]);
 
 	const getReviews = async () => {
-		// const reviews = await axios.get(`/api/v1/reviews/byChallenge/${props.challengeId}`).then((res) => res.data);
-		const reviews = data;
+		const reviews = await axios.get(`/api/v1/reviews/byChallenge/${props.challengeId}`).then((res) => res.data);
 		const filteredRevs = reviews.filter(item => item.title !== undefined && item.content !== undefined);
 		setRevArr(filteredRevs);
 	}
@@ -23,7 +22,7 @@ function ReviewSection(props) {
 	return (
 		<div>
 			{revArr.map((item,i)=> 
-						<Review className="review" key={i} 
+						<Review key={i} 
 						author = {item.author} 
 						createdAt = {item.createdAt} 
 						title = {item.title}

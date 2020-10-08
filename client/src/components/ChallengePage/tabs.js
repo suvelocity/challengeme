@@ -59,17 +59,17 @@ export default function ChallengeTabs(props) {
   };
 
   return (
-    <div className={classes.root}>
+    <div style = {{width:"725px", height:"1000px", backgroundColor:"lightskyblue"}} className={classes.root}>
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Submissions" {...a11yProps(0)} />
           <Tab label="Reviews" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
-      <TabPanel value={value} index={0}>
+      <TabPanel style={{backgroundColor:"lightskyblue"}} value={value} index={0}>
         <SubmissionTable challengeId = {props.challengeId}/>
       </TabPanel>
-      <TabPanel value={value} index={1}>
+      <TabPanel style={{backgroundColor:"lightskyblue"}} value={value} index={1}>
         <ReviewSection challengeId = {props.challengeId}/>
       </TabPanel>
     </div>

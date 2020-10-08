@@ -3,14 +3,14 @@ import Submission from "./Submission";
 import axios from "axios";
 
 
-const data = [{name:"asd", status:"fdgfdg", submittedAt:"3434"}];
+const data = [{name:"asd", status:"fdgfdg", submittedAt:"3434"},{name:"asd", status:"fdgfdg", submittedAt:"3434"}];
 
 function SubmissionTable(props) {
 	const [subArr, setSubArr] = useState([]);
 
 	const getSubmissions = async () => {
-		// const submissions = await axios.get(`/api/v1/challenges/${props.challengeId}/submissions`).then((res) => res.data);
-		const submissions = data;
+		const submissions = await axios.get(`/api/v1/challenges/${props.challengeId}/submissions`).then((res) => res.data);
+		// const submissions = data;
 		setSubArr(submissions);
 	}
 
@@ -18,18 +18,19 @@ function SubmissionTable(props) {
 		getSubmissions();
 	}, []);
 
-	console.log(subArr);
 	return <div>
-				<table>
-				<tr>
-					<th>Name</th>
-					<th>Status</th>
-					<th>Submitted at</th>
-				</tr>
+				<Submission className="headlines" 
+				name = {"Name"} 
+				status = {"Status"} 
+				submittedAt = {"Submitted at"} 
+				bold = {true}/>
 				{subArr.map((item,i)=> 
-						<Submission className="submission" key={i} name = {item.name} status = {item.status} submittedAt = {item.submittedAt}/>)}
-				</table>
-	</div>;
+						<Submission className="submission" key={i} 
+						name = {item.name} 
+						status = {item.status} 
+						submittedAt = {item.submittedAt}
+						bold = {false}/>)}
+			</div>;
 }
 
 export default SubmissionTable;
