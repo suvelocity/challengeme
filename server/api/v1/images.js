@@ -1,9 +1,11 @@
 const { Router } = require('express');
 const { Image } = require('../../models');
-const router = Router();
+const ImageRouter = Router();
 
-router.get('/', async (req, res) => { // /api/v1/image?id=
-    let challengeId = req.query.id;
+
+ImageRouter.get('/', async (req, res) => { // /api/v1/image?id=
+    let challengeId = req.query.id ;
+
     try{
         const image = await Image.findOne({
             where: {challengeId}
@@ -12,8 +14,8 @@ router.get('/', async (req, res) => { // /api/v1/image?id=
     }
     catch(e){res.status(500).send("Something went wrong")}
 });
-router.post('/', async (req, res) => { // /api/v1/image
-    let image = req.body;
+ImageRouter.post('/', async (req, res) => { // /api/v1/image
+    let image = req.body ;
     try {
         const checkIfExists = await Image.findOne({
             where: {challengeId: image.challengeId}
@@ -30,4 +32,4 @@ router.post('/', async (req, res) => { // /api/v1/image
     }
 });
 
-module.exports = router;
+module.exports = ImageRouter;
