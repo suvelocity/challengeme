@@ -56,6 +56,7 @@ function ChallengePage() {
 		// =======
 		// const [challenge, setChallenge] = useState({});
 
+
 		// useEffect(() => {
 		//   const fetchChallenge = async () => {
 		//     try {
@@ -153,6 +154,7 @@ function ChallengePage() {
 						</Button>
 					</div>
 				</div>
+
 
 				<SubmitModal
 					isOpen={isModalOpen}
