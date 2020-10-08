@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import UserDetails from './UserDetails';
 import PersonalDetails from './PersonalDetails';
 import Confirm from './Confirm';
@@ -35,18 +35,19 @@ function Register() {
 
     let tempErrs = [];
     if (step === 1) {
-      if (firstName.length < 1 || !onlyLettersRegex.test(firstName)) tempErrs.push({ field: 'firstName', message: "First name  must contain only letters" });
+      if (firstName.length < 1 || !onlyLettersRegex.test(firstName)) tempErrs.push({ field: 'firstName', message: "First name must contain only letters." });
       if (lastName.length < 1 || !onlyLettersRegex.test(lastName)) tempErrs.push({ field: 'lastName', message: "Last name  must contain only letters." });
-      if (userName.length < 1 || !onlyLettersAndNumbersRegex.test(userName)) tempErrs.push({ field: 'userName', message: "Username must contain only letters and numbers." });
+      if (userName.length < 6 || !onlyLettersAndNumbersRegex.test(userName)) tempErrs.push({ field: 'userName', message: "Username must contain only letters and numbers and be longer then 6 characters." });
       if (email.length < 1) tempErrs.push({ field: 'email', message: "Email required." });
       if (!validateEmailRegex.test(email)) tempErrs.push({ field: 'email', message: "Email invalid." });
     } else if (step === 2) {
       if (country.length < 1 || !onlyLettersRegex.test(country)) tempErrs.push({ field: 'country', message: "Country must contain only letters" });
       if (city.length < 1 || !onlyLettersRegex.test(city)) tempErrs.push({ field: 'city', message: "City must contain only letters" });
       if (birthDate.length < 1) tempErrs.push({ field: 'birthDate', message: "Birth date required" });
+      if (new Date(birthDate).valueOf() > new Date().valueOf()) tempErrs.push({ field: 'birthDate', message: "Birth date must be in the past." });
       if (phoneNumber.length < 1 || !onlyNumbersRegex.test(phoneNumber)) tempErrs.push({ field: 'phoneNumber', message: "Only numbers allowed in phone number." });
     } else if (step === 3) {
-      if (password.length < 6) tempErrs.push({ field: 'password', message: "Password needs to be at least 6 characters." });
+      if (password.length < 8) tempErrs.push({ field: 'password', message: "Password needs to be at least 8 characters." });
       if (password !== confirmPassword) tempErrs.push({ field: 'confirmPassword', message: "Passwords must be identical." });
       if (securityQuestion === '') tempErrs.push({ field: 'securityQuestion', message: 'Security question must be chosen.' });
       if (securityAnswer.length < 2) tempErrs.push({ field: 'securityAnswer', message: 'Security answer must be longer.' });
@@ -187,6 +188,7 @@ function Register() {
   return (
     <div>
       {multiForm()}
+      <p>Have an existing account? <Link to='/login'>Login Here</Link></p>
       <div>
         {errors && errors.map(err => (
           <p key={err.message}>{err.message}</p>
