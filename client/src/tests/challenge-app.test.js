@@ -38,6 +38,22 @@ const mockData = {
     rating: 3.7,
     isSaved: true,
   },
+  answer: {
+    repo: 'zilbers/Challenge-Calculator',
+    rating: '5',
+    title: 'A very hard challenge',
+    content: 'Took me a while',
+  },
+  badAnswer: {
+    repo: 'Not A Valid Repo Name!',
+    title: 'A very hard challenge',
+    content: 'Took me a while',
+  },
+  errorMessage: {
+    review: 'To send a review, the review must have both title and content!',
+    repo: 'This is not a valid repo!',
+    rating: 'To send an answer, you must rate the challenge!',
+  },
 };
 
 const projectName = 'Challenge - Page Client';
@@ -63,25 +79,101 @@ describe(`${projectName} - test suite`, () => {
       .get('/api/v1/challenges/2')
       .query(() => true)
       .reply(200, mockData.ReactCalculator);
-  });
-
-  it(`The page includes all the mandatory data about the challenge`, async (done) => {
     await page.goto('http://localhost:3000/challenges/1', {
       waitUntil: 'networkidle0',
     });
-    await page.waitForSelector('.challenge-name')
-    const nameValue = await page.$eval('.challenge-name', (name) => name.innerText);
+  });
+
+  it('The page includes all the mandatory data about the challenge', async (done) => {
+    await page.waitForSelector('.challenge-name');
+    const nameValue = await page.$eval(
+      '.challenge-name',
+      (name) => name.innerText
+    );
     expect(nameValue).toBe(mockData.ReactTvShows.name);
     let imgSrc = await page.$eval('.challenge-img', (image) => image.src);
     expect(imgSrc).toBe(mockData.ReactTvShows.cover);
-    let rating = await page.$eval('.challenge-rating', (rating) => rating.innerText); // Need to check how its presented in the HTML
+
+    let rating = await page.$eval(
+      '.challenge-rating',
+      (rating) => rating.innerText
+    );
+    // Need to check how its presented in the HTML
     expect(rating).toBe(mockData.ReactTvShows.rating);
-    let rating = await page.$eval('.challenge-rating', (rating) => rating.innerText); // Need to check how its presented in the HTML
-    expect(rating).toBe(mockData.ReactTvShows.rating);
-    let description = await page.$eval('.challenge-description', (description) => description.innerText); // Need to check how its presented in the HTML
+
+    let description = await page.$eval(
+      '#challenge-description',
+      (description) => description.innerText
+    );
     expect(description).toBe(mockData.ReactTvShows.description);
-    let description = await page.$eval('.challenge-created-at', (createdAt) => createdAt.innerText); // Need to check how its presented in the HTML
-    expect(description).toBe(`Created at: ${mockData.ReactTvShows.createdAt}`);
+
+    let createdAt = await page.$eval(
+      '.challenge-created-at',
+      (createdAt) => createdAt.innerText
+    );
+    expect(createdAt).toBe(`Created at: ${mockData.ReactTvShows.createdAt} `);
+
+    let updatedAt = await page.$eval(
+      '.challenge-updated-at',
+      (updatedAt) => updatedAt.innerText
+    );
+    expect(updatedAt).toBe(`Updated at: ${mockData.ReactTvShows.updatedAt}`);
+
     done();
   });
+
+  it('There is a submmit button, that opens a modal', async () => {
+    await page.waitForSelector('.submit-btn');
+    await page.click('.submit-btn');
+    await page.waitForSelector('#repoInput');
+    await page.type('#repoInput', mockData.answer.repo);
+    await page.select('#rating', mockData.answer.rating);
+    await page.type('#commentTitleInput', mockData.answer.title);
+    await page.type('#reviewContentInput', mockData.answer.content);
+    await page.click('.submit-btn'); // Add id to last submit button
+    const response = await page.waitForResponse((response) =>
+      response.url().startsWith('http://localhost:3000/challenges/1')
+    );
+    expect(response.ok()).toBe(true);
+  });
+
+  it('Form validation, cannot send without required inputs.', async () => {
+    await page.waitForSelector('.submit-btn');
+    await page.click('.submit-btn');
+    await page.waitForSelector('#repoInput');
+
+    await page.type('#repoInput', mockData.answer.repo);
+    await page.click('#submit-answer'); // Add id to last submit button
+
+    const errorMessageRating = await page.$eval(
+      '.form-error',
+      (error) => error.innerText
+    );
+    expect(errorMessageRating).toBe(mockData.errorMessage.rating);
+
+    await page.select('#rating', mockData.answer.rating);
+    await page.type('#repoInput', mockData.badAnswer.repo);
+    await page.click('#submit-answer'); // Add id to last submit button
+
+    const errorMessageRepo = await page.$eval(
+      '.form-error',
+      (error) => error.innerText
+    );
+    expect(errorMessageRepo).toBe(mockData.errorMessage.repo);
+
+    await page.type('#repoInput', mockData.answer.repo);
+    await page.type('#commentTitleInput', mockData.badAnswer.title);
+    await page.click('#submit-answer'); // Add id to last submit button
+
+    const errorMessageContent = await page.$eval(
+      '.form-error',
+      (error) => error.innerText
+    );
+    expect(errorMessageContent).toBe(mockData.errorMessage.review);
+
+    await page.type('#reviewContentInput', mockData.badAnswer.content);
+    await page.click('#submit-answer'); // Add id to last submit button
+  });
 });
+
+
