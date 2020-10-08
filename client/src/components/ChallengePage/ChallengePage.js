@@ -28,7 +28,7 @@ const challenge = {
 const challengeParamId = 3; //Mock until we merge shahar
 
 function ChallengePage() {
-  const [challenge, setChallenge] = useState({});
+  const [challenge, setChallenge] = useState({challenge});
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -85,7 +85,7 @@ function ChallengePage() {
               />
             </span>
           ))}
-          <p className="challenge-description">{challenge.description}</p>
+          <p className="challenge-description" id="challenge-description">{challenge.description}</p>
           <Button color="primary" className="submit-btn">
             Submit
           </Button>
