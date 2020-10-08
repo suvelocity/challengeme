@@ -9,7 +9,7 @@ app.use(express.json())
 //   res.send('Hello World!')
 // })
 
-app.use('/api/v1', require('./api/v1'))
+app.use('/api', require('./api'))
 
 app.use('*', function(req,res){
     res.sendStatus(404)
