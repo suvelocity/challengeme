@@ -104,6 +104,32 @@ usersRouter.post("/logout", async (req, res) => {
 usersRouter.post("/info", checkToken, (req, res) => {
   res.status(200).json({ message: "success get sensitive info" });
 });
+//sequrity question
+usersRouter.post("/getquestion", async (req, res) => {
+  res.send("goo");
+  // const currentUser = await User.findOne({
+  //   where: {
+  //     userName: req.body.userName,
+  //   },
+  // });
+  // if (!currentUser)
+  //   return res.status(404).json({ message: "Cannot Find User" });
+  // res
+  //   .status(200)
+  //   .json({ securityQuestion: currentUser.dataValues.securityQuestion });
+});
+
+// //returned answer
+// usersRouter.post("/returnedanswer", async (req, res) => {
+//   const returnedAnswer = req.body.answer;
+
+//   res.status(200).json({ message: "success get sensitive info" });
+// });
+
+// //password update
+// usersRouter.put("/paswwordupdate", (req, res) => {
+//   res.status(200).json({ message: "success get sensitive info" });
+// });
 
 function checkToken(req, res, next) {
   let token = req.headers["authorization"];
