@@ -3,7 +3,7 @@ const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const router = Router()
 
-const { Submission, Teams, User, UsersTeams } = require('../../../models');
+const { Submission, Teams, User } = require('../../../models');
 
 
 router.get('/top', async (req, res) => {
@@ -15,7 +15,6 @@ router.get('/top', async (req, res) => {
       include:[
         {
           model:User,
-
           attributes:[],
           through:{
             attributes:[]
@@ -96,9 +95,35 @@ router.get('/top', async (req, res) => {
             }
           ]
         })
+        // const team = await Submission.findAll({
+        //   raw:true,
+        //   group:[sequelize.fn("DAY", sequelize.col("Submission.created_at"))],
+        //   attributes: [[sequelize.fn("COUNT", "id"), "dateSubmissions"],"createdAt"],
+        //   where:{
+        //     state:'SUCCESS',
+        //     created_at: {
+        //       [Op.gte]: new Date(Date.now() - 604800000),
+        //     }
+        //   },
+        //   include:[{
+        //     model: User,
+        //     attributes:["id"],
+        //     include:[{
+        //       model: Teams,
+        //       through:{
+        //         attributes:[]
+        //       },
+        //       attributes:["id","name"],
+        //       where:{
+        //         id:thisUser.Teams[0].id
+        //       }
+        //     }]
+        //   }],
+
+        // })
+
         const team = await Teams.findAll({
           raw:true,
-          // group:[sequelize.fn("DAY", sequelize.col("created_at"))],
           attributes: ['id','name',[sequelize.fn("COUNT", "submissions.id"), "teamSubmissions"]],
           where:{
             id: thisUser.Teams[0].id
@@ -106,10 +131,14 @@ router.get('/top', async (req, res) => {
           include:[
             {
               model:User,
+              through:{
+                attributes:[]
+              },
               attributes:[],
               include:{
                 model: Submission,
-                attributes:["createdAt"],
+                group:[sequelize.fn("DAY", sequelize.col("Submission.created_at"))],
+                attributes:[],
                 where:{
                   state:'SUCCESS',
                   created_at: {
@@ -121,19 +150,19 @@ router.get('/top', async (req, res) => {
           ]
         })
 
-        const taem = await Submission.findAll({
-          group:[sequelize.fn("DAY", sequelize.col("created_at"))],
-          attributes: ['id',[sequelize.fn("COUNT", "id"), "teamSubmissions"]],
-        })
-        team.forEach(element => {
-          delete element["Users.UsersTeams.teamId"]
-          delete element["Users.UsersTeams.userId"]
-          delete element["Users.UsersTeams.createdAt"]
-          delete element["Users.UsersTeams.updatedAt"]
-          delete element["Users.UsersTeams.TeamId"]
-          delete element["Users.Submissions.id"]
-          delete element["Users.UsersTeams.UserId"]
-        })
+        // const taem = await Submission.findAll({
+          // group:[sequelize.fn("DAY", sequelize.col("created_at"))],
+          // attributes: ['id',[sequelize.fn("COUNT", "id"), "teamSubmissions"]],
+        // })
+        // team.forEach(element => {
+        //   delete element["Users.UsersTeams.teamId"]
+        //   delete element["Users.UsersTeams.userId"]
+        //   delete element["Users.UsersTeams.createdAt"]
+        //   delete element["Users.UsersTeams.updatedAt"]
+        //   delete element["Users.UsersTeams.TeamId"]
+        //   delete element["Users.Submissions.id"]
+        //   delete element["Users.UsersTeams.UserId"]
+        // })
         res.send(team)
       }catch(err){
         res.status(400).send(err)
