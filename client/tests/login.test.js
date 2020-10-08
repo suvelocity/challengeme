@@ -25,7 +25,7 @@ describe('Client Tests', () => {
         await passwordInput.type("Test12345")
         const button = await page.$("#loginButton");
         button.click();
-        await timeout(2000);
+        await timeout(1000);
         const textContent = await page.evaluate(() => document.querySelector('.errorInput').textContent);
         expect(textContent).toBe('invalid userName')
         await usernameInput.click({ clickCount: 3 })
@@ -33,7 +33,7 @@ describe('Client Tests', () => {
         await passwordInput.click({ clickCount: 3 })
         await passwordInput.type("Test12345")
         button.click();
-        await timeout(2000);
+        await timeout(1000);
         const textContent2 = await page.evaluate(() => document.querySelector('.errorInput').textContent);
         expect(textContent2).toBe('userName must be 6-32 characters long');
         await usernameInput.click({ clickCount: 3 })
@@ -41,7 +41,7 @@ describe('Client Tests', () => {
         await passwordInput.click({ clickCount: 3 })
         await passwordInput.type("Test")
         button.click();
-        await timeout(2000);
+        await timeout(1000);
         const textContent3 = await page.evaluate(() => document.querySelector('.errorInput').textContent);
         expect(textContent3).toBe('password must be at least 8 characters long');
     }, 30000)
@@ -59,7 +59,7 @@ describe('Client Tests', () => {
         await page.type("#passwordField", "Test12345");
         const button = await page.$("#loginButton");
         button.click();
-        await timeout(2000);
+        await timeout(1000);
         expect(login.isDone()).toBe(true);
         const cookies = await page.cookies();
         expect(cookies[0].name).toBe('refreshToken');
@@ -72,7 +72,7 @@ describe('Client Tests', () => {
         await page.waitForSelector("#signUp", { visible: true });
         const button = await page.$("#signUp");
         button.click();
-        await timeout(2000);
+        await timeout(1000);
         expect(page._target._targetInfo.url).toBe('http://localhost:3000/register');
     }, 30000)
 
@@ -81,7 +81,7 @@ describe('Client Tests', () => {
         await page.waitForSelector(".forgotLabel", { visible: true });
         const button = await page.$(".forgotLabel");
         button.click();
-        await timeout(2000);
+        await timeout(1000);
         expect(page._target._targetInfo.url).toBe('http://localhost:3000/forgotpassword');
     }, 30000)
 })
