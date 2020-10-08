@@ -70,13 +70,13 @@ jobs:
     - name: onSuccess
       uses: fjogeleit/http-request-action@master
       with:
-        method: 'PUT'
+        method: 'PATCH'
         url: ${{ github.event.inputs.webhookUrl }}
         data:  '{ "success":true }'
     - name: onFailure
       if: ${{ failure() || cancelled() }}
       uses: fjogeleit/http-request-action@master
       with:
-        method: 'PUT'
+        method: 'PATCH'
         url: ${{ github.event.inputs.webhookUrl }}
         data:  '{ "success":false }'
