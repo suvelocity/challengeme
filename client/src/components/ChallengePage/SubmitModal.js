@@ -1,105 +1,119 @@
 import React, { useEffect, useState } from "react";
-import Modal from "@material-ui/core/Modal";
+import { Modal, TextField } from "@material-ui/core";
+import { Rating } from "@material-ui/lab";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 
-function SubmitModal({ isOpen, handleClose, challengeId }) {
-  const [repoName, setRepoName] = useState("");
-  const [reviewTitle, setReviewTitle] = useState("");
-  const [reviewContent, setReviewContent] = useState("");
-  const [userRating, setUserRating] = useState(0);
+function SubmitModal({ isOpen, handleClose, challengeId, userId }) {
+	const { register, handleSubmit, watch, errors } = useForm();
+	const [userRating, setUserRating] = useState(0);
 
-  const submitForm = () => {
-    //make POST request
-    // VIEW SUBMITTED SUCCESSFULLY/FAILED TO SUBMITT MESSAGE and close modal
-  };
-  //
-  const validateRepoName = (repo) => {
-    setRepoName(repo);
-  };
-  return (
-    <Modal
-      open={isOpen}
-      onClose={handleClose}
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
-      style={{ width: 400, margin: "20px auto" }}
-    >
-      <div
-        style={{
-          backgroundColor: "white",
-          height: "60vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
-        <h3>submit your solution</h3>
+	// const [repoName, setRepoName] = useState("");
+	// const [reviewTitle, setReviewTitle] = useState("");
+	// const [reviewContent, setReviewContent] = useState("");
 
-        <label for="repoInput">
-          repo:
-          <input
-            type="text"
-            id="repoInput"
-            value={repoName}
-            onChange={({ target }) => {
-              validateRepoName(target.value);
-            }}
-            placeholder="Owner/repo"
-            required
-          />
-        </label>
-        <select
-          name="rating"
-          id="rating"
-          required
-          onChange={({ target }) => setUserRating(target.value)}
-        >
-          <option value="" selected disabled>
-            Enter Rating
-          </option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
+	const submitForm = async data => {
+		//make POST request
+		// VIEW SUBMITTED SUCCESSFULLY/FAILED TO SUBMITT MESSAGE and close modal
+		const formData = {
+			...data,
+			userId
+		};
+		try {
+			const res = await axios.post(`/${challengeId}/apply`, formData);
+			console.log(res);
+		} catch (error) {
+			console.error(error);
+		}
 
-        <label for="commentTitle">
-          title:
-          <input
-            type="text"
-            id="commentTitleInput"
-            placeholder="Comment Title"
-            value={reviewTitle}
-            max="100"
-            onChange={({ target }) => setReviewTitle(target.value)}
-          />
-        </label>
-        <label for="reviewContentInput">
-          content:
-          <textarea
-            type="text"
-            id="reviewContentInput"
-            max="255"
-            placeholder="Comment content"
-            onChange={({ target }) => setReviewContent(target.value)}
-          >
-            {reviewContent}
-          </textarea>
-        </label>
-        <button onClick={submitForm}>Submit</button>
+		// data object looks like:
+		// {
+		//  commentContent: "the content of the comment"
+		//  commentTitle: "title for the comment"
+		//  rating: 4, -> can't be null
+		//  repository: "drormaman/pokedex", -> can't be null
+		//  userId: 3 -> can't be null
+		// }
 
-        {/* TODO: repo input */}
-        {/* TODO : validate link from above input - correct input and existing repository */}
-        {/* TODO: rating input 1-5 */}
-        {/* TODO: review input title (up to 100 chars)*/}
-        {/* TODO: review input content (up to 255 chars)*/}
-        {/* TODO: cancel button */}
-        {/* TODO: submit button */}
-        {/* TODO: render a result with a waiting "checking your solution plaese wait : success/faliure" */}
-        {/* NOT IN MODAL => SHOULD MOVED TO SUBMISSIONTABLE */}
-      </div>
-    </Modal>
-  );
+		console.log(formData);
+	};
+
+	// console.log(watch("repository"));
+
+	const isRepoExist = async repo => {
+		const response = await fetch(`https://api.github.com/repos/${repo}`);
+		return response.status !== 404;
+	};
+	return (
+		<Modal
+			open={isOpen}
+			onClose={handleClose}
+			aria-labelledby="simple-modal-title"
+			aria-describedby="simple-modal-description"
+			style={{ width: 400, margin: "20px auto" }}>
+			<form
+				onSubmit={handleSubmit(submitForm)}
+				style={{
+					backgroundColor: "white",
+					height: "60vh",
+					display: "flex",
+					flexDirection: "column",
+					alignItems: "flex-start"
+				}}>
+				<h3>submit your solution</h3>
+				<label htmlFor="repoInput">Solution repository:</label>
+				{/* <TextField */}
+				{/* label="Solution repository" */}
+				<input
+					type="text"
+					id="repoInput"
+					name="repository"
+					placeholder="Owner/Repo"
+					ref={register({
+						required: true,
+						pattern: /^([^ ]+\/[^ ]+)$/,
+						validate: { isRepoExist }
+					})}
+				/>
+				{errors.repository && errors.repository.type === "required" && (
+					<p>this </p>
+				)}
+				<label htmlFor="rating">Rating </label>
+				{/*  this input is invisible, only here for the rating to work in the form */}
+				<input
+					name="rating"
+					type="number"
+					value={userRating}
+					ref={register({ required: true })}
+					hidden
+					readOnly
+				/>
+				<Rating
+					name="rating"
+					value={userRating}
+					defaultValue={2.5}
+					precision={0.5}
+					onChange={(_, value) => setUserRating(Number(value))}
+				/>
+				<label htmlFor="commentTitle">Title: </label>
+				<input
+					type="text"
+					id="commentTitleInput"
+					placeholder="Comment Title"
+					name="commentTitle"
+					ref={register({ maxLength: 100 })}
+				/>
+				<label htmlFor="reviewContentInput">Content: </label>
+				<textarea
+					type="text"
+					id="reviewContentInput"
+					name="commentContent"
+					placeholder="Comment content"
+					ref={register({ maxLength: 255 })}></textarea>
+				<input type="submit" />
+			</form>
+		</Modal>
+	);
 }
 
 export default SubmitModal;
