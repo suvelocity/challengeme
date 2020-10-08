@@ -91,8 +91,8 @@ function SubmitModal({ isOpen, handleClose, challengeId, userId }) {
 				<Rating
 					name="rating"
 					value={userRating}
-					defaultValue={2.5}
-					precision={0.5}
+					// defaultValue={2.5}
+					// precision={0.5}
 					onChange={(_, value) => setUserRating(Number(value))}
 				/>
 				<label htmlFor="commentTitle">Title: </label>
