@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { BrowserRouter, Switch, Route, } from "react-router-dom";
-import { Logged } from '../context/LoggedInContext';
-import Home from './Home';
-import Register from './Register/Register';
-import Login from './Login';
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { Logged } from "../context/LoggedInContext";
+import Home from "./Home";
+import Register from "./Register/Register";
+import Login from "./Login";
+import Forgot from "./Forgot/Forgot";
 
 export default function Router() {
   const [logged, setLogged] = useState(false);
 
   return (
     <BrowserRouter>
-      {!logged ?
+      {!logged ? (
         <Logged.Provider value={{ logged, setLogged }}>
           <Switch>
             <Route path="/register">
@@ -21,7 +22,7 @@ export default function Router() {
             </Route>
           </Switch>
         </Logged.Provider>
-        :
+      ) : (
         <Logged.Provider value={{ logged, setLogged }}>
           <Switch>
             <Route exact path="/">
@@ -29,7 +30,7 @@ export default function Router() {
             </Route>
           </Switch>
         </Logged.Provider>
-      }
+      )}
     </BrowserRouter>
   );
 }

@@ -16,24 +16,57 @@ describe('Client Tests', () => {
         browser.close();
     })
 
-    test('login request sent to server', async () => {
+    test('input validation', async () => {
+        await page.goto("http://localhost:3000/login");
+        await page.waitForSelector("#username-field", { visible: true });
+        const usernameInput = await page.$('#username-field');
+        const passwordInput = await page.$('#password-field');
+        await usernameInput.type("Test1%2")
+        await passwordInput.type("Test12345")
+        const button = await page.$("#login-button");
+        button.click();
+        await timeout(2000);
+        const textContent = await page.evaluate(() => document.querySelector('#errorBox').textContent);
+        expect(textContent).toBe('invalid username')
+        await usernameInput.click({ clickCount: 3 })
+        await usernameInput.type("Test")
+        await passwordInput.click({ clickCount: 3 })
+        await passwordInput.type("Test12345")
+        button.click();
+        await timeout(2000);
+        const textContent2 = await page.evaluate(() => document.querySelector('#errorBox').textContent);
+        expect(textContent2).toBe('username must be 6-32 characters long');
+        await usernameInput.click({ clickCount: 3 })
+        await usernameInput.type("Test123")
+        await passwordInput.click({ clickCount: 3 })
+        await passwordInput.type("Test")
+        button.click();
+        await timeout(2000);
+        const textContent3 = await page.evaluate(() => document.querySelector('#errorBox').textContent);
+        expect(textContent3).toBe('password must be at least 8 characters long');
+    }, 30000)
+
+    test.skip('login request sent to server and cookies set', async () => {
         await page.goto("http://localhost:3000/login");
         const login = await nock("http://localhost:3000", {
             allowUnmocked: true,
         })
-            .post("/loginEndPoint")
+            .post("/login")
             .reply(200);
 
         await page.waitForSelector("#username-field", { visible: true });
-        await page.type("#username-field", "Test");
-        await page.type("#password-field", "Test123");
+        await page.type("#username-field", "Test123");
+        await page.type("#password-field", "Test12345");
         const button = await page.$("#login-button");
         button.click();
         await timeout(2000);
         expect(login.isDone()).toBe(true);
+        const cookies = await page.cookies();
+        expect(cookies[0].name).toBe('RT_Token');
+        expect(cookies[1].name).toBe('AT_Token');
     }, 30000)
 
-    test('move to sign up page', async () => {
+    test.skip('move to sign up page', async () => {
         await page.goto("http://localhost:3000/login");
         await page.waitForSelector("#signUp", { visible: true });
         const button = await page.$("#signUp");
