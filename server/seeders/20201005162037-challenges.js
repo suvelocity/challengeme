@@ -1,5 +1,5 @@
 'use strict';
-const challenges = require('../_tests_/mocks/challenges');
+const challenges = require('../_tests_/statistics/mocks/challenges');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {

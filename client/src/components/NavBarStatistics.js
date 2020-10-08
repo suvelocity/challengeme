@@ -29,7 +29,7 @@ const routesIcons = [
   {name: "TeamStatistics", iconComp: <GroupOutlinedIcon />, text: "Team Statistics", path: "/statistics/teams"},
   {name: "Insights", iconComp: <InsertChartOutlinedIcon />, text: "Insights Statistics", path: "/statistics/insights"},
   {name: "ChallengeCard", iconComp: <AssistantOutlinedIcon />, text: "Challenge Card Statistics", path: "/statistics/challenge-card"},
-  {name: "ProfileStatistics", iconComp: <AssignmentIndOutlinedIcon />, text: "Profile Statistics", path: "/statistics/profile-statistics"},
+  {name: "ProfileStatistics", iconComp: <AssignmentIndOutlinedIcon />, text: "Profile Statistics", path: "/statistics/profile"},
 ]
 
 

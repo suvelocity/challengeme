@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, useRouteMatch } from "react-router-dom";
 
 //import { NavBarStatistics, StatisticsHome, UserStatistics, TeamStatistics, Insights} from '../components';
 
@@ -19,22 +19,25 @@ const useStyles = makeStyles({
 });
 function Statistics() {
     const classes = useStyles()
+    const { path, url } = useRouteMatch();
+    const res = useRouteMatch();
+    console.log(res);
     return (
-        <Router>
+        <div>
             <ButtonAppBar />
             <Grid className={classes.root} container>
                 <Grid xs={12}>
                     <NavBarStatistics />
                 </Grid>
             <Switch>
-                <Route exact path="/statistics" component={StatisticsHome}/>
-                <Route path="/statistics/users" component={UserStatistics}/>
-                <Route path="/statistics/teams" component={TeamStatistics} />
-                <Route path="/statistics/insights" component={Insights} />
-                <Route path="/statistics/profile" component={ProfileStatistics} />
+                <Route exact path={`${path}`} component={StatisticsHome}/>
+                <Route path={`${path}/users`} component={UserStatistics}/>
+                <Route path={`${path}/teams`} component={TeamStatistics} />
+                <Route path={`${path}/insights`} component={Insights} />
+                <Route path={`${path}/profile`} component={ProfileStatistics} />
             </Switch>
            </Grid>
-        </Router>
+           </div>
        
             
         
