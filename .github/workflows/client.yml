@@ -60,7 +60,7 @@ jobs:
       run: npm run test
       working-directory: ./challenge
     - name: onSuccess
-      uses: ZBejavu/httpWebhook@v1
+      uses: ZBejavu/httpWebhook
       env:
         url: ${{ github.event.inputs.webhookUrl }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":true }'
