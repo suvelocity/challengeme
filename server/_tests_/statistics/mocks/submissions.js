@@ -2,7 +2,7 @@ module.exports = [
     {
       challengeId: 1,
       userId: 1,
-      state: "PENDING",
+      state: "SUCCESS",
       solution_repository: "Moran1324/Authentication-Challenge-SOLUTION",
       created_at: "2020-10-01 20:00:00",
       updated_at: "2020-10-01 20:00:00",
@@ -18,7 +18,7 @@ module.exports = [
     {
       challengeId: 1,
       userId: 3,
-      state: "PENDING",
+      state: "SUCCESS",
       solution_repository: "michaelbyalsky/Authentication-Challenge-SOLUTION",
       created_at: "2020-10-01 20:00:00",
       updated_at: "2020-10-01 20:00:00",
@@ -26,7 +26,7 @@ module.exports = [
     {
       challengeId: 2,
       userId: 1,
-      state: "PENDING",
+      state: "SUCCESS",
       solution_repository: "Moran1324/Authentication-Challenge-SOLUTION",
       created_at: "2020-10-01 20:00:00",
       updated_at: "2020-10-01 20:00:00",

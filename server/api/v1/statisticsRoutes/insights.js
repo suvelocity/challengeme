@@ -26,7 +26,7 @@ router.get("/top-success", async (req, res) => {
   const sub = await Submission.findAll({
     attributes: {
       include: [
-        [sequelize.fn("COUNT", sequelize.col("challenge_id")), "countSuc"],
+        [sequelize.fn("COUNT", sequelize.col("challenge_id")), "countSub"],
       ],
     },
     include: {
@@ -44,9 +44,7 @@ router.get("/top-success", async (req, res) => {
 
 router.get("/challenges-type", async (req, res) => {
   const challengeType = await Challenge.findAll({
-    attributes: {
-      include: [[sequelize.fn("COUNT", sequelize.col("type")), "count_type"]],
-    },
+    attributes: ['type', [sequelize.fn("COUNT", sequelize.col("type")), "countType"]],
     group: ["type"],
     order: [[sequelize.fn("COUNT", sequelize.col("type")), "DESC"]],
     limit: 10,
