@@ -7,10 +7,10 @@ on:
         required: true
         default: 'Mona the Octocat'
       testRepo:
-        description: 'location'
+        description: 'the testing repository'
         required: false
       solutionRepo:
-        description: 'location'
+        description: 'the solution repository'
         required: false
       webhookUrl:
         description: 'location'
