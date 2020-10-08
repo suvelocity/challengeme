@@ -61,7 +61,7 @@ jobs:
       working-directory: ./challenge
     - name: onSuccess
       uses: fjogeleit/http-request-action@master
-      env:
+      with:
         url: ${{ github.event.inputs.webhookUrl }}
         data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":true }'
     - name: onFailure
