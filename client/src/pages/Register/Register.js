@@ -4,6 +4,7 @@ import PersonalDetails from './PersonalDetails';
 import Confirm from './Confirm';
 import Security from './Security';
 import Extras from './Extras';
+import network from '../../services/network'
 
 function Register() {
   const [errors, setErrors] = useState([]);
@@ -18,11 +19,10 @@ function Register() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [securityQuestion, setSecurityQuestion] = useState('Choose Security Question...');
+  const [securityQuestion, setSecurityQuestion] = useState('');
   const [securityAnswer, setSecurityAnswer] = useState('');
-  const [signUpReason, setSignUpReason] = useState('Choose your sign-up reason...');
+  const [signUpReason, setSignUpReason] = useState('');
   const [gitHub, setGitHub] = useState('');
-
 
   const nextStep = () => {
     const validateEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -45,10 +45,10 @@ function Register() {
     } else if (step === 3) {
       if (password.length < 6) tempErrs.push({field: 'password', message: "Password needs to be at least 6 characters."});
       if (password !== confirmPassword) tempErrs.push({field: 'confirmPassword', message: "Passwords must be identical."});
-      if (securityQuestion === 'Choose Security Question...') tempErrs.push({field: 'securityQuestion', message: 'Security question must be chosen.'});
+      if (securityQuestion === '') tempErrs.push({field: 'securityQuestion', message: 'Security question must be chosen.'});
       if (securityAnswer.length < 2) tempErrs.push({field: 'securityAnswer', message: 'Security answer must be longer.'});
     } else if (step === 4) {
-      if (signUpReason === 'Choose your sign-up reason...') tempErrs.push({field: 'signUpReason', message: 'Sign up reason must be chosen.'});
+      if (signUpReason === '') tempErrs.push({field: 'signUpReason', message: 'Sign up reason must be chosen.'});
       if (gitHub.length < 1 || !onlyLettersAndNumbersRegex.test(gitHub)) tempErrs.push({field: 'gitHub', message: 'GitHub account is invalid.'});
     }
     if (tempErrs.length === 0) {
@@ -57,12 +57,33 @@ function Register() {
     } else {
       setErrors(tempErrs)
     }
-    
   }
 
   const prevStep = () => {
     setStep(step - 1);
     setErrors([]);
+  }
+
+  const handelSubmit = async () => {
+    try {
+      const { data: regRes } = await network.post('/api/v1/auth/register', {
+        firstName,
+        lastName,
+        userName,
+        email,
+        password,
+        birthDate,
+        country,
+        city,
+        phoneNumber,
+        githubAccount: gitHub,
+        reasonOfRegistration: signUpReason,
+        securityQuestion,
+        securityAnswer
+      });
+    } catch (err) {
+      setErrors([...errors, {field: 'server', message: err.message}])
+    }
   }
 
   const handleChange = input => e => {
@@ -150,6 +171,7 @@ function Register() {
       case 5: return (
         <Confirm
           prevStep={prevStep}
+          handelSubmit={handelSubmit}
           values={values}
         />
       );

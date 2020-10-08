@@ -1,7 +1,7 @@
 import React from 'react'
 import { List, ListItem, ListItemText } from '@material-ui/core'
 
-function Confirm({ prevStep, values }) {
+function Confirm({ prevStep, values, handleSubmit }) {
   return (
     <div>
       <List >
@@ -43,7 +43,7 @@ function Confirm({ prevStep, values }) {
         </ListItem>
       </List>
       <button onClick={prevStep}>Back</button>
-      <button onClick={() => {alert(`welcome ${values.userName}`)}} >Confirm</button>
+      <button onClick={handleSubmit} >Confirm</button>
 
     </div>
   )
