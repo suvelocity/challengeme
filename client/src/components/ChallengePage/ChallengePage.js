@@ -3,10 +3,10 @@ import { Button, Link } from "@material-ui/core";
 import axios from "axios";
 import Rating from "@material-ui/lab/Rating";
 import Chip from "@material-ui/core/Chip";
+import ChallengeTabs from "./Tabs";
 //import SubmitModal from "./SubmitModal";
 // import ChallengePage from "./ChallengePage";
 //import SubmissionTable from "./SubmissionTable";
-import ChallengeTabs from "./tabs";
 
 import "./ChallengePage.css";
 
@@ -88,8 +88,7 @@ function ChallengePage() {
             </span>
           ))}
           <p className="challenge-description">{challenge.description}</p>
-          {/* add props to ChallengeTabs: submission and comments */}
-          <ChallengeTabs submissions = "submissions" comments = "comments"/>
+          <ChallengeTabs/>
           <Button color="primary" className="submit-btn">
             Submit
           </Button>

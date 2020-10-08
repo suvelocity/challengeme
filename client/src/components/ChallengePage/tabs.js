@@ -6,6 +6,8 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import SubmissionTable from "./SubmissionTable";
+import ReviewSection from "./ReviewSection";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -60,14 +62,14 @@ export default function ChallengeTabs(props) {
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Submissions" {...a11yProps(0)} />
-          <Tab label="Comments" {...a11yProps(1)} />
+          <Tab label="Reviews" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        {props.submissions}
+        <SubmissionTable/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-      {props.comments}
+        <ReviewSection/>
       </TabPanel>
     </div>
   );
