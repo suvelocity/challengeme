@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import Button from '@material-ui/core/Button';
+import Cookies from "js-cookie";
+import { useHistory } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,6 +11,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import network from '../services/network';
 import ChallengeCard from '../components/ChallengeCard';
 import { Typography } from '@material-ui/core';
+import { Logged } from '../context/LoggedInContext';
 
 
 const ApplyDialog = ({ open, onClose, onSubmit }) => {
@@ -46,6 +49,8 @@ export default function HomePage() {
   const [challenges, setChallenges] = useState([]);
   const [challengeToApply, setChallengeToApply] = useState();
   const [expandedChallenge, setExpandedChallenge] = useState();
+  const value = useContext(Logged);
+  const location = useHistory();
   useEffect(() => {
     (async () => {
       const { data: challengesFromServer } = await network.get('/api/v1/challenges')
@@ -64,11 +69,29 @@ export default function HomePage() {
     setChallengeToApply(challengeId)
   }
 
+  const logOut = async () => {
+    try {
+      const { data: response } = await network.post('/api/v1/auth/logout', { token: Cookies.get("refreshToken") })
+      location.push('/login');
+      value.setLogged(false);
+      Cookies.remove("refreshToken")
+      Cookies.remove("accessToken")
+      alert(response.message)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
+
   return (
     <div style={{ padding: 30, maxWidth: 840, margin: 'auto' }}>
       <Typography variant="h5" gutterBottom>
         Challenges
       </Typography>
+      <Button onClick={logOut} color="secondary">
+        logOut
+        </Button>
       {challenges.map(challenge => (
         <ChallengeCard
           key={challenge.id}
