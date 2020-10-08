@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import UserDetails from "./UserDetails";
 import PersonalDetails from "./PersonalDetails";
 import Confirm from "./Confirm";
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 function Register() {
     const classes = useStyles();
     const [errors, setErrors] = useState([]);
-    const [step, setStep] = useState(4);
+    const [step, setStep] = useState(1);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [userName, setUserName] = useState("");
@@ -39,8 +39,6 @@ function Register() {
     const [securityAnswer, setSecurityAnswer] = useState("");
     const [signUpReason, setSignUpReason] = useState("");
     const [gitHub, setGitHub] = useState("");
-
-    const location = useHistory();
 
     const nextStep = () => {
         const validateEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -166,7 +164,7 @@ function Register() {
                 }
             );
             if (regRes) {
-                location.push("/login");
+                setStep(5)
             }
         } catch (err) {
             setErrors([...errors, { field: "server", message: err.message }]);
