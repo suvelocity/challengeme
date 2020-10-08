@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios'
+import network from '../../services/network'
 import { Button, Link } from "@material-ui/core";
 
 import Rating from "@material-ui/lab/Rating";
@@ -31,11 +33,26 @@ const normalizeDate = (dateTime) => {
 };
 const challengeId = 3; //Mock until we merge shahar
 
+const makeBlobed = async (img) =>{
+  const  preBlobedImg  = await fetch(img)
+  const blobedImg = await preBlobedImg.blob()
+  return blobedImg
+}
+
 function ChallengePage() {
   //const [challengeInfo,setChallengeInfo] = useState('');
-
+  const [blobedImg, setBlobedImg] = useState("")
+  
+  const setImg = async () => {
+    const { data } = await network.get("api/v1/challenges")
+    const blobed = await makeBlobed(data.image.img)
+    const imgURL = URL.createObjectURL(blobed);
+    setBlobedImg(imgURL)
+  }
   useEffect(() => {
     //setChallengeInfo(axios.get('url:id').data);
+    setImg()
+    console.log(blobedImg);
   }, []);
   return challenge ? (
     <div className='challenge-wrapper'>
@@ -66,8 +83,8 @@ function ChallengePage() {
           </span>
         </div>
         <div className='challenge-description'>
-          {challenge.label.map((tag) => (
-            <span className='challenge-label'>
+          {challenge.label.map((tag, index) => (
+            <span className='challenge-label' key={index}>
               <Chip
                 color='primary'
                 label={tag}

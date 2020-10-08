@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from "react-router-dom";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -70,19 +71,21 @@ export default function HomePage() {
         Challenges
       </Typography>
       {challenges.map(challenge => (
-        <ChallengeCard
-          key={challenge.id}
-          cover={challenge.cover}
-          challengeId={challenge.id}
-          expanded={expandedChallenge === challenge.id}
-          setExpanded={() => setExpandedChallenge(currentExpanded => {
-            return currentExpanded === challenge.id ? false : challenge.id
-          })}
-          createdAt={challenge.createdAt}
-          name={challenge.name}
-          description={challenge.description}
-          onApply={() => onApply(challenge.id)}
-        />
+        <Link to={`/challenges/${challenge.id}`} style={{ textDecoration: 'none' }}>
+          <ChallengeCard
+            key={challenge.id}
+            cover={challenge.cover}
+            challengeId={challenge.id}
+            expanded={expandedChallenge === challenge.id}
+            setExpanded={() => setExpandedChallenge(currentExpanded => {
+              return currentExpanded === challenge.id ? false : challenge.id
+            })}
+            createdAt={challenge.createdAt}
+            name={challenge.name}
+            description={challenge.description}
+            onApply={() => onApply(challenge.id)}
+          />
+        </Link>
       ))}
       <ApplyDialog
         open={!!challengeToApply}
