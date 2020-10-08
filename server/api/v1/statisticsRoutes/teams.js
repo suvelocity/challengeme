@@ -15,6 +15,9 @@ router.get('/top', async (req, res) => {
         {
           model:User,
           attributes:[],
+          through:{
+            attributes:[]
+          },
           include:{
             model: Submission,
             attributes:[[sequelize.fn("COUNT", sequelize.col("challenge_id")), "teamSuccessSubmissions"]],
@@ -25,17 +28,6 @@ router.get('/top', async (req, res) => {
         }
       ]
     })
-    topTeam.forEach(element => {
-      delete element["Users.UsersTeams.teamId"]
-      delete element["Users.UsersTeams.userId"]
-      delete element["Users.UsersTeams.createdAt"]
-      delete element["Users.UsersTeams.updatedAt"]
-      delete element["Users.UsersTeams.createdAt"]
-      delete element["Users.UsersTeams.TeamId"]
-      delete element["Users.Submissions.id"]
-      delete element["Users.UsersTeams.UserId"]
-      delete element["Users.UsersTeams.createdAt"]
-    })
     res.send(topTeam)
   }catch(err){
     res.status(400).send(err)
@@ -44,7 +36,20 @@ router.get('/top', async (req, res) => {
 
   router.get('/top-user', async (req, res) => {
     try{
-      const teams = await Teams.findByPk(1)
+      const thisUser= await User.findOne({
+        where:{
+          id:1
+        },
+        include:[
+          {
+            model:Teams,
+            through:{
+              attributes:[]
+            }
+          }
+        ]
+      })
+      const teams = await Teams.findByPk(thisUser.Teams[0].id)
       const users = await teams.getUsers({
         raw:true,
         group:["id"],
@@ -77,7 +82,7 @@ router.get('/top', async (req, res) => {
       try{
         const team = await Teams.findAll({
           raw:true,
-          group:[sequelize.fn("DAY", "submissions.createdAt")],
+          group:[sequelize.fn("DAY", sequelize.col("created_at"))],
           attributes: ['id','name',[sequelize.fn("COUNT", "submissions.id"), "teamSubmissions"]],
           where:{
             id: 1
@@ -113,7 +118,7 @@ router.get('/top', async (req, res) => {
           delete element["Users.Submissions.id"]
           delete element["Users.UsersTeams.UserId"]
         })
-        res.send(taem)
+        res.send(team)
       }catch(err){
         res.status(400).send(err)
       }
