@@ -137,7 +137,7 @@ function Insights() {
         ) : (
          
           <div  className={classes.div} style={{gridArea: 'headChart'}}><Charts width={'36vw'} height={'36vh'} chart={[0,1]} data={data}/></div>
-      )
+      )}
  {loading ? (
        <div className={classes.root}>
             <CircularProgress />
