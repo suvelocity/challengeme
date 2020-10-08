@@ -1,6 +1,6 @@
 ## Challenge Page Tests
 
-Here there will be all the tests we currently have, and the ones we plan to add
+Here there will be all the tests we currently have, and the ones we plan to add!
 
 ### Have
 
