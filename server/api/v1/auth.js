@@ -106,17 +106,16 @@ usersRouter.post("/info", checkToken, (req, res) => {
 });
 //sequrity question
 usersRouter.post("/getquestion", async (req, res) => {
-  res.send("goo");
-  // const currentUser = await User.findOne({
-  //   where: {
-  //     userName: req.body.userName,
-  //   },
-  // });
-  // if (!currentUser)
-  //   return res.status(404).json({ message: "Cannot Find User" });
-  // res
-  //   .status(200)
-  //   .json({ securityQuestion: currentUser.dataValues.securityQuestion });
+  const currentUser = await User.findOne({
+    where: {
+      userName: req.body.userName,
+    },
+  });
+  if (!currentUser)
+    return res.status(404).json({ message: "Cannot Find User" });
+  res
+    .status(200)
+    .json({ securityQuestion: currentUser.dataValues.securityQuestion });
 });
 
 // //returned answer
