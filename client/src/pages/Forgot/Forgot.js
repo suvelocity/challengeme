@@ -8,18 +8,44 @@ import { useHistory } from "react-router-dom";
 export default function Forgot() {
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
-  const [data, setData] = useState({});
+  const [userName, setUserName] = useState("");
+  const [secQuestion, setSecQuestion] = useState("");
+  const [resetToken, setResetToken] = useState("");
+  const [secAnswer, setSecAnswer] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const history = useHistory();
+
+  const handleChange = (field) => (e) => {
+    let value = e.target.value;
+    switch (field) {
+      case "userName":
+        setUserName(e.target.value);
+        break;
+      case "answer":
+        setSecAnswer(e.target.value);
+        break;
+      case "newP":
+        setPassword(e.target.value);
+        break;
+      case "confirmP":
+        setConfirmPassword(e.target.value);
+        break;
+    }
+  };
 
   const nextStep = () => {
     switch (step) {
       case 1:
-        getQuestion(data.userName);
+        getQuestion(userName);
+        break;
       case 2:
-        validateAnswer(data.userName, data.securityAnswer);
+        validateAnswer(userName, secAnswer);
+        break;
       case 3:
-        resetPassword(data.newPassword, data.confirmPassword, data.resetToken);
+        resetPassword(password, confirmPassword, resetToken);
+        break;
     }
   };
   const prevStep = () => {
@@ -32,13 +58,10 @@ export default function Forgot() {
       const { data: response } = await axios.post("/api/v1/auth/getquestion", {
         userName,
       });
-      setData((prev) => {
-        prev.securityQuestion = response.securityQuestion;
-        return prev;
-      });
+      console.log(response);
+      setSecQuestion(response.securityQuestion);
       setStep(2);
     } catch (e) {
-      console.log(e.response.data);
       setError(e.response.data.message);
     }
   };
@@ -52,10 +75,7 @@ export default function Forgot() {
           securityAnswer,
         }
       );
-      setData((prev) => {
-        prev.resetToken = response.resetToken;
-        return prev;
-      });
+      setResetToken(response.resetToken);
       setStep(3);
     } catch (e) {
       setError(e.response.data.message);
@@ -83,24 +103,10 @@ export default function Forgot() {
     }
   };
 
-  // const handleChange = input => e => {
-  //     switch (input) {
-  //         case 'newPassword':
-  //             setNew(e.target.value);
-  //             break;
-  //         case 'answer':
-  //             setAnswer(e.target.value)
-  //             break;
-  //         case 'securityQuestion':
-  //             setQuestion(e.target.value);
-  //             break;
-  //     }
-  // }
-
   const multiForm = () => {
     switch (step) {
       case 1:
-        return <Identify data={data} setData={setData} />;
+        return <Identify data={{ userName }} handleChange={handleChange} />;
       case 2:
         return (
           //   <Security
@@ -110,20 +116,27 @@ export default function Forgot() {
           //     prevStep={prevStep}
           //     handleChange={handleChange}
           //   />
-          <Security data={data} setData={setData} />
+          <Security
+            data={{ secQuestion, secAnswer }}
+            handleChange={handleChange}
+          />
         );
       case 3:
-        return <Change data={data} setData={setData} />;
+        return (
+          <Change
+            data={{ password, confirmPassword }}
+            handleChange={handleChange}
+          />
+        );
     }
   };
-  console.log(data);
   console.log(error);
   return (
     <>
       <div>{multiForm()}</div>
       <button onClick={nextStep}>next</button>
       <button onClick={prevStep}>back</button>
-      <div name="error-vox">{error}</div>
+      <div name="error-box">{error}</div>
     </>
   );
 }

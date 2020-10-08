@@ -8,11 +8,12 @@ function Security({
   // handleChange,
   // securityQuestion,
   data,
-  setData,
+  handleChange,
 }) {
+  console.log(data);
   return (
     <div>
-      <span>Security question: {data.securityQuestion}</span>
+      <span>Security question: {data.secQuestion}</span>
       {/* <Select
         displayEmpty
         value={securityQuestion}
@@ -31,13 +32,8 @@ function Security({
       <input
         type="text"
         placeholder="Enter your answer"
-        value={data.securityAnswer}
-        onChange={(e) =>
-          setData((prev) => {
-            prev.securityAnswer = e.target.value;
-            return prev;
-          })
-        }
+        value={data.secAnswer}
+        onChange={handleChange("answer")}
       />{" "}
     </div>
   );

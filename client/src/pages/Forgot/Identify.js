@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "../../services/network";
 
 export default function Identify(props) {
-  const { data, setData } = props;
+  const { data, handleChange } = props;
 
   return (
     <div>
@@ -11,12 +11,7 @@ export default function Identify(props) {
         name="userName"
         type="text"
         value={data.userName}
-        onChange={(e) =>
-          setData((prev) => {
-            prev.userName = e.target.value;
-            return prev;
-          })
-        }
+        onChange={handleChange("userName")}
       />
     </div>
   );

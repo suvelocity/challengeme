@@ -42,7 +42,7 @@ export default function Router() {
               <Route exact path="/login">
                 <Login />
               </Route>
-              <Route path="reset-password">
+              <Route path="/reset-password">
                 <Forgot />
               </Route>
               <Route exact path="/auth">
