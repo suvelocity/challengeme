@@ -12,8 +12,7 @@ export default function Router() {
     <BrowserRouter>
       <Switch>
         <Route path="/">
-          {/* <Home /> */}
-          <AddImg />
+          <Home />
         </Route>
       </Switch>
     </BrowserRouter>
