@@ -17,5 +17,6 @@ module.exports = {
   login: {
     userName: "matanGreenvald",
     password: "123456",
+    rememberMe: "false"
   },
 };
