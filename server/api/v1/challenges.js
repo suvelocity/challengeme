@@ -41,7 +41,7 @@ router.post('/:challengeId/apply', async (req, res) => {
     return res.json({ error: 'already success' })
   }
 
-  if(submission.state !== 'FAIL') {
+  if(submission.state === 'FAIL') {
     await submission.update({ state: 'PENDING' })
   }
 /* ,

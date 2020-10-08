@@ -3,17 +3,17 @@ on:
   workflow_dispatch:
     inputs:
       name:
-        description: 'Person to greet'
+        description: 'Solution repository name and submissions number'
         required: true
-        default: 'Mona the Octocat'
+        default: 'Submission number'
       testRepo:
-        description: 'location'
+        description: 'Testing repository'
         required: false
       solutionRepo:
-        description: 'location'
+        description: 'Solution repository'
         required: false
       webhookUrl:
-        description: 'location'
+        description: 'Location'
         required: false
 
 jobs:
