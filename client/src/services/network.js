@@ -16,17 +16,17 @@ network.interceptors.request.use(
   }
 );
 
-// network.interceptors.response.use(
-//   config => {
-//     console.log('RESPONSE', config)
-//     return config;
-//   },
-//   (error) => {
-//     if (error.response.status === 401) {
-//       window.location = '/login';
-//     }
-//     return error;
-//   }
-// );
+network.interceptors.response.use(
+  config => {
+    console.log('RESPONSE', config)
+    return config;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      window.location = '/login';
+    }
+    return error;
+  }
+);
 
 export default network;
