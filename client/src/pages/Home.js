@@ -49,7 +49,7 @@ export default function HomePage() {
   const [expandedChallenge, setExpandedChallenge] = useState();
   useEffect(() => {
     (async () => {
-      const { data: challengesFromServer } = await network.get('/api/v1/challenges')
+      const { data: challengesFromServer } = await network.get('/api/v1/challenges/')
       setChallenges(challengesFromServer);
     })();
   }, []);
@@ -71,7 +71,6 @@ export default function HomePage() {
         Challenges
       </Typography>
       {challenges.map(challenge => (
-        <Link to={`/challenges/${challenge.id}`} style={{ textDecoration: 'none' }}>
           <ChallengeCard
             key={challenge.id}
             cover={challenge.cover}
@@ -85,7 +84,6 @@ export default function HomePage() {
             description={challenge.description}
             onApply={() => onApply(challenge.id)}
           />
-        </Link>
       ))}
       <ApplyDialog
         open={!!challengeToApply}

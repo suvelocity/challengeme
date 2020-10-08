@@ -10,7 +10,7 @@ router.get('/', async (req, res) => { // /api/v1/image?id=
         });
         res.json(image)
     }
-    catch(e){res.send("Something went wrong")}
+    catch(e){res.status(500).send("Something went wrong")}
 });
 router.post('/', async (req, res) => { // /api/v1/image
     let image = req.body ;

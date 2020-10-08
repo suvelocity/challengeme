@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import axios from 'axios'
+// import axios from 'axios'
 import network from '../../services/network'
 import { Button, Link } from "@material-ui/core";
-import axios from "axios";
 import Rating from "@material-ui/lab/Rating";
 import Chip from "@material-ui/core/Chip";
 //import SubmitModal from "./SubmitModal";
@@ -41,15 +40,16 @@ function ChallengePage() {
   const [blobedImg, setBlobedImg] = useState("")
   
   const setImg = async () => {
-    const { data } = await network.get("api/v1/challenges")
-    const blobed = await makeBlobed(data.image.img)
+    const { data } = await network.get(`/api/v1/images?id=${1}`)
+    // console.log(data);
+    const blobed = await makeBlobed(data.img)
     const imgURL = URL.createObjectURL(blobed);
+    console.log(imgURL);
     setBlobedImg(imgURL)
   }
   useEffect(() => {
     //setChallengeInfo(axios.get('url:id').data);
     setImg()
-    console.log(blobedImg);
 // =======
   // const [challenge, setChallenge] = useState({});
 
@@ -73,7 +73,7 @@ function ChallengePage() {
     <div className="challenge-wrapper">
       <div className="challenge-header">
         <h1 className="challenge-name">{challenge.name}</h1>
-        <img className="challenge-img" src={challenge.cover} />
+        <img className="challenge-img" src={blobedImg} />
 
         <Button color="primary" href={challenge.githubLink}>
           To Github!
