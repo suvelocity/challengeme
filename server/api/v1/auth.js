@@ -64,6 +64,10 @@ usersRouter.post("/userexist", async (req, res) => {
   res.json({ notExist: true });
 });
 
+usersRouter.get("/validateToken", checkToken, (req, res) => {
+  res.json({ valid: true })
+})
+
 // Log In
 usersRouter.post("/login", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
