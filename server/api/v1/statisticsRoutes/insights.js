@@ -58,7 +58,7 @@ router.get("/challenges-type", async (req, res) => {
 
 router.get("/sub-by-date", async (req, res) => {
   const subByDate = await Submission.findAll({
-    group: [sequelize.fn("DAY", sequelize.col("created_at"))],
+    group: [sequelize.fn("DAY", sequelize.col("createdAt"))],
     attributes: [
       [sequelize.fn("COUNT", sequelize.col("id")), "countByDay"],
       "createdAt",
@@ -86,7 +86,7 @@ router.get("/challenges-by-reviews", async (req, res) => {
 
   allChallengesWithAVG.sort((challenge1, challenge2) => challenge2.dataValues.ratingAVG - challenge1.dataValues.ratingAVG)
 
-  res.json(allChallengesWithAVG.slice(0, 5));
+  res.status(200).json(allChallengesWithAVG.slice(0, 5));
 });
 
 module.exports = router;
