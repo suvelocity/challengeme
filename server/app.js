@@ -5,9 +5,9 @@ const express = require('express')
 const app = express()
 app.use(express.json())
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World!')
-// })
+// app.use('/auth', require('./auth'))
+
+// app.use(checkToken)
 
 app.use('/api/v1/', require('./api/v1'))
 
