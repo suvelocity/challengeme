@@ -1,5 +1,5 @@
 const reviewsRouter = require("express").Router();
-const { Challenge } = require("../../models");
+const { Challenge, Reviews } = require("../../models");
 
 // review mock for easy sevelopment
 const review = {
@@ -12,9 +12,11 @@ const review = {
 };
 
 reviewsRouter.get("/byChallenge/:challengeId", async (req, res) => {
-  // get array of reviews for this challenge , include user object (id, firstName,lastName, githubAccount)in the response
   try {
-    res.send("reviews!!!");
+    const reviews = await Reviews.findAll({
+      where: { challengeId: req.params.challengeId },
+    });
+    res.json(reviews);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

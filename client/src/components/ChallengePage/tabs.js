@@ -9,6 +9,7 @@ import Box from '@material-ui/core/Box';
 import SubmissionTable from "./SubmissionTable";
 import ReviewSection from "./ReviewSection";
 
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -66,10 +67,10 @@ export default function ChallengeTabs(props) {
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <SubmissionTable/>
+        <SubmissionTable challengeId = {props.challengeId}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ReviewSection/>
+        <ReviewSection challengeId = {props.challengeId}/>
       </TabPanel>
     </div>
   );

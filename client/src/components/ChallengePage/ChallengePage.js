@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import {useParams} from 'react-router-dom';
 import { Button, Link } from "@material-ui/core";
 import axios from "axios";
 import Rating from "@material-ui/lab/Rating";
@@ -31,6 +32,7 @@ const challengeParamId = 3; //Mock until we merge shahar
 
 function ChallengePage() {
   // const [challenge, setChallenge] = useState({});
+  const params = useParams();
 
   useEffect(() => {
     const fetchChallenge = async () => {
@@ -88,7 +90,8 @@ function ChallengePage() {
             </span>
           ))}
           <p className="challenge-description">{challenge.description}</p>
-          <ChallengeTabs/>
+          {/* change prop to params.id */}
+          <ChallengeTabs challengeId = {challengeParamId}/>
           <Button color="primary" className="submit-btn">
             Submit
           </Button>

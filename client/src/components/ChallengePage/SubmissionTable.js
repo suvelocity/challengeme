@@ -2,13 +2,14 @@ import React, {useEffect, useState} from "react";
 import Submission from "./Submission";
 import axios from "axios";
 
+
 const data = [{name:"asd", status:"fdgfdg", submittedAt:"3434"}];
 
-function SubmissionTable() {
+function SubmissionTable(props) {
 	const [subArr, setSubArr] = useState([]);
 
 	const getSubmissions = async () => {
-		// const submissions = await axios.get(`/`).then((res) => res.data);
+		// const submissions = await axios.get(`/api/v1/challenges/${props.challengeId}/submissions`).then((res) => res.data);
 		const submissions = data;
 		setSubArr(submissions);
 	}
