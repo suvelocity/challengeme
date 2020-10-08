@@ -137,8 +137,8 @@ function Insights() {
         ) : (
          
           <div  className={classes.div} style={{gridArea: 'headChart'}}><Charts width={'36vw'} height={'36vh'} chart={[0,1]} data={data}/></div>
-      )
- {loading ? (
+        )}
+        {loading ? (
        <div className={classes.root}>
             <CircularProgress />
           </div>
@@ -160,14 +160,6 @@ function Insights() {
           </div>
         ) : (
                      <div id="challengesMostSubChart" className={classes.div} style={{gridArea: 'leftChart'}}><Charts width={'13vw'} height={'13vw'} chart={[0 , 2]} data={topChallengesData}/></div>
-
-        )}
-        {loading ? (
-          <div className={classes.root}>
-            <CircularProgress />
-          </div>
-        ) : (
-                      <div id="challengesMostSubChart" className={classes.div} style={{gridArea: 'leftChart'}}><Charts width={'13vw'} height={'13vw'} chart={[0 , 2]} data={topChallengesData}/></div>
 
         )}
         {loading ? (
