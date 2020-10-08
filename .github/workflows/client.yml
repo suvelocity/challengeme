@@ -15,12 +15,11 @@ on:
       webhookUrl:
         description: 'location'
         required: false
-      webhookSecret:
-        description: 'location'
-        required: false
+
+
 
 jobs:
-  build:
+  tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -58,12 +57,17 @@ jobs:
     - name: Run test on cloned app
       run: npm run test
       working-directory: ./challenge
-    - name: Webhook
-      uses: distributhor/workflow-webhook@v1
-      env:
-        webhook_url: ${{ github.event.inputs.webhookUrl }}
-        webhook_secret: ${{ github.event.inputs.webhookSecret }}
-        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
-    #    json: '{ "solutionRepo":"${{ github.event.inputs.name }}", "actionUrl":"${{ github.event.inputs.name }}" }'
-    #    webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-    #    url: ${{ github.event.inputs.webhook }}
+    - name: onSuccess
+      uses: fjogeleit/http-request-action@master
+      with:
+        url: ${{ github.event.inputs.webhookUrl }}
+        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":true }'
+    - name: onFailure
+      if: ${{ failure() || cancelled() }}
+      uses: fjogeleit/http-request-action@master
+      with:
+        url: ${{ github.event.inputs.webhookUrl }}
+        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":false }'
+
+
+
