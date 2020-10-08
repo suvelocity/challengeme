@@ -1,16 +1,16 @@
 module.exports = [
     {
-    name:'teamA',
-    createdAt: new Date(),
-    updatedAt: new Date()
-    },
-    {
-        name:'teamB',
+        name: 'teamA',
         createdAt: new Date(),
         updatedAt: new Date()
     },
     {
-        name:'cyber4s',
+        name: 'teamB',
+        createdAt: new Date(),
+        updatedAt: new Date()
+    },
+    {
+        name: 'cyber4s',
         createdAt: new Date(),
         updatedAt: new Date()
     }
