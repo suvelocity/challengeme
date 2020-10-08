@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import network from '../services/network';
 import ChallengeCard from '../components/ChallengeCard';
-import { Typography } from '@material-ui/core';
 import "./Home.css"
 
 
@@ -21,9 +20,6 @@ export default function HomePage() {
 
   return (
     <div >
-      <Typography variant="h5" gutterBottom>
-        Challenges
-      </Typography>
       <div className ={darkMode?"dark-home-page":"light-home-page"}>
       {challenges.map(challenge => (
         <ChallengeCard
@@ -32,6 +28,7 @@ export default function HomePage() {
           createdAt={challenge.createdAt}
           name={challenge.name}
           description={challenge.description}
+          repositoryName = {challenge.repositoryName}
         />
       ))}
       </div>
