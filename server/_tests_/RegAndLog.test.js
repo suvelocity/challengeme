@@ -1,28 +1,30 @@
 require('dotenv').config()
 const request = require("supertest");
 const server = require("../app");
-const { User } = require("../models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const { User, RefreshToken } = require("../models");
 
 const mockUser = require("./mocks/users");
-
 //login logout and register tests
 
 describe("Register & Login Tests", () => {
+  beforeAll(async () => {
+    await User.destroy({ truncate: true, force: true }); 
+    mockUser.user.password = await bcrypt.hash(mockUser.user.password, 10);
+    await User.create(mockUser.user);
+   
+  })
   afterAll(async () => {
     await server.close();
-  },
-  beforeEach(async () => {
-    await User.destroy({ truncate: true, force: true });
-  }));
+  });
 
   // user register
   test("User Can Register if the userName Unique", async (done) => {
     const registerResponse = await request(server)
       .post("/api/v1/auth/register")
       .send(mockUser.reg);
-    expect(registerResponse.body.message).toBe("Waiting For Mail Validation");
+    expect(registerResponse.body.message).toBe("Email Invalid");
     
     const regToken = jwt.sign(mockUser.reg, process.env.EMAIL_TOKEN_SECRET);
 
@@ -39,55 +41,51 @@ describe("Register & Login Tests", () => {
     done();
   });
 
-
   // user login
-  // test("User Can Login", async (done) => {
-    
-  //   const regToken = jwt.sign(mockUser.reg, process.env.EMAIL_TOKEN_SECRET);
+  test("User Can Login With Correct Details", async (done) => {
 
-  //   const createUserResponse = await request(server)
-  //     .post("/api/v1/auth/createuser")
-  //     .send({token: regToken});
-  //   expect(createUserResponse.status).toBe(201);
+    const invalidLoginResponse = await request(server)
+      .post("/api/v1/auth/login")
+      .send({ userName: "supposed", password: "toFail", rememberMe: "true"});
+    expect(invalidLoginResponse.status).toBe(404);
 
-  //   const invalidLoginResponse = await request(server)
-  //     .post("/api/v1/auth/login")
-  //     .send({ userName: "supposed", password: "toFail" });
-  //   expect(invalidLoginResponse.status).toBe(404);
+    const loginResponse = await request(server)
+      .post("/api/v1/auth/login")
+      .send(mockUser.login);
+    expect(loginResponse.status).toBe(200);
+    expect(loginResponse.headers['set-cookie'][0].slice(0, 11)).toBe('accessToken');
+    expect(loginResponse.headers['set-cookie'][1].slice(0, 12)).toBe('refreshToken');
+    const refreshTokenInDB = loginResponse.headers['set-cookie'][1].split('=')[1].split(';')[0];
+    const validRefreshTokenInDB = await RefreshToken.findOne({
+      where: {
+        token: refreshTokenInDB
+      }
+    })
+    expect(validRefreshTokenInDB.userName).toBe(mockUser.login.userName)
+    expect(loginResponse.body.userDetails.userName).toBe(
+      mockUser.login.userName
+    );
 
-  //   const hashPassword = await bcrypt.hash(mockUser.reg.password, 10);
+    done();
+  });
 
-  //   const loginResponse = await request(server)
-  //     .post("/api/v1/auth/login")
-  //     .send({userName: "matanGreenvald", password: hashPassword, rememberMe: "false"});
-  //   expect(loginResponse.status).toBe(200);
-  //   expect(loginResponse.body.accessToken.length > 0).toBe(true);
-  //   expect(loginResponse.body.refreshToken.length > 0).toBe(true);
-  //   expect(loginResponse.body.userDetails.userName).toBe(
-  //     mockUser.login.userName
-  //   );
+  // user logout
+  test("User Can Logout", async (done) => {
 
-  //   done();
-  // });
+    const loginResponse = await request(server)
+      .post("/api/v1/auth/login")
+      .send(mockUser.login);
+    expect(loginResponse.status).toBe(200);
 
-//   // user logout
-//   test("User Can Logout", async (done) => {
-//     const registerResponse = await request(server)
-//       .post("/api/v1/auth/register")
-//       .send(mockUser.reg);
-//     expect(registerResponse.status).toBe(201);
+    const refreshToken = loginResponse.headers['set-cookie'][1].split('=')[1].split(';')[0];
+    console.log(refreshToken)
 
-//     const loginResponse = await request(server)
-//       .post("/api/v1/auth/login")
-//       .send(mockUser.login);
-//     expect(loginResponse.status).toBe(200);
+    const logOutResponse = await request(server)
+      .post("/api/v1/auth/logout")
+      .send({ token: refreshToken });
+    expect(logOutResponse.status).toBe(200);
 
-//     const logOutResponse = await request(server)
-//       .post("/api/v1/auth/logout")
-//       .send({ token: loginResponse.body.refreshToken });
-//     expect(logOutResponse.status).toBe(200);
-
-//     done();
-//   });
+    done();
+  });
 
 });
