@@ -1,5 +1,5 @@
-module.exports = [
-  {
+module.exports = {
+  reg: {
     firstName: "Matan",
     lastName: "Greenvald",
     userName: "matanGreenvald",
@@ -14,4 +14,8 @@ module.exports = [
     securityQuestion: "favorite food?",
     securityAnswer: "Lafa Shawarma",
   },
-];
+  login: {
+    userName: "matanGreenvald",
+    password: "123456",
+  },
+};

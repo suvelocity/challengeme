@@ -14,8 +14,7 @@ describe("Register & Login Tests", () => {
   test("User Can Register", async (done) => {
     const registerResponse = await request(server)
       .post("/api/v1/auth/register")
-      .send(mockUser);
-
+      .send(mockUser.reg);
     expect(registerResponse.status).toBe(201);
 
     done();
@@ -24,59 +23,61 @@ describe("Register & Login Tests", () => {
   test("Cannot register if User Name is not unique", async (done) => {
     const registerResponse = await request(server)
       .post("/api/v1/auth/register")
-      .send(mockUser);
-
+      .send(mockUser.reg);
     expect(registerResponse.status).toBe(201);
 
     const invalidRegisterResponse = await request(server)
       .post("/api/v1/auth/register")
-      .send(mockUser);
-
+      .send(mockUser.reg);
     expect(invalidRegisterResponse.status).toBe(409);
 
     done();
   });
 
-  // // user login
-  // test("User Can Login", async (done) => {
-  //   const registerResponse = await request(server)
-  //     .post("/users/register")
-  //     .send(mockU);
+  // user login
+  test("User Can Login", async (done) => {
+    const registerResponse = await request(server)
+      .post("/api/v1/auth/register")
+      .send(mockUser.reg);
+    expect(registerResponse.status).toBe(201);
 
-  //   expect(registerResponse.status).toBe(201);
+    const invalidLoginResponse = await request(server)
+      .post("/api/v1/auth/login")
+      .send({ userName: "supposed", password: "toFail" });
+    expect(invalidLoginResponse.status).toBe(403);
 
-  //   const loginResponse = await request(server)
-  //     .post("/users/login")
-  //     .send(userLoginMock);
+    const loginResponse = await request(server)
+      .post("/api/v1/auth/login")
+      .send(mockUser.login);
+    expect(loginResponse.status).toBe(200);
+    expect(loginResponse.body.accessToken.length > 0).toBe(true);
+    expect(loginResponse.body.refreshToken.length > 0).toBe(true);
+    expect(loginResponse.body.userDetails.userName).toBe(
+      mockUser.login.userName
+    );
 
-  //   expect(loginResponse.status).toBe(200);
-  //   expect(loginResponse.body.accessToken.length > 0).toBe(true);
-  //   expect(loginResponse.body.refreshToken.length > 0).toBe(true);
-  //   expect(loginResponse.body.name).toBe(userLoginMock.name);
-  //   done();
-  // });
+    done();
+  });
 
-  //   // user logout
-  //   test("User Can Logout", async (done) => {
-  //     const registerResponse = await request(server)
-  //       .post("/users/register")
-  //       .send(userLogoutMock);
+  // user logout
+  test("User Can Logout", async (done) => {
+    const registerResponse = await request(server)
+      .post("/api/v1/auth/register")
+      .send(mockUser.reg);
+    expect(registerResponse.status).toBe(201);
 
-  //     expect(registerResponse.status).toBe(201);
+    const loginResponse = await request(server)
+      .post("/api/v1/auth/login")
+      .send(mockUser.login);
+    expect(loginResponse.status).toBe(200);
 
-  //     const loginResponse = await request(server)
-  //       .post("/users/login")
-  //       .send(userLogoutMock);
+    const logOutResponse = await request(server)
+      .post("/users/logout")
+      .send({ token: loginResponse.body.refreshToken });
+    expect(logOutResponse.status).toBe(200);
 
-  //     expect(loginResponse.status).toBe(200);
-
-  //     const logOutResponse = await request(server)
-  //       .post("/users/logout")
-  //       .send({ token: loginResponse.body.refreshToken });
-
-  //     expect(logOutResponse.status).toBe(200);
-  //     done();
-  //   });
+    done();
+  });
 
   //   test("check unknown endpoint handler", async (done) => {
   //     await request(server).delete("/blabla").expect(404);
