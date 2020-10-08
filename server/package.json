@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "migrate": "node_modules/.bin/sequelize db:migrate",
     "dev": "nodemon node ."
+
   },
   "repository": {
     "type": "git",

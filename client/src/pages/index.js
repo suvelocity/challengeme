@@ -6,13 +6,17 @@ import {
 } from "react-router-dom";
 import AddImg from "../components/AddImg";
 import Home from './Home';
+import AddChallenge from './AddChallenge.js';
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/">
+        <Route exact path="/">
           <Home />
+        </Route>
+        <Route path="/add-challenge">
+          <AddChallenge />
         </Route>
       </Switch>
     </BrowserRouter>
