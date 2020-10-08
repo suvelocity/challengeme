@@ -7,10 +7,11 @@ const router = Router();
     success: false // true or false
 } */
 
-router.put('/submission/:id', (req, res) => {
-    console.error(req.params.id);
-    console.error(req.body);
-    res.json('success');
+router.put('/submission/:id', async (req, res) => {
+    const { success } = req.body;
+    let submission = await Submission.findByPk(req.params.id);
+      await submission.update({ state: success ? 'SUCCESS' : 'FAIL' })
+        res.json(submission);
 })
 
 module.exports = router;
