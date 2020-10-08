@@ -66,7 +66,7 @@ export default function Login() {
         }
     };
     const handleClickShowPassword = () => {
-        setShowPassword(!showPassword);
+        setShowPassword((prev) => !prev);
     };
     const loginFunc = async (e) => {
         const formErrors = {};
@@ -74,11 +74,11 @@ export default function Login() {
         if (/\W/.test(userName)) {
             formErrors.userName = "invalid userName";
         }
-        if (userName.length < 1 || userName.length > 32) {
-            formErrors.userName = "userName must be 1-32 characters long";
+        if (userName.length < 6 ||  userName.length > 32) {
+            formErrors.userName = "userName must be 6-32 characters long";
         }
 
-        if (password.length < 5) {
+        if (password.length < 8) {
             formErrors.password = "password must be at least 8 characters long";
         }
         if (formErrors.password || formErrors.userName) {
@@ -86,20 +86,20 @@ export default function Login() {
             return;
         }
         //request to server
-        const { data: response } = await axios.post("/api/v1/auth/login", {
-            userName: userName,
-            password: password,
-            rememberMe: rememberMe,
-        });
-        //if success -> set cookies
-        if (response.message) {
-            setError({ msg: response.message });
-            return;
+        try {
+
+            const { data: response } = await axios.post("/api/v1/auth/login", {
+                userName: userName,
+                password: password,
+                rememberMe: rememberMe
+            })
+            Cookies.set("accessToken", response.accessToken);
+            Cookies.set("refreshToken", response.refreshToken);
+            value.setLogged(true);
+            location.push("/");
+        } catch (e) {
+            setError({ msg: e.response.data.message })
         }
-        Cookies.set("accessToken", response.accessToken);
-        Cookies.set("refreshToken", response.refreshToken);
-        value.setLogged(true);
-        location.push("/");
     };
 
     return (
@@ -167,13 +167,14 @@ export default function Login() {
                                         <IconButton
                                             style={{ opacity: "0.7" }}
                                             aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
+                                            onMouseDown={handleClickShowPassword}
+                                            onMouseUp={handleClickShowPassword}
                                         >
                                             {showPassword ? (
                                                 <Visibility />
                                             ) : (
-                                                <VisibilityOff />
-                                            )}
+                                                    <VisibilityOff />
+                                                )}
                                         </IconButton>
                                         <LockIcon style={{ opacity: "0.7" }} />
                                     </InputAdornment>
