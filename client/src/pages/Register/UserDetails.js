@@ -9,7 +9,7 @@ import Email from "@material-ui/icons/Email";
 
 const useStyles = makeStyles((theme) => ({
     firstName: {
-        // marginTop: "80px",
+        marginTop: "80px",
         // marginBottom: "20px",
         width: "320px",
     },
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
         width: "320px",
     },
 }));
-function UserDetails({ nextStep, handleChange, values }) {
+function UserDetails({  handleChange, values }) {
     const classes = useStyles();
 
     return (
@@ -102,7 +102,6 @@ function UserDetails({ nextStep, handleChange, values }) {
                     }
                 />
             </FormControl>
-            <button onClick={nextStep}>Next</button>
         </div>
     );
 }

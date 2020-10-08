@@ -7,10 +7,24 @@ import Security from "./Security";
 import Extras from "./Extras";
 import network from "../../services/network";
 import Stepper from "./Stepper";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import ErrorIcon from "@material-ui/icons/Error";
 import "../../styles/Register.css";
+
+const useStyles = makeStyles((theme) => ({
+    nextButton: {
+        // marginBottom: "10px",
+        // marginTop: "60px",
+        background: "linear-gradient(45deg, #447CC6 30%, #315CAB 90%)",
+        color: "white",
+    },
+}));
+
 function Register() {
+    const classes = useStyles();
     const [errors, setErrors] = useState([]);
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(4);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [userName, setUserName] = useState("");
@@ -203,6 +217,8 @@ function Register() {
             case "securityAnswer":
                 setSecurityAnswer(e.target.value);
                 break;
+            default:
+                break;
         }
     };
 
@@ -243,28 +259,16 @@ function Register() {
                     />
                 );
             case 3:
-                return (
-                    <Security
-                        nextStep={nextStep}
-                        prevStep={prevStep}
-                        handleChange={handleChange}
-                        values={values}
-                    />
-                );
+                return <Security handleChange={handleChange} values={values} />;
             case 4:
+                return <Extras handleChange={handleChange} values={values} />;
+            // case 5:
+            //     return <Confirm handleSubmit={handleSubmit} values={values} />;
+            default:
                 return (
-                    <Extras
+                    <UserDetails
                         nextStep={nextStep}
-                        prevStep={prevStep}
                         handleChange={handleChange}
-                        values={values}
-                    />
-                );
-            case 5:
-                return (
-                    <Confirm
-                        prevStep={prevStep}
-                        handleSubmit={handleSubmit}
                         values={values}
                     />
                 );
@@ -272,30 +276,46 @@ function Register() {
     };
 
     return (
-        <div>
+        <div className="registerGeneral">
             <div className="containerHeaderRegister">
                 <div className="registerHeader">
                     <div className="registerTitle">Register</div>
-                    {/* <div className="orLoginWith">Or login with :</div>
-                    <div>
-                        <IconButton>
-                            <FacebookIcon style={{ color: "white" }} />
-                        </IconButton>
-                        <IconButton>
-                            <GitHubIcon style={{ color: "white" }} />
-                        </IconButton>
-                    </div>
-                 */}
+                    <Stepper activeStep={step} />
                 </div>
             </div>
             <div className="registerBody">
-                <Stepper activeStep={step}/>
                 {multiForm()}
-                {errors.length !== 0 && <div> {errors[0].message}</div>}
-                <p>
-                    Have an existing account?{" "}
-                    <Link to="/login">Login Here</Link>
-                </p>
+                {errors.length !== 0 && (
+                    <div className="containerErrorRegister">
+                        <ErrorIcon
+                            style={{
+                                color: "white",
+                                marginLeft: "4px",
+                            }}
+                        />
+                        <div className="errorInputRegister">
+                            {errors[0].message}
+                        </div>
+                    </div>
+                )}
+                <div className="containerSecond">
+                    <div className="containerButtons">
+                        {step > 1 && <Button onClick={prevStep}>Back</Button>}
+                        <Button
+                            className={classes.nextButton}
+                            variant="contained"
+                            color="primary"
+                            onClick={step === 4 ? handleSubmit : nextStep}
+                        >
+                            {step === 4 ? "Finish" : "Next"}
+                        </Button>
+                    </div>
+
+                    <p>
+                        Have an existing account?{" "}
+                        <Link to="/login">Login Here</Link>
+                    </p>
+                </div>
             </div>
         </div>
     );
