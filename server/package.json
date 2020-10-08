@@ -31,7 +31,7 @@
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
-    "sequelize-cli": "^6.2.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "sequelize-cli": "^6.2.0"
   }
 }
