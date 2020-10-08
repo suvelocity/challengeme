@@ -108,7 +108,7 @@ usersRouter.post("/token", async (req, res) => {
     },
   });
   if (!validRefreshToken)
-    return res.status(403).json({ message: "Invalid Refresh Token" });
+    return res.status(401).json({ message: "Invalid Refresh Token" });
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Refresh Token" });
     delete decoded.iat;
@@ -191,7 +191,7 @@ async function userIsExist(userName) {
 }
 
 function generateToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "900s" });
 }
 
 module.exports = usersRouter;
