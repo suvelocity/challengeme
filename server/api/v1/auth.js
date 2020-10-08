@@ -60,7 +60,7 @@ usersRouter.post("/login", async (req, res) => {
   const body = {
     accessToken: accessToken,
     refreshToken: refreshToken,
-    userDetails: currentUser, //מה שבאלהם!!!!!
+    userDetails: currentUser,
   };
   res.status(200).json(body);
 });
@@ -108,8 +108,8 @@ usersRouter.post("/info", checkToken, (req, res) => {
 });
 
 function checkToken(req, res, next) {
-  const token = req.headers["authorization"];
-  // const token = authHeader && authHeader.split(' ')[1];
+  let token = req.headers["authorization"];
+  token = token && token.split(" ")[1];
   if (!token) return res.status(401).json({ message: "Access Token Required" });
   jwt.verify(token, ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Access Token" });
