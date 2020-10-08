@@ -13,7 +13,7 @@ router.get("/top-challenges", async (req, res) => {
     },
     include: {
       model: Challenge,
-      attributes: ["name"],
+      attributes: ["name"]
     },
     group: ["challenge_id"],
     order: [[sequelize.fn("COUNT", sequelize.col("challenge_id")), "DESC"]],
