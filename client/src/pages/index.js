@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Home from './Home';
 import Login from './Login';
+import Forgot from './Forgot/Forgot';
 
 export default function Router() {
   return (
@@ -16,6 +17,9 @@ export default function Router() {
         </Route>
         <Route path="/login">
           <Login />
+        </Route>
+        <Route path="/forgot">
+          <Forgot />
         </Route>
       </Switch>
     </BrowserRouter>
