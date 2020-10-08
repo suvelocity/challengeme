@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Charts from "./charts/Charts";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    "& > * + *": {
+      marginLeft: theme.spacing(2),
+    },
+  },
   grid: {
     display: "grid",
     gridGap: "20px",
@@ -148,45 +155,70 @@ const userData = {
 
 function StatisticsHome() {
   const classes = useStyles();
+  const [loading, setLoading] = useState(true);
 
   const imageStyle = { backgroundColor: "lightgray" };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, [4000]);
+  }, []);
 
   return (
     <div className={classes.main}>
       <div className={classes.grid}>
-        <div
-          className={classes.div}
-          style={{ gridArea: "headChart", ...imageStyle }}
-        >
-          <Charts
-            width={"600px"}
-            height={"2000px"}
-            chart={[0, 2]}
-            data={challengeData}
-          />
-        </div>
-        <div
-          className={classes.div}
-          style={{ gridArea: "topChart", ...imageStyle }}
-        >
-          <Charts
-            width={"450px"}
-            height={"70px"}
-            chart={[0, 1]}
-            data={userData}
-          />
-        </div>
-        <div
-          className={classes.div}
-          style={{ gridArea: "bottomChart", ...imageStyle }}
-        >
-          <Charts
-            width={"450px"}
-            height={"70px"}
-            chart={[0, 1]}
-            data={teamData}
-          />
-        </div>
+        {loading ? (
+          <div className={classes.root}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <div
+            className={classes.div}
+            style={{ gridArea: "headChart", ...imageStyle }}
+          >
+            <Charts
+              width={"600px"}
+              height={"2000px"}
+              chart={[0, 2]}
+              data={challengeData}
+            />
+          </div>
+        )}
+        {loading ? (
+          <div className={classes.root}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <div
+            className={classes.div}
+            style={{ gridArea: "topChart", ...imageStyle }}
+          >
+            <Charts
+              width={"450px"}
+              height={"70px"}
+              chart={[0, 1]}
+              data={userData}
+            />
+          </div>
+        )}
+        {loading ? (
+          <div className={classes.root}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <div
+            className={classes.div}
+            style={{ gridArea: "bottomChart", ...imageStyle }}
+          >
+            <Charts
+              width={"450px"}
+              height={"70px"}
+              chart={[0, 1]}
+              data={teamData}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
