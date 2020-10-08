@@ -11,7 +11,7 @@ export default function Router() {
         <Route exact path="/">
           <Home />
         </Route>
-        <Route path="/challenges" component={ChallengePage} />
+        <Route path="/challenges/:challengeId" component={ChallengePage} />
       </Switch>
     </BrowserRouter>
   );
