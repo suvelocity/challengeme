@@ -9,7 +9,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import network from '../services/network';
 import ChallengeCard from '../components/ChallengeCard';
 import { Typography } from '@material-ui/core';
-import FilterMenu from '../components/FilterMenu';
 
 
 const ApplyDialog = ({ open, onClose, onSubmit }) => {
@@ -70,7 +69,6 @@ export default function HomePage() {
       <Typography variant="h5" gutterBottom>
         Challenges
       </Typography>
-      <FilterMenu updateFilters={()=>{}} />
       {challenges.map(challenge => (
         <ChallengeCard
           key={challenge.id}
