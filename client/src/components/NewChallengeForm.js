@@ -44,7 +44,14 @@ export default function NewChallengeForm() {
     let newBadInput = [];
     if(repoName.length < 2 || repoName.match(spaces) || repoName.match(hebrew)) {
       // newBadInput.push("* Repository's name is too short (minimum 2 characters).\n  Don't use hebrew letters");
-      newBadInput.push(<Alert severity="error"><AlertTitle>Repository's name is too short (minimum 2 characters)</AlertTitle>Don't use hebrew letters</Alert>);
+      newBadInput.push(
+        <Alert severity="error">
+          <AlertTitle>
+            Repository's name is too short
+          </AlertTitle>
+          Minimum 2 characters. Don't use hebrew letters
+        </Alert>
+      );
     }
     try {
       if(repoLink.length > 2 && !repoLink.match(spaces) && !repoLink.match(hebrew)) {
@@ -57,27 +64,63 @@ export default function NewChallengeForm() {
       // - Type the Github repository in this format: owner/repo
       // - Change your repository to public
       // - Check for type errors.\n  Don't use Hebrew letters`);
-      newBadInput.push(<Alert severity="error"><AlertTitle>Repository's name is too short (minimum 2 characters)</AlertTitle>Don't use hebrew letters</Alert>);
+      newBadInput.push(
+        <Alert severity="error">
+          <AlertTitle>
+            Repository's Link is not valid. Check the suggestions below:
+          </AlertTitle>
+          {"- Type the Github repository in this format: owner/repo\n- Change your repository to public\n- Check for type errors.\nDon't use Hebrew letters"}
+        </Alert>
+      );
     }
     if(repoDescription.length < 20 || !!repoDescription.match(spaces) || !!repoDescription.match(hebrew)) {
-      newBadInput.push("* Repository's Description is too short (minimum 20 characters).\n  Don't use hebrew letters");
+      // newBadInput.push("* Repository's Description is too short (minimum 20 characters).\n  Don't use hebrew letters");
+      newBadInput.push(
+        <Alert severity="error">
+          <AlertTitle>
+            Repository's Description is too short
+          </AlertTitle>
+          Minimum 2 characters. Don't use hebrew letters
+        </Alert>
+      );  
     } else if(repoDescription.length > 500 || repoDescription.match(hebrew)) {
-      newBadInput.push("* Repository's Description is too long (maximum 500 characters).\n  Don't use hebrew letters");
+      // newBadInput.push("* Repository's Description is too long (maximum 500 characters).\n  Don't use hebrew letters");
+      newBadInput.push(
+        <Alert severity="error">
+          <AlertTitle>
+            Repository's Description is too long
+          </AlertTitle>
+          Maximum 500 characters. Don't use hebrew letters
+        </Alert>
+      );  
     }
     if(!repoType) {
-      newBadInput.push("* Repository's type not selected");
+      // newBadInput.push("* Repository's type not selected");
+      newBadInput.push(
+        <Alert severity="error">
+          <AlertTitle>
+            Repository's type not selected
+          </AlertTitle>
+        </Alert>
+      );  
     }
     if(Object.keys(file).length === 0 && file.constructor === Object) {
-      newBadInput.push("* Repository's image not selected");
+      // newBadInput.push("* Repository's image not selected");
+      newBadInput.push(
+        <Alert severity="error">
+          <AlertTitle>
+            Repository's image not selected
+          </AlertTitle>
+        </Alert>
+      );  
     }
-    setBadInput(newBadInput);
     if(newBadInput.length > 0)
     {
+      setBadInput(newBadInput);
       setTimeout(() => {
         return setBadInput([]);
       }, 8000);
-    }
-    if(newBadInput.length === 0) {
+    } else {
       const newRepo = {
         name: repoName,
         description: repoDescription,
@@ -89,17 +132,19 @@ export default function NewChallengeForm() {
         const { data : postedRepo } = await network.post(`/api/v1/new-challenge`, newRepo)
         await network.post("/api/v1/image",{
           challengeId: postedRepo.id,
-          img:file.result
+          img: file.result
         });
-        await network.post('/api/v1/labels',{
-          labels: repoLabels,
-          challengeId: postedRepo.id
-        });
+        if(repoLabels.length > 0) {
+          await network.post('/api/v1/labels',{
+            labels: repoLabels,
+            challengeId: postedRepo.id
+          });
+        }
         Swal.fire({
           icon: 'success',
           title: 'Your challenge added successfuly!',
           showConfirmButton: false,
-          timer: 4000
+          timer: 3000
         })
         
         history.push('/');
