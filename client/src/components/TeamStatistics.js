@@ -18,11 +18,10 @@ import axios from 'axios';
 }));
 
 
-function TeamStatistics({ id }) {
+function TeamStatistics() {
 
     // states
     // const [team, setTeam] = useState(null);
-    console.log("TEAMS");
     //effect
     // useEffect(() => getInfo(id), []);
     

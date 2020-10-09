@@ -47,21 +47,21 @@ function Insights() {
 
   const getInfo = () => {
     axios
-      .get(`http://localhost:8080/api/v1/statistics/insights/top-challenges`)
+      .get(`/api/v1/statistics/insights/top-challenges`)
       .then((r) => r.data)
       .then((r) => {
         setChallengesTop(r);
         setLoading(false);
       });
     axios
-      .get(`http://localhost:8080/api/v1/statistics/insights/challenges-type`)
+      .get(`/api/v1/statistics/insights/challenges-type`)
       .then((r) => r.data)
       .then((r) => {
         setChallengesType(r);
         setLoading(false);
       });
     axios
-      .get(`http://localhost:8080/api/v1/statistics/insights/top-success`)
+      .get(`/api/v1/statistics/insights/top-success`)
       .then((r) => r.data)
       .then((r) => {
         setChallengesSuccess(r);
@@ -69,7 +69,9 @@ function Insights() {
       });
   };
 
-  useEffect(getInfo, []);
+useEffect(() => {
+  getInfo()
+}, [])
 
   const [challengesTop, setChallengesTop] = useState(null);
   const [challengesSuccess, setChallengesSuccess] = useState(null);
