@@ -5,13 +5,12 @@ const bcrypt = require("bcrypt");
 
 const mockUser = require("./mocks/users");
 
-
 describe("Register & Login Tests", () => {
   beforeAll(async () => {
     await User.destroy({ truncate: true, force: true }); 
-    mockUser.user.password = await bcrypt.hash(mockUser.user.password, 10);
-    mockUser.user.securityAnswer= await bcrypt.hash(mockUser.user.securityAnswer, 10);
-    await User.create(mockUser.user);
+    mockUser.user2.password = await bcrypt.hash(mockUser.user2.password, 10);
+    mockUser.user2.securityAnswer= await bcrypt.hash(mockUser.user2.securityAnswer, 10);
+    await User.create(mockUser.user2);
    
   })
   afterAll(async () => {
@@ -24,7 +23,7 @@ describe("Register & Login Tests", () => {
       .post("/api/v1/auth/getquestion")
       .send({userName: mockUser.resetPassword.userName});
     expect(questionResponse.status).toBe(200);
-    expect(questionResponse.body.securityQuestion).toBe(mockUser.user.securityQuestion);
+    expect(questionResponse.body.securityQuestion).toBe(mockUser.user2.securityQuestion);
 
     const answerRequest = {
       securityAnswer : mockUser.resetPassword.securityAnswer,
@@ -48,7 +47,7 @@ describe("Register & Login Tests", () => {
     expect(newPasswordResponse.status).toBe(200);
 
     const loginAfterChangedPasswordRequest = {
-      userName: mockUser.login.userName, 
+      userName: mockUser.resetPassword.userName, 
       password:"654321",
       rememberMe: "true"
     }
@@ -60,7 +59,7 @@ describe("Register & Login Tests", () => {
 
     const oldPasswordLoginResponse = await request(server)
       .post("/api/v1/auth/login")
-      .send(mockUser.login);
+      .send(mockUser.resetPassword);
     expect(oldPasswordLoginResponse.status).toBe(403);
 
     done();
