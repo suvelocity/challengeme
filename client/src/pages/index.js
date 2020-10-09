@@ -1,8 +1,9 @@
 import React,{useState,useEffect} from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './Home';
-import Header from '../components/Header';
 import ThemeApi from "../services/Theme"
+import Header from '../components/Header';
+import NewChallengeForm from '../components/NewChallengeForm';
 
 
 export default function Router() {
@@ -22,6 +23,9 @@ export default function Router() {
       <Header />
       <div className="main">
       <Switch>
+        <Route path="/addChallenge">
+          <NewChallengeForm />
+        </Route>
         <Route path="/">
           <Home />
         </Route>
