@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Challenge extends Model {
     /**
@@ -10,24 +8,35 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsToMany(models.Label,{
-        through: 'labels_to_challenges',
-        foreignKey: 'challenge_id'
+      this.belongsTo(models.User, {
+        sourceKey: "userId",
+        foreignKey: "authorId",
+      });
+      this.belongsToMany(models.Label, {
+        through: "labels_to_challenges",
+        foreignKey: "challenge_id",
       });
     }
-  };
-  Challenge.init({
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    type: DataTypes.STRING,
-    repositoryName: DataTypes.STRING,
-    cover: DataTypes.STRING,
-    category: DataTypes.STRING,
-  }, {
-    sequelize,
-    paranoid: true,
-    modelName: 'Challenge',
-    tableName: 'challenges'
-  });
+  }
+  Challenge.init(
+    {
+      name: DataTypes.STRING,
+      description: DataTypes.STRING,
+      type: DataTypes.STRING,
+      repositoryName: DataTypes.STRING,
+      cover: DataTypes.STRING,
+      category: DataTypes.STRING,
+      authorId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+    },
+    {
+      sequelize,
+      paranoid: true,
+      modelName: "Challenge",
+      tableName: "challenges",
+    }
+  );
   return Challenge;
 };
