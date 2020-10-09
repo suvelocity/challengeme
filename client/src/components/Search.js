@@ -6,7 +6,7 @@ import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import  ChooseCategory from "./ChooseCategory"
 import  ChooseLabels from "./ChooseLabels"
-
+import './Search.css'
 const useStyles = makeStyles((theme) => ({
   root: {
     // maxWidth: 600,

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import ChooseLabels from './ChooseLabels'
 import ChooseTime from './ChooseTime'
 import ChooseCategory from './ChooseCategory'
+import './FilterMenu.css'
+
 const FilterMenu =( {formerSelection,updateFilters}) => {
 
   const [filters,setFilters]  = useState(formerSelection||[])
