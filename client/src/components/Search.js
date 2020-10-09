@@ -86,7 +86,7 @@ const Search =() => {
         :value
         return `${name}=${valueString}`
       }).join('&')
-      return '?'+filterString
+      return '&'+filterString
     },
     [filters]
   ) 
@@ -95,8 +95,8 @@ const Search =() => {
     if(!query.length){return setResults([])}
     if(query==='*'){ query =''}
     try{
-      const url = `/api/v1/challenges`
-      // +`?challengeName=${query}` + getFilters() 
+      const url = `/api/v1/challenges`+`?challengeName=${query}`
+       + getFilters() 
       console.log(url)
       network.get(url)
       .then(({data})=>{
@@ -130,6 +130,7 @@ const Search =() => {
       no results found
     </span>
   )
+  console.log(resultsList);
   const searchInput = <div 
   className={classes.search}>
     <div className={classes.searchIcon}>

@@ -26,7 +26,7 @@ function SearchTicket({ticket,closeSearch}) {
                 <Avatar className={classes.blueGrey}>{avatarName}</Avatar>
                 <div className="ticketName">{ticket.name}</div>
                 <div className="ticketRating">
-                    <Rating name="disabled" value={rating} disabled />
+                    <Rating name="" value={rating} disabled />
                 </div>
             </div>
         </Link>

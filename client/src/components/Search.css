@@ -30,7 +30,9 @@
   left:50vw; */
   /* visibility: hidden; */
 }
-
+#no-results{
+  align-self: center;
+}
 
 #searchResults .filterMenu{
   position:sticky;
