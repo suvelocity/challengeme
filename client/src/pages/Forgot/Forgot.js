@@ -18,7 +18,7 @@ export default function Forgot() {
   const history = useHistory();
 
   const handleChange = (field) => (e) => {
-    let value = e.target.value;
+  
     switch (field) {
       case "userName":
         setUserName(e.target.value);
@@ -36,6 +36,7 @@ export default function Forgot() {
   };
 
   const nextStep = () => {
+    setError("");
     switch (step) {
       case 1:
         getQuestion(userName);
