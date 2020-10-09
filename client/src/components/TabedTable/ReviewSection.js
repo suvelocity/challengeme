@@ -3,21 +3,20 @@ import Review from "./Review.js";
 import axios from "axios";
 
 
-const data = [{author:"author", title:"title", createdAt:"date", content:"sadsadsadasdasd", rating:4}];
+// const data = [{author:"author", title:"title", createdAt:"date", content:"sadsadsadasdasd", rating:4}];
 
-function ReviewSection(props) {
+function ReviewSection({challengeId}) {
 	
 	const [revArr, setRevArr] = useState([]);
-
-	const getReviews = async () => {
-		const reviews = await axios.get(`/api/v1/reviews/byChallenge/${props.challengeId}`).then((res) => res.data);
-		const filteredRevs = reviews.filter(item => item.title !== undefined && item.content !== undefined);
-		setRevArr(filteredRevs);
-	}
-
 	useEffect(() => {
+		const getReviews = async () => {
+			const reviews = await axios.get(`/api/v1/reviews/byChallenge/${challengeId}`).then((res) => res.data);
+			const filteredRevs = reviews.filter(item => item.title !== undefined && item.content !== undefined);
+			setRevArr(filteredRevs);
+		}
+	
 		getReviews();
-	}, []);
+	}, [challengeId]);
 
 	return (
 		<div>

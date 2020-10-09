@@ -1,22 +1,23 @@
 import React, {useEffect, useState} from "react";
 import Submission from "./Submission";
-import axios from "axios";
+import network from "../../services/network"
 
 
-const data = [{name:"asd", status:"fdgfdg", submittedAt:"3434"},{name:"asd", status:"fdgfdg", submittedAt:"3434"}];
+// const data = [{name:"asd", status:"fdgfdg", submittedAt:"3434"},{name:"asd", status:"fdgfdg", submittedAt:"3434"}];
 
-function SubmissionTable(props) {
-	const [subArr, setSubArr] = useState([]);
+function SubmissionTable({challengeId}) {
+	const [submissions, setSubmissions] = useState([]);
 
-	const getSubmissions = async () => {
-		const submissions = await axios.get(`/api/v1/challenges/${props.challengeId}/submissions`).then((res) => res.data);
-		// const submissions = data;
-		setSubArr(submissions);
-	}
-
+	
 	useEffect(() => {
-		getSubmissions();
-	}, []);
+		const fetchSubmissions = async () => {
+			const submissions = await network.get(`/api/v1/challenges/${challengeId}/submissions`).then((res) => res.data);
+			setSubmissions(submissions);
+		}
+		fetchSubmissions();
+		const liveSubmissions = setInterval(fetchSubmissions,7000)
+		return () => clearInterval(liveSubmissions);
+	}, [challengeId]);
 
 	return <div>
 				<Submission className="headlines" 
@@ -24,12 +25,13 @@ function SubmissionTable(props) {
 				status = {"Status"} 
 				submittedAt = {"Submitted at"} 
 				bold = {true}/>
-				{subArr.map((item,i)=> 
+				{submissions.map((item,i)=> 
 						<Submission className="submission" key={i} 
 						name = {item.solutionRepository.split('/')[0]} 
 						status = {item.state} 
 						submittedAt = {item.updatedAt.split('T').join(' ').split('.')[0]}
 						bold = {false}/>)}
+						
 			</div>;
 }
 

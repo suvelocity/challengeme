@@ -22,11 +22,10 @@ const userId = 2; //Mock until we merge shahar
 
 function ChallengePage() {
   const [challenge, setChallenge] = useState(null);
-  const [author, setAuthor] = useState(null);
+  const [author, setAuthor] = useState({username:"Dror"});
   const {challengeParamId } = useParams();
   const [blobedImg, setBlobedImg] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
   useEffect(() => {
     const setImg = async () => {
       try {
@@ -45,21 +44,21 @@ function ChallengePage() {
         );
         console.log('challenge from server: ',challengeFromServer);
         setChallenge(challengeFromServer);
-        setAuthor(author);
+        // setAuthor(author);
       } catch (error) {
         console.log(error);
       }
     };
     setImg();
     fetchChallenge();
-    console.log('challenge is: ',challenge);
-  }, []);
+  }, [challengeParamId]);
 
   function handleModalClose() {
     setIsModalOpen(false);
   }
   console.table(challenge);
-
+  console.table('author: ', author)
+  console.log({blobedImg})
 
   return challenge && author ? (
     <div className='fullpage-wrapper'>
@@ -67,7 +66,7 @@ function ChallengePage() {
       <div className='challenge-wrapper'>
         <div className='challenge-left-wrapper'>
           <div className='challenge-img-div'>
-            <img className='challenge-img' src={blobedImg} />
+            <img className='challenge-img' src={blobedImg} alt={challenge.name}/>
           </div>
           <div className='challenge-rawdata'>
             <span className='challenge-created-by'>

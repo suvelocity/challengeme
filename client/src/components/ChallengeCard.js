@@ -35,7 +35,7 @@ const SubmissionsTable = ({ challengeId }) => {
     return () => {
       clearInterval(submissionInterval);
     };
-  }, []);
+  }, [challengeId]);
   return (
     <div>
       {submissions.map((submission) => (
