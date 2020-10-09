@@ -1,8 +1,9 @@
 const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
+
 module.exports = function(req,res,next){
   const {challengeName,categories,labels} = req.query;
-  console.log(challengeName)
+
   const conditionArray = []
   if(challengeName){
     const firstWordCondition = {name: { [Op.like]: `${challengeName}%`} }
