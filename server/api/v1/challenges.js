@@ -10,17 +10,20 @@ const challengeRouter = Router();
 
 challengeRouter.get('/',filterResults, async (req, res) => {
   try {
-      const {condition,labels} = req
+      const {condition,labels} = req;
       console.log(labels);
       const allChallenges = await Challenge.findAll({
         where: condition,
-        include: [Label]
+        include: {
+          model: Label,
+          attributes: ["name"]
+        }
       });
       if(labels){
         const filterChallenges = allChallenges.filter((challenge)=>{
           return labels.some((label)=>{
             return challenge.Labels.some((x)=>{
-              return x.id == label  ;
+              return x.id == label;
             })
           })
         });
@@ -37,6 +40,10 @@ challengeRouter.get("/:challengeId", async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
       where: { id: req.params.challengeId },
+      include: {
+        model: Label,
+        attributes: ["name"]
+      }
     });
     res.json(challenge);
   } catch (error) {

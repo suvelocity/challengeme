@@ -1,5 +1,6 @@
 module.exports = [
   {
+    id: 1,
     name: "JWT - Node.js",
     description:
       "A great chance to Practice your JWT skills with that amaizng challenge",
@@ -11,6 +12,7 @@ module.exports = [
     author_id: 1,
   },
   {
+    id: 2,
     name: "React - Calculator",
     description:
       "In That challenge we will calculate the sum of some numbers and try doing calculation",
@@ -22,6 +24,7 @@ module.exports = [
     author_id: 3,
   },
   {
+    id: 3,
     name: "Js - Drag N Scale",
     description:
       "in that Challenge you will face the struggle of implementing Drag N Drop functionallity in React, take your Chance!",

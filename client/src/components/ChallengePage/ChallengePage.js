@@ -68,6 +68,7 @@ function ChallengePage() {
     };
     setImg();
     fetchChallenge();
+    console.log('challenge is: ',challenge);
   }, []);
 
   function handleModalClose() {
@@ -96,7 +97,7 @@ function ChallengePage() {
           </div>
           <div className='challenge-labels'>
             <h2>Labels:</h2>
-            <span className='challenge-label'>
+            {/* <span className='challenge-label'>
               <Chip
                 color='secondary'
                 label='difficulty'
@@ -104,18 +105,18 @@ function ChallengePage() {
                 href='#chip'
                 clickable
               />
-            </span>
-            {/* {challenge.label.map((tag, index) => (
+            </span> */}
+            {challenge.Labels.map((tag, index) => (
               <span key={index} className='challenge-label'>
                 <Chip
                   color='primary'
-                  label={tag}
+                  label={tag.name}
                   component='a'
                   href='#chip'
                   clickable
                 />
               </span>
-            ))} */}
+            ))}
           </div>
           <div className='challenge-rating'>
             <h2>Rating:</h2>
