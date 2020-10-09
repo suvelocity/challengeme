@@ -145,7 +145,7 @@ function StatisticsHome() {
     setLoading(false);
   };
   const getTeamsData = async () => {
-    const { data: teamsInfo } = await axios.get('/api/v1/statistics/users/top-users');
+    const { data: teamsInfo } = await axios.get('/api/v1/statistics/users/top-challenges');
     console.log(teamsInfo)
     setLoading(false);
   };
