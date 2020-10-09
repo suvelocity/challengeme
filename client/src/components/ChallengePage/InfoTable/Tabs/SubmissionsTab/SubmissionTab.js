@@ -1,24 +1,21 @@
 import React, {useEffect, useState} from "react";
-import Submission from "./Submission";
-import network from "../../services/network"
-
-
+import network from '../../../../../services/network'
+import Submission from './Submission'
 // const data = [{name:"asd", status:"fdgfdg", submittedAt:"3434"},{name:"asd", status:"fdgfdg", submittedAt:"3434"}];
-
-function SubmissionTable({challengeId}) {
+function SubmissionTab({challengeId}) {
 	const [submissions, setSubmissions] = useState([]);
 
 	
 	useEffect(() => {
 		const fetchSubmissions = async () => {
-			const submissions = await network.get(`/api/v1/challenges/${challengeId}/submissions`).then((res) => res.data);
+			const {data:submissions} = await network.get(`/api/v1/challenges/${challengeId}/submissions`)
 			setSubmissions(submissions);
 		}
 		fetchSubmissions();
 		const liveSubmissions = setInterval(fetchSubmissions,7000)
 		return () => clearInterval(liveSubmissions);
 	}, [challengeId]);
-
+	console.log({submissions})
 	return <div>
 				<Submission className="headlines" 
 				name = {"Name"} 
@@ -35,4 +32,4 @@ function SubmissionTable({challengeId}) {
 			</div>;
 }
 
-export default SubmissionTable;
+export default SubmissionTab;

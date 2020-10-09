@@ -10,7 +10,7 @@ import Chip from "@material-ui/core/Chip";
 //import SubmitModal from "./SubmitModal";
 
 import SubmitModal from "../SubmitModal";
-import SolutionTable from "../../TabedTable/SolutionTable";
+import InfoTable from '../InfoTable/InfoTable'
 
 
 import "./ChallengePage.css";
@@ -44,7 +44,7 @@ function ChallengePage() {
         );
         console.log('challenge from server: ',challengeFromServer);
         setChallenge(challengeFromServer);
-        // setAuthor(author);
+        setAuthor(author);
       } catch (error) {
         console.log(error);
       }
@@ -134,7 +134,9 @@ function ChallengePage() {
             </div>
           </div>
           <div className='challenge-solution-table'>
-            <SolutionTable challengeParamId={challengeParamId} />
+            <InfoTable
+             challengeId={challengeParamId}
+              />
           </div>
           <div className='challenge-submit-btn'>
             <Button color='primary' onClick={setIsModalOpen}>

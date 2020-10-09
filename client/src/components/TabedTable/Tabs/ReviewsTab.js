@@ -5,7 +5,7 @@ import axios from "axios";
 
 // const data = [{author:"author", title:"title", createdAt:"date", content:"sadsadsadasdasd", rating:4}];
 
-function ReviewSection({challengeId}) {
+function ReviewsTab({challengeId}) {
 	
 	const [revArr, setRevArr] = useState([]);
 	useEffect(() => {
@@ -31,4 +31,4 @@ function ReviewSection({challengeId}) {
 	);
 }
 
-export default ReviewSection;
+export default ReviewsTab;

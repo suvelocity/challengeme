@@ -6,6 +6,7 @@ const Op = Sequelize.Op;
 
 const { Submission,User, Challenge, Label, labels_to_challenge, Reviews } = require('../../models');
 
+// TODO:  include a rating for each challenge response
 const challengeRouter = Router();
 
 challengeRouter.get('/',filterResults, async (req, res) => {
@@ -91,7 +92,7 @@ challengeRouter.get('/labels', async (req, res) => {
 challengeRouter.get('/:challengeId/submissions', async (req, res) => {
   try {
     const { challengeId } = req.params;
-    const allSubmission = await Submission.findAll({ where: { challengeId }, include:[User] });
+    const allSubmission = await Submission.findAll({ where: { challengeId } });
     res.json(allSubmission);
   } catch (error) {
     res.status(404).json({ message: error.message });

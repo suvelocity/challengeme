@@ -1,44 +1,12 @@
 import React, {useState} from "react";
-import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import SubmissionTable from "./SubmissionTable";
-import ReviewSection from "./ReviewSection";
+import SubmissionTab from "../ChallengePage/InfoTable/Tabs/SubmissionsTab/SubmissionTab";
+import ReviewsTab from './Tabs/ReviewsTab';
+import TabPanel from './TabPanel'
 
-function TabPanel({ children, value, index, ...other }) {
-
-  return (
-    <div
-      role='tabpanel'
-      hidden={value !== index}
-      id={`scrollable-force-tabpanel-${index}`}
-      aria-labelledby={`scrollable-force-tab-${index}`}
-      {...other}>
-      {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `scrollable-force-tab-${index}`,
-    "aria-controls": `scrollable-force-tabpanel-${index}`,
-  };
-}
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SolutionTable(props) {
+function InfoTable({challengeId}) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
 
@@ -82,14 +50,24 @@ export default function SolutionTable(props) {
         style={{ backgroundColor: "lightskyblue" }}
         value={value}
         index={0}>
-        <SubmissionTable challengeId={props.challengeId} />
+        <SubmissionTab challengeId={challengeId} />
       </TabPanel>
       <TabPanel
         style={{ backgroundColor: "lightskyblue" }}
         value={value}
         index={1}>
-        <ReviewSection challengeId={props.challengeId} />
+        <ReviewsTab challengeId={challengeId} />
       </TabPanel>
     </div>
   );
+}
+
+export default InfoTable;
+
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
 }
