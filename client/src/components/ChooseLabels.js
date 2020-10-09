@@ -27,11 +27,14 @@ const ChooseLabels =({ submitFilter }) => {
   return (
     <div className='labelFilter'>
     <Selector
+    maxMenuHeight={100}
     placeholder='select labels' 
     isMulti
     name='labels'
     onChange={selectionChange}
+    closeMenuOnSelect={false}
     options={labels}/>
+
     </div>
   );
 }

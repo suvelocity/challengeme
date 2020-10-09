@@ -24,7 +24,7 @@ export default function HomePage() {
         return `${name}=${valueString}`
       }).join('&')
       console.log(filterString)
-      return '?'+filterString
+      return filterString
     },
     [filters]
   ) 
@@ -32,7 +32,7 @@ export default function HomePage() {
   useEffect(() => {
     (async () => {
       const { data: challengesFromServer } = await network.get(
-        '/api/v1/challenges'+getFilters()
+        '/api/v1/challenges?'+getFilters()
         )
       setChallenges(challengesFromServer);  
     })();  
@@ -41,7 +41,9 @@ export default function HomePage() {
   return (
     <div >
       <div className ={darkMode?"dark-home-page":"light-home-page"}>
-      <FilterMenu formerSelection={filters} updateFilters={setFilters} />
+      <FilterMenu 
+      formerSelection={filters} 
+      updateFilters={setFilters} />
       {challenges.map((challenge) => (
         <ChallengeCard
           key={challenge.id}

@@ -24,9 +24,11 @@
   padding:0;
 }
 .filters.open{
+  transition: .5s;
   border: 2px red outset;
   border-width: 0 2px 2px 0px ;
-  width: 80vw;
+  width: 70%;
+  /* min-width:200px; */
   z-index:2;
 }
 
@@ -36,6 +38,7 @@
   height:50px;
   width:50px;
   border-radius: 0 50% 50% 0;
+  margin-top: 20px;
   
 }
 
@@ -44,6 +47,7 @@
 }
 .filters h3{
   background-color: orangered;
+  padding-left: 5px;
   margin:0; 
   margin-bottom:5px;
 } 
