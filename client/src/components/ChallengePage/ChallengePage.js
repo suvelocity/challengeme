@@ -46,6 +46,7 @@ function ChallengePage() {
   const [blobedImg, setBlobedImg] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+<<<<<<< HEAD
   const setImg = async () => {
     const { data } = await network.get(`/api/v1/images?id=${challengeId}`);
     setBlobedImg(data.img);
@@ -73,6 +74,26 @@ function ChallengePage() {
     //   fetchChallenge();
     // >>>>>>> 36f2077c2c283d389024cb3a91620c0a4000d5e0
   }, []);
+=======
+		// useEffect(() => {
+		//   const fetchChallenge = async () => {
+		//     try {
+		//       const { data: challengeFromServer } = await axios.get(
+		//         `/api/v1/challenges/${challengeParamId}`
+		//       );
+		//       console.table(challenge);
+		//       // setChallenge(challengeFromServer);
+		//     } catch (error) {
+		//       console.log(error);
+		//     }
+		//   };
+		//   fetchChallenge();
+		// >>>>>>> 36f2077c2c283d389024cb3a91620c0a4000d5e0
+	}, []);
+	function handleModalClose() {
+		setIsModalOpen(false);
+	}
+>>>>>>> c51070c702f285ab66ae1c12fff2e19d3ee1c9df
 
   function handleModalClose() {
     setIsModalOpen(false);
