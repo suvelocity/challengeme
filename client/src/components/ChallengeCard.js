@@ -20,8 +20,10 @@ function generateTime(date) {
 export default function ChallengeCard({
   name,
   description,
+  labels,
+  createdAt,
   repositoryName,
-  challengeId,
+  challengeId
 }) {
   const darkMode = React.useContext(ThemeApi).darkTheme
   const [coverImg,setCoverImg] = useState("")
@@ -29,11 +31,20 @@ export default function ChallengeCard({
 
   useEffect(()=>{
     (async ()=> {
-      const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`)
-      setCoverImg(coverImage?coverImage.img:'')
-      const { data: repo } = await network.get(`https://api.github.com/repos/${repositoryName}`)
-      const updateDate = repo.updated_at
-      setDate(generateTime(updateDate))
+      try{
+        const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`)
+        setCoverImg(coverImage?coverImage.img:'')
+        try{
+          const { data: repo } = await network.get(`/api/v1/challenges/update_date?repo_name=${repositoryName}`)
+          const updateDate = repo.updated_at
+          setDate(generateTime(updateDate))
+        }catch(e){
+          setDate(generateTime(createdAt))
+        }
+      }catch(err){
+        console.error(err.message)
+      }
+ 
 
     })()
   })
@@ -47,9 +58,17 @@ export default function ChallengeCard({
     >
       <div className="challenge-card-creator-homepage">
         <Tooltip title={repositoryName.split("/")[0]}>
-        <Avatar style={{backgroundColor:"#F5AF5D",marginRight:50}}>{repositoryName.slice(0,2)}</Avatar>
+        <Avatar style={{backgroundColor:"#F5AF5D",marginRight:10}}>{repositoryName.slice(0,2)}</Avatar>
         </Tooltip>
-        <div>{name}</div>
+
+       {name}
+        <div>
+          {
+            labels.slice(0,3).map(label=>{
+            return <span className="home-page-challenge-labels" key={label.id}>{label.name}</span>
+            })
+          }
+        </div>
       </div>
       {
       coverImg.length>0&&
@@ -57,10 +76,9 @@ export default function ChallengeCard({
       }
       <div className="challenge-card-data-homepage">
         <div>
-
         {
           date&&
-          "Last update: " + date 
+         "Updated at: "+date
         }
         </div>
         <Rating readOnly name="disabled" value={4}  />

@@ -13,7 +13,6 @@ export default function HomePage() {
   useEffect(() => {
     (async () => {
       const { data: challengesFromServer } = await network.get('/api/v1/challenges')
-
       setChallenges(challengesFromServer);
     })();
   }, []);
@@ -31,6 +30,7 @@ export default function HomePage() {
           name={challenge.name}
           description={challenge.description}
           repositoryName = {challenge.repositoryName}
+          labels = {challenge.Labels}
         />
       ))}
       </div>
