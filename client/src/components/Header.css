@@ -8,3 +8,14 @@
 .link-rout {
   text-decoration: none;
 }
+
+.MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters{
+  position: sticky;
+  max-height: 40px;
+  top: 0%;
+}
+@media (min-width: 600px){
+.MuiToolbar-regular {
+    min-height: 40px;
+}
+}
