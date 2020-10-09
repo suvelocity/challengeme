@@ -77,8 +77,12 @@
     padding-bottom: 2px;
     align-items: center;
     justify-content: space-between;
-    /* text-align: left; */
 }
+
+.challenge-card-date-homepage{
+    font-size: 12px;
+}
+
 .home-page-challenge-labels{
     font-size: 10px;
     padding:5px;

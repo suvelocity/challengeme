@@ -75,7 +75,7 @@ export default function ChallengeCard({
       <img className="challenge-card-img-homepage" src={coverImg} />
       }
       <div className="challenge-card-data-homepage">
-        <div>
+        <div className="challenge-card-date-homepage">
         {
           date&&
          "Updated at: "+date
