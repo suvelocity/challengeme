@@ -14,7 +14,10 @@ challengeRouter.get('/',filterResults, async (req, res) => {
       console.log(labels);
       const allChallenges = await Challenge.findAll({
         where: condition,
-        include: [Label]
+        include: {
+          model: Label,
+          attributes: ["name"]
+        }
       });
       if(labels){
         const filterChallenges = allChallenges.filter((challenge)=>{
@@ -37,7 +40,10 @@ challengeRouter.get("/:challengeId", async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
       where: { id: req.params.challengeId },
-      include: [Label]
+      include: {
+        model: Label,
+        attributes: ["name"]
+      }
     });
     res.json(challenge);
   } catch (error) {

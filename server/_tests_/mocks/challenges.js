@@ -1,5 +1,6 @@
 module.exports = [
   {
+    id: 1,
     name: "JWT - Node.js",
     description: "https://github.com/suvelocity/Authentication-Challenge-TEMPLATE",
     type: "static",
@@ -9,6 +10,7 @@ module.exports = [
     cover: "https://storage.googleapis.com/challenges-cover/jwt.png"
   },
   {
+    id: 2,
     name: "React - Calculator",
     description: "https://github.com/suvelocity/calculator-challenge",
     type: "client",
@@ -18,6 +20,7 @@ module.exports = [
     cover: "https://storage.googleapis.com/challenges-cover/calc.jpg"
   },
   {
+    id: 3,
     name: "Js - Drag N Scale",
     description: "https://github.com/suvelocity/DragAndScaleBoilerplate",
     type: "static",
