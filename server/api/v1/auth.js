@@ -14,6 +14,7 @@ usersRouter.post("/register", async (req, res) => {
 
   if (checkUser) return res.status(409).send("user name already exists");
   const hashPassword = await bcrypt.hash(req.body.password, 10);
+  const hashsecurityAnswer = await bcrypt.hash(req.body.securityAnswer, 10);
   const newUser = {
     userName: req.body.userName,
     firstName: req.body.firstName,
@@ -27,7 +28,7 @@ usersRouter.post("/register", async (req, res) => {
     githubAccount: req.body.githubAccount,
     reasonOfRegistration: req.body.reasonOfRegistration,
     securityQuestion: req.body.securityQuestion,
-    securityAnswer: req.body.securityAnswer,
+    securityAnswer: hashsecurityAnswer,
   };
   // send validation mail
   // await User.create(newUser);
