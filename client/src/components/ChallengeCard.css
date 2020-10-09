@@ -81,6 +81,8 @@
 
 .challenge-card-date-homepage{
     font-size: 12px;
+    display: flex;
+    align-items: center;
 }
 
 .home-page-challenge-labels{
