@@ -8,8 +8,6 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
 import Avatar from '@material-ui/core/Avatar';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import HomeIcon from '@material-ui/icons/Home';
@@ -81,8 +79,8 @@ function Header() {
   };
 
   return (
-    <div className={classes.root} style={{maxHeight:10}}>
-      <AppBar >
+    <div className={classes.root} >
+      <AppBar  style={{height:60}}>
         <Toolbar>
           <Typography variant='h6' className={classes.title}>
             <NavLink
