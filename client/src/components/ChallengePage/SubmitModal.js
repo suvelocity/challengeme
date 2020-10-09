@@ -1,105 +1,197 @@
 import React, { useEffect, useState } from "react";
-import Modal from "@material-ui/core/Modal";
+import { Modal, TextField, Button, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-function SubmitModal({ isOpen, handleClose, challengeId }) {
-  const [repoName, setRepoName] = useState("");
-  const [reviewTitle, setReviewTitle] = useState("");
-  const [reviewContent, setReviewContent] = useState("");
-  const [userRating, setUserRating] = useState(0);
+import { Rating } from "@material-ui/lab";
+import { useForm } from "react-hook-form";
+import axios from "axios";
 
-  const submitForm = () => {
-    //make POST request
-    // VIEW SUBMITTED SUCCESSFULLY/FAILED TO SUBMITT MESSAGE and close modal
-  };
-  //
-  const validateRepoName = (repo) => {
-    setRepoName(repo);
-  };
-  return (
-    <Modal
-      open={isOpen}
-      onClose={handleClose}
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
-      style={{ width: 400, margin: "20px auto" }}
-    >
-      <div
-        style={{
-          backgroundColor: "white",
-          height: "60vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
-        <h3>submit your solution</h3>
+function getModalStyle() {
+	return {
+		outline: 0
+	};
+}
 
-        <label for="repoInput">
-          repo:
-          <input
-            type="text"
-            id="repoInput"
-            value={repoName}
-            onChange={({ target }) => {
-              validateRepoName(target.value);
-            }}
-            placeholder="Owner/repo"
-            required
-          />
-        </label>
-        <select
-          name="rating"
-          id="rating"
-          required
-          onChange={({ target }) => setUserRating(target.value)}
-        >
-          <option value="" selected disabled>
-            Enter Rating
-          </option>
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-        </select>
+const useStyles = makeStyles(theme => ({
+	paper: {
+		position: "absolute",
+		width: 400,
+		backgroundColor: theme.palette.background.paper,
+		border: "2px solid #000",
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing(2, 4, 3)
+	},
+	formValidationError: {
+		color: "red",
+		fontSize: "0.8em"
+	}
+}));
 
-        <label for="commentTitle">
-          title:
-          <input
-            type="text"
-            id="commentTitleInput"
-            placeholder="Comment Title"
-            value={reviewTitle}
-            max="100"
-            onChange={({ target }) => setReviewTitle(target.value)}
-          />
-        </label>
-        <label for="reviewContentInput">
-          content:
-          <textarea
-            type="text"
-            id="reviewContentInput"
-            max="255"
-            placeholder="Comment content"
-            onChange={({ target }) => setReviewContent(target.value)}
-          >
-            {reviewContent}
-          </textarea>
-        </label>
-        <button onClick={submitForm}>Submit</button>
+function SubmitModal({ isOpen, handleClose, challengeId, userId }) {
+	const { register, handleSubmit, watch, errors } = useForm();
+	const [userRating, setUserRating] = useState();
+	const classes = useStyles();
+	const [modalStyle] = useState(getModalStyle);
 
-        {/* TODO: repo input */}
-        {/* TODO : validate link from above input - correct input and existing repository */}
-        {/* TODO: rating input 1-5 */}
-        {/* TODO: review input title (up to 100 chars)*/}
-        {/* TODO: review input content (up to 255 chars)*/}
-        {/* TODO: cancel button */}
-        {/* TODO: submit button */}
-        {/* TODO: render a result with a waiting "checking your solution plaese wait : success/faliure" */}
-        {/* NOT IN MODAL => SHOULD MOVED TO SUBMISSIONTABLE */}
-      </div>
-    </Modal>
-  );
+	const submitForm = async data => {
+		// VIEW SUBMITTED SUCCESSFULLY/FAILED TO SUBMITT MESSAGE and close modal
+		const formData = {
+			...data,
+			userId
+		};
+		try {
+			const res = await axios.post(`/${challengeId}/apply`, formData);
+			console.log(res);
+		} catch (error) {
+			console.error(error);
+		}
+		// data object looks like:
+		// {
+		//  commentContent: "the content of the comment"
+		//  commentTitle: "title for the comment"
+		//  rating: 4, -> can't be null
+		//  repository: "drormaman/pokedex", -> can't be null
+		//  userId: 3 -> can't be null
+		// }
+		console.log(formData);
+	};
+
+	// console.log(watch("repository"));
+
+	const isRepoExist = async repo => {
+		const response = await fetch(`https://api.github.com/repos/${repo}`);
+		return response.status !== 404;
+	};
+
+	return (
+		<Modal
+			open={isOpen}
+			onClose={handleClose}
+			aria-labelledby="simple-modal-title"
+			aria-describedby="simple-modal-description"
+			style={{
+				display: "flex",
+				alignItems: "center",
+				justifyContent: "center"
+			}}>
+			<div style={modalStyle} className={classes.paper}>
+				<form
+					onSubmit={handleSubmit(submitForm)}
+					style={{
+						// height: "60vh",
+						display: "flex",
+						flexDirection: "column"
+						// alignItems: "flex-start"
+					}}>
+					<Typography variant="h5">Submit Your Solution</Typography>
+					<TextField
+						label="Solution repository"
+						type="text"
+						id="repoInput"
+						name="repository"
+						placeholder="Owner/Repo"
+						style={{ marginTop: 8 }}
+						inputRef={register({
+							required: true,
+							pattern: /^([^ ]+\/[^ ]+)$/,
+							validate: { isRepoExist }
+						})}
+					/>
+					{errors.repository?.type === "pattern" && (
+						<Typography
+							variant="caption"
+							className={classes.formValidationError}>
+							The text should look like "username/repository-name"
+						</Typography>
+					)}
+					{errors.repository?.type === "required" && (
+						<Typography
+							variant="caption"
+							className={classes.formValidationError}>
+							Please enter a solution repository
+						</Typography>
+					)}
+
+					{/*  this input is invisible, only here for the rating to work in the form */}
+					<div
+						style={{
+							marginTop: 12,
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "space-between"
+						}}>
+						<Typography component="subtitle1">Rate this challenge</Typography>
+						<Rating
+							name="rating"
+							value={userRating}
+							// precision={0.5}
+							onChange={(_, value) => setUserRating(value)}
+						/>
+					</div>
+					<input
+						name="rating"
+						type="number"
+						value={userRating}
+						ref={register({ required: true })}
+						hidden
+						readOnly
+					/>
+					{errors.rating?.type === "required" && (
+						<Typography
+							variant="caption"
+							className={classes.formValidationError}>
+							Please rate this challenge
+						</Typography>
+					)}
+					<Typography variant="subtitle1" style={{ marginTop: 16 }}>
+						Please leave your review here
+					</Typography>
+					<TextField
+						label="Title"
+						type="text"
+						id="commentTitleInput"
+						placeholder="Comment Title"
+						name="commentTitle"
+						inputRef={register({ maxLength: 100 })}
+						variant="filled"
+					/>
+					{errors.commentTitle?.type === "maxLength" && (
+						<Typography
+							variant="caption"
+							className={classes.formValidationError}>
+							Title should be less than 100 characters
+						</Typography>
+					)}
+					<TextField
+						id="reviewContentInput"
+						label="Message"
+						multiline
+						rows={4}
+						placeholder="Leave your message here"
+						name="commentContent"
+						inputRef={register({ maxLength: 255 })}
+						variant="filled"
+						style={{ marginTop: 8 }}
+					/>
+					{errors.commentContent?.type === "maxLength" && (
+						<Typography
+							variant="caption"
+							className={classes.formValidationError}>
+							Your message should be less than 100 characters
+						</Typography>
+					)}
+
+					<Button
+						variant="contained"
+						color="primary"
+						type="submit"
+						style={{ marginTop: 16 }}>
+						submit
+					</Button>
+				</form>
+			</div>
+		</Modal>
+	);
 }
 
 export default SubmitModal;
