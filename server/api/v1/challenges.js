@@ -4,7 +4,7 @@ const filterResults = require('../../middleware/filterResults');
 const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
 
-const { Submission, Challenge, Label, labels_to_challenge } = require('../../models');
+const { Submission, Challenge, Label } = require('../../models');
 
 const router = Router();
 

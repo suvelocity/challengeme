@@ -18,13 +18,13 @@ function AddImg( { file, handleChange} ) {
               minCropBoxHeight:300,
               minCropBoxWidth:800,
               aspectRatio:400/150,
-              zoomable:false
+              zoomable:true
             }
           }
           onChange={event => handleChange(event)}
           value={file}
         />
-        <Button variant="contained" color="secondary" onClick={()=>handleChange({})} >
+        <Button variant="contained" color="secondary" style={{marginTop: 15}} onClick={()=>handleChange({})} >
           remove image
         </Button>
           </div>

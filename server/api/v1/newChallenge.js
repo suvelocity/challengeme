@@ -21,7 +21,7 @@ router.post(`/`,async(req,res) => {
     const newChallenge = await Challenge.create(req.body);
     res.status(200).send(newChallenge);
   } catch(err) {
-    res.send("Bad request");
+    res.send('Bad request');
   }
 })
 

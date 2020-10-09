@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import ChooseLabels from '../components/ChooseLabels'
 import network from '../services/network';
+import ThemeApi from "../services/Theme"
 import AddImg from './AddImg';
 import Swal from 'sweetalert2';
 import "./NewChallengeForm.css"
-import ChooseLables from '../components/ChooseLabels'
+
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, InputLabel, MenuItem, FormControl, Select, TextField, TextareaAutosize, Button } from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
 
 export default function NewChallengeForm() {
-  const [darkMode, setDarkMode] = useState('darkMode'); 
   const [optionsArray, setOptionsArray] = useState([]); 
   const [repoName, setRepoName] = useState(''); 
   const [repoLink, setRepoLink] = useState(''); 
@@ -18,7 +21,9 @@ export default function NewChallengeForm() {
   const [repoLabels, setRepoLabels] = useState([]);
   const [file,setFile] = useState({})
   const [badInput, setBadInput] = useState([]); 
-
+  const darkMode = React.useContext(ThemeApi).darkTheme
+  const history = useHistory();
+  
   useEffect(() => {
     openOptions();
   }, [])
@@ -38,7 +43,8 @@ export default function NewChallengeForm() {
     event.preventDefault();
     let newBadInput = [];
     if(repoName.length < 2 || repoName.match(spaces) || repoName.match(hebrew)) {
-      newBadInput.push("* Repository's name is too short (minimum 2 characters).\n  Don't use hebrew letters");
+      // newBadInput.push("* Repository's name is too short (minimum 2 characters).\n  Don't use hebrew letters");
+      newBadInput.push(<Alert severity="error"><AlertTitle>Repository's name is too short (minimum 2 characters)</AlertTitle>Don't use hebrew letters</Alert>);
     }
     try {
       if(repoLink.length > 2 && !repoLink.match(spaces) && !repoLink.match(hebrew)) {
@@ -47,10 +53,11 @@ export default function NewChallengeForm() {
         throw 'error';
       }
     } catch(err) {
-      newBadInput.push(`* Repository's Link is not valid. Check the suggestions below:
-      - Type the Github repository in this format: owner/repo
-      - Change your repository to public
-      - Check for type errors.\n  Don't use Hebrew letters`);
+      // newBadInput.push(`* Repository's Link is not valid. Check the suggestions below:
+      // - Type the Github repository in this format: owner/repo
+      // - Change your repository to public
+      // - Check for type errors.\n  Don't use Hebrew letters`);
+      newBadInput.push(<Alert severity="error"><AlertTitle>Repository's name is too short (minimum 2 characters)</AlertTitle>Don't use hebrew letters</Alert>);
     }
     if(repoDescription.length < 20 || !!repoDescription.match(spaces) || !!repoDescription.match(hebrew)) {
       newBadInput.push("* Repository's Description is too short (minimum 20 characters).\n  Don't use hebrew letters");
@@ -68,7 +75,7 @@ export default function NewChallengeForm() {
     {
       setTimeout(() => {
         return setBadInput([]);
-      }, 5000);
+      }, 8000);
     }
     if(newBadInput.length === 0) {
       const newRepo = {
@@ -82,21 +89,23 @@ export default function NewChallengeForm() {
         const { data : postedRepo } = await network.post(`/api/v1/new-challenge`, newRepo)
         await network.post("/api/v1/image",{
           challengeId: postedRepo.id,
-          img:file
+          img:file.result
+        });
+        await network.post('/api/v1/labels',{
+          labels: repoLabels,
+          challengeId: postedRepo.id
+        });
+        Swal.fire({
+          icon: 'success',
+          title: 'Your challenge added successfuly!',
+          showConfirmButton: false,
+          timer: 4000
         })
-        // await network.post('/api/v1/challenges/labels',{
-
-        // })
+        
+        history.push('/');
       }
       catch(error){
-        console.log(newBadInput)
-        newBadInput.push(error.message);
-        console.log(error)
-        console.log(newBadInput)
-        setBadInput(newBadInput);
-        setTimeout(() => {
-          return setBadInput([]);
-        }, 5000);
+        console.log('error');
       }
     }
   }
@@ -156,7 +165,7 @@ export default function NewChallengeForm() {
   const classes = useStyles();
   
   return (
-  <div className={`newChallenge ${darkMode}`}>
+  <div className={`newChallenge ${darkMode ? 'darkMode' : 'lightMode'}`}>
     <form className='newChallengeForm'>
       <Typography variant='h5' gutterBottom className='newChallengeFormheader'>
         New Challenge
@@ -167,7 +176,7 @@ export default function NewChallengeForm() {
 
       <AddImg file={file} handleChange={handleFile}/><br />
       <div className="newChallengeFormFeild">
-        <ChooseLables addNewChallengeLabelsSetter={setRepoLabels}/> 
+        <ChooseLabels submitFilter={setRepoLabels}/> 
       </div>
       <FormControl className={classes.formControl}>
         <InputLabel id='Challenge type'>Challenge type</InputLabel>
@@ -182,7 +191,8 @@ export default function NewChallengeForm() {
         </Select>
       </FormControl><br />
       <Typography color='error' className='displayErrors'>
-        {badInput.join(`\n`)}
+        {/* {badInput.join(`\n`)} */}
+        {badInput}
         {console.log(badInput)}
       </Typography>
       <br />
