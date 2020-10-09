@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import network from "../services/network"
 import "./ChallengeCard.css"
 import Avatar from "@material-ui/core/Avatar"
@@ -48,24 +48,26 @@ export default function ChallengeCard({
 
     })()
   })
+  const challengeCardDescriptionStyle = darkMode ? "challenge-card-description-homepage" : "challenge-card-description-homepage-light"
+  const avatarStyle = {backgroundColor:darkMode?"#F5AF5D":"#C9AC80",marginRight:10}
 
   return (
     <motion.div className={darkMode?"dark-challenge-card":"light-challenge-card"}
     initial={{scale:0.03}}
     animate={{ scale: 1 }}
-    transition={{default: { duration: 1.2 }}}
+    transition={{default: { duration: 1.2 , delay:0.3}}}
     
     >
       <div className="challenge-card-creator-homepage">
         <Tooltip title={repositoryName.split("/")[0]}>
-        <Avatar style={{backgroundColor:"#F5AF5D",marginRight:10}}>{repositoryName.slice(0,2)}</Avatar>
+        <Avatar style={avatarStyle}>{repositoryName.slice(0,2)}</Avatar>
         </Tooltip>
 
        {name}
         <div>
           {
             labels.slice(0,3).map(label=>{
-            return <span className="home-page-challenge-labels" key={label.id}>{label.name}</span>
+            return <span className={darkMode?"home-page-challenge-labels-dark":"home-page-challenge-labels-light"} key={label.id}>{label.name}</span>
             })
           }
         </div>
@@ -75,17 +77,14 @@ export default function ChallengeCard({
       <img className="challenge-card-img-homepage" src={coverImg} />
       }
       <div className="challenge-card-data-homepage">
-        <div className="challenge-card-date-homepage">
         {
           date&&
          "Updated at: "+date
         }
-        </div>
         <Rating readOnly name="disabled" value={4}  />
       </div>
-      <div className={darkMode?"challenge-card-description-homepage":"challenge-card-description-homepage-light"}>
-        {/* description.slice(0,100) */}
-        word-wrap: break-word ssssssssssssssssssssssssssssshas been replaced with overflow-wrap: brsseask-wo      
+      <div className={challengeCardDescriptionStyle}>
+        {description.length<100? description : description.slice(0,100).split(" ").slice(0,-1).join(" ")+"..."}
         </div>
     </motion.div>
   );

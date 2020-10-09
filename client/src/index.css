@@ -6,12 +6,27 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #f5f5f5;
+  overflow-y: hidden;
 }
 
 .main{
   overflow-x: hidden;
-  margin-top: 60px;
-  
+  overflow-y: scroll;
+  height: 88vh;
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  background-color: transparent;
+}
+::-webkit-scrollbar {
+  width: 6px !important;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, .5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 }
 
 code {

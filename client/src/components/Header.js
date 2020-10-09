@@ -80,7 +80,7 @@ function Header() {
 
   return (
     <div className={classes.root} >
-      <AppBar  style={{height:60}}>
+      <AppBar  style={{height:"12vh",position:"sticky",top:0}}>
         <Toolbar>
           <Typography variant='h6' className={classes.title}>
             <NavLink

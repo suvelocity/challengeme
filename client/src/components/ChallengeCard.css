@@ -13,14 +13,13 @@
 .light-challenge-card{
     width:300px;
     height: 200px;
-    border: 1px solid black;
     margin: 10px;
     position: relative;
     overflow: hidden;
     color: black;
-    background: #ECE9E6;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to top, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to top, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background-color:#D8DFE2;
+    background: radial-gradient(circle, rgba(230,230,230,1) 0%, rgb(209, 202, 202) 100%);
+
     
 }
 
@@ -45,7 +44,7 @@
     bottom: 0;
     right: 0;
     left: 0;
-    background-color:#F5F5F5;
+    background-color:rgb(228, 224, 224);
     font-size: 20px;
     transition: transform 0.4s ease-in-out;
     transform: translateY(100%);
@@ -64,7 +63,9 @@
 .challenge-card-data-homepage{
     display: flex;
     justify-content: space-between;
+    align-items: center;
     padding-left: 5px;
+    padding-top: 7px;
 }
 
 .challenge-card-img-homepage{
@@ -85,14 +86,25 @@
     align-items: center;
 }
 
-.home-page-challenge-labels{
+.home-page-challenge-labels-dark{
     font-size: 10px;
     padding:5px;
     border: 1px solid black;
     border-radius: 8px;
-    background-color: cornflowerblue;
+    background-color: #267EB5;
     margin-right: 3px;
 }
+
+.home-page-challenge-labels-light{
+    font-size: 10px;
+    padding:5px;
+    color: black;
+    border: 1px solid black;
+    border-radius: 8px;
+    background-color: #F0EAD3;
+    margin-right: 3px;
+}
+
 
 @media only screen and (max-width: 350px) {
     .challenge-card-data-homepage{
