@@ -4,7 +4,7 @@ const filterResults = require('./middleware/filterResults');
 const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
 
-const { Submission, Challenge, Label, labels_to_challenge, Reviews } = require('../../models');
+const { Submission,User, Challenge, Label, labels_to_challenge, Reviews } = require('../../models');
 
 const challengeRouter = Router();
 
@@ -36,20 +36,39 @@ challengeRouter.get('/',filterResults, async (req, res) => {
   }
   
 })
+
+
+
 challengeRouter.get("/:challengeId", async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
       where: { id: req.params.challengeId },
-      include: {
+      include: [
+        {
         model: Label,
         attributes: ["name"]
-      }
+      },
+    ]
     });
-    res.json(challenge);
+    const author = await challenge.getUser();
+    res.json({challenge, author})
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 challengeRouter.get('/labels', async (req, res) => {
   try {
     const allLabels = await Label.findAll();
@@ -59,10 +78,20 @@ challengeRouter.get('/labels', async (req, res) => {
   }
 })
 
+
+
+
+
+
+
+
+
+
+
 challengeRouter.get('/:challengeId/submissions', async (req, res) => {
   try {
     const { challengeId } = req.params;
-    const allSubmission = await Submission.findAll({ where: { challengeId } });
+    const allSubmission = await Submission.findAll({ where: { challengeId }, include:[User] });
     res.json(allSubmission);
   } catch (error) {
     res.status(404).json({ message: error.message });

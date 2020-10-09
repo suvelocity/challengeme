@@ -9,7 +9,7 @@ module.exports = [
     created_at: "2020-10-01 20:00:00",
     updated_at: "2020-10-01 20:00:00",
     cover: "https://storage.googleapis.com/challenges-cover/jwt.png",
-    author_id: 1,
+    user_id: 1,
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ module.exports = [
     created_at: "2020-10-01 20:00:00",
     updated_at: "2020-10-01 20:00:00",
     cover: "https://storage.googleapis.com/challenges-cover/calc.jpg",
-    author_id: 3,
+    user_id: 3,
   },
   {
     id: 3,
@@ -33,6 +33,6 @@ module.exports = [
     created_at: "2020-10-01 20:00:00",
     updated_at: "2020-10-01 20:00:00",
     cover: "https://storage.googleapis.com/challenges-cover/dragnscale_f.png",
-    author_id: 2,
+    user_id: 2,
   },
 ];

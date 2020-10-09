@@ -14,8 +14,7 @@ module.exports = [
     security_question: "sup man????",
     security_answer: "cool",
     created_at: "2020-10-01 20:00:00",
-    updated_at: "2020-10-01 20:00:00",
-    deleted_at: "2020-10-01 20:00:00",
+    updated_at: "2020-10-01 20:00:00"
   },
   {
     first_name: "tsach",
@@ -32,8 +31,7 @@ module.exports = [
     security_question: "sup man????",
     security_answer: "cool",
     created_at: "2020-10-01 20:00:00",
-    updated_at: "2020-10-01 20:00:00",
-    deleted_at: "2020-10-01 20:00:00",
+    updated_at: "2020-10-01 20:00:00"
   },
   {
     first_name: "Dror",
@@ -50,8 +48,7 @@ module.exports = [
     security_question: "sup man????",
     security_answer: "cool",
     created_at: "2020-10-01 20:00:00",
-    updated_at: "2020-10-01 20:00:00",
-    deleted_at: "2020-10-01 20:00:00",
+    updated_at: "2020-10-01 20:00:00"
   },
   {
     first_name: "Nir",
@@ -68,7 +65,6 @@ module.exports = [
     security_question: "sup man????",
     security_answer: "cool",
     created_at: "2020-10-01 20:00:00",
-    updated_at: "2020-10-01 20:00:00",
-    deleted_at: "2020-10-01 20:00:00",
+    updated_at: "2020-10-01 20:00:00"
   },
 ];
