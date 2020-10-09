@@ -1,20 +1,20 @@
-require("dotenv").config();
+require('dotenv').config()
 const { Router } = require("express");
 const usersRouter = Router();
 const { User, RefreshToken } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const checkToken = require("../../helpers/checkToken");
-const mailer = require("../../helpers/communicator");
+const checkToken = require('../../helpers/checkToken');
+const mailer = require('../../helpers/communicator');
 
-// Register
+// Register 
 usersRouter.post("/register", async (req, res) => {
   // if user name already exist return error
   const checkUser = await userIsExist(req.body.userName);
 
   if (checkUser) return res.status(409).send("user name already exists");
   const hashPassword = await bcrypt.hash(req.body.password, 10);
-  const hashSecAnswer = await bcrypt.hash(req.body.securityAnswer,10);
+  const hashsecurityAnswer = await bcrypt.hash(req.body.securityAnswer, 10);
   const newUser = {
     userName: req.body.userName,
     firstName: req.body.firstName,
@@ -28,15 +28,12 @@ usersRouter.post("/register", async (req, res) => {
     githubAccount: req.body.githubAccount,
     reasonOfRegistration: req.body.reasonOfRegistration,
     securityQuestion: req.body.securityQuestion,
-    securityAnswer: hashSecAnswer,
+    securityAnswer: hashsecurityAnswer,
   };
   // send validation mail
   // await User.create(newUser);
-  const mailedToken = jwt.sign(newUser, process.env.EMAIL_TOKEN_SECRET);
-  mailer.sendHTMLMail(
-    req.body.email,
-    "Validate your E-mail",
-    `<p>
+  const mailedToken = jwt.sign(newUser, process.env.EMAIL_TOKEN_SECRET)
+  mailer.sendHTMLMail(req.body.email, "Validate your E-mail", `<p>
   Conregulation Challenger, and welcome! You are now offically a part of challenge me
   community! To start challenging your friends and undertake challenges
   yourself, click on the buttom bellow.
@@ -44,15 +41,13 @@ usersRouter.post("/register", async (req, res) => {
 <form action="http://localhost:3000/auth">
 <input name="token" value="${mailedToken}" type="hidden">
   <button style="width: 200px; background-color: purple; color: white;">GET SHWIFFTY</button>
-</form>`,
-    (err, info) => {
-      if (err) {
-        res.status(400).json({ message: "Email Invalid" });
-      } else {
-        res.json({ message: "Waiting For Mail Validation" });
-      }
+</form>`, (err, info) => {
+    if (err) {
+      res.status(400).json({ message: 'Email Invalid' })
+    } else {
+      res.json({ message: "Waiting For Mail Validation" })
     }
-  );
+  });
 });
 
 // Create User
@@ -69,15 +64,14 @@ usersRouter.post('/createuser', (req, res) => {
 // Check if user exist
 usersRouter.post("/userexist", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
-  if (currentUser)
-    return res.status(409).json({ message: "user name already exists" });
+  if (currentUser) return res.status(409).json({ message: "user name already exists" });
   res.json({ notExist: true });
 });
 
 // Validate Token
 usersRouter.get("/validateToken", checkToken, (req, res) => {
-  res.json({ valid: true });
-});
+  res.json({ valid: true })
+})
 
 // Log In
 usersRouter.post("/login", async (req, res) => {
@@ -92,7 +86,7 @@ usersRouter.post("/login", async (req, res) => {
     return res.status(403).json({ message: "User or Password incorrect" });
   const expired = req.body.rememberMe ? "365 days" : "24h";
   const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET, {
-    expiresIn: expired,
+    expiresIn: expired
   });
   const accessToken = generateToken(currentUser);
   await RefreshToken.create({
@@ -150,8 +144,7 @@ usersRouter.post("/info", checkToken, (req, res) => {
 // Geting Sequrity Question
 usersRouter.post("/getquestion", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
-  if (!currentUser)
-    return res.status(404).json({ message: "Cannot Find User" });
+  if (!currentUser) return res.status(404).json({ message: "Cannot Find User" });
   res.json({ securityQuestion: currentUser.securityQuestion });
 });
 
@@ -165,34 +158,24 @@ usersRouter.post("/validateanswer", async (req, res) => {
     currentUser.securityAnswer
   );
   if (!validAnswer) return res.status(403).json({ message: "Wrong Answer" });
-  const resetToken = jwt.sign(currentUser, process.env.RESET_PASSWORD_TOKEN, {
-    expiresIn: "300s",
-  });
+  const resetToken = jwt.sign(currentUser, process.env.RESET_PASSWORD_TOKEN, { expiresIn: "300s" });
   res.json({ resetToken });
 });
 
 // Password Update
 usersRouter.patch("/passwordupdate", async (req, res) => {
   const resetToken = req.body.resetToken;
-  if (!resetToken)
-    return res.status(400).json({ message: "Reset Token Required" });
-  jwt.verify(
-    resetToken,
-    process.env.RESET_PASSWORD_TOKEN,
-    async (err, decoded) => {
-      if (err) return res.status(403).json({ message: "Invalid Token" });
-      const hashPassword = await bcrypt.hash(req.body.password, 10);
-      await User.update(
-        { password: hashPassword },
-        {
-          where: {
-            userName: decoded.userName,
-          },
-        }
-      );
-      res.json({ message: "Changed Password Sucsessfuly" });
-    }
-  );
+  if (!resetToken) return res.status(400).json({ message: "Reset Token Required" });
+  jwt.verify(resetToken, process.env.RESET_PASSWORD_TOKEN, async (err, decoded) => {
+    if (err) return res.status(403).json({ message: "Invalid Token" });
+    const hashPassword = await bcrypt.hash(req.body.password, 10);
+    await User.update({ password: hashPassword }, {
+      where: {
+        userName: decoded.userName
+      }
+    });
+    res.json({ message: "Changed Password Sucsessfuly" });
+  });
 });
 
 async function userIsExist(userName) {
@@ -204,8 +187,9 @@ async function userIsExist(userName) {
   if (user) {
     return user.dataValues;
   } else {
-    return user;
+    return user
   }
+
 }
 
 function generateToken(user) {

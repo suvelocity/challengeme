@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect  } from "react-router-dom";
 import { Logged } from "../context/LoggedInContext";
 import Home from "./Home";
 import Register from "./Register/Register";
 import Login from "./Login";
 import Cookies from "js-cookie";
 import Forgot from "./Forgot/Forgot";
-import VlidatingMail from "./Register/VlidatingMail";
-import network from "../services/network";
+import VlidatingMail from './Register/VlidatingMail';
+import network from '../services/network';
 
 export default function Router() {
   const [logged, setLogged] = useState(false);
@@ -15,7 +15,7 @@ export default function Router() {
 
   useEffect(() => {
     (async () => {
-      if (Cookies.get("accessToken")) {
+      if (Cookies.get('accessToken')) {
         try {
           const { data } = await network.get("/api/v1/auth/validateToken");
           setLogged(data);
@@ -32,8 +32,8 @@ export default function Router() {
 
   return (
     <BrowserRouter>
-      {!loading ? (
-        !logged ? (
+      {!loading ? 
+        !logged ? 
           <Logged.Provider value={{ logged, setLogged }}>
             <Switch>
               <Route exact path="/register">
@@ -42,32 +42,27 @@ export default function Router() {
               <Route exact path="/login">
                 <Login />
               </Route>
-              <Route path="/reset-password">
-                <Forgot />
-              </Route>
               <Route exact path="/auth">
                 <VlidatingMail />
               </Route>
               <Route path="*">
-                <Redirect to="/login" />
+                <Redirect to='/login' />
               </Route>
             </Switch>
           </Logged.Provider>
-        ) : (
+        : 
           <Logged.Provider value={{ logged, setLogged }}>
             <Switch>
               <Route exact path="/">
                 <Home />
               </Route>
               <Route path="*">
-                <Redirect to="/" />
+                <Redirect to='/' />
               </Route>
             </Switch>
           </Logged.Provider>
-        )
-      ) : (
-        <div></div>
-      )}
+      : <div></div>
+      } 
     </BrowserRouter>
   );
 }

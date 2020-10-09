@@ -24,33 +24,33 @@ import ErrorIcon from "@material-ui/icons/Error";
 import "../styles/Login.css";
 
 const useStyles = makeStyles((theme) => ({
-  userName: {
-    marginTop: "80px",
-    marginBottom: "20px",
-    width: "320px",
-  },
-  password: {
-    marginBottom: "5px",
-    width: "320px",
-  },
-  loginButton: {
-    marginBottom: "10px",
-    marginTop: "60px",
-    background: "linear-gradient(45deg, #447CC6 30%, #315CAB 90%)",
-    color: "white",
-  },
+    userName: {
+        marginTop: "80px",
+        marginBottom: "20px",
+        width: "320px",
+    },
+    password: {
+        marginBottom: "5px",
+        width: "320px",
+    },
+    loginButton: {
+        marginBottom: "10px",
+        marginTop: "60px",
+        background: "linear-gradient(45deg, #447CC6 30%, #315CAB 90%)",
+        color: "white",
+    },
 }));
 
 export default function Login() {
-  const classes = useStyles();
-  const [userName, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [rememberMe, setRememberMe] = useState(false);
-  const [error, setError] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
-  const location = useHistory();
+    const classes = useStyles();
+    const [userName, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [rememberMe, setRememberMe] = useState(false);
+    const [error, setError] = useState({});
+    const [showPassword, setShowPassword] = useState(false);
+    const location = useHistory();
 
-  const value = useContext(Logged);
+    const value = useContext(Logged);
 
     const updateField = (e) => {
         switch (e.currentTarget.name) {
@@ -114,28 +114,6 @@ export default function Login() {
                         </IconButton>
                     </div>
                 </div>
-              </div>
-            )
-            <Button
-              type="submit"
-              id="login-button"
-              className={classes.loginButton}
-            >
-              Log in
-            </Button>
-            <FormControlLabel
-              htmlFor="rememberMe"
-              value="start"
-              control={<Checkbox color="primary" />}
-              label="Remember me"
-              labelPlacement="end"
-              name="rememberMe"
-              type="checkbox"
-              onChange={updateField}
-            />
-            <div>
-              <span>don't have an account yet?</span>
-              <Link to="/register">Sign up</Link>
             </div>
             <div className="containerBody">
                 <form className="loginForm" onSubmit={loginFunc}>
