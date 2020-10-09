@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-// import axios from 'axios'
+import axios from "axios";
 import network from "../../services/network";
 
 import { Button, Link } from "@material-ui/core";
@@ -18,7 +18,7 @@ import SolutionTable from "./SolutionTable";
 
 import "./ChallengePage.css";
 
-const challenge = {
+const mockChallenge = {
   cover: "https://storage.googleapis.com/challenges-cover/tvv_f.png",
   createdAt: "2020-10-04T12:00:00.000Z",
   deletedAt: null,
@@ -39,66 +39,40 @@ const challengeParamId = 3; //Mock until we merge shahar
 const userId = 2; //Mock until we merge shahar
 
 function ChallengePage() {
-  // const [challenge, setChallenge] = useState({});
-  const { challengeId } = useParams();
-
-  //const [challengeInfo,setChallengeInfo] = useState('');
+  const [challenge, setChallenge] = useState({});
+  const { challengeParamId } = useParams();
   const [blobedImg, setBlobedImg] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-<<<<<<< HEAD
-  const setImg = async () => {
-    const { data } = await network.get(`/api/v1/images?id=${challengeId}`);
-    setBlobedImg(data.img);
-  };
   useEffect(() => {
-    //setChallengeInfo(axios.get('url:id').data);
-    // console.log(blobedImg);
+    const setImg = async () => {
+      try {
+        const { data } = await network.get(
+          `/api/v1/images?id=${challengeParamId}`
+        );
+        setBlobedImg(data.img);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    const fetchChallenge = async () => {
+      try {
+        const { data: challengeFromServer } = await axios.get(
+          `/api/v1/challenges/${challengeParamId}`
+        );
+        setChallenge(challengeFromServer);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     setImg();
-    console.log(blobedImg);
-    // =======
-    // const [challenge, setChallenge] = useState({});
-
-    // useEffect(() => {
-    //   const fetchChallenge = async () => {
-    //     try {
-    //       const { data: challengeFromServer } = await axios.get(
-    //         `/api/v1/challenges/${challengeParamId}`
-    //       );
-    //       console.table(challenge);
-    //       // setChallenge(challengeFromServer);
-    //     } catch (error) {
-    //       console.log(error);
-    //     }
-    //   };
-    //   fetchChallenge();
-    // >>>>>>> 36f2077c2c283d389024cb3a91620c0a4000d5e0
+    fetchChallenge();
   }, []);
-=======
-		// useEffect(() => {
-		//   const fetchChallenge = async () => {
-		//     try {
-		//       const { data: challengeFromServer } = await axios.get(
-		//         `/api/v1/challenges/${challengeParamId}`
-		//       );
-		//       console.table(challenge);
-		//       // setChallenge(challengeFromServer);
-		//     } catch (error) {
-		//       console.log(error);
-		//     }
-		//   };
-		//   fetchChallenge();
-		// >>>>>>> 36f2077c2c283d389024cb3a91620c0a4000d5e0
-	}, []);
-	function handleModalClose() {
-		setIsModalOpen(false);
-	}
->>>>>>> c51070c702f285ab66ae1c12fff2e19d3ee1c9df
 
   function handleModalClose() {
     setIsModalOpen(false);
   }
-
+  console.table(challenge);
   return challenge ? (
     <div className='fullpage-wrapper'>
       <div className='navbar'>im navbar</div>
