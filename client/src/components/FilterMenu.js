@@ -7,24 +7,30 @@ import './FilterMenu.css'
 const FilterMenu =( {formerSelection,updateFilters}) => {
   //filters must have a value that's either a number/string or an array of such
   const {labels:formerLabels,time:formerTime} = formerSelection
-  
   const [labels,setLabels]  =useState(formerLabels||[])
   const [time,setTime]  = useState(formerTime||100)
   const [open,setOpen]  = useState(false)
-
+  const submit= () => {
+    updateFilters({labels,time})
+    setOpen(false);
+  }
+  const clear= () => {
+    updateFilters({labels:[],time:100})
+    setOpen(false);
+  }
+  const close= () => {
+    setOpen(false);
+  }
+  
   const toggleOpenClick = () => {
     if(open){
-      setOpen(false);
-      // submit()  
+      close()
     }else{
       setOpen(true)
     }
     
   }
 
-  const submit= () => {
-    updateFilters({labels,time})
-  }
   const menuClass = open?'open filters':'filters'
   
   return (
@@ -34,12 +40,28 @@ const FilterMenu =( {formerSelection,updateFilters}) => {
       FILTERS
       </h3>
         {/* <ChooseCategory submitFilter={setValue} /> */}
-        <button className='filterSubmit' 
-        onClick={toggleOpenClick} >submit</button>
-        <button className='filterSubmit' 
-        onClick={toggleOpenClick} >clear</button>
+        
+        <button 
+          className='filterSubmit' 
+          onClick={submit} >
+          submit
+        </button>
+        
+        <button 
+          className='filterClear' 
+          onClick={clear} >
+          clear
+        </button>
+        
+        <button 
+          className='filterCancel' 
+          onClick={close} >
+          cancel
+        </button>
+        
         <ChooseLabels submitFilter={setLabels} />
         <ChooseTime submitFilter={setTime} />
+      
       </div>
       <div className='toggleOpen' 
       onClick={toggleOpenClick} />
