@@ -30,7 +30,7 @@ export default function ChallengeCard({
   useEffect(()=>{
     (async ()=> {
       const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`)
-      setCoverImg(coverImage.img)
+      setCoverImg(coverImage?coverImage.img:'')
       const { data: repo } = await network.get(`https://api.github.com/repos/${repositoryName}`)
       const updateDate = repo.updated_at
       setDate(generateTime(updateDate))

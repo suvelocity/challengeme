@@ -17,6 +17,7 @@ import './Header.css';
 import ThemeApi from "../services/Theme"
 import DarkModeToggle from "react-dark-mode-toggle";
 
+import Search from './Search'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -71,7 +72,6 @@ function Header() {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -103,19 +103,9 @@ function Header() {
               </div>
             </NavLink>
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder='Search…'
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
+
+          <Search />
+
           <div style={{ flex: 1 }}></div> 
           {/* Make space between the search input and the rest of the header. */}
           <Button color='inherit'>

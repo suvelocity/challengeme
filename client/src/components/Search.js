@@ -5,8 +5,11 @@ import network from '../services/network';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import  ChooseCategory from "./ChooseCategory"
+import  SearchTicket from "./SearchTicket"
 import  ChooseLabels from "./ChooseLabels"
 import './Search.css'
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     // maxWidth: 600,
@@ -107,8 +110,8 @@ const Search =() => {
     }
   }
   const resultsList = (results&&results.length>0
-    ?results.map((results)=>{
-      return <div key={results.name}>{results.name}</div>
+    ?results.map((result)=>{
+      return <SearchTicket ticket={result} key={result.id} closeSearch={closeSearch}/>;
     })
     :'no results found')
   
@@ -144,11 +147,11 @@ const Search =() => {
       {searchInput}
       <div id='searchResults' className={searching?'open':'closed'}>
         <ChooseLabels submitFilter={addFilters}/>
-        {openFilter
+        {/* {openFilter
           ?<ChooseCategory formerSelection={filters.categories} submitFilter={addFilters}/>
           :<button onClick={() => {setOpenFilter(true)}}>
             Choose Category 
-          </button>}
+          </button>} */}
         <div className='display'>
         {resultsList}
         </div>

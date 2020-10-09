@@ -10,24 +10,28 @@ const router = Router();
 
 router.get('/',filterResults, async (req, res) => {
   const {condition,labels} = req
-  console.log(labels);
-  const allChallenges = await Challenge.findAll({
-    where: condition,
-    include: [Label]
-  });
-  if(labels){
-    const filterChallenges = allChallenges.filter((challenge)=>{
-      // challenge.Labels[t].id === labels[j]  
-      // return challenge ;
-      return labels.some((label)=>{
-        return challenge.Labels.some((x)=>{
-          return x.id == label  ;
-        })
-      })
+  try {
+    const allChallenges = await Challenge.findAll({
+      where: condition,
+      include: [Label]
     });
-    res.json(filterChallenges);
-  } else {
-    res.json(allChallenges)
+    if(labels){
+      const filterChallenges = allChallenges.filter((challenge)=>{
+        // challenge.Labels[t].id === labels[j]  
+        // return challenge ;
+        return labels.some((label)=>{
+          return challenge.Labels.some((x)=>{
+            return x.id == label  ;
+          })
+        })
+      });
+      res.json(filterChallenges);
+    } else {
+      res.json(allChallenges)
+    }
+    
+  } catch (error) {
+    res.send('an error has happened')
   }
 })
 
