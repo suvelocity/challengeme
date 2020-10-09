@@ -71,7 +71,6 @@ function ChallengePage() {
 		//   fetchChallenge();
 		// >>>>>>> 36f2077c2c283d389024cb3a91620c0a4000d5e0
 	}, []);
-
 	function handleModalClose() {
 		setIsModalOpen(false);
 	}

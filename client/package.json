@@ -37,5 +37,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nock": "^13.0.4",
+    "nock-puppeteer": "^1.0.2",
+    "puppeteer": "^5.3.1"
   }
 }
