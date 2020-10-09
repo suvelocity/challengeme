@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
     width: "inherit",
     gridTemplate: `
       'headChart topChart' 300px 
-      'headChart bottomChart' 300px / 800px 600px;`,
+      'bottomChart bottomChart' 300px`,
   },
   div: {
     textAlign: "center",
@@ -169,7 +169,7 @@ function StatisticsHome() {
             style={{ gridArea: "headChart", ...imageStyle }}
           >
             <Charts
-              width={"600px"}
+              width={"400px"}
               height={"2000px"}
               chart={[0, 2]}
               data={challengeData}

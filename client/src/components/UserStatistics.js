@@ -15,8 +15,8 @@ const useStyles = makeStyles((theme) => ({
       height: "inherit",
       width: "inherit",
       gridTemplate: `
-        'headChart topChart' 300px 
-        'headChart bottomChart' 300px / 800px 600px;`,
+        'headChart headChart' 300px 
+        'topChart bottomChart' 300px `,
     },
     div: {
       textAlign: "center",
@@ -67,6 +67,7 @@ function UserStatistics() {
           setTopUsersData(null)
         }
       }, [])
+      
       const getUsersData = async () => {
         const { data: usersInfo } = await axios.get('/api/v1/statistics/users/top-users');
         setTopUsersData(usersInfo)

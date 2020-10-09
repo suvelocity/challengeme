@@ -15,9 +15,9 @@ const useStyles = makeStyles((theme) => ({
     height: "inherit",
     width: "inherit",
     gridTemplate: `
-      'headChart headChart smallChart' 22vh 
-      'headChart headChart sideChart' 22vh
-      'leftChart rightChart sideChart' 22vh / 18vw 18vw 40vw;`,
+      'headChart headChart smallChart' 30vh 
+      'headChart headChart sideChart' 30vh
+      'leftChart rightChart sideChart' 30vh `,
   },
   div: {
     textAlign: "center",
@@ -228,9 +228,9 @@ useEffect(() => {
             style={{ gridArea: "leftChart" }}
           >
             <Charts
-              width={"13vw"}
+              width={"17vw"}
               height={"13vw"}
-              chart={[0, 2]}
+              chart={[2]}
               data={topChallengesData}
             />
           </div>
@@ -247,8 +247,8 @@ useEffect(() => {
           >
             <Charts
               width={"13vw"}
-              height={"13vh"}
-              chart={[0, 2]}
+              height={"16vh"}
+              chart={[2]}
               data={challengesTypeData}
             />
           </div>
