@@ -1,24 +1,18 @@
 
 
 const request = require('supertest');
-const app = require('./app');
-const appForWebhook = require('./app');
+const app = require('../app');
 const ngrok = require('ngrok');
-const port = process.env.PORT || 4040;
-// const fs = require('fs');
-// const filePath = 'urlForTest.json';
-// const data = fs.readFileSync(filePath);
-// const url = JSON.parse(data).url;
-// process.env.MY_URL= url;
-const {Submission, Challenge} = require('./models');
+const port = process.env.TEST_PORT || 4040;
+const {Submission, Challenge} = require('../models');
 const {challengeArr, solutionRepos, failRepos} = require('./mockData');
+let server;
 
-jest.setTimeout(300000);
 describe('Submission process', () => {
-    beforeAll(async () => {
+    beforeAll(async (done) => {
         const url = await ngrok.connect(port);
         process.env.MY_URL = url;
-        app.listen(port, () => {
+        server = app.listen(port, () => {
             console.log(`Example app listening at http://localhost:${port}`)
           })
         await Challenge.destroy({ truncate: true, force: true });
@@ -26,8 +20,9 @@ describe('Submission process', () => {
         await Challenge.bulkCreate(challengeArr);
         console.log(solutionRepos)
         console.log(process.env.MY_URL)
+        done();
       });
-    test('Posting submisson and status change to PENDING', async () => {
+    test('Posting submisson and status change to PENDING', async (done) => {
 
         await request(app).post(`/api/v1/challenges/${solutionRepos[0].challengeId}/apply`).send({solutionRepository:solutionRepos[0].repo});
         await request(app).post(`/api/v1/challenges/${solutionRepos[1].challengeId}/apply`).send({solutionRepository:solutionRepos[1].repo});
@@ -36,8 +31,9 @@ describe('Submission process', () => {
         let submissions = await Submission.findAll();
         expect(submissions.length).toBe(4);
         submissions.forEach(submission => expect(submission.state).toBe('PENDING'));
+        done();
     });
-    test('Getting Submission Status back to database', async () => {
+    test('Getting Submission Status back to database', async (done) => {
         let submissions;
         function checkingPending (){
             return new Promise((resolve, reject) => {
@@ -57,12 +53,23 @@ describe('Submission process', () => {
             });
         }
         await checkingPending();
-    });
-    test('Correct status on the Submissions', async () => {
+        done();
+    },200000);
+    test('Correct status on the Submissions', async (done) => {
         const allSubmissions = await Submission.findAll();
-        let success = allSubmissions.filter(submission => submission.state === 'SUCCESS');
-        expect(success.length).toBe(3);
-        let fails = allSubmissions.filter(submission => submission.state === 'FAIL');
-        expect(fails.length).toBe(1);
+        solutionRepos.forEach(solution => {
+            const index = allSubmissions.findIndex(submission => submission.solutionRepository === solution.repo && submission.state === 'SUCCESS');
+            expect(index).toBeGreaterThan(-1);
+        })
+        failRepos.forEach(fail => {
+            const index = allSubmissions.findIndex(submission => submission.solutionRepository === fail.repo && submission.state === 'FAIL');
+            expect(index).toBeGreaterThan(-1);
+        })
+        done();
     });
+    afterAll(async (done) => {
+        server.close();
+        await ngrok.disconnect();
+        done();
+    })
 });  
