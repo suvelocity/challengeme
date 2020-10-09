@@ -39,7 +39,7 @@ const challengeParamId = 3; //Mock until we merge shahar
 const userId = 2; //Mock until we merge shahar
 
 function ChallengePage() {
-  const [challenge, setChallenge] = useState({});
+  const [challenge, setChallenge] = useState(null);
   const { challengeParamId } = useParams();
   const [blobedImg, setBlobedImg] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,6 +60,7 @@ function ChallengePage() {
         const { data: challengeFromServer } = await axios.get(
           `/api/v1/challenges/${challengeParamId}`
         );
+        console.log('challenge from server: ',challengeFromServer);
         setChallenge(challengeFromServer);
       } catch (error) {
         console.log(error);
@@ -72,7 +73,7 @@ function ChallengePage() {
   function handleModalClose() {
     setIsModalOpen(false);
   }
-  console.table(challenge);
+  // console.table(challenge);
   return challenge ? (
     <div className='fullpage-wrapper'>
       <div className='navbar'>im navbar</div>
@@ -104,7 +105,7 @@ function ChallengePage() {
                 clickable
               />
             </span>
-            {challenge.label.map((tag, index) => (
+            {/* {challenge.label.map((tag, index) => (
               <span key={index} className='challenge-label'>
                 <Chip
                   color='primary'
@@ -114,7 +115,7 @@ function ChallengePage() {
                   clickable
                 />
               </span>
-            ))}
+            ))} */}
           </div>
           <div className='challenge-rating'>
             <h2>Rating:</h2>
@@ -143,7 +144,7 @@ function ChallengePage() {
             {/* change prop to params.id */}
           </div>
           <div className='challenge-solution-table'>
-            <SolutionTable challengeId={challengeParamId} />
+            <SolutionTable challengeParamId={challengeParamId} />
           </div>
           <div className='challenge-submit-btn'>
             <Button color='primary' onClick={setIsModalOpen}>
@@ -156,7 +157,7 @@ function ChallengePage() {
       <SubmitModal
         isOpen={isModalOpen}
         handleClose={handleModalClose}
-        challengeId={challengeParamId}
+        challengeParamId={challengeParamId}
         userId={userId}
       />
     </div>
