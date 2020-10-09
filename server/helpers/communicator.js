@@ -1,10 +1,11 @@
+require('dotenv').config()
 const nodemailer = require("nodemailer");
 
 myCon = {
     service: 'gmail',
     auth: {
         user: 'suvelocity@gmail.com',
-        pass: 'yozwryyfgcrsneor'
+        pass: process.env.emailPassword
     }
 }
 
