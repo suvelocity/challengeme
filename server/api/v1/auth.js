@@ -63,7 +63,6 @@ usersRouter.post('/createuser', (req, res) => {
 // Check if user exist
 usersRouter.post("/userexist", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
-  console.log(currentUser);
   if (currentUser) return res.status(409).json({ message: "user name already exists" });
   res.json({ notExist: true });
 });
@@ -193,7 +192,7 @@ async function userIsExist(userName) {
 }
 
 function generateToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "900s" });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "5s" });
 }
 
 module.exports = usersRouter;
