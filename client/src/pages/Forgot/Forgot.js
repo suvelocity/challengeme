@@ -54,6 +54,10 @@ export default function Forgot() {
   };
 
   const getQuestion = async (userName) => {
+    if(userName.length < 8 || userName.length > 32 ||/\W/.test(userName)) {
+      setError("Please enter a valid username ");
+      return;
+    }
     try {
       const { data: response } = await axios.post("/api/v1/auth/getquestion", {
         userName,
@@ -82,17 +86,17 @@ export default function Forgot() {
     }
   };
 
-  const resetPassword = async (password, confirmPassword, token) => {
+  const resetPassword = async (password, confirmPassword, resetToken) => {
     if (password !== confirmPassword) {
       setError("passwords do not match");
       return;
     }
     try {
-      const { data: response } = await axios.post(
+      const { data: response } = await axios.patch(
         "/api/v1/auth/passwordupdate",
         {
           password,
-          token,
+          resetToken,
         }
       );
 

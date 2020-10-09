@@ -115,7 +115,7 @@ export default function Login() {
                     </div>
                 </div>
               </div>
-            )}
+            )
             <Button
               type="submit"
               id="login-button"
