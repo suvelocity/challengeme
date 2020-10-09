@@ -3,6 +3,7 @@ import network from '../services/network';
 import AddImg from './AddImg';
 import Swal from 'sweetalert2';
 import "./NewChallengeForm.css"
+import ChooseLables from '../components/ChooseLabels'
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, InputLabel, MenuItem, FormControl, Select, TextField, TextareaAutosize, Button } from '@material-ui/core';
@@ -14,6 +15,7 @@ export default function NewChallengeForm() {
   const [repoLink, setRepoLink] = useState(''); 
   const [repoDescription, setRepoDescription] = useState(''); 
   const [repoType, setRepoType] = useState('');
+  const [repoLabels, setRepoLabels] = useState([]);
   const [file,setFile] = useState({})
   const [badInput, setBadInput] = useState([]); 
 
@@ -62,9 +64,12 @@ export default function NewChallengeForm() {
       newBadInput.push("* Repository's image not selected");
     }
     setBadInput(newBadInput);
-    setTimeout(() => {
-      return setBadInput([]);
-    }, 5000);
+    if(newBadInput.length > 0)
+    {
+      setTimeout(() => {
+        return setBadInput([]);
+      }, 5000);
+    }
     if(newBadInput.length === 0) {
       const newRepo = {
         name: repoName,
@@ -73,38 +78,26 @@ export default function NewChallengeForm() {
         repositoryName: repoLink
       }
       // post newRepo to challenge table
-      const postedRepo = await network.post(`/api/v1/new-challenge`, newRepo)
-      .catch(error => {
-        newBadInput.push([error.message]);
-        setBadInput(newBadInput);
-        setTimeout(() => {
-          return setBadInput([]);
-        }, 5000);
-      });
-      /* DELETE IF POSTING WORKS WITHOUT THIS
-      // get newRepo's challengeId --- bad request - can't send parameter with '/' in it
-      // + sholud fire this get only if previous post succeeded
-      const repoId = await network.get(`/api/v1/new-challenge/${repoLink}`, newRepo)
-      .catch(error => {
-        newBadInput.push([error.message]);
-        setBadInput(newBadInput);
-        setTimeout(() => {
-          return setBadInput([]);
-        }, 5000);
-      });
-      */
-      // post file as challenge's image
-      // + sholud fire this post only if previous get succeeded
-      await network.post("/api/v1/image",{
+      try{
+        const postedRepo = await network.post(`/api/v1/new-challenge`, newRepo)
+        await network.post("/api/v1/image",{
         challengeId: postedRepo.id,
         img:file
-      }).catch(error => {
-        newBadInput.push([error.message]);
+      })
+        // await network.post('/api/v1/challenges/labels',{
+
+        // })
+      }
+      catch(error){
+        console.log(newBadInput)
+        newBadInput.push(error.message);
+        console.log(error)
+        console.log(newBadInput)
         setBadInput(newBadInput);
         setTimeout(() => {
           return setBadInput([]);
-        }, 11000);
-      });  
+        }, 5000);
+      }
     }
   }
 
@@ -146,6 +139,7 @@ export default function NewChallengeForm() {
     setRepoType('')
     setFile({})
     setBadInput([])
+    setRepoLabels([])
   }
 
   // material ui styling
@@ -172,7 +166,9 @@ export default function NewChallengeForm() {
       <TextareaAutosize className='descriptionTextArea' autoComplete="off" aria-label='Description' rowsMin={6} placeholder='Challenge description...' onChange={event => setRepoDescription(event.target.value)}/><br />
 
       <AddImg file={file} handleChange={handleFile}/><br />
-
+      <div className="newChallengeFormFeild">
+        <ChooseLables addNewChallengeLabelsSetter={setRepoLabels}/> 
+      </div>
       <FormControl className={classes.formControl}>
         <InputLabel id='Challenge type'>Challenge type</InputLabel>
         <Select
@@ -187,6 +183,7 @@ export default function NewChallengeForm() {
       </FormControl><br />
       <Typography color='error' className='displayErrors'>
         {badInput.join(`\n`)}
+        {console.log(badInput)}
       </Typography>
       <br />
       <div className='newChallengeFormButtons'>
