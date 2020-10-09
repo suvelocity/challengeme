@@ -1,13 +1,39 @@
 const { Router } = require('express');
 const axios = require('axios');
+const filterResults = require('../../middleware/filterResults');
+const { Sequelize } = require('sequelize');
+const Op = Sequelize.Op;
 
-const { Submission, Challenge } = require('../../models');
+const { Submission, Challenge, Label, labels_to_challenge } = require('../../models');
 
 const router = Router();
 
-router.get('/', async (req, res) => {
-  const allChallenges = await Challenge.findAll();
-  res.json(allChallenges)
+router.get('/',filterResults, async (req, res) => {
+  const {condition,labels} = req
+  console.log(labels);
+  const allChallenges = await Challenge.findAll({
+    where: condition,
+    include: [Label]
+  });
+  if(labels){
+    const filterChallenges = allChallenges.filter((challenge)=>{
+      // challenge.Labels[t].id === labels[j]  
+      // return challenge ;
+      return labels.some((label)=>{
+        return challenge.Labels.some((x)=>{
+          return x.id == label  ;
+        })
+      })
+    });
+    res.json(filterChallenges);
+  } else {
+    res.json(allChallenges)
+  }
+})
+
+router.get('/labels', async (req, res) => {
+  const allLabels = await Label.findAll();
+  res.json(allLabels.map(({id,name})=>{return{label:name,value:id}}))
 })
 
 router.get('/:challengeId/submissions', async (req, res) => {
