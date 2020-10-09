@@ -6,14 +6,19 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "@synapsestudios/react-drop-n-crop": "^0.2.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.20.0",
+    "framer-motion": "^2.8.0",
     "react": "^16.13.1",
+    "react-dark-mode-toggle": "0.0.10",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "sweetalert2": "^10.3.5"
     "react-select": "^3.1.0"
   },
   "scripts": {

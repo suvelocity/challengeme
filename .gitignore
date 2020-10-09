@@ -1,5 +1,5 @@
 server/checked-actions-memory.json
 checked-actions-memory.json
-node_modules
 .env
-requests.rest
+node_modules
+
