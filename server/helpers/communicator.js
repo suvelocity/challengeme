@@ -1,12 +1,11 @@
 const nodemailer = require("nodemailer");
+require('dotenv').config()
 
 myCon = {
-    host: 'smtp.mail.yahoo.com',
-    port: 465,
-    service: 'yahoo',
+    service: 'gmail',
     auth: {
-        user: 'suvelocity@yahoo.com',
-        pass: 'woqfikymfbaoievm'
+        user: process.env.SUVELOCITY_MAIL,
+        pass: process.env.SUVELOCITY_PASSWORD
     }
 }
 

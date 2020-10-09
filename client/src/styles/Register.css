@@ -36,7 +36,7 @@
     background-color: rgba(255, 255, 255, 0.972);
     border-radius: 5px;
     width: 600px;
-    height: 420px;
+    height: 430px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -61,11 +61,13 @@ span.MuiTypography-root.MuiStepLabel-label.MuiStepLabel-alternativeLabel.MuiTypo
 .containerButtons {
     display: flex;
     justify-content: center;
+    align-items: center;
+  
 }
 
 .containerErrorRegister {
     position: absolute;
-    margin-top: 290px;
+    margin-top: 300px;
     height: 30px;
     border-radius: 5px;
     width: 400px;

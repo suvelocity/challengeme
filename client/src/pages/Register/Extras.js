@@ -11,8 +11,8 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 
 const useStyles = makeStyles((theme) => ({
     reason: {
-        marginTop: "80px",
-        // marginBottom: "20px",
+        marginTop: "130px",
+        marginBottom: "30px",
         width: "320px",
     },
     github: {

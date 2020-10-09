@@ -16,7 +16,7 @@ function ValidatingMail() {
     }, []);
 
     useEffect(() => {
-        if (access === "good") History.push("/login");
+        History.push('/login');
     }, [access]);
 
     return (
