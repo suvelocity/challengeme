@@ -9,7 +9,21 @@ function AddImg( { file, handleChange} ) {
     <>
       <div className="upload-img-container">
         <div className="upload-img-secondary-container">
-        <DropNCrop maxFileSize={3145728} cropperOptions={{multiple:false,viewMode:1,minCropBoxHeight:300,minCropBoxWidth:800,aspectRatio:400/150,zoomable:false}} onChange={event => handleChange(event)} value={file} />
+        <DropNCrop
+          maxFileSize={3145728}
+          cropperOptions={
+            {
+              multiple:false,
+              viewMode:1,
+              minCropBoxHeight:300,
+              minCropBoxWidth:800,
+              aspectRatio:400/150,
+              zoomable:false
+            }
+          }
+          onChange={event => handleChange(event)}
+          value={file}
+        />
         <Button variant="contained" color="secondary" onClick={()=>handleChange({})} >
           remove image
         </Button>

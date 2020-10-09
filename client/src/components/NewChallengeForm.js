@@ -2,19 +2,20 @@ import React, { useEffect, useState } from 'react';
 import network from '../services/network';
 import AddImg from './AddImg';
 import Swal from 'sweetalert2';
+import "./NewChallengeForm.css"
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, InputLabel, MenuItem, FormControl, Select, TextField, TextareaAutosize, Button } from '@material-ui/core';
 
 export default function NewChallengeForm() {
-  const [darkMode, setDarkMode] = useState(false); 
+  const [darkMode, setDarkMode] = useState('darkMode'); 
   const [optionsArray, setOptionsArray] = useState([]); 
-  const [badInput, setBadInput] = useState([]); 
   const [repoName, setRepoName] = useState(''); 
   const [repoLink, setRepoLink] = useState(''); 
   const [repoDescription, setRepoDescription] = useState(''); 
   const [repoType, setRepoType] = useState('');
   const [file,setFile] = useState({})
+  const [badInput, setBadInput] = useState([]); 
 
   useEffect(() => {
     openOptions();
@@ -27,19 +28,6 @@ export default function NewChallengeForm() {
     <MenuItem key={index} value={type}>{type}</MenuItem>
     ))
   }
-
-  // material ui styling
-  const useStyles = makeStyles((theme) => ({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-  }));
-
-  const classes = useStyles();
 
   // validate data before poting and submiting challenge
   const spaces = new RegExp(/^(\s{1,})$/);
@@ -70,6 +58,9 @@ export default function NewChallengeForm() {
     if(!repoType) {
       newBadInput.push("* Repository's type not selected");
     }
+    if(Object.keys(file).length === 0 && file.constructor === Object) {
+      newBadInput.push("* Repository's image not selected");
+    }
     setBadInput(newBadInput);
     setTimeout(() => {
       return setBadInput([]);
@@ -82,7 +73,7 @@ export default function NewChallengeForm() {
         repositoryName: repoLink
       }
       // post newRepo to challenge table
-      await network.post(`/api/v1/new-challenge`, newRepo)
+      const postedRepo = await network.post(`/api/v1/new-challenge`, newRepo)
       .catch(error => {
         newBadInput.push([error.message]);
         setBadInput(newBadInput);
@@ -90,6 +81,7 @@ export default function NewChallengeForm() {
           return setBadInput([]);
         }, 5000);
       });
+      /* DELETE IF POSTING WORKS WITHOUT THIS
       // get newRepo's challengeId --- bad request - can't send parameter with '/' in it
       // + sholud fire this get only if previous post succeeded
       const repoId = await network.get(`/api/v1/new-challenge/${repoLink}`, newRepo)
@@ -100,10 +92,11 @@ export default function NewChallengeForm() {
           return setBadInput([]);
         }, 5000);
       });
+      */
       // post file as challenge's image
       // + sholud fire this post only if previous get succeeded
       await network.post("/api/v1/image",{
-        challengeId: repoId,
+        challengeId: postedRepo.id,
         img:file
       }).catch(error => {
         newBadInput.push([error.message]);
@@ -115,6 +108,7 @@ export default function NewChallengeForm() {
     }
   }
 
+  // add image
   const handleFile = (value) =>{
     if(value.src)
     {
@@ -144,8 +138,8 @@ export default function NewChallengeForm() {
     }
   }
 
-  const handleReset = () =>{
-    setBadInput([])
+  // 'clear values' button
+  const handleReset = () => {
     setRepoName('')
     setRepoLink('')
     setRepoDescription('')
@@ -154,22 +148,33 @@ export default function NewChallengeForm() {
     setBadInput([])
   }
 
+  // material ui styling
+  const useStyles = makeStyles((theme) => ({
+    formControl: {
+      margin: theme.spacing(1),
+      minWidth: 120,
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    },
+  }));
 
-
+  const classes = useStyles();
+  
   return (
-  <div className={`newChallenge ${darkMode ? 'darkMode' : 'lightMode'}`}>
+  <div className={`newChallenge ${darkMode}`}>
     <form className='newChallengeForm'>
       <Typography variant='h5' gutterBottom className='newChallengeFormheader'>
         New Challenge
       </Typography>
-        <TextField id='name' autoComplete="off" className='newChallengeFormFeild' label='Challenge name' onChange={event => setRepoName(event.target.value)}/><br />
-        <TextField id='repo' autoComplete="off" className='newChallengeFormFeild' label='Challenge link' onChange={event => setRepoLink(event.target.value)}/><br />
-        <TextareaAutosize className='descriptionTextArea' autoComplete="off" aria-label='Description' rowsMin={6} placeholder='Challenge description...' onChange={event => setRepoDescription(event.target.value)}/><br />
+      <TextField id='name' autoComplete="off" className='newChallengeFormFeild' label='Challenge name' onChange={event => setRepoName(event.target.value)}/><br />
+      <TextField id='repo' autoComplete="off" className='newChallengeFormFeild' label='Challenge link' onChange={event => setRepoLink(event.target.value)}/><br />
+      <TextareaAutosize className='descriptionTextArea' autoComplete="off" aria-label='Description' rowsMin={6} placeholder='Challenge description...' onChange={event => setRepoDescription(event.target.value)}/><br />
 
       <AddImg file={file} handleChange={handleFile}/><br />
 
       <FormControl className={classes.formControl}>
-          <InputLabel id='Challenge type'>Challenge type</InputLabel>
+        <InputLabel id='Challenge type'>Challenge type</InputLabel>
         <Select
           labelId='Challenge type'
           id='Challenge type'
