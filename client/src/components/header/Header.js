@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -121,6 +121,7 @@ function Header() {
           </div>
           <div style={{ flex: 1 }}></div> 
           {/* Make space between the search input and the rest of the header. */}
+          <Link to="/statistics">
           <Button color='inherit'>
             <div
               style={{
@@ -134,6 +135,7 @@ function Header() {
               <span className='header-link-title'>Statistics</span>
             </div>
           </Button>
+          </Link>
           <Tooltip title='hhhhhhhh'>
             <Avatar
               aria-label='account of current user'

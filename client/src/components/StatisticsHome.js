@@ -131,6 +131,20 @@ function StatisticsHome() {
       // you can add as many object as you wand, each one will a different line with different color
     ],
   };
+  const teamData = {
+    labels: topTeamsData && topTeamsData.map(team => team.name), // array of values for x axis (strings)
+    title: "Top Teams", // title for the chart
+    rawData: [
+      {
+        label: "Submitions", // name of the line (one or two words)
+        backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'], //raw color
+        borderColor: "cyan", //use the same as background color
+        fill: false, // change the line chart
+        data: topTeamsData && [...topTeamsData.map(team => team["Users.Submissions.teamSuccessSubmissions"]), 0], // array of values for Y axis (numbers)
+      },
+      // you can add as many object as you wand, each one will a different line with different color
+    ],
+  };
 
 
   useEffect(() => {
@@ -145,8 +159,8 @@ function StatisticsHome() {
     setLoading(false);
   };
   const getTeamsData = async () => {
-    const { data: teamsInfo } = await axios.get('/api/v1/statistics/users/top-challenges');
-    console.log(teamsInfo)
+    const { data: teamsInfo } = await axios.get('/api/v1/statistics/teams/top');
+    setTopTeamsData(teamsInfo)
     setLoading(false);
   };
   const getUsersData = async () => {
