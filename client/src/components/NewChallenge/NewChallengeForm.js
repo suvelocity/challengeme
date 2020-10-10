@@ -6,10 +6,11 @@ import ThemeApi from "../../services/Theme";
 import AddImg from '../AddImg/AddImg';
 import Swal from 'sweetalert2';
 import "./NewChallengeForm.css";
-
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, InputLabel, MenuItem, FormControl, Select, TextField, TextareaAutosize, Button } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
+const textFieldStyle = {minWidth:"200px"}
+
 
 export default function NewChallengeForm() {
   const [optionsArray, setOptionsArray] = useState([]); 
@@ -209,23 +210,23 @@ export default function NewChallengeForm() {
   }));
 
   const classes = useStyles();
-  
+
   return (
-  <div className={`newChallenge ${darkMode ? 'darkMode' : 'lightMode'}`}>
+  <div className={darkMode?"newChallengeDark":`newChallenge`}>
     <form className='newChallengeForm'>
       <Typography variant='h5' gutterBottom className='newChallengeFormheader'>
         New Challenge
       </Typography>
-      <TextField id='name' autoComplete="off" className='newChallengeFormFeild' label='Challenge name' onChange={event => setRepoName(event.target.value)}/><br />
-      <TextField id='repo' autoComplete="off" className='newChallengeFormFeild' label='Challenge link' onChange={event => setRepoLink(event.target.value)}/><br />
-      <TextareaAutosize className='descriptionTextArea' autoComplete="off" aria-label='Description' rowsMin={6} placeholder='Challenge description...' onChange={event => setRepoDescription(event.target.value)}/><br />
+      <TextField id='name' autoComplete="off" className='newChallengeFormFeild' label='Challenge name' onChange={event => setRepoName(event.target.value)} style={textFieldStyle}/><br />
+      <TextField id='repo' autoComplete="off" className='newChallengeFormFeild' label='Challenge link' onChange={event => setRepoLink(event.target.value)} style={textFieldStyle}/><br />
+      <TextareaAutosize className='descriptionTextArea' autoComplete="off" aria-label='Description' rowsMin={6} placeholder='Challenge description...' onChange={event => setRepoDescription(event.target.value)}  style={textFieldStyle}/><br />
 
       <AddImg file={file} handleChange={handleFile}/><br />
       <div className="newChallengeFormFeild">
         <ChooseLabels submitFilter={setRepoLabels}/> 
       </div>
-      <FormControl className={classes.formControl}>
-        <InputLabel id='Challenge type'>Challenge type</InputLabel>
+      <FormControl className={classes.formControl} >
+        <InputLabel id='Challenge type'  style={textFieldStyle}>Challenge type</InputLabel>
         <Select
           labelId='Challenge type'
           id='Challenge type'

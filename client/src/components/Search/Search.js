@@ -6,20 +6,17 @@ import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import SearchTicket from "./SearchTicket"
 import FilterMenu from "../FilterMenu/FilterMenu"
-
 import './Search.css'
 import './SearchDark.css'
-
 import ThemeApi from "../../services/Theme"
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // maxWidth: 600,
     marginBottom: 20,
   },
   media: {
     height: 0,
-    paddingTop: '37.25%', // 16:9
+    paddingTop: '37.25%', 
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -63,7 +60,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -153,7 +149,7 @@ const Search =() => {
   </div>
 
   return (
-    <div id='search' className={darkMode&&'dark'}> 
+    <div id='search' className={darkMode && 'dark'}> 
       {searchInput}
       <div id='searchResults' className={searching?'open':'closed'}>
         <FilterMenu formerSelection={filters} updateFilters={setFilters} />

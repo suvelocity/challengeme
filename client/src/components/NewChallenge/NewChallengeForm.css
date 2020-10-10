@@ -3,9 +3,24 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow-y: scroll;
-
+  background-color: #F7F5E0;
+  
 }
+
+.newChallengeDark{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #141e30; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #141e30, #243b55); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #141e30, #243b55); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+ }
+
+ .newChallengeDark .newChallengeForm{
+  background: #4B79A1;  /* fallback for old browsers */
+  color: azure;
+ }
 
 .newChallengeForm {
   display: flex;
@@ -14,8 +29,12 @@
   align-items: center;
   background-color: white;
   width: 70vw;
-}
+  padding-top: 50px;
+  padding-bottom: 50px;
+  min-width: 260px;
 
+
+}
 .newChallengeFormheader{
   padding-top: 2vh;
 }
@@ -28,12 +47,16 @@
 
 .newChallengeFormFeild {
   width: 40vw;
+  min-width: 250px;
+  display: flex;
+  justify-content: center;
 }
 
 .newChallengeFormButtons {
   display: flex;
   justify-content: space-evenly;
   width: 40vw;
+  min-width: 260px;
 }
 
 .newChallengeFormDisplayErrors {
