@@ -37,8 +37,10 @@ jobs:
           cd ../../var/www &&
           sudo git pull origin &&
           cd ./client &&
+          sudo npm ci &&
           sudo npm run build &&
           cd ../server &&
+          sudo npm ci &&
           sudo npx sequelize db:migrate &&
           sudo pm2 reset 0
         '
