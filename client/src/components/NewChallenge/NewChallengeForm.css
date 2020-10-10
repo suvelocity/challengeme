@@ -61,4 +61,51 @@
 
 .newChallengeFormDisplayErrors {
   white-space: pre;
+  width: 80%;
+  font-size: 8px;
+  min-width: 200px;
+}
+
+.MuiAlert-standardError{
+  font-size: 10px !important;
+
+}
+.MuiAlertTitle-root{
+  font-size: 11px !important;
+}
+
+@media (max-width: 715px){
+  .MuiAlert-standardError{
+    font-size: 9px !important;
+  
+  }
+  .MuiAlertTitle-root{
+    font-size: 10px !important;
+  }
+}
+
+
+@media (max-width: 635px){
+  .MuiAlert-standardError{
+    font-size: 8px !important;
+  
+  }
+  .MuiAlertTitle-root{
+    font-size: 9px !important;
+  }
+}
+@media (max-width: 500px){
+  .MuiAlert-standardError{
+    font-size: 7px !important;
+  
+  }
+
+}
+
+@media (max-width: 440px){
+  .MuiAlert-standardError{
+    font-size: 6px!important;
+  
+  }
+  
 }

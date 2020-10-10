@@ -11,6 +11,17 @@ import { Typography, InputLabel, MenuItem, FormControl, Select, TextField, Texta
 import { Alert, AlertTitle } from '@material-ui/lab';
 const textFieldStyle = {minWidth:"200px"}
 
+const generateAlert=(title,message)=>(
+  <>
+  <Alert severity="error"  >
+    <AlertTitle >
+    {title}
+    </AlertTitle>
+    {message}
+  </Alert>
+  <br/>
+  </>
+)
 
 export default function NewChallengeForm() {
   const [optionsArray, setOptionsArray] = useState([]); 
@@ -43,14 +54,7 @@ export default function NewChallengeForm() {
     event.preventDefault();
     let newBadInput = [];
     if(repoName.length < 2 || repoName.match(spaces) || repoName.match(hebrew)) {
-      newBadInput.push(
-        <Alert severity="error">
-          <AlertTitle>
-            Repository's name is too short
-          </AlertTitle>
-          Minimum 2 characters. Don't use hebrew letters
-        </Alert>
-      );
+      newBadInput.push(generateAlert("Repository's name is too short","Minimum 2 characters. Don't use hebrew letters")      );
     }
     try {
       if(repoLink.length > 2 && !repoLink.match(spaces) && !repoLink.match(hebrew)) {
@@ -59,50 +63,22 @@ export default function NewChallengeForm() {
         throw 'error';
       }
     } catch(err) {
-      newBadInput.push(
-        <Alert severity="error">
-          <AlertTitle>
-            Repository's Link is not valid. Check the suggestions below:
-          </AlertTitle>
-          {"- Type the Github repository in this format: owner/repo\n- Change your repository to public\n- Check for type errors.\nDon't use Hebrew letters"}
-        </Alert>
+      newBadInput.push(generateAlert("Repository's Link is not valid.\n Check the suggestions below:","- Type the Github repository in this format: owner/repo\n- Change your repository to public\n- Check for type errors.\nDon't use Hebrew letters")
       );
     }
     if(repoDescription.length < 20 || !!repoDescription.match(spaces) || !!repoDescription.match(hebrew)) {
-      newBadInput.push(
-        <Alert severity="error">
-          <AlertTitle>
-            Repository's Description is too short
-          </AlertTitle>
-          Minimum 2 characters. Don't use hebrew letters
-        </Alert>
+      newBadInput.push(generateAlert("Repository's Description is too short","Minimum 2 characters. Don't use hebrew letters")
       );  
     } else if(repoDescription.length > 500 || repoDescription.match(hebrew)) {
-      newBadInput.push(
-        <Alert severity="error">
-          <AlertTitle>
-            Repository's Description is too long
-          </AlertTitle>
-          Maximum 500 characters. Don't use hebrew letters
-        </Alert>
+      newBadInput.push(generateAlert("Repository's Description is too long","Maximum 500 characters. Don't use hebrew letters")
       );  
     }
     if(!repoType) {
-      newBadInput.push(
-        <Alert severity="error">
-          <AlertTitle>
-            Repository's type not selected
-          </AlertTitle>
-        </Alert>
+      newBadInput.push(generateAlert("Repository's type not selected","")
       );  
     }
     if(Object.keys(file).length === 0 && file.constructor === Object) {
-      newBadInput.push(
-        <Alert severity="error">
-          <AlertTitle>
-            Repository's image not selected
-          </AlertTitle>
-        </Alert>
+      newBadInput.push(generateAlert("Repository's image not selected","")
       );  
     }
     if(newBadInput.length > 0)
