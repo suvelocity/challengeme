@@ -19,7 +19,6 @@ network.interceptors.response.use(
   async (error) => {
     const status = error.response ? error.response.status : null
     const originalRequest = error.config;
-    console.log(originalRequest);
     
     if(status === 401) {
       Cookies.remove('accessToken');

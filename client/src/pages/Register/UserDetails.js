@@ -37,6 +37,7 @@ function UserDetails({  handleChange, values }) {
             <FormControl className={classes.firstName}>
                 <InputLabel style={{ color: "grey" }}>First Name</InputLabel>
                 <Input
+                    id="firstName"
                     type="text"
                     value={values.firstName}
                     required
@@ -54,6 +55,7 @@ function UserDetails({  handleChange, values }) {
             <FormControl className={classes.lastName}>
                 <InputLabel style={{ color: "grey" }}>last Name</InputLabel>
                 <Input
+                    id="lastName"
                     type="text"
                     value={values.lastName}
                     required
@@ -71,6 +73,7 @@ function UserDetails({  handleChange, values }) {
             <FormControl className={classes.userName}>
                 <InputLabel style={{ color: "grey" }}>Username</InputLabel>
                 <Input
+                    id="userName"
                     type="text"
                     value={values.userName}
                     required
@@ -88,6 +91,7 @@ function UserDetails({  handleChange, values }) {
             <FormControl className={classes.email}>
                 <InputLabel style={{ color: "grey" }}>Email</InputLabel>
                 <Input
+                    id="email"
                     type="email"
                     value={values.email}
                     required

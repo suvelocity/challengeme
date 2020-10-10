@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import UserDetails from "./UserDetails";
 import PersonalDetails from "./PersonalDetails";
 import Confirm from "./Confirm";
@@ -10,6 +10,7 @@ import Stepper from "./Stepper";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import ErrorIcon from "@material-ui/icons/Error";
+import { CircularProgress } from '@material-ui/core';
 import "../../styles/Register.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +40,8 @@ function Register() {
     const [securityAnswer, setSecurityAnswer] = useState("");
     const [signUpReason, setSignUpReason] = useState("");
     const [gitHub, setGitHub] = useState("");
+    const [loading, setLoading] = useState(false);
+    const history = useHistory();
 
     const nextStep = async () => {
         const validateEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
@@ -150,6 +153,38 @@ function Register() {
                     field: "gitHub",
                     message: "GitHub account is invalid.",
                 });
+            if(tempErrs.length === 0) {
+                try {
+                    setLoading(true);
+                    await network.post(
+                        "/api/v1/auth/register",
+                        {
+                            firstName,
+                            lastName,
+                            userName,
+                            email,
+                            password,
+                            birthDate,
+                            country,
+                            city,
+                            phoneNumber,
+                            githubAccount: gitHub,
+                            reasonOfRegistration: signUpReason,
+                            securityQuestion,
+                            securityAnswer,
+                        }
+                    );
+                    setLoading(false);
+                } catch (err) {
+                    tempErrs.push({
+                        field: "server",
+                        message: err.message,
+                    });
+                }
+            }
+        } else if (step === 5) {
+            history.push('/login');
+            return;
         }
         if (tempErrs.length === 0) {
             setStep(step + 1);
@@ -164,33 +199,6 @@ function Register() {
         setErrors([]);
     };
 
-    const handleSubmit = async () => {
-        try {
-            const { data: regRes } = await network.post(
-                "/api/v1/auth/register",
-                {
-                    firstName,
-                    lastName,
-                    userName,
-                    email,
-                    password,
-                    birthDate,
-                    country,
-                    city,
-                    phoneNumber,
-                    githubAccount: gitHub,
-                    reasonOfRegistration: signUpReason,
-                    securityQuestion,
-                    securityAnswer,
-                }
-            );
-            if (regRes) {
-                setStep(5)
-            }
-        } catch (err) {
-            setErrors([...errors, { field: "server", message: err.message }]);
-        }
-    };
 
     const handleChange = (input) => (e) => {
         switch (input) {
@@ -317,18 +325,35 @@ function Register() {
                         </div>
                     </div>
                 )}
+                {loading && <CircularProgress />} 
                 <div className="containerSecond">
-                    <div className="containerButtons">
-                        {step > 1 && <Button onClick={prevStep}>Back</Button>}
-                        <Button
-                            className={classes.nextButton}
-                            variant="contained"
-                            color="primary"
-                            onClick={step === 4 ? handleSubmit : nextStep}
-                        >
-                            {step === 4 ? "Finish" : "Next"}
+                    {step !== 5 ?
+                    <>
+                            
+                        <div className="containerButtons">
+                            {step > 1 && <Button onClick={prevStep}>Back</Button>}
+                            <Button
+                                className={classes.nextButton}
+                                variant="contained"
+                                color="primary"
+                                onClick={nextStep}
+                            >
+                                {step === 4 ? "Finish" : "Next"}
+                            </Button>
+                        </div>
+                                </>
+                        :
+                        <div className="containerButtons">
+                            <Button
+                                className={classes.nextButton}
+                                variant="contained"
+                                color="primary"
+                                onClick={nextStep}
+                            >
+                                Back To Login Page
                         </Button>
-                    </div>
+                        </div>
+                    }
 
                     <p>
                         Have an existing account?{" "}
@@ -341,8 +366,3 @@ function Register() {
 }
 
 export default Register;
-
-// /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
-//   email,
-
-// (/[^a-zA-Z -]/.test(fieldValue))

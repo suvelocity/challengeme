@@ -2,6 +2,8 @@ const puppeteer = require("puppeteer");
 const nock = require("nock");
 const useNock = require("nock-puppeteer");
 
+let page, browser;
+
 describe('Client Tests', () => {
     beforeAll(async () => {
         browser = await puppeteer.launch({

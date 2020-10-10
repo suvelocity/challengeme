@@ -119,11 +119,11 @@ function Security({ values, handleChange }) {
                 <MenuItem value="" disabled>
                     Choose Security Question...
                 </MenuItem>
-                <MenuItem value="Q1">Q 1</MenuItem>
-                <MenuItem value="Q2">Q 2</MenuItem>
-                <MenuItem value="Q3">Q 3</MenuItem>
-                <MenuItem value="Q4">Q 4</MenuItem>
-                <MenuItem value="Q5">Q 5</MenuItem>
+                <MenuItem value="When you were young, what did you want to be when you grew up?">When you were young, what did you want to be when you grew up?</MenuItem>
+                <MenuItem value="Who was your childhood hero?">Who was your childhood hero?</MenuItem>
+                <MenuItem value="Where was your best family vacation as a kid?">Where was your best family vacation as a kid?</MenuItem>
+                <MenuItem value="What is the name, breed, and color of your favorite pet?">What is the name, breed, and color of your favorite pet?</MenuItem>
+                <MenuItem value="What was the first concert you attended?">What was the first concert you attended?</MenuItem>
             </Select>
             <FormControl className={classes.answer}>
                 <InputLabel style={{ color: "grey" }}>
