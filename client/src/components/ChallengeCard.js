@@ -29,6 +29,35 @@ export default function ChallengeCard({
   const [coverImg,setCoverImg] = useState("")
   const [date,setDate] = useState(null)
 
+  const getUpdated = (date)=>{
+      const dateNow =  Date.now()
+      const updateRepoDate =new Date(date)
+      let diff = (dateNow-updateRepoDate.getTime())/1000/60/60
+      if(diff < 24){
+        setDate(`${Math.floor(diff)} Hours ago`)
+      }else{
+        diff = diff/24
+        diff = Math.floor(diff)  
+        if(diff < 8){
+          setDate(`${Math.floor(diff)} Days ago`)
+        }else{
+        diff = Math.floor(diff / 7)
+          if(diff < 5){
+            setDate(`${Math.floor(diff)} Weeks ago`)
+          }else{
+             diff = Math.floor(diff / 4)
+             if(diff < 13){
+               setDate(`${Math.floor(diff)} Months ago`)
+             }else{
+             diff = Math.floor(diff / 12)
+              setDate(`${Math.floor(diff)} Years ago`)
+             }
+
+          }
+        }
+      }
+  }
+
   useEffect(()=>{
     (async ()=> {
       try{
@@ -37,7 +66,13 @@ export default function ChallengeCard({
         try{
           const { data: repo } = await network.get(`/api/v1/challenges/public_repo?repo_name=${repositoryName}`)
           const updateDate = repo.updated_at
-          setDate(generateTime(updateDate))
+          // let diff = updateDate.valueOf()
+          // const dateNow =  Date.now()
+          // const updateRepoDate =new Date(updateDate)
+          // console.log((dateNow-updateRepoDate.getTime())/1000/60/60);
+          // setDate(updateDate)
+          getUpdated(updateDate)
+          // setDate(generateTime(updateDate))
         }catch(e){
           setDate(generateTime(createdAt))
         }
@@ -48,10 +83,10 @@ export default function ChallengeCard({
 
     })()
   })
-  const avatarStyle = {backgroundColor:darkMode ? "#F5AF5D":"#C9AC80",margin:3}
+  const avatarStyle = {backgroundColor:darkMode ? "#F5AF5D":"#C9AC80",margin:5}
 
   return (
-    <motion.div className={"challenge-card"}
+    <motion.div className="challenge-card"
     initial={{scale:0.03}}
     animate={{ scale: 1 }}
     transition={{default: { duration: 1.2 , delay:0.3}}}
@@ -79,7 +114,7 @@ export default function ChallengeCard({
       <div className="challenge-card-data-homepage">
         {
           date&&
-         "Updated at: "+date
+         "Updated: "+date
         }
         <Rating readOnly name="disabled" value={4}  />
       </div>

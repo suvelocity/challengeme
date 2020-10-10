@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Header() {
   const changeTheme = React.useContext(ThemeApi).setDarkTheme
-  const currentTheme = React.useContext(ThemeApi).darkTheme
+  const darkMode = React.useContext(ThemeApi).darkTheme
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -78,14 +78,16 @@ function Header() {
     setAnchorEl(null);
   };
 
+  const headerStyle = {height:"12vh",position:"sticky",top:0, backgroundColor:! darkMode && "#C9AC80"}
+
   return (
     <div className={classes.root} >
-      <AppBar  style={{height:"12vh",position:"sticky",top:0}}>
+      <AppBar  style={headerStyle}>
         <Toolbar>
           <Typography variant='h6' className={classes.title}>
             <NavLink
               to='/'
-              activeStyle={{ color: '#F5CB39' }}
+              activeStyle={{ color: darkMode?'#F5CB39':"white"}}
               className='link-rout'
             >
               <div
@@ -126,7 +128,7 @@ function Header() {
               aria-haspopup='true'
               onClick={handleMenu}
               color='inherit'
-              style={{ cursor: 'pointer', backgroundColor: 'purple' }}
+              style={{ cursor: 'pointer', backgroundColor: darkMode?'purple':"#7BACB4"}}
             >
               HH
               {/* Cookie.get(username).slice(0, 2) */}
@@ -149,15 +151,17 @@ function Header() {
           >
             <MenuItem  style={{paddingLeft:60}}>
               <DarkModeToggle
-                checked={currentTheme}
+                checked={darkMode}
                 onChange={()=>changeTheme(prev => !prev)}
                 size={45}
                 />
             </MenuItem>
-            <MenuItem onClick={()=>{window.location = '/addChallenge'}}>
+            <MenuItem>
+              <Link to="/addChallenge" style={{textDecoration:"none"}}>
               <Button style={{minWidth:150}} variant="contained" color="primary">
               Add Challenge
               </Button>
+              </Link>
             </MenuItem> 
             <MenuItem onClick={handleClose}>
               <Button style={{minWidth:150}} variant="contained" color="secondary">
