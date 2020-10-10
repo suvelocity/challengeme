@@ -92,14 +92,26 @@ usersRouter.post("/login", async (req, res) => {
     expiresIn: expired
   });
   const accessToken = generateToken(currentUser);
-  await RefreshToken.create({
-    userName: currentUser.userName,
-    token: refreshToken,
-  });
-
+  const isTokenExist = await RefreshToken.findOne({
+    where: {
+      userName: currentUser.userName
+    }
+  })
+  if (!isTokenExist) {
+    await RefreshToken.create({
+      userName: currentUser.userName,
+      token: refreshToken,
+    });
+  } else {
+    await RefreshToken.update({ token: refreshToken }, {
+      where: {
+        userName: currentUser.userName
+      }
+    });
+  }
   res.cookie('accessToken', accessToken)
   res.cookie('refreshToken', refreshToken)
-  res.json({userDetails: currentUser});
+  res.json({ userDetails: currentUser });
 });
 
 //Get new access token
