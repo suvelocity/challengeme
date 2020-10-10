@@ -219,7 +219,7 @@ export default function NewChallengeForm() {
       </Typography>
       <TextField id='name' autoComplete="off" className='newChallengeFormFeild' label='Challenge name' onChange={event => setRepoName(event.target.value)} style={textFieldStyle}/><br />
       <TextField id='repo' autoComplete="off" className='newChallengeFormFeild' label='Challenge link' onChange={event => setRepoLink(event.target.value)} style={textFieldStyle}/><br />
-      <TextareaAutosize className='descriptionTextArea' autoComplete="off" aria-label='Description' rowsMin={6} placeholder='Challenge description...' onChange={event => setRepoDescription(event.target.value)}  style={textFieldStyle}/><br />
+      <TextareaAutosize className='descriptionTextArea' autoComplete="off" aria-label='Description' rowsMin={6} placeholder='Challenge description...' onChange={event => setRepoDescription(event.target.value)}  style={{minWidth:200,width:"40vw"}}/><br />
 
       <AddImg file={file} handleChange={handleFile}/><br />
       <div className="newChallengeFormFeild">
