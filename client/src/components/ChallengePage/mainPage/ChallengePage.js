@@ -6,7 +6,7 @@ import { Button, Link } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import Chip from "@material-ui/core/Chip";
 
-
+// TODO: clean all console alert and logs before merge
 import SubmitModal from "../SubmitModal";
 import InfoTable from '../InfoTable/InfoTable'
 

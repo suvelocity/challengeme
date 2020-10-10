@@ -42,4 +42,6 @@ reviewsRouter.post("/:challengeId", async (req, res) => {
   }
 });
 
+// TODO: (nir kahana) : create new endpoint to get the avarage ratiing ('/byChallenge/:challengeId')
+
 module.exports = reviewsRouter;

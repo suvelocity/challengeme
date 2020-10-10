@@ -25,7 +25,7 @@ body::-webkit-scrollbar {
   min-width: 100%;
 }
 .challenge-wrapper {
-  background: linear-gradient(#ffffff, rgb(235, 240, 255));
+  background: linear-gradient(#ffffff, rgba(235, 240, 255,0.1));
   min-width: 100%;
   height: 95vh;
   color: black;

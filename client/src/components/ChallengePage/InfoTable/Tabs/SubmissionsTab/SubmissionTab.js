@@ -1,7 +1,11 @@
 import React, {useEffect, useState} from "react";
 import network from '../../../../../services/network'
 import Submission from './Submission'
-// const data = [{name:"asd", status:"fdgfdg", submittedAt:"3434"},{name:"asd", status:"fdgfdg", submittedAt:"3434"}];
+
+
+// TODO: get the userName from the coockies and aloow him to see is own submissions
+
+
 function SubmissionTab({challengeId}) {
 	const [submissions, setSubmissions] = useState([]);
 

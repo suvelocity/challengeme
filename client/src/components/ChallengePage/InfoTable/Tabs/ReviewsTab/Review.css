@@ -1,3 +1,5 @@
+
+/* TODO: (amit nir) remove the red lines and find soulution for long reviews*/
 .review {
     display: grid;
     grid-template-columns: 1.7fr 1.3fr;
