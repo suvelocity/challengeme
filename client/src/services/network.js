@@ -20,12 +20,7 @@ network.interceptors.response.use(
     const status = error.response ? error.response.status : null
     const originalRequest = error.config;
 
-    if (status === 401) {
-      Cookies.remove('accessToken');
-      Cookies.remove('refreshToken');
-    }
-
-    if (status === 403) {
+    if (status === 408) {
       try {
         await network.post('/api/v1/auth/token', { token: Cookies.get('refreshToken') });
         const data = await network(originalRequest)

@@ -177,7 +177,7 @@ export default function Login() {
                                 }
                             />
                         </FormControl>
-                        <Link to="/forgotpassword" className="forgotLabel">
+                        <Link to="/forgot" className="forgotLabel">
                             Forgot Password ?
                         </Link>
                         {(error.userName || error.password || error.msg) && (

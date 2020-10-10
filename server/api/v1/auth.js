@@ -118,14 +118,14 @@ usersRouter.post("/login", async (req, res) => {
 usersRouter.post("/token", async (req, res) => {
   const refreshToken = req.body.token;
   if (!refreshToken)
-    return res.status(401).json({ message: "Refresh Token Required" });
+    return res.status(400).json({ message: "Refresh Token Required" });
   const validRefreshToken = await RefreshToken.findOne({
     where: {
       token: refreshToken,
     },
   });
   if (!validRefreshToken)
-    return res.status(401).json({ message: "Invalid Refresh Token" });
+    return res.status(403).json({ message: "Invalid Refresh Token" });
   jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Refresh Token" });
     delete decoded.iat;
@@ -150,11 +150,6 @@ usersRouter.post("/logout", async (req, res) => {
   if (!result)
     return res.status(400).json({ message: "Refresh Token is required" });
   res.json({ message: "User Logged Out Successfully" });
-});
-
-// validate token
-usersRouter.post("/info", checkToken, (req, res) => {
-  res.json({ message: "success get sensitive info" });
 });
 
 // Geting Sequrity Question
