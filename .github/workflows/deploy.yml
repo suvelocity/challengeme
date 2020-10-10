@@ -33,12 +33,13 @@ jobs:
         gcloud --quiet auth configure-docker
     - name: Deploy
       run: |-
-        gcloud --quiet compute ssh --zone us-central1-a instance-1 --command 'pwd && echo 'aaaaa''
+        gcloud --quiet compute ssh --zone us-central1-a instance-1 --command '
+          cd ../../var/www &&
+          sudo git pull origin &&
+          cd ./client &&
+          sudo npm run build &&
+          cd ../server &&
+          sudo npx sequelize db:migrate &&
+          sudo pm2 reset 0
+        '
 
-    # cd ../../var/www &&
-    # sudo git pull origin &&
-    # cd ./client &&
-    # sudo npm run build &&
-    # cd ../server &&
-    # sudo npx sequelize db:migrate &&
-    # sudo pm2 reset 0
