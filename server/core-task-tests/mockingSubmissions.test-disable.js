@@ -32,7 +32,7 @@ describe('Submission process', () => {
             "Content-Type": "application:json"
           }) */
         const githubmock = nock(`https://api.github.com`)
-        .intercept(`/repos/${process.env.GITHUB_REPO}/actions/workflows/${challengeType}.yml/dispatches`)
+        .intercept(`/repos/${process.env.GITHUB_REPO}/actions/workflows/${challengeType}.yml/dispatches`, "OPTIONS")
         .reply(200, null, {
             'access-control-allow-headers': 'Authorization',
             "Content-Type": "application:json"
