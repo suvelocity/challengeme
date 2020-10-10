@@ -39,7 +39,7 @@ function PersonalDetails({ values, handleChange, prevStep, nextStep }) {
     return (
         <div className="containerPersonalDetails">
             <FormControl className={classes.country}>
-                <InputLabel style={{ color: "grey" }}>Countey</InputLabel>
+                <InputLabel style={{ color: "grey" }}>Country</InputLabel>
                 <Input
                     type="text"
                     value={values.country}
