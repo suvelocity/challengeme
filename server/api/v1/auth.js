@@ -30,8 +30,6 @@ usersRouter.post("/register", async (req, res) => {
     securityQuestion: req.body.securityQuestion,
     securityAnswer: hashsecurityAnswer,
   };
-  // send validation mail
-  // await User.create(newUser);
   const mailedToken = jwt.sign(newUser, process.env.EMAIL_TOKEN_SECRET)
   mailer.sendHTMLMail(req.body.email, "Validate your E-mail", `<p>
   Conregulation Challenger, and welcome! You are now offically a part of challenge me
@@ -80,7 +78,7 @@ usersRouter.get("/validateToken", checkToken, (req, res) => {
 usersRouter.post("/login", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser)
-    return res.status(404).json({ message: "User or Password incorrect" });
+    return res.status(403).json({ message: "User or Password incorrect" });
   const validPass = await bcrypt.compare(
     req.body.password,
     currentUser.password
@@ -138,17 +136,14 @@ usersRouter.post("/token", async (req, res) => {
 
 // Logout request
 usersRouter.post("/logout", async (req, res) => {
-  if (!req.body.token)
-    return res.status(400).json({ message: "Refresh Token Required" });
+  if (!req.body.token) return res.status(400).json({ message: "Refresh Token Required" });
   // check if token exist and delete it
   const result = await RefreshToken.destroy({
     where: {
       token: req.body.token,
     },
   });
-
-  if (!result)
-    return res.status(400).json({ message: "Refresh Token is required" });
+  if (!result) return res.status(400).json({ message: "Refresh Token is required" });
   res.json({ message: "User Logged Out Successfully" });
 });
 
@@ -162,8 +157,7 @@ usersRouter.post("/getquestion", async (req, res) => {
 // Validate Answer
 usersRouter.post("/validateanswer", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
-  if (!currentUser)
-    return res.status(404).json({ message: "Cannot Find User" });
+  if (!currentUser) return res.status(404).json({ message: "Cannot Find User" });
   const validAnswer = await bcrypt.compare(
     req.body.securityAnswer,
     currentUser.securityAnswer
@@ -198,13 +192,12 @@ async function userIsExist(userName) {
   if (user) {
     return user.dataValues;
   } else {
-    return user
+    return false;
   }
-
 }
 
 function generateToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "9s" });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "900s" });
 }
 
 module.exports = usersRouter;
