@@ -1,13 +1,14 @@
 const path = require("path");
 const express = require('express')
-
+const morgan =  require('morgan');
+const cors = require('cors');
 
 const app = express()
 app.use(express.json())
+app.use(morgan())
+app.use(cors())
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World!')
-// })
+
 
 app.use('/api/v1/', require('./api/v1'))
 

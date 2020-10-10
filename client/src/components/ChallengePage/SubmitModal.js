@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Modal, TextField, Button, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Rating } from "@material-ui/lab";
 import { useForm } from "react-hook-form";
-import axios from "axios";
-
+import network from '../../services/network'
 function getModalStyle() {
 	return {
 		outline: 0
@@ -27,8 +26,10 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function SubmitModal({ isOpen, handleClose, challengeId, userId }) {
+function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
+	/* eslint-disable no-unused-vars */
 	const { register, handleSubmit, watch, errors } = useForm();
+	/* eslint-enable no-unused-vars */
 	const [userRating, setUserRating] = useState();
 	const classes = useStyles();
 	const [modalStyle] = useState(getModalStyle);
@@ -40,7 +41,7 @@ function SubmitModal({ isOpen, handleClose, challengeId, userId }) {
 			userId
 		};
 		try {
-			const res = await axios.post(`/${challengeId}/apply`, formData);
+			const res = await network.post(`/${challengeParamId}/apply`, formData);
 			console.log(res);
 		} catch (error) {
 			console.error(error);

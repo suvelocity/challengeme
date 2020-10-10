@@ -1,3 +1,6 @@
+/* TODO: (Amit) refactor this all css with SASS (talk to tsach ot Dror) */
+/* TODO: add hovers */
+/* TODO: talk to shahar about dark mode */
 * {
   box-sizing: border-box;
 }
@@ -11,9 +14,7 @@ body::-webkit-scrollbar {
 .fullpage-wrapper {
   display: flex;
   flex-direction: column;
-  /* border: 3px solid blueviolet; */
-  /* display: flex;
-  flex-direction: row; */
+  flex-direction: row; 
   height: 100%;
 }
 .navbar {
@@ -24,15 +25,12 @@ body::-webkit-scrollbar {
   min-width: 100%;
 }
 .challenge-wrapper {
-  border: 3px solid salmon;
-  background: linear-gradient(#ffffff, rgb(235, 240, 255));
+  background: linear-gradient(#ffffff, rgba(235, 240, 255,0.1));
   min-width: 100%;
   height: 95vh;
-  /* height: fit-content; */
   color: black;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-weight: normal;
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 800;
   margin-top: 5vh;
   display: grid;
   grid-template-columns: 1fr 1.4fr;
@@ -55,7 +53,8 @@ body::-webkit-scrollbar {
 }
 
 .challenge-left-wrapper div {
-  width: 90%;
+  margin-top: 100px;
+  width: 70%;
   margin-left: auto;
   margin-right: auto;
   border-radius: 10px;
@@ -65,7 +64,6 @@ body::-webkit-scrollbar {
   width: 90%;
   margin-left: auto;
   margin-right: auto;
-
   border-radius: 10px;
   /* border: 1px dotted red; */
 }
@@ -73,6 +71,8 @@ body::-webkit-scrollbar {
 .challenge-img-div {
   margin-top: 2vh;
   min-height: 38vh;
+  object-fit: contain;
+  margin-bottom: -50px;;
 }
 
 .challenge-img {
@@ -97,7 +97,6 @@ body::-webkit-scrollbar {
 }
 
 .challenge-labels {
-  margin-top: 2vh;
 }
 .challenge-labels a {
   font-size: 24px;

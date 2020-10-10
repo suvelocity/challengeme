@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import ChallengePage from "../components/ChallengePage/ChallengePage";
+import ChallengePage from "../components/ChallengePage/mainPage/ChallengePage";
 
 import Home from "./Home";
 

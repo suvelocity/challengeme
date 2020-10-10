@@ -1,7 +1,7 @@
 THAT BRANCH SHOULD ALWAYS WORK (with npm start at the ./client, and npm run dev at the ./server), ONLY PULL REQUESTS , NO PUSH OR WORKING ON THAT BRANCH </br>
 
 
-BRANCH OUT!!</br>
+
 
 example: "feature-test" </br> </br>
 

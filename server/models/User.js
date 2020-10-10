@@ -12,6 +12,12 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.RefreshToken, {
         foreignKey: "userName",
       });
+      this.hasMany(models.Challenge,{
+        foreignKey:"userId"
+      });
+      this.hasMany(models.Review,{
+        foreignKey:"userId"
+      });
     }
   }
   User.init(
