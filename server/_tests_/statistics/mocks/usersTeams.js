@@ -1,38 +1,38 @@
 module.exports = [
     {
-    team_id:1,
-    user_id:1,
-    created_at: new Date(),
-    updated_at: new Date()
+        teamId: 1,
+        userId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-    team_id:1,
-    user_id:2,
-    created_at: new Date(),
-    updated_at: new Date()
+        teamId: 1,
+        userId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-    team_id:2,
-    user_id:3,
-    created_at: new Date(),
-    updated_at: new Date()
+        teamId: 2,
+        userId: 3,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-    team_id:2,
-    user_id:4,
-    created_at: new Date(),
-    updated_at: new Date()
+        teamId: 2,
+        userId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-    team_id:3,
-    user_id:5,
-    created_at: new Date(),
-    updated_at: new Date()
+        teamId: 3,
+        userId: 2,
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-    team_id:3,
-    user_id:6,
-    created_at: new Date(),
-    updated_at: new Date()
+        teamId: 3,
+        userId: 3,
+        createdAt: new Date(),
+        updatedAt: new Date()
     }
 ]
