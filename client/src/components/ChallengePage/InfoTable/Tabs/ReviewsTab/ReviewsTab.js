@@ -7,6 +7,7 @@ function ReviewsTab({challengeId}) {
     // TODO: fetch interval all reviews
     // TODO: change the style with amit
     // TODO:insert a review with dror and expect to be here
+    // TODO: user can delete his review, bonus , can edit it
     const [reviews,setReviews] = useState(null)
     useEffect(() => {
         const fetchReviews = async () => {

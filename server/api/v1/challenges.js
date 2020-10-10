@@ -6,7 +6,6 @@ const Op = Sequelize.Op;
 
 const { Submission,User, Challenge, Label, labels_to_challenge, Reviews } = require('../../models');
 
-// TODO:  include a rating for each challenge response
 const challengeRouter = Router();
 
 challengeRouter.get('/',filterResults, async (req, res) => {

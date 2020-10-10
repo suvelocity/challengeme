@@ -12,7 +12,6 @@ const review = {
 };
 
 reviewsRouter.get("/byChallenge/:challengeId", async (req, res) => {
-  // TODO: include User
   try {
     const reviews = await Review.findAll({
       where: { challengeId: req.params.challengeId },
@@ -35,7 +34,7 @@ reviewsRouter.get("/byUser/:challengeId", async (req, res) => {
   }
 });
 reviewsRouter.post("/:challengeId", async (req, res) => {
-  // TODO: create a new review
+  // TODO: (Dror maman) create a new review
   try {
     res.send("reviews!!!");
   } catch (error) {

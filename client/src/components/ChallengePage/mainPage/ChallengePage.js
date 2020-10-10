@@ -6,8 +6,6 @@ import { Button, Link } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import Chip from "@material-ui/core/Chip";
 
-// import ChallengeTabs from "./SolutionTable";
-//import SubmitModal from "./SubmitModal";
 
 import SubmitModal from "../SubmitModal";
 import InfoTable from '../InfoTable/InfoTable'
@@ -31,14 +29,15 @@ function ChallengePage() {
       try {
         const { data } = await network.get(
           `/api/v1/images?id=${challengeParamId}`
-        );
-        setBlobedImg(data.img);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    const fetchChallenge = async () => {
-      try {
+          );
+          setBlobedImg(data.img);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      const fetchChallenge = async () => {
+        try {
+          // TODO: (Dror) add another migration and column and seed, so each challenge will have the boilerplate and the official repo , talk to shahar team about that change
         const { data:{challenge:challengeFromServer, author}  } = await network.get(
           `/api/v1/challenges/${challengeParamId}`
         );
@@ -85,7 +84,7 @@ function ChallengePage() {
             <span className='challenge-label'>
               {challenge['Labels'].map(label => (
                 <Link>  
-                {/* TODO: talk to shahar where this link goes to... */}
+                {/* TODO: (ori Sass) talk to shahar where this link goes to... */}
                   <Chip
                       color='secondary'
                       label={label.name}
