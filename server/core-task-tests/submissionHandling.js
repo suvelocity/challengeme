@@ -1,5 +1,6 @@
 
-
+// A Test than checks the flow of the actions in github actions as well.
+// takes a long time and unecessary to go over each time you run all of the tests
 const request = require('supertest');
 const app = require('../app');
 const ngrok = require('ngrok');
@@ -32,7 +33,7 @@ describe('Submission process', () => {
         expect(submissions.length).toBe(4);
         submissions.forEach(submission => expect(submission.state).toBe('PENDING'));
         done();
-    });
+    },10000);
     test('Getting Submission Status back to database', async (done) => {
         let submissions;
         function checkingPending (){

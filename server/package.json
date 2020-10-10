@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "jest": "^26.5.2",
+    "nock": "^13.0.4",
     "puppeteer": "^5.3.1",
     "sequelize-cli": "^6.2.0",
     "supertest": "^5.0.0"
