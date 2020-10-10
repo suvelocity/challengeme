@@ -35,7 +35,7 @@ jobs:
       run: npm ci
       working-directory: ./client
     - name: Build client
-      run: CI=true npm run build
+      run: CI=false npm run build
       working-directory: ./client
     - name: Copy build
       run: |-
