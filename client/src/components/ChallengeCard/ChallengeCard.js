@@ -1,10 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import network from "../services/network"
+import React, { useEffect, useState } from 'react';
+import network from "../../services/network"
 import "./ChallengeCard.css"
 import Avatar from "@material-ui/core/Avatar"
 import Rating from '@material-ui/lab/Rating';
 import { Tooltip } from '@material-ui/core';
-import ThemeApi from "../services/Theme"
+import ThemeApi from "../../services/Theme"
 import {motion} from 'framer-motion'
 
 
@@ -66,13 +66,7 @@ export default function ChallengeCard({
         try{
           const { data: repo } = await network.get(`/api/v1/challenges/public_repo?repo_name=${repositoryName}`)
           const updateDate = repo.updated_at
-          // let diff = updateDate.valueOf()
-          // const dateNow =  Date.now()
-          // const updateRepoDate =new Date(updateDate)
-          // console.log((dateNow-updateRepoDate.getTime())/1000/60/60);
-          // setDate(updateDate)
           getUpdated(updateDate)
-          // setDate(generateTime(updateDate))
         }catch(e){
           setDate(generateTime(createdAt))
         }

@@ -1,9 +1,9 @@
 import React,{useState,useEffect} from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Home from './Home';
+import Home from './Home/Home';
 import ThemeApi from "../services/Theme"
-import Header from '../components/Header';
-import NewChallengeForm from '../components/NewChallengeForm';
+import Header from '../components/Header/Header';
+import NewChallengeForm from '../components/NewChallenge/NewChallengeForm';
 
 
 export default function Router() {

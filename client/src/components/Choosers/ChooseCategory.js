@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 const ChooseCategory =({ formerSelection , submitFilter }) => {
   const [selected,setSelected]  = useState(formerSelection)
@@ -22,11 +22,9 @@ const ChooseCategory =({ formerSelection , submitFilter }) => {
   const selectCategory= (e) => {
     const {target} = e 
     const {value,checked} = target
-    console.log(checked)
     if(checked){
       const newSelection = [...selected]
       newSelection.push(value)
-      console.log(newSelection)
       setSelected(newSelection)
     }else{
       const newSelection = [...selected]

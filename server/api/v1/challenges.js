@@ -20,8 +20,6 @@ router.get('/',filterResults, async (req, res) => {
     });
     if(labels){
       const filterChallenges = allChallenges.filter((challenge)=>{
-        // challenge.Labels[t].id === labels[j]  
-        // return challenge ;
         return labels.some((label)=>{
           return challenge.Labels.some((x)=>{
             return x.id == label  ;
@@ -117,8 +115,6 @@ router.post('/:challengeId/apply', async (req, res) => {
 
     res.json({ status })
   } catch (e) {
-    console.log('aaaa', e.message)
-
     res.json({ status: 500, error: e })
   }
 

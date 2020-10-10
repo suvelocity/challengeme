@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import ChooseLabels from './ChooseLabels'
-import ChooseTime from './ChooseTime'
-import ChooseCategory from './ChooseCategory'
+import React, { useState } from 'react';
+import ChooseLabels from '../Choosers/ChooseLabels'
+import ChooseTime from '../Choosers/ChooseTime'
 import './FilterMenu.css'
 import './FilterMenuDark.css'
 import { Button } from '@material-ui/core';
-
-import ThemeApi from "../services/Theme"
+import ThemeApi from "../../services/Theme"
 
 
 const FilterMenu =( {formerSelection,updateFilters}) => {

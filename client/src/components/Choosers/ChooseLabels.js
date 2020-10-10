@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import network from '../services/network';
+import network from '../../services/network';
 import Selector from 'react-select'
 
 const ChooseLabels =({ submitFilter }) => {
@@ -18,9 +18,7 @@ const ChooseLabels =({ submitFilter }) => {
     }
     ,[])
   
-  const selectionChange = (a,b)=>{
-    // a=[{title:<string>,value:<string>},{title:<string>,value:<string>}]
-    // b={action:<string>, option(what you clicked): {title:<string>,value:<string>} , name(name of the Selector):<string>}
+  const selectionChange = (a)=>{
     submitFilter(a?a.map(x=>x.value):[])
   }
 

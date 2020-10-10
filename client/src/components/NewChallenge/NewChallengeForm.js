@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import ChooseLabels from '../components/ChooseLabels';
-import network from '../services/network';
-import ThemeApi from "../services/Theme";
-import AddImg from './AddImg';
+import ChooseLabels from '../Choosers/ChooseLabels';
+import network from '../../services/network';
+import ThemeApi from "../../services/Theme";
+import AddImg from '../AddImg/AddImg';
 import Swal from 'sweetalert2';
 import "./NewChallengeForm.css";
 
@@ -53,8 +53,6 @@ export default function NewChallengeForm() {
     }
     try {
       if(repoLink.length > 2 && !repoLink.match(spaces) && !repoLink.match(hebrew)) {
-        console.log(repoLink);
-        console.log(`/api/v1/challenges/public_repo?repo_name=${repoLink}`);
         await network.get(`/api/v1/challenges/public_repo?repo_name=${repoLink}`);
       } else {
         throw 'error';

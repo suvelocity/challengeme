@@ -1,16 +1,16 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { fade ,makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
-import network from '../services/network';
+import network from '../../services/network';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import SearchTicket from "./SearchTicket"
-import FilterMenu from "./FilterMenu"
+import FilterMenu from "../FilterMenu/FilterMenu"
 
 import './Search.css'
 import './SearchDark.css'
 
-import ThemeApi from "../services/Theme"
+import ThemeApi from "../../services/Theme"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -101,10 +101,8 @@ const Search =() => {
     try{
       const url = `/api/v1/challenges`+`?challengeName=${query}`
        + getFilters() 
-      console.log(url)
       network.get(url)
       .then(({data})=>{
-        console.log(data)
         setResults(data)
       })
     }catch(error){
@@ -134,7 +132,6 @@ const Search =() => {
       no results found
     </span>
   )
-  console.log(resultsList);
   const searchInput = <div 
   className={classes.search}>
     <div className={classes.searchIcon}>

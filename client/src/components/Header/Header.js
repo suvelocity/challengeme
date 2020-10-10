@@ -12,10 +12,9 @@ import Avatar from '@material-ui/core/Avatar';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import HomeIcon from '@material-ui/icons/Home';
 import './Header.css';
-import ThemeApi from "../services/Theme"
+import ThemeApi from "../../services/Theme"
 import DarkModeToggle from "react-dark-mode-toggle";
-
-import Search from './Search'
+import Search from '../Search/Search'
 
 
 const useStyles = makeStyles((theme) => ({

@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import network from '../services/network';
-import ChallengeCard from '../components/ChallengeCard';
+import network from '../../services/network';
+import ChallengeCard from '../../components/ChallengeCard/ChallengeCard';
 import "./Home.css"
-import ThemeApi from "../services/Theme"
-import FilterMenu from '../components/FilterMenu';
+import ThemeApi from "../../services/Theme"
+import FilterMenu from '../../components/FilterMenu/FilterMenu';
 
 
 
@@ -17,7 +17,6 @@ export default function HomePage() {
       const filterNames = Object.keys(filters)
       const filterString = filterNames.map(name=>{
         const value = filters[name]
-        console.log(value)
         let valueString = (typeof value === 'object')
         ? value.join(',')
         :value
