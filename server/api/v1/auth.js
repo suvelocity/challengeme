@@ -150,14 +150,14 @@ usersRouter.post("/logout", async (req, res) => {
 // Geting Sequrity Question
 usersRouter.post("/getquestion", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
-  if (!currentUser) return res.status(404).json({ message: "Cannot Find User" });
+  if (!currentUser) return res.json({ securityQuestion: "What is the name, breed, and color of your favorite pet?" });
   res.json({ securityQuestion: currentUser.securityQuestion });
 });
 
 // Validate Answer
 usersRouter.post("/validateanswer", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
-  if (!currentUser) return res.status(404).json({ message: "Cannot Find User" });
+  if (!currentUser) return res.status(403).json({ message: "Wrong Answer" });
   const validAnswer = await bcrypt.compare(
     req.body.securityAnswer,
     currentUser.securityAnswer
