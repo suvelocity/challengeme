@@ -47,7 +47,7 @@ function Register() {
         const validateEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
         const onlyLettersRegex = /^[a-zA-Z]*$/;
         const onlyLettersAndSpacesRegex = /^[a-zA-Z\s]*$/;
-        const onlyLettersAndNumbersRegex = /^[A-Za-z0-9]*$/;
+        const onlyLettersAndNumbersRegex = /\w/;
         const onlyNumbersRegex = /^[0-9]*$/;
 
         let tempErrs = [];

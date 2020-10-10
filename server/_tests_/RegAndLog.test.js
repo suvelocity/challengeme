@@ -99,6 +99,21 @@ describe("Register & Login Tests", () => {
     done();
   });
 
+  test("User exists", async (done) => {
+
+    const userExist = await request(server)
+      .post("/api/v1/auth/userexist")
+      .send({userName: mockUser.reg.userName});
+    expect(userExist.status).toBe(409);
+
+    const userNotExist = await request(server)
+      .post("/api/v1/auth/userexist")
+      .send({userName: "Alibaba"});
+    expect(userNotExist.status).toBe(200);
+
+    done();
+  });
+
   // user logout
   test("User Can Logout", async (done) => {
 
