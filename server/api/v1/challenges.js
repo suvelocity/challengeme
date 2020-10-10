@@ -9,10 +9,6 @@ router.get('/', async (req, res) => {
   const allChallenges = await Challenge.findAll();
   res.json(allChallenges)
 })
-router.get('/all', async (req, res) => {
-  const allSubmissions = await Submission.findAll();
-  res.json(allSubmissions)
-})
 
 router.get('/:challengeId/submissions', async (req, res) => {
   const { challengeId } = req.params;
@@ -54,7 +50,7 @@ router.post('/:challengeId/apply', async (req, res) => {
     const urltoSet = process.env.MY_URL.concat(`/api/v1/webhook/submission/${submission.id}`);
     //console.log(urltoSet);
     const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
-      ref: 'meiron-try',
+      ref: 'master',
       inputs: {
         //name: `${solutionRepository}-Submission${submission.id}`,
         testRepo: challenge.repositoryName,
