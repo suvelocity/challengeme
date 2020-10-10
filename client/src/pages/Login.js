@@ -116,27 +116,7 @@ export default function Login() {
                 </div>
               </div>
             )
-            <Button
-              type="submit"
-              id="login-button"
-              className={classes.loginButton}
-            >
-              Log in
-            </Button>
-            <FormControlLabel
-              htmlFor="rememberMe"
-              value="start"
-              control={<Checkbox color="primary" />}
-              label="Remember me"
-              labelPlacement="end"
-              name="rememberMe"
-              type="checkbox"
-              onChange={updateField}
-            />
-            <div>
-              <span>don't have an account yet?</span>
-              <Link to="/register">Sign up</Link>
-            </div>
+            
             <div className="containerBody">
                 <form className="loginForm" onSubmit={loginFunc}>
                     <div className="loginBody">
