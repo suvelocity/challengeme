@@ -28,7 +28,7 @@ router.post('/', async (req, res) => { // /api/v1/image
             res.status(400).send('This challenge already own an image');
         }
     } catch(e) { 
-        res.status(400).send({'Something went wrong':e.message});
+        res.status(400).send('Something went wrong');
     }
 });
 

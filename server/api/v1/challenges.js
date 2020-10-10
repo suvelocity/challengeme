@@ -4,7 +4,7 @@ const filterResults = require('../../middleware/filterResults');
 const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
 
-const { Submission, Challenge, Label, labels_to_challenge } = require('../../models');
+const { Submission, Challenge, Label } = require('../../models');
 
 const router = Router();
 
@@ -56,6 +56,21 @@ router.get('/:challengeId/submissions', async (req, res) => {
     challengeId
   } });
   res.json(allSubmission)
+})
+
+router.get('/public_repo', async (req, res) => {
+  try {
+    const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`, {
+      headers: {Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`}
+    });
+    if(!repo.private) {
+      res.json(repo);
+    } else {
+      res.status(401).send('Repo is private');
+    }
+  } catch(error) {
+    res.status(400).send('Repo does not exist');
+  }
 })
 
 router.post('/:challengeId/apply', async (req, res) => {

@@ -21,7 +21,7 @@ router.post(`/`,async(req,res) => {
     const newChallenge = await Challenge.create(req.body);
     res.status(200).send(newChallenge);
   } catch(err) {
-    res.send("Bad request");
+    res.status(400).send('Bad request');
   }
 })
 
@@ -33,23 +33,5 @@ router.get('/type', async (req,res) => {
   )
   res.send(types)
 })
-
-/*
-//router Get - challenge by link
-router.get('/:repoLink', async (req, res) => {
-  try {
-    const repo = await Challenge.findOne({
-      where: {
-        repositoryName: req.params.repoLink
-      }
-    });
-    if(repo) {
-      return res.status(200).send(repo.id);
-    }
-  } catch (err) {
-  res.send("Bad request")
-  }
-})
-*/
 
 module.exports = router;

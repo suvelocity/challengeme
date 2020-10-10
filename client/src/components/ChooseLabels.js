@@ -39,4 +39,5 @@ const ChooseLabels =({ submitFilter }) => {
     </div>
   );
 }
+
 export default ChooseLabels 
