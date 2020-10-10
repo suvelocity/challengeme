@@ -3,6 +3,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import Charts from "./charts/Charts";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import axios from 'axios';
+import ThemeApi from "../services/Theme"
+import '../pages/Home.css'
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,12 +15,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   grid: {
+    marginTop: "4rem",
     display: "grid",
     gridGap: "20px",
     textAlign: "center",
     alignContent: "center",
     justifyContent: "center",
-    backgroundColor: "lightblue",
     padding: "10px",
     height: "inherit",
     width: "inherit",
@@ -102,6 +105,7 @@ function StatisticsHome() {
   const [topChallengesData, setTopChallengesData] = useState([]);
   const [topUsersData, setTopUsersData] = useState([]);
   const [topTeamsData, setTopTeamsData] = useState([]);
+  const darkMode = React.useContext(ThemeApi).darkTheme
 
   const challengeData = {
     labels: topChallengesData && topChallengesData.map(index => index.Challenge.name), // array of values for x axis (strings)
@@ -131,6 +135,20 @@ function StatisticsHome() {
       // you can add as many object as you wand, each one will a different line with different color
     ],
   };
+  const teamData = {
+    labels: topTeamsData && topTeamsData.map(team => team.name), // array of values for x axis (strings)
+    title: "Top Teams", // title for the chart
+    rawData: [
+      {
+        label: "Submitions", // name of the line (one or two words)
+        backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'], //raw color
+        borderColor: "cyan", //use the same as background color
+        fill: false, // change the line chart
+        data: topTeamsData && [...topTeamsData.map(team => team["Users.Submissions.teamSuccessSubmissions"]), 0], // array of values for Y axis (numbers)
+      },
+      // you can add as many object as you wand, each one will a different line with different color
+    ],
+  };
 
 
   useEffect(() => {
@@ -145,8 +163,8 @@ function StatisticsHome() {
     setLoading(false);
   };
   const getTeamsData = async () => {
-    const { data: teamsInfo } = await axios.get('/api/v1/statistics/users/top-users');
-    console.log(teamsInfo)
+    const { data: teamsInfo } = await axios.get('/api/v1/statistics/teams/top');
+    setTopTeamsData(teamsInfo)
     setLoading(false);
   };
   const getUsersData = async () => {
@@ -157,7 +175,8 @@ function StatisticsHome() {
   };
   
   return (
-    <div className={classes.main}>
+    // <div className ={darkMode?"dark-home-page":"light-home-page"}>
+    <div className={clsx(classes.main, darkMode?"dark-home-page":"light-home-page")}>
       <div className={classes.grid}>
         {loading ? (
           <div className={classes.root}>
@@ -211,6 +230,7 @@ function StatisticsHome() {
           </div>
         )}
       </div>
+    {/* </div> */}
     </div>
   );
 }

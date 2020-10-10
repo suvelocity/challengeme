@@ -4,13 +4,14 @@ import { BrowserRouter as Router, Switch, Route, useRouteMatch } from "react-rou
 //import { NavBarStatistics, StatisticsHome, UserStatistics, TeamStatistics, Insights} from '../components';
 
 import NavBarStatistics from '../components/NavBarStatistics';
-
+import ThemeApi from "../services/Theme"
 import StatisticsHome from '../components/StatisticsHome';
 import UserStatistics from '../components/UserStatistics';
 import TeamStatistics from '../components/TeamStatistics';
 import Insights from '../components/Insights';
 import ButtonAppBar from '../components/Navigation/NavbarMock';
-
+import './Home.css'
+import clsx from 'clsx';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ProfileStatistics from '../components/ProfileStatistics';
@@ -27,12 +28,13 @@ const useStyles = makeStyles({
     }
 });
 function Statistics() {
+    const darkMode = React.useContext(ThemeApi).darkTheme
     const classes = useStyles()
     const { path, url } = useRouteMatch();
     const res = useRouteMatch();
     console.log(res);
     return (
-        <div>
+        <div className={darkMode?"dark-home-page":"light-home-page"}>
             <div className={classes.root} >
                 <div className={classes.navBar}>
                     <NavBarStatistics />
