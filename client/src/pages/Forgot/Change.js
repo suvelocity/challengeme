@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 import Timer from "./TImer";
-import Select from "@material-ui/core/Select";
-import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -13,28 +11,24 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import LockIcon from "@material-ui/icons/Lock";
-import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
+
 const useStyles = makeStyles((theme) => ({
-    ForogotPassNewPass: {
+  ForogotPassContainer: {
         marginTop: "80px",
         marginBottom: "10px",
         width: "320px",
     },
-    password: {
+    ForogotPasspassword: {
         // marginTop: "60px",
         marginBottom: "10px",
         width: "320px",
     },
-    confirmPassword: {
+    ForogotPassconfirmPassword: {
         // marginTop: "80px",
         marginBottom: "30px",
         width: "320px",
     },
-    answer: {
-        // marginTop: "80px",
-        // marginBottom: "20px",
-        width: "320px",
-    },
+
 }));
 export default function Change({ data, handleChange }) {
     const classes = useStyles();
@@ -59,12 +53,12 @@ export default function Change({ data, handleChange }) {
     return redirect ? (
         <Redirect to="/" />
     ) : (
-        <div className={classes.ForogotPassNewPass}>
+        <div className={classes.ForogotPassContainer}>
             Attention! You have {<Timer limit={limit} unit={"minutes"} />} to
             change your password.
             <br />
             Enter new password :
-            <FormControl className={classes.password}>
+            <FormControl className={classes.ForogotPasspassword}>
                 <InputLabel
                     style={{ color: "grey" }}
                     className={classes.labelPass}
@@ -96,7 +90,7 @@ export default function Change({ data, handleChange }) {
                     }
                 />
             </FormControl>
-            <FormControl className={classes.confirmPassword}>
+            <FormControl className={classes.ForogotPassconfirmPassword}>
                 <InputLabel
                     style={{ color: "grey" }}
                     className={classes.labelPass}
