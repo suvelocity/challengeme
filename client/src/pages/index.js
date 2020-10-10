@@ -19,7 +19,7 @@ export default function Router() {
 
   return (
     <ThemeApi.Provider value={{darkTheme,setDarkTheme}}>
-    <BrowserRouter className='ssss'>
+    <BrowserRouter >
       <Header />
       <div className="main">
       <Switch>
