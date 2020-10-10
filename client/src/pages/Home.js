@@ -23,7 +23,6 @@ export default function HomePage() {
         :value
         return `${name}=${valueString}`
       }).join('&')
-      console.log(filterString)
       return filterString
     },
     [filters]
@@ -31,10 +30,11 @@ export default function HomePage() {
 
   useEffect(() => {
     (async () => {
-      const { data: challengesFromServer } = await network.get(
-        '/api/v1/challenges?'+getFilters()
-        )
-      setChallenges(challengesFromServer);  
+      try{
+        const { data: challengesFromServer } = await network.get(
+          '/api/v1/challenges?'+getFilters())
+          setChallenges(challengesFromServer);  
+      }catch(e){}
     })();  
   }, [filters]);  
 

@@ -21,7 +21,6 @@ export default function Router() {
     <ThemeApi.Provider value={{darkTheme,setDarkTheme}}>
     <BrowserRouter>
       <Header />
-      <div className="main">
       <Switch>
         <Route path="/addChallenge">
           <NewChallengeForm />
@@ -30,7 +29,6 @@ export default function Router() {
           <Home />
         </Route>
       </Switch>
-      </div>
     </BrowserRouter>
      </ThemeApi.Provider>
 
