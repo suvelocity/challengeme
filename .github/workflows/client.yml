@@ -2,18 +2,18 @@ name: client
 on:
   workflow_dispatch:
     inputs:
-      name:
-        description: 'Person to greet'
-        required: true
-        default: 'Mona the Octocat'
+      # name:
+      #   description: 'Solution repository name and submissions number'
+      #   required: true
+      #   default: 'Submission number'
       testRepo:
-        description: 'the testing repository'
+        description: 'Testing repository'
         required: false
       solutionRepo:
-        description: 'the solution repository'
+        description: 'Solution repository'
         required: false
       webhookUrl:
-        description: 'location'
+        description: 'Location'
         required: false
 
 
@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x]
-    name: ${{ github.event.inputs.name }}
+    name: ${{ github.event.inputs.solutionRepo }}
     steps:
     - uses: actions/checkout@v2
     - name: Run challenge (Node.js ${{ matrix.node-version }})
@@ -60,14 +60,16 @@ jobs:
     - name: onSuccess
       uses: fjogeleit/http-request-action@master
       with:
+        method: 'PATCH'
         url: ${{ github.event.inputs.webhookUrl }}
-        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":true }'
+        data:  '{ "success":true }'
     - name: onFailure
       if: ${{ failure() || cancelled() }}
       uses: fjogeleit/http-request-action@master
       with:
+        method: 'PATCH'
         url: ${{ github.event.inputs.webhookUrl }}
-        data:  '{ "solutionRepo":"${{ github.event.inputs.name }}", "success":false }'
+        data:  '{ "success":false }'
 
   # secondjob:
   #   needs: tests
