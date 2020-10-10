@@ -10,7 +10,6 @@
 }
 
 .MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters{
-  position: sticky;
   max-height: 40px;
   top: 0%;
 }

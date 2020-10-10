@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import network from "../services/network"
 import "./ChallengeCard.css"
 import Avatar from "@material-ui/core/Avatar"
@@ -20,54 +20,107 @@ function generateTime(date) {
 export default function ChallengeCard({
   name,
   description,
+  labels,
+  createdAt,
   repositoryName,
-  challengeId,
+  challengeId
 }) {
   const darkMode = React.useContext(ThemeApi).darkTheme
   const [coverImg,setCoverImg] = useState("")
   const [date,setDate] = useState(null)
 
+  const getUpdated = (date)=>{
+      const dateNow =  Date.now()
+      const updateRepoDate =new Date(date)
+      let diff = (dateNow-updateRepoDate.getTime())/1000/60/60
+      if(diff < 24){
+        setDate(`${Math.floor(diff)} Hours ago`)
+      }else{
+        diff = diff/24
+        diff = Math.floor(diff)  
+        if(diff < 8){
+          setDate(`${Math.floor(diff)} Days ago`)
+        }else{
+        diff = Math.floor(diff / 7)
+          if(diff < 5){
+            setDate(`${Math.floor(diff)} Weeks ago`)
+          }else{
+             diff = Math.floor(diff / 4)
+             if(diff < 13){
+               setDate(`${Math.floor(diff)} Months ago`)
+             }else{
+             diff = Math.floor(diff / 12)
+              setDate(`${Math.floor(diff)} Years ago`)
+             }
+
+          }
+        }
+      }
+  }
+
   useEffect(()=>{
     (async ()=> {
-      const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`)
-      setCoverImg(coverImage?coverImage.img:'')
-      const { data: repo } = await network.get(`https://api.github.com/repos/${repositoryName}`)
-      const updateDate = repo.updated_at
-      setDate(generateTime(updateDate))
+      try{
+        const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`)
+        setCoverImg(coverImage?coverImage.img:'')
+        try{
+          const { data: repo } = await network.get(`/api/v1/challenges/public_repo?repo_name=${repositoryName}`)
+          const updateDate = repo.updated_at
+          // let diff = updateDate.valueOf()
+          // const dateNow =  Date.now()
+          // const updateRepoDate =new Date(updateDate)
+          // console.log((dateNow-updateRepoDate.getTime())/1000/60/60);
+          // setDate(updateDate)
+          getUpdated(updateDate)
+          // setDate(generateTime(updateDate))
+        }catch(e){
+          setDate(generateTime(createdAt))
+        }
+      }catch(err){
+        console.error(err.message)
+      }
+ 
 
     })()
   })
+  const avatarStyle = {backgroundColor:darkMode ? "#F5AF5D":"#C9AC80",margin:5}
 
   return (
-    <motion.div className={darkMode?"dark-challenge-card":"light-challenge-card"}
+    <motion.div className="challenge-card"
     initial={{scale:0.03}}
     animate={{ scale: 1 }}
-    transition={{default: { duration: 1.2 }}}
+    transition={{default: { duration: 1.2 , delay:0.3}}}
     
     >
       <div className="challenge-card-creator-homepage">
+        <div className="avatar-and-repo-name">
         <Tooltip title={repositoryName.split("/")[0]}>
-        <Avatar style={{backgroundColor:"#F5AF5D",marginRight:50}}>{repositoryName.slice(0,2)}</Avatar>
+        <Avatar style={avatarStyle}>{repositoryName.slice(0,2)}</Avatar>
         </Tooltip>
-        <div>{name}</div>
+       {name}
+        </div>
+        <div>
+          {
+            labels.slice(0,3).map(label=>{
+            return <span className="home-page-challenge-labels" key={label.id}>{label.name}</span>
+            })
+          }
+        </div>
       </div>
       {
       coverImg.length>0&&
       <img className="challenge-card-img-homepage" src={coverImg} />
       }
       <div className="challenge-card-data-homepage">
-        <div>
-
         {
           date&&
-          "Last update: " + date 
+         "Updated: "+date
         }
-        </div>
         <Rating readOnly name="disabled" value={4}  />
       </div>
-      <div className={darkMode?"challenge-card-description-homepage":"challenge-card-description-homepage-light"}>
+      <div className="challenge-card-description-homepage">
         {description.length<100? description : description.slice(0,100).split(" ").slice(0,-1).join(" ")+"..."}
-      </div>
+        </div>
     </motion.div>
   );
 }

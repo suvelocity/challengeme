@@ -27,12 +27,17 @@ const ChooseLabels =({ submitFilter }) => {
   return (
     <div className='labelFilter'>
     <Selector
+    className='selectLabels'
+    maxMenuHeight={100}
     placeholder='select labels' 
     isMulti
     name='labels'
     onChange={selectionChange}
+    closeMenuOnSelect={false}
     options={labels}/>
+
     </div>
   );
 }
-export default ChooseLabels
+
+export default ChooseLabels 
