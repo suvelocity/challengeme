@@ -48,7 +48,7 @@ export default function HomePage() {
   const [expandedChallenge, setExpandedChallenge] = useState();
   useEffect(() => {
     (async () => {
-      const { data: challengesFromServer } = await network.get('/api/v1/challenges')
+      const { data: challengesFromServer } = await network.get('/api/v1/challenges/')
       setChallenges(challengesFromServer);
     })();
   }, []);
@@ -70,19 +70,19 @@ export default function HomePage() {
         Challenges
       </Typography>
       {challenges.map(challenge => (
-        <ChallengeCard
-          key={challenge.id}
-          cover={challenge.cover}
-          challengeId={challenge.id}
-          expanded={expandedChallenge === challenge.id}
-          setExpanded={() => setExpandedChallenge(currentExpanded => {
-            return currentExpanded === challenge.id ? false : challenge.id
-          })}
-          createdAt={challenge.createdAt}
-          name={challenge.name}
-          description={challenge.description}
-          onApply={() => onApply(challenge.id)}
-        />
+          <ChallengeCard
+            key={challenge.id}
+            cover={challenge.cover}
+            challengeId={challenge.id}
+            expanded={expandedChallenge === challenge.id}
+            setExpanded={() => setExpandedChallenge(currentExpanded => {
+              return currentExpanded === challenge.id ? false : challenge.id
+            })}
+            createdAt={challenge.createdAt}
+            name={challenge.name}
+            description={challenge.description}
+            onApply={() => onApply(challenge.id)}
+          />
       ))}
       <ApplyDialog
         open={!!challengeToApply}
