@@ -35,7 +35,7 @@ export default function ChallengeCard({
         const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`)
         setCoverImg(coverImage?coverImage.img:'')
         try{
-          const { data: repo } = await network.get(`/api/v1/challenges/update_date?repo_name=${repositoryName}`)
+          const { data: repo } = await network.get(`/api/v1/challenges/public_repo?repo_name=${repositoryName}`)
           const updateDate = repo.updated_at
           setDate(generateTime(updateDate))
         }catch(e){
@@ -49,7 +49,7 @@ export default function ChallengeCard({
     })()
   })
   const challengeCardDescriptionStyle = darkMode ? "challenge-card-description-homepage" : "challenge-card-description-homepage-light"
-  const avatarStyle = {backgroundColor:darkMode?"#F5AF5D":"#C9AC80",marginRight:10}
+  const avatarStyle = {backgroundColor:darkMode ? "#F5AF5D":"#C9AC80",margin:3}
 
   return (
     <motion.div className={darkMode?"dark-challenge-card":"light-challenge-card"}

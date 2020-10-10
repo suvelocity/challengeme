@@ -40,7 +40,7 @@ router.get('/labels', async (req, res) => {
   res.json(allLabels.map(({id,name})=>{return{label:name,value:id}}))
 })
 
-router.get('/update_date', async (req, res) => {
+router.get('/public_repo', async (req, res) => {
   const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`,{headers: {
     Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
   }})
