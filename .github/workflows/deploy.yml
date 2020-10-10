@@ -39,7 +39,7 @@ jobs:
       working-directory: ./client
     - name: Copy build
       run: |-
-        gcloud compute scp --recurse --zone us-central1-a ./build instance-1:../../var/www/client/
+        gcloud compute scp --recurse --zone us-central1-a ./build root@instance-1:../../var/www/client
       working-directory: ./client
     - name: Deploy
       run: |-
