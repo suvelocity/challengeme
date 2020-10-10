@@ -18,10 +18,10 @@ const ChooseCategory =({ formerSelection , submitFilter }) => {
     }
     ,[])
   
-  const selectionChange = (a,b)=>{
-    // a=[{title:<string>,value:<string>},{title:<string>,value:<string>}]
-    // b={action:<string>, option(what you clicked): {title:<string>,value:<string>} , name(name of the Selector):<string>}
-    submitFilter('labels',a?a.map(x=>x.value):[])
+  const selectionChange = (allSelected,lastAction)=>{// this 
+    // allSelected=[{title:<string>,value:<string>},{title:<string>,value:<string>}]
+    // lastAction={action:<string>, option(what you clicked): {title:<string>,value:<string>} , name(name of the Selector):<string>}
+    submitFilter('labels',allSelected?allSelected.map(selection=>selection.value):[])
   }
 
   return (

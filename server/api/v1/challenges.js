@@ -15,18 +15,16 @@ router.get('/',filterResults, async (req, res) => {
     where: condition,
     include: [Label]
   });
-  if(labels){
+  if(labels){ // if filter for labels
     const filterChallenges = allChallenges.filter((challenge)=>{
-      // challenge.Labels[t].id === labels[j]  
-      // return challenge ;
-      return labels.some((label)=>{
-        return challenge.Labels.some((x)=>{
+      return labels.some((label)=>{ // if at least one of the existing labels
+        return challenge.Labels.some((x)=>{ // matches at least one of the Challenge's labels 
           return x.id == label  ;
         })
       })
     });
     res.json(filterChallenges);
-  } else {
+  } else { // else dont filter
     res.json(allChallenges)
   }
 })
