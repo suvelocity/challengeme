@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon node .",
     "migrate": "node_modules/.bin/sequelize db:migrate"
   },
   "repository": {
@@ -27,6 +28,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "mysql2": "^2.2.5",
+    "nodemon": "^2.0.4",
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
