@@ -10,7 +10,7 @@ import ErrorIcon from "@material-ui/icons/Error";
 import "../../styles/Forgot.css";
 
 const useStyles = makeStyles((theme) => ({
-    nextButton: {
+    nextButtonForgotPass: {
         marginBottom: "10px",
         // marginTop: "60px",
         background: "linear-gradient(45deg, #447CC6 30%, #315CAB 90%)",
@@ -185,7 +185,7 @@ export default function Forgot() {
                 )}
                 <div className="containerButtonsForgotPass">
                     <Button
-                        className={classes.nextButton}
+                        className={classes.nextButtonForgotPass}
                         variant="contained"
                         color="primary"
                         onClick={nextStep}

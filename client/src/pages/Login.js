@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import axios from "../services/network";
 import { Logged } from "../context/LoggedInContext";
 import IconButton from "@material-ui/core/IconButton";
-import FacebookIcon from "@material-ui/icons/Facebook";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -24,7 +23,7 @@ import "../styles/Login.css";
 
 const useStyles = makeStyles((theme) => ({
     userName: {
-        marginTop: "80px",
+        marginTop: "110px",
         marginBottom: "20px",
         width: "320px",
     },
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     },
     loginButton: {
         marginBottom: "10px",
-        marginTop: "60px",
+        marginTop: "70px",
         background: "linear-gradient(45deg, #447CC6 30%, #315CAB 90%)",
         color: "white",
     },
@@ -89,12 +88,12 @@ export default function Login() {
             const { data: response } = await axios.post("/api/v1/auth/login", {
                 userName: userName,
                 password: password,
-                rememberMe: rememberMe
-            })
+                rememberMe: rememberMe,
+            });
             value.setLogged(true);
             location.push("/");
         } catch (e) {
-            setError({ msg: e.response.data.message })
+            setError({ msg: e.response.data.message });
         }
     };
 
@@ -105,9 +104,6 @@ export default function Login() {
                     <div className="loginTitle">Log in</div>
                     <div className="orLoginWith">Or login with :</div>
                     <div>
-                        <IconButton>
-                            <FacebookIcon style={{ color: "white" }} />
-                        </IconButton>
                         <IconButton>
                             <GitHubIcon style={{ color: "white" }} />
                         </IconButton>
@@ -163,23 +159,37 @@ export default function Login() {
                                         <IconButton
                                             style={{ opacity: "0.7" }}
                                             aria-label="toggle password visibility"
-                                            onMouseDown={handleClickShowPassword}
+                                            onMouseDown={
+                                                handleClickShowPassword
+                                            }
                                             onMouseUp={handleClickShowPassword}
                                         >
                                             {showPassword ? (
                                                 <Visibility />
                                             ) : (
-                                                    <VisibilityOff />
-                                                )}
+                                                <VisibilityOff />
+                                            )}
                                         </IconButton>
                                         <LockIcon style={{ opacity: "0.7" }} />
                                     </InputAdornment>
                                 }
                             />
                         </FormControl>
-                        <Link to="/forgot" className="forgotLabel">
-                            Forgot Password ?
-                        </Link>
+                        <div className="RememberAndforgot">
+                            <FormControlLabel
+                                htmlFor="rememberMe"
+                                value="start"
+                                control={<Checkbox color="primary" />}
+                                label="Remember me"
+                                labelPlacement="end"
+                                name="rememberMe"
+                                type="checkbox"
+                                onChange={updateField}
+                            />
+                            <Link to="/forgot" className="forgotLabel">
+                                Forgot Password ?
+                            </Link>
+                        </div>
                         {(error.userName || error.password || error.msg) && (
                             <div className="containerError">
                                 <ErrorIcon
@@ -202,19 +212,12 @@ export default function Login() {
                         >
                             Log in
                         </Button>
-                        <FormControlLabel
-                            htmlFor="rememberMe"
-                            value="start"
-                            control={<Checkbox color="primary" />}
-                            label="Remember me"
-                            labelPlacement="end"
-                            name="rememberMe"
-                            type="checkbox"
-                            onChange={updateField}
-                        />
                         <div>
                             <span>don't have an account yet?</span>
-                            <Link to="/register" id='signUp'> Sign up</Link>
+                            <Link to="/register" id="signUp">
+                                {" "}
+                                Sign up
+                            </Link>
                         </div>
                     </div>
                 </form>
