@@ -18,7 +18,8 @@ function AddImg( { file, handleChange} ) {
               minCropBoxHeight:300,
               minCropBoxWidth:800,
               aspectRatio:400/150,
-              zoomable:true
+              zoomable:true,
+              autoCrop:true
             }
           }
           onChange={event => handleChange(event)}

@@ -66,9 +66,8 @@ export default function ChallengeCard({
         <Rating readOnly name="disabled" value={4}  />
       </div>
       <div className={darkMode?"challenge-card-description-homepage":"challenge-card-description-homepage-light"}>
-      {description.length<100? description : description.slice(0,100).split(" ").slice(0,-1).join(" ")+"..."}
-        {/* word-wrap: break-word ssssssssssssssssssssssssssssshas been replaced with overflow-wrap: brsseask-wo       */}
-        </div>
+        {description.length<100? description : description.slice(0,100).split(" ").slice(0,-1).join(" ")+"..."}
+      </div>
     </motion.div>
   );
 }

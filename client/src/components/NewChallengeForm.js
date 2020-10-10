@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import ChooseLabels from '../components/ChooseLabels'
+import ChooseLabels from '../components/ChooseLabels';
 import network from '../services/network';
-import ThemeApi from "../services/Theme"
+import ThemeApi from "../services/Theme";
 import AddImg from './AddImg';
 import Swal from 'sweetalert2';
-import "./NewChallengeForm.css"
-
+import "./NewChallengeForm.css";
 
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, InputLabel, MenuItem, FormControl, Select, TextField, TextareaAutosize, Button } from '@material-ui/core';
@@ -28,7 +27,7 @@ export default function NewChallengeForm() {
     openOptions();
   }, [])
 
-  // pull challenge's type options from .github/workflows folder
+  /* pull challenge's type options from .github/workflows folder */
   const openOptions = async () => {
   const { data: types } = await network.get('/api/v1/new-challenge/type');
   setOptionsArray(types.map((type, index) => 
@@ -36,14 +35,13 @@ export default function NewChallengeForm() {
     ))
   }
 
-  // validate data before poting and submiting challenge
+  /* validate data before poting */
   const spaces = new RegExp(/^(\s{1,})$/);
   const hebrew = new RegExp(/^.*([\u0590-\u05FF]{1,}).*$/);
   const handleSubmit = async (event) => {
     event.preventDefault();
     let newBadInput = [];
     if(repoName.length < 2 || repoName.match(spaces) || repoName.match(hebrew)) {
-      // newBadInput.push("* Repository's name is too short (minimum 2 characters).\n  Don't use hebrew letters");
       newBadInput.push(
         <Alert severity="error">
           <AlertTitle>
@@ -55,15 +53,13 @@ export default function NewChallengeForm() {
     }
     try {
       if(repoLink.length > 2 && !repoLink.match(spaces) && !repoLink.match(hebrew)) {
-        await network.get(`https://api.github.com/repos/${repoLink}`)
+        console.log(repoLink);
+        console.log(`/api/v1/challenges/public_repo?repo_name=${repoLink}`);
+        await network.get(`/api/v1/challenges/public_repo?repo_name=${repoLink}`);
       } else {
         throw 'error';
       }
     } catch(err) {
-      // newBadInput.push(`* Repository's Link is not valid. Check the suggestions below:
-      // - Type the Github repository in this format: owner/repo
-      // - Change your repository to public
-      // - Check for type errors.\n  Don't use Hebrew letters`);
       newBadInput.push(
         <Alert severity="error">
           <AlertTitle>
@@ -74,7 +70,6 @@ export default function NewChallengeForm() {
       );
     }
     if(repoDescription.length < 20 || !!repoDescription.match(spaces) || !!repoDescription.match(hebrew)) {
-      // newBadInput.push("* Repository's Description is too short (minimum 20 characters).\n  Don't use hebrew letters");
       newBadInput.push(
         <Alert severity="error">
           <AlertTitle>
@@ -84,7 +79,6 @@ export default function NewChallengeForm() {
         </Alert>
       );  
     } else if(repoDescription.length > 500 || repoDescription.match(hebrew)) {
-      // newBadInput.push("* Repository's Description is too long (maximum 500 characters).\n  Don't use hebrew letters");
       newBadInput.push(
         <Alert severity="error">
           <AlertTitle>
@@ -95,7 +89,6 @@ export default function NewChallengeForm() {
       );  
     }
     if(!repoType) {
-      // newBadInput.push("* Repository's type not selected");
       newBadInput.push(
         <Alert severity="error">
           <AlertTitle>
@@ -105,7 +98,6 @@ export default function NewChallengeForm() {
       );  
     }
     if(Object.keys(file).length === 0 && file.constructor === Object) {
-      // newBadInput.push("* Repository's image not selected");
       newBadInput.push(
         <Alert severity="error">
           <AlertTitle>
@@ -127,7 +119,7 @@ export default function NewChallengeForm() {
         type: repoType,
         repositoryName: repoLink
       }
-      // post newRepo to challenge table
+      /* post newRepo to challenge table */
       try{
         const { data : postedRepo } = await network.post(`/api/v1/new-challenge`, newRepo)
         await network.post("/api/v1/image",{
@@ -142,20 +134,33 @@ export default function NewChallengeForm() {
         }
         Swal.fire({
           icon: 'success',
-          title: 'Your challenge added successfuly!',
+          title: 'Your challenge was added successfuly!',
           showConfirmButton: false,
           timer: 3000
-        })
-        
+        });        
         history.push('/');
       }
       catch(error){
-        console.log('error');
+        if(error.response.status === 500) {
+          Swal.fire({
+            icon: 'error',
+            title: error.response.data,
+            showConfirmButton: false,
+            timer: 3000
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'An error has occurred. Please try again later',
+            showConfirmButton: false,
+            timer: 3000
+          });
+        }
       }
     }
   }
 
-  // add image
+  /* add image */
   const handleFile = (value) =>{
     if(value.src)
     {
@@ -165,7 +170,6 @@ export default function NewChallengeForm() {
       i.onload = () => {
         const width = i.width
         const height = i.height
-        console.log(width, " ", height);
         if (width < 800) {
           Swal.fire("invalid image width", "", "error")
           setFile({})
@@ -175,7 +179,6 @@ export default function NewChallengeForm() {
           setFile({})
         }
         else {
-          console.log(value.src.offsetHeight,);
           setFile(value);
         }
       }
@@ -185,7 +188,7 @@ export default function NewChallengeForm() {
     }
   }
 
-  // 'clear values' button
+  /* 'clear values' button */
   const handleReset = () => {
     setRepoName('')
     setRepoLink('')
@@ -235,10 +238,8 @@ export default function NewChallengeForm() {
           {optionsArray.map(x=>x)}
         </Select>
       </FormControl><br />
-      <Typography color='error' className='displayErrors'>
-        {/* {badInput.join(`\n`)} */}
+      <Typography color='error' className='newChallengeFormDisplayErrors'>
         {badInput}
-        {console.log(badInput)}
       </Typography>
       <br />
       <div className='newChallengeFormButtons'>
