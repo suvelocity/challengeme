@@ -25,6 +25,23 @@ reviewsRouter.get('/byChallenge/:challengeId', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
+reviewsRouter.get(
+  '/byChallenge/:challengeId/averageRating',
+  async (req, res) => {
+    try {
+      const rating = await Review.findAll({
+        where: { challengeId: req.params.challengeId },
+        attributes: ['challengeId', 'rating'],
+      });
+      const averageRating = rating.map((item) => item.rating);
+      res.json(averageRating.reduce((a, b) => a + b) / averageRating.length);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
+);
+
 reviewsRouter.get('/byUser/:userId', async (req, res) => {
   try {
     const reviews = await Review.findAll({
@@ -39,8 +56,8 @@ reviewsRouter.get('/byUser/:userId', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
+
 reviewsRouter.post('/:challengeId', async (req, res) => {
-  // TODO: (Dror maman) create a new review
   const { title, content, rating, userId } = req.body;
   const query = {
     title,
@@ -51,7 +68,7 @@ reviewsRouter.post('/:challengeId', async (req, res) => {
   };
   try {
     await Review.create(query);
-    res.status(200).send("Uploaded new review!");
+    res.status(200).send('Uploaded new review!');
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
