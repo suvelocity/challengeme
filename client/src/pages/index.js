@@ -19,7 +19,7 @@ export default function Router() {
 
   return (
     <ThemeApi.Provider value={{darkTheme,setDarkTheme}}>
-    <BrowserRouter>
+    <BrowserRouter >
       <Header />
       <Switch>
         <Route path="/addChallenge">

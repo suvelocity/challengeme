@@ -13,7 +13,10 @@ router.get('/',filterResults, async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
       where: condition,
-      include: [Label]
+      include: [Label],
+      order: [
+        ['createdAt','DESC']
+      ]
     });
     if(labels){
       const filterChallenges = allChallenges.filter((challenge)=>{

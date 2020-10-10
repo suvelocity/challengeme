@@ -3,6 +3,11 @@ import ChooseLabels from './ChooseLabels'
 import ChooseTime from './ChooseTime'
 import ChooseCategory from './ChooseCategory'
 import './FilterMenu.css'
+import './FilterMenuDark.css'
+import { Button } from '@material-ui/core';
+
+import ThemeApi from "../services/Theme"
+
 
 const FilterMenu =( {formerSelection,updateFilters}) => {
   //filters must have a value that's either a number/string or an array of such
@@ -10,6 +15,9 @@ const FilterMenu =( {formerSelection,updateFilters}) => {
   const [labels,setLabels]  =useState(formerLabels||[])
   const [time,setTime]  = useState(formerTime||100)
   const [open,setOpen]  = useState(false)
+  
+  const darkMode = React.useContext(ThemeApi).darkTheme
+  
   const submit= () => {
     updateFilters({labels,time})
     setOpen(false);
@@ -32,36 +40,47 @@ const FilterMenu =( {formerSelection,updateFilters}) => {
   }
 
   const menuClass = open?'open filters':'filters'
+  const darkClass = darkMode?'filterMenu dark':'filterMenu'
   
   return (
-    <div className='filterMenu'>
+    <div className={darkClass}>
       <div className={menuClass}>
       <h3>
       FILTERS
       </h3>
-        {/* <ChooseCategory submitFilter={setValue} /> */}
-        
-        <button 
-          className='filterSubmit' 
-          onClick={submit} >
-          submit
-        </button>
-        
-        <button 
-          className='filterClear' 
-          onClick={clear} >
-          clear
-        </button>
-        
-        <button 
-          className='filterCancel' 
-          onClick={close} >
-          cancel
-        </button>
-        
+
+      <div>
+        <div className='buttons'>
+
+          <Button 
+            className='filterSubmit' 
+            variant={darkMode?'outlined':'contained'}
+            color='primary'
+            onClick={submit} >
+            submit
+          </Button>
+          
+          <Button 
+            className='filterClear' 
+            variant={darkMode?'outlined':'contained'}
+            color='secondary'
+            onClick={clear} >
+            clear
+          </Button>
+          
+          <Button 
+            className='filterCancel' 
+            variant={darkMode?'outlined':'contained'}
+            color='default'
+            onClick={close} >
+            cancel
+          </Button>
+          
+        </div>
         <ChooseLabels submitFilter={setLabels} />
         <ChooseTime submitFilter={setTime} />
       
+      </div>
       </div>
       <div className='toggleOpen' 
       onClick={toggleOpenClick} />
