@@ -18,8 +18,8 @@ const useStyles = makeStyles((theme) => ({
       'headChart headChart smallChart' 30vh 
       'headChart headChart sideChart' 30vh
       'leftChart rightChart sideChart' 30vh
-      'byReview byReview null' 30vh
-      'byReview byReview null' 30vh `,
+      'byReview byReview perDay' 30vh
+      'byReview byReview perDay' 30vh `,
   },
   div: {
     textAlign: "center",
@@ -74,6 +74,13 @@ function Insights() {
       .then((r) => r.data)
       .then((r) => {
         setChallengeByReview(r);
+        setLoading(false);
+      });
+    axios
+      .get(`/api/v1/statistics/insights/sub-by-date`)
+      .then((r) => r.data)
+      .then((r) => {
+        setSubByDate(r);
         setLoading(false);
       });
   };
@@ -205,6 +212,34 @@ useEffect(() => {
     ],
   };
 
+  const subByDateData = {
+    labels: subByDate && subByDate.map((e) => e.createdAt.split("T")[0]), // array of values for x axis (strings)
+    title: "Submissions per day",
+    rawData: [
+      {
+        label: "types",
+        backgroundColor: [
+          "red",
+          "blue",
+          "green",
+          "yellow",
+          "purple",
+          "black",
+          "pink",
+          "gray",
+        ],
+        borderColor: "black",
+        fill: false,
+        data: subByDate && [
+          ...subByDate.map((e) => e.countByDay),
+          0,
+        ], // array of values for Y axis (numbers)
+      },
+    ],
+  };
+
+  console.log(subByDate);
+
   return (
     <div className={classes.main}>
       <div className={classes.grid}>
@@ -292,6 +327,24 @@ useEffect(() => {
               height={"16vh"}
               chart={[2]}
               data={challengesTypeData}
+            />
+          </div>
+        )}
+        {loading ? (
+          <div className={classes.root}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <div
+            id="subByDate"
+            className={classes.div}
+            style={{ gridArea: "perDay" }}
+          >
+            <Charts
+              width={"36vw"}
+              height={"36vh"}
+              chart={[0,1]}
+              data={subByDateData}
             />
           </div>
         )}

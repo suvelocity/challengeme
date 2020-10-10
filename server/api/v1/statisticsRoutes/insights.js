@@ -65,7 +65,8 @@ router.get("/sub-by-date", async (req, res) => {
     ],
     where: {
       created_at: {
-        [Op.gte]: new Date(Date.now() - 432000000),
+        //432000000
+        [Op.gte]: new Date(Date.now() - 2.628e+9),
       },
     },
   });
