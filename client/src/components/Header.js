@@ -147,15 +147,20 @@ function Header() {
             open={open}
             onClose={handleClose}
           >
-            <MenuItem style={{paddingLeft:40}}>
+            <MenuItem  style={{paddingLeft:60}}>
               <DarkModeToggle
                 checked={currentTheme}
                 onChange={()=>changeTheme(prev => !prev)}
                 size={45}
                 />
             </MenuItem>
-            <MenuItem onClick={handleClose} style={{color: 'red'}}>
-              <Button variant="contained" color="secondary">
+            <MenuItem onClick={()=>{window.location = '/addChallenge'}}>
+              <Button style={{minWidth:150}} variant="contained" color="primary">
+              Add Challenge
+              </Button>
+            </MenuItem> 
+            <MenuItem onClick={handleClose}>
+              <Button style={{minWidth:150}} variant="contained" color="secondary">
               Log Out
               </Button>
             </MenuItem>
