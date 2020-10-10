@@ -1,6 +1,5 @@
 
-// A Test than checks the flow of the actions in github actions as well.
-// takes a long time and unecessary to go over each time you run all of the tests
+
 const request = require('supertest');
 const app = require('../app');
 const ngrok = require('ngrok');
@@ -33,7 +32,7 @@ describe('Submission process', () => {
         expect(submissions.length).toBe(4);
         submissions.forEach(submission => expect(submission.state).toBe('PENDING'));
         done();
-    },10000);
+    });
     test('Getting Submission Status back to database', async (done) => {
         let submissions;
         function checkingPending (){
@@ -56,6 +55,7 @@ describe('Submission process', () => {
         await checkingPending();
         done();
     },200000);
+    
     test('Correct status on the Submissions', async (done) => {
         const allSubmissions = await Submission.findAll();
         solutionRepos.forEach(solution => {
@@ -67,7 +67,35 @@ describe('Submission process', () => {
             expect(index).toBeGreaterThan(-1);
         })
         done();
-    });
+    })
+
+
+  test('Can update an existing failing submission to success', async (done) => {
+        const solution = await Submission.findOne({challengeId:1});
+        await solution.update({state: 'FAIL'});
+        await request(app).post(`/api/v1/challenges/${solutionRepos[0].challengeId}/apply`).send({solutionRepository:solutionRepos[0].repo});
+        function checkingPending (){
+            return new Promise((resolve, reject) => {
+                function checking(){
+                    setTimeout(async()=>{
+                        let reSubmission = await Submission.findOne({challengeId:1});
+                        if(reSubmission.state === 'SUCCESS'){
+                            console.log('success');
+                            return resolve('success');
+                        }else{
+                            console.log('checking again')
+                            return checking();
+                    }
+                    }, 10000);
+                }
+                checking();
+            });
+        }
+        await checkingPending();
+        done();
+    },200000)
+
+
     afterAll(async (done) => {
         server.close();
         await ngrok.disconnect();
