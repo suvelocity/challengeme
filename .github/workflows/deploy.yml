@@ -31,14 +31,23 @@ jobs:
     # helper for authentication
     - run: |-
         gcloud --quiet auth configure-docker
+    - name: Install dependencies
+      run: npm ci
+      working-directory: ./client
+    - name: Install dependencies
+      run: npm run build
+      working-directory: ./client
+    - name: Copy build
+      run: |-
+        gcloud compute scp --recurse ./build instance-1:~/var/www/client/build
+      working-directory: ./client
     - name: Deploy
       run: |-
         gcloud --quiet compute ssh --zone us-central1-a instance-1 --command '
           cd ../../var/www &&
           sudo git pull origin &&
-          cd ./client &&
-          sudo npm run build &&
-          cd ../server &&
+          cd ./server &&
+          sudo npm ci &&
           sudo npx sequelize db:migrate &&
           sudo pm2 reset 0
         '
