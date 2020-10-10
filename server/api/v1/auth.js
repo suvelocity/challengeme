@@ -55,6 +55,9 @@ usersRouter.post('/createuser', (req, res) => {
     if (err) return res.status(403).json({ message: "Invalid Token" });
     delete decoded.iat;
     delete decoded.exp;
+
+    const checkUser = await userIsExist(decoded.userName);
+    if (checkUser) return res.status(409).send("user name already exists");
     await User.create(decoded);
     res.status(201).json({ message: "Register Success" });
   });
