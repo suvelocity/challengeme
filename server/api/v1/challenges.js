@@ -10,35 +10,33 @@ const router = Router();
 
 router.get('/',filterResults, async (req, res) => {
   const {condition,labels} = req
-  try {
-    const allChallenges = await Challenge.findAll({
-      where: condition,
-      include: [Label],
-      order: [
-        ['createdAt','DESC']
-      ]
-    });
-    if(labels){
-      const filterChallenges = allChallenges.filter((challenge)=>{
-        return labels.some((label)=>{
-          return challenge.Labels.some((x)=>{
+    try {
+      const allChallenges = await Challenge.findAll({
+        where: condition,
+        include: [Label]
+      });
+      if(labels){ // if filter for labels
+        const filterChallenges = allChallenges.filter((challenge)=>{
+          return labels.some((label)=>{ // if at least one of the existing labels
+            return challenge.Labels.some((x)=>{ // matches at least one of the Challenge's labels 
             return x.id == label  ;
           })
         })
       });
       res.json(filterChallenges);
-    } else {
+    } else { // else dont filter
       res.json(allChallenges)
     }
-    
-  } catch (error) {
-    res.send('an error has happened')
-  }
-})
+    } catch (error) {
+      res.send('an error has happened')
+    }
+  })
 
-router.get('/labels', async (req, res) => {
-  const allLabels = await Label.findAll();
-  res.json(allLabels.map(({id,name})=>{return{label:name,value:id}}))
+router.get('/update_date', async (req, res) => {
+  const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`,{headers: {
+    Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
+  }})
+  res.json(repo)
 })
 
 router.get('/public_repo', async (req, res) => {
