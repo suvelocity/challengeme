@@ -39,8 +39,8 @@ export default function HomePage() {
   }, [filters]);  
 
   return (
-    <div >
-      <div className ={darkMode ? "dark-home-page" : "light-home-page"}>
+    <div className={darkMode && "dark"}>
+      <div className ={"home-page"}>
       <FilterMenu 
       formerSelection={filters} 
       updateFilters={setFilters} />

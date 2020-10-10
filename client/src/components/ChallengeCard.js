@@ -48,26 +48,26 @@ export default function ChallengeCard({
 
     })()
   })
-  const challengeCardDescriptionStyle = darkMode ? "challenge-card-description-homepage" : "challenge-card-description-homepage-light"
   const avatarStyle = {backgroundColor:darkMode ? "#F5AF5D":"#C9AC80",margin:3}
 
   return (
-    <motion.div className={darkMode?"dark-challenge-card":"light-challenge-card"}
+    <motion.div className={"challenge-card"}
     initial={{scale:0.03}}
     animate={{ scale: 1 }}
     transition={{default: { duration: 1.2 , delay:0.3}}}
     
     >
       <div className="challenge-card-creator-homepage">
+        <div className="avatar-and-repo-name">
         <Tooltip title={repositoryName.split("/")[0]}>
         <Avatar style={avatarStyle}>{repositoryName.slice(0,2)}</Avatar>
         </Tooltip>
-
        {name}
+        </div>
         <div>
           {
             labels.slice(0,3).map(label=>{
-            return <span className={darkMode?"home-page-challenge-labels-dark":"home-page-challenge-labels-light"} key={label.id}>{label.name}</span>
+            return <span className="home-page-challenge-labels" key={label.id}>{label.name}</span>
             })
           }
         </div>
@@ -83,7 +83,7 @@ export default function ChallengeCard({
         }
         <Rating readOnly name="disabled" value={4}  />
       </div>
-      <div className={challengeCardDescriptionStyle}>
+      <div className="challenge-card-description-homepage">
         {description.length<100? description : description.slice(0,100).split(" ").slice(0,-1).join(" ")+"..."}
         </div>
     </motion.div>
