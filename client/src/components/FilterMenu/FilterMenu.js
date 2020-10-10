@@ -76,7 +76,7 @@ const FilterMenu =( {formerSelection,updateFilters}) => {
           
         </div>
         <ChooseLabels submitFilter={setLabels} />
-        <ChooseTime submitFilter={setTime} />
+        {/* <ChooseTime submitFilter={setTime} /> */}
       
       </div>
       </div>
