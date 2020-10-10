@@ -156,7 +156,7 @@ function Header() {
                 />
             </MenuItem>
             <MenuItem>
-              <Link to="/addChallenge" style={{textDecoration:"none"}}>
+              <Link to="/add_challenge" style={{textDecoration:"none"}}>
               <Button style={{minWidth:150}} variant="contained" color="primary">
               Add Challenge
               </Button>

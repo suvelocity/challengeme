@@ -9,12 +9,9 @@ import NewChallengeForm from '../components/NewChallenge/NewChallengeForm';
 export default function Router() {
   const [darkTheme,setDarkTheme] = useState(false)
   useEffect(() => {
-  
     if(window.matchMedia('(prefers-color-scheme: dark)').matches){
       setDarkTheme(true)
     }
-    
-
   }, [])
 
   return (
@@ -22,7 +19,7 @@ export default function Router() {
     <BrowserRouter >
       <Header />
       <Switch>
-        <Route path="/addChallenge">
+        <Route path="/add_challenge">
           <NewChallengeForm />
         </Route>
         <Route path="/">
