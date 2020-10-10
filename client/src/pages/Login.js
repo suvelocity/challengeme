@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
-import Cookies from "js-cookie";
 import axios from "../services/network";
 import { Logged } from "../context/LoggedInContext";
 import IconButton from "@material-ui/core/IconButton";
