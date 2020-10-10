@@ -1,5 +1,5 @@
 const reviewsRouter = require("express").Router();
-const { Challenge, Reviews } = require("../../models");
+const { Challenge, Review, User } = require("../../models");
 
 // review mock for easy sevelopment
 const review = {
@@ -14,8 +14,12 @@ const review = {
 reviewsRouter.get("/byChallenge/:challengeId", async (req, res) => {
   // TODO: include User
   try {
-    const reviews = await Reviews.findAll({
+    const reviews = await Review.findAll({
       where: { challengeId: req.params.challengeId },
+      include:{
+        model:User, 
+        attributes:['userName']
+      }
     });
     res.json(reviews);
   } catch (error) {

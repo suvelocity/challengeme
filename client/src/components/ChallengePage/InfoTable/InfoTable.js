@@ -61,7 +61,15 @@ export default function InfoTable({challengeId}) {
   };
 
   return (
-    <div className={classes.root}>
+    <div className={classes.root}
+    style={{
+      width: "100%",
+      height: "500px",
+      backgroundColor: "lightskyblue",
+      border:'none',
+      overflowY: "auto",
+    }}>
+    
       <AppBar position="static">
         <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
           <Tab label="Submissions" {...a11yProps(0)} />
