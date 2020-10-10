@@ -44,7 +44,7 @@
     bottom: 0;
     right: 0;
     left: 0;
-    background-color:rgb(228, 224, 224);
+    background-color: #EFEBE1;
     font-size: 20px;
     transition: transform 0.4s ease-in-out;
     transform: translateY(100%);
@@ -101,7 +101,7 @@
     color: black;
     border: 1px solid black;
     border-radius: 8px;
-    background-color: #F0EAD3;
+    background-color: #EEDCB4;
     margin-right: 3px;
 }
 
