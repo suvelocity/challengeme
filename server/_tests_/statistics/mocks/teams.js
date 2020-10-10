@@ -1,17 +1,17 @@
 module.exports = [
     {
-    name:'teamA',
-    created_at: new Date(),
-    updated_at: new Date()
+        name: 'teamA',
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        name:'teamB',
-        created_at: new Date(),
-        updated_at: new Date()
+        name: 'teamB',
+        createdAt: new Date(),
+        updatedAt: new Date()
     },
     {
-        name:'cyber4s',
-        created_at: new Date(),
-        updated_at: new Date()
+        name: 'cyber4s',
+        createdAt: new Date(),
+        updatedAt: new Date()
     }
 ]
