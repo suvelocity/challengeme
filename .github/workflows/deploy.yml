@@ -33,7 +33,7 @@ jobs:
         gcloud --quiet auth configure-docker
     - name: Deploy
       run: |-
-        gcloud compute ssh --zone us-central1-a instance-1 &&
+        gcloud --quiet compute ssh --zone us-central1-a instance-1 &&
         pwd &&
         echo 'aaaaa'
     # cd ../../var/www &&
