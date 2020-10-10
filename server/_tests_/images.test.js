@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../app');
 const { Image } = require('../models');
-// const challengesMock = require ('./mocks/challenges');
+const imageMock = require('./mocks/images');
 
 
 describe('testing challenges endpoints', () => {
@@ -13,18 +13,15 @@ describe('testing challenges endpoints', () => {
   it('Can get image by challange id', async (done) => {
     await Image.bulkCreate(imageMock)
     const { body } = await request(app).get('/api/v1/image?id=2');
-    console.log('image:', body);
-    expect(body.length).toBe(1);
-    expect(body[0].challengeId).toBe(2);
+    expect(body.challengeId).toBe(2);
     done()
   })
-
+  
   it('Can post image to a challange, sends an error if image already exists', async (done) => {
-    // await Image.bulkCreate(challengesMock)
-    request(app).post('/api/v1/image', imageMock);
+    await request(app).post('/api/v1/image').send(imageMock[0]).expect(200);
     const { body } = await request(app).get('/api/v1/image?id=2');
-    expect(body[0].img).toBe(imageMock);
-    request(app).post('/api/v1/image', imageMock).expect(400);
+    expect(body.challengeId).toBe(2);
+    await request(app).post('/api/v1/image').send(imageMock[0]).expect(400);
     done()
   })
 
