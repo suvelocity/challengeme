@@ -1,138 +1,74 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-import PublishIcon from '@material-ui/icons/Publish';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import ShareIcon from '@material-ui/icons/Share';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-
-import network from '../services/network';
+import network from "../services/network"
+import "./ChallengeCard.css"
+import Avatar from "@material-ui/core/Avatar"
+import Rating from '@material-ui/lab/Rating';
+import { Tooltip } from '@material-ui/core';
+import ThemeApi from "../services/Theme"
+import {motion} from 'framer-motion'
 
 
-const SubmissionsTable = ({ challengeId }) => {
-  const [submissions, setSubmissions] = useState([]);
-  useEffect(() => {
-    const loadSubmissions = async () => {
-      const { data: submissionsFromServer } = await network.get(`/api/v1/challenges/${challengeId}/submissions`)
-      setSubmissions(submissionsFromServer);
-    }
-    loadSubmissions();
-    const submissionInterval = setInterval(loadSubmissions, 7000)
-    return () => {
-      clearInterval(submissionInterval);
-    }
-  }, [])
-  return <div>
-    {
-      submissions.map(submission => (<div>
-        {submission.solutionRepository} -> {submission.state}
-      </div>))
-    }
-  </div>
+function generateTime(date) {
+  let today = new Date(date)
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const yyyy = today.getFullYear();
+  today = `${yyyy}-${mm}-${dd}`;
+  return `${today}`;
 }
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    // maxWidth: 600,
-    marginBottom: 20,
-  },
-  media: {
-    height: 0,
-    paddingTop: '37.25%', // 16:9
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
-}));
 
 export default function ChallengeCard({
   name,
   description,
   repositoryName,
-  cover,
   challengeId,
-  onApply,
-  expanded,
-  setExpanded,
-  createdAt
 }) {
-  const classes = useStyles();
+  const darkMode = React.useContext(ThemeApi).darkTheme
+  const [coverImg,setCoverImg] = useState("")
+  const [date,setDate] = useState(null)
+
+  useEffect(()=>{
+    (async ()=> {
+      const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`)
+      setCoverImg(coverImage?coverImage.img:'')
+      const { data: repo } = await network.get(`https://api.github.com/repos/${repositoryName}`)
+      const updateDate = repo.updated_at
+      setDate(generateTime(updateDate))
+
+    })()
+  })
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            P
-          </Avatar>
+    <motion.div className={darkMode?"dark-challenge-card":"light-challenge-card"}
+    initial={{scale:0.03}}
+    animate={{ scale: 1 }}
+    transition={{default: { duration: 1.2 }}}
+    
+    >
+      <div className="challenge-card-creator-homepage">
+        <Tooltip title={repositoryName.split("/")[0]}>
+        <Avatar style={{backgroundColor:"#F5AF5D",marginRight:50}}>{repositoryName.slice(0,2)}</Avatar>
+        </Tooltip>
+        <div>{name}</div>
+      </div>
+      {
+      coverImg.length>0&&
+      <img className="challenge-card-img-homepage" src={coverImg} />
+      }
+      <div className="challenge-card-data-homepage">
+        <div>
+
+        {
+          date&&
+          "Last update: " + date 
         }
-        action={
-          <IconButton disabled aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title={name}
-        subheader={createdAt}
-      />
-      <CardMedia
-        className={classes.media}
-        image={cover}
-        title="Paella dish"
-      />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {description}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton onClick={onApply} aria-label="Apply challenge">
-          <PublishIcon />
-        </IconButton>
-        <IconButton disabled aria-label="add to favorites">
-          <FavoriteIcon  />
-        </IconButton>
-        <IconButton disabled aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={setExpanded}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Submissions:</Typography>
-          <SubmissionsTable challengeId={challengeId} />
-        </CardContent>
-      </Collapse>
-    </Card>
+        </div>
+        <Rating readOnly name="disabled" value={4}  />
+      </div>
+      <div className={darkMode?"challenge-card-description-homepage":"challenge-card-description-homepage-light"}>
+        {/* description.slice(0,100) */}
+        word-wrap: break-word ssssssssssssssssssssssssssssshas been replaced with overflow-wrap: brsseask-wo      
+        </div>
+    </motion.div>
   );
 }

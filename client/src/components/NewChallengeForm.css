@@ -1,0 +1,41 @@
+.newChallenge {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+
+}
+
+.newChallengeForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 70vw;
+}
+
+.newChallengeFormheader{
+  padding-top: 2vh;
+}
+
+.descriptionTextArea {
+  min-width: 40vw;
+  max-width: 65vw;
+  max-height: 30vh;
+}
+
+.newChallengeFormFeild {
+  width: 40vw;
+}
+
+.newChallengeFormButtons {
+  display: flex;
+  justify-content: space-evenly;
+  width: 40vw;
+}
+
+.displayErrors {
+  white-space: pre;
+}
