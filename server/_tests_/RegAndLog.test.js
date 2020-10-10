@@ -21,10 +21,10 @@ describe("Register & Login Tests", () => {
 
   // user register
   test("User Can Register if the userName Unique", async (done) => {
-    const registerResponse = await request(server)
-      .post("/api/v1/auth/register")
-      .send(mockUser.reg);
-    expect(registerResponse.body.message).toBe("Email Invalid");
+    // const registerResponse = await request(server)
+    //   .post("/api/v1/auth/register")
+    //   .send(mockUser.reg);
+    // expect(registerResponse.body.message).toBe("Email Invalid");
     
     const regToken = jwt.sign(mockUser.reg, process.env.EMAIL_TOKEN_SECRET);
 
@@ -46,8 +46,8 @@ describe("Register & Login Tests", () => {
 
     const invalidLoginResponse = await request(server)
       .post("/api/v1/auth/login")
-      .send({ userName: "supposed", password: "toFail", rememberMe: "true"});
-    expect(invalidLoginResponse.status).toBe(404);
+      .send({ userName: "supposed", password: "toFail", rememberMe: true});
+    expect(invalidLoginResponse.status).toBe(403);
 
     const loginResponse = await request(server)
       .post("/api/v1/auth/login")
@@ -69,6 +69,36 @@ describe("Register & Login Tests", () => {
     done();
   });
 
+
+  test("User get new access token", async (done) => {
+
+    const loginResponse = await request(server)
+      .post("/api/v1/auth/login")
+      .send(mockUser.login);
+    expect(loginResponse.status).toBe(200);
+
+    const refreshToken = loginResponse.headers['set-cookie'][1].split('=')[1].split(';')[0];
+    const accessToken = loginResponse.headers['set-cookie'][0].split('=')[1].split(';')[0];
+
+    const validateToken = await request(server)
+      .get("/api/v1/auth/validateToken")
+      .set('authorization', `Bearer ${accessToken}`)
+    expect(validateToken.status).toBe(200);
+
+    const notValidateToken = await request(server)
+      .get("/api/v1/auth/validateToken")
+      .set('authorization', 'hkdfhaskjfhdsakjfhkdshfkds')
+    expect(notValidateToken.status).toBe(408);
+
+    const newAccessTokenRes = await request(server)
+      .post("/api/v1/auth/token")
+      .send({ token: refreshToken })
+    expect(newAccessTokenRes.status).toBe(200);
+    const newAccessToken = newAccessTokenRes.headers['set-cookie'][0].split('=')[1].split(';')[0];
+    expect(newAccessToken.length > 0).toBe(true);
+    done();
+  });
+
   // user logout
   test("User Can Logout", async (done) => {
 
@@ -78,14 +108,24 @@ describe("Register & Login Tests", () => {
     expect(loginResponse.status).toBe(200);
 
     const refreshToken = loginResponse.headers['set-cookie'][1].split('=')[1].split(';')[0];
-    console.log(refreshToken)
 
     const logOutResponse = await request(server)
       .post("/api/v1/auth/logout")
       .send({ token: refreshToken });
     expect(logOutResponse.status).toBe(200);
 
+    const deleteToken = await RefreshToken.findOne({
+      where: {
+        token: refreshToken
+      }
+    })
+
+    expect(deleteToken).toBe(null);
+
     done();
   });
+
+
+
 
 });

@@ -6,7 +6,8 @@ import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import PeopleIcon from "@material-ui/icons/People";
 import Email from "@material-ui/icons/Email";
-
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import PersonIcon from '@material-ui/icons/Person';
 const useStyles = makeStyles((theme) => ({
     firstName: {
         marginTop: "60px",
@@ -47,7 +48,7 @@ function UserDetails({  handleChange, values }) {
                             style={{ opacity: "0.7" }}
                             position="end"
                         >
-                            <PeopleIcon />
+                            <PersonIcon />
                         </InputAdornment>
                     }
                 />
@@ -83,7 +84,7 @@ function UserDetails({  handleChange, values }) {
                             style={{ opacity: "0.7" }}
                             position="end"
                         >
-                            <PeopleIcon />
+                            <AccountCircleIcon />
                         </InputAdornment>
                     }
                 />

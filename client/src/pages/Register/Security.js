@@ -6,13 +6,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import PeopleIcon from "@material-ui/icons/People";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import LockIcon from "@material-ui/icons/Lock";
-
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
 const useStyles = makeStyles((theme) => ({
     password: {
         marginTop: "60px",
@@ -90,7 +89,6 @@ function Security({ values, handleChange }) {
                     value={values.confirmPassword}
                     type={showConfirmPassword ? "text" : "password"}
                     onChange={handleChange("confirmPassword")}
-                    color="secondary"
                     endAdornment={
                         <InputAdornment position="end">
                             <IconButton
@@ -139,7 +137,7 @@ function Security({ values, handleChange }) {
                             style={{ opacity: "0.7" }}
                             position="end"
                         >
-                            <PeopleIcon />
+                            <QuestionAnswerIcon />
                         </InputAdornment>
                     }
                 />

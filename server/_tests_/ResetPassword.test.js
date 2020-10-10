@@ -11,7 +11,6 @@ describe("Register & Login Tests", () => {
     mockUser.user2.password = await bcrypt.hash(mockUser.user2.password, 10);
     mockUser.user2.securityAnswer= await bcrypt.hash(mockUser.user2.securityAnswer, 10);
     await User.create(mockUser.user2);
-   
   })
   afterAll(async () => {
     await server.close();

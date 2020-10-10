@@ -68,7 +68,7 @@ function ColorlibStepIcon(props) {
         2: <ContactlessIcon />,
         3: <SecurityIcon />,
         4: <CodeIcon />,
-        // 5: <DoneOutlineIcon />,
+        5: <DoneOutlineIcon />,
     };
 
     return (
@@ -119,7 +119,7 @@ export default function CustomizedSteppers({ activeStep }) {
         "Contact Details",
         "Security",
         "Expertise",
-        // "Confirm",
+        "Confirm",
     ];
 
     return (
