@@ -1,14 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { fade ,makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import network from '../services/network';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
-import  ChooseCategory from "./ChooseCategory"
-import  SearchTicket from "./SearchTicket"
-import  ChooseLabels from "./ChooseLabels"
-import './Search.css'
+import SearchTicket from "./SearchTicket"
+import FilterMenu from "./FilterMenu"
 
+import './Search.css'
+import './SearchDark.css'
+
+import ThemeApi from "../services/Theme"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,32 +76,47 @@ const useStyles = makeStyles((theme) => ({
 const Search =() => {
   const classes = useStyles();
   const [searching,setSearching]  = useState(false)
-  const [openFilter,setOpenFilter]  = useState(false)
   const [results,setResults]  = useState([])
-  const [filters,setFilters]  = useState({categories:[],labels:[]})
+  const [filters,setFilters]  = useState({})
+  const darkMode = React.useContext(ThemeApi).darkTheme
 
+  const getFilters = useCallback(
+    () => {
+      const filterNames = Object.keys(filters)
+      const filterString = filterNames.map(name=>{
+        const value = filters[name]
+        let valueString = (typeof value === 'object')
+        ? value.join(',')
+        :value
+        return `${name}=${valueString}`
+      }).join('&')
+      return '&'+filterString
+    },
+    [filters]
+  ) 
   const search= (e) => {
-    let {value} = e.target
-    if(!value.length){return setResults([])}
-    if(value==='*'){ value =''}
+    let {value:query} = e.target
+    if(!query.length){return setResults([])}
+    if(query==='*'){ query =''}
     try{
-      const nameQuery=`challengeName=${value}`
-      const categoryQuery = `categories=${filters.categories.join(',')}`
-      const labelsQuery = `labels=${filters.labels.join(',')}`
-      const url = `/api/v1/challenges?${nameQuery}&${categoryQuery}&${labelsQuery}`
+      const url = `/api/v1/challenges`+`?challengeName=${query}`
+       + getFilters() 
       console.log(url)
       network.get(url)
       .then(({data})=>{
+        console.log(data)
         setResults(data)
       })
     }catch(error){
       console.error(error)
     }
   }
+  
   const closeSearch= () => {
     setResults([])
     setSearching(false)
   }
+
   const exitSearch = (e) => {
     const {key,target} = e
     if(!target.value.length){
@@ -113,15 +130,11 @@ const Search =() => {
     ?results.map((result)=>{
       return <SearchTicket ticket={result} key={result.id} closeSearch={closeSearch}/>;
     })
-    :'no results found')
-  
-    const addFilters = (name,newFilter) => {
-      const updated= {...filters}
-      updated[name] = newFilter
-      console.log(updated)
-      setOpenFilter(false)
-      setFilters(updated)
-    }
+    :<span id='no-results'>
+      no results found
+    </span>
+  )
+  console.log(resultsList);
   const searchInput = <div 
   className={classes.search}>
     <div className={classes.searchIcon}>
@@ -143,16 +156,12 @@ const Search =() => {
   </div>
 
   return (
-    <div id='search'>
+    <div id='search' className={darkMode&&'dark'}> 
       {searchInput}
       <div id='searchResults' className={searching?'open':'closed'}>
-        <ChooseLabels submitFilter={addFilters}/>
-        {/* {openFilter
-          ?<ChooseCategory formerSelection={filters.categories} submitFilter={addFilters}/>
-          :<button onClick={() => {setOpenFilter(true)}}>
-            Choose Category 
-          </button>} */}
+        <FilterMenu formerSelection={filters} updateFilters={setFilters} />
         <div className='display'>
+        <button className='searchClose' onClick={closeSearch}>X</button>
         {resultsList}
         </div>
       </div>

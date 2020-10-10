@@ -2,36 +2,41 @@ import React, { useEffect, useState } from 'react';
 import network from '../services/network';
 import Selector from 'react-select'
 
-const ChooseCategory =({ formerSelection , submitFilter }) => {
+const ChooseLabels =({ submitFilter }) => {
   const [labels,setLabels]  = useState([])
-  const [selected,setSelected]  = useState()
-  function getLabels(){
-    network.get(`/api/v1/challenges/labels`)
-    .then(({data})=>{
-      setLabels(data)
-    })  
-  }
-  useEffect(getLabels,[])
+  
+  useEffect(// gets existing labels
+    ()=>{
+      (
+        ()=>{
+          network.get(`/api/v1/challenges/labels`)
+          .then(({data})=>{
+            setLabels(data)
+          })  
+        }
+      )()
+    }
+    ,[])
   
   const selectionChange = (a,b)=>{
     // a=[{title:<string>,value:<string>},{title:<string>,value:<string>}]
     // b={action:<string>, option(what you clicked): {title:<string>,value:<string>} , name(name of the Selector):<string>}
-    submitFilter('labels',a?a.map(x=>x.value):[])
+    submitFilter(a?a.map(x=>x.value):[])
   }
 
   return (
-    // <div className='filter'>
-    //     {"choose labels:"}
     <div className='labelFilter'>
     <Selector
+    className='selectLabels'
+    maxMenuHeight={100}
     placeholder='select labels' 
     isMulti
     name='labels'
     onChange={selectionChange}
+    closeMenuOnSelect={false}
     options={labels}/>
+
     </div>
-    //   {/* <button onClick={submit}>confirm</button> 
-    // </div> */}
   );
 }
-export default ChooseCategory 
+export default ChooseLabels 

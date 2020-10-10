@@ -13,7 +13,10 @@ router.get('/',filterResults, async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
       where: condition,
-      include: [Label]
+      include: [Label],
+      order: [
+        ['createdAt','DESC']
+      ]
     });
     if(labels){
       const filterChallenges = allChallenges.filter((challenge)=>{
@@ -38,6 +41,13 @@ router.get('/',filterResults, async (req, res) => {
 router.get('/labels', async (req, res) => {
   const allLabels = await Label.findAll();
   res.json(allLabels.map(({id,name})=>{return{label:name,value:id}}))
+})
+
+router.get('/public_repo', async (req, res) => {
+  const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`,{headers: {
+    Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
+  }})
+  res.json(repo)
 })
 
 router.get('/:challengeId/submissions', async (req, res) => {

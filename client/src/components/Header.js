@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,8 +8,6 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import InputBase from '@material-ui/core/InputBase';
 import Avatar from '@material-ui/core/Avatar';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import HomeIcon from '@material-ui/icons/Home';
@@ -67,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Header() {
   const changeTheme = React.useContext(ThemeApi).setDarkTheme
-  const currentTheme = React.useContext(ThemeApi).darkTheme
+  const darkMode = React.useContext(ThemeApi).darkTheme
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -80,14 +78,16 @@ function Header() {
     setAnchorEl(null);
   };
 
+  const headerStyle = {height:"12vh",position:"sticky",top:0, backgroundColor:! darkMode && "#C9AC80"}
+
   return (
-    <div className={classes.root} style={{maxHeight:10}}>
-      <AppBar >
+    <div className={classes.root} >
+      <AppBar  style={headerStyle}>
         <Toolbar>
           <Typography variant='h6' className={classes.title}>
             <NavLink
               to='/'
-              activeStyle={{ color: '#F5CB39' }}
+              activeStyle={{ color: darkMode?'#F5CB39':"white"}}
               className='link-rout'
             >
               <div
@@ -128,7 +128,7 @@ function Header() {
               aria-haspopup='true'
               onClick={handleMenu}
               color='inherit'
-              style={{ cursor: 'pointer', backgroundColor: 'purple' }}
+              style={{ cursor: 'pointer', backgroundColor: darkMode?'purple':"#7BACB4"}}
             >
               HH
               {/* Cookie.get(username).slice(0, 2) */}
@@ -149,15 +149,22 @@ function Header() {
             open={open}
             onClose={handleClose}
           >
-            <MenuItem style={{paddingLeft:40}}>
+            <MenuItem  style={{paddingLeft:60}}>
               <DarkModeToggle
-                checked={currentTheme}
+                checked={darkMode}
                 onChange={()=>changeTheme(prev => !prev)}
                 size={45}
                 />
             </MenuItem>
-            <MenuItem onClick={handleClose} style={{color: 'red'}}>
-              <Button variant="contained" color="secondary">
+            <MenuItem>
+              <Link to="/addChallenge" style={{textDecoration:"none"}}>
+              <Button style={{minWidth:150}} variant="contained" color="primary">
+              Add Challenge
+              </Button>
+              </Link>
+            </MenuItem> 
+            <MenuItem onClick={handleClose}>
+              <Button style={{minWidth:150}} variant="contained" color="secondary">
               Log Out
               </Button>
             </MenuItem>
