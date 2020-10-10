@@ -1,4 +1,6 @@
-
+/**
+ * @jest-environment node
+ */
 const request = require('supertest');
 const app = require('../app');
 const {Submission, Challenge} = require('../models');
@@ -18,13 +20,28 @@ describe('Submission process', () => {
     test('Posting submisson and status change to PENDING', async (done) => {
         const challenges = await Challenge.findAll();
         const challengeType = challenges.find(challenge => challenge.id === solutionRepos[0].challengeId).type;
+        const testRepo = challengeArr.find(challenge=> challenge.id === solutionRepos[0].challengeId).repositoryName;
+        const webhookUrl = process.env.MY_URL.concat(`/api/v1/webhook/submission/${1}`);
         console.log(challengeType)
+        console.log(testRepo)
+        console.log(webhookUrl)
+/*         const githubOptionsmock = nock(`https://api.github.com`)
+        .options(`/repos/${process.env.GITHUB_REPO}/actions/workflows/${challengeType}.yml/dispatches`)
+        .reply(200, null, {
+            'access-control-allow-headers': 'Authorization',
+            "Content-Type": "application:json"
+          }) */
         const githubmock = nock(`https://api.github.com`)
+        .intercept(`/repos/${process.env.GITHUB_REPO}/actions/workflows/${challengeType}.yml/dispatches`)
+        .reply(200, null, {
+            'access-control-allow-headers': 'Authorization',
+            "Content-Type": "application:json"
+          })
         .post(`/repos/${process.env.GITHUB_REPO}/actions/workflows/${challengeType}.yml/dispatches`,
         {
-            testRepo: challengeArr.find(challenge=> challenge.id === solutionRepos[0].challengeId).repositoryName,
+            testRepo: testRepo,
             solutionRepo: solutionRepos[0].repo,
-            webhookUrl: process.env.MY_URL.concat(`/api/v1/webhook/submission/${1}`)
+            webhookUrl: webhookUrl
         })
         .matchHeader({
                 'Content-Type': 'application/json',

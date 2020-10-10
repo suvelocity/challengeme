@@ -70,7 +70,7 @@ describe('Submission process', () => {
     })
 
 
-  test('Can update an existing failing submission to success', async (done) => {
+  /* test('Can update an existing failing submission to success', async (done) => {
         const solution = await Submission.findOne({challengeId:1});
         await solution.update({state: 'FAIL'});
         await request(app).post(`/api/v1/challenges/${solutionRepos[0].challengeId}/apply`).send({solutionRepository:solutionRepos[0].repo});
@@ -93,7 +93,7 @@ describe('Submission process', () => {
         }
         await checkingPending();
         done();
-    },200000)
+    },200000) */ // not ideal at all to add another loop. need to fix and add the failed test to the initial action triggering session.
 
 
     afterAll(async (done) => {
