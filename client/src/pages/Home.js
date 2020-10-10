@@ -67,7 +67,7 @@ export default function HomePage() {
   return (
     <div style={{ padding: 30, maxWidth: 840, margin: 'auto' }}>
       <Typography variant="h5" gutterBottom>
-        Challenges (V2 SOON)
+        Challenges (V2 SOON?)
       </Typography>
       {challenges.map(challenge => (
         <ChallengeCard
