@@ -72,8 +72,8 @@ export default function Login() {
         if (/\W/.test(userName)) {
             formErrors.userName = "invalid userName";
         }
-        if (userName.length < 6 || userName.length > 32) {
-            formErrors.userName = "userName must be 6-32 characters long";
+        if (userName.length < 1 || userName.length > 32) {
+            formErrors.userName = "userName must be 1-32 characters long";
         }
 
         if (password.length < 8) {

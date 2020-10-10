@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 function Register() {
     const classes = useStyles();
     const [errors, setErrors] = useState([]);
-    const [step, setStep] = useState(4);
+    const [step, setStep] = useState(1);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [userName, setUserName] = useState("");
@@ -45,10 +45,12 @@ function Register() {
 
     const nextStep = async () => {
         const validateEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-        const onlyLettersRegex = /^[a-zA-Z]*$/;
+        // const onlyLettersRegex = /^[a-zA-Z]*$/;
         const onlyLettersAndSpacesRegex = /^[a-zA-Z\s]*$/;
-        const onlyLettersAndNumbersRegex = /\w/;
-        const onlyNumbersRegex = /^[0-9]*$/;
+        const onlyLettersAndNumbersRegex = /^[a-zA-Z0-9]*$/;
+        const phoneNumberRegex= /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+        // const onlyNumbersRegex = /^[0-9]*$/;
+        const noSpecialLetters = /[^a-zA-Z\d\s]/;
 
         let tempErrs = [];
         if (step === 1) {
@@ -63,15 +65,15 @@ function Register() {
                     message: "Last name  must contain only letters.",
                 });
             if (
-                userName.length < 6 ||
+                userName.length < 1 ||
                 !onlyLettersAndNumbersRegex.test(userName)
             )
                 tempErrs.push({
                     field: "userName",
                     message:
-                        "Username must contain only letters and numbers and be longer then 6 characters.",
+                        "Username must contain only letters and numbers.",
                 });
-            if (userName.length > 32 )
+            if (userName.length > 32)
                 tempErrs.push({
                     field: "userName",
                     message:
@@ -88,15 +90,6 @@ function Register() {
                     });
                 }
             }
-            if (
-                userName.length < 6 ||
-                !onlyLettersAndNumbersRegex.test(userName)
-            )
-                tempErrs.push({
-                    field: "userName",
-                    message:
-                        "Username must contain only letters and numbers and be longer then 6 characters.",
-                });
             if (email.length < 1)
                 tempErrs.push({ field: "email", message: "Email required." });
             if (!validateEmailRegex.test(email))
@@ -122,7 +115,7 @@ function Register() {
                     field: "birthDate",
                     message: "Birth date must be in the past.",
                 });
-            if (phoneNumber.length < 1 || !onlyNumbersRegex.test(phoneNumber))
+            if (phoneNumber.length < 1 || !phoneNumberRegex.test(phoneNumber))
                 tempErrs.push({
                     field: "phoneNumber",
                     message: "Only numbers allowed in phone number.",
@@ -143,10 +136,15 @@ function Register() {
                     field: "securityQuestion",
                     message: "Security question must be chosen.",
                 });
-            if (securityAnswer.length < 2)
+            if (securityAnswer.length < 8)
                 tempErrs.push({
                     field: "securityAnswer",
-                    message: "Security answer must be longer.",
+                    message: "Security answer should be at least 8 characters.",
+                });
+            if (noSpecialLetters.test(securityAnswer))
+                tempErrs.push({
+                    field: "securityAnswer",
+                    message: "Security answer cant contain special characters.",
                 });
         } else if (step === 4) {
             if (signUpReason === "")
@@ -160,6 +158,7 @@ function Register() {
                     message: "GitHub account is invalid.",
                 });
             if (tempErrs.length === 0) {
+                setErrors([]);
                 try {
                     setLoading(true);
                     await network.post(

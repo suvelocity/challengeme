@@ -45,11 +45,16 @@ export default function Change({ data, handleChange }) {
     };
     const history = useHistory();
     useEffect(() => {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             alert("Sorry, time is up");
             setRedirect(true);
         }, limit * 60 * 1000);
-    });
+        
+        return () => {
+            clearTimeout(timer);
+        }
+    },[]);
+    
     return redirect ? (
         <Redirect to="/" />
     ) : (

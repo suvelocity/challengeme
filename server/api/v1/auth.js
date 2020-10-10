@@ -5,17 +5,19 @@ const { User, RefreshToken } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const checkToken = require('../../helpers/checkToken');
-const {loginValidation, registerValidation, tokenValidation} = require('../../helpers/checkToken');
+const { loginValidation, registerValidation, tokenValidation, pwdUpdateValidation, answerValidation, userValidation } = require('../../helpers/validator');
 const mailer = require('../../helpers/communicator');
 
 // Register 
 usersRouter.post("/register", async (req, res) => {
-//Joi validation
+  //Joi validation
   const { error } = registerValidation(req.body);
-  if (error)
+  if (error) {
+    console.log(error);
     return res
       .status(400)
       .json({ success: false, message: error.details[0].message });
+  }
   // if user name already exist return error
   const checkUser = await userIsExist(req.body.userName);
 
@@ -58,9 +60,9 @@ usersRouter.post("/register", async (req, res) => {
 
 // Create User
 usersRouter.post('/createuser', (req, res) => {
-  const error=tokenValidation(req.body);
-  if(error) {
-    return res.status(400).json({success: false, message: "Token required"},)
+  const { error } = tokenValidation(req.body);
+  if (error) {
+    return res.status(400).json({ success: false, message: "Token required" },)
   }
   jwt.verify(req.body.token, process.env.EMAIL_TOKEN_SECRET, async (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Token" });
@@ -76,7 +78,11 @@ usersRouter.post('/createuser', (req, res) => {
 
 // Check if user exist
 usersRouter.post("/userexist", async (req, res) => {
-  //Joi here?
+  //User Validation
+  const { error } = userValidation(req.body);
+  if (error) {
+    res.status(400).json({ success: false, message: "Don't mess with me" })
+  }
   const currentUser = await userIsExist(req.body.userName);
   if (currentUser) return res.status(409).json({ message: "user name already exists" });
   res.json({ notExist: true });
@@ -90,13 +96,13 @@ usersRouter.get("/validateToken", checkToken, (req, res) => {
 // Log In
 usersRouter.post("/login", async (req, res) => {
   //Joi Validation
-  const error = loginValidation(req.body);
-  if(error){
-    return res.status(400).json({ success: false, message: error.details[0].message })
+  const { error } = loginValidation(req.body);
+  if (error) {
+    return res.status(400).json({ success: false, message: "Don't mess with us" })
   }
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser)
-    return res.status(403).json({ message: "User or Password incorrect" });
+    return res.status(403).json({ message: "User or Password are incorrect" });
   const validPass = await bcrypt.compare(
     req.body.password,
     currentUser.password
@@ -133,8 +139,8 @@ usersRouter.post("/login", async (req, res) => {
 //Get new access token
 usersRouter.post("/token", async (req, res) => {
   //Joi Validation
-  const error = validateToken(req.body);
-  if(error) {
+  const { error } = tokenValidation(req.body);
+  if (error) {
     return res.status(400).json({ success: false, message: "Refresh Token Required" })
   }
   const refreshToken = req.body.token;
@@ -159,11 +165,11 @@ usersRouter.post("/token", async (req, res) => {
 
 // Logout request
 usersRouter.post("/logout", async (req, res) => {
-   //Joi Validation
-   const error = validateToken(req.body);
-   if(error) {
-     return res.status(400).json({ success: false, message: "Refresh Token Required" })
-   }
+  //Joi Validation
+  const { error } = tokenValidation(req.body);
+  if (error) {
+    return res.status(400).json({ success: false, message: "Refresh Token Required" })
+  }
   // if (!req.body.token) return res.status(400).json({ message: "Refresh Token Required" });
   // check if token exist and delete it
   const result = await RefreshToken.destroy({
@@ -177,7 +183,10 @@ usersRouter.post("/logout", async (req, res) => {
 
 // Geting Sequrity Question
 usersRouter.post("/getquestion", async (req, res) => {
-  //Joi validate user
+  const { error } = userValidation(req.body);
+  if (error) {
+    res.status(400).json({ success: false, message: "Don't mess with me" })
+  }
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser) return res.json({ securityQuestion: "What is the name, breed, and color of your favorite pet?" });
   res.json({ securityQuestion: currentUser.securityQuestion });
@@ -185,7 +194,11 @@ usersRouter.post("/getquestion", async (req, res) => {
 
 // Validate Answer
 usersRouter.post("/validateanswer", async (req, res) => {
-  //Joi validate answer
+  //Joi Validation
+  const { error } = answerValidation(req.body);
+  if (error) {
+    res.status(400).json({ success: false, message: "Don't mess with me" })
+  }
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser) return res.status(403).json({ message: "Wrong Answer" });
   const validAnswer = await bcrypt.compare(
@@ -199,8 +212,13 @@ usersRouter.post("/validateanswer", async (req, res) => {
 
 // Password Update
 usersRouter.patch("/passwordupdate", async (req, res) => {
+  //Joi Valodation 
+  const { error } = pwdUpdateValidation(req.body);
+  if (error) {
+    return res.status(400).json({ success: false, message: "Reset password failed" })
+  }
   const resetToken = req.body.resetToken;
-  if (!resetToken) return res.status(400).json({ message: "Reset Token Required" });
+  // if (!resetToken) return res.status(400).json({ message: "Reset Token Required" });
   jwt.verify(resetToken, process.env.RESET_PASSWORD_TOKEN, async (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Token" });
     const hashPassword = await bcrypt.hash(req.body.password, 10);

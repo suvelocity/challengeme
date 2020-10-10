@@ -68,7 +68,7 @@ export default function Forgot() {
 
     const getQuestion = async (userName) => {
         if (
-            userName.length < 8 ||
+            userName.length < 1 ||
             userName.length > 32 ||
             /\W/.test(userName)
         ) {
@@ -91,6 +91,18 @@ export default function Forgot() {
     };
 
     const validateAnswer = async (userName, securityAnswer) => {
+        if(!securityAnswer) {
+            setError("Please type your anwer");
+            return;
+        }
+        if(securityAnswer.length < 8) {
+            setError("Answer should be longer");
+            return;
+        }
+        if(securityAnswer.match(/[^a-zA-Z\d\s]/)) {
+            setError("Answer can not contain special characters");
+            return;
+        }
         try {
             const { data: response } = await axios.post(
                 "/api/v1/auth/validateanswer",
