@@ -25,7 +25,7 @@ router.post('/', async (req, res) => { // /api/v1/image
             const newImage = await Image.create(image);
             res.status(200).send('Success');
         } else {
-            res.status(403).send('This challenge already own an image');
+            res.status(400).send('This challenge already own an image');
         }
     } catch(e) { 
         res.status(400).send('Something went wrong');
