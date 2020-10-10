@@ -42,6 +42,9 @@ export default function Router() {
               <Route exact path="/login">
                 <Login />
               </Route>
+              <Route exact path="/forgot">
+                <Forgot />
+              </Route>
               <Route exact path="/auth">
                 <VlidatingMail />
               </Route>
