@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import network from "../../services/network"
 import "./ChallengeCard.css"
 import Avatar from "@material-ui/core/Avatar"
@@ -29,7 +29,7 @@ export default function ChallengeCard({
   const [coverImg,setCoverImg] = useState("")
   const [date,setDate] = useState(null)
 
-  const getUpdated = (date)=>{
+  const getUpdated = useCallback((date)=>{
       const dateNow =  Date.now()
       const updateRepoDate =new Date(date)
       let diff = (dateNow-updateRepoDate.getTime())/1000/60/60
@@ -56,7 +56,7 @@ export default function ChallengeCard({
           }
         }
       }
-  }
+  },[])
 
   useEffect(()=>{
     (async ()=> {
@@ -73,8 +73,6 @@ export default function ChallengeCard({
       }catch(err){
         console.error(err.message)
       }
- 
-
     })()
   })
   const avatarStyle = {backgroundColor:darkMode ? "#F5AF5D":"#C9AC80",margin:5}
@@ -84,7 +82,6 @@ export default function ChallengeCard({
     initial={{scale:0.03}}
     animate={{ scale: 1 }}
     transition={{default: { duration: 1.2 , delay:0.3}}}
-    
     >
       <div className="challenge-card-creator-homepage">
         <div className="avatar-and-repo-name">
