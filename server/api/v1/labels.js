@@ -14,8 +14,8 @@ router.post('/', async (req, res) => { // /api/v1/labels
         await labels_to_challenge.bulkCreate(
           labels.map(label => (
             {
-              label_id: label,
-              challenge_id: challenge
+              labelId: label,
+              challengeId: challenge
             }
           ))
         );
