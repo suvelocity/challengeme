@@ -6,8 +6,11 @@ import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import SearchTicket from "./SearchTicket"
 import FilterMenu from "./FilterMenu"
-import './Search.css'
 
+import './Search.css'
+import './SearchDark.css'
+
+import ThemeApi from "../services/Theme"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,6 +78,7 @@ const Search =() => {
   const [searching,setSearching]  = useState(false)
   const [results,setResults]  = useState([])
   const [filters,setFilters]  = useState({})
+  const darkMode = React.useContext(ThemeApi).darkTheme
 
   const getFilters = useCallback(
     () => {
@@ -152,11 +156,12 @@ const Search =() => {
   </div>
 
   return (
-    <div id='search'>
+    <div id='search' className={darkMode&&'dark'}> 
       {searchInput}
       <div id='searchResults' className={searching?'open':'closed'}>
-        <div className='display'>
         <FilterMenu formerSelection={filters} updateFilters={setFilters} />
+        <div className='display'>
+        <button className='searchClose' onClick={closeSearch}>X</button>
         {resultsList}
         </div>
       </div>
