@@ -35,6 +35,7 @@ jobs:
       run: |-
         gcloud --quiet compute ssh --zone us-central1-a instance-staging-2 --command '
           cd ../../var/www &&
+          sudo git fetch --all &&
           sudo git checkout staging &&
           sudo git pull origin staging &&
           cd ./client &&
