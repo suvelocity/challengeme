@@ -4,13 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
 import Input from "@material-ui/core/Input";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import PeopleIcon from "@material-ui/icons/People";
-import Email from "@material-ui/icons/Email";
-// import {
-//     MuiPickersUtilsProvider,
-//     KeyboardTimePicker,
-//     KeyboardDatePicker,
-// } from "@material-ui/pickers";
+import PublicIcon from '@material-ui/icons/Public';
+import LocationCityIcon from '@material-ui/icons/LocationCity';
+import PhoneIcon from '@material-ui/icons/Phone';
+
 const useStyles = makeStyles((theme) => ({
     country: {
         marginTop: "60px",
@@ -25,7 +22,15 @@ const useStyles = makeStyles((theme) => ({
     birthDate: {
         // marginTop: "80px",
         marginBottom: "10px",
-        // width: "320px",
+        width: "320px",
+        appearance: "none",
+        fontFamily: "Helvetica, arial, sans-serif",
+        border:"transparent",
+        borderBottom:"1.5px solid gray",
+        "&:focus":{
+            outline: "none",
+        }
+
     },
     phoneNumber: {
         // marginTop: "80px",
@@ -50,7 +55,7 @@ function PersonalDetails({ values, handleChange, prevStep, nextStep }) {
                             style={{ opacity: "0.7" }}
                             position="end"
                         >
-                            <PeopleIcon />
+                            <PublicIcon />
                         </InputAdornment>
                     }
                 />
@@ -67,31 +72,19 @@ function PersonalDetails({ values, handleChange, prevStep, nextStep }) {
                             style={{ opacity: "0.7" }}
                             position="end"
                         >
-                            <PeopleIcon />
+                            <LocationCityIcon />
                         </InputAdornment>
                     }
                 />
             </FormControl>
-            <label>Enter Birth Date</label>
+            <label>Enter Birth Date :</label>
             <input
             className={classes.birthDate}
                 type="date"
                 value={values.birthDate}
                 onChange={handleChange("birthDate")}
             />
-            {/* <KeyboardDatePicker
-                disableToolbar
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                id="date-picker-inline"
-                label="Date picker inline"
-                // value={selectedDate}
-                // onChange={handleDateChange}
-                KeyboardButtonProps={{
-                    "aria-label": "change date",
-                }}
-            /> */}
+
             <FormControl className={classes.phoneNumber}>
                 <InputLabel style={{ color: "grey" }}>Phone Number</InputLabel>
                 <Input
@@ -104,7 +97,7 @@ function PersonalDetails({ values, handleChange, prevStep, nextStep }) {
                             style={{ opacity: "0.7" }}
                             position="end"
                         >
-                            <PeopleIcon />
+                            <PhoneIcon />
                         </InputAdornment>
                     }
                 />
