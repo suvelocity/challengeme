@@ -131,7 +131,8 @@ usersRouter.post("/token", async (req, res) => {
     delete decoded.iat;
     delete decoded.exp;
     const accessToken = generateToken(decoded);
-    res.json({ token: accessToken });
+    res.cookie('accessToken', accessToken)
+    res.json({ message: 'token updated' });
   });
 });
 
@@ -208,7 +209,7 @@ async function userIsExist(userName) {
 }
 
 function generateToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "900s" });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "9s" });
 }
 
 module.exports = usersRouter;
