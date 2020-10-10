@@ -37,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     gridTemplateColumns: "auto",
     width: "100%",
-    backgroundColor: "#41B3A3",
   },
   span: {
     fontSize: "30px",

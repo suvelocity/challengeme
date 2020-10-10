@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -8,17 +8,21 @@ import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import Switch from '@material-ui/core/Switch';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 import Avatar from '@material-ui/core/Avatar';
 import EqualizerIcon from '@material-ui/icons/Equalizer';
 import HomeIcon from '@material-ui/icons/Home';
 import './Header.css';
+import ThemeApi from "../../services/Theme"
+import DarkModeToggle from "react-dark-mode-toggle";
+
+import Search from './Search'
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flexGrow: 0,
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -52,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -63,17 +66,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Header() {
+  const changeTheme = React.useContext(ThemeApi).setDarkTheme
+  const currentTheme = React.useContext(ThemeApi).darkTheme
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const [state, setState] = React.useState({
-    checkedA: true,
-    checkedB: true,
-  });
-
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -84,13 +81,13 @@ function Header() {
   };
 
   return (
-    <div className={classes.root}>
-      <AppBar position='fixed'>
+    <div className={classes.root} style={{maxHeight:10}}>
+      <AppBar >
         <Toolbar>
           <Typography variant='h6' className={classes.title}>
             <NavLink
               to='/'
-              activeStyle={{ color: 'white' }}
+              activeStyle={{ color: '#F5CB39' }}
               className='link-rout'
             >
               <div
@@ -106,22 +103,11 @@ function Header() {
               </div>
             </NavLink>
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder='Search…'
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
+
+          <Search />
+
           <div style={{ flex: 1 }}></div> 
           {/* Make space between the search input and the rest of the header. */}
-          <Link to="/statistics">
           <Button color='inherit'>
             <div
               style={{
@@ -135,7 +121,6 @@ function Header() {
               <span className='header-link-title'>Statistics</span>
             </div>
           </Button>
-          </Link>
           <Tooltip title='hhhhhhhh'>
             <Avatar
               aria-label='account of current user'
@@ -164,16 +149,18 @@ function Header() {
             open={open}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>
-              <Switch
-                checked={state.checkedB}
-                onChange={handleChange}
-                color='primary'
-                name='checkedB'
-                inputProps={{ 'aria-label': 'primary checkbox' }}
-              />
+            <MenuItem style={{paddingLeft:40}}>
+              <DarkModeToggle
+                checked={currentTheme}
+                onChange={()=>changeTheme(prev => !prev)}
+                size={45}
+                />
             </MenuItem>
-            <MenuItem onClick={handleClose} style={{color: 'red'}}>Log Out</MenuItem>
+            <MenuItem onClick={handleClose} style={{color: 'red'}}>
+              <Button variant="contained" color="secondary">
+              Log Out
+              </Button>
+            </MenuItem>
           </Menu>
         </Toolbar>
       </AppBar>
