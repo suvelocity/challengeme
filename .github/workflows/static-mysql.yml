@@ -2,10 +2,6 @@ name: static mysql
 on:
   workflow_dispatch:
     inputs:
-      # name:
-      #   description: 'Solution repository name and submissions number'
-      #   required: true
-      #   default: 'Submission number'
       testRepo:
         description: 'Testing repository'
         required: false
