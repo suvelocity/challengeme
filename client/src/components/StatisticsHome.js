@@ -184,10 +184,12 @@ function StatisticsHome() {
           </div>
         ) : (
           <div
+            id="firstChart"
             className={classes.div}
             style={{ gridArea: "headChart", ...imageStyle }}
           >
             <Charts
+              name="TopTeams"
               width={"400px"}
               height={"2000px"}
               chart={[0, 2]}
@@ -205,6 +207,7 @@ function StatisticsHome() {
             style={{ gridArea: "topChart", ...imageStyle }}
           >
             <Charts
+              name="TopUsers"
               width={"450px"}
               height={"70px"}
               chart={[0, 2]}
@@ -222,6 +225,7 @@ function StatisticsHome() {
             style={{ gridArea: "bottomChart", ...imageStyle }}
           >
             <Charts
+              name="topTeams"
               width={"450px"}
               height={"70px"}
               chart={[0, 1]}

@@ -46,7 +46,7 @@ function Charts(props) {
     }));
     const classes = useStyles();
   return (
-    <div className={classes.chart}>
+    <div className={classes.chart} id={props.name}>
         <div className="chart">
             {
                 selectChart()         

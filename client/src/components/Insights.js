@@ -119,7 +119,7 @@ useEffect(() => {
 
   const topChallengesData = {
     labels: challengesTop && challengesTop.map((e) => e.Challenge.name), // array of values for x axis (strings)
-    title: "Top Challenges (most submitions)",
+    title: "Top Challenges (most submissions)",
     rawData: [
       {
         label: "submitions",
@@ -257,7 +257,7 @@ useEffect(() => {
           </div>
         ) : (
           <div className={classes.div} style={{ gridArea: "byReview" }}>
-            <Charts width={"36vw"} height={"36vh"} chart={[0, 1]} data={topChallengeByReview} />
+            <Charts name="topByReview" width={"36vw"} height={"36vh"} chart={[0, 1]} data={topChallengeByReview} />
           </div>
         )}
         {loading ? (
@@ -286,6 +286,7 @@ useEffect(() => {
             style={{ gridArea: "sideChart" }}
           >
             <Charts
+            name="challengesByTypeChart"
               width={"38vw"}
               height={"38vh"}
               chart={[0, 2]}
@@ -304,6 +305,7 @@ useEffect(() => {
             style={{ gridArea: "leftChart" }}
           >
             <Charts
+            name="challengesMostSubChart"
               width={"17vw"}
               height={"13vw"}
               chart={[2]}
@@ -322,6 +324,7 @@ useEffect(() => {
             style={{ gridArea: "rightChart" }}
           >
             <Charts
+            name="challengesMostSuccessChart"
               width={"13vw"}
               height={"16vh"}
               chart={[2]}
@@ -340,6 +343,7 @@ useEffect(() => {
             style={{ gridArea: "perDay" }}
           >
             <Charts
+            name="subByDate"
               width={"36vw"}
               height={"36vh"}
               chart={[0,1]}
