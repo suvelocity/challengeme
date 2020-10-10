@@ -32,7 +32,8 @@ export default function HomePage() {
       try{
         const { data: challengesFromServer } = await network.get(
           '/api/v1/challenges?'+getFilters())
-          setChallenges(challengesFromServer);  
+          typeof challengesFromServer ==="object"&&
+          setChallenges(challengesFromServer)
       }catch(e){}
     })();  
   }, [filters]);  

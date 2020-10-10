@@ -9,9 +9,18 @@ import NewChallengeForm from '../components/NewChallenge/NewChallengeForm';
 export default function Router() {
   const [darkTheme,setDarkTheme] = useState(false)
   useEffect(() => {
-    if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+    const previousTheme = localStorage.getItem("darkMode")
+    if(previousTheme === "false"){
+      setDarkTheme(false)
+    }else if(previousTheme === "true"){
       setDarkTheme(true)
     }
+    else{
+      if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+        setDarkTheme(true)
+      }
+    }
+
   }, [])
 
   return (

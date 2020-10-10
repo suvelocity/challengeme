@@ -151,8 +151,12 @@ function Header() {
             <MenuItem  style={{paddingLeft:60}}>
               <DarkModeToggle
                 checked={darkMode}
-                onChange={()=>changeTheme(prev => !prev)}
-                size={45}
+                onChange={()=>
+                {
+                  localStorage.setItem("darkMode",!darkMode)
+                  changeTheme(prev => !prev)}
+                }
+                  size={45}
                 />
             </MenuItem>
             <MenuItem>
