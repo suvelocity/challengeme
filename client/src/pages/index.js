@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import Forgot from "./Forgot/Forgot";
 import VlidatingMail from './Register/VlidatingMail';
 import network from '../services/network';
-import Guest from "./Guest";
+import Landing from "./Landing";
 export default function Router() {
   const [logged, setLogged] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -36,9 +36,6 @@ export default function Router() {
         !logged ? 
           <Logged.Provider value={{ logged, setLogged }}>
             <Switch>
-            <Route exact path="/guest">
-                <Guest />
-              </Route>
               <Route exact path="/register">
                 <Register />
               </Route>
@@ -51,8 +48,11 @@ export default function Router() {
               <Route exact path="/auth">
                 <VlidatingMail />
               </Route>
+            <Route exact path="/">
+                <Landing />
+              </Route>
               <Route path="*">
-                <Redirect to='/login' />
+                <Redirect to='/' />
               </Route>
             </Switch>
           </Logged.Provider>

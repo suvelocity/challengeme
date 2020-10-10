@@ -31,8 +31,6 @@ function Security({
     console.log(data);
     return (
         <div className={classes.securityQTitle}>
-            <span>Security question: {data.secQuestion}</span>
-            <br></br>
             <span>{data.secQuestion}</span>
             {/* <Select
         displayEmpty

@@ -31,7 +31,26 @@ const loginValidation = (data) => {
   return schema.validate(data);
 };
 
-//
+//Token Validation
+const tokenValidation = (data)=>{
+  const schema = Joi.object({
+    token: Joi.string().required(),
+  })
+
+  return schema.validate(data);
+}
+
+//Password Update Validation
+const pwdUpdate = (data)=>{
+  const schema=Joi.object({
+    token: Joi.string().required(),
+    password: Joi.string().min(8).required(),
+  })
+
+  return schema.validate(data);
+}
 
 module.exports.loginValidation = loginValidation;
-module.exports.registerValidation = registerValidation
+module.exports.registerValidation = registerValidation;
+module.exports.tokenValidation = tokenValidation;
+module.exports.pwdUpdate=pwdUpdate;

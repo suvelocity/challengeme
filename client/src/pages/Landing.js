@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Guest() {
+export default function Landing() {
     const classes = useStyles();
 
     return (

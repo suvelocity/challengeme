@@ -177,6 +177,7 @@ usersRouter.post("/logout", async (req, res) => {
 
 // Geting Sequrity Question
 usersRouter.post("/getquestion", async (req, res) => {
+  //Joi validate user
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser) return res.json({ securityQuestion: "What is the name, breed, and color of your favorite pet?" });
   res.json({ securityQuestion: currentUser.securityQuestion });
@@ -184,6 +185,7 @@ usersRouter.post("/getquestion", async (req, res) => {
 
 // Validate Answer
 usersRouter.post("/validateanswer", async (req, res) => {
+  //Joi validate answer
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser) return res.status(403).json({ message: "Wrong Answer" });
   const validAnswer = await bcrypt.compare(
