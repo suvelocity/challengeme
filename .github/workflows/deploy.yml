@@ -33,9 +33,8 @@ jobs:
         gcloud --quiet auth configure-docker
     - name: Deploy
       run: |-
-        gcloud --quiet compute ssh --zone us-central1-a instance-1 &&
-        pwd &&
-        echo 'aaaaa'
+        gcloud --quiet compute ssh --zone us-central1-a instance-1 --command 'pwd && echo 'aaaaa''
+
     # cd ../../var/www &&
     # sudo git pull origin &&
     # cd ./client &&
