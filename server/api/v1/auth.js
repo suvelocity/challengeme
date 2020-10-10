@@ -5,14 +5,22 @@ const { User, RefreshToken } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const checkToken = require('../../helpers/checkToken');
+const {loginValidation, registerValidation, tokenValidation} = require('../../helpers/checkToken');
 const mailer = require('../../helpers/communicator');
 
 // Register 
 usersRouter.post("/register", async (req, res) => {
+//Joi validation
+  const { error } = registerValidation(req.body);
+  if (error)
+    return res
+      .status(400)
+      .json({ success: false, message: error.details[0].message });
   // if user name already exist return error
   const checkUser = await userIsExist(req.body.userName);
 
   if (checkUser) return res.status(409).send("user name already exists");
+
   const hashPassword = await bcrypt.hash(req.body.password, 10);
   const hashsecurityAnswer = await bcrypt.hash(req.body.securityAnswer, 10);
   const newUser = {
@@ -50,6 +58,10 @@ usersRouter.post("/register", async (req, res) => {
 
 // Create User
 usersRouter.post('/createuser', (req, res) => {
+  const error=tokenValidation(req.body);
+  if(error) {
+    return res.status(400).json({success: false, message: "Token required"},)
+  }
   jwt.verify(req.body.token, process.env.EMAIL_TOKEN_SECRET, async (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Token" });
     delete decoded.iat;
@@ -64,6 +76,7 @@ usersRouter.post('/createuser', (req, res) => {
 
 // Check if user exist
 usersRouter.post("/userexist", async (req, res) => {
+  //Joi here?
   const currentUser = await userIsExist(req.body.userName);
   if (currentUser) return res.status(409).json({ message: "user name already exists" });
   res.json({ notExist: true });
@@ -76,6 +89,11 @@ usersRouter.get("/validateToken", checkToken, (req, res) => {
 
 // Log In
 usersRouter.post("/login", async (req, res) => {
+  //Joi Validation
+  const error = loginValidation(req.body);
+  if(error){
+    return res.status(400).json({ success: false, message: error.details[0].message })
+  }
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser)
     return res.status(403).json({ message: "User or Password incorrect" });
@@ -114,9 +132,14 @@ usersRouter.post("/login", async (req, res) => {
 
 //Get new access token
 usersRouter.post("/token", async (req, res) => {
+  //Joi Validation
+  const error = validateToken(req.body);
+  if(error) {
+    return res.status(400).json({ success: false, message: "Refresh Token Required" })
+  }
   const refreshToken = req.body.token;
-  if (!refreshToken)
-    return res.status(400).json({ message: "Refresh Token Required" });
+  // if (!refreshToken)
+  //   return res.status(400).json({ message: "Refresh Token Required" });
   const validRefreshToken = await RefreshToken.findOne({
     where: {
       token: refreshToken,
@@ -136,7 +159,12 @@ usersRouter.post("/token", async (req, res) => {
 
 // Logout request
 usersRouter.post("/logout", async (req, res) => {
-  if (!req.body.token) return res.status(400).json({ message: "Refresh Token Required" });
+   //Joi Validation
+   const error = validateToken(req.body);
+   if(error) {
+     return res.status(400).json({ success: false, message: "Refresh Token Required" })
+   }
+  // if (!req.body.token) return res.status(400).json({ message: "Refresh Token Required" });
   // check if token exist and delete it
   const result = await RefreshToken.destroy({
     where: {

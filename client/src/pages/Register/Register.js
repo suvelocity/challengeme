@@ -71,6 +71,12 @@ function Register() {
                     message:
                         "Username must contain only letters and numbers and be longer then 6 characters.",
                 });
+            if (userName.length > 32 )
+                tempErrs.push({
+                    field: "userName",
+                    message:
+                        "Username to long.",
+                });
             try {
                 const { data } = await network.post('/api/v1/auth/userexist', { userName });
             } catch (e) {
@@ -153,7 +159,7 @@ function Register() {
                     field: "gitHub",
                     message: "GitHub account is invalid.",
                 });
-            if(tempErrs.length === 0) {
+            if (tempErrs.length === 0) {
                 try {
                     setLoading(true);
                     await network.post(
@@ -325,23 +331,23 @@ function Register() {
                         </div>
                     </div>
                 )}
-                {loading && <CircularProgress />} 
+                {loading && <CircularProgress />}
                 <div className="containerSecond">
                     {step !== 5 ?
-                    <>
-                            
-                        <div className="containerButtons">
-                            {step > 1 && <Button onClick={prevStep}>Back</Button>}
-                            <Button
-                                className={classes.nextButton}
-                                variant="contained"
-                                color="primary"
-                                onClick={nextStep}
-                            >
-                                {step === 4 ? "Finish" : "Next"}
-                            </Button>
-                        </div>
-                                </>
+                        <>
+
+                            <div className="containerButtons">
+                                {step > 1 && <Button onClick={prevStep}>Back</Button>}
+                                <Button
+                                    className={classes.nextButton}
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={nextStep}
+                                >
+                                    {step === 4 ? "Finish" : "Next"}
+                                </Button>
+                            </div>
+                        </>
                         :
                         <div className="containerButtons">
                             <Button
