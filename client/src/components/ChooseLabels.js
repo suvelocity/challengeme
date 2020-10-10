@@ -4,14 +4,19 @@ import Selector from 'react-select'
 
 const ChooseCategory =({ formerSelection , submitFilter }) => {
   const [labels,setLabels]  = useState([])
-  const [selected,setSelected]  = useState()
-  function getLabels(){
-    network.get(`/api/v1/challenges/labels`)
-    .then(({data})=>{
-      setLabels(data)
-    })  
-  }
-  useEffect(getLabels,[])
+  
+  useEffect(// gets existing labels
+    ()=>{
+      (
+        ()=>{
+          network.get(`/api/v1/labels`)
+          .then(({data})=>{
+            setLabels(data)
+          })  
+        }
+      )()
+    }
+    ,[])
   
   const selectionChange = (a,b)=>{
     // a=[{title:<string>,value:<string>},{title:<string>,value:<string>}]
