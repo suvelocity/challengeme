@@ -8,20 +8,33 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import ErrorIcon from "@material-ui/icons/Error";
 import { motion } from "framer-motion";
-import Background from "../../components/Background";
-import Swal from "sweetalert2";
+
 import "../../styles/Forgot.css";
 
+const pageVariants = {
+    initial: {
+        opacity: 0,
+    },
+    in: {
+        opacity: 1,
+        transition: { duration: 1.5 },
+    },
+    out: {
+        opacity: 0,
+        transition: { duration: 1.5 },
+    },
+};
 const useStyles = makeStyles((theme) => ({
     nextButtonForgotPass: {
         marginBottom: "10px",
+        // marginTop: "60px",
         background: "linear-gradient(45deg, #447CC6 30%, #315CAB 90%)",
         color: "white",
     },
 }));
 export default function Forgot() {
     const classes = useStyles();
-    const [step, setStep] = useState(3);
+    const [step, setStep] = useState(1);
     const [error, setError] = useState("");
     const [userName, setUserName] = useState("");
     const [secQuestion, setSecQuestion] = useState("");
@@ -74,7 +87,7 @@ export default function Forgot() {
             userName.length > 32 ||
             /\W/.test(userName)
         ) {
-            setError("Please enter a valid username ");
+            setError("Please enter a valid username");
             return;
         }
         try {
@@ -93,15 +106,15 @@ export default function Forgot() {
     };
 
     const validateAnswer = async (userName, securityAnswer) => {
-        if (!securityAnswer) {
+        if(!securityAnswer) {
             setError("Please type your anwer");
             return;
         }
-        if (securityAnswer.length < 8) {
+        if(securityAnswer.length < 8) {
             setError("Answer should be longer");
             return;
         }
-        if (securityAnswer.match(/[^a-zA-Z\d\s]/)) {
+        if(securityAnswer.match(/[^a-zA-Z\d\s]/)) {
             setError("Answer can not contain special characters");
             return;
         }
@@ -137,12 +150,9 @@ export default function Forgot() {
                     resetToken,
                 }
             );
-            Swal.fire({
-                icon: "success",
-                text: response.message,
-            }).then(() => {
-                history.push("/login");
-            });
+
+            alert(response.message);
+            history.push("/login");
         } catch (e) {
             setError(e.response.data.message);
         }
@@ -156,6 +166,13 @@ export default function Forgot() {
                 );
             case 2:
                 return (
+                    //   <Security
+                    //     securityAnswer={securityAnswer}
+                    //     securityQuestion={securityQuestion}
+                    //     nextStep={nextStep}
+                    //     prevStep={prevStep}
+                    //     handleChange={handleChange}
+                    //   />
                     <Security
                         data={{ secQuestion, secAnswer }}
                         handleChange={handleChange}
@@ -172,48 +189,46 @@ export default function Forgot() {
     };
     console.log(error);
     return (
-        <>
-            <Background />
-            <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                    default: { duration: 0.5 },
-                }}
-                className="forgotPassGeneral"
-            >
-                <div className="containerHeaderForgotPass">
-                    <div className="forgotPassHeader">
-                        <div className="forgotPassTitle">
-                            <b>Forgot Password</b>
-                        </div>
+        <motion.div
+            initial="initial"
+            animate="in"
+            exit="out"
+            variants={pageVariants}
+            className="forgotPassGeneral"
+        >
+            <div className="containerHeaderForgotPass">
+                <div className="forgotPassHeader">
+                    <div className="forgotPassTitle">
+                        <b>Forgot Password</b>
                     </div>
                 </div>
-                <div className="ForgotPassBody">
-                    {multiForm()}
-                    {error !== "" && (
-                        <motion.div className="containerErrorForgotPass">
-                            <ErrorIcon
-                                style={{
-                                    color: "white",
-                                    marginLeft: "4px",
-                                }}
-                            />
-                            <div className="errorInputForgotPass">{error}</div>
-                        </motion.div>
-                    )}
-                    <div className="containerButtonsForgotPass">
-                        <Button
-                            className={classes.nextButtonForgotPass}
-                            variant="contained"
-                            onClick={nextStep}
-                        >
-                            next
-                        </Button>
-                        <Link to="/login">Login Here</Link>
-                    </div>
+            </div>
+            <div className="ForgotPassBody">
+                {multiForm()}
+                {error !== "" && (
+                    <motion.div className="containerErrorForgotPass">
+                        <ErrorIcon
+                            style={{
+                                color: "white",
+                                marginLeft: "4px",
+                            }}
+                        />
+                        <div className="errorInputForgotPass">{error}</div>
+                    </motion.div>
+                )}
+                <div className="containerButtonsForgotPass">
+                    <Button
+                        id='nextButton'
+                        className={classes.nextButtonForgotPass}
+                        variant="contained"
+                        color="primary"
+                        onClick={nextStep}
+                    >
+                        next
+                    </Button>
+                    <Link to="/login">Login Here</Link>
                 </div>
-            </motion.div>
-        </>
+            </div>
+        </motion.div>
     );
 }

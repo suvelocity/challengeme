@@ -19,9 +19,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import ErrorIcon from "@material-ui/icons/Error";
 import { motion } from "framer-motion";
-import Background from "../components/Background";
-import "../styles/Login.css";
 
+import "../styles/Login.css";
 const pageVariants = {
     initial: {
         opacity: 0,
@@ -36,12 +35,12 @@ const pageVariants = {
     },
 };
 const useStyles = makeStyles((theme) => ({
-    userNameLoginInput: {
+    userName: {
         marginTop: "110px",
         marginBottom: "20px",
         width: "320px",
     },
-    passwordLoginINput: {
+    password: {
         marginBottom: "5px",
         width: "320px",
     },
@@ -113,37 +112,41 @@ export default function Login() {
 
     return (
         <>
-            <Background />
             <motion.div
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                    default: { duration: 0.5 },
-                }}
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariants}
                 className="loginGeneral"
             >
-                <div className="containerHeaderLogin">
-                    <div className="loginTitle">
-                        <b>Log in</b>
-                    </div>
-                    <div className="orLoginWith">
-                        Or login with :
-                        <IconButton>
-                            <GitHubIcon style={{ color: "white" }} />
-                        </IconButton>
+                <div className="containerHeader">
+                    <div className="loginHeader">
+                        <div className="loginTitle">
+                            <b>Log in</b>
+                        </div>
+                        <div className="orLoginWith">
+                            Or login with :
+                            <IconButton>
+                                <GitHubIcon style={{ color: "white" }} />
+                            </IconButton>
+                        </div>
                     </div>
                 </div>
-                <div className="containerBodyLogin">
+                <div className="containerBody">
                     <form className="loginForm" onSubmit={loginFunc}>
                         <div className="loginBody">
-                            <FormControl className={classes.userNameLoginInput}>
-                                <InputLabel style={{ color: "grey" }}>
+                            <FormControl className={classes.userName}>
+                                <InputLabel
+                                    style={{ color: "grey" }}
+                                    htmlFor="standard-adornment-password"
+                                >
                                     User Name
                                 </InputLabel>
                                 <Input
                                     type="text"
                                     id="userNameField"
                                     name="userName"
+                                    // color="secondary"
                                     value={userName}
                                     required
                                     onChange={updateField}
@@ -157,8 +160,12 @@ export default function Login() {
                                     }
                                 />
                             </FormControl>
-                            <FormControl className={classes.passwordLoginINput}>
-                                <InputLabel style={{ color: "grey" }}>
+                            <FormControl className={classes.password}>
+                                <InputLabel
+                                    style={{ color: "grey" }}
+                                    className={classes.labelPass}
+                                    htmlFor="standard-adornment-password"
+                                >
                                     Password
                                 </InputLabel>
                                 <Input
@@ -168,6 +175,7 @@ export default function Login() {
                                     required
                                     type={showPassword ? "text" : "password"}
                                     onChange={updateField}
+                                    // color="secondary"
                                     endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton
@@ -183,8 +191,8 @@ export default function Login() {
                                                 {showPassword ? (
                                                     <Visibility />
                                                 ) : (
-                                                    <VisibilityOff />
-                                                )}
+                                                        <VisibilityOff />
+                                                    )}
                                             </IconButton>
                                             <LockIcon
                                                 style={{ opacity: "0.7" }}
@@ -211,33 +219,35 @@ export default function Login() {
                             {(error.userName ||
                                 error.password ||
                                 error.msg) && (
-                                <div className="containerErrorLogin">
-                                    <ErrorIcon
-                                        style={{
-                                            color: "white",
-                                            marginLeft: "4px",
-                                        }}
-                                    />
-                                    <div className="errorInput">
-                                        {error.userName ||
-                                            error.password ||
-                                            error.msg}
+                                    <div className="containerError">
+                                        <ErrorIcon
+                                            style={{
+                                                color: "white",
+                                                marginLeft: "4px",
+                                            }}
+                                        />
+                                        <div className="errorInput">
+                                            {error.userName ||
+                                                error.password ||
+                                                error.msg}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
                             <Button
                                 type="submit"
                                 id="loginButton"
                                 className={classes.loginButton}
                             >
                                 Log in
-                            </Button>
+                        </Button>
                             <div>
-                                <span>don't have an account yet? </span>
+                                <span>don't have an account yet? {" "}</span>
                                 <Link to="/register" id="signUp">
                                     Sign up
-                                </Link>
+                            </Link>
+
                             </div>
+                        )
                         </div>
                     </form>
                 </div>

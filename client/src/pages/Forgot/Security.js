@@ -51,6 +51,7 @@ function Security({
                     Enter your answer
                 </InputLabel>
                 <Input
+                    id='answer'
                     type="text"
                     value={data.secAnswer}
                     required

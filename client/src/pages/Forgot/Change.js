@@ -77,6 +77,7 @@ export default function Change({ data, handleChange }) {
                     Password
                 </InputLabel>
                 <Input
+                    id="newPassword"
                     name="newP"
                     value={data.password}
                     type={showPassword ? "text" : "password"}
@@ -109,6 +110,7 @@ export default function Change({ data, handleChange }) {
                     Confirm Password
                 </InputLabel>
                 <Input
+                    id='confirmNewPassword'
                     name="confirmP"
                     value={data.confirmPassword}
                     type={showConfirmPassword ? "text" : "password"}
