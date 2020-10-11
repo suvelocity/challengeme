@@ -18,6 +18,7 @@ const challengeRouter = Router();
 challengeRouter.get('/', filterResults, async (req, res) => {
   try {
     const { condition, labels } = req;
+
     const allChallenges = await Challenge.findAll({
       where: condition,
       include: {
@@ -25,6 +26,51 @@ challengeRouter.get('/', filterResults, async (req, res) => {
         attributes: ['name'],
       },
     });
+
+    /*
+    const rating = await Review.findAll({
+      attributes: ['challengeId', 'rating'],
+    });
+
+    const ratingArr = rating.reduce(
+      (all, { challengeId, rating }) => ({
+        ...all,
+        [challengeId]: (all[challengeId] || []).concat(rating),
+      }),
+      {}
+    );
+
+    const averageRatings = Object.entries(ratingArr).reduce(
+      (all, [challengeId, ratings]) => {
+        return {
+          ...all,
+          [challengeId]: ratings.reduce((a, b) => a + b) / ratings.length,
+        };
+      },
+      {}
+    );
+
+    const allChallengesWithRatings = allChallenges.map((challenge) => ({
+      ...challenge,
+      averageRating: averageRatings[challenge.id] != null
+        ? averageRatings[challenge.id]
+        : null,
+	}));
+
+	const allChallengesWithRatings = allChallenges.map(challenge => {
+		const mappedChallenge =  {
+			...challenge, averageRating: 1
+		}
+	})
+	*/
+    const newArr = allChallenges.map((challenge) => {
+      challenge['averageRating'] = 1;
+      return challenge;
+	});
+	
+	console.log(newArr);
+    res.json(newArr);
+
     if (labels) {
       const filterChallenges = allChallenges.filter((challenge) => {
         return labels.some((label) => {
