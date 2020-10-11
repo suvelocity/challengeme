@@ -1,36 +1,37 @@
-import React,{useState,useEffect} from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import React, {useState, useEffect} from "react";
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+} from "react-router-dom";
 import Home from './Home';
-import ThemeApi from "../services/Theme"
-import Header from '../components/Header';
-import NewChallengeForm from '../components/NewChallengeForm';
+import Header from '../components/header/Header'
+import ThemeApi from '../services/Theme'
+import Statistics from './Statistics';
 
 
-export default function Router() {
-  const [darkTheme,setDarkTheme] = useState(false)
-  useEffect(() => {
   
-    if(window.matchMedia('(prefers-color-scheme: dark)').matches){
-      setDarkTheme(true)
-    }
+  
+  export default function Router() {
+    const [darkTheme,setDarkTheme] = useState(false)
+    useEffect(() => {
     
-
-  }, [])
-
+      if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+        setDarkTheme(true)
+      }
+    })
   return (
     <ThemeApi.Provider value={{darkTheme,setDarkTheme}}>
     <BrowserRouter>
-      <Header />
-      <div className="main">
+    <Header/>
       <Switch>
-        <Route path="/addChallenge">
-          <NewChallengeForm />
-        </Route>
-        <Route path="/">
+        <Route exact path="/" >
           <Home />
         </Route>
+        <Route path="/statistics">
+          <Statistics />
+        </Route>
       </Switch>
-      </div>
     </BrowserRouter>
      </ThemeApi.Provider>
 

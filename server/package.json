@@ -27,10 +27,12 @@
     "axios": "^0.20.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jest": "^26.5.2",
     "mysql2": "^2.2.5",
     "nodemon": "^2.0.4",
     "ngrok": "^3.3.0",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
     "jest": "^26.5.2",
