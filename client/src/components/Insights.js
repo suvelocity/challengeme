@@ -257,7 +257,7 @@ useEffect(() => {
           </div>
         ) : (
           <div className={classes.div} style={{ gridArea: "byReview" }}>
-            <Charts name="topByReview" width={"36vw"} height={"36vh"} chart={[0, 1]} data={topChallengeByReview} />
+            <Charts name="topByReview" width={"36vw"} height={"36vh"} chart={[0, 2]} data={topChallengeByReview} />
           </div>
         )}
         {loading ? (
@@ -346,7 +346,7 @@ useEffect(() => {
             name="subByDate"
               width={"36vw"}
               height={"36vh"}
-              chart={[0,1]}
+              chart={[0,2]}
               data={subByDateData}
             />
           </div>
