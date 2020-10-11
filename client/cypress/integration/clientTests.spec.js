@@ -34,9 +34,9 @@ describe("Client Tests", {
     cy.route("**/teams/top", "fixture:topTeams.json").as("getTeams");
     cy.route("**/top-challenges", "fixture:topChallenges.json").as("topChallenges");
     cy.visit("http://localhost:3000/statistics");
-    cy.get("#TopTeams > .chart > .chartjs-render-monitor");
+    cy.get("#topChallenges > .chart > .chartjs-render-monitor");
     cy.get(
-      "#TopTeams > .MuiBottomNavigation-root > :nth-child(2)"
+      "#topChallenges > .MuiBottomNavigation-root > :nth-child(2)"
     ).click();
     cy.get(".chart > :nth-child(1) > .chartjs-render-monitor");
     cy.get("#TopUsers > .chart > .chartjs-render-monitor");
@@ -46,10 +46,10 @@ describe("Client Tests", {
     cy.get("#TopUsers > .chart > :nth-child(1) > .chartjs-render-monitor");
     cy.get("#topTeams > .chart > .chartjs-render-monitor");
     cy.get(
-      "#topTeams > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
+      "#topTeams > .MuiBottomNavigation-root > :nth-child(2) > .MuiBottomNavigationAction-wrapper"
     ).click();
     cy.get(
-      "#topTeams > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
+      "#topTeams > .chart > :nth-child(1) > .chartjs-render-monitor"
     );
   });
 });
