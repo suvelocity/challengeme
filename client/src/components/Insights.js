@@ -26,8 +26,8 @@ const useStyles = makeStyles((theme) => ({
     alignContent: "center",
     padding: "20px",
     fontWeight: "bold",
-    backgroundImage: "radial-gradient(circle, lightgray, #85DCB0)",
-    boxShadow: "15px 15px 0px #379683",
+    backgroundImage: "radial-gradient(circle, #9C8249, #F5D690)",
+    boxShadow: "15px 15px 0px #AD8C40",
   },
   main: {
     marginTop: "4rem",
@@ -238,7 +238,6 @@ useEffect(() => {
     ],
   };
 
-  console.log(subByDate);
 
   return (
     <div className={classes.main}>

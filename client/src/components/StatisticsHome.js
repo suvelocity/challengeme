@@ -15,9 +15,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   grid: {
-    marginTop: "4rem",
     display: "grid",
-    gridGap: "20px",
+    gridGap: "40px",
     textAlign: "center",
     alignContent: "center",
     justifyContent: "center",
@@ -33,11 +32,11 @@ const useStyles = makeStyles((theme) => ({
     alignContent: "center",
     padding: "20px",
     fontWeight: "bold",
-    backgroundColor: "lightgray",
-    borderRadius: "20px",
-    boxShadow: "6px 6px 12px black",
+    backgroundImage: "radial-gradient(circle, #9C8249, #F5D690)",
+    boxShadow: "15px 15px 0px #AD8C40",
   },
   main: {
+    marginTop: "4rem",
     display: "grid",
     padding: "10px",
     alignContent: "center",
@@ -101,7 +100,6 @@ function StatisticsHome() {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
 
-  const imageStyle = { backgroundColor: "lightgray" };
   const [topChallengesData, setTopChallengesData] = useState([]);
   const [topUsersData, setTopUsersData] = useState([]);
   const [topTeamsData, setTopTeamsData] = useState([]);
@@ -186,7 +184,7 @@ function StatisticsHome() {
           <div
             id="firstChart"
             className={classes.div}
-            style={{ gridArea: "headChart", ...imageStyle }}
+            style={{ gridArea: "headChart"}}
           >
             <Charts
               name="topChallenges"
@@ -204,7 +202,7 @@ function StatisticsHome() {
         ) : (
           <div
             className={classes.div}
-            style={{ gridArea: "topChart", ...imageStyle }}
+            style={{ gridArea: "topChart"}}
           >
             <Charts
               name="TopUsers"
@@ -222,7 +220,7 @@ function StatisticsHome() {
         ) : (
           <div
             className={classes.div}
-            style={{ gridArea: "bottomChart", ...imageStyle }}
+            style={{ gridArea: "bottomChart"}}
           >
             <Charts
               name="topTeams"
