@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const axios = require('axios');
-const filterResults = require('../../middleware/filterResults');
-const { Sequelize } = require('sequelize');
+const searchFilters = require('../../middleware/searchFilters');
 const fs = require("fs")
 
 const { Submission, Challenge, Label } = require('../../models');
@@ -9,7 +8,7 @@ const { Submission, Challenge, Label } = require('../../models');
 const router = Router();
 
 //get all challenges
-router.get('/',filterResults, async (req, res) => {
+router.get('/',searchFilters, async (req, res) => {
   const {condition,labels} = req
     try {
       const allChallenges = await Challenge.findAll({
