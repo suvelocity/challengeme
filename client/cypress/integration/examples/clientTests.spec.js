@@ -1,34 +1,34 @@
-describe('redirect', () => {
-    it('can redirect to home for inexact urls', () => {
-        cy.visit('/dfhksjdfhkjdsfhdk')
-        cy.url().should("equal", "http://localhost:3000/");
-        cy.visit("/login/a")
-        cy.url().should("equal", "http://localhost:3000/");
-        cy.visit("/register/a")
-        cy.url().should("equal", "http://localhost:3000/");
-        cy.visit("/forgot/a")
-        cy.url().should("equal", "http://localhost:3000/");
-    })
+describe("redirect", () => {
+  it("can redirect to home for inexact urls", () => {
+    cy.visit("/dfhksjdfhkjdsfhdk");
+    cy.url().should("equal", "http://localhost:3000/");
+    cy.visit("/login/a");
+    cy.url().should("equal", "http://localhost:3000/");
+    cy.visit("/register/a");
+    cy.url().should("equal", "http://localhost:3000/");
+    cy.visit("/forgot/a");
+    cy.url().should("equal", "http://localhost:3000/");
+  });
 
-    it('can redirect from login', () => {
-        cy.visit('/login');
-        cy.contains('Forgot Password ?').click();
-        cy.url().should("equal", "http://localhost:3000/forgot");
-        cy.visit('/login');
-        cy.contains('Sign up').click();
-        cy.url().should("equal", "http://localhost:3000/register");
-    })
-    it('can redirect from register', () => {
-        cy.visit("/register");
-        cy.contains('Login Here').click()
-        cy.url().should("equal", "http://localhost:3000/login")
-    })
-    it('can redirect from forgot', () => {
-        cy.visit("/forgot");
-        cy.contains('Login Here').click()
-        cy.url().should("equal", "http://localhost:3000/login")
-    })
-})
+  it("can redirect from login", () => {
+    cy.visit("/login");
+    cy.contains("Forgot Password ?").click();
+    cy.url().should("equal", "http://localhost:3000/forgot");
+    cy.visit("/login");
+    cy.contains("Sign up").click();
+    cy.url().should("equal", "http://localhost:3000/register");
+  });
+  it("can redirect from register", () => {
+    cy.visit("/register");
+    cy.contains("Login Here").click();
+    cy.url().should("equal", "http://localhost:3000/login");
+  });
+  it("can redirect from forgot", () => {
+    cy.visit("/forgot");
+    cy.contains("Login Here").click();
+    cy.url().should("equal", "http://localhost:3000/login");
+  });
+});
 
 describe("Rgister Form Test", () => {
   it("Can get all errors and submit register form", () => {
@@ -44,7 +44,6 @@ describe("Rgister Form Test", () => {
               },
             ],
             trueValue: "Amir",
-            action: "type"
           },
           {
             field: "lastName",
@@ -55,7 +54,6 @@ describe("Rgister Form Test", () => {
               },
             ],
             trueValue: "Debbie",
-            action: "type"
           },
           {
             field: "userName",
@@ -71,7 +69,6 @@ describe("Rgister Form Test", () => {
               },
             ],
             trueValue: "Nitzan",
-            action: "type"
           },
           {
             field: "email",
@@ -187,14 +184,18 @@ describe("Rgister Form Test", () => {
               },
             ],
             trueValue: "myAnswerrrr",
-          }
+          },
         ],
       },
     ];
     cy.server();
-    cy.route('POST', "**/api/v1/auth/userexist", { notExist: true })
-    cy.route('POST', "**/api/v1/auth/register", {message: 'Waiting for mail validation'}).as('register')
-    cy.route('POST', "**/api/v1/auth/createuser", { message: "Register Success" }).as('createUser')
+    cy.route("POST", "**/api/v1/auth/userexist", { notExist: true });
+    cy.route("POST", "**/api/v1/auth/register", {
+      message: "Waiting for mail validation",
+    }).as("register");
+    cy.route("POST", "**/api/v1/auth/createuser", {
+      message: "Register Success",
+    }).as("createUser");
     cy.visit("/register");
     pages.forEach((page) => {
       page.inputs.forEach((input) => {
@@ -219,7 +220,7 @@ describe("Rgister Form Test", () => {
     });
     cy.wait("@register");
 
-    cy.visit('/auth?token=djfhskdfhdskjf');
+    cy.visit("/auth?token=djfhskdfhdskjf");
     cy.wait("@createUser");
     cy.url().should("equal", "http://localhost:3000/login");
     // cy.get('.MuiCircularProgress-svg').should('exist');
@@ -360,7 +361,7 @@ describe("Change password", () => {
               {
                 falseValue: "short",
                 message: "password should be at least 8 characters",
-              }
+              },
             ],
             trueValue: "newPassword",
           },
@@ -370,12 +371,12 @@ describe("Change password", () => {
               {
                 falseValue: "doNotMatch",
                 message: "passwords do not match",
-              }
+              },
             ],
-            trueValue: "newPassword"
-          }
-        ]
-      }
+            trueValue: "newPassword",
+          },
+        ],
+      },
     ];
     cy.server();
     cy.route("POST", "**/api/v1/auth/getquestion", {
@@ -388,9 +389,9 @@ describe("Change password", () => {
     cy.route("PATCH", "**/api/v1/auth/passwordupdate", {
       message: "Changed Password Sucsessfuly",
     }).as("passwordUpdate");
-    
+
     cy.visit("/forgot");
-    
+
     pages.forEach((page) => {
       page.inputs.forEach((input) => {
         input.errors.forEach((error) => {
