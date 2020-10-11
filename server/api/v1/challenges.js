@@ -5,6 +5,7 @@ const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
 
 const { Submission,User, Challenge, Label, labels_to_challenge, Reviews } = require('../../models');
+// const { default: Review } = require('../../../client/src/components/ChallengePage/InfoTable/Tabs/ReviewsTab/Review');
 
 const challengeRouter = Router();
 
@@ -47,7 +48,7 @@ challengeRouter.get("/:challengeId", async (req, res) => {
         {
         model: Label,
         attributes: ["name"]
-      },
+        }
     ]
     });
     const author = await challenge.getUser();

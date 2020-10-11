@@ -86,7 +86,7 @@ function ChallengePage() {
                 <Link>  
                 {/* TODO: (ori Sass) talk to shahar where this link goes to... */}
                   <Chip
-                      color='secondary'
+                      color='primary'
                       label={label.name}
                       component='a'
                       href='#chip'
@@ -95,7 +95,7 @@ function ChallengePage() {
                 </Link>
               ))}
             </span>
-            {challenge.Labels.map((tag, index) => (
+            {/* {challenge.Labels.map((tag, index) => (
               <span key={index} className='challenge-label'>
                 <Chip
                   color='primary'
@@ -105,7 +105,7 @@ function ChallengePage() {
                   clickable
                 />
               </span>
-            ))}
+            ))} */}
           </div>
           <div className='challenge-rating'>
             <h2>Rating:</h2>
