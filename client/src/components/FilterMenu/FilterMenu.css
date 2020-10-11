@@ -10,10 +10,11 @@
   z-index:2;
   pointer-events: none ;
 }
+
 .filterMenu *{
   pointer-events: auto ;
-
 }
+
 .filters{
   transition: 1s;
   background-color: white;
@@ -22,6 +23,7 @@
   overflow: hidden;
   padding:0;
 }
+
 .filters.open{
   transition: .5s;
   
@@ -32,13 +34,9 @@
 }
 
 .filters>div>*{
-  /* display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  height:100% */
   margin: 10px 0;
-
 }
+
 .toggleOpen{
   transition: .5s;
   background-color:#C9AC80;
@@ -67,37 +65,3 @@
   flex-direction: row;
   justify-content: space-evenly;
 }
-
-/* .timeFilter input[type=range] {
-  -webkit-appearance: none; 
-  width: 100%; 
-  background: transparent; 
-} */
-/* .timeFilter input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  
-  height: 16px;
-  width: 16px;
-  border-radius: 50%;
-  background: #eee;
-  cursor: pointer;
-  margin-top: -4px; 
-  
-} */
-
-/* .timeFilter input[type=range]::-webkit-slider-runnable-track {
-  width: inherit;
-  height:inherit;
-  cursor:inherit;
-  box-shadow:inherit;
-  background: red; */
-  /* border-radius: 1.3px; */
-/* } */
-/* 
-.timeFilter input[type=range]:focus::-webkit-slider-runnable-track {
-  background: yellow;
-} */
-/* 
-.timeFilter input[type=range]:focus {
-  outline: none; 
-} */
