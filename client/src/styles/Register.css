@@ -4,10 +4,12 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background: linear-gradient(60deg, rgba(58, 106, 183, 0.7) 0%, rgba(213, 240, 255, 0.5) 100%);
+
 }
 
 .containerHeaderRegister {
-    margin-bottom: 450px;
+    margin-bottom: 475px;
     position: absolute;
 }
 
