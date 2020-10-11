@@ -10,10 +10,12 @@ function ReviewsTab({ challengeId }) {
       const { data: reviewsArrayFromServer } = await network.get(
         `/api/v1/reviews/byChallenge/${challengeId}`
       );
+
       const reviewsWithContent = reviewsArrayFromServer.filter(
         (review) => review.title && review.content
       );
       setReviews(reviewsWithContent);
+
     };
     fetchReviews();
     const liveReviews = setInterval(fetchReviews, 5000);
