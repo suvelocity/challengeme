@@ -3,7 +3,7 @@ const fs = require('fs').promises;
 
 const { Submission } = require('../models');
 module.exports = async () => {
-  console.log('Runs check started')
+  // console.log('Runs check started')
   let data;
   try {
 
