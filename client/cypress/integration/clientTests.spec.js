@@ -85,25 +85,41 @@ describe("Client Tests", () => {
     cy.server();
 
     cy.route("**/unsolved-challenges", "fixture:usersFixtures/unsolvedChallenges.json").as("getUnsolvedChallenges");
-    cy.route("**/top-users", "fixture:usersFixtures/topUsers.json").as("getTopUsers");
+    cy.route("**/user-success", "fixture:usersFixtures/userSuccess.json").as("getUserSuccess");
+    cy.route("**/sub-by-category", "fixture:usersFixtures/subByCategory.json").as("getSubByCategory");
+    cy.route("**/sub-by-date", "fixture:usersFixtures/subByDate.json").as("getSubByDate");
 
     cy.visit("http://localhost:3000/statistics/users");
 
-    cy.get("#topUsers > .chart > .chartjs-render-monitor");
+    cy.get("#UserTopSubmissionsByType");
     cy.get(
-      "#topUsers > .MuiBottomNavigation-root > :nth-child(2) > .MuiBottomNavigationAction-wrapper"
+      "#UserTopSubmissionsByType > .MuiBottomNavigation-root > :nth-child(2)"
       ).click();
     cy.get(
-      "#topUsers > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected"
+      "#UserTopSubmissionsByType > .MuiBottomNavigation-root > :nth-child(1)"
       ).click();
     
-    cy.get("#TopUsers > .chart > .chartjs-render-monitor");
+    cy.get("#topUsersBySuccess > .chart > .chartjs-render-monitor");
     cy.get(
-      "#TopUsers > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected"
+      "#topUsersBySuccess > .MuiBottomNavigation-root > :nth-child(2)"
       ).click();
     cy.get(
-      "#TopUsers > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
+      "#topUsersBySuccess > .MuiBottomNavigation-root > :nth-child(1)"
       ).click();
+      
+    cy.get("#UserSubmissionsByDate > .chart > .chartjs-render-monitor");
+
+    cy.get(
+      "#UserSubmissionsByDate > .MuiBottomNavigation-root > :nth-child(3) > .MuiBottomNavigationAction-wrapper"
+      ).click();
+    cy.get(
+      "#UserSubmissionsByDate > .MuiBottomNavigation-root > :nth-child(2) > .MuiBottomNavigationAction-wrapper"
+      ).click();
+    cy.get(
+      "#UserSubmissionsByDate > .MuiBottomNavigation-root > :nth-child(1) > .MuiBottomNavigationAction-wrapper"
+      ).click();
+
+    cy.get("#topUsersByTeam");
   });
 
   //Teams
@@ -146,7 +162,5 @@ describe("Client Tests", () => {
     cy.get(
       "#TopSuccessChallenges > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
       ).click();
-
-
   });
 });
