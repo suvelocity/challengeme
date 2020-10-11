@@ -46,14 +46,14 @@ router.get("/top-success", async (req, res) => {
 });
 
 // returns the count of challenges from same type('type name' + 'count')
-router.get("/challenges-category", async (req, res) => {
+router.get("/challenges-type", async (req, res) => {
   const challengeType = await Challenge.findAll({
     attributes: [
-      "category",
-      [sequelize.fn("COUNT", sequelize.col("type")), "countCategory"],
+      "type",
+      [sequelize.fn("COUNT", sequelize.col("type")), "countType"],
     ],
-    group: ["category"],
-    order: [[sequelize.fn("COUNT", sequelize.col("category")), "DESC"]],
+    group: ["type"],
+    order: [[sequelize.fn("COUNT", sequelize.col("type")), "DESC"]],
     limit: 5,
   });
   res.json(challengeType);

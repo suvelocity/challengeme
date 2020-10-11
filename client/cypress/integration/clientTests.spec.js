@@ -36,9 +36,9 @@ describe("Client Tests", {
   it("Checks home page charts", () => {
     cy.server();
 
-    cy.route("**/top-users", "fixture:homeFixtures/users").as("getUsers");
-    cy.route("**/teams/top", "fixture:homeFixtures/topTeams").as("getTeams");
-    cy.route("**/top-challenges", "fixture:homeFixtures/challenges").as("topChallenges");
+    cy.route("**/top-users", "fixture:homeFixtures/users.json").as("getUsers");
+    cy.route("**/teams/top", "fixture:homeFixtures/topTeams.json").as("getTeams");
+    cy.route("**/top-challenges", "fixture:homeFixtures/topChallenges.json").as("topChallenges");
 
     cy.visit("http://localhost:3000/statistics");
 
