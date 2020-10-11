@@ -16,6 +16,7 @@ import WorkIcon from '@material-ui/icons/Work';
 const useStyles = makeStyles((theme) => ({
   listRoot: {
     width: '100%',
+    height: '100%',
     maxWidth: 360,
   },
   root: {
@@ -25,9 +26,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   grid: {
-    marginTop: "4rem",
     display: "grid",
-    gridGap: "20px",
+    gridGap: "40px",
     textAlign: "center",
     alignContent: "center",
     justifyContent: "center",
@@ -35,19 +35,27 @@ const useStyles = makeStyles((theme) => ({
     height: "inherit",
     width: "inherit",
     gridTemplate: `
-      'headChart topChart' 300px 
-      'bottomChart bottomChart' 300px`,
+      'headChart sideList ' 45vh 
+      'bottomChart sideList' 45vh`,
   },
-  div: {
+   divLight: {
     textAlign: "center",
     alignContent: "center",
     padding: "20px",
     fontWeight: "bold",
-    backgroundColor: "lightgray",
-    borderRadius: "20px",
-    boxShadow: "6px 6px 12px black",
+    backgroundImage: "radial-gradient(circle, #9C8249, #F5D690)",
+    boxShadow: "15px 15px 0px #AD8C40",
+  },
+  divDark: {
+    textAlign: "center",
+    alignContent: "center",
+    padding: "20px",
+    fontWeight: "bold",
+    backgroundImage: "radial-gradient(circle, #DCE5E8, #53676E)",
+    boxShadow: "15px 15px 0px #696969",
   },
   main: {
+    marginTop: "4rem",
     display: "grid",
     padding: "10px",
     alignContent: "center",
@@ -65,7 +73,6 @@ const useStyles = makeStyles((theme) => ({
 
 function UserStatistics() {
     const classes = useStyles();
-    const imageStyle = { backgroundColor: "lightgray" };
     const [topUsers, setTopUsers] = useState(null);
     const [userSubByType, setUserSubByType] = useState(null);
     const [userUnsolvedChallenges, setUserUnsolvedChallenges] = useState([]);
@@ -108,8 +115,17 @@ function UserStatistics() {
         rawData: [
           {
             label: "Amount submissions", // name of the line (one or two words)
-            backgroundColor: "green", //raw color
-            borderColor: "green", //use the same as background color
+            backgroundColor: [
+              "red",
+              "blue",
+              "green",
+              "yellow",
+              "purple",
+              "black",
+              "pink",
+              "gray",
+            ],
+            borderColor: "black",
             fill: false, // change the line chart
             data: userSubByType && [...userSubByType.map(index => index.Challenge.CountByCategory), 0], // array of values for Y axis (numbers)
           },
@@ -123,8 +139,17 @@ function UserStatistics() {
         rawData: [
           {
             label: "Submitions", // name of the line (one or two words)
-            backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'], //raw color
-            borderColor: "cyan", //use the same as background color
+            backgroundColor: [
+              "red",
+              "blue",
+              "green",
+              "yellow",
+              "purple",
+              "black",
+              "pink",
+              "gray",
+            ],
+            borderColor: "black",
             fill: false, // change the line chart
             data: topUsers && [...topUsers.map(index => index.countSub), 0],
           },
@@ -139,7 +164,11 @@ function UserStatistics() {
             <CircularProgress />
           </div>
         ) : (
-          <List className={classes.listRoot}>
+          <div
+          className={classes.div}
+          style={{ gridArea: "sideList"}}
+        >
+          <List className={clsx(classes.listRoot, darkMode? classes.divDark: classes.divLight)}>
             <h3>Unsolved Challenges</h3>
             {userUnsolvedChallenges.map((challenge) => 
               <ListItem>
@@ -148,10 +177,11 @@ function UserStatistics() {
                 <WorkIcon />
                   </Avatar>
                 </ListItemAvatar>
-                <ListItemText primary={challenge.name} secondary={challenge.type} />
+                <ListItemText primary={challenge.name} secondary={`${challenge.category} - ${challenge.repositoryName}`} />
               </ListItem>
             )}
           </List>
+          </div>
         )}
         {loading ? (
           <div className={classes.root}>
@@ -159,13 +189,13 @@ function UserStatistics() {
           </div>
         ) : (
           <div
-            className={classes.div}
-            style={{ gridArea: "topChart", ...imageStyle }}
+            className={darkMode ? classes.divDark: classes.divLight}
+            style={{ gridArea: "headChart"}}
           >
             <Charts
               name="TopUsers"
-              width={"450px"}
-              height={"70px"}
+              width={"25vw"}
+              height={"25vh"}
               chart={[0, 2]}
               data={usersSubmissionType}
             />
@@ -177,20 +207,19 @@ function UserStatistics() {
           </div>
         ) : (
           <div
-            className={classes.div}
-            style={{ gridArea: "bottomChart", ...imageStyle }}
+            className={darkMode ? classes.divDark: classes.divLight}
+            style={{ gridArea: "bottomChart"}}
           >
             <Charts
               name="topUsers"
-              width={"450px"}
-              height={"70px"}
+              width={"25vw"}
+              height={"25vh"}
               chart={[0, 2]}
               data={DataTopUsers}
             />
           </div>
         )}
       </div>
-    {/* </div> */}
     </div>
   );
 }
