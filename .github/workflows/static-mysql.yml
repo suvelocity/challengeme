@@ -9,7 +9,7 @@ on:
         description: 'Solution repository'
         required: false
       webhookUrl:
-        description: 'Location'
+        description: 'Webhook Url'
         required: false
 
 
