@@ -25,7 +25,7 @@ router.get("/top-users", async (req, res) => {
 
 
 router.get("/user-success", async (req, res) => {
-  let loggedUser = req.user.userId ? req.user.userId : 7
+  let loggedUser = req.user.userId ? req.user.userId : 1
   const subBySuccess = await Submission.findAll({
     group: ["state"],
     attributes: [
@@ -49,7 +49,7 @@ router.get("/user-success", async (req, res) => {
 });
 
 router.get("/sub-by-date", async (req, res) => {
-  let loggedUser = req.user.userId ? req.user.userId : 7
+  let loggedUser = req.user.userId ? req.user.userId : 1
   const subByDate = await Submission.findAll({
     group: [sequelize.fn("DAY", sequelize.col("created_at"))],
     attributes: [

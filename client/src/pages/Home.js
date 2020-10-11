@@ -70,6 +70,7 @@ export default function HomePage() {
         Challenges
       </Typography>
       {challenges.map(challenge => (
+      <div id="challenges">
         <ChallengeCard
           key={challenge.id}
           cover={challenge.cover}
@@ -83,7 +84,8 @@ export default function HomePage() {
           description={challenge.description}
           onApply={() => onApply(challenge.id)}
         />
-      ))}
+        </div>
+        ))}
       <ApplyDialog
         open={!!challengeToApply}
         onSubmit={(solutionRepository) => {

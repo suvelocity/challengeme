@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Submission, {
         foreignKey: "userId",
       });
-      this.belongsToMany(models.Teams, { through: 'UsersTeams' });
+      this.belongsToMany(models.Teams, { through: 'UsersTeams', foreignKey: 'userId' });
       this.hasMany(models.Review, {
         foreignKey: 'challengeId'
       })

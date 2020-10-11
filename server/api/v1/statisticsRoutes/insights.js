@@ -43,14 +43,14 @@ router.get("/top-success", async (req, res) => {
   res.json(sub);
 });
 
-router.get("/challenges-type", async (req, res) => {
+router.get("/challenges-category", async (req, res) => {
   const challengeType = await Challenge.findAll({
     attributes: [
-      "type",
-      [sequelize.fn("COUNT", sequelize.col("type")), "countType"],
+      "category",
+      [sequelize.fn("COUNT", sequelize.col("type")), "countCategory"],
     ],
-    group: ["type"],
-    order: [[sequelize.fn("COUNT", sequelize.col("type")), "DESC"]],
+    group: ["category"],
+    order: [[sequelize.fn("COUNT", sequelize.col("category")), "DESC"]],
     limit: 10,
   });
   res.json(challengeType);
@@ -65,7 +65,8 @@ router.get("/sub-by-date", async (req, res) => {
     ],
     where: {
       created_at: {
-        [Op.gte]: new Date(Date.now() - 432000000),
+        //432000000
+        [Op.gte]: new Date(Date.now() - 2.628e+9),
       },
     },
   });

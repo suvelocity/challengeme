@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     static async getRatingAVG() {
       const reviewsAvgByChallenge = await this.findAll({
         group: ['challengeId'],
-        attributes: ['challengeId', [sequelize.fn('AVG', sequelize.col('rating')), 'ratingAVG']]
+        attributes: ['challengeId', 'name', [sequelize.fn('AVG', sequelize.col('rating')), 'ratingAVG']]
       })
 
       return reviewsAvgByChallenge

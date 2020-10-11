@@ -21,7 +21,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import network from '../services/network';
 
 
-const SubmissionsTable = ({ challengeId }) => {
+const SubmissionsTable = ({challengeId}) => {
   const [submissions, setSubmissions] = useState([]);
   useEffect(() => {
     const loadSubmissions = async () => {

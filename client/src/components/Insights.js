@@ -15,9 +15,11 @@ const useStyles = makeStyles((theme) => ({
     height: "inherit",
     width: "inherit",
     gridTemplate: `
-      'headChart headChart smallChart' 22vh 
-      'headChart headChart sideChart' 22vh
-      'leftChart rightChart sideChart' 22vh / 18vw 18vw 40vw;`,
+      'headChart headChart smallChart' 30vh 
+      'headChart headChart sideChart' 30vh
+      'leftChart rightChart sideChart' 30vh
+      'byReview byReview perDay' 30vh
+      'byReview byReview perDay' 30vh `,
   },
   div: {
     textAlign: "center",
@@ -35,7 +37,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     gridTemplateColumns: "auto",
     width: "100%",
-    backgroundColor: "#41B3A3",
   },
   span: {
     fontSize: "30px",
@@ -47,33 +48,51 @@ function Insights() {
 
   const getInfo = () => {
     axios
-      .get(`http://localhost:8080/api/v1/statistics/insights/top-challenges`)
+      .get(`/api/v1/statistics/insights/top-challenges`)
       .then((r) => r.data)
       .then((r) => {
         setChallengesTop(r);
         setLoading(false);
       });
     axios
-      .get(`http://localhost:8080/api/v1/statistics/insights/challenges-type`)
+      .get(`/api/v1/statistics/insights/challenges-category`)
       .then((r) => r.data)
       .then((r) => {
         setChallengesType(r);
         setLoading(false);
       });
     axios
-      .get(`http://localhost:8080/api/v1/statistics/insights/top-success`)
+      .get(`/api/v1/statistics/insights/top-success`)
       .then((r) => r.data)
       .then((r) => {
         setChallengesSuccess(r);
         setLoading(false);
       });
+    axios
+      .get(`/api/v1/statistics/insights/challenges-by-reviews`)
+      .then((r) => r.data)
+      .then((r) => {
+        setChallengeByReview(r);
+        setLoading(false);
+      });
+    axios
+      .get(`/api/v1/statistics/insights/sub-by-date`)
+      .then((r) => r.data)
+      .then((r) => {
+        setSubByDate(r);
+        setLoading(false);
+      });
   };
 
-  useEffect(getInfo, []);
+useEffect(() => {
+  getInfo()
+}, [])
 
   const [challengesTop, setChallengesTop] = useState(null);
   const [challengesSuccess, setChallengesSuccess] = useState(null);
   const [challengesType, setChallengesType] = useState(null);
+  const [subByDate, setSubByDate] = useState(null);
+  const [challengeByReview, setChallengeByReview] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const data = {
@@ -100,7 +119,7 @@ function Insights() {
 
   const topChallengesData = {
     labels: challengesTop && challengesTop.map((e) => e.Challenge.name), // array of values for x axis (strings)
-    title: "Top Challenges (most submitions)",
+    title: "Top Challenges (most submissions)",
     rawData: [
       {
         label: "submitions",
@@ -120,9 +139,31 @@ function Insights() {
       },
     ],
   };
+  const topChallengeByReview = {
+    labels: challengeByReview && challengeByReview.map((challenge) => challenge.Challenge.name), // array of values for x axis (strings)
+    title: "Top Challenges (by review)",
+    rawData: [
+      {
+        label: "submitions",
+        backgroundColor: [
+          "red",
+          "blue",
+          "green",
+          "yellow",
+          "purple",
+          "black",
+          "pink",
+          "gray",
+        ],
+        borderColor: "black",
+        fill: false,
+        data: challengeByReview && [...challengeByReview.map((challenge) => challenge.ratingAVG), 0], // array of values for Y axis (numbers)
+      },
+    ],
+  };
 
   const challengesTypeData = {
-    labels: challengesType && challengesType.map((e) => e.type), // array of values for x axis (strings)
+    labels: challengesType && challengesType.map((e) => e.category), // array of values for x axis (strings)
     title: "Challenges by Type",
     rawData: [
       {
@@ -139,7 +180,7 @@ function Insights() {
         ],
         borderColor: "black",
         fill: false,
-        data: challengesType && [...challengesType.map((e) => e.countType), 0], // array of values for Y axis (numbers)
+        data: challengesType && [...challengesType.map((e) => e.countCategory), 0], // array of values for Y axis (numbers)
       },
     ],
   };
@@ -170,6 +211,34 @@ function Insights() {
     ],
   };
 
+  const subByDateData = {
+    labels: subByDate && subByDate.map((e) => e.createdAt.split("T")[0]), // array of values for x axis (strings)
+    title: "Submissions per day",
+    rawData: [
+      {
+        label: "types",
+        backgroundColor: [
+          "red",
+          "blue",
+          "green",
+          "yellow",
+          "purple",
+          "black",
+          "pink",
+          "gray",
+        ],
+        borderColor: "black",
+        fill: false,
+        data: subByDate && [
+          ...subByDate.map((e) => e.countByDay),
+          0,
+        ], // array of values for Y axis (numbers)
+      },
+    ],
+  };
+
+  console.log(subByDate);
+
   return (
     <div className={classes.main}>
       <div className={classes.grid}>
@@ -180,6 +249,15 @@ function Insights() {
         ) : (
           <div className={classes.div} style={{ gridArea: "headChart" }}>
             <Charts width={"36vw"} height={"36vh"} chart={[0, 1]} data={data} />
+          </div>
+        )}
+        {loading ? (
+          <div className={classes.root}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <div className={classes.div} style={{ gridArea: "byReview" }}>
+            <Charts name="topByReview" width={"36vw"} height={"36vh"} chart={[0, 1]} data={topChallengeByReview} />
           </div>
         )}
         {loading ? (
@@ -208,6 +286,7 @@ function Insights() {
             style={{ gridArea: "sideChart" }}
           >
             <Charts
+            name="challengesByTypeChart"
               width={"38vw"}
               height={"38vh"}
               chart={[0, 2]}
@@ -226,9 +305,10 @@ function Insights() {
             style={{ gridArea: "leftChart" }}
           >
             <Charts
-              width={"13vw"}
+            name="challengesMostSubChart"
+              width={"17vw"}
               height={"13vw"}
-              chart={[0, 2]}
+              chart={[2]}
               data={topChallengesData}
             />
           </div>
@@ -244,10 +324,30 @@ function Insights() {
             style={{ gridArea: "rightChart" }}
           >
             <Charts
+            name="challengesMostSuccessChart"
               width={"13vw"}
-              height={"13vh"}
-              chart={[0, 2]}
+              height={"16vh"}
+              chart={[2]}
               data={challengesTypeData}
+            />
+          </div>
+        )}
+        {loading ? (
+          <div className={classes.root}>
+            <CircularProgress />
+          </div>
+        ) : (
+          <div
+            id="subByDate"
+            className={classes.div}
+            style={{ gridArea: "perDay" }}
+          >
+            <Charts
+            name="subByDate"
+              width={"36vw"}
+              height={"36vh"}
+              chart={[0,1]}
+              data={subByDateData}
             />
           </div>
         )}

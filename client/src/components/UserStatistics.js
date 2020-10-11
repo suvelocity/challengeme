@@ -15,8 +15,8 @@ const useStyles = makeStyles((theme) => ({
       height: "inherit",
       width: "inherit",
       gridTemplate: `
-        'headChart topChart' 300px 
-        'headChart bottomChart' 300px / 800px 600px;`,
+        'headChart headChart' 300px 
+        'topChart bottomChart' 300px `,
     },
     div: {
       textAlign: "center",
@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 function UserStatistics() {
     const classes = useStyles();
     const imageStyle = { backgroundColor: "lightgray" };
-    const [topUsersData, setTopUsersData] = useState([]);
+    const [topUsersData, setTopUsersData] = useState(null);
 
     const userData = {
         labels: topUsersData && topUsersData.map(index => index.User ? index.User.userName : 'Itay'), // array of values for x axis (strings)
@@ -60,7 +60,14 @@ function UserStatistics() {
           // you can add as many object as you wand, each one will a different line with different color
         ],
       };
-      useEffect(() => getUsersData() , []);
+     
+      useEffect(() => {
+        getUsersData() 
+        return () => {
+          setTopUsersData(null)
+        }
+      }, [])
+      
       const getUsersData = async () => {
         const { data: usersInfo } = await axios.get('/api/v1/statistics/users/top-users');
         setTopUsersData(usersInfo)
