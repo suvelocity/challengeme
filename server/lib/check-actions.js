@@ -40,7 +40,7 @@ module.exports = async () => {
       return;
     }
 
-    if(!data || !data.jobs || !data.jobs[0]) {
+    if (!data || !data.jobs || !data.jobs[0]) {
       // checkedIds[run.id] = true;
       return;
     }
@@ -53,9 +53,11 @@ module.exports = async () => {
     const submissionId = data.jobs[0].name.slice(index+stringLength);
     let submission; 
     try {
+    if (!isNaN(submissionId)) {
       submission = await Submission.findByPk(parseInt(submissionId));
+    }
     } catch (e) {
-      console.log('error on', submissionId , e)
+      console.log('error on', submissionId, e)
       // checkedIds[run.id] = true;
       return;
     }
