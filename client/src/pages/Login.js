@@ -146,7 +146,6 @@ export default function Login() {
                                     type="text"
                                     id="userNameField"
                                     name="userName"
-                                    // color="secondary"
                                     value={userName}
                                     required
                                     onChange={updateField}
@@ -175,7 +174,6 @@ export default function Login() {
                                     required
                                     type={showPassword ? "text" : "password"}
                                     onChange={updateField}
-                                    // color="secondary"
                                     endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton

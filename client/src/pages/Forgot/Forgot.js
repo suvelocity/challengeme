@@ -27,7 +27,6 @@ const pageVariants = {
 const useStyles = makeStyles((theme) => ({
     nextButtonForgotPass: {
         marginBottom: "10px",
-        // marginTop: "60px",
         background: "linear-gradient(45deg, #447CC6 30%, #315CAB 90%)",
         color: "white",
     },
@@ -166,13 +165,6 @@ export default function Forgot() {
                 );
             case 2:
                 return (
-                    //   <Security
-                    //     securityAnswer={securityAnswer}
-                    //     securityQuestion={securityQuestion}
-                    //     nextStep={nextStep}
-                    //     prevStep={prevStep}
-                    //     handleChange={handleChange}
-                    //   />
                     <Security
                         data={{ secQuestion, secAnswer }}
                         handleChange={handleChange}

@@ -10,7 +10,6 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 const useStyles = makeStyles((theme) => ({
   titleUserNameForgotPass: {
       marginTop: "130px",
-      // marginBottom: "60px",
       width: "320px",
   },
   userNameForgotPass: {
