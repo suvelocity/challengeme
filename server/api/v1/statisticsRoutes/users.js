@@ -121,9 +121,6 @@ router.get("/unsolved-challenges", async(req, res) => {
     return challenge.challenge_id
   })
 
-
-  const unsolvedChallenges = await Challenge.findAll({  
-    where: {
   const unsolvedChallenges = await Challenge.findAll({
     attributes: ['name', 'type', 'repositoryName'],
       where: {

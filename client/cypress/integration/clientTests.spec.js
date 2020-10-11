@@ -23,12 +23,6 @@ describe("Client Tests", {
     cy.get("#TeamStatistics").click();
     cy.url().should("include", "teams");
 
-    cy.get("#ChallengeCard").click();
-    cy.url().should("include", "challenge-card");
-
-    cy.get("#ProfileStatistics").click();
-    cy.url().should("include", "profile");
-
     cy.get("#home").click();
     cy.url().should("include", "http://localhost:3000/statistics");
   });
