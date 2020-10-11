@@ -10,8 +10,8 @@ const MOCK = {
   },
   error: {
     review: 'To send a review, the review must have both title and content!',
-    repo: 'This is not a valid repo!',
-    rating: 'To send an answer, you must rate the challenge!',
+    repo: 'Please enter a solution repository',
+    rating: 'Please rate this challenge',
   },
   jwtNodeJs: {
     id: 1,
@@ -179,7 +179,7 @@ describe(`${projectName} - test suite`, () => {
     cy.get(PATH.openModal).click();
     cy.get(PATH.submitAnswer).click();
 
-    cy.contains(MOCK.error.review);
+    cy.contains(MOCK.error.repo);
     cy.contains(MOCK.error.rating);
   });
 });
