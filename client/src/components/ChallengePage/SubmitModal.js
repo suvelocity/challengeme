@@ -41,7 +41,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
       userId,
     };
     try {
-      const res = await network.post(`/${challengeParamId}/apply`, formData);
+      const res = await network.post(`/api/v1/challenges/${challengeParamId}/apply`, formData);
       console.log(res);
     } catch (error) {
       console.error(error);

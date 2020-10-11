@@ -128,19 +128,24 @@ const PATH = {
     'body > div:nth-child(7) > div.makeStyles-paper-7 > form > div:nth-child(3) > span > label:nth-child(9)',
 };
 
+const beforeAll = () => {
+  cy.server();
+  cy.route(`${url}/api/v1/challenges/1`, {
+    challenge: MOCK.jwtNodeJs,
+    author: MOCK.author,
+  });
+  cy.route(`${url}/api/v1/challenges/1/submissions`, MOCK.submissions);
+  cy.route(`${url}/api/v1/reviews/byChallenge/1`, MOCK.reviews);
+  cy.route(`${url}/api/v1/images?id=1`, MOCK.blobImg);
+  cy.route('POST', `${url}/api/v1/challenges/1/apply`, 'Success');
+};
+
 const url = 'http://localhost:3000';
 
 const projectName = 'Challenge - Page Client';
 describe(`${projectName} - test suite`, () => {
   it('The page includes all the mandatory data about the challenge', () => {
-    cy.server();
-    cy.route(`${url}/api/v1/challenges/1`, {
-      challenge: MOCK.jwtNodeJs,
-      author: MOCK.author,
-    });
-    cy.route(`${url}/api/v1/challenges/1/submissions`, MOCK.submissions);
-    cy.route(`${url}/api/v1/reviews/byChallenge/1`, MOCK.reviews);
-    cy.route(`${url}/api/v1/images?id=1`, MOCK.blobImg);
+    beforeAll();
 
     cy.visit('http://localhost:3000/challenges/1');
 
@@ -148,20 +153,13 @@ describe(`${projectName} - test suite`, () => {
     cy.contains(MOCK.jwtNodeJs.description);
     cy.contains(MOCK.jwtNodeJs.createdAt);
     cy.contains(MOCK.jwtNodeJs.updatedAt);
-    MOCK.jwtNodeJs.Labels.map((label) => {
+    MOCK.jwtNodeJs.Labels.forEach((label) => {
       cy.contains(label.name);
     });
   });
 
   it('There is a submmit button, that opens a modal', () => {
-    cy.server();
-    cy.route(`${url}/api/v1/challenges/1`, {
-      challenge: MOCK.jwtNodeJs,
-      author: MOCK.author,
-    });
-    cy.route(`${url}/api/v1/challenges/1/submissions`, MOCK.submissions);
-    cy.route(`${url}/api/v1/reviews/byChallenge/1`, MOCK.reviews);
-    cy.route(`${url}/api/v1/images?id=1`, MOCK.blobImg);
+    beforeAll();
 
     cy.visit('http://localhost:3000/challenges/1');
 
@@ -175,14 +173,7 @@ describe(`${projectName} - test suite`, () => {
   });
 
   it('Form validation, cannot send without required inputs', () => {
-    cy.server();
-    cy.route(`${url}/api/v1/challenges/1`, {
-      challenge: MOCK.jwtNodeJs,
-      author: MOCK.author,
-    });
-    cy.route(`${url}/api/v1/challenges/1/submissions`, MOCK.submissions);
-    cy.route(`${url}/api/v1/reviews/byChallenge/1`, MOCK.reviews);
-    cy.route(`${url}/api/v1/images?id=1`, MOCK.blobImg);
+    beforeAll();
 
     cy.visit('http://localhost:3000/challenges/1');
 
@@ -192,29 +183,53 @@ describe(`${projectName} - test suite`, () => {
     cy.contains(MOCK.error.repo);
     cy.contains(MOCK.error.rating);
 
-    cy.get(PATH.repoInput).type(MOCK.answer.badSolutionRepo);
+    cy.get(PATH.repoInput)
+      .type(MOCK.answer.badSolutionRepo)
+      .should('have.value', MOCK.answer.badSolutionRepo);
     cy.contains(MOCK.error.invalidRrepo);
   });
 
-  it('Send valid form', () => {
-    cy.server();
-    cy.route(`${url}/api/v1/challenges/1`, {
-      challenge: MOCK.jwtNodeJs,
-      author: MOCK.author,
-    });
-    cy.route(`${url}/api/v1/challenges/1/submissions`, MOCK.submissions);
-    cy.route(`${url}/api/v1/reviews/byChallenge/1`, MOCK.reviews);
-    cy.route(`${url}/api/v1/images?id=1`, MOCK.blobImg);
+  it('Sends valid answer form', () => {
+    beforeAll();
 
     cy.visit('http://localhost:3000/challenges/1');
 
     cy.get(PATH.openModal).click();
 
-    cy.get(PATH.repoInput).type(MOCK.answer.solutionRepo);
+    cy.get(PATH.repoInput)
+      .type(MOCK.answer.solutionRepo)
+      .should('have.value', MOCK.answer.solutionRepo);
+    cy.get(PATH.title)
+      .type(MOCK.answer.title)
+      .should('have.value', MOCK.answer.title);
+    cy.get(PATH.message)
+      .type(MOCK.answer.message)
+      .should('have.value', MOCK.answer.message);
     cy.get(PATH.rate).click();
-    cy.get(PATH.title).type(MOCK.answer.title);
-    cy.get(PATH.message).type(MOCK.answer.message);
 
     cy.get(PATH.submitAnswer).click();
+  });
+
+  it('Submissions has date, name and status', async () => {
+    beforeAll();
+
+    cy.visit('http://localhost:3000/challenges/1');
+
+    MOCK.reviews.forEach((review) => {
+      cy.contains(review.title);
+      cy.contains(review.content);
+      cy.contains(review.User.userName);
+    });
+  });
+
+  it('Reviews has title, content, date and user who posted the review', async () => {
+    beforeAll();
+    cy.visit('http://localhost:3000/challenges/1');
+
+    MOCK.reviews.forEach((review) => {
+      cy.contains(review.title);
+      cy.contains(review.content);
+      cy.contains(review.User.userName);
+    });
   });
 });

@@ -96,7 +96,7 @@ describe(`${projectName} - test suite`, () => {
       '.challenge-name',
       (name) => name.innerText
     );
-    
+
     expect(nameValue).toBe(mockData.ReactTvShows.name);
     let imgSrc = await page.$eval('.challenge-img', (image) => image.src);
     expect(imgSrc).toBe(mockData.ReactTvShows.cover);
@@ -207,43 +207,38 @@ describe(`${projectName} - test suite`, () => {
     done();
   });
 
+  it('After sending a rating, the rating updates', async () => {
+    await page.waitForSelector('.challenge-rating'); //need to add number of ratings
 
-it('After sending a rating, the rating updates', async () => {
-  await page.waitForSelector('.challenge-rating'); //need to add number of ratings
+    let initialRaters = await page.$eval(
+      '#raters', //need to add id for number of ratings
+      (initialRaters) => initialRaters.innerText
+    );
+    await page.waitForSelector('.submit-btn');
+    await page.click('.submit-btn');
+    await page.waitForSelector('#repoInput');
+    await page.type('#repoInput', mockData.answer.repo);
+    await page.select('#rating', mockData.answer.rating);
+    await page.click('.submit-btn'); // Add id to last submit button
+    let updatedRaters = await page.$eval(
+      '#raters', //need to add id for number of ratings
+      (updatedRaters) => updatedRaters.innerText
+    );
 
-  let initialRaters = await page.$eval(
-    '#raters', //need to add id for number of ratings
-    (initialRaters) => initialRaters.innerText
-  );
-  await page.waitForSelector('.submit-btn');
-  await page.click('.submit-btn');
-  await page.waitForSelector('#repoInput');
-  await page.type('#repoInput', mockData.answer.repo);
-  await page.select('#rating', mockData.answer.rating);
-  await page.click('.submit-btn'); // Add id to last submit button
-  let updatedRaters = await page.$eval(
-    '#raters', //need to add id for number of ratings
-    (updatedRaters) => updatedRaters.innerText
-  );
-
-  expect(updatedRaters).toBe(initialRaters + 1);
-  done();
-});
-
-it('Pressing tag should search all challenges with the same tag', async () => {
-  await page.waitForSelector('.challenge-labels');
-  await page.click('.challenge-label');
-  let label;
-  page.on('response', response => {
-    if (response.url().endsWith("/labels")) //need to add the right URL
-     label=true
-     
+    expect(updatedRaters).toBe(initialRaters + 1);
+    done();
   });
-  expect(label).toBe(true);
-  done();
-});
 
-
-
-
+  it('Pressing tag should search all challenges with the same tag', async () => {
+    await page.waitForSelector('.challenge-labels');
+    await page.click('.challenge-label');
+    let label;
+    page.on('response', (response) => {
+      if (response.url().endsWith('/labels'))
+        //need to add the right URL
+        label = true;
+    });
+    expect(label).toBe(true);
+    done();
+  });
 });
