@@ -13,7 +13,7 @@ const usersTeams = require("./mocks/usersTeams");
 
 //mock data
 
-describe("insights tests", () => {
+describe("teams tests", () => {
     beforeAll(async () => {
         console.log("process.env.NODE_ENV", process.env.NODE_ENV);
         await Challenge.destroy({ truncate: true, force: true });
@@ -38,11 +38,38 @@ describe("insights tests", () => {
         app.close();
     });
 
-    it('can get teams with most succssesfull submitions', async () => {
+    it('can get teams with most succssesfull submissions', async () => {
         const { body } = await request(app).get('/api/v1/statistics/teams/top').expect(200)
         expect(body.length).toBe(3)
         expect(body[0]['Users.Submissions.teamSuccessSubmissions']).toBe(2)
         expect(body[2]['Users.Submissions.teamSuccessSubmissions']).toBe(1)
+    })
+    it('can get team users successes', async () => {
+        const { body } = await request(app).get('/api/v1/statistics/teams/top-user').expect(200)
+        expect(body.length).toBe(1)
+        expect(body[0]['firstName']).toBe(users[0].firstName)
+        expect(body[0]['Submissions.userSuccessSubmission']).toBe(2)
+    })
+    it('can get the team last week submissions group by date', async () => {
+        const { body } = await request(app).get('/api/v1/statistics/teams/last-week-submissions').expect(200)
+        expect(body.length).toBe(2)
+        expect(body[0]['createdAt'] > body[1]['createdAt']).toBe(true)
+        expect(body[0]['dateSubmissions']).toBe(1)
+        expect(body[1]['dateSubmissions']).toBe(1)
+    })
+    it('can get the team submissions by state', async () => {
+        const { body } = await request(app).get('/api/v1/statistics/teams/team-submissions').expect(200)
+        // expect(body.length).toBe(2)
+        // expect(body[0]['createdAt'] > body[1]['createdAt']).toBe(true)
+        // expect(body[0]['dateSubmissions']).toBe(1)
+        // expect(body[1]['dateSubmissions']).toBe(1)
+    })
+    it('can get and count the successes challenges of the team', async () => {
+        const { body } = await request(app).get('/api/v1/statistics/teams/success-challenge').expect(200)
+        // expect(body.length).toBe(2)
+        // expect(body[0]['createdAt'] > body[1]['createdAt']).toBe(true)
+        // expect(body[0]['dateSubmissions']).toBe(1)
+        // expect(body[1]['dateSubmissions']).toBe(1)
     })
 
 })

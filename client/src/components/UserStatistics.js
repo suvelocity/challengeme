@@ -126,56 +126,10 @@ function UserStatistics() {
             backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'], //raw color
             borderColor: "cyan", //use the same as background color
             fill: false, // change the line chart
-            data: topUsers && [...topUsers.map(index => index.countSub), 0], // array of values for Y axis (numbers)
+            data: topUsers && [...topUsers.map(index => index.countSub), 0],
           },
-          // you can add as many object as you wand, each one will a different line with different color
         ],
       };
-      // const unsolvedChallengesByUser = {
-      //   labels: userUnsolvedChallenges && userUnsolvedChallenges.map((index) => index.Challenge.name), // array of values for x axis (strings)
-      //   title: "Top Challenges (by review)",
-      //   rawData: [
-      //     {
-      //       label: "submitions",
-      //       backgroundColor: [
-      //         "red",
-      //         "blue",
-      //         "green",
-      //         "yellow",
-      //         "purple",
-      //         "black",
-      //         "pink",
-      //         "gray",
-      //       ],
-      //       borderColor: "black",
-      //       fill: false,
-      //       data: challengeByReview && [...challengeByReview.map((challenge) => challenge.ratingAVG), 0], // array of values for Y axis (numbers)
-      //     },
-      //   ],
-      // };
-    
-      // const challengesTypeData = {
-      //   labels: challengesType && challengesType.map((e) => e.category), // array of values for x axis (strings)
-      //   title: "Challenges by Type",
-      //   rawData: [
-      //     {
-      //       label: "types",
-      //       backgroundColor: [
-      //         "red",
-      //         "blue",
-      //         "green",
-      //         "yellow",
-      //         "purple",
-      //         "black",
-      //         "pink",
-      //         "gray",
-      //       ],
-      //       borderColor: "black",
-      //       fill: false,
-      //       data: challengesType && [...challengesType.map((e) => e.countCategory), 0], // array of values for Y axis (numbers)
-      //     },
-      //   ],
-      // };
 
     return (
       <div className={clsx(classes.main, darkMode?"dark-home-page":"light-home-page")}>
