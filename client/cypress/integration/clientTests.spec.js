@@ -17,27 +17,36 @@ describe("Client Tests", {
     cy.visit("http://localhost:3000/statistics");
     const insights = cy.get("#Insights").click();
     cy.url().should("include", "insights");
+
     cy.get("#UserStatistics").click();
     cy.url().should("include", "users");
+
     cy.get("#TeamStatistics").click();
     cy.url().should("include", "teams");
+
     cy.get("#ChallengeCard").click();
     cy.url().should("include", "challenge-card");
+
     cy.get("#ProfileStatistics").click();
     cy.url().should("include", "profile");
+    
     cy.get("#home").click();
     cy.url().should("include", "http://localhost:3000/statistics");
   });
 
   it("Checks home page charts", () => {
     cy.server();
+
     cy.fixture('../fixtures/homeFixtures/challenges').as('challengesJson');
     cy.fixture('../fixtures/homeFixtures/users').as('usersJson');
     cy.fixture('../fixtures/homeFixtures/topTeams').as('topTeamsJson');
+
     cy.route("**/top-users", "fixture:usersJson").as("getUsers");
     cy.route("**/teams/top", "fixture:topTeamsJson").as("getTeams");
     cy.route("**/top-challenges", "fixture:topChallenges.json").as("topChallenges");
+
     cy.visit("http://localhost:3000/statistics");
+
     cy.get("#topChallenges > .chart > .chartjs-render-monitor");
     cy.get(
       "#topChallenges > .MuiBottomNavigation-root > :nth-child(2)"
