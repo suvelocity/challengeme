@@ -46,7 +46,7 @@ describe("Register & Login Tests", () => {
 
     const invalidLoginResponse = await request(server)
       .post("/api/v1/auth/login")
-      .send({ userName: "supposed", password: "toFail", rememberMe: true});
+      .send({ userName: "supposed", password: "toFail111", rememberMe: true});
     expect(invalidLoginResponse.status).toBe(403);
 
     const loginResponse = await request(server)

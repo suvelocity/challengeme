@@ -4,6 +4,7 @@ const { User } = require("../models");
 const bcrypt = require("bcrypt");
 
 const mockUser = require("./mocks/users");
+const e = require("express");
 
 describe("Register & Login Tests", () => {
   beforeAll(async () => {
@@ -25,7 +26,7 @@ describe("Register & Login Tests", () => {
     expect(questionResponse.body.securityQuestion).toBe(mockUser.user2.securityQuestion);
 
     const answerRequest = {
-      securityAnswer : mockUser.resetPassword.securityAnswer,
+      securityAnswer : 'Switzerland',
       userName : mockUser.resetPassword.userName
     }
 
@@ -37,7 +38,7 @@ describe("Register & Login Tests", () => {
 
     const newPasswordRequest = {
       resetToken: answerResponse.body.resetToken,
-      password: "654321"
+      password: "87654321"
     }
 
     const newPasswordResponse = await request(server)
@@ -47,7 +48,7 @@ describe("Register & Login Tests", () => {
 
     const loginAfterChangedPasswordRequest = {
       userName: mockUser.resetPassword.userName, 
-      password:"654321",
+      password:"87654321",
       rememberMe: "true"
     }
 
