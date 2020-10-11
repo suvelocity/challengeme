@@ -37,6 +37,7 @@ function SubmissionTab({ challengeId }) {
           name={item.solutionRepository.split("/")[0]}
           status={item.state}
           submittedAt={item.updatedAt.split("T").join(" ").split(".")[0]}
+          solutionRepository={item.solutionRepository}
           bold={false}
         />
       ))}
