@@ -15,3 +15,11 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+
+.home-page .filterMenu{
+    width: 350px;
+  }
+      
+.home-page .filterMenu .toggleOpen:hover{
+    background-color:#cc7a00;
+}

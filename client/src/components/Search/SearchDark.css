@@ -1,6 +1,6 @@
 .dark #searchResults{
   background-image:linear-gradient(to top, #222 ,#777);
-  border-color: orangered
+  border-color: #9B3636
 }
 
 .dark #searchResults>.display{
