@@ -1,40 +1,77 @@
 /* TODO: (Amit) refactor this all css with SASS (talk to tsach ot Dror) */
 /* TODO: add hovers */
-/* TODO: talk to shahar about dark mode */
 * {
   box-sizing: border-box;
 }
 body {
   overflow-y: auto;
 }
-body::-webkit-scrollbar {
+
+*::-webkit-scrollbar {
   display: none;
 }
 
 .fullpage-wrapper {
   display: flex;
   flex-direction: column;
-  flex-direction: row; 
-  height: 100%;
+  flex-direction: row;
 }
-.navbar {
-  height: 5vh;
+.navbar-dm {
+  /* height: 1.7em; */
+  height: 3vh;
   position: fixed;
-  background-color: #46505a;
+  background-color: #3f51b5;
   top: 0;
   min-width: 100%;
 }
-.challenge-wrapper {
-  background: linear-gradient(#ffffff, rgba(235, 240, 255,0.1));
+.navbar {
+  /* height: 1.7em; */
+  height: 3vh;
+  position: fixed;
+  background-color: rgb(201, 172, 128);
+  top: 0;
   min-width: 100%;
-  height: 95vh;
+}
+.light-challenge-wrapper {
+  transition: 500ms;
+
+  background-color: #f7f5e0;
+  min-width: 100%;
+  height: 100%;
   color: black;
-  font-family: 'PT Sans', sans-serif;
-  font-weight: 800;
-  margin-top: 5vh;
+  font-family: Arial, Helvetica, sans-serif;
+  /* font-weight: 400; */
+  /* margin-top: 1.7em; */
   display: grid;
   grid-template-columns: 1fr 1.4fr;
+  height: 97vh;
+  margin-top: 3vh;
 }
+.dark-challenge-wrapper {
+  transition: 500ms;
+  background: linear-gradient(to right, #141e30, #243b55);
+  min-width: 100%;
+  height: 100%;
+  color: black;
+  font-family: Arial, Helvetica, sans-serif;
+  /* font-weight: 400; */
+  /* margin-top: 1.7em; */
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  height: 97vh;
+  margin-top: 3vh;
+}
+.dark-challenge-wrapper p {
+  color: rgb(255, 255, 255);
+  font-size: 1em;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.light-challenge-wrapper p {
+  color: black;
+  font-size: 1em;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
 @media screen and (max-width: 1200px) {
   .challenge-wrapper {
     grid-template-columns: 1fr;
@@ -53,8 +90,8 @@ body::-webkit-scrollbar {
 }
 
 .challenge-left-wrapper div {
-  margin-top: 100px;
-  width: 70%;
+  /* margin-top: 100px; */
+  width: 85%;
   margin-left: auto;
   margin-right: auto;
   border-radius: 10px;
@@ -69,13 +106,13 @@ body::-webkit-scrollbar {
 }
 
 .challenge-img-div {
-  margin-top: 2vh;
-  min-height: 38vh;
-  object-fit: contain;
-  margin-bottom: -50px;;
+  margin-top: 3vh;
+  min-height: 30vh;
+  /* object-fit: contain; */
 }
 
 .challenge-img {
+  /* object-fit: contain; */
   width: 100%;
   height: 100%;
   box-shadow: 0px 3px 4px 4px #00000073;
@@ -83,20 +120,34 @@ body::-webkit-scrollbar {
   /* object-fit: contain; */
 }
 
-.challenge-rawdata {
-  font-size: 20px;
+.challenge-rawdata-dm {
+  font-size: 18px;
   border-radius: 10px;
-  background-color: #7cb8f0;
+  background-color: #4b79a1;
+  height: fit-content;
+  margin-top: 2vh;
+}
+
+.challenge-rawdata {
+  font-size: 18px;
+  border-radius: 10px;
+  background-color: #d8dfe2;
   height: fit-content;
   margin-top: 2vh;
 }
 .challenge-rawdata span {
-  display: flex;
-  justify-content: space-around;
-  align-items: baseline;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: left;
+}
+.challenge-rawdata span p {
+  padding-right: 1em;
+  padding-left: 3em;
 }
 
 .challenge-labels {
+  margin-top: 1vh;
 }
 .challenge-labels a {
   font-size: 24px;
@@ -105,10 +156,10 @@ body::-webkit-scrollbar {
   margin-bottom: 5px;
 }
 .challenge-label {
-  padding-right: 5px;
+  padding-right: 3px;
 }
 .challenge-label a {
-  padding: 5px;
+  padding: 7px;
 }
 
 .challenge-rating {
@@ -118,46 +169,92 @@ body::-webkit-scrollbar {
 .challenge-github-btn {
   height: 100px;
   margin-bottom: 1.5vh;
+  margin-top: 1.5vh;
+}
+
+.challenge-github-btn-dm {
+  height: 100px;
+  margin-bottom: 1.5vh;
+  margin-top: 1.5vh;
 }
 .challenge-github-btn a {
+  transition: 500ms;
   font-size: 26px;
-  border: 2px solid #3a1e85;
+  border: 2px solid #3f51b5;
   width: 100%;
   height: 100%;
+  padding: 6px;
+}
+.challenge-github-btn-dm a {
+  transition: 500ms;
+  font-size: 26px;
+  border: 2px solid #ffffff;
+  width: 100%;
+  height: 100%;
+  color: white;
+  padding: 6px;
 }
 .challenge-github-btn a:hover {
-  background-color: #3a1e85;
+  transition: 500ms;
+  background-color: #3f51b5;
   color: white;
   font-size: 26px;
   width: 100%;
   height: 100%;
   align-self: flex-end;
+  padding: 6px;
+}
+
+.challenge-github-btn-dm a:hover {
+  transition: 500ms;
+  background-color: #ffffff;
+  color: #3f51b5;
+  font-size: 26px;
+  width: 100%;
+  height: 100%;
+  align-self: flex-end;
+  padding: 6px;
 }
 
 .challenge-title-description {
   display: flex;
   flex-direction: column;
-  height: 40vh;
+  height: 33vh;
   /* height: fit-content; */
   /* margin-bottom: 0; */
 }
-h1 {
-  font-size: 40px;
+.light-h1 {
+  transition: 500ms;
+  font-size: 70px;
   color: black;
   text-align: center;
+}
+.dark-h1 {
+  transition: 500ms;
+  font-size: 35px;
+  color: rgb(255, 255, 255);
+  text-align: center;
+}
+
+.light-h2 {
+  transition: 500ms;
+  color: black;
+}
+.dark-h2 {
+  transition: 500ms;
+  color: white;
 }
 .challenge-description {
   flex-grow: 1;
   height: 100%;
   /* min-height: 100%; */
-  background-color: #7cb8f0;
+  background-color: #4b79a1;
   color: black;
   min-width: 100%;
 }
 
 .challenge-description p {
-  font-size: 24px;
-
+  font-size: 22px;
   padding-left: 15px;
   padding-right: 15px;
 }
@@ -165,23 +262,58 @@ h1 {
 .challenge-solution-table {
   margin-top: 2vh;
   font-size: 24px;
-  /* background-color: #7cb8f0; */
+  /* background-color: #4b79a1; */
   /* max-height: 725px; */
   flex-grow: 1;
+  font-size: 1em;
   /* margin-top: 3vh; */
 }
 
 .challenge-submit-btn {
   height: 100px;
   margin-bottom: 1.5vh;
+  margin-top: 1.5vh;
 }
+
+.challenge-submit-btn-dm {
+  height: 100px;
+  margin-bottom: 1.5vh;
+  margin-top: 1.5vh;
+}
+
 .challenge-submit-btn button {
+  transition: 500ms;
   font-size: 26px;
-  border: 2px solid #3a1e85;
+  border: 2px solid #3f51b5;
   width: 100%;
   height: 100%;
+  padding: 6px;
 }
-.challenge-submit-btn button:hover {
-  background-color: #3a1e85;
+
+.challenge-submit-btn-dm button {
   color: white;
+  transition: 500ms;
+  font-size: 26px;
+  border: 2px solid #ffffff;
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+}
+
+.challenge-submit-btn button:hover {
+  transition: 500ms;
+  background-color: #3f51b5;
+  color: white;
+  padding: 6px;
+}
+
+.challenge-submit-btn-dm button :hover {
+  transition: 500ms;
+  background-color: #ffffff;
+  color: #3f51b5;
+  font-size: 26px;
+  width: 100%;
+  height: 100%;
+  align-self: flex-end;
+  padding: 6px;
 }
