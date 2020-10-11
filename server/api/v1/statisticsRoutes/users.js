@@ -110,6 +110,7 @@ router.get("/unsolved-challenges", async(req, res) => {
   })
 
   const unsolvedChallenges = await Challenge.findAll({
+    attributes: ['name', 'category', 'repositoryName'],
       where: {
       id: {[Op.notIn]: solvedChallenges}
   }})
