@@ -33,9 +33,10 @@ describe('Submission process', () => {
         let initialSubmissions = await Submission.findAll();
         expect(initialSubmissions.length).toBe(2);
         let challengeType = challenges.find(challenge => challenge.id === solutionRepos[0].challengeId).type;
-        let testRepo = challengeArr.find(challenge=> challenge.id === solutionRepos[0].challengeId).repositoryName;
+        let testRepo = challenges.find(challenge=> challenge.id === solutionRepos[0].challengeId).repositoryName;
         const successId = initialSubmissions.find(submission => submission.solutionRepository === solutionRepos[0].repo).id;
         let webhookUrl = process.env.MY_URL.concat(`/api/v1/webhook/submission/${successId}`);
+        
         const githubPostmock1 = nock(`https://api.github.com`, {reqHeaders: {
           'Content-Type': 'application/json',
           Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
