@@ -21,7 +21,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -39,6 +40,7 @@
     ]
   },
   "devDependencies": {
+    "cypress": "^5.3.0",
     "nock": "^13.0.4",
     "nock-puppeteer": "^1.0.2",
     "puppeteer": "^5.3.1"

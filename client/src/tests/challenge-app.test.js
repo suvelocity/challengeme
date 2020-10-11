@@ -84,6 +84,7 @@ describe(`${projectName} - test suite`, () => {
       .get('/api/v1/challenges/2')
       .query(() => true)
       .reply(200, mockData.ReactCalculator);
+
     await page.goto('http://localhost:3000/challenges/1', {
       waitUntil: 'networkidle0',
     });
@@ -95,6 +96,7 @@ describe(`${projectName} - test suite`, () => {
       '.challenge-name',
       (name) => name.innerText
     );
+    
     expect(nameValue).toBe(mockData.ReactTvShows.name);
     let imgSrc = await page.$eval('.challenge-img', (image) => image.src);
     expect(imgSrc).toBe(mockData.ReactTvShows.cover);
