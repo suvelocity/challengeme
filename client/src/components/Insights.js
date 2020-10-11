@@ -238,7 +238,6 @@ useEffect(() => {
     ],
   };
 
-  console.log(subByDate);
 
   return (
     <div className={classes.main}>
