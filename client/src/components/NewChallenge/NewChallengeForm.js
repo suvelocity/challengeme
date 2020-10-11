@@ -11,16 +11,16 @@ import { Typography, InputLabel, MenuItem, FormControl, Select, TextField, Texta
 import { Alert, AlertTitle } from '@material-ui/lab';
 const textFieldStyle = { minWidth : "200px" }
 
-//function to generate alerts for bad or missing inputs
+/* function to generate alerts for bad or missing inputs */
 const generateAlert=(title,message)=>(
   <>
-  <Alert severity="error"  >
-    <AlertTitle >
-    {title}
-    </AlertTitle>
-    {message}
-  </Alert>
-  <br/>
+    <Alert severity="error"  >
+      <AlertTitle >
+        {title}
+      </AlertTitle>
+      {message}
+    </Alert>
+    <br/>
   </>
 )
 
@@ -28,6 +28,7 @@ export default function NewChallengeForm() {
   const [optionsArray, setOptionsArray] = useState([]); 
   const [repoName, setRepoName] = useState(''); 
   const [repoLink, setRepoLink] = useState(''); 
+  const [repoBoiler, setRepoBoiler] = useState(''); 
   const [repoDescription, setRepoDescription] = useState(''); 
   const [repoType, setRepoType] = useState('');
   const [repoLabels, setRepoLabels] = useState([]);
@@ -67,6 +68,16 @@ export default function NewChallengeForm() {
       newBadInput.push(generateAlert("Repository's Link is not valid.\n Check the suggestions below:","- Type the Github repository in this format: owner/repo\n- Change your repository to public\n- Check for type errors.\nDon't use Hebrew letters")
       );
     }
+    try {
+      if(repoBoiler.length > 2 && !repoBoiler.match(spaces) && !repoBoiler.match(hebrew)) {
+        await network.get(`/api/v1/challenges/public_repo?repo_name=${repoBoiler}`);
+      } else {
+        throw new Error();
+      }
+    } catch(err) {
+      newBadInput.push(generateAlert("Repository's Boilerplate Link is not valid.\n Check the suggestions below:","- Type the Github boilerplate repository in this format: owner/repo\n- Change your boilerplate repository to public\n- Check for type errors.\nDon't use Hebrew letters")
+      );
+    }
     if(repoDescription.length < 20 || !!repoDescription.match(spaces) || !!repoDescription.match(hebrew)) {
       newBadInput.push(generateAlert("Repository's Description is too short","Minimum 2 characters. Don't use hebrew letters")
       );  
@@ -93,7 +104,9 @@ export default function NewChallengeForm() {
         name: repoName,
         description: repoDescription,
         type: repoType,
-        repositoryName: repoLink
+        repositoryName: repoLink,
+        boilerPlate: repoBoiler,
+        // userId: get from headers or something  ------------------------------ XXXXXXXX -------------------------------
       }
       /* post newRepo to challenge table */
       try{
@@ -175,7 +188,7 @@ export default function NewChallengeForm() {
     setRepoLabels([])
   }
 
-  // material ui styling
+  /* material ui styling */
   const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -197,6 +210,7 @@ export default function NewChallengeForm() {
       </Typography>
       <TextField id='name' autoComplete="off" className='newChallengeFormFeild' label='Challenge name' onChange={event => setRepoName(event.target.value)} style={textFieldStyle}/><br />
       <TextField id='repo' autoComplete="off" className='newChallengeFormFeild' label='Challenge link' onChange={event => setRepoLink(event.target.value)} style={textFieldStyle}/><br />
+      <TextField id='boiler' autoComplete="off" className='newChallengeFormFeild' label='Challenge boilerplate' onChange={event => setRepoBoiler(event.target.value)} style={textFieldStyle}/><br />
       <TextareaAutosize className='descriptionTextArea' autoComplete="off" aria-label='Description' rowsMin={6} placeholder='Challenge description...' onChange={event => setRepoDescription(event.target.value)}  style={{minWidth:200,width:"40vw"}}/><br />
       <AddImg file={file} handleChange={handleFile}/><br />
       <div className="newChallengeFormFeild">

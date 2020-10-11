@@ -7,7 +7,7 @@ const { Submission, Challenge, Label } = require('../../models');
 
 const router = Router();
 
-//get all challenges
+// get all challenges
 router.get('/',searchFilters, async (req, res) => {
   const {condition,labels} = req
     try {
@@ -40,7 +40,7 @@ router.get('/:challengeId/submissions', async (req, res) => {
   res.json(allSubmission)
 })
 
-//get repo details if its public
+// get repo details if its public
 router.get('/public_repo', async (req, res) => {
   try {
     const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`, {
@@ -110,14 +110,23 @@ router.post('/:challengeId/apply', async (req, res) => {
 // router Post - new challenge
 router.post(`/`,async(req,res) => {
   try {
-    const newRepo = req.body.repositoryName;
-    const check = await Challenge.findOne({
+    const newRepoLink = req.body.repositoryName;
+    const newRepoBoiler = req.body.boilerPlate;
+    const checkByLink = await Challenge.findOne({
       where:{
-        repositoryName: newRepo
+        repositoryName: newRepoLink
       }
     })
-    if(check) {
+    if(checkByLink) {
       return res.status(500).send('Repo is already in the system');
+    }
+    const checkByBoiler = await Challenge.findOne({
+      where:{
+        boilerPlate: newRepoBoiler
+      }
+    })
+    if(checkByBoiler) {
+      return res.status(500).send('Boilerplate is already in the system');
     }
     const newChallenge = await Challenge.create(req.body);
     res.status(200).send(newChallenge);
@@ -141,7 +150,7 @@ router.get('/type', async (req,res) => {
   }catch(e){res.send(e.message)}
 })
 
-//get all labels
+// get all labels
 router.get('/labels', async (req, res) => {
   const allLabels = await Label.findAll();
   res.json(allLabels.map(({id,name})=>{return{label:name,value:id}}))
