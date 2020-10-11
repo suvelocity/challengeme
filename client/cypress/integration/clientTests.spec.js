@@ -60,4 +60,78 @@ describe("Client Tests", {
       "#topTeams > .chart > :nth-child(1) > .chartjs-render-monitor"
     );
   });
+
+  it("Checks insights page charts", () => {
+    cy.server();
+
+    cy.route("**/challenges-by-reviews", "fixture:insightsFixtures/challengesByReview.json").as("getChallengesByReview");
+    cy.route("**/challenges-category", "fixture:insightsFixtures/challengesCategory.json").as("getChallengesCategory");
+    cy.route("**/sub-by-date", "fixture:insightsFixtures/subByDate.json").as("getSubByDate");
+    cy.route("**/top-challenges", "fixture:insightsFixtures/topChallenges.json").as("getTopChallenges");
+    cy.route("**/top-success", "fixture:insightsFixtures/topSuccess.json").as("getTopSuccess");
+
+    cy.visit("http://localhost:3000/statistics/insights");
+
+    cy.get("#SubmissionTotalChart");
+    cy.get("#challengesMostSubChart > .chart > :nth-child(1) > .chartjs-render-monitor");
+    cy.get("#challengesMostSuccessChart > .chart > :nth-child(1) > .chartjs-render-monitor");
+    cy.get("#challengesByTypeChart > .chart > .chartjs-render-monitor");
+    cy.get(
+      "#challengesByTypeChart > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
+    ).click();
+    cy.get(
+      "#challengesByTypeChart > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
+    ).click();
+  });
+
+  it("Checks users page charts", () => {
+    cy.server();
+
+    cy.route("**/unsolved-challenges", "fixture:usersFixtures/unsolvedChallenges.json").as("getUnsolvedChallenges");
+    cy.route("**/top-users", "fixture:usersFixtures/topUsers.json").as("getTopUsers");
+
+    cy.visit("http://localhost:3000/statistics/users");
+
+    cy.get("#topUsers > .chart > .chartjs-render-monitor");
+    cy.get(
+      "#topUsers > .MuiBottomNavigation-root > :nth-child(2) > .MuiBottomNavigationAction-wrapper"
+      ).click();
+    cy.get(
+      "#topUsers > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected"
+      ).click();
+    
+    cy.get("#TopUsers > .chart > .chartjs-render-monitor");
+    cy.get(
+      "#TopUsers > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected"
+      ).click();
+    cy.get(
+      "#TopUsers > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
+      ).click();
+  });
+
+  it("Checks teams page charts", () => {
+    cy.server();
+
+    cy.route("**/top-user", "fixture:teamsFixtures/topUser.json").as("getTopUser");
+    cy.route("**/last-week-submissions", "fixture:teamsFixtures/lastWeekSubmissions.json").as("getLastWeekSubmissions");
+    cy.route("**/top", "fixture:teamsFixtures/top.json").as("getTop");
+
+    cy.visit("http://localhost:3000/statistics/teams");
+
+    cy.get("#lastWeekSubOfTeam > .chart > .chartjs-render-monitor");
+    cy.get(
+      "#lastWeekSubOfTeam > .MuiBottomNavigation-root > :nth-child(2) > .MuiBottomNavigationAction-wrapper"
+      ).click();
+    cy.get(
+      "#lastWeekSubOfTeam > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
+      ).click();
+    
+    cy.get("#TopOfTheTeams > .chart > .chartjs-render-monitor");
+    cy.get(
+      "#TopOfTheTeams > .MuiBottomNavigation-root > :nth-child(2) > .MuiBottomNavigationAction-wrapper"
+      ).click();
+    cy.get(
+      "#TopOfTheTeams > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
+      ).click();
+  });
 });

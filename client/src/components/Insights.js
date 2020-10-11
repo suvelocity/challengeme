@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   span: {
-    fontSize: "30px",
+    fontSize: "50px",
   },
 }));
 
@@ -93,6 +93,13 @@ function Insights() {
         setSubByDate(r);
         setLoading(false);
       });
+    axios
+      .get(`/api/v1/challenges`)
+      .then((r) => r.data.length)
+      .then((r) => {
+        setNumOfChallenges(r);
+        setLoading(false);
+      });
   };
 
 useEffect(() => {
@@ -105,6 +112,7 @@ useEffect(() => {
   const [subByDate, setSubByDate] = useState(null);
   const [challengeByReview, setChallengeByReview] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [numberOfChallenges , setNumOfChallenges] = useState(null);
 
   const data = {
     labels: ["January", "February", "March", "April", "May" , "June" , "July" , "August"], // array of values for x axis (strings)
@@ -288,9 +296,9 @@ useEffect(() => {
             className={darkMode ? classes.divDark : classes.divLight}
             style={{ gridArea: "smallChart" }}
           >
-            total submition number
+            <span className={classes.span}>total challenges in the site:</span>
             <br />
-            <span className={classes.span}>1349</span>
+            <span className={classes.span}>{numberOfChallenges}</span>
           </div>
         )}
         {loading ? (
