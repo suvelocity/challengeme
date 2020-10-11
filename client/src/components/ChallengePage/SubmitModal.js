@@ -89,6 +89,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 					{errors.repository?.type === "pattern" && (
 						<Typography
 							variant="caption"
+							id="required-repo"
 							className={classes.formValidationError}>
 							The text should look like "username/repository-name"
 						</Typography>
@@ -176,6 +177,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 						variant="contained"
 						color="primary"
 						type="submit"
+						id="submit-form"
 						style={{ marginTop: 16 }}>
 						submit
 					</Button>
