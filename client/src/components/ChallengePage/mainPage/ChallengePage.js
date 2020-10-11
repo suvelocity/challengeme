@@ -9,7 +9,6 @@ import "./ChallengePage.css";
 import SubmitModal from "../SubmitModal";
 import InfoTable from "../InfoTable/InfoTable";
 
-
 // TODO: clean all console alert and logs before merge
 
 // we have two users
@@ -43,7 +42,6 @@ function ChallengePage() {
         setChallenge(challengeFromServer);
       } catch (error) {
         console.log(error);
-        // TODO: handle error
       }
     };
     setImg();
@@ -107,10 +105,12 @@ function ChallengePage() {
               size="large"
             />
           </div>
-          <div className='challenge-github-btn'>
-            <Button color='primary' href={`https://github.com/suvelocity/${challenge.boilerPlate}`}>
+          <div className="challenge-github-btn">
+            <Button
+              color="primary"
+              href={`https://github.com/suvelocity/${challenge.boilerPlate}`}
+            >
               Fork boiler plate
-
             </Button>
           </div>
         </div>
@@ -134,16 +134,16 @@ function ChallengePage() {
         </div>
       </div>
 
-			<SubmitModal
-				isOpen={isModalOpen}
-				handleClose={handleModalClose}
-				challengeParamId={challengeParamId}
-				userId={userId}
-			/>
-		</div>
-	) : (
-		<div>Loading</div>
-	);
+      <SubmitModal
+        isOpen={isModalOpen}
+        handleClose={handleModalClose}
+        challengeParamId={challengeParamId}
+        userId={userId}
+      />
+    </div>
+  ) : (
+    <div>Loading</div>
+  );
 }
 
 export default ChallengePage;
