@@ -19,7 +19,7 @@ import Statistics from './Statistics';
       if(window.matchMedia('(prefers-color-scheme: dark)').matches){
         setDarkTheme(true)
       }
-    })
+    } , [])
   return (
     <ThemeApi.Provider value={{darkTheme,setDarkTheme}}>
     <BrowserRouter>
