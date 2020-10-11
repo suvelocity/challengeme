@@ -1,5 +1,5 @@
 'use strict';
-const reviews = require('../_tests_/statistics/seeders/seedFiles');
+const reviews = require('./seedFiles/reviews');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
