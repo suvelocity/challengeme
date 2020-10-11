@@ -2,6 +2,9 @@
 
 
 describe("Search Tests", () => {
+    before(()=>{
+        cy.login()
+    })
     it("Can search with labels", () => {
         const typedText = 'react';
         cy.server();

@@ -2,6 +2,9 @@
 const expectedDescription = "dcnlkdncdkncdkacndkcndkjcndakcndkwcndkncdkncdkncdk..."
 
 describe("Home page Tests", () => {
+    before(()=>{
+      cy.login()
+    })
     it("can get challenges", () => {
       cy.server();
       cy.route("**/api/v1/challenges", "fixture:challenges.json");
