@@ -84,7 +84,6 @@ export default function Forgot() {
                     userName,
                 }
             );
-            console.log(response);
             setSecQuestion(response.securityQuestion);
             setStep(2);
         } catch (e) {

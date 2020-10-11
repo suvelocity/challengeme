@@ -10,7 +10,6 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 const useStyles = makeStyles((theme) => ({
     titleUserNameForgotPass: {
         marginTop: "130px",
-        // marginBottom: "60px",
         width: "320px",
     },
     userNameForgotPass: {
@@ -31,7 +30,7 @@ export default function Identify(props) {
             <FormControl className={classes.userNameForgotPass}>
                 <InputLabel style={{ color: "grey" }}>User Name</InputLabel>
                 <Input
-                    id="firstName"
+                    id="userName"
                     type="text"
                     value={data.userName}
                     required
