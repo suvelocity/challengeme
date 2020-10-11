@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class labels_to_challenge extends Model {
+  class labelsToChallenge extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 
     }
   };
-  labels_to_challenge.init({
+  labelsToChallenge.init({
     labelId: {
       field: 'label_id',
       type: DataTypes.INTEGER },
@@ -22,8 +22,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER }
   }, {
     sequelize,
-    modelName: 'labels_to_challenge',
+    modelName: 'labelsToChallenge',
     underscored: true,
   });
-  return labels_to_challenge;
+  return labelsToChallenge;
 };

@@ -155,4 +155,9 @@ router.get('/type', async (req,res) => {
   }catch(e){res.send(e.message)}
 })
 
+router.get('/labels', async (req, res) => {
+  const allLabels = await Label.findAll();
+  res.json(allLabels.map(({id,name})=>{return{label:name,value:id}}))
+})
+
 module.exports = router;
