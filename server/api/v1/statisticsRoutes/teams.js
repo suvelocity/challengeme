@@ -5,17 +5,17 @@ const router = Router()
 
 const { Submission, Teams, User, Challenge } = require('../../../models');
 
-
+// returns the 5 teams with the most successfull submissions
 router.get('/top', async (req, res) => {
   try{
     const topTeam = await Teams.findAll({
-      raw:true,
+      // raw:true,
       group: ["id"],
       attributes: ['id','name'],
       include:[
         {
           model:User,
-          attributes:[],
+          attributes:['userName'],
           through:{
             attributes:[]
           },
@@ -24,18 +24,23 @@ router.get('/top', async (req, res) => {
             attributes:[[sequelize.fn("COUNT", sequelize.col("challenge_id")), "teamSuccessSubmissions"]],
             where:{
               state:'success'
-            }
+            },
           }
         }
-      ]
+      ],
+      order: [[sequelize.fn("COUNT", sequelize.col("challenge_id")), 'DESC']]
     })
 
-    res.send(topTeam)
+    res.send(topTeam.slice(0, 5))
   }catch(err){
     res.status(400).send(err)
   }
   })
 
+
+// for the team related to the logged in user
+
+// returns the 5 users with most successfull submissions in the team
 router.get('/top-user', async (req, res) => {
   try{
     // let loggedUser = req.user.userId ? req.user.userId : 1
@@ -65,7 +70,8 @@ router.get('/top-user', async (req, res) => {
           state:'success'
         }
         }
-      ]
+      ],
+      order: [[sequelize.fn("COUNT", sequelize.col("challenge_id")), 'DESC']],
     })
     users.forEach(element => {
       delete element["UsersTeams.teamId"]
@@ -75,12 +81,13 @@ router.get('/top-user', async (req, res) => {
       delete element["UsersTeams.TeamId"]
       delete element["UsersTeams.UserId"]
     })
-    res.send(users)
+    res.send(users.slice(0, 5))
   }catch(err){
     res.status(400).send(err)
   }
 })
 
+// returns last week submissions  for the logged in user team
 router.get('/last-week-submissions', async (req, res) => {
   try{
     // let loggedUser = req.user.userId ? req.user.userId : 1
@@ -97,59 +104,35 @@ router.get('/last-week-submissions', async (req, res) => {
         }
       ]
     })
-    // const team = await Submission.findAll({
-    //   raw:true,
-    //   group:[sequelize.fn("DAY", sequelize.col("Submission.created_at"))],
-    //   attributes: [[sequelize.fn("COUNT", "id"), "dateSubmissions"],"createdAt"],
-    //   where:{
-    //     state:'SUCCESS',
-    //     created_at: {
-    //       [Op.gte]: new Date(Date.now() - 604800000),
-    //     }
-    //   },
-    //   include:[{
-    //     model: User,
-    //     attributes:["id"],
-    //     include:[{
-    //       model: Teams,
-    //       through:{
-    //         attributes:[]
-    //       },
-    //       attributes:["id","name"],
-    //       where:{
-    //         id:userTeam.Teams[0].id
-    //       }
-    //     }]
-    //   }],
 
-    // })
-
-    const team = await Teams.findAll({
-      // raw:true,
-      attributes: ['id','name',[sequelize.fn("COUNT", "submissions.id"), "teamSubmissions"]],
+    const currentTeam= await Teams.findOne({
       where:{
-        id: userTeam.Teams[0].id
+        id:userTeam.Teams[0].id
       },
-      include:[
-        {
-          model:User,
-          through:{
-            attributes:[]
-          },
-          attributes:[],
-          include:{
-            model: Submission,
-            group:[sequelize.fn("DAY", sequelize.col("Submission.created_at"))],
-            attributes:[],
-            where:{
-              state:'SUCCESS',
-              created_at: {
-                [Op.gte]: new Date(Date.now() - 604800000),
-              }
-            }
-          }
+      attributes:["name"],
+      include:[{
+        model:User,
+        attributes:["id"],
+        through:{
+          attributes:[]
         }
-      ]
+      }]
+    })
+
+    usersId = currentTeam.Users.map(value=>value.id)
+
+    const team = await Submission.findAll({
+      raw:true,
+      group:[sequelize.fn("DAY", sequelize.col("Submission.created_at"))],
+      attributes: [[sequelize.fn("COUNT", "id"), "dateSubmissions"],"createdAt"],
+      where:{
+        state:'SUCCESS',
+        created_at: {
+          [Op.gte]: new Date(Date.now() - 604800000),
+        },
+        userId:usersId
+      },
+      order:[[sequelize.fn("DAY", sequelize.col("Submission.created_at")),"desc"]]
     })
     res.send(team)
   }catch(err){
@@ -157,6 +140,7 @@ router.get('/last-week-submissions', async (req, res) => {
   }
 })
 
+// returns the teams submissions status(total amount, pending, success, fail)
 router.get("/team-submissions", async (req, res) => {
   try{
    // let loggedUser = req.user.userId ? req.user.userId : 1
@@ -173,86 +157,55 @@ router.get("/team-submissions", async (req, res) => {
       }
     ]
   })
-  const successSub = await Teams.findAll({
-    group: ["id"],
-    attributes: ['id','name'],
+
+  const currentTeam= await Teams.findOne({
     where:{
       id:userTeam.Teams[0].id
     },
-    include:[
-      {
-        model:User,
-        attributes:["id"],
-        through:{
-          attributes:[]
-        },
-        include:{
-          model: Submission,
-          attributes:[[sequelize.fn("COUNT", sequelize.col("challenge_id")), "teamSuccessSubmissions"]],
-          where:{
-            state:'success'
-          }
-        }
+    attributes:["name"],
+    include:[{
+      model:User,
+      attributes:["id"],
+      through:{
+        attributes:[]
       }
-    ]
-  })
-  const failSub = await Teams.findAll({
-    group: ["id"],
-    attributes: ['id','name'],
-    where:{
-      id:userTeam.Teams[0].id
-    },
-    include:[
-      {
-        model:User,
-        attributes:["id"],
-        through:{
-          attributes:[]
-        },
-        include:{
-          model: Submission,
-          attributes:[[sequelize.fn("COUNT", sequelize.col("challenge_id")), "teamFailSubmissions"]],
-          where:{
-            state:'fail'
-          }
-        }
-      }
-    ]
-  })
-  const pendingSub = await Teams.findAll({
-    group: ["id"],
-    attributes: ['id','name'],
-    where:{
-      id:userTeam.Teams[0].id
-    },
-    include:[
-      {
-        model:User,
-        attributes:["id"],
-        through:{
-          attributes:[]
-        },
-        include:{
-          model: Submission,
-          attributes:[[sequelize.fn("COUNT", sequelize.col("challenge_id")), "teamPendingSubmissions"]],
-          where:{
-            state:'pending'
-          }
-        }
-      }
-    ]
+    }]
   })
 
-  const succes= successSub[0].Users[0].Submissions[0].dataValues.teamSuccessSubmissions
-  const fail = failSub[0].Users[0].Submissions[0].dataValues.teamFailSubmissions;
-  const pending = pendingSub[0].Users[0].Submissions[0].dataValues.teamPendingSubmissions;
+  usersId = currentTeam.Users.map(value=>value.id)
+
+  const successSub = await Submission.findAll({
+    attributes:[[sequelize.fn("COUNT", sequelize.col("id")), "teamSuccessSubmissions"]],
+    where:{
+      userId:usersId,
+      state:'success'
+    }
+  })
+  const failSub = await Submission.findAll({
+    attributes:[[sequelize.fn("COUNT", sequelize.col("id")), "teamFailSubmissions"]],
+    where:{
+      userId:usersId,
+      state:'fail'
+    }
+  })
+  const pendingSub = await Submission.findAll({
+    attributes:[[sequelize.fn("COUNT", sequelize.col("id")), "teamPendingSubmissions"]],
+    where:{
+      userId:usersId,
+      state:'pending'
+    }
+  })
+
+  const succes = successSub[0].dataValues.teamSuccessSubmissions;
+  const fail = failSub[0].dataValues.teamFailSubmissions;
+  const pending = pendingSub[0].dataValues.teamPendingSubmissions;
   const allSub= succes+fail+pending
 
   const teamSubmissions={
-    allTheTeamSubmissions:allSub,
-    teamSuccesSubnissions:succes,
-    teamFailSubnissions:fail,
-    teamPendingSubnissions:pending
+    all:allSub,
+    success:succes,
+    fail:fail,
+    pending:pending
   }
   res.json(teamSubmissions);
 }catch(err){
@@ -260,10 +213,10 @@ router.get("/team-submissions", async (req, res) => {
 }
 });
 
-//team success challenges
-
+// returns the top 5 challenges, with the most successful submissions in the team 
 router.get('/success-challenge', async (req, res) => {
   try{
+     // let loggedUser = req.user.userId ? req.user.userId : 1
     const userTeam= await User.findOne({
       where:{
         id: 1
@@ -277,34 +230,39 @@ router.get('/success-challenge', async (req, res) => {
         }
       ]
     })
-    const successCallenges = await Teams.findAll({
-      attributes: ['id','name'],
+
+    const currentTeam= await Teams.findOne({
       where:{
         id:userTeam.Teams[0].id
       },
-      include:[
-        {
-          model:User,
-          attributes:["id"],
-          through:{
-            attributes:[]
-          },
-          include:{
-            model: Submission,
-            attributes:["id"],
-            where:{
-              state:'success'
-            },
-            include:[{
-              model: Challenge,
-              attributes:["name"]
-            }]
-          }
+      attributes:["name"],
+      include:[{
+        model:User,
+        attributes:["id"],
+        through:{
+          attributes:[]
         }
-      ]
+      }]
     })
 
-    res.send(successCallenges)
+    usersId = currentTeam.Users.map(value=>value.id)
+
+    const teamChallenges = await Submission.findAll({
+      group:["challengeId"],
+      attributes: [[sequelize.fn("COUNT", "challengeId"), "challengeSuccesses"],"challengeId"],
+      where:{
+        state:'SUCCESS',
+        userId:usersId
+      },
+      include:[{
+        model:Challenge,
+        attributes:["name"]
+      }],
+      order: [[sequelize.fn("COUNT", "challengeId"), 'DESC']],
+      limit: 5
+    })
+
+    res.send(teamChallenges)
   }catch(err){
     res.status(400).send(err)
   }

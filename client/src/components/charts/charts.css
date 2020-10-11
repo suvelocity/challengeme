@@ -2,3 +2,7 @@
 .chartNavBar{
     background-color: transparent!important;
 }
+
+.chart{
+    height: auto !important;
+}

@@ -15,9 +15,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   grid: {
-    marginTop: "4rem",
     display: "grid",
-    gridGap: "20px",
+    gridGap: "40px",
     textAlign: "center",
     alignContent: "center",
     justifyContent: "center",
@@ -28,16 +27,24 @@ const useStyles = makeStyles((theme) => ({
       'headChart topChart' 300px 
       'bottomChart bottomChart' 300px`,
   },
-  div: {
+  divLight: {
     textAlign: "center",
     alignContent: "center",
     padding: "20px",
     fontWeight: "bold",
-    backgroundColor: "lightgray",
-    borderRadius: "20px",
-    boxShadow: "6px 6px 12px black",
+    backgroundImage: "radial-gradient(circle, #9C8249, #F5D690)",
+    boxShadow: "15px 15px 0px #AD8C40",
+  },
+  divDark: {
+    textAlign: "center",
+    alignContent: "center",
+    padding: "20px",
+    fontWeight: "bold",
+    backgroundImage: "radial-gradient(circle, #DCE5E8, #53676E)",
+    boxShadow: "15px 15px 0px #696969",
   },
   main: {
+    marginTop: "4rem",
     display: "grid",
     padding: "10px",
     alignContent: "center",
@@ -101,7 +108,6 @@ function StatisticsHome() {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
 
-  const imageStyle = { backgroundColor: "lightgray" };
   const [topChallengesData, setTopChallengesData] = useState([]);
   const [topUsersData, setTopUsersData] = useState([]);
   const [topTeamsData, setTopTeamsData] = useState([]);
@@ -171,7 +177,7 @@ function StatisticsHome() {
     const { data: usersInfo } = await axios.get('/api/v1/statistics/users/top-users');
     setTopUsersData(usersInfo)
     setLoading(false);
-    // console.log(usersInfo[0].User.userName)
+    
   };
   
   return (
@@ -185,13 +191,13 @@ function StatisticsHome() {
         ) : (
           <div
             id="firstChart"
-            className={classes.div}
-            style={{ gridArea: "headChart", ...imageStyle }}
+            className={darkMode ? classes.divDark : classes.divLight}
+            style={{ gridArea: "headChart"}}
           >
             <Charts
-              name="TopTeams"
+              name="topChallenges"
               width={"400px"}
-              height={"2000px"}
+              height={"200px"}
               chart={[0, 2]}
               data={challengeData}
             />
@@ -203,8 +209,8 @@ function StatisticsHome() {
           </div>
         ) : (
           <div
-            className={classes.div}
-            style={{ gridArea: "topChart", ...imageStyle }}
+            className={darkMode ? classes.divDark : classes.divLight}
+            style={{ gridArea: "topChart"}}
           >
             <Charts
               name="TopUsers"
@@ -221,8 +227,8 @@ function StatisticsHome() {
           </div>
         ) : (
           <div
-            className={classes.div}
-            style={{ gridArea: "bottomChart", ...imageStyle }}
+            className={darkMode ? classes.divDark : classes.divLight}
+            style={{ gridArea: "bottomChart"}}
           >
             <Charts
               name="topTeams"

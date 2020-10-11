@@ -1,9 +1,10 @@
-const { Router, request } = require("express");
+const { Router } = require("express");
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const router = Router();
 const { Submission, Challenge, Review } = require("../../../models");
 
+// returns the 5 challenges with most submitions
 router.get("/top-challenges", async (req, res) => {
   const sub = await Submission.findAll({
     attributes: {
@@ -17,12 +18,13 @@ router.get("/top-challenges", async (req, res) => {
     },
     group: ["challenge_id"],
     order: [[sequelize.fn("COUNT", sequelize.col("challenge_id")), "DESC"]],
-    limit: 10,
+    limit: 5,
   });
 
   res.json(sub);
 });
 
+// returns the 5 challenges with most successful submitions
 router.get("/top-success", async (req, res) => {
   const sub = await Submission.findAll({
     attributes: {
@@ -37,25 +39,27 @@ router.get("/top-success", async (req, res) => {
     where: { state: "SUCCESS" },
     group: ["challenge_id"],
     order: [[sequelize.fn("COUNT", sequelize.col("challenge_id")), "DESC"]],
-    limit: 10,
+    limit: 5,
   });
 
   res.json(sub);
 });
 
-router.get("/challenges-category", async (req, res) => {
+// returns the count of challenges from same type('type name' + 'count')
+router.get("/challenges-type", async (req, res) => {
   const challengeType = await Challenge.findAll({
     attributes: [
-      "category",
-      [sequelize.fn("COUNT", sequelize.col("type")), "countCategory"],
+      "type",
+      [sequelize.fn("COUNT", sequelize.col("type")), "countType"],
     ],
-    group: ["category"],
-    order: [[sequelize.fn("COUNT", sequelize.col("category")), "DESC"]],
-    limit: 10,
+    group: ["type"],
+    order: [[sequelize.fn("COUNT", sequelize.col("type")), "DESC"]],
+    limit: 5,
   });
   res.json(challengeType);
 });
 
+// returns the count of submitions submited per day from the last 5 days 
 router.get("/sub-by-date", async (req, res) => {
   const subByDate = await Submission.findAll({
     group: [sequelize.fn("DAY", sequelize.col("createdAt"))],
@@ -73,6 +77,7 @@ router.get("/sub-by-date", async (req, res) => {
   res.json(subByDate);
 });
 
+// returns top 5 challenges ordered by rating averge (from reviews) 
 router.get("/challenges-by-reviews", async (req, res) => {
 
   let allChallenges = await Review.findAll({

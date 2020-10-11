@@ -9,6 +9,8 @@ import DonutSmallIcon from '@material-ui/icons/DonutSmall';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import './charts.css';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+
 
 function Charts(props) {
     const [chartType,setChartType] = useState(props.chart[0])
@@ -46,7 +48,7 @@ function Charts(props) {
     }));
     const classes = useStyles();
   return (
-    <div className={classes.chart} id={props.name}>
+    <div className={clsx(classes.chart)} id={props.name}>
         <div className="chart">
             {
                 selectChart()         
