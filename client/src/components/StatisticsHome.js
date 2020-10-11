@@ -27,13 +27,21 @@ const useStyles = makeStyles((theme) => ({
       'headChart topChart' 300px 
       'bottomChart bottomChart' 300px`,
   },
-  div: {
+  divLight: {
     textAlign: "center",
     alignContent: "center",
     padding: "20px",
     fontWeight: "bold",
     backgroundImage: "radial-gradient(circle, #9C8249, #F5D690)",
     boxShadow: "15px 15px 0px #AD8C40",
+  },
+  divDark: {
+    textAlign: "center",
+    alignContent: "center",
+    padding: "20px",
+    fontWeight: "bold",
+    backgroundImage: "radial-gradient(circle, #DCE5E8, #53676E)",
+    boxShadow: "15px 15px 0px #696969",
   },
   main: {
     marginTop: "4rem",
@@ -183,7 +191,7 @@ function StatisticsHome() {
         ) : (
           <div
             id="firstChart"
-            className={classes.div}
+            className={darkMode ? classes.divDark : classes.divLight}
             style={{ gridArea: "headChart"}}
           >
             <Charts
@@ -201,7 +209,7 @@ function StatisticsHome() {
           </div>
         ) : (
           <div
-            className={classes.div}
+            className={darkMode ? classes.divDark : classes.divLight}
             style={{ gridArea: "topChart"}}
           >
             <Charts
@@ -219,7 +227,7 @@ function StatisticsHome() {
           </div>
         ) : (
           <div
-            className={classes.div}
+            className={darkMode ? classes.divDark : classes.divLight}
             style={{ gridArea: "bottomChart"}}
           >
             <Charts
