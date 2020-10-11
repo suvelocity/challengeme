@@ -14,18 +14,15 @@ const MOCK = {
     },
     repo: {
       content: 'Please enter a solution repository',
-      path:
-        '#required-repo',
+      path: '#required-repo',
     },
     invalidRrepo: {
       content: 'The text should look like "username/repository-name"',
-      path:
-        '#required-repo',
+      path: '#required-repo',
     },
     rating: {
       content: 'Please rate this challenge',
-      path:
-        '#required-rating',
+      path: '#required-rating',
     },
   },
   jwtNodeJs: {
@@ -163,7 +160,7 @@ describe(`${projectName} - Test suite`, () => {
 
     cy.visit('http://localhost:3000/challenges/1');
   });
-  
+
   it('The page includes all the mandatory data about the challenge', () => {
     cy.contains(MOCK.jwtNodeJs.name);
     cy.contains(MOCK.jwtNodeJs.description);
@@ -209,13 +206,13 @@ describe(`${projectName} - Test suite`, () => {
     cy.get(PATH.repoInput)
       .type(MOCK.answer.solutionRepo)
       .should('have.value', MOCK.answer.solutionRepo);
+    cy.get(PATH.rate).click();
     cy.get(PATH.title)
       .type(MOCK.answer.title)
       .should('have.value', MOCK.answer.title);
     cy.get(PATH.message)
       .type(MOCK.answer.message)
       .should('have.value', MOCK.answer.message);
-    cy.get(PATH.rate).click();
 
     cy.get(PATH.submitAnswer).click();
   });
