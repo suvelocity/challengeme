@@ -13,8 +13,8 @@
   z-index:3;
   overflow-y: scroll;
   background-color: #fff;;
-  border-left:10px solid navy;
-  border-bottom:10px solid navy;
+  border-left:10px solid #e2ccac;
+  border-bottom:10px solid #e2ccac;
   border-radius:  0 0 10px 15px;
 }
 #searchResults.closed{
@@ -55,9 +55,9 @@
 }
 
 .searchClose{
-  position: absolute;
-  right: 5px;
-  top: 5px;
+  /* position: absolute; */
+  right: 0px;
+  top: 0px;
   transition: .2s;
   cursor: pointer;
   width:fit-content;
@@ -70,6 +70,7 @@
   border-radius: 50%;
   border:none;
   margin: 2px;
+  padding-left: 5.5px;
   font-weight: bolder;
 }
 
@@ -77,7 +78,6 @@
   transition: .3s;
   top:2.5px;
   right:2.5px;
-  font-size: 1.1em;
   color: rgb(255, 255, 255);
   background-color: rgba(212, 18, 18, 0.8);
   /* width: 2em;
@@ -100,6 +100,9 @@
 }
 #searchResults .filters.open{
   transition: 1s;
-  max-width: 200px;
+  max-width: 300px;
 }
 
+.selectLabels{
+  color: black;
+}
