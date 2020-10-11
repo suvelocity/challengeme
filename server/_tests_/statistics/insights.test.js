@@ -16,10 +16,14 @@ const reviews = require("./mocks/reviews");
 describe("insights tests", () => {
   beforeAll(async () => {
     console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+
+    // cleaning all tables
     await Challenge.destroy({ truncate: true, force: true });
     await Submission.destroy({ truncate: true, force: true });
     await User.destroy({ truncate: true, force: true });
     await Review.destroy({ truncate: true, force: true });
+
+    // inserting mock data
     const challengesRes = await Challenge.bulkCreate(challenges);
     expect(challengesRes.length).toBe(3);
     const submissionsRes = await Submission.bulkCreate(submissions);
@@ -62,7 +66,7 @@ describe("insights tests", () => {
 
   it('can get all submitions from the last 5 days', async () => {
     const { body } = await request(app).get("/api/v1/statistics/insights/sub-by-date").expect(200)
-    expect(body.length).toBe(3)
+    expect(body.length).toBe(4)
     expect(body[0].countByDay).toBe(2)
     expect(body[1].countByDay).toBe(1)
     expect(new Date(body[0].createdAt).getTime()).toBeGreaterThan(Date.now() - 432000000)

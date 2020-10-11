@@ -16,11 +16,15 @@ const usersTeams = require("./mocks/usersTeams");
 describe("insights tests", () => {
     beforeAll(async () => {
         console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+        
+        //cleaning all tables
         await Challenge.destroy({ truncate: true, force: true });
         await Submission.destroy({ truncate: true, force: true });
         await User.destroy({ truncate: true, force: true });
         await Teams.destroy({ truncate: true, force: true });
         await UsersTeams.destroy({ truncate: true, force: true });
+
+        //inserting mock data
         const challengesRes = await Challenge.bulkCreate(challenges);
         expect(challengesRes.length).toBe(3);
         const submissionsRes = await Submission.bulkCreate(submissions);
