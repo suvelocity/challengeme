@@ -83,4 +83,29 @@ describe("Client Tests", {
       "#challengesByTypeChart > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
     ).click();
   });
+
+  it("Checks users page charts", () => {
+    cy.server();
+
+    cy.route("**/unsolved-challenges", "fixture:usersFixtures/unsolvedChallenges.json").as("getUnsolvedChallenges");
+    cy.route("**/top-users", "fixture:usersFixtures/topUsers.json").as("getTopUsers");
+
+    cy.visit("http://localhost:3000/statistics/users");
+
+    cy.get("#topUsers > .chart > .chartjs-render-monitor");
+    cy.get(
+      "#topUsers > .MuiBottomNavigation-root > :nth-child(2) > .MuiBottomNavigationAction-wrapper"
+      ).click();
+    cy.get(
+      "#topUsers > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected"
+      ).click();
+    
+    cy.get("#TopUsers > .chart > .chartjs-render-monitor");
+    cy.get(
+      "#TopUsers > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected"
+      ).click();
+    cy.get(
+      "#TopUsers > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
+      ).click();
+  });
 });
