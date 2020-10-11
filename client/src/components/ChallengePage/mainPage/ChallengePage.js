@@ -107,12 +107,10 @@ function ChallengePage() {
               size="large"
             />
           </div>
-          <div className="challenge-github-btn">
-            <Button
-              color="primary"
-              href={`https://www.github.com/${challenge.repositoryName}`}
-            >
-              To Github!
+          <div className='challenge-github-btn'>
+            <Button color='primary' href={`https://github.com/suvelocity/${challenge.boilerPlate}`}>
+              Fork boiler plate
+
             </Button>
           </div>
         </div>
