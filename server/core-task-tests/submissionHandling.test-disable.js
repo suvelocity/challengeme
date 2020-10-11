@@ -4,7 +4,7 @@ const request = require('supertest');
 const app = require('../app');
 const ngrok = require('ngrok');
 const port = process.env.TEST_PORT || 4040;
-const {Submission, Challenge} = require('../models');
+const {Submission, Challenge, User} = require('../models');
 const {challengeArr, solutionRepos, failRepos} = require('./mockData');
 let server;
 let accessToken;
