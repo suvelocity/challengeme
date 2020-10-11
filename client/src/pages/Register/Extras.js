@@ -15,6 +15,8 @@ const useStyles = makeStyles((theme) => ({
         width: "320px",
     },
     github: {
+        // marginTop: "80px",
+        // marginBottom: "20px",
         width: "320px",
     },
 }));

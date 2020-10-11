@@ -15,14 +15,18 @@ const useStyles = makeStyles((theme) => ({
         width: "320px",
     },
     lastName: {
+        // marginTop: "80px",
         marginBottom: "10px",
         width: "320px",
     },
     userName: {
+        // marginTop: "80px",
         marginBottom: "10px",
         width: "320px",
     },
     email: {
+        // marginTop: "80px",
+        // marginBottom: "20px",
         width: "320px",
     },
 }));

@@ -20,10 +20,12 @@ const useStyles = makeStyles((theme) => ({
         width: "320px",
     },
     ForogotPasspassword: {
+        // marginTop: "60px",
         marginBottom: "10px",
         width: "320px",
     },
     ForogotPassconfirmPassword: {
+        // marginTop: "80px",
         marginBottom: "30px",
         width: "320px",
     },

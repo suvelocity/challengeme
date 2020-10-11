@@ -106,6 +106,10 @@ const useStyles = makeStyles((theme) => ({
         marginRight: theme.spacing(1),
     },
 
+    // instructions: {
+    //     marginTop: theme.spacing(1),
+    //     marginBottom: theme.spacing(1),
+    // },
 }));
 
 export default function CustomizedSteppers({ activeStep }) {
