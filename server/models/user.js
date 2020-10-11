@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Review, {
         foreignKey: 'challengeId'
       })
+      this.hasMany(models.RefreshToken, {
+        foreignKey: "userName",
+      });
     }
   }
   User.init(
@@ -37,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "User",
+      paranoid: true,
     }
   );
   return User;

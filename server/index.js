@@ -9,6 +9,7 @@ async function establishConnection(){
     process.env.MY_URL = url;
   }
   console.log(process.env.MY_URL);
+  
   app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`)
   })

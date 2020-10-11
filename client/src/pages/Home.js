@@ -20,6 +20,20 @@ export default function HomePage() {
 
 
 
+  const logOut = async () => {
+    try {
+      const { data: response } = await network.post('/api/v1/auth/logout', { token: Cookies.get("refreshToken") })
+      location.push('/login');
+      value.setLogged(false);
+      Cookies.remove("refreshToken")
+      Cookies.remove("accessToken")
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+
+
   return (
     <div >
       <div className ={darkMode?"dark-home-page":"light-home-page"}>
