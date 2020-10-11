@@ -15,7 +15,7 @@ module.exports = [
     updated_at: "2020-10-01 20:00:00"
   },
   {
-    name: 'JavaScript',
+    name: 'JS',
     created_at: "2020-10-01 20:00:00",
     updated_at: "2020-10-01 20:00:00"
   },
@@ -30,7 +30,7 @@ module.exports = [
     updated_at: "2020-10-01 20:00:00"
   },
   {
-    name: 'TypeScript',
+    name: 'TS',
     created_at: "2020-10-01 20:00:00",
     updated_at: "2020-10-01 20:00:00"
   },
@@ -50,22 +50,7 @@ module.exports = [
     updated_at: "2020-10-01 20:00:00"
   },
   {
-    name: 'Object-Oriented',
-    created_at: "2020-10-01 20:00:00",
-    updated_at: "2020-10-01 20:00:00"
-  },
-  {
-    name: 'Secure Coding',
-    created_at: "2020-10-01 20:00:00",
-    updated_at: "2020-10-01 20:00:00"
-  },
-  {
-    name: 'Git workflow',
-    created_at: "2020-10-01 20:00:00",
-    updated_at: "2020-10-01 20:00:00"
-  },
-  {
-    name: 'Package management',
+    name: 'XSS',
     created_at: "2020-10-01 20:00:00",
     updated_at: "2020-10-01 20:00:00"
   }
