@@ -34,7 +34,7 @@ router.get("/top-users", async (req, res) => {
 // returns the amount of successfull and failed submissions from all submissions
 router.get("/user-success", async (req, res) => {
   try{
-    let loggedUser = req.user.userId ? req.user.userId : 1
+    let loggedUser = req.user ? req.user.userId : 1
     const subBySuccess = await Submission.findAll({
       group: ["state"],
       attributes: [
@@ -46,7 +46,7 @@ router.get("/user-success", async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["id"],
+          attributes: ["id", "userName"],
         }
       ],
       where: {
@@ -62,7 +62,7 @@ router.get("/user-success", async (req, res) => {
 // returns the submissions per day from the last 5 days
 router.get("/sub-by-date", async (req, res) => {
   try{
-    let loggedUser = req.user.userId ? req.user.userId : 1
+    let loggedUser = req.user ? req.user.userId : 1
     const subByDate = await Submission.findAll({
       group: [sequelize.fn("DAY", sequelize.col("created_at"))],
       attributes: [

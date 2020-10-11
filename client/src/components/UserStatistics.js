@@ -85,7 +85,7 @@ function UserStatistics() {
           .get(`/api/v1/statistics/users/unsolved-challenges`)
           .then((r) => r.data)
           .then((r) => {
-            setUserUnsolvedChallenges(r[0]);
+            setUserUnsolvedChallenges(r);
             setLoading(false);
           });
         axios
@@ -183,7 +183,7 @@ function UserStatistics() {
             ],
             borderColor: "black",
             fill: false, // change the line chart
-            data: topUsers && [...topUsers.map(index => index.CountSuccessByUser), 0],
+            data: topUsers && [...topUsers.map(index => index.CountByUserID), 0],
           },
         ],
       };

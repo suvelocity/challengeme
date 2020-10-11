@@ -16,9 +16,9 @@ const useStyles = makeStyles((theme) => ({
     height: "inherit",
     width: "inherit",
     gridTemplate: `
-      'headChart headChart smallChart' 30vh 
-      'headChart headChart sideChart' 30vh
-      'leftChart rightChart sideChart' 30vh
+      'smallChart smallChart smallChart' 30vh 
+      'rightChart sideChart sideChart' 30vh
+      'leftChart sideChart sideChart' 30vh
       'byReview byReview perDay' 30vh
       'byReview byReview perDay' 30vh `,
   },
@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Insights() {
   const classes = useStyles();
-  const darkMode = React.useContext(ThemeApi).darkTheme
+  const darkMode = React.useContext(ThemeApi).darkTheme;
 
   const getInfo = () => {
     axios
@@ -66,7 +66,7 @@ function Insights() {
         setLoading(false);
       });
     axios
-      .get(`/api/v1/statistics/insights/challenges-category`)
+      .get(`/api/v1/statistics/insights/challenges-type`)
       .then((r) => r.data)
       .then((r) => {
         setChallengesType(r);
@@ -102,9 +102,9 @@ function Insights() {
       });
   };
 
-useEffect(() => {
-  getInfo()
-}, [])
+  useEffect(() => {
+    getInfo();
+  }, []);
 
   const [challengesTop, setChallengesTop] = useState(null);
   const [challengesSuccess, setChallengesSuccess] = useState(null);
@@ -112,37 +112,7 @@ useEffect(() => {
   const [subByDate, setSubByDate] = useState(null);
   const [challengeByReview, setChallengeByReview] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [numberOfChallenges , setNumOfChallenges] = useState(null);
-
-  const data = {
-    labels: ["January", "February", "March", "April", "May" , "June" , "July" , "August"], // array of values for x axis (strings)
-    title: "test", // title for the chart
-    rawData: [
-      //   {
-      //     label: 'data1',// name of the line (one or two words)
-      //     backgroundColor: 'red',//raw color
-      //     borderColor: 'red',//use the same as background color
-      //     fill: false, // change the line chart
-      //     data: [65, 59, 80, 81, 56], // array of values for Y axis (numbers)
-      //   },
-      {
-        label: "data1", // name of the line (one or two words)
-        backgroundColor:  [
-          "#e65a78",
-          "#6698e8",
-          "#6aa870",
-          "#9e8662",
-          "#b287c9",
-          "#787878",
-          "#afeddb",
-          "#f79628"], //raw color
-        borderColor: "green", //use the same as background color
-        fill: false, // change the line chart
-        data: [44, 50, 86, 61, 56 , 42 , 79 , 75 , 0], // array of values for Y axis (numbers)
-      },
-      // you can add as many object as you wand, each one will a different line with different color
-    ],
-  };
+  const [numberOfChallenges, setNumOfChallenges] = useState(null);
 
   const topChallengesData = {
     labels: challengesTop && challengesTop.map((e) => e.Challenge.name), // array of values for x axis (strings)
@@ -158,7 +128,7 @@ useEffect(() => {
           "#b287c9",
           "#787878",
           "#afeddb",
-          "#f79628"
+          "#f79628",
         ],
         borderColor: "black",
         fill: false,
@@ -167,7 +137,9 @@ useEffect(() => {
     ],
   };
   const topChallengeByReview = {
-    labels: challengeByReview && challengeByReview.map((challenge) => challenge.Challenge.name), // array of values for x axis (strings)
+    labels:
+      challengeByReview &&
+      challengeByReview.map((challenge) => challenge.Challenge.name), // array of values for x axis (strings)
     title: "Top Challenges (by review)",
     rawData: [
       {
@@ -180,17 +152,20 @@ useEffect(() => {
           "#b287c9",
           "#787878",
           "#afeddb",
-          "#f79628"
+          "#f79628",
         ],
         borderColor: "black",
         fill: false,
-        data: challengeByReview && [...challengeByReview.map((challenge) => challenge.ratingAVG), 0], // array of values for Y axis (numbers)
+        data: challengeByReview && [
+          ...challengeByReview.map((challenge) => challenge.ratingAVG),
+          0,
+        ], // array of values for Y axis (numbers)
       },
     ],
   };
 
   const challengesTypeData = {
-    labels: challengesType && challengesType.map((e) => e.category), // array of values for x axis (strings)
+    labels: challengesType && challengesType.map((e) => e.type), // array of values for x axis (strings)
     title: "Challenges by Type",
     rawData: [
       {
@@ -203,11 +178,11 @@ useEffect(() => {
           "#b287c9",
           "#787878",
           "#afeddb",
-          "#f79628"
+          "#f79628",
         ],
         borderColor: "black",
         fill: false,
-        data: challengesType && [...challengesType.map((e) => e.countCategory), 0], // array of values for Y axis (numbers)
+        data: challengesType && [...challengesType.map((e) => e.countType), 0], // array of values for Y axis (numbers)
       },
     ],
   };
@@ -226,7 +201,7 @@ useEffect(() => {
           "#b287c9",
           "#787878",
           "#afeddb",
-          "#f79628"
+          "#f79628",
         ],
         borderColor: "black",
         fill: false,
@@ -252,18 +227,14 @@ useEffect(() => {
           "#b287c9",
           "#787878",
           "#afeddb",
-          "#f79628"
+          "#f79628",
         ],
         borderColor: "black",
         fill: false,
-        data: subByDate && [
-          ...subByDate.map((e) => e.countByDay),
-          0,
-        ], // array of values for Y axis (numbers)
+        data: subByDate && [...subByDate.map((e) => e.countByDay), 0], // array of values for Y axis (numbers)
       },
     ],
   };
-
 
   return (
     <div className={classes.main}>
@@ -273,17 +244,17 @@ useEffect(() => {
             <CircularProgress />
           </div>
         ) : (
-          <div className={darkMode ? classes.divDark : classes.divLight} style={{ gridArea: "headChart" }}>
-            <Charts width={"36vw"} height={"36vh"} chart={[0, 1 , 2]} data={data} />
-          </div>
-        )}
-        {loading ? (
-          <div className={classes.root}>
-            <CircularProgress />
-          </div>
-        ) : (
-          <div className={darkMode ? classes.divDark : classes.divLight} style={{ gridArea: "byReview" }}>
-            <Charts name="topByReview" width={"36vw"} height={"36vh"} chart={[0, 2]} data={topChallengeByReview} />
+          <div
+            className={darkMode ? classes.divDark : classes.divLight}
+            style={{ gridArea: "byReview" }}
+          >
+            <Charts
+              name="topByReview"
+              width={"36vw"}
+              height={"36vh"}
+              chart={[0, 2]}
+              data={topChallengeByReview}
+            />
           </div>
         )}
         {loading ? (
@@ -312,7 +283,7 @@ useEffect(() => {
             style={{ gridArea: "sideChart" }}
           >
             <Charts
-            name="challengesByTypeChart"
+              name="challengesByTypeChart"
               width={"38vw"}
               height={"38vh"}
               chart={[0, 2]}
@@ -331,7 +302,7 @@ useEffect(() => {
             style={{ gridArea: "leftChart" }}
           >
             <Charts
-            name="challengesMostSubChart"
+              name="challengesMostSubChart"
               width={"17vw"}
               height={"13vw"}
               chart={[2]}
@@ -350,7 +321,7 @@ useEffect(() => {
             style={{ gridArea: "rightChart" }}
           >
             <Charts
-            name="challengesMostSuccessChart"
+              name="challengesMostSuccessChart"
               width={"13vw"}
               height={"16vh"}
               chart={[2]}
@@ -369,10 +340,10 @@ useEffect(() => {
             style={{ gridArea: "perDay" }}
           >
             <Charts
-            name="subByDate"
+              name="subByDate"
               width={"36vw"}
               height={"36vh"}
-              chart={[0,2]}
+              chart={[0, 2]}
               data={subByDateData}
             />
           </div>
