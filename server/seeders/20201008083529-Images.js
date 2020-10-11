@@ -1,5 +1,5 @@
 'use strict';
-const images = require('./seedFiles/images');
+const images = require('../_tests_/mocks/images');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {

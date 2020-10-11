@@ -23,7 +23,7 @@ export default function ChallengeCard({
   repositoryName,
   challengeId,
 }) {
-  // const darkMode = React.useContext(ThemeApi).darkTheme
+  const darkMode = React.useContext(ThemeApi).darkTheme
   const [coverImg,setCoverImg] = useState("")
   const [date,setDate] = useState(null)
 
@@ -39,8 +39,7 @@ export default function ChallengeCard({
   })
 
   return (
-    // <motion.div className={darkMode?"dark-challenge-card":"light-challenge-card"}
-    <motion.div className={"dark-challenge-card"}
+    <motion.div className={darkMode?"dark-challenge-card":"light-challenge-card"}
     initial={{scale:0.03}}
     animate={{ scale: 1 }}
     transition={{default: { duration: 1.2 }}}
@@ -66,8 +65,7 @@ export default function ChallengeCard({
         </div>
         <Rating readOnly name="disabled" value={4}  />
       </div>
-      {/* <div className={darkMode?"challenge-card-description-homepage":"challenge-card-description-homepage-light"}> */}
-      <div className={"challenge-card-description-homepage"}>
+      <div className={darkMode?"challenge-card-description-homepage":"challenge-card-description-homepage-light"}>
         {/* description.slice(0,100) */}
         word-wrap: break-word ssssssssssssssssssssssssssssshas been replaced with overflow-wrap: brsseask-wo      
         </div>

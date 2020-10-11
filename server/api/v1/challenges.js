@@ -6,7 +6,7 @@ const Op = Sequelize.Op;
 
 const { Submission, Challenge, Label, labels_to_challenge } = require('../../models');
 
-const router = Router();
+const challengeRouter = Router();
 
 router.get('/',filterResults, async (req, res) => {
   const {condition,labels} = req
@@ -40,7 +40,7 @@ router.get('/labels', async (req, res) => {
   res.json(allLabels.map(({id,name})=>{return{label:name,value:id}}))
 })
 
-router.get("/:challengeId", async (req, res) => {
+challengeRouter.get("/:challengeId", async (req, res) => {
 	try {
 		let challenge = await Challenge.findOne({
 			where: { id: req.params.challengeId },
@@ -60,7 +60,7 @@ router.get("/:challengeId", async (req, res) => {
 	}
 });
 
-router.get("/labels", async (req, res) => {
+challengeRouter.get("/labels", async (req, res) => {
 	try {
 		const allLabels = await Label.findAll();
 		res.json(
@@ -73,7 +73,7 @@ router.get("/labels", async (req, res) => {
 	}
 });
 
-router.get("/:challengeId/submissions", async (req, res) => {
+challengeRouter.get("/:challengeId/submissions", async (req, res) => {
 	try {
 		const { challengeId } = req.params;
 		const allSubmission = await Submission.findAll({ where: { challengeId } });
@@ -83,38 +83,28 @@ router.get("/:challengeId/submissions", async (req, res) => {
 	}
 });
 
-router.post("/:challengeId/apply", async (req, res) => {
-	const challengeId = req.params.challengeId;
-	const { commentContent, commentTitle, rating, userId } = req.body;
-	const solutionRepository = req.body.repository;
-	// adding review
-	await Review.create({
-		userId,
-		challengeId,
-		title: commentTitle,
-		content: commentContent,
-		rating
-	});
-	const challenge = await Challenge.findByPk(challengeId);
-	let submission = await Submission.findOne({
-		where: {
-			solutionRepository
-		}
-	});
-	if (!submission) {
-		submission = await Submission.create({
-			challengeId,
-			userId: req.body.userId,
-			state: "PENDING",
-			solutionRepository
-		});
-	} else if (submission.state === "PENDING") {
-		return res.json({ error: "already exist" });
-	}
-
-	if (submission.state === "SUCCESS") {
-		return res.json({ error: "already success" });
-	}
+  if(submission.state === 'FAIL') {
+    await submission.update({ state: 'PENDING' })
+  }
+/* ,
+        webhook:'https://api.ngrok.com' */
+  try {
+    const urltoSet = process.env.MY_URL.concat(`/api/v1/webhook/submission/${submission.id}`);
+    //console.log(urltoSet);
+    const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
+      ref: 'master',
+      inputs: {
+        //name: `${solutionRepository}-Submission${submission.id}`,
+        testRepo: challenge.repositoryName,
+        solutionRepo: solutionRepository,
+        webhookUrl: urltoSet
+      }
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
+      }
+    }) 
 
 	if (submission.state !== "FAIL") {
 		await submission.update({ state: "PENDING" });
@@ -146,4 +136,4 @@ router.post("/:challengeId/apply", async (req, res) => {
 	}
 });
 
-module.exports = router;
+module.exports = challengeRouter;

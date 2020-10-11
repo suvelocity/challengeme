@@ -7,10 +7,9 @@ import Cookies from "js-cookie";
 import { useHistory } from 'react-router-dom';
 import { Logged } from '../context/LoggedInContext';
 
-
 export default function HomePage() {
   const [challenges, setChallenges] = useState([]);
-  // const darkMode = React.useContext(ThemeApi).darkTheme
+  const darkMode = React.useContext(ThemeApi).darkTheme
 
   const [challengeToApply, setChallengeToApply] = useState();
   const [expandedChallenge, setExpandedChallenge] = useState();
@@ -43,8 +42,7 @@ export default function HomePage() {
 
   return (
     <div >
-      {/* <div className ={darkMode?"dark-home-page":"light-home-page"}> */}
-      <div className ={"light-home-page"}>
+      <div className ={darkMode?"dark-home-page":"light-home-page"}>
       {challenges.map((challenge) => (
         <ChallengeCard
           key={challenge.id}

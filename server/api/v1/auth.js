@@ -5,23 +5,33 @@ const { User, RefreshToken } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const checkToken = require('../../helpers/checkToken');
+<<<<<<< HEAD
 const { loginValidation, registerValidation, tokenValidation, pwdUpdateValidation, answerValidation, userValidation } = require('../../helpers/validator');
+=======
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
 const mailer = require('../../helpers/communicator');
 
 // Register 
 usersRouter.post("/register", async (req, res) => {
+<<<<<<< HEAD
   //Joi validation
   const { error } = registerValidation(req.body);
   if (error) {
     return res.status(400).json({ success: false, message: "Don't mess with me" })
   }
+=======
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
   // if user name already exist return error
   const checkUser = await userIsExist(req.body.userName);
 
   if (checkUser) return res.status(409).send("user name already exists");
+<<<<<<< HEAD
 
   const hashPassword = await bcrypt.hash(req.body.password, 10);
   const hashsecurityAnswer = await bcrypt.hash(req.body.securityAnswer, 10);
+=======
+  const hashPassword = await bcrypt.hash(req.body.password, 10);
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
   const newUser = {
     userName: req.body.userName,
     firstName: req.body.firstName,
@@ -35,8 +45,15 @@ usersRouter.post("/register", async (req, res) => {
     githubAccount: req.body.githubAccount,
     reasonOfRegistration: req.body.reasonOfRegistration,
     securityQuestion: req.body.securityQuestion,
+<<<<<<< HEAD
     securityAnswer: hashsecurityAnswer,
   };
+=======
+    securityAnswer: req.body.securityAnswer,
+  };
+  // send validation mail
+  // await User.create(newUser);
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
   const mailedToken = jwt.sign(newUser, process.env.EMAIL_TOKEN_SECRET)
   mailer.sendHTMLMail(req.body.email, "Validate your E-mail", `<p>
   Conregulation Challenger, and welcome! You are now offically a part of challenge me
@@ -56,6 +73,7 @@ usersRouter.post("/register", async (req, res) => {
 });
 
 // Create User
+<<<<<<< HEAD
 usersRouter.post('/createuser', (req, res) => {
   const { error } = tokenValidation(req.body);
   if (error) {
@@ -71,27 +89,41 @@ usersRouter.post('/createuser', (req, res) => {
     await User.create(decoded);
     res.status(201).json({ message: "Register Success" });
   });
+=======
+usersRouter.post('/createuser', async (req, res) => {
+  const newUser = jwt.decode(req.body.token, process.env.EMAIL_TOKEN_SECRET);
+  delete newUser.iat;
+  await User.create(newUser);
+  res.status(201).json({ message: "Register Success" });
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
 })
 
 // Check if user exist
 usersRouter.post("/userexist", async (req, res) => {
+<<<<<<< HEAD
   //User Validation
   const { error } = userValidation(req.body);
   if (error) {
     return res.status(400).json({ success: false, message: "Don't mess with me" })
   }
+=======
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
   const currentUser = await userIsExist(req.body.userName);
   if (currentUser) return res.status(409).json({ message: "user name already exists" });
   res.json({ notExist: true });
 });
 
+<<<<<<< HEAD
 // Validate Token
+=======
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
 usersRouter.get("/validateToken", checkToken, (req, res) => {
   res.json({ valid: true })
 })
 
 // Log In
 usersRouter.post("/login", async (req, res) => {
+<<<<<<< HEAD
   //Joi Validation
   const { error } = loginValidation(req.body);
   if (error) {
@@ -100,6 +132,11 @@ usersRouter.post("/login", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser)
     return res.status(403).json({ message: "User or Password are incorrect" });
+=======
+  const currentUser = await userIsExist(req.body.userName);
+  if (!currentUser)
+    return res.status(404).json({ message: "User or Password incorrect" });
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
   const validPass = await bcrypt.compare(
     req.body.password,
     currentUser.password
@@ -111,6 +148,7 @@ usersRouter.post("/login", async (req, res) => {
     expiresIn: expired
   });
   const accessToken = generateToken(currentUser);
+<<<<<<< HEAD
   const isTokenExist = await RefreshToken.findOne({
     where: {
       userName: currentUser.userName
@@ -131,16 +169,34 @@ usersRouter.post("/login", async (req, res) => {
   res.cookie('accessToken', accessToken)
   res.cookie('refreshToken', refreshToken)
   res.json({ userDetails: currentUser });
+=======
+  await RefreshToken.create({
+    userName: currentUser.userName,
+    token: refreshToken,
+  });
+  const body = {
+    accessToken: accessToken,
+    refreshToken: refreshToken,
+    userDetails: currentUser,
+  };
+  res.json(body);
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
 });
 
 //Get new access token
 usersRouter.post("/token", async (req, res) => {
+<<<<<<< HEAD
   //Joi Validation
   const { error } = tokenValidation(req.body);
   if (error) {
     return res.status(400).json({ success: false, message: "Refresh Token Required" })
   }
   const refreshToken = req.body.token;
+=======
+  const refreshToken = req.body.token;
+  if (!refreshToken)
+    return res.status(401).json({ message: "Refresh Token Required" });
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
   const validRefreshToken = await RefreshToken.findOne({
     where: {
       token: refreshToken,
@@ -153,25 +209,35 @@ usersRouter.post("/token", async (req, res) => {
     delete decoded.iat;
     delete decoded.exp;
     const accessToken = generateToken(decoded);
+<<<<<<< HEAD
     res.cookie('accessToken', accessToken)
     res.json({ message: 'token updated' });
+=======
+    res.json({ token: accessToken });
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
   });
 });
 
 // Logout request
 usersRouter.post("/logout", async (req, res) => {
+<<<<<<< HEAD
   //Joi Validation
   const { error } = tokenValidation(req.body);
   if (error) {
     return res.status(400).json({ success: false, message: "Refresh Token Required" })
   }
   if (!req.body.token) return res.status(400).json({ message: "Refresh Token Required" });
+=======
+  if (!req.body.token)
+    return res.status(400).json({ message: "Refresh Token Required" });
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
   // check if token exist and delete it
   const result = await RefreshToken.destroy({
     where: {
       token: req.body.token,
     },
   });
+<<<<<<< HEAD
   if (!result) return res.status(400).json({ message: "Refresh Token is required" });
   res.json({ message: "User Logged Out Successfully" });
 });
@@ -184,11 +250,29 @@ usersRouter.post("/getquestion", async (req, res) => {
   }
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser) return res.json({ securityQuestion: "What is the name, breed, and color of your favorite pet?" });
+=======
+
+  if (!result)
+    return res.status(400).json({ message: "Refresh Token is required" });
+  res.json({ message: "User Logged Out Successfully" });
+});
+
+// validate token
+usersRouter.post("/info", checkToken, (req, res) => {
+  res.json({ message: "success get sensitive info" });
+});
+
+// Geting Sequrity Question
+usersRouter.post("/getquestion", async (req, res) => {
+  const currentUser = await userIsExist(req.body.userName);
+  if (!currentUser) return res.status(404).json({ message: "Cannot Find User" });
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
   res.json({ securityQuestion: currentUser.securityQuestion });
 });
 
 // Validate Answer
 usersRouter.post("/validateanswer", async (req, res) => {
+<<<<<<< HEAD
   //Joi Validation
   const { error } = answerValidation(req.body);
   if (error) {
@@ -196,6 +280,11 @@ usersRouter.post("/validateanswer", async (req, res) => {
   }
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser) return res.status(403).json({ message: "Wrong Answer" });
+=======
+  const currentUser = await userIsExist(req.body.userName);
+  if (!currentUser)
+    return res.status(404).json({ message: "Cannot Find User" });
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
   const validAnswer = await bcrypt.compare(
     req.body.securityAnswer,
     currentUser.securityAnswer
@@ -207,6 +296,7 @@ usersRouter.post("/validateanswer", async (req, res) => {
 
 // Password Update
 usersRouter.patch("/passwordupdate", async (req, res) => {
+<<<<<<< HEAD
   //Joi Valodation 
   const { error } = pwdUpdateValidation(req.body);
   if (error) {
@@ -214,6 +304,10 @@ usersRouter.patch("/passwordupdate", async (req, res) => {
   }
   const resetToken = req.body.resetToken;
   // if (!resetToken) return res.status(400).json({ message: "Reset Token Required" });
+=======
+  const resetToken = req.body.resetToken;
+  if (!resetToken) return res.status(400).json({ message: "Reset Token Required" });
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
   jwt.verify(resetToken, process.env.RESET_PASSWORD_TOKEN, async (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Token" });
     const hashPassword = await bcrypt.hash(req.body.password, 10);
@@ -235,12 +329,22 @@ async function userIsExist(userName) {
   if (user) {
     return user.dataValues;
   } else {
+<<<<<<< HEAD
     return false;
   }
 }
 
 function generateToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "900s" });
+=======
+    return user
+  }
+
+}
+
+function generateToken(user) {
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
+>>>>>>> efee03b44676d9f16fa62e476ae1a5991f86cae3
 }
 
 module.exports = usersRouter;
