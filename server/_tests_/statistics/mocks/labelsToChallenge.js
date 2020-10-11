@@ -1,62 +1,62 @@
 module.exports = [
     {
-        challenge_id: 1,
-        label_id: 1,
-        created_at: "2020-10-01 20:00:00",
-        updated_at: "2020-10-01 20:00:00"
+        challengeId: 1,
+        labelId: 1,
+        createdAt: "2020-10-01 20:00:00",
+        updatedAt: "2020-10-01 20:00:00"
     },
     {
-        challenge_id: 1,
-        label_id: 2,
-        created_at: "2020-10-01 20:00:00",
-        updated_at: "2020-10-01 20:00:00"
+        challengeId: 1,
+        labelId: 2,
+        createdAt: "2020-10-01 20:00:00",
+        updatedAt: "2020-10-01 20:00:00"
     },
     {
-        challenge_id: 1,
-        label_id: 3,
-        created_at: "2020-10-01 20:00:00",
-        updated_at: "2020-10-01 20:00:00"
+        challengeId: 1,
+        labelId: 3,
+        createdAt: "2020-10-01 20:00:00",
+        updatedAt: "2020-10-01 20:00:00"
     },
     {
-        challenge_id: 2,
-        label_id: 1,
-        created_at: "2020-10-01 20:00:00",
-        updated_at: "2020-10-01 20:00:00"
+        challengeId: 2,
+        labelId: 1,
+        createdAt: "2020-10-01 20:00:00",
+        updatedAt: "2020-10-01 20:00:00"
     },
     {
-        challenge_id: 2,
-        label_id: 4,
-        created_at: "2020-10-01 20:00:00",
-        updated_at: "2020-10-01 20:00:00"
+        challengeId: 2,
+        labelId: 4,
+        createdAt: "2020-10-01 20:00:00",
+        updatedAt: "2020-10-01 20:00:00"
     },
     {
-        challenge_id: 2,
-        label_id: 5,
-        created_at: "2020-10-01 20:00:00",
-        updated_at: "2020-10-01 20:00:00"
+        challengeId: 2,
+        labelId: 5,
+        createdAt: "2020-10-01 20:00:00",
+        updatedAt: "2020-10-01 20:00:00"
     },
     {
-        challenge_id: 3,
-        label_id: 5,
-        created_at: "2020-10-01 20:00:00",
-        updated_at: "2020-10-01 20:00:00"
+        challengeId: 3,
+        labelId: 5,
+        createdAt: "2020-10-01 20:00:00",
+        updatedAt: "2020-10-01 20:00:00"
     },
     {
-        challenge_id: 3,
-        label_id: 6,
-        created_at: "2020-10-01 20:00:00",
-        updated_at: "2020-10-01 20:00:00"
+        challengeId: 3,
+        labelId: 6,
+        createdAt: "2020-10-01 20:00:00",
+        updatedAt: "2020-10-01 20:00:00"
     },
     {
-        challenge_id: 3,
-        label_id: 7,
-        created_at: "2020-10-01 20:00:00",
-        updated_at: "2020-10-01 20:00:00"
+        challengeId: 3,
+        labelId: 7,
+        createdAt: "2020-10-01 20:00:00",
+        updatedAt: "2020-10-01 20:00:00"
     },
     {
-        challenge_id: 3,
-        label_id: 8,
-        created_at: "2020-10-01 20:00:00",
-        updated_at: "2020-10-01 20:00:00"
+        challengeId: 3,
+        labelId: 8,
+        createdAt: "2020-10-01 20:00:00",
+        updatedAt: "2020-10-01 20:00:00"
     }
   ]
