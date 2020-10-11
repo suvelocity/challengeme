@@ -171,7 +171,7 @@ function StatisticsHome() {
     const { data: usersInfo } = await axios.get('/api/v1/statistics/users/top-users');
     setTopUsersData(usersInfo)
     setLoading(false);
-    // console.log(usersInfo[0].User.userName)
+    
   };
   
   return (
