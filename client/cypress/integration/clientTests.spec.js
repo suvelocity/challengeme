@@ -1,9 +1,7 @@
-describe("Client Tests", {
-  // retries: {
-  //   runMode: 3,
-  //   openMode: 2
-  // }
-}, () => {
+describe("Client Tests", () => {
+  before(() => {
+    cy.login()
+  })
   it("can get challenges", () => {
     cy.server();
     cy.route("**/api/v1/challenges", "fixture:homeFixtures/challenges");
