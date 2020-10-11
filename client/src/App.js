@@ -1,12 +1,9 @@
-import React from 'react';
-import './App.css';
-import Router from './pages';
-import Charts from './components/charts/Charts';
+import React from "react";
+import "./App.css";
+import Router from "./pages/Router";
 
 function App() {
-  return (
-      <Router />
-  );
+	return <Router />;
 }
 
 export default App;

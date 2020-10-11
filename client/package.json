@@ -24,6 +24,7 @@
     "react-chartjs-2": "^2.10.0",
     "react-dark-mode-toggle": "0.0.10",
     "react-dom": "^16.13.1",
+    "react-hook-form": "^6.9.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "sweetalert2": "^10.3.5",
@@ -33,7 +34,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "node_modules/.bin/jest",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"
