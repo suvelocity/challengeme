@@ -39,7 +39,7 @@ const routesIcons = [
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    position: 'relative',
+    position: 'fixed',
     marginTop: "3.4rem"
   },
   appBar: {
