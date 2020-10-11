@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
+function SubmitModal({ isOpen, handleClose, challengeParamId }) {
 	/* eslint-disable no-unused-vars */
 	const { register, handleSubmit, errors } = useForm();
 	/* eslint-enable no-unused-vars */
@@ -39,7 +39,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 		// VIEW SUBMITTED SUCCESSFULLY/FAILED TO SUBMITT MESSAGE and close modal
 		const formData = {
 			...data,
-			userId
+			userId: Cookies.get("userId")
 		};
 		try {
 			const res = await network.post(
