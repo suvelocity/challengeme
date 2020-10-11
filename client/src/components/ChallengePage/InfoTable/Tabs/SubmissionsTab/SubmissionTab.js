@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import network from "../../../../../services/network";
 import Submission from "./Submission";
+import Cookies from "js-cookie";
 
 // TODO: get the userName from the coockies and allow him to see his own submissions
-const loggeUserId = 2;
+const loggedUserId  = Cookies.get('userId');
 
 function SubmissionTab({ challengeId }) {
   const [submissions, setSubmissions] = useState([]);
