@@ -100,7 +100,6 @@ function UserStatistics() {
           .get(`/api/v1/statistics/users/sub-by-category`)
           .then((r) => r.data)
           .then((r) => {
-            console.log(r);
             setUserSubByType(r);
             setLoading(false);
           });
@@ -108,7 +107,6 @@ function UserStatistics() {
           .get(`/api/v1/statistics/users/sub-by-date`)
           .then((r) => r.data)
           .then((r) => {
-            console.log(r);
             setUserSubByDate(r[0]);
             setLoading(false);
           });
