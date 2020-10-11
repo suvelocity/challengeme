@@ -2,23 +2,25 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Charts from "./charts/Charts";
 import axios from 'axios';
+import './statistics.css'
 
 const useStyles = makeStyles((theme) => ({
     grid: {
+      marginTop: "3.6rem",
       display: "grid",
       gridGap: "20px",
       textAlign: "center",
       alignContent: "center",
       justifyContent: "center",
-      backgroundColor: "lightblue",
       padding: "10px",
-      height: "inherit",
+      height: "auto",
       width: "inherit",
       gridTemplate: `
         'headChart headChart' 300px 
         'topChart bottomChart' 300px `,
     },
     div: {
+      height: "auto",
       textAlign: "center",
       alignContent: "center",
       padding: "20px",
@@ -28,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "6px 6px 12px black",
     },
     main: {
+      height: "auto",
       display: "grid",
       padding: "10px",
       alignContent: "center",
@@ -83,8 +86,9 @@ function UserStatistics() {
           style={{ gridArea: "headChart", ...imageStyle }}
         >
           <Charts
+          name="topUsers"
             width={"600px"}
-            height={"2000px"}
+            height={"200px"}
             chart={[0, 2]}
             data={userData}
           />
@@ -94,6 +98,7 @@ function UserStatistics() {
           style={{ gridArea: "topChart", ...imageStyle }}
         >
           <Charts
+          name="subByDate"
             width={"450px"}
             height={"70px"}
             chart={[0, 2]}
@@ -105,6 +110,7 @@ function UserStatistics() {
           style={{ gridArea: "bottomChart", ...imageStyle }}
         >
           <Charts
+          name="topBySuccess"
             width={"450px"}
             height={"70px"}
             chart={[0, 1]}
