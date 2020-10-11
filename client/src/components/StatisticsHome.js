@@ -60,50 +60,6 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const teamData = {
-  labels: ["January", "February", "March", "April", "May"], // array of values for x axis (strings)
-  title: "Top Teams", // title for the chart
-  rawData: [
-    {
-      label: "Team1", // name of the line (one or two words)
-      backgroundColor: "red", //raw color
-      borderColor: "red", //use the same as background color
-      fill: false, // change the line chart
-      data: [2, 5, 10, 17, 25], // array of values for Y axis (numbers)
-    },
-    {
-      label: "Team2", // name of the line (one or two words)
-      backgroundColor: "green", //raw color
-      borderColor: "green", //use the same as background color
-      fill: false, // change the line chart
-      data: [5, 8, 15, 25, 31], // array of values for Y axis (numbers)
-    },
-    {
-      label: "Team3", // name of the line (one or two words)
-      backgroundColor: "blue", //raw color
-      borderColor: "blue", //use the same as background color
-      fill: false, // change the line chart
-      data: [3, 9, 14, 22, 29], // array of values for Y axis (numbers)
-    },
-    {
-      label: "Team4", // name of the line (one or two words)
-      backgroundColor: "yellow", //raw color
-      borderColor: "yellow", //use the same as background color
-      fill: false, // change the line chart
-      data: [1, 6, 7, 11, 13], // array of values for Y axis (numbers)
-    },
-    {
-      label: "Team5", // name of the line (one or two words)
-      backgroundColor: "black", //raw color
-      borderColor: "black", //use the same as background color
-      fill: false, // change the line chart
-      data: [1, 5, 10, 16, 22], // array of values for Y axis (numbers)
-    },
-    // you can add as many object as you wand, each one will a different line with different color
-  ],
-};
-
-
 function StatisticsHome() {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
