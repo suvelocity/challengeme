@@ -191,8 +191,8 @@ export default function Login() {
                                                 {showPassword ? (
                                                     <Visibility />
                                                 ) : (
-                                                    <VisibilityOff />
-                                                )}
+                                                        <VisibilityOff />
+                                                    )}
                                             </IconButton>
                                             <LockIcon
                                                 style={{ opacity: "0.7" }}
@@ -219,34 +219,35 @@ export default function Login() {
                             {(error.userName ||
                                 error.password ||
                                 error.msg) && (
-                                <div className="containerError">
-                                    <ErrorIcon
-                                        style={{
-                                            color: "white",
-                                            marginLeft: "4px",
-                                        }}
-                                    />
-                                    <div className="errorInput">
-                                        {error.userName ||
-                                            error.password ||
-                                            error.msg}
+                                    <div className="containerError">
+                                        <ErrorIcon
+                                            style={{
+                                                color: "white",
+                                                marginLeft: "4px",
+                                            }}
+                                        />
+                                        <div className="errorInput">
+                                            {error.userName ||
+                                                error.password ||
+                                                error.msg}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
                             <Button
                                 type="submit"
                                 id="loginButton"
                                 className={classes.loginButton}
                             >
                                 Log in
-                            </Button>
+                        </Button>
                             <div>
-                                <span>don't have an account yet?</span>
+                                <span>don't have an account yet? {" "}</span>
                                 <Link to="/register" id="signUp">
-                                    {" "}
                                     Sign up
-                                </Link>
+                            </Link>
+
                             </div>
+                        )
                         </div>
                     </form>
                 </div>

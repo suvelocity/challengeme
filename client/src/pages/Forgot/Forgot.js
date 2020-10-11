@@ -87,7 +87,7 @@ export default function Forgot() {
             userName.length > 32 ||
             /\W/.test(userName)
         ) {
-            setError("Please enter a valid username ");
+            setError("Please enter a valid username");
             return;
         }
         try {
@@ -218,6 +218,7 @@ export default function Forgot() {
                 )}
                 <div className="containerButtonsForgotPass">
                     <Button
+                        id='nextButton'
                         className={classes.nextButtonForgotPass}
                         variant="contained"
                         color="primary"

@@ -31,7 +31,7 @@ export default function Identify(props) {
       <FormControl className={classes.userNameForgotPass}>
                 <InputLabel style={{ color: "grey" }}>User Name</InputLabel>
                 <Input
-                    id="firstName"
+                    id="userName"
                     type="text"
                     value={data.userName}
                     required
