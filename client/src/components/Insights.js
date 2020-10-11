@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Charts from "./charts/Charts";
 import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import ThemeApi from "../services/Theme";
 
 const useStyles = makeStyles((theme) => ({
   grid: {
@@ -21,13 +22,21 @@ const useStyles = makeStyles((theme) => ({
       'byReview byReview perDay' 30vh
       'byReview byReview perDay' 30vh `,
   },
-  div: {
+  divLight: {
     textAlign: "center",
     alignContent: "center",
     padding: "20px",
     fontWeight: "bold",
     backgroundImage: "radial-gradient(circle, #9C8249, #F5D690)",
     boxShadow: "15px 15px 0px #AD8C40",
+  },
+  divDark: {
+    textAlign: "center",
+    alignContent: "center",
+    padding: "20px",
+    fontWeight: "bold",
+    backgroundImage: "radial-gradient(circle, #DCE5E8, #53676E)",
+    boxShadow: "15px 15px 0px #696969",
   },
   main: {
     marginTop: "4rem",
@@ -46,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Insights() {
   const classes = useStyles();
+  const darkMode = React.useContext(ThemeApi).darkTheme
 
   const getInfo = () => {
     axios
@@ -247,7 +257,7 @@ useEffect(() => {
             <CircularProgress />
           </div>
         ) : (
-          <div className={classes.div} style={{ gridArea: "headChart" }}>
+          <div className={darkMode ? classes.divDark : classes.divLight} style={{ gridArea: "headChart" }}>
             <Charts width={"36vw"} height={"36vh"} chart={[0, 1]} data={data} />
           </div>
         )}
@@ -256,7 +266,7 @@ useEffect(() => {
             <CircularProgress />
           </div>
         ) : (
-          <div className={classes.div} style={{ gridArea: "byReview" }}>
+          <div className={darkMode ? classes.divDark : classes.divLight} style={{ gridArea: "byReview" }}>
             <Charts name="topByReview" width={"36vw"} height={"36vh"} chart={[0, 2]} data={topChallengeByReview} />
           </div>
         )}
@@ -267,7 +277,7 @@ useEffect(() => {
         ) : (
           <div
             id="SubmissionTotalChart"
-            className={classes.div}
+            className={darkMode ? classes.divDark : classes.divLight}
             style={{ gridArea: "smallChart" }}
           >
             total submition number
@@ -282,7 +292,7 @@ useEffect(() => {
         ) : (
           <div
             id="challengesByTypeChart"
-            className={classes.div}
+            className={darkMode ? classes.divDark : classes.divLight}
             style={{ gridArea: "sideChart" }}
           >
             <Charts
@@ -301,7 +311,7 @@ useEffect(() => {
         ) : (
           <div
             id="challengesMostSubChart"
-            className={classes.div}
+            className={darkMode ? classes.divDark : classes.divLight}
             style={{ gridArea: "leftChart" }}
           >
             <Charts
@@ -320,7 +330,7 @@ useEffect(() => {
         ) : (
           <div
             id="challengesMostSuccessChart"
-            className={classes.div}
+            className={darkMode ? classes.divDark : classes.divLight}
             style={{ gridArea: "rightChart" }}
           >
             <Charts
@@ -339,7 +349,7 @@ useEffect(() => {
         ) : (
           <div
             id="subByDate"
-            className={classes.div}
+            className={darkMode ? classes.divDark : classes.divLight}
             style={{ gridArea: "perDay" }}
           >
             <Charts
