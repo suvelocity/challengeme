@@ -4,7 +4,7 @@ const { Router } = require("express");
 const router = Router();
 const sequelize = require("sequelize");
 const { Submission, Challenge, User } = require("../../../models");
-const { Op, where } = require("sequelize");
+const { Op } = require("sequelize");
 
 router.get("/top-users", async (req, res) => {
   const topUsers = await Submission.findAll({
@@ -25,19 +25,19 @@ router.get("/top-users", async (req, res) => {
 
 
 router.get("/user-success", async (req, res) => {
-  let loggedUser = req.user.userId ? req.user.userId : 1
+  let loggedUser = req.user ? req.user.userId : 1
   const subBySuccess = await Submission.findAll({
     group: ["state"],
     attributes: [
       "id",
       "state",
       "createdAt",
-      [sequelize.fn("COUNT", sequelize.col("user_id")), "CountByUserID"]
+      [sequelize.fn("COUNT", sequelize.col("user_id")), "CountSuccessByUser"]
     ],
     include: [
       {
         model: User,
-        attributes: ["id"],
+        attributes: ["id", "userName"],
       }
     ],
     where: {
@@ -49,7 +49,7 @@ router.get("/user-success", async (req, res) => {
 });
 
 router.get("/sub-by-date", async (req, res) => {
-  let loggedUser = req.user.userId ? req.user.userId : 1
+  let loggedUser = req.user ? req.user.userId : 1
   const subByDate = await Submission.findAll({
     group: [sequelize.fn("DAY", sequelize.col("created_at"))],
     attributes: [
@@ -94,8 +94,12 @@ router.get("/sub-by-type", async(req, res) => {
 })
 
 router.get("/unsolved-challenges", async(req, res) => {
-  let loggedUser = req.user ? req.user.userId : 1
+  let reqUser = req.user ? req.user : {id: 3, userName: "boosty"}
+  
+
+  let loggedUser = req.user ? req.user.userId : 3
   const userSubmissions = await Submission.findAll({
+
     group:["challenge_id"],
     attributes: [
       "challenge_id"
@@ -110,12 +114,12 @@ router.get("/unsolved-challenges", async(req, res) => {
   })
 
 
-  const unsolvedChallenges = await Challenge.findAll({
-      where: {
+  const unsolvedChallenges = await Challenge.findAll({  
+    where: {
       id: {[Op.notIn]: solvedChallenges}
   }})
 
-  res.json(unsolvedChallenges)
+  res.json([unsolvedChallenges, {User: reqUser}])
 })
 
 
