@@ -1,5 +1,6 @@
 const path = require("path");
 const express = require('express')
+const checkToken = require('./middleware/checkToken')
 
 
 const app = express()
@@ -9,7 +10,7 @@ app.use(express.json( {limit: '50mb'}))
 //   res.send('Hello World!')
 // })
 
-app.use('/api/v1/', require('./api/v1'))
+app.use('/api/v1/', checkToken ,require('./api/v1'))
 
 app.use(express.static(path.join(__dirname, "..", "client", 'build')))
 app.use('/', (req, res, next) => {
