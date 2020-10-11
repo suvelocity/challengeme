@@ -213,9 +213,8 @@ export default function Login() {
                             Log in
                         </Button>
                         <div>
-                            <span>don't have an account yet?</span>
+                            <span>don't have an account yet? {" "}</span>
                             <Link to="/register" id="signUp">
-                                {" "}
                                 Sign up
                             </Link>
                         </div>
