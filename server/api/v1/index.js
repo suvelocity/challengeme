@@ -8,7 +8,7 @@ const unknownEndpoint = (req, res) => {
 
 router.use('/challenges', require('./challenges'));
 router.use('/image', require('./image'));
-router.use('/new-challenge', require('./newChallenge'));
+// router.use('/new-challenge', require('./newChallenge')); this does not exist, seems to be accounted for in challenges
 router.use('/webhook', require('./webhook'));
 router.use('/statistics', require('./statisticsRoutes'));
 router.use("/auth", require("./auth"));

@@ -36,6 +36,8 @@ import NewChallengeForm from '../components/NewChallenge/NewChallengeForm';
         setDarkTheme(true)
       }
     }
+  })
+    
 
     useEffect(() => {
     
