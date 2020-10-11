@@ -119,6 +119,31 @@ router.get("/sub-by-date", async (req, res) => {
 
 // returns the count of unsolved challenges
 router.get("/unsolved-challenges", async(req, res) => {
+  let reqUser = req.user ? req.user : {id: 3, userName: "boosty"}
+
+  let loggedUser = req.user ? req.user.userId : 3
+  const userSubmissions = await Submission.findAll({
+
+    group:["challenge_id"],
+    attributes: [
+      "challenge_id"
+    ],
+    where: {
+      userId: loggedUser
+    }
+  })
+
+  const solvedChallenges = userSubmissions.map(challenge => {
+    return challenge.challenge_id
+  })
+
+  const unsolvedChallenges = await Challenge.findAll({
+    attributes: ['name', 'type', 'repositoryName'],
+      where: {
+      id: {[Op.notIn]: solvedChallenges}
+  }})
+
+  res.json([unsolvedChallenges, {User: reqUser}])
   try{
     let loggedUser = req.user ? req.user.userId : 3
     const userSubmissions = await Submission.findAll({
