@@ -15,10 +15,12 @@ const useStyles = makeStyles((theme) => ({
         width: "320px",
     },
     city: {
+        // marginTop: "80px",
         marginBottom: "20px",
         width: "320px",
     },
     birthDate: {
+        // marginTop: "80px",
         marginBottom: "10px",
         width: "320px",
         appearance: "none",
@@ -31,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
     },
     phoneNumber: {
+        // marginTop: "80px",
+        // marginBottom: "20px",
         width: "320px",
     },
 }));

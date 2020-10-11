@@ -19,14 +19,18 @@ const useStyles = makeStyles((theme) => ({
         width: "320px",
     },
     confirmPassword: {
+        // marginTop: "80px",
         marginBottom: "30px",
         width: "320px",
     },
     question: {
+        // marginTop: "80px",
         marginBottom: "10px",
         width: "320px",
     },
     answer: {
+        // marginTop: "80px",
+        // marginBottom: "20px",
         width: "320px",
     },
 }));
