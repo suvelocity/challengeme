@@ -25,7 +25,9 @@ challengeRouter.get('/', filterResults, async (req, res) => {
         model: Label,
         attributes: ['name'],
       },
-    });
+	});
+	
+	const allChallengesJson = allChallenges
 
     /*
     const rating = await Review.findAll({
@@ -63,13 +65,13 @@ challengeRouter.get('/', filterResults, async (req, res) => {
 		}
 	})
 	*/
-    const newArr = allChallenges.map((challenge) => {
-      challenge['averageRating'] = 1;
-      return challenge;
-	});
+    // const newArr = allChallenges.map((challenge) => {
+    //   challenge['averageRating'] = 1;
+    //   return challenge;
+	// });
 	
-	console.log(newArr);
-    res.json(newArr);
+	console.log('now',allChallenges);
+    res.json(allChallenges);
 
     if (labels) {
       const filterChallenges = allChallenges.filter((challenge) => {
