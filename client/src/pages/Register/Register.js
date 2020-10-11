@@ -359,17 +359,16 @@ function Register() {
                         </div>
                     )}
                     {loading && <CircularProgress />}
-                    <div className="containerSecond">
+                    <div className="containerSecondPartRegister">
                         {step !== 5 ? (
                             <>
-                                <div className="containerButtons">
+                                <div className="containerButtonsRegister">
                                     {step > 1 && (
                                         <Button onClick={prevStep}>Back</Button>
                                     )}
                                     <Button
                                         className={classes.nextButton}
                                         variant="contained"
-                               
                                         onClick={nextStep}
                                     >
                                         {step === 4 ? "Finish" : "Next"}
@@ -377,7 +376,7 @@ function Register() {
                                 </div>
                             </>
                         ) : (
-                            <div className="containerButtons">
+                            <div className="containerButtonsRegister">
                                 {step > 1 && (
                                     <Button id="prevButton" onClick={prevStep}>
                                         Back
@@ -387,7 +386,6 @@ function Register() {
                                     id="nextButton"
                                     className={classes.nextButton}
                                     variant="contained"
-                     
                                     onClick={nextStep}
                                 >
                                     Back To Login Page

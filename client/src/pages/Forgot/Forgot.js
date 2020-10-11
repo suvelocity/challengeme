@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import ErrorIcon from "@material-ui/icons/Error";
 import { motion } from "framer-motion";
 import Background from "../../components/Background";
+import Swal from "sweetalert2";
 import "../../styles/Forgot.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Forgot() {
     const classes = useStyles();
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(3);
     const [error, setError] = useState("");
     const [userName, setUserName] = useState("");
     const [secQuestion, setSecQuestion] = useState("");
@@ -136,9 +137,12 @@ export default function Forgot() {
                     resetToken,
                 }
             );
-
-            alert(response.message);
-            history.push("/login");
+            Swal.fire({
+                icon: "success",
+                text: response.message,
+            }).then(() => {
+                history.push("/login");
+            });
         } catch (e) {
             setError(e.response.data.message);
         }
@@ -202,7 +206,6 @@ export default function Forgot() {
                         <Button
                             className={classes.nextButtonForgotPass}
                             variant="contained"
-                      
                             onClick={nextStep}
                         >
                             next
