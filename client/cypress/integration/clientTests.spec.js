@@ -41,7 +41,7 @@ describe("Client Tests", {
     cy.fixture('../fixtures/homeFixtures/users').as('usersJson');
     cy.fixture('../fixtures/homeFixtures/topTeams').as('topTeamsJson');
 
-    cy.route("**/top-users", "fixture:usersJson").as("getUsers");
+    cy.route("**/top-users", "fixture:homeFixtures/users.json").as("getUsers");
     cy.route("**/teams/top", "fixture:topTeamsJson").as("getTeams");
     cy.route("**/top-challenges", "fixture:topChallenges.json").as("topChallenges");
 
