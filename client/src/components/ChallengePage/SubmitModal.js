@@ -57,11 +57,6 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 		console.log(formData);
 	};
 
-	// const isRepoExist = async repo => {
-	// 	const response = await fetch(`https://api.github.com/repos/${repo}`);
-	// 	return response.status !== 404;
-	// };
-
 	return (
 		<Modal
 			open={isOpen}
@@ -77,10 +72,8 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 				<form
 					onSubmit={handleSubmit(submitForm)}
 					style={{
-						// height: "60vh",
 						display: "flex",
 						flexDirection: "column"
-						// alignItems: "flex-start"
 					}}>
 					<Typography variant="h5">Submit Your Solution</Typography>
 					<TextField
@@ -93,7 +86,6 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 						inputRef={register({
 							required: true,
 							pattern: /^([^ ]+\/[^ ]+)$/
-							// validate: { isRepoExist }
 						})}
 					/>
 					{errors.repository?.type === "pattern" && (
