@@ -43,7 +43,7 @@ usersRouter.post("/register", async (req, res) => {
   community! To start challenging your friends and undertake challenges
   yourself, click on the buttom bellow.
 </p>
-<form action="http://localhost:3000/auth">
+<form action="${process.env.IP_ADRESS}/auth">
 <input name="token" value="${mailedToken}" type="hidden">
   <button style="width: 200px; background-color: purple; color: white;">GET SHWIFFTY</button>
 </form>`, (err, info) => {
@@ -95,6 +95,7 @@ usersRouter.post("/login", async (req, res) => {
   //Joi Validation
   const { error } = loginValidation(req.body);
   if (error) {
+    console.log(error);
     return res.status(400).json({ success: false, message: "Don't mess with us" })
   }
   const currentUser = await userIsExist(req.body.userName);
