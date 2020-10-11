@@ -133,7 +133,7 @@ function StatisticsHome() {
         ],
         borderColor: "black",
         fill: false, // change the line chart
-        data: topTeamsData && [...topTeamsData.map(team => team["Users[0].Submissions[0].teamSuccessSubmissions"]), 0], // array of values for Y axis (numbers)
+        data: topTeamsData && [...topTeamsData.map(team => team.Users[0] && team["Users"][0]["Submissions"][0]["teamSuccessSubmissions"]), 0], // array of values for Y axis (numbers)
       },
       // you can add as many object as you wand, each one will a different line with different color
     ],
