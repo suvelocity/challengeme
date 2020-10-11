@@ -124,14 +124,14 @@ function TeamStatistics() {
       {
         label: "Amount submissions", // name of the line (one or two words)
         backgroundColor: [
-          "red",
-          "blue",
-          "green",
-          "yellow",
-          "purple",
-          "black",
-          "pink",
-          "gray",
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628"
         ],
         borderColor: "black",
         fill: false, // change the line chart
@@ -148,14 +148,14 @@ function TeamStatistics() {
       {
         label: "Submitions", // name of the line (one or two words)
         backgroundColor: [
-          "red",
-          "blue",
-          "green",
-          "yellow",
-          "purple",
-          "black",
-          "pink",
-          "gray",
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628"
         ],
         borderColor: "black",
         fill: false, // change the line chart
@@ -172,14 +172,14 @@ function TeamStatistics() {
       {
         label: "Submitions", // name of the line (one or two words)
         backgroundColor: [
-          "red",
-          "blue",
-          "green",
-          "yellow",
-          "purple",
-          "black",
-          "pink",
-          "gray",
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628"
         ],
         borderColor: "black",
         fill: false, // change the line chart
