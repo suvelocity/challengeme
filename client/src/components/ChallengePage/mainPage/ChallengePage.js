@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import network from "../../../services/network";
 import normalizeDate from "../helpers/normalizeDate";
 import { Button, Link } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import Chip from "@material-ui/core/Chip";
-
-// TODO: clean all console alert and logs before merge
+import "./ChallengePage.css";
 import SubmitModal from "../SubmitModal";
 import InfoTable from "../InfoTable/InfoTable";
+import network from "../../../services/network";
 
-import "./ChallengePage.css";
+// TODO: clean all console alert and logs before merge
 
 // we have two users
 // 1. author- the user which uploaded that challenge
@@ -36,26 +35,15 @@ function ChallengePage() {
     };
     const fetchChallenge = async () => {
       try {
-        // TODO: (Dror) add another migration and column and seed, so each challenge will have the boilerplate and the official repo , talk to shahar team about that change
         let {
           data: { challenge: challengeFromServer, author },
         } = await network.get(`/api/v1/challenges/${challengeParamId}`);
-        const reviews = (
-          await network.get(`/api/v1/reviews/byChallenge/${challengeParamId}`)
-        ).data;
-        const ratingArray = reviews.map((review) => review.rating);
-        const avgRating =
-          ratingArray.length > 0
-            ? ratingArray.reduce(
-                (accumulator, currentValue) => accumulator + currentValue
-              ) / ratingArray.length
-            : 0;
-        challengeFromServer.averageRating = avgRating;
         console.log("challenge from server: ", challengeFromServer);
         setChallenge(challengeFromServer);
         setAuthor(author);
       } catch (error) {
         console.log(error);
+        // TODO: handle error
       }
     };
     setImg();
@@ -98,7 +86,6 @@ function ChallengePage() {
             <span className="challenge-label">
               {challenge["Labels"].map((label) => (
                 <Link to={`/?labelId=${label.id}`}>
-                  {/* TODO: (ori Sass) talk to shahar where this link goes to... */}
                   <Chip
                     color="primary"
                     label={label.name}
@@ -114,7 +101,8 @@ function ChallengePage() {
             <h2>Rating:</h2>
             <Rating
               name="half-rating-read"
-              defaultValue={challenge.averageRating}
+              // TODO: add rating after dror finish with his rating at the backend
+              defaultValue={5}
               precision={0.5}
               readOnly
               size="large"
