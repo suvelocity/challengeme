@@ -6,8 +6,18 @@ import axios from "axios";
 import ThemeApi from "../services/Theme"
 import '../pages/Home.css'
 import clsx from 'clsx';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import WorkIcon from '@material-ui/icons/Work';
 
 const useStyles = makeStyles((theme) => ({
+  listRoot: {
+    width: '100%',
+    maxWidth: 360,
+  },
   root: {
     display: "flex",
     "& > * + *": {
@@ -56,7 +66,7 @@ function TeamStatistics() {
   const classes = useStyles();
   const imageStyle = { backgroundColor: "lightgray" };
   const [topTeams, setTopTeams] = useState(null);
-  const [teamsTopUser, setTeamsTopUser] = useState(null);
+  const [teamsTopUser, setTeamsTopUser] = useState([]);
   const [teamsLastWeekSub, setTeamsLastWeekSub] = useState(null);
   const [loading, setLoading] = useState(true);
   const darkMode = React.useContext(ThemeApi).darkTheme
@@ -171,18 +181,19 @@ function TeamStatistics() {
           <CircularProgress />
         </div>
       ) : (
-        <div
-          className={classes.div}
-          style={{ gridArea: "topChart"}}
-        >
-          <Charts
-            name="TopUserOfTheTeam"
-            width={"450px"}
-            height={"70px"}
-            chart={[0, 2]}
-            data={topUserInTeam}
-          />
-        </div>
+        <List className={classes.listRoot}>
+            <h3>Top Users by team</h3>
+            {teamsTopUser.map((user) => 
+              <ListItem>
+                <ListItemAvatar>
+                <Avatar>
+                <WorkIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={`${user.firstName} - ${user.lastName}`} secondary={`Number of success: ${user["Submissions.userSuccessSubmission"]}`} />
+              </ListItem>
+            )}
+          </List>
       )}
       {loading ? (
         <div className={classes.root}>

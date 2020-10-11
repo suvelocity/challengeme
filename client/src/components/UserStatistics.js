@@ -6,8 +6,18 @@ import ThemeApi from "../services/Theme"
 import '../pages/Home.css'
 import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from 'clsx';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+import WorkIcon from '@material-ui/icons/Work';
 
 const useStyles = makeStyles((theme) => ({
+  listRoot: {
+    width: '100%',
+    maxWidth: 360,
+  },
   root: {
     display: "flex",
     "& > * + *": {
@@ -56,21 +66,20 @@ const useStyles = makeStyles((theme) => ({
 function UserStatistics() {
     const classes = useStyles();
     const imageStyle = { backgroundColor: "lightgray" };
-    const [topUsersSuccess, setTopUserssuccess] = useState(null);
     const [topUsers, setTopUsers] = useState(null);
     const [userSubByType, setUserSubByType] = useState(null);
-    const [userUnsolvedChallenges, setUserUnsolvedChallenges] = useState(null);
+    const [userUnsolvedChallenges, setUserUnsolvedChallenges] = useState([]);
     const [loading, setLoading] = useState(true);
     const darkMode = React.useContext(ThemeApi).darkTheme
 
       const getInfo = () => {
-        // axios
-        //   .get(`/api/v1/statistics/users/user-success`)
-        //   .then((r) => r.data)
-        //   .then((r) => {
-        //     setTopUserssuccess(r);
-        //     setLoading(false);
-        //   });
+        axios
+          .get(`/api/v1/statistics/users/unsolved-challenges`)
+          .then((r) => r.data)
+          .then((r) => {
+            setUserUnsolvedChallenges(r);
+            setLoading(false);
+          });
         axios
           .get('/api/v1/statistics/users/top-users')
           .then((r) => r.data)
@@ -122,8 +131,8 @@ function UserStatistics() {
           // you can add as many object as you wand, each one will a different line with different color
         ],
       };
-      // const topChallengeByReview = {
-      //   labels: challengeByReview && challengeByReview.map((challenge) => challenge.Challenge.name), // array of values for x axis (strings)
+      // const unsolvedChallengesByUser = {
+      //   labels: userUnsolvedChallenges && userUnsolvedChallenges.map((index) => index.Challenge.name), // array of values for x axis (strings)
       //   title: "Top Challenges (by review)",
       //   rawData: [
       //     {
@@ -176,19 +185,19 @@ function UserStatistics() {
             <CircularProgress />
           </div>
         ) : (
-          <div
-            id="firstChart"
-            className={classes.div}
-            style={{ gridArea: "headChart", ...imageStyle }}
-          >
-            <Charts
-              name="topChallenges"
-              width={"400px"}
-              height={"200px"}
-              chart={[0, 2]}
-              data={usersSubmissionType}
-            />
-          </div>
+          <List className={classes.listRoot}>
+            <h3>Unsolved Challenges</h3>
+            {userUnsolvedChallenges.map((challenge) => 
+              <ListItem>
+                <ListItemAvatar>
+                <Avatar>
+                <WorkIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={challenge.name} secondary={challenge.type} />
+              </ListItem>
+            )}
+          </List>
         )}
         {loading ? (
           <div className={classes.root}>
