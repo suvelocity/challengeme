@@ -128,27 +128,24 @@ const PATH = {
     'body > div:nth-child(7) > div.makeStyles-paper-7 > form > div:nth-child(3) > span > label:nth-child(9)',
 };
 
-const beforeAll = () => {
-  cy.server();
-  cy.route(`${url}/api/v1/challenges/1`, {
-    challenge: MOCK.jwtNodeJs,
-    author: MOCK.author,
-  });
-  cy.route(`${url}/api/v1/challenges/1/submissions`, MOCK.submissions);
-  cy.route(`${url}/api/v1/reviews/byChallenge/1`, MOCK.reviews);
-  cy.route(`${url}/api/v1/images?id=1`, MOCK.blobImg);
-  cy.route('POST', `${url}/api/v1/challenges/1/apply`, 'Success');
-};
-
 const url = 'http://localhost:3000';
 
 const projectName = 'Challenge - Page Client';
 describe(`${projectName} - test suite`, () => {
-  it('The page includes all the mandatory data about the challenge', () => {
-    beforeAll();
+  beforeEach(() => {
+    cy.server();
+    cy.route(`${url}/api/v1/challenges/1`, {
+      challenge: MOCK.jwtNodeJs,
+      author: MOCK.author,
+    });
+    cy.route(`${url}/api/v1/challenges/1/submissions`, MOCK.submissions);
+    cy.route(`${url}/api/v1/reviews/byChallenge/1`, MOCK.reviews);
+    cy.route(`${url}/api/v1/images?id=1`, MOCK.blobImg);
+    cy.route('POST', `${url}/api/v1/challenges/1/apply`, 'Success');
 
     cy.visit('http://localhost:3000/challenges/1');
-
+  });
+  it('The page includes all the mandatory data about the challenge', () => {
     cy.contains(MOCK.jwtNodeJs.name);
     cy.contains(MOCK.jwtNodeJs.description);
     cy.contains(MOCK.jwtNodeJs.createdAt);
@@ -159,10 +156,6 @@ describe(`${projectName} - test suite`, () => {
   });
 
   it('There is a submmit button, that opens a modal', () => {
-    beforeAll();
-
-    cy.visit('http://localhost:3000/challenges/1');
-
     cy.get(PATH.openModal).click();
 
     cy.contains(MOCK.submitModal.header);
@@ -173,10 +166,6 @@ describe(`${projectName} - test suite`, () => {
   });
 
   it('Form validation, cannot send without required inputs', () => {
-    beforeAll();
-
-    cy.visit('http://localhost:3000/challenges/1');
-
     cy.get(PATH.openModal).click();
     cy.get(PATH.submitAnswer).click();
 
@@ -190,8 +179,6 @@ describe(`${projectName} - test suite`, () => {
   });
 
   it('Sends valid answer form', () => {
-    beforeAll();
-
     cy.visit('http://localhost:3000/challenges/1');
 
     cy.get(PATH.openModal).click();
@@ -211,21 +198,16 @@ describe(`${projectName} - test suite`, () => {
   });
 
   it('Submissions has date, name and status', async () => {
-    beforeAll();
-
     cy.visit('http://localhost:3000/challenges/1');
 
-    MOCK.reviews.forEach((review) => {
-      cy.contains(review.title);
-      cy.contains(review.content);
-      cy.contains(review.User.userName);
+    MOCK.submissions.forEach((submission) => {
+      cy.contains(submission.solutionRepository);
+      cy.contains(submission.state);
+      cy.contains(submission.updatedAt.split('T').join(' ').split('.')[0]);
     });
   });
 
-  it('Reviews has title, content, date and user who posted the review', async () => {
-    beforeAll();
-    cy.visit('http://localhost:3000/challenges/1');
-
+  it('Reviews has title, content, date and the name of the user who posted the review', async () => {
     MOCK.reviews.forEach((review) => {
       cy.contains(review.title);
       cy.contains(review.content);
