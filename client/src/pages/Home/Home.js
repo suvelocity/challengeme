@@ -6,7 +6,6 @@ import ThemeApi from "../../services/Theme"
 import FilterMenu from '../../components/FilterMenu/FilterMenu';
 
 
-
 export default function HomePage() {
   const [challenges, setChallenges] = useState([]);
   const [filters, setFilters] = useState({labels:[],time:100});
@@ -39,8 +38,9 @@ export default function HomePage() {
   }, [filters]);  
 
   return (
-    <div className={darkMode && "dark"}>
-      <div className ={"home-page"}>
+    <div 
+    className={darkMode && "dark"}>
+      <div className ="home-page">
       <FilterMenu 
       formerSelection={filters} 
       updateFilters={setFilters} />

@@ -5,7 +5,6 @@ import ThemeApi from "../services/Theme"
 import Header from '../components/Header/Header';
 import NewChallengeForm from '../components/NewChallenge/NewChallengeForm';
 
-
 export default function Router() {
   const [darkTheme,setDarkTheme] = useState(false)
   useEffect(() => {
@@ -27,14 +26,14 @@ export default function Router() {
     <ThemeApi.Provider value={{darkTheme,setDarkTheme}}>
     <BrowserRouter >
       <Header />
-      <Switch>
-        <Route path="/add_challenge">
-          <NewChallengeForm />
-        </Route>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
+          <Switch  >
+          <Route path="/add_challenge">
+            <NewChallengeForm />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
     </BrowserRouter>
      </ThemeApi.Provider>
 

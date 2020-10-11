@@ -9,7 +9,8 @@ import "./NewChallengeForm.css";
 import { makeStyles } from '@material-ui/core/styles';
 import { Typography, InputLabel, MenuItem, FormControl, Select, TextField, TextareaAutosize, Button } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
-const textFieldStyle = {minWidth:"200px"}
+const textFieldStyle = { minWidth : "200px" }
+
 
 const generateAlert=(title,message)=>(
   <>
@@ -188,7 +189,8 @@ export default function NewChallengeForm() {
   const classes = useStyles();
 
   return (
-  <div className={darkMode?"newChallengeDark":`newChallenge`}>
+  <div
+  className={darkMode?"newChallengeDark":`newChallenge`}>
     <form className='newChallengeForm'>
       <Typography variant='h5' gutterBottom className='newChallengeFormheader'>
         New Challenge
