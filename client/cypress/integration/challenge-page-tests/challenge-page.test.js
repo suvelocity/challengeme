@@ -9,10 +9,24 @@ const MOCK = {
     },
   },
   error: {
-    review: 'To send a review, the review must have both title and content!',
-    repo: 'Please enter a solution repository',
-    invalidRrepo: 'The text should look like "username/repository-name"',
-    rating: 'Please rate this challenge',
+    review: {
+      content: 'To send a review, the review must have both title and content!',
+    },
+    repo: {
+      content: 'Please enter a solution repository',
+      path:
+        'body > div:nth-child(7) > div.makeStyles-paper-7 > form > span:nth-child(3)',
+    },
+    invalidRrepo: {
+      content: 'The text should look like "username/repository-name"',
+      path:
+        'body > div:nth-child(7) > div.makeStyles-paper-7 > form > span:nth-child(3)',
+    },
+    rating: {
+      content: 'Please rate this challenge',
+      path:
+        'body > div:nth-child(7) > div.makeStyles-paper-7 > form > span:nth-child(6)',
+    },
   },
   jwtNodeJs: {
     id: 1,
@@ -48,6 +62,7 @@ const MOCK = {
       state: 'SUCCESS',
       updatedAt: '2020-10-01T20:00:00.000Z',
       userId: 1,
+      path: '#simple-tabpanel-0 > div > p > div > div:nth-child(1)',
     },
     {
       challengeId: 1,
@@ -58,6 +73,7 @@ const MOCK = {
       state: 'Fail',
       updatedAt: '2020-10-01T20:00:00.000Z',
       userId: 2,
+      path: '#simple-tabpanel-0 > div > p > div > div:nth-child(2)',
     },
   ],
   reviews: [
@@ -73,6 +89,7 @@ const MOCK = {
       title: 'great challenge',
       updatedAt: '2020-10-01T20:00:00.000Z',
       userId: 1,
+      path: '#simple-tabpanel-1 > div > p > div:nth-child(1)',
     },
     {
       ChallengeId: 1,
@@ -86,6 +103,7 @@ const MOCK = {
       title: 'well made challenge',
       updatedAt: '2020-10-01T20:00:00.000Z',
       userId: 2,
+      path: '#simple-tabpanel-1 > div > p > div:nth-child(2)',
     },
   ],
   author: {
@@ -130,8 +148,8 @@ const PATH = {
 
 const url = 'http://localhost:3000';
 
-const projectName = 'Challenge - Page Client';
-describe(`${projectName} - test suite`, () => {
+const projectName = 'Challenge page';
+describe(`${projectName} - Test suite`, () => {
   beforeEach(() => {
     cy.server();
     cy.route(`${url}/api/v1/challenges/1`, {
@@ -145,6 +163,7 @@ describe(`${projectName} - test suite`, () => {
 
     cy.visit('http://localhost:3000/challenges/1');
   });
+  
   it('The page includes all the mandatory data about the challenge', () => {
     cy.contains(MOCK.jwtNodeJs.name);
     cy.contains(MOCK.jwtNodeJs.description);
@@ -169,13 +188,17 @@ describe(`${projectName} - test suite`, () => {
     cy.get(PATH.openModal).click();
     cy.get(PATH.submitAnswer).click();
 
-    cy.contains(MOCK.error.repo);
-    cy.contains(MOCK.error.rating);
+    cy.get(MOCK.error.repo.path).should('contain', MOCK.error.repo.content);
+    cy.get(MOCK.error.rating.path).should('contain', MOCK.error.rating.content);
 
     cy.get(PATH.repoInput)
       .type(MOCK.answer.badSolutionRepo)
       .should('have.value', MOCK.answer.badSolutionRepo);
-    cy.contains(MOCK.error.invalidRrepo);
+
+    cy.get(MOCK.error.invalidRrepo.path).should(
+      'contain',
+      MOCK.error.invalidRrepo.content
+    );
   });
 
   it('Sends valid answer form', () => {
@@ -201,17 +224,20 @@ describe(`${projectName} - test suite`, () => {
     cy.visit('http://localhost:3000/challenges/1');
 
     MOCK.submissions.forEach((submission) => {
-      cy.contains(submission.solutionRepository);
-      cy.contains(submission.state);
-      cy.contains(submission.updatedAt.split('T').join(' ').split('.')[0]);
+      cy.get(submission.path).should('contain', submission.solutionRepository);
+      cy.get(submission.path).should('contain', submission.state);
+      cy.get(submission.path).should(
+        'contain',
+        submission.updatedAt.split('T').join(' ').split('.')[0]
+      );
     });
   });
 
   it('Reviews has title, content, date and the name of the user who posted the review', async () => {
     MOCK.reviews.forEach((review) => {
-      cy.contains(review.title);
-      cy.contains(review.content);
-      cy.contains(review.User.userName);
+      cy.get(review.path).should('contain', review.title);
+      cy.get(review.path).should('contain', review.content);
+      cy.get(review.path).should('contain', review.User.userName);
     });
   });
 });
