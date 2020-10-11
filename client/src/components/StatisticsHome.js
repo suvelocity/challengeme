@@ -64,11 +64,8 @@ const useStyles = makeStyles((theme) => ({
 function StatisticsHome() {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
-<<<<<<< HEAD
-  const [loadingTeams, setLoadingTeams] = useState(true);
 
-=======
->>>>>>> 5d9eb59e959298e7b2ca01d92ea0871e57ccf51d
+  const [loadingTeams, setLoadingTeams] = useState(true);
   const [topChallengesData, setTopChallengesData] = useState([]);
   const [topUsersData, setTopUsersData] = useState([]);
   const [topTeamsData, setTopTeamsData] = useState([]);
