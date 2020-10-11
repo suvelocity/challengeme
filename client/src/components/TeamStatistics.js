@@ -124,9 +124,9 @@ function TeamStatistics() {
           >
             Team Leader
             <br />
-            <span
+            {/* <span
               className={classes.span}
-            >{`${topUserData[0]["firstName"]} ${topUserData[0]["lastName"]}  ${topUserData[0]["Submissions.userSuccessSubmission"]}`}</span>
+            >{`${topUserData[0]["firstName"]} ${topUserData[0]["lastName"]}  ${topUserData[0]["Submissions.userSuccessSubmission"]}`}</span> */}
           </div>
         )}
         {/* {loading ? (

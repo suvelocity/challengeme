@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "15px 15px 0px #379683",
   },
   main: {
+    marginTop: "4rem",
     display: "grid",
     padding: "10px",
     alignContent: "center",
