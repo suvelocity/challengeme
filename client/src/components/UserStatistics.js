@@ -120,7 +120,7 @@ function UserStatistics() {
 
       const usersSubmissionType = {
         labels: userSubByDate && userSubByDate.map(index => index.createdAt.split('T')[0]), // array of values for x axis (strings)
-        title: "Users top submissions by challenges type", // title for the chart
+        title: "Users Submissions by the last 5 days", // title for the chart
         rawData: [
           {
             label: "Date of submission", // name of the line (one or two words)
@@ -230,7 +230,7 @@ function UserStatistics() {
               width={"25vw"}
               height={"25vh"}
               chart={[0, 2]}
-              data={usersSubmissionType}
+              data={usersSubmissionByDate}
             />
           </div>
         )}
@@ -265,8 +265,8 @@ function UserStatistics() {
               name="UserSubmissionsByDate"
               width={"25vw"}
               height={"25vh"}
-              chart={[0, 2]}
-              data={usersSubmissionByDate}
+              chart={[0, 1, 2]}
+              data={usersSubmissionType}
             />
           </div>
         )}

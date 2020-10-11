@@ -206,7 +206,7 @@ function TeamStatistics() {
             name="lastWeekSubOfTeam"
             width={"25vw"}
             height={"25vh"}
-            chart={[0, 2]}
+            chart={[0, 1, 2]}
             data={lastWeekTeamsSubmissions}
           />
         </div>
