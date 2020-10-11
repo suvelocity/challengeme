@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     width: "inherit",
     gridTemplate: `
       'headChart sideList ' 45vh 
-      'bottomChart sideList' 45vh`,
+      'bottomChart bottomRightChart' 45vh`,
   },
   divLight: {
     textAlign: "center",
@@ -74,6 +74,7 @@ function TeamStatistics() {
   const classes = useStyles();
   const [topTeams, setTopTeams] = useState(null);
   const [teamsTopUser, setTeamsTopUser] = useState([]);
+  const [successChallenges, setSuccessChallenges] = useState([]);
   const [teamsLastWeekSub, setTeamsLastWeekSub] = useState(null);
   const [loading, setLoading] = useState(true);
   const darkMode = React.useContext(ThemeApi).darkTheme
@@ -95,11 +96,18 @@ function TeamStatistics() {
         setLoading(false);
       });
     axios
-      .get(`/api/v1/statistics/teams/top`)
+      .get(`/api/v1/statistics/teams/team-submissions`)
+      .then((r) => r.data)
+      .then((r) => {
+        setTopTeams(r);
+        setLoading(false);
+      });
+      axios
+      .get(`/api/v1/statistics/teams/success-challenge`)
       .then((r) => r.data)
       .then((r) => {
         console.log(r);
-        setTopTeams(r);
+        setSuccessChallenges(r);
         setLoading(false);
       });
   };
@@ -110,48 +118,72 @@ function TeamStatistics() {
   }, [])
 
   const lastWeekTeamsSubmissions = {
-    labels: teamsLastWeekSub && teamsLastWeekSub.map(index => index), // array of values for x axis (strings)
+    labels: teamsLastWeekSub && teamsLastWeekSub.map(index => index.createdAt.split('T')[0]), // array of values for x axis (strings)
     title: "Teams last week submissions", // title for the chart
     rawData: [
       {
         label: "Amount submissions", // name of the line (one or two words)
         backgroundColor: [
-          "red",
-          "blue",
-          "green",
-          "yellow",
-          "purple",
-          "black",
-          "pink",
-          "gray",
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628"
         ],
         borderColor: "black",
         fill: false, // change the line chart
-        data: teamsLastWeekSub && [...teamsLastWeekSub.map(index => index), 0], // array of values for Y axis (numbers)
+        data: teamsLastWeekSub && [...teamsLastWeekSub.map(index => index.dateSubmissions), 0], // array of values for Y axis (numbers)
       },
       // you can add as many object as you wand, each one will a different line with different color
     ],
   };
 
   const teamData = {
-    labels: topTeams && topTeams.map(team => team.name), // array of values for x axis (strings)
-    title: "Top Teams", // title for the chart
+    labels: ['Success', 'Fail', 'Pending'], // array of values for x axis (strings)
+    title: topTeams && `Status from total ${topTeams.all} submissions`, // title for the chart
     rawData: [
       {
         label: "Submitions", // name of the line (one or two words)
         backgroundColor: [
-          "red",
-          "blue",
-          "green",
-          "yellow",
-          "purple",
-          "black",
-          "pink",
-          "gray",
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628"
         ],
         borderColor: "black",
         fill: false, // change the line chart
-        data: topTeams && [...topTeams.map(team => team["Users.Submissions.teamSuccessSubmissions"]), 0], // array of values for Y axis (numbers)
+        data: topTeams && [ topTeams.success, topTeams.fail, topTeams.pending, 0], // array of values for Y axis (numbers)
+      },
+      // you can add as many object as you wand, each one will a different line with different color
+    ],
+  };
+
+  const successChallengesOfTheTeam = {
+    labels: successChallenges && [...successChallenges.map(index => index.Challenge.name)], // array of values for x axis (strings)
+    title: 'Top success challenges of the team', // title for the chart
+    rawData: [
+      {
+        label: "Submitions", // name of the line (one or two words)
+        backgroundColor: [
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628"
+        ],
+        borderColor: "black",
+        fill: false, // change the line chart
+        data: successChallenges && [...successChallenges.map(index => index.challengeSuccesses), 0], // array of values for Y axis (numbers)
       },
       // you can add as many object as you wand, each one will a different line with different color
     ],
@@ -219,6 +251,24 @@ function TeamStatistics() {
             height={"25vh"}
             chart={[0, 2]}
             data={teamData}
+          />
+        </div>
+      )}
+      {loading ? (
+        <div className={classes.root}>
+          <CircularProgress />
+        </div>
+      ) : (
+        <div
+          className={darkMode ? classes.divDark: classes.divLight}
+          style={{ gridArea: "bottomRightChart"}}
+        >
+          <Charts
+            name="TopSuccessChallenges"
+            width={"25vw"}
+            height={"25vh"}
+            chart={[0, 2]}
+            data={successChallengesOfTheTeam}
           />
         </div>
       )}

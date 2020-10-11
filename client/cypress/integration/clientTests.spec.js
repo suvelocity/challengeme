@@ -100,4 +100,30 @@ describe("Client Tests", () => {
       "#TopUsers > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
       ).click();
   });
+
+  it("Checks teams page charts", () => {
+    cy.server();
+
+    cy.route("**/top-user", "fixture:teamsFixtures/topUser.json").as("getTopUser");
+    cy.route("**/last-week-submissions", "fixture:teamsFixtures/lastWeekSubmissions.json").as("getLastWeekSubmissions");
+    cy.route("**/top", "fixture:teamsFixtures/top.json").as("getTop");
+
+    cy.visit("http://localhost:3000/statistics/teams");
+
+    cy.get("#lastWeekSubOfTeam > .chart > .chartjs-render-monitor");
+    cy.get(
+      "#lastWeekSubOfTeam > .MuiBottomNavigation-root > :nth-child(2) > .MuiBottomNavigationAction-wrapper"
+      ).click();
+    cy.get(
+      "#lastWeekSubOfTeam > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
+      ).click();
+    
+    cy.get("#TopOfTheTeams > .chart > .chartjs-render-monitor");
+    cy.get(
+      "#TopOfTheTeams > .MuiBottomNavigation-root > :nth-child(2) > .MuiBottomNavigationAction-wrapper"
+      ).click();
+    cy.get(
+      "#TopOfTheTeams > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
+      ).click();
+  });
 });
