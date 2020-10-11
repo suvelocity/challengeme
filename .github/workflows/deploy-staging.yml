@@ -3,8 +3,8 @@ name: Build and Deploy to Google Compute Engine
 
 on:
   push:
-    tags:        
-      - staging  
+    branches:        
+    - staging  
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
