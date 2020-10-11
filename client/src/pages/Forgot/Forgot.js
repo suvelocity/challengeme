@@ -204,6 +204,7 @@ export default function Forgot() {
                     )}
                     <div className="containerButtonsForgotPass">
                         <Button
+                            id='nextButton'
                             className={classes.nextButtonForgotPass}
                             variant="contained"
                             onClick={nextStep}

@@ -367,6 +367,7 @@ function Register() {
                                         <Button onClick={prevStep}>Back</Button>
                                     )}
                                     <Button
+                                        id='nextButton'
                                         className={classes.nextButton}
                                         variant="contained"
                                         onClick={nextStep}
