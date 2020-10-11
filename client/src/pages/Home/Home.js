@@ -16,7 +16,9 @@ export default function HomePage() {
   const [filtered, setFiltered] = useState(false);
   const [filters, setFilters] = useState({labels:[]});
   const darkMode = React.useContext(ThemeApi).darkTheme
+  let query = useQuery();
 
+  //function to sort the searched filters
   const getFilters = useCallback(
     () => {
       const filterNames = Object.keys(filters)
@@ -32,21 +34,22 @@ export default function HomePage() {
     [filters]
   ) 
 
-  let query = useQuery();
   useEffect(() => {
     (async () => {
       try{
+        //checking if there is query params and the page loaded once
         if(filtered!==true && query.get("labelId")){
           const { data: challengesFromServer } = await network.get(
           `/api/v1/challenges?labels=${query.get("labelId")}`)
-          typeof challengesFromServer ==="object"&&
+          //checking if there is the challenges data is array
+          typeof challengesFromServer === "object" &&
           setChallenges(challengesFromServer)
           setFiltered(true)
         }
         else{
           const { data: challengesFromServer } = await network.get(
-          '/api/v1/challenges?'+getFilters())
-          typeof challengesFromServer ==="object"&&
+          '/api/v1/challenges?'+ getFilters())
+          typeof challengesFromServer === "object" &&
           setChallenges(challengesFromServer)
         }
       }catch(e){}
