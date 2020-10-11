@@ -1,12 +1,12 @@
 const { Router } = require("express");
-
+const checkToken = require('../../helpers/checkToken');
 const router = Router();
 
-router.use('/challenges', require('./challenges'));
-router.use('/image', require('./image'));
-router.use('/new-challenge', require('./newChallenge'));
-router.use('/webhook', require('./webhook'));
-router.use('/statistics', require('./statisticsRoutes'));
+router.use('/challenges', checkToken, require('./challenges'));
+router.use('/image', checkToken, require('./image'));
+router.use('/new-challenge', checkToken, require('./newChallenge'));
+router.use('/webhook', checkToken, require('./webhook'));
+router.use('/statistics', checkToken, require('./statisticsRoutes'));
 router.use("/auth", require("./auth"));
 
 

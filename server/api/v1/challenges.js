@@ -51,7 +51,6 @@ router.get('/:challengeId/submissions', async (req, res) => {
 router.post('/:challengeId/apply', async (req, res) => {
   const { solutionRepository } = req.body;
   const headers = req.headers;
-  console.log('MY HEADERS !!!!!!!!! ', headers);
   const challengeId = req.params.challengeId;
   const challenge = await Challenge.findByPk(challengeId);
   let submission = await Submission.findOne({
@@ -76,15 +75,11 @@ router.post('/:challengeId/apply', async (req, res) => {
   if(submission.state === 'FAIL') {
     await submission.update({ state: 'PENDING' })
   }
-/* ,
-        webhook:'https://api.ngrok.com' */
   try {
     const urltoSet = process.env.MY_URL.concat(`/api/v1/webhook/submission/${submission.id}`);
-    //console.log(urltoSet);
     const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
       ref: 'master',
       inputs: {
-        //name: `${solutionRepository}-Submission${submission.id}`,
         testRepo: challenge.repositoryName,
         solutionRepo: solutionRepository,
         webhookUrl: urltoSet
