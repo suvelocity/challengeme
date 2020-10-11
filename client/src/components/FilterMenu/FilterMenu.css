@@ -41,7 +41,7 @@
 }
 .toggleOpen{
   transition: .5s;
-  background-color: rgba(0, 144, 240,.6);
+  background-color:#C9AC80;
   height:50px;
   width:50px;
   border-radius: 0 50% 50% 0;
@@ -50,7 +50,7 @@
 }
 
 .toggleOpen:hover{
- background-color: dodgerblue;
+ background-color:#d3bd9c;
 }
 .filters h3{
   color:white;
