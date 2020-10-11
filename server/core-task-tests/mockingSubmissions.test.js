@@ -7,6 +7,7 @@ const {Submission, Challenge} = require('../models');
 const {challengeArr, solutionRepos, failRepos} = require('./mockData');
 const nock = require('nock');
 const { default: Axios } = require('axios');
+let accessToken;
 
 describe('Submission process', () => {
     beforeAll(async (done) => {
@@ -26,6 +27,11 @@ describe('Submission process', () => {
         console.log(solutionRepos)
         process.env.MY_URL = 'TheWebHookUrl';
         console.log(process.env.MY_URL)
+        const password = process.env.TEST_PASSWORD || 'password';
+        const userName = process.env.TEST_USERNAME || 'user';
+        const {headers} = await request(app).post('/api/v1/auth/login').send({userName, password})
+        accessToken = headers['set-cookie'][0].split(';')[0].split('=')[1];
+        console.log('myAccess',accessToken)
         done();
       });
     test('Posting submisson and status change to PENDING + can Post Submissions that had FAIL status', async () => {
@@ -90,11 +96,14 @@ describe('Submission process', () => {
             }
         })
         .reply(200)
+    
 
-
-        await request(app).post(`/api/v1/challenges/${solutionRepos[0].challengeId}/apply`).send({solutionRepository:solutionRepos[0].repo});
-        await request(app).post(`/api/v1/challenges/${failRepos[0].challengeId}/apply`).send({solutionRepository:failRepos[0].repo});
-        await request(app).post(`/api/v1/challenges/${solutionRepos[1].challengeId}/apply`).send({solutionRepository:solutionRepos[1].repo});
+        await request(app).post(`/api/v1/challenges/${solutionRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
+        .send({solutionRepository:solutionRepos[0].repo});
+        await request(app).post(`/api/v1/challenges/${failRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
+        .send({solutionRepository:failRepos[0].repo});
+        await request(app).post(`/api/v1/challenges/${solutionRepos[1].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
+        .send({solutionRepository:solutionRepos[1].repo});
         expect(githubPostmock1.isDone()).toEqual(true);
         expect(githubPostmock2.isDone()).toEqual(true);
         expect(githubPostmock3.isDone()).toEqual(true);

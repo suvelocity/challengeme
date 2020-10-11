@@ -10,6 +10,15 @@ router.get('/', async (req, res) => {
   res.json(allChallenges)
 })
 
+router.post('/login', async (req, res) => {
+  const accessToken = 'myAccessToken',
+  refreshToken = 'myRefresh',
+  currentUser = 'myCurrentUser';
+  res.cookie('accessToken', accessToken)
+  res.cookie('refreshToken', refreshToken)
+  res.json({ userDetails: currentUser });
+})
+
 router.get('/:challengeId/submissions', async (req, res) => {
   const { challengeId } = req.params;
   const allSubmission = await Submission.findAll({ where: {
@@ -20,6 +29,8 @@ router.get('/:challengeId/submissions', async (req, res) => {
 
 router.post('/:challengeId/apply', async (req, res) => {
   const { solutionRepository } = req.body;
+  const headers = req.headers;
+  console.log('MY HEADERS !!!!!!!!! ', headers);
   const challengeId = req.params.challengeId;
   const challenge = await Challenge.findByPk(challengeId);
   let submission = await Submission.findOne({
