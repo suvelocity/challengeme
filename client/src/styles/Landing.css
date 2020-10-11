@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap");
-body {
+/* body {
     margin: 0;
     padding: 0;
     font-family: "Roboto", sans-serif;
@@ -7,6 +7,30 @@ body {
 h1 {
     font-size: 8em;
     color: #fff;
+} */
+
+.challengeMe {
+    font-size: 60px;
+    text-shadow: "2px 2px 10px black";
+    animation: color 2s linear 1s infinite alternate;
+    margin-bottom: 30px;
+}
+
+@keyframes color {
+    0% {
+        color: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(51, 95, 174, 1) 100%
+        );
+    }
+    100% {
+        color: linear-gradient(
+            270deg,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(51, 95, 174, 1) 100%
+        );
+    }
 }
 #container {
     position: relative;
@@ -30,7 +54,7 @@ h1 {
     height: 150px;
     top: 0;
     left: 0;
-    background: url(https://drive.google.com/uc?export=view&id=1PtoEBLD19pqTd5PT23RwMoAu3Sz7qBs_);
+    background: url("wave.png");
     animation: wave 8s linear infinite;
 }
 .wave::before {
@@ -40,7 +64,7 @@ h1 {
     height: 150px;
     top: 0;
     left: 0;
-    background: url(https://drive.google.com/uc?export=view&id=1PtoEBLD19pqTd5PT23RwMoAu3Sz7qBs_);
+    background: url("wave.png");
     opacity: 0.2;
     animation: wave-reverse 8s linear infinite;
 }
@@ -51,7 +75,7 @@ h1 {
     height: 150px;
     top: 0;
     left: 0;
-    background: url(https://drive.google.com/uc?export=view&id=1PtoEBLD19pqTd5PT23RwMoAu3Sz7qBs_);
+    background: url("wave.png");
     opacity: 0.8;
     animation-delay: -4s;
     animation: wave 16s linear infinite;

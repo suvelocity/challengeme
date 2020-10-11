@@ -46,6 +46,7 @@ function PersonalDetails({ values, handleChange, prevStep, nextStep }) {
             <FormControl className={classes.country}>
                 <InputLabel style={{ color: "grey" }}>Country</InputLabel>
                 <Input
+                    id='country'
                     type="text"
                     value={values.country}
                     required
@@ -63,6 +64,7 @@ function PersonalDetails({ values, handleChange, prevStep, nextStep }) {
             <FormControl className={classes.city}>
                 <InputLabel style={{ color: "grey" }}>City</InputLabel>
                 <Input
+                    id='city'
                     type="text"
                     value={values.city}
                     required
@@ -80,6 +82,7 @@ function PersonalDetails({ values, handleChange, prevStep, nextStep }) {
             <label>Enter Birth Date :</label>
             <input
             className={classes.birthDate}
+                id='birthDate'
                 type="date"
                 value={values.birthDate}
                 onChange={handleChange("birthDate")}
@@ -88,6 +91,7 @@ function PersonalDetails({ values, handleChange, prevStep, nextStep }) {
             <FormControl className={classes.phoneNumber}>
                 <InputLabel style={{ color: "grey" }}>Phone Number</InputLabel>
                 <Input
+                    id='phoneNumber'
                     type="text"
                     value={values.phoneNumber}
                     required

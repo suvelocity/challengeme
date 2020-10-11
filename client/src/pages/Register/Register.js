@@ -10,8 +10,9 @@ import Stepper from "./Stepper";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import ErrorIcon from "@material-ui/icons/Error";
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from "@material-ui/core";
 import "../../styles/Register.css";
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
     nextButton: {
@@ -21,6 +22,20 @@ const useStyles = makeStyles((theme) => ({
         color: "white",
     },
 }));
+
+// const pageVariants = {
+//     initial: {
+//         opacity: 0,
+//     },
+//     in: {
+//         opacity: 1,
+//         transition: { duration: 0.5 },
+//     },
+//     out: {
+//         opacity: 0,
+//         transition: { duration: 0.5 },
+//     },
+// };
 
 function Register() {
     const classes = useStyles();
@@ -45,7 +60,7 @@ function Register() {
 
     const nextStep = async () => {
         const validateEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-        // const onlyLettersRegex = /^[a-zA-Z]*$/;
+        const githubAccountRegex = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i;
         const onlyLettersAndSpacesRegex = /^[a-zA-Z\s]*$/;
         const onlyLettersAndNumbersRegex = /^[a-zA-Z0-9]*$/;
         const phoneNumberRegex= /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
@@ -54,15 +69,21 @@ function Register() {
 
         let tempErrs = [];
         if (step === 1) {
-            if (firstName.length < 1 || !onlyLettersAndSpacesRegex.test(firstName))
+            if (
+                firstName.length < 1 ||
+                !onlyLettersAndSpacesRegex.test(firstName)
+            )
                 tempErrs.push({
                     field: "firstName",
                     message: "First name must contain only letters.",
                 });
-            if (lastName.length < 1 || !onlyLettersAndSpacesRegex.test(lastName))
+            if (
+                lastName.length < 1 ||
+                !onlyLettersAndSpacesRegex.test(lastName)
+            )
                 tempErrs.push({
                     field: "lastName",
-                    message: "Last name  must contain only letters.",
+                    message: "Last name must contain only letters.",
                 });
             if (
                 userName.length < 1 ||
@@ -76,17 +97,17 @@ function Register() {
             if (userName.length > 32)
                 tempErrs.push({
                     field: "userName",
-                    message:
-                        "Username to long.",
+                    message: "Username to long.",
                 });
             try {
-                const { data } = await network.post('/api/v1/auth/userexist', { userName });
+                const { data } = await network.post("/api/v1/auth/userexist", {
+                    userName,
+                });
             } catch (e) {
                 if (e.response.status === 409) {
                     tempErrs.push({
                         field: "userName",
-                        message:
-                            "Username already exists.",
+                        message: "Username already exists.",
                     });
                 }
             }
@@ -118,7 +139,7 @@ function Register() {
             if (phoneNumber.length < 1 || !phoneNumberRegex.test(phoneNumber))
                 tempErrs.push({
                     field: "phoneNumber",
-                    message: "Only numbers allowed in phone number.",
+                    message: "Invalid phone number",
                 });
         } else if (step === 3) {
             if (password.length < 8)
@@ -152,7 +173,7 @@ function Register() {
                     field: "signUpReason",
                     message: "Sign up reason must be chosen.",
                 });
-            if (gitHub.length < 1 || !onlyLettersAndNumbersRegex.test(gitHub))
+            if (gitHub.length < 1 || !githubAccountRegex.test(gitHub))
                 tempErrs.push({
                     field: "gitHub",
                     message: "GitHub account is invalid.",
@@ -161,24 +182,21 @@ function Register() {
                 setErrors([]);
                 try {
                     setLoading(true);
-                    await network.post(
-                        "/api/v1/auth/register",
-                        {
-                            firstName,
-                            lastName,
-                            userName,
-                            email,
-                            password,
-                            birthDate,
-                            country,
-                            city,
-                            phoneNumber,
-                            githubAccount: gitHub,
-                            reasonOfRegistration: signUpReason,
-                            securityQuestion,
-                            securityAnswer,
-                        }
-                    );
+                    await network.post("/api/v1/auth/register", {
+                        firstName,
+                        lastName,
+                        userName,
+                        email,
+                        password,
+                        birthDate,
+                        country,
+                        city,
+                        phoneNumber,
+                        githubAccount: gitHub,
+                        reasonOfRegistration: signUpReason,
+                        securityQuestion,
+                        securityAnswer,
+                    });
                     setLoading(false);
                 } catch (err) {
                     tempErrs.push({
@@ -188,7 +206,7 @@ function Register() {
                 }
             }
         } else if (step === 5) {
-            history.push('/login');
+            history.push("/login");
             return;
         }
         if (tempErrs.length === 0) {
@@ -203,7 +221,6 @@ function Register() {
         setStep(step - 1);
         setErrors([]);
     };
-
 
     const handleChange = (input) => (e) => {
         switch (input) {
@@ -308,65 +325,87 @@ function Register() {
     };
 
     return (
-        <div className="registerGeneral">
-            <div className="containerHeaderRegister">
-                <div className="registerHeader">
-                    <div className="registerTitle">Register</div>
-                    <Stepper activeStep={step} />
-                </div>
-            </div>
-            <div className="registerBody">
-                {multiForm()}
-                {errors.length !== 0 && (
-                    <div className="containerErrorRegister">
-                        <ErrorIcon
-                            style={{
-                                color: "white",
-                                marginLeft: "4px",
-                            }}
-                        />
-                        <div className="errorInputRegister">
-                            {errors[0].message}
+        <>
+            <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                    default: { duration: 2 },
+                }}
+                // <motion.div
+                //     initial="initial"
+                //     animate="in"
+                //     exit="out"
+                //     variants={pageVariants}
+                className="registerGeneral"
+            >
+                <div className="containerHeaderRegister">
+                    <div className="registerHeader">
+                        <div className="registerTitle">
+                            <b>Register</b>
                         </div>
+                        <Stepper activeStep={step} />
                     </div>
-                )}
-                {loading && <CircularProgress />}
-                <div className="containerSecond">
-                    {step !== 5 ?
-                        <>
-
+                </div>
+                <div className="registerBody">
+                    {multiForm()}
+                    {errors.length !== 0 && (
+                        <div className="containerErrorRegister">
+                            <ErrorIcon
+                                style={{
+                                    color: "white",
+                                    marginLeft: "4px",
+                                }}
+                            />
+                            <div className="errorInputRegister">
+                                {errors[0].message}
+                            </div>
+                        </div>
+                    )}
+                    {loading && <CircularProgress />}
+                    <div className="containerSecond">
+                        {step !== 5 ? (
+                            <>
+                                <div className="containerButtons">
+                                    {step > 1 && (
+                                        <Button onClick={prevStep}>Back</Button>
+                                    )}
+                                    <Button
+                                        className={classes.nextButton}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={nextStep}
+                                    >
+                                        {step === 4 ? "Finish" : "Next"}
+                                    </Button>
+                                </div>
+                            </>
+                        ) : (
                             <div className="containerButtons">
-                                {step > 1 && <Button onClick={prevStep}>Back</Button>}
-                                <Button
+                                {step > 1 && <Button id='prevButton' onClick={prevStep}>Back</Button>}
+                                 <Button
+                                    id='nextButton'
                                     className={classes.nextButton}
                                     variant="contained"
                                     color="primary"
                                     onClick={nextStep}
                                 >
-                                    {step === 4 ? "Finish" : "Next"}
+                                    Back To Login Page
                                 </Button>
                             </div>
-                        </>
-                        :
-                        <div className="containerButtons">
-                            <Button
-                                className={classes.nextButton}
-                                variant="contained"
-                                color="primary"
-                                onClick={nextStep}
-                            >
-                                Back To Login Page
-                        </Button>
-                        </div>
-                    }
+                        )}
 
-                    <p>
-                        Have an existing account?{" "}
-                        <Link to="/login">Login Here</Link>
-                    </p>
+                        <p>
+                            Have an existing account?{" "}
+                            <Link to="/login">Login Here</Link>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </motion.div>
+            <div className="background"></div>
+
+            {/* // </div> */}
+        </>
     );
 }
 

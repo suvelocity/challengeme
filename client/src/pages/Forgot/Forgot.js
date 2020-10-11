@@ -7,8 +7,23 @@ import { useHistory, Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import ErrorIcon from "@material-ui/icons/Error";
+import { motion } from "framer-motion";
+
 import "../../styles/Forgot.css";
 
+const pageVariants = {
+    initial: {
+        opacity: 0,
+    },
+    in: {
+        opacity: 1,
+        transition: { duration: 1.5 },
+    },
+    out: {
+        opacity: 0,
+        transition: { duration: 1.5 },
+    },
+};
 const useStyles = makeStyles((theme) => ({
     nextButtonForgotPass: {
         marginBottom: "10px",
@@ -174,26 +189,32 @@ export default function Forgot() {
     };
     console.log(error);
     return (
-        <div className="forgotPassGeneral">
+        <motion.div
+            initial="initial"
+            animate="in"
+            exit="out"
+            variants={pageVariants}
+            className="forgotPassGeneral"
+        >
             <div className="containerHeaderForgotPass">
                 <div className="forgotPassHeader">
-                    <div className="forgotPassTitle">Forgot Password</div>
+                    <div className="forgotPassTitle">
+                        <b>Forgot Password</b>
+                    </div>
                 </div>
             </div>
             <div className="ForgotPassBody">
                 {multiForm()}
                 {error !== "" && (
-                    <div className="containerErrorForgotPass">
+                    <motion.div className="containerErrorForgotPass">
                         <ErrorIcon
                             style={{
                                 color: "white",
                                 marginLeft: "4px",
                             }}
                         />
-                        <div className="errorInputForgotPass">
-                            {error}
-                        </div>
-                    </div>
+                        <div className="errorInputForgotPass">{error}</div>
+                    </motion.div>
                 )}
                 <div className="containerButtonsForgotPass">
                     <Button
@@ -207,6 +228,6 @@ export default function Forgot() {
                     <Link to="/login">Login Here</Link>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }
