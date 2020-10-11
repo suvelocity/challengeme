@@ -97,10 +97,9 @@ function UserStatistics() {
             setLoading(false);
           });
         axios
-          .get(`/api/v1/statistics/users/sub-by-category`)
+          .get(`/api/v1/statistics/users/sub-by-type`)
           .then((r) => r.data)
           .then((r) => {
-            console.log(r);
             setUserSubByType(r);
             setLoading(false);
           });
@@ -108,7 +107,6 @@ function UserStatistics() {
           .get(`/api/v1/statistics/users/sub-by-date`)
           .then((r) => r.data)
           .then((r) => {
-            console.log(r);
             setUserSubByDate(r[0]);
             setLoading(false);
           });
@@ -117,8 +115,9 @@ function UserStatistics() {
       useEffect(() => {
         getInfo()
       }, [])
+      
 
-      const usersSubmissionType = {
+      const usersSubmissionByDate = {
         labels: userSubByDate && userSubByDate.map(index => index.createdAt.split('T')[0]), // array of values for x axis (strings)
         title: "Users Submissions by the last 5 days", // title for the chart
         rawData: [
@@ -142,9 +141,9 @@ function UserStatistics() {
         ],
       };
 
-      const usersSubmissionByDate = {
-        labels: userSubByType && userSubByType.map(index => index.Challenge.category), // array of values for x axis (strings)
-        title: "Users top submissions by challenges type", // title for the chart
+      const usersSubmissionType = {
+        labels: userSubByType && userSubByType.map(index => index.Challenge.type), // array of values for x axis (strings)
+        title: "User's top submissions by challenges type", // title for the chart
         rawData: [
           {
             label: "Amount submissions", // name of the line (one or two words)
@@ -160,7 +159,7 @@ function UserStatistics() {
             ],
             borderColor: "black",
             fill: false, // change the line chart
-            data: userSubByType && [...userSubByType.map(index => index.Challenge.CountByCategory), 0], // array of values for Y axis (numbers)
+            data: userSubByType && [...userSubByType.map(index => index.Challenge.CountByType), 0], // array of values for Y axis (numbers)
           },
           // you can add as many object as you wand, each one will a different line with different color
         ],
@@ -227,10 +226,10 @@ function UserStatistics() {
             style={{ gridArea: "headChart"}}
           >
             <Charts
-              name="UserTopSubmissionsByType"
+              name="UserSubmissionsByDate"
               width={"25vw"}
               height={"25vh"}
-              chart={[0, 2]}
+              chart={[0, 1, 2]}
               data={usersSubmissionByDate}
             />
           </div>
@@ -263,10 +262,10 @@ function UserStatistics() {
             style={{ gridArea: "bottomRightChart"}}
           >
             <Charts
-              name="UserSubmissionsByDate"
+              name="UserTopSubmissionsByType"
               width={"25vw"}
               height={"25vh"}
-              chart={[0, 1, 2]}
+              chart={[0, 2]}
               data={usersSubmissionType}
             />
           </div>

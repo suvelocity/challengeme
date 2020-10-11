@@ -14,7 +14,7 @@
 // -- This is a parent command --
 Cypress.Commands.add("login", () => {
     cy.server()
-    cy.route('/api/v1/auth/login', {login: true})
+    cy.route('**/api/v1/auth/login', {login: true})
     cy.visit('http://localhost:3000')
 })
 //
