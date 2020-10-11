@@ -35,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     height: "inherit",
     width: "inherit",
     gridTemplate: `
+    'header header ' 5vh
       'headChart sideList ' 45vh 
       'bottomChart bottomRightChart' 45vh`,
   },
@@ -191,6 +192,7 @@ function UserStatistics() {
     return (
       <div className={clsx(classes.main, darkMode?"dark-home-page":"light-home-page")}>
       <div className={classes.grid}>
+      <h1 style={{gridArea: "header"}}>Users Statistics</h1>
         {loading ? (
           <div className={classes.root}>
             <CircularProgress />

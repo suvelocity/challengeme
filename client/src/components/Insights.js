@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
     height: "inherit",
     width: "inherit",
     gridTemplate: `
+      'header header header' 5vh
       'smallChart smallChart smallChart' 30vh 
       'rightChart sideChart sideChart' 30vh
       'leftChart sideChart sideChart' 30vh
@@ -239,6 +240,7 @@ function Insights() {
   return (
     <div className={classes.main}>
       <div className={classes.grid}>
+        <h1 style={{gridArea: "header"}}>Insights</h1>
         {loading ? (
           <div className={classes.root}>
             <CircularProgress />
