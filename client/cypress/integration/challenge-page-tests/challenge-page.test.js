@@ -15,17 +15,17 @@ const MOCK = {
     repo: {
       content: 'Please enter a solution repository',
       path:
-        'body > div:nth-child(7) > div.makeStyles-paper-7 > form > span:nth-child(3)',
+        '#required-repo',
     },
     invalidRrepo: {
       content: 'The text should look like "username/repository-name"',
       path:
-        'body > div:nth-child(7) > div.makeStyles-paper-7 > form > span:nth-child(3)',
+        '#required-repo',
     },
     rating: {
       content: 'Please rate this challenge',
       path:
-        'body > div:nth-child(7) > div.makeStyles-paper-7 > form > span:nth-child(6)',
+        '#required-rating',
     },
   },
   jwtNodeJs: {
