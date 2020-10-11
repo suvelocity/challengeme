@@ -1,7 +1,7 @@
 const reviewsRouter = require("express").Router();
 const { Challenge, Review, User } = require("../../models");
 
-// review mock for easy sevelopment
+// review mock for easy development
 const review = {
   id: 32123,
   title: "love that challenge!!!",
