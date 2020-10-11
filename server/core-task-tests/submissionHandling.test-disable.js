@@ -35,6 +35,9 @@ describe('Submission process', () => {
     });
     test('Getting Submission Status back to database', async (done) => {
         let submissions;
+        const solution = await Submission.findOne({challengeId:1});
+        // changing the state of a successed submission to 'FAIL' to see if it will get resolved
+        await solution.update({state: 'FAIL'});
         function checkingPending (){
             return new Promise((resolve, reject) => {
                 function checking(){
@@ -66,35 +69,10 @@ describe('Submission process', () => {
             const index = allSubmissions.findIndex(submission => submission.solutionRepository === fail.repo && submission.state === 'FAIL');
             expect(index).toBeGreaterThan(-1);
         })
+        const resolvedSubmission = await Submission.findOne({challengeId:1});
+        expect(resolvedSubmission.state).toBe('SUCCESS')
         done();
     })
-
-
-  /* test('Can update an existing failing submission to success', async (done) => {
-        const solution = await Submission.findOne({challengeId:1});
-        await solution.update({state: 'FAIL'});
-        await request(app).post(`/api/v1/challenges/${solutionRepos[0].challengeId}/apply`).send({solutionRepository:solutionRepos[0].repo});
-        function checkingPending (){
-            return new Promise((resolve, reject) => {
-                function checking(){
-                    setTimeout(async()=>{
-                        let reSubmission = await Submission.findOne({challengeId:1});
-                        if(reSubmission.state === 'SUCCESS'){
-                            console.log('success');
-                            return resolve('success');
-                        }else{
-                            console.log('checking again')
-                            return checking();
-                    }
-                    }, 10000);
-                }
-                checking();
-            });
-        }
-        await checkingPending();
-        done();
-    },200000) */ // not ideal at all to add another loop. need to fix and add the failed test to the initial action triggering session.
-
 
     afterAll(async (done) => {
         server.close();
