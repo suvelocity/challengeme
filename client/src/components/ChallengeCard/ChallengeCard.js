@@ -74,7 +74,7 @@ export default function ChallengeCard({
         console.error(err.message)
       }
     })()
-  })
+  },[])
   const avatarStyle = {backgroundColor:darkMode ? "#F5AF5D":"#C9AC80",margin:5}
 
   return (
