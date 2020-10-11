@@ -17,13 +17,13 @@
     padding:10px;
     text-align: center;
   }
-  #title {
+  .title {
     text-align: left; 
       grid-area: title;
       margin-left: 20px; 
       font-weight: 900;
     }
-  #content { 
+  .content { 
       text-align: left;
       grid-area: content;
       margin-left: 20px; 
@@ -31,18 +31,18 @@
       margin-top: 10px;
       word-wrap: break-word;
     }
-  #createdAt { 
+  .createdAt { 
       grid-area: createdAt; 
       justify-self: end;
       margin-right:20px;
       text-align: right;
     }
-  #rating { 
+  .rating { 
       grid-area: rating; 
       margin-left: 20px;
       text-align: left;
     }
-  #author { 
+  .author { 
       grid-area: author; 
       justify-self: end;
       margin-right:20px;

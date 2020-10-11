@@ -1,32 +1,35 @@
-import React, { useState } from "react";
-import { Modal, TextField, Button, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useState } from 'react';
+import { Modal, TextField, Button, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
 
 import { Rating } from "@material-ui/lab";
 import { useForm } from "react-hook-form";
 import network from "../../services/network";
+
 function getModalStyle() {
-	return {
-		outline: 0
-	};
+  return {
+    outline: 0,
+  };
 }
 
-const useStyles = makeStyles(theme => ({
-	paper: {
-		position: "absolute",
-		width: 400,
-		backgroundColor: theme.palette.background.paper,
-		border: "2px solid #000",
-		boxShadow: theme.shadows[5],
-		padding: theme.spacing(2, 4, 3)
-	},
-	formValidationError: {
-		color: "red",
-		fontSize: "0.8em"
-	}
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: 'absolute',
+    width: 400,
+    backgroundColor: theme.palette.background.paper,
+    border: '2px solid #000',
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+  },
+  formValidationError: {
+    color: 'red',
+    fontSize: '0.8em',
+  },
 }));
 
 function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
+
 	/* eslint-disable no-unused-vars */
 	const { register, handleSubmit, errors } = useForm();
 	/* eslint-enable no-unused-vars */
