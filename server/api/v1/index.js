@@ -12,8 +12,7 @@ router.use('/new-challenge', require('./newChallenge'));
 router.use('/webhook', require('./webhook'));
 router.use('/statistics', require('./statisticsRoutes'));
 router.use("/auth", require("./auth"));
-
+router.use('/labels', require('./labels'));
 router.use(unknownEndpoint);
-
 
 module.exports = router;

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import Home from './Home';
+// import Home from './Home'; // used by old versions
 import Header from '../components/header/Header'
 import ThemeApi from '../services/Theme'
 import Statistics from './Statistics';
@@ -14,12 +14,28 @@ import network from "../services/network";
 import Landing from "./Landing";
 import { AnimatePresence } from "framer-motion";
 
+import Home from './Home/Home'; // post- Shahar folder revolution
+import NewChallengeForm from '../components/NewChallenge/NewChallengeForm';
+
   
   
   export default function Router() {
     const [darkTheme,setDarkTheme] = useState(false)
     const [logged, setLogged] = useState(false);
     const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const previousTheme = localStorage.getItem("darkMode") //get previous selected theme
+    if(previousTheme === "false"){
+      setDarkTheme(false)
+    }else if(previousTheme === "true"){
+      setDarkTheme(true)
+    }
+    else{
+      if(window.matchMedia('(prefers-color-scheme: dark)').matches){ //check default theme of the user
+        setDarkTheme(true)
+      }
+    }
 
     useEffect(() => {
     
@@ -90,6 +106,9 @@ import { AnimatePresence } from "framer-motion";
                           <Switch>
                             <Route exact path="/" >
                               <Home />
+                            </Route>
+                            <Route path="/add_challenge">
+                              <NewChallengeForm />
                             </Route>
                             <Route path="/statistics">
                               <Statistics />

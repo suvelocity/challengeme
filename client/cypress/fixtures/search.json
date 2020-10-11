@@ -1,0 +1,55 @@
+[
+    {
+        "id": 2,
+        "name": "React - Calculator",
+        "description": "https://github.com/suvelocity/calculator-challenge",
+        "type": "client",
+        "repositoryName": "suvelocity/calculator-challange-tests",
+        "cover": "https://storage.googleapis.com/challenges-cover/calc.jpg",
+        "category": "React",
+        "createdAt": "2020-10-01T20:00:00.000Z",
+        "updatedAt": "2020-10-01T20:00:00.000Z",
+        "deletedAt": null,
+        "Labels": [
+            {
+                "id": 1,
+                "name": "React",
+                "createdAt": "2020-10-01T20:00:00.000Z",
+                "updatedAt": "2020-10-01T20:00:00.000Z",
+                "deletedAt": null,
+                "labels_to_challenges": {
+                    "createdAt": "2020-10-01T20:00:00.000Z",
+                    "updatedAt": "2020-10-01T20:00:00.000Z",
+                    "challenge_id": 2,
+                    "label_id": 1
+                }
+            },
+            {
+                "id": 4,
+                "name": "JavaScript",
+                "createdAt": "2020-10-01T20:00:00.000Z",
+                "updatedAt": "2020-10-01T20:00:00.000Z",
+                "deletedAt": null,
+                "labels_to_challenges": {
+                    "createdAt": "2020-10-01T20:00:00.000Z",
+                    "updatedAt": "2020-10-01T20:00:00.000Z",
+                    "challenge_id": 2,
+                    "label_id": 4
+                }
+            },
+            {
+                "id": 5,
+                "name": "HTML",
+                "createdAt": "2020-10-01T20:00:00.000Z",
+                "updatedAt": "2020-10-01T20:00:00.000Z",
+                "deletedAt": null,
+                "labels_to_challenges": {
+                    "createdAt": "2020-10-01T20:00:00.000Z",
+                    "updatedAt": "2020-10-01T20:00:00.000Z",
+                    "challenge_id": 2,
+                    "label_id": 5
+                }
+            }
+        ]
+    }
+]
