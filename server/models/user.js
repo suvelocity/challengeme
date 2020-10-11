@@ -9,14 +9,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.hasMany(models.Submission, {
+        foreignKey: "userId",
+      });
+      this.belongsToMany(models.Teams, { through: 'UsersTeams', foreignKey: 'userId' });
+      this.hasMany(models.Review, {
+        foreignKey: 'challengeId'
+      })
       this.hasMany(models.RefreshToken, {
         foreignKey: "userName",
-      });
-      this.hasMany(models.Challenge,{
-        foreignKey:"userId"
-      });
-      this.hasMany(models.Review,{
-        foreignKey:"userId"
       });
     }
   }
