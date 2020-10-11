@@ -6,8 +6,7 @@ describe("Client Tests", {
 }, () => {
   it("can get challenges", () => {
     cy.server();
-    cy.fixture('../fixtures/homeFixtures/challenges').as('challengesJson');
-    cy.route("**/api/v1/challenges", "fixture:challengesJson");
+    cy.route("**/api/v1/challenges", "fixture:homeFixtures/challenges");
     cy.visit("http://localhost:3000");
     cy.get("div#challenges").should("have.length", 3);
     // cy.route('**/api/v1/challenges', '@challenges')
@@ -29,7 +28,7 @@ describe("Client Tests", {
 
     cy.get("#ProfileStatistics").click();
     cy.url().should("include", "profile");
-    
+
     cy.get("#home").click();
     cy.url().should("include", "http://localhost:3000/statistics");
   });
@@ -37,13 +36,9 @@ describe("Client Tests", {
   it("Checks home page charts", () => {
     cy.server();
 
-    cy.fixture('../fixtures/homeFixtures/challenges').as('challengesJson');
-    cy.fixture('../fixtures/homeFixtures/users').as('usersJson');
-    cy.fixture('../fixtures/homeFixtures/topTeams').as('topTeamsJson');
-
-    cy.route("**/top-users", "fixture:usersJson").as("getUsers");
-    cy.route("**/teams/top", "fixture:topTeamsJson").as("getTeams");
-    cy.route("**/top-challenges", "fixture:topChallenges.json").as("topChallenges");
+    cy.route("**/top-users", "fixture:homeFixtures/users").as("getUsers");
+    cy.route("**/teams/top", "fixture:homeFixtures/topTeams").as("getTeams");
+    cy.route("**/top-challenges", "fixture:homeFixtures/challenges").as("topChallenges");
 
     cy.visit("http://localhost:3000/statistics");
 
