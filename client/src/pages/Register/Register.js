@@ -83,7 +83,7 @@ function Register() {
             )
                 tempErrs.push({
                     field: "lastName",
-                    message: "Last name  must contain only letters.",
+                    message: "Last name must contain only letters.",
                 });
             if (
                 userName.length < 1 ||
@@ -139,7 +139,7 @@ function Register() {
             if (phoneNumber.length < 1 || !phoneNumberRegex.test(phoneNumber))
                 tempErrs.push({
                     field: "phoneNumber",
-                    message: "Only numbers allowed in phone number.",
+                    message: "Invalid phone number",
                 });
         } else if (step === 3) {
             if (password.length < 8)
@@ -382,7 +382,9 @@ function Register() {
                             </>
                         ) : (
                             <div className="containerButtons">
+                                {step > 1 && <Button id='prevButton' onClick={prevStep}>Back</Button>}
                                 <Button
+                                    id='nextButton'
                                     className={classes.nextButton}
                                     variant="contained"
                                     color="primary"

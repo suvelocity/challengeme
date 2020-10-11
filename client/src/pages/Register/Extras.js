@@ -26,6 +26,7 @@ function Extras({ values, handleChange }) {
     return (
         <div className="containerExtra">
             <Select
+            id="signUpReason"
             className={classes.reason}
                 displayEmpty
                 value={values.signUpReason}
@@ -42,6 +43,7 @@ function Extras({ values, handleChange }) {
             <FormControl className={classes.github}>
                 <InputLabel style={{ color: "grey" }}>Enter your GitHub Account Username</InputLabel>
                 <Input
+                id="github"
                     type="text"
                     value={values.gitHub}
                     required

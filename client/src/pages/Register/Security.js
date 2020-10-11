@@ -55,6 +55,7 @@ function Security({ values, handleChange }) {
                     Password
                 </InputLabel>
                 <Input
+                    id="password"
                     value={values.password}
                     type={showPassword ? "text" : "password"}
                     onChange={handleChange("password")}
@@ -86,6 +87,7 @@ function Security({ values, handleChange }) {
                     Confirm Password
                 </InputLabel>
                 <Input
+                    id="confirmPassword"
                     value={values.confirmPassword}
                     type={showConfirmPassword ? "text" : "password"}
                     onChange={handleChange("confirmPassword")}
@@ -109,6 +111,7 @@ function Security({ values, handleChange }) {
                 />
             </FormControl>
             <Select
+                id="securityQuestion"
                 className={classes.question}
                 displayEmpty
                 value={values.securityQuestion}
@@ -128,6 +131,7 @@ function Security({ values, handleChange }) {
                     Enter your answer
                 </InputLabel>
                 <Input
+                    id="securityAnswer"
                     type="text"
                     value={values.securityAnswer}
                     required
