@@ -23,19 +23,19 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const pageVariants = {
-    initial: {
-        opacity: 0,
-    },
-    in: {
-        opacity: 1,
-        transition: { duration: 0.5 },
-    },
-    out: {
-        opacity: 0,
-        transition: { duration: 0.5 },
-    },
-};
+// const pageVariants = {
+//     initial: {
+//         opacity: 0,
+//     },
+//     in: {
+//         opacity: 1,
+//         transition: { duration: 0.5 },
+//     },
+//     out: {
+//         opacity: 0,
+//         transition: { duration: 0.5 },
+//     },
+// };
 
 function Register() {
     const classes = useStyles();
@@ -326,74 +326,85 @@ function Register() {
     };
 
     return (
-        <motion.div
-            initial="initial"
-            animate="in"
-            exit="out"
-            variants={pageVariants}
-            className="registerGeneral"
-        >
-            <div className="containerHeaderRegister">
-                <div className="registerHeader">
-                    <div className="registerTitle">
-                        <b>Register</b>
-                    </div>
-                    <Stepper activeStep={step} />
-                </div>
-            </div>
-            <div className="registerBody">
-                {multiForm()}
-                {errors.length !== 0 && (
-                    <div className="containerErrorRegister">
-                        <ErrorIcon
-                            style={{
-                                color: "white",
-                                marginLeft: "4px",
-                            }}
-                        />
-                        <div className="errorInputRegister">
-                            {errors[0].message}
+        <>
+            <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                    default: { duration: 2 },
+                }}
+                // <motion.div
+                //     initial="initial"
+                //     animate="in"
+                //     exit="out"
+                //     variants={pageVariants}
+                className="registerGeneral"
+            >
+                <div className="containerHeaderRegister">
+                    <div className="registerHeader">
+                        <div className="registerTitle">
+                            <b>Register</b>
                         </div>
+                        <Stepper activeStep={step} />
                     </div>
-                )}
-                {loading && <CircularProgress />}
-                <div className="containerSecond">
-                    {step !== 5 ? (
-                        <>
+                </div>
+                <div className="registerBody">
+                    {multiForm()}
+                    {errors.length !== 0 && (
+                        <div className="containerErrorRegister">
+                            <ErrorIcon
+                                style={{
+                                    color: "white",
+                                    marginLeft: "4px",
+                                }}
+                            />
+                            <div className="errorInputRegister">
+                                {errors[0].message}
+                            </div>
+                        </div>
+                    )}
+                    {loading && <CircularProgress />}
+                    <div className="containerSecond">
+                        {step !== 5 ? (
+                            <>
+                                <div className="containerButtons">
+                                    {step > 1 && (
+                                        <Button onClick={prevStep}>Back</Button>
+                                    )}
+                                    <Button
+                                        className={classes.nextButton}
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={nextStep}
+                                    >
+                                        {step === 4 ? "Finish" : "Next"}
+                                    </Button>
+                                </div>
+                            </>
+                        ) : (
                             <div className="containerButtons">
-                                {step > 1 && (
-                                    <Button onClick={prevStep}>Back</Button>
-                                )}
                                 <Button
                                     className={classes.nextButton}
                                     variant="contained"
                                     color="primary"
                                     onClick={nextStep}
                                 >
-                                    {step === 4 ? "Finish" : "Next"}
+                                    Back To Login Page
                                 </Button>
                             </div>
-                        </>
-                    ) : (
-                        <div className="containerButtons">
-                            <Button
-                                className={classes.nextButton}
-                                variant="contained"
-                                color="primary"
-                                onClick={nextStep}
-                            >
-                                Back To Login Page
-                            </Button>
-                        </div>
-                    )}
+                        )}
 
-                    <p>
-                        Have an existing account?{" "}
-                        <Link to="/login">Login Here</Link>
-                    </p>
+                        <p>
+                            Have an existing account?{" "}
+                            <Link to="/login">Login Here</Link>
+                        </p>
+                    </div>
                 </div>
-            </div>
-        </motion.div>
+            </motion.div>
+            <div className="background"></div>
+
+            {/* // </div> */}
+        </>
     );
 }
 
