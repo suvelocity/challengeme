@@ -137,7 +137,6 @@ function ChallengePage() {
 				isOpen={isModalOpen}
 				handleClose={handleModalClose}
 				challengeParamId={challengeParamId}
-				userId={userId}
 			/>
 		</div>
 	) : (
