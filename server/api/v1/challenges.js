@@ -2,13 +2,13 @@ const { Router } = require('express');
 const axios = require('axios');
 const filterResults = require('../../middleware/filterResults');
 const { Sequelize } = require('sequelize');
-const Op = Sequelize.Op;
 const fs = require("fs")
 
 const { Submission, Challenge, Label } = require('../../models');
 
 const router = Router();
 
+//get all challenges
 router.get('/',filterResults, async (req, res) => {
   const {condition,labels} = req
     try {
@@ -33,20 +33,6 @@ router.get('/',filterResults, async (req, res) => {
     }
   })
 
-router.get('/update_date', async (req, res) => {
-  const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`,{headers: {
-    Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
-  }})
-  res.json(repo)
-})
-
-router.get('/public_repo', async (req, res) => {
-  const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`,{headers: {
-    Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
-  }})
-  res.json(repo)
-})
-
 router.get('/:challengeId/submissions', async (req, res) => {
   const { challengeId } = req.params;
   const allSubmission = await Submission.findAll({ where: {
@@ -55,6 +41,7 @@ router.get('/:challengeId/submissions', async (req, res) => {
   res.json(allSubmission)
 })
 
+//get repo details if its public
 router.get('/public_repo', async (req, res) => {
   try {
     const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`, {
@@ -155,6 +142,7 @@ router.get('/type', async (req,res) => {
   }catch(e){res.send(e.message)}
 })
 
+//get all labels
 router.get('/labels', async (req, res) => {
   const allLabels = await Label.findAll();
   res.json(allLabels.map(({id,name})=>{return{label:name,value:id}}))

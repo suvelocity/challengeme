@@ -104,13 +104,13 @@ export default function ChallengeCard({
         </div>
       </div>
       {
-      coverImg.length>0&&
+      coverImg.length > 0 &&
       <img className="challenge-card-img-homepage" src={coverImg} />
       }
       <div className="challenge-card-data-homepage">
         {
           date&&
-         "Updated: "+date
+         "Updated: "+ date
         }
         <Rating readOnly name="disabled" value={4}  />
       </div>
