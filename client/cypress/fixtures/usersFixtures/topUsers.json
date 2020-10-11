@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "challengeId": 1,
+        "userId": 1,
+        "state": "SUCCESS",
+        "solutionRepository": "Moran1324/Authentication-Challenge-SOLUTION",
+        "createdAt": "2020-10-06T18:13:59.000Z",
+        "updatedAt": "2020-10-06T18:13:59.000Z",
+        "deletedAt": null,
+        "challenge_id": 1,
+        "countSub": 6,
+        "User": {
+            "userName": "miki"
+        }
+    },
+    {
+        "id": 3,
+        "challengeId": 1,
+        "userId": 3,
+        "state": "SUCCESS",
+        "solutionRepository": "michaelbyalsky/Authentication-Challenge-SOLUTION",
+        "createdAt": "2020-10-07T13:40:39.000Z",
+        "updatedAt": "2020-10-07T13:40:39.000Z",
+        "deletedAt": null,
+        "challenge_id": 1,
+        "countSub": 3,
+        "User": {
+            "userName": "boosty"
+        }
+    }
+]
