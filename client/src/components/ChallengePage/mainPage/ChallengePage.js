@@ -38,9 +38,13 @@ function ChallengePage() {
       const fetchChallenge = async () => {
         try {
           // TODO: (Dror) add another migration and column and seed, so each challenge will have the boilerplate and the official repo , talk to shahar team about that change
-        const { data:{challenge:challengeFromServer, author}  } = await network.get(
+        let { data:{challenge:challengeFromServer, author}  } = await network.get(
           `/api/v1/challenges/${challengeParamId}`
         );
+        const reviews = (await network.get(`/api/v1/reviews/byChallenge/${challengeParamId}`)).data
+        const ratingArray = reviews.map(review => review.rating);
+        const avgRating = ratingArray.length>0 ? (ratingArray.reduce((accumulator, currentValue) => accumulator + currentValue) / ratingArray.length) : 0;
+        challengeFromServer.averageRating = avgRating;
         console.log('challenge from server: ',challengeFromServer);
         setChallenge(challengeFromServer);
         setAuthor(author);
@@ -111,7 +115,7 @@ function ChallengePage() {
             <h2>Rating:</h2>
             <Rating
               name='half-rating-read'
-              defaultValue={3}
+              defaultValue={challenge.averageRating}
               precision={0.5}
               readOnly
               size='large'
