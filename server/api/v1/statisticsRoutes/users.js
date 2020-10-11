@@ -94,7 +94,7 @@ router.get("/sub-by-type", async(req, res) => {
 })
 
 router.get("/unsolved-challenges", async(req, res) => {
-  let loggedUser = req.user ? req.user.userId : 1
+  let loggedUser = req.user ? req.user.userId : 3
   const userSubmissions = await Submission.findAll({
     group:["challenge_id"],
     attributes: [
@@ -108,7 +108,6 @@ router.get("/unsolved-challenges", async(req, res) => {
   const solvedChallenges = userSubmissions.map(challenge => {
     return challenge.challenge_id
   })
-
 
   const unsolvedChallenges = await Challenge.findAll({
       where: {
