@@ -32,6 +32,14 @@ describe("insights tests", () => {
     expect(userRes.length).toBe(3);
     const reviewRes = await Review.bulkCreate(reviews);
     expect(reviewRes.length).toBe(7);
+
+    const loginResponse = await request(app)
+      .post("/api/v1/auth/login")
+      .send({
+        userName: "dekdekdek",
+        passsword: "blabla96"
+      });
+
   });
 
   afterAll(async () => {
