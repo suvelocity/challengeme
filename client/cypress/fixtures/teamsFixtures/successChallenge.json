@@ -1,0 +1,16 @@
+[
+    {
+        "challengeSuccesses": 3,
+        "challengeId": 1,
+        "Challenge": {
+            "name": "JWT - Node.js"
+        }
+    },
+    {
+        "challengeSuccesses": 3,
+        "challengeId": 2,
+        "Challenge": {
+            "name": "React - Calculator"
+        }
+    }
+]
