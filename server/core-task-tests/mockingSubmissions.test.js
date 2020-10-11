@@ -6,7 +6,6 @@ const app = require('../app');
 const {Submission, Challenge} = require('../models');
 const {challengeArr, solutionRepos, failRepos} = require('./mockData');
 const nock = require('nock');
-const { default: Axios } = require('axios');
 let accessToken;
 
 describe('Submission process', () => {
