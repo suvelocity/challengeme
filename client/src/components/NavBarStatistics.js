@@ -39,8 +39,9 @@ const routesIcons = [
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
-    position: 'relative',
-    marginTop: "3.4rem"
+    position: 'fixed',
+    marginTop: "3.4rem",
+    zIndex: '1'
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,

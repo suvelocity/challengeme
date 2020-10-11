@@ -189,9 +189,9 @@ function StatisticsHome() {
             style={{ gridArea: "headChart", ...imageStyle }}
           >
             <Charts
-              name="TopTeams"
+              name="topChallenges"
               width={"400px"}
-              height={"2000px"}
+              height={"200px"}
               chart={[0, 2]}
               data={challengeData}
             />
