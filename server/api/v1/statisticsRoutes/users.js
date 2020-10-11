@@ -33,28 +33,6 @@ router.get("/top-users", async (req, res) => {
 
 // returns the amount of successfull and failed submissions from all submissions
 router.get("/user-success", async (req, res) => {
-<<<<<<< Updated upstream
-  let loggedUser = req.user ? req.user.userId : 1
-  const subBySuccess = await Submission.findAll({
-    group: ["state"],
-    attributes: [
-      "id",
-      "state",
-      "createdAt",
-      [sequelize.fn("COUNT", sequelize.col("user_id")), "CountSuccessByUser"]
-    ],
-    include: [
-      {
-        model: User,
-        attributes: ["id", "userName"],
-      }
-    ],
-    where: {
-    [Op.and]: [{userId: loggedUser}, {[Op.or]: [{ state: "SUCCESS" }, { state: "FAIL" }]}],
-    },
-  });
-  res.json(subBySuccess);
-=======
   try{
     let loggedUser = req.user.userId ? req.user.userId : 1
     const subBySuccess = await Submission.findAll({
@@ -79,29 +57,10 @@ router.get("/user-success", async (req, res) => {
   }catch(err){
     res.json(err)
   }
->>>>>>> Stashed changes
 });
 
 // returns the submissions per day from the last 5 days
 router.get("/sub-by-date", async (req, res) => {
-<<<<<<< Updated upstream
-  let loggedUser = req.user ? req.user.userId : 1
-  const subByDate = await Submission.findAll({
-    group: [sequelize.fn("DAY", sequelize.col("created_at"))],
-    attributes: [
-      
-      [sequelize.fn("COUNT", sequelize.col("id")), "CountSubByDate"],
-      "createdAt",
-    ],
-    where: {
-      created_at: {
-
-      [Op.gte]: new Date(Date.now() - 432000000),
-    },
-    userId: loggedUser
-    },
-  });
-=======
   try{
     let loggedUser = req.user.userId ? req.user.userId : 1
     const subByDate = await Submission.findAll({
@@ -113,7 +72,6 @@ router.get("/sub-by-date", async (req, res) => {
       ],
       where: {
         created_at: {
->>>>>>> Stashed changes
   
         [Op.gte]: new Date(Date.now() - 432000000),
       },
@@ -131,30 +89,6 @@ router.get("/sub-by-date", async (req, res) => {
 
 
 // returns the count of submissions with the same challenge type
-<<<<<<< Updated upstream
-  router.get("/sub-by-type", async(req, res) => {
-  let loggedUser = req.user ? req.user.userId : 1
-  const subByType = await Submission.findAll({
-    include: [
-      {
-        model: Challenge,
-        attributes: [
-          "id", 
-          "type", 
-          "name",
-          [sequelize.fn("COUNT", sequelize.col("type")), "CountByType"]
-        ],
-        
-
-      }
-    ],
-    group: ["type"],
-    where: {
-      userId: loggedUser
-    },    
-  })
-  res.json(subByType)
-=======
   router.get("/sub-by-category", async(req, res) => {
     try{
       let loggedUser = req.user ? req.user.userId : 1
@@ -181,39 +115,10 @@ router.get("/sub-by-date", async (req, res) => {
     }catch(err){
       res.json(err)
     }
->>>>>>> Stashed changes
 })
 
 // returns the count of unsolved challenges
 router.get("/unsolved-challenges", async(req, res) => {
-<<<<<<< Updated upstream
-  let reqUser = req.user ? req.user : {id: 3, userName: "boosty"}
-
-  let loggedUser = req.user ? req.user.userId : 3
-  const userSubmissions = await Submission.findAll({
-
-    group:["challenge_id"],
-    attributes: [
-      "challenge_id"
-    ],
-    where: {
-      userId: loggedUser
-    }
-  })
-
-  const solvedChallenges = userSubmissions.map(challenge => {
-    return challenge.challenge_id
-  })
-
-
-  const unsolvedChallenges = await Challenge.findAll({
-    attributes: ['name', 'type', 'repositoryName'],
-      where: {
-      id: {[Op.notIn]: solvedChallenges}
-  }})
-
-  res.json([unsolvedChallenges, {User: reqUser}])
-=======
   try{
     let loggedUser = req.user ? req.user.userId : 3
     const userSubmissions = await Submission.findAll({
@@ -240,7 +145,6 @@ router.get("/unsolved-challenges", async(req, res) => {
   }catch(err){
     res.json(err)
   }
->>>>>>> Stashed changes
 })
 
 

@@ -53,19 +53,6 @@ router.get("/top-success", async (req, res) => {
 });
 
 // returns the count of challenges from same type('type name' + 'count')
-<<<<<<< Updated upstream
-router.get("/challenges-type", async (req, res) => {
-  const challengeType = await Challenge.findAll({
-    attributes: [
-      "type",
-      [sequelize.fn("COUNT", sequelize.col("type")), "countType"],
-    ],
-    group: ["type"],
-    order: [[sequelize.fn("COUNT", sequelize.col("type")), "DESC"]],
-    limit: 5,
-  });
-  res.json(challengeType);
-=======
 router.get("/challenges-category", async (req, res) => {
   try{
     const challengeType = await Challenge.findAll({
@@ -81,7 +68,6 @@ router.get("/challenges-category", async (req, res) => {
   }catch(err){
     res.json(err)
   }
->>>>>>> Stashed changes
 });
 
 // returns the count of submitions submited per day from the last 5 days 

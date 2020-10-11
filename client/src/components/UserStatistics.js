@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 function UserStatistics() {
     const classes = useStyles();
     const [topUsers, setTopUsers] = useState([{User: {userName: "user"}}]);
-    const [userSubByType, setUserSubByType] = useState(null);
+    const [userSubByType, setUserSubByType] = useState([]);
     const [userSubByDate, setUserSubByDate] = useState([]);
     const [userUnsolvedChallenges, setUserUnsolvedChallenges] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -96,7 +96,7 @@ function UserStatistics() {
             setLoading(false);
           });
         axios
-          .get(`/api/v1/statistics/users/sub-by-type`)
+          .get(`/api/v1/statistics/users/sub-by-category`)
           .then((r) => r.data)
           .then((r) => {
             console.log(r);
@@ -114,7 +114,6 @@ function UserStatistics() {
       };
      
       useEffect(() => {
-        console.log("effect");
         getInfo()
       }, [])
 
@@ -143,7 +142,7 @@ function UserStatistics() {
       };
 
       const usersSubmissionByDate = {
-        labels: userSubByType && userSubByType.map(index => index.Challenge.type), // array of values for x axis (strings)
+        labels: userSubByType && userSubByType.map(index => index.Challenge.category), // array of values for x axis (strings)
         title: "Users top submissions by challenges type", // title for the chart
         rawData: [
           {
@@ -160,7 +159,7 @@ function UserStatistics() {
             ],
             borderColor: "black",
             fill: false, // change the line chart
-            data: userSubByType && [...userSubByType.map(index => index.Challenge.CountByType), 0], // array of values for Y axis (numbers)
+            data: userSubByType && [...userSubByType.map(index => index.Challenge.CountByCategory), 0], // array of values for Y axis (numbers)
           },
           // you can add as many object as you wand, each one will a different line with different color
         ],
