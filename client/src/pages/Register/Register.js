@@ -60,7 +60,7 @@ function Register() {
 
     const nextStep = async () => {
         const validateEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
-        // const onlyLettersRegex = /^[a-zA-Z]*$/;
+        const githubAccountRegex = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i;
         const onlyLettersAndSpacesRegex = /^[a-zA-Z\s]*$/;
         const onlyLettersAndNumbersRegex = /^[a-zA-Z0-9]*$/;
         const phoneNumberRegex= /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
@@ -173,7 +173,7 @@ function Register() {
                     field: "signUpReason",
                     message: "Sign up reason must be chosen.",
                 });
-            if (gitHub.length < 1 || !onlyLettersAndNumbersRegex.test(gitHub))
+            if (gitHub.length < 1 || !githubAccountRegex.test(gitHub))
                 tempErrs.push({
                     field: "gitHub",
                     message: "GitHub account is invalid.",
@@ -383,7 +383,7 @@ function Register() {
                         ) : (
                             <div className="containerButtons">
                                 {step > 1 && <Button id='prevButton' onClick={prevStep}>Back</Button>}
-                                <Button
+                                 <Button
                                     id='nextButton'
                                     className={classes.nextButton}
                                     variant="contained"

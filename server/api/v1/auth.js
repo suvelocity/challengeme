@@ -13,10 +13,7 @@ usersRouter.post("/register", async (req, res) => {
   //Joi validation
   const { error } = registerValidation(req.body);
   if (error) {
-    console.log(error);
-    return res
-      .status(400)
-      .json({ success: false, message: error.details[0].message });
+    return res.status(400).json({ success: false, message: "Don't mess with me" })
   }
   // if user name already exist return error
   const checkUser = await userIsExist(req.body.userName);
@@ -81,7 +78,7 @@ usersRouter.post("/userexist", async (req, res) => {
   //User Validation
   const { error } = userValidation(req.body);
   if (error) {
-    res.status(400).json({ success: false, message: "Don't mess with me" })
+    return res.status(400).json({ success: false, message: "Don't mess with me" })
   }
   const currentUser = await userIsExist(req.body.userName);
   if (currentUser) return res.status(409).json({ message: "user name already exists" });
@@ -144,8 +141,6 @@ usersRouter.post("/token", async (req, res) => {
     return res.status(400).json({ success: false, message: "Refresh Token Required" })
   }
   const refreshToken = req.body.token;
-  // if (!refreshToken)
-  //   return res.status(400).json({ message: "Refresh Token Required" });
   const validRefreshToken = await RefreshToken.findOne({
     where: {
       token: refreshToken,
@@ -170,7 +165,7 @@ usersRouter.post("/logout", async (req, res) => {
   if (error) {
     return res.status(400).json({ success: false, message: "Refresh Token Required" })
   }
-  // if (!req.body.token) return res.status(400).json({ message: "Refresh Token Required" });
+  if (!req.body.token) return res.status(400).json({ message: "Refresh Token Required" });
   // check if token exist and delete it
   const result = await RefreshToken.destroy({
     where: {
