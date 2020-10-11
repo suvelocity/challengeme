@@ -6,7 +6,7 @@ module.exports = [
     repositoryName: "suvelocity/Authentication-Challenge",
     createdAt: "2020-10-01 20:00:00",
     updatedAt: "2020-10-01 20:00:00",
-    cover: "https://storage.googleapis.com/challenges-cover/jwt.png"
+    cover: "https://storage.googleapis.com/challenges-cover/jwt.png",
   },
   {
     name: "React - Calculator",

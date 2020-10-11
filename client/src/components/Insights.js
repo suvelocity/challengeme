@@ -107,7 +107,7 @@ useEffect(() => {
   const [loading, setLoading] = useState(true);
 
   const data = {
-    labels: ["January", "February", "March", "April", "May"], // array of values for x axis (strings)
+    labels: ["January", "February", "March", "April", "May" , "June" , "July" , "August"], // array of values for x axis (strings)
     title: "test", // title for the chart
     rawData: [
       //   {
@@ -119,10 +119,18 @@ useEffect(() => {
       //   },
       {
         label: "data1", // name of the line (one or two words)
-        backgroundColor: "green", //raw color
+        backgroundColor:  [
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628"], //raw color
         borderColor: "green", //use the same as background color
         fill: false, // change the line chart
-        data: [44, 50, 86, 61, 56], // array of values for Y axis (numbers)
+        data: [44, 50, 86, 61, 56 , 42 , 79 , 75 , 0], // array of values for Y axis (numbers)
       },
       // you can add as many object as you wand, each one will a different line with different color
     ],
@@ -135,14 +143,14 @@ useEffect(() => {
       {
         label: "submitions",
         backgroundColor: [
-          "red",
-          "blue",
-          "green",
-          "yellow",
-          "purple",
-          "black",
-          "pink",
-          "gray",
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628"
         ],
         borderColor: "black",
         fill: false,
@@ -157,14 +165,14 @@ useEffect(() => {
       {
         label: "submitions",
         backgroundColor: [
-          "red",
-          "blue",
-          "green",
-          "yellow",
-          "purple",
-          "black",
-          "pink",
-          "gray",
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628"
         ],
         borderColor: "black",
         fill: false,
@@ -180,14 +188,14 @@ useEffect(() => {
       {
         label: "types",
         backgroundColor: [
-          "red",
-          "blue",
-          "green",
-          "yellow",
-          "purple",
-          "black",
-          "pink",
-          "gray",
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628"
         ],
         borderColor: "black",
         fill: false,
@@ -203,14 +211,14 @@ useEffect(() => {
       {
         label: "types",
         backgroundColor: [
-          "red",
-          "blue",
-          "green",
-          "yellow",
-          "purple",
-          "black",
-          "pink",
-          "gray",
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628"
         ],
         borderColor: "black",
         fill: false,
@@ -229,14 +237,14 @@ useEffect(() => {
       {
         label: "types",
         backgroundColor: [
-          "red",
-          "blue",
-          "green",
-          "yellow",
-          "purple",
-          "black",
-          "pink",
-          "gray",
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628"
         ],
         borderColor: "black",
         fill: false,
@@ -258,7 +266,7 @@ useEffect(() => {
           </div>
         ) : (
           <div className={darkMode ? classes.divDark : classes.divLight} style={{ gridArea: "headChart" }}>
-            <Charts width={"36vw"} height={"36vh"} chart={[0, 1]} data={data} />
+            <Charts width={"36vw"} height={"36vh"} chart={[0, 1 , 2]} data={data} />
           </div>
         )}
         {loading ? (

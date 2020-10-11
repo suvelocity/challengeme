@@ -22,7 +22,8 @@ function Charts(props) {
             labels: props.data.labels,
             title: props.data.title,
             label: props.data.rawData[0].label,
-            data: props.data.rawData[0].data
+            data: props.data.rawData[0].data,
+            colors: props.data.rawData[0].backgroundColor
         }
     }
     
