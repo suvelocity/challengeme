@@ -40,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     position: 'fixed',
-    marginTop: "3.4rem"
+    marginTop: "3.4rem",
+    zIndex: '1'
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
