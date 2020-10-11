@@ -11,7 +11,7 @@ import { Typography, InputLabel, MenuItem, FormControl, Select, TextField, Texta
 import { Alert, AlertTitle } from '@material-ui/lab';
 const textFieldStyle = { minWidth : "200px" }
 
-
+//function to generate alerts for bad or missing inputs
 const generateAlert=(title,message)=>(
   <>
   <Alert severity="error"  >
@@ -61,7 +61,7 @@ export default function NewChallengeForm() {
       if(repoLink.length > 2 && !repoLink.match(spaces) && !repoLink.match(hebrew)) {
         await network.get(`/api/v1/challenges/public_repo?repo_name=${repoLink}`);
       } else {
-        throw 'error';
+        throw new Error();
       }
     } catch(err) {
       newBadInput.push(generateAlert("Repository's Link is not valid.\n Check the suggestions below:","- Type the Github repository in this format: owner/repo\n- Change your repository to public\n- Check for type errors.\nDon't use Hebrew letters")
@@ -190,7 +190,7 @@ export default function NewChallengeForm() {
 
   return (
   <div
-  className={darkMode?"newChallengeDark":`newChallenge`}>
+  className={ darkMode ? "newChallengeDark" : `newChallenge` }>
     <form className='newChallengeForm'>
       <Typography variant='h5' gutterBottom className='newChallengeFormheader'>
         New Challenge
@@ -198,7 +198,6 @@ export default function NewChallengeForm() {
       <TextField id='name' autoComplete="off" className='newChallengeFormFeild' label='Challenge name' onChange={event => setRepoName(event.target.value)} style={textFieldStyle}/><br />
       <TextField id='repo' autoComplete="off" className='newChallengeFormFeild' label='Challenge link' onChange={event => setRepoLink(event.target.value)} style={textFieldStyle}/><br />
       <TextareaAutosize className='descriptionTextArea' autoComplete="off" aria-label='Description' rowsMin={6} placeholder='Challenge description...' onChange={event => setRepoDescription(event.target.value)}  style={{minWidth:200,width:"40vw"}}/><br />
-
       <AddImg file={file} handleChange={handleFile}/><br />
       <div className="newChallengeFormFeild">
         <ChooseLabels submitFilter={setRepoLabels}/> 
@@ -212,7 +211,7 @@ export default function NewChallengeForm() {
           value={repoType}
           onChange={event => setRepoType(event.target.value)}
         >
-          {optionsArray.map(x=>x)}
+          {optionsArray}
         </Select>
       </FormControl><br />
       <Typography color='error' className='newChallengeFormDisplayErrors'>

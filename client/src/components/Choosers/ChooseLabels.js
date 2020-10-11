@@ -19,8 +19,6 @@ const ChooseLabels =({ submitFilter }) => {
     ,[])
   
   const selectionChange = (a)=>{
-      // allSelected=[{title:<string>,value:<string>},{title:<string>,value:<string>}]
-    // lastAction={action:<string>, option(what you clicked): {title:<string>,value:<string>} , name(name of the Selector):<string>}
     submitFilter(a?a.map(x=>x.value):[])
   }
 
@@ -35,7 +33,6 @@ const ChooseLabels =({ submitFilter }) => {
     onChange={selectionChange}
     closeMenuOnSelect={false}
     options={labels}/>
-
     </div>
   );
 }

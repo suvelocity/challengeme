@@ -76,6 +76,8 @@ const Search =() => {
   const [filters,setFilters]  = useState({})
   const darkMode = React.useContext(ThemeApi).darkTheme
 
+
+  //get all the filters sorted to the url
   const getFilters = useCallback(
     () => {
       const filterNames = Object.keys(filters)
@@ -90,8 +92,10 @@ const Search =() => {
     },
     [filters]
   ) 
+
+  //search function to the the challenges
   const search= (e) => {
-    let {value:query} = e.target
+    let {value : query} = e.target
     if(!query.length){return setResults([])}
     if(query==='*'){ query =''}
     try{
@@ -106,11 +110,13 @@ const Search =() => {
     }
   }
   
+  //close search function
   const closeSearch= () => {
     setResults([])
     setSearching(false)
   }
 
+  //exit search function
   const exitSearch = (e) => {
     const {key,target} = e
     if(!target.value.length){
@@ -120,14 +126,19 @@ const Search =() => {
       }
     }
   }
-  const resultsList = (results&&results.length>0
-    ?results.map((result)=>{
+
+
+  const resultsList = (results && results.length > 0
+    ?
+    results.map((result)=>{
       return <SearchTicket ticket={result} key={result.id} closeSearch={closeSearch}/>;
     })
-    :<span id='no-results'>
+    :
+    <span id='no-results'>
       no results found
     </span>
   )
+  //search bar item
   const searchInput = <div 
   className={classes.search}>
     <div className={classes.searchIcon}>
@@ -135,7 +146,7 @@ const Search =() => {
     </div>
     <InputBase
       id={'searchBar'}
-      placeholder={searching?'press esc to close':'Search'}
+      placeholder={searching ? 'press esc to close' : 'Search'}
       onFocus={()=>{setSearching(true)}}
       onChange={search}
       onKeyUp={exitSearch}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Rating from '@material-ui/lab/Rating';
-import { blueGrey , deepPurple } from '@material-ui/core/colors';
+import { blueGrey  } from '@material-ui/core/colors';
 import './SearchTicket.css'
 
 const useStyles = makeStyles((theme) => ({
@@ -13,11 +13,10 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-function SearchTicket({ticket,closeSearch}) {
+function SearchTicket({ ticket, closeSearch }) {
     const rating = ticket.rating || Math.random()*6 ;
     const classes = useStyles();
-    const avatarName = ticket.repositoryName.substring(0,2).toUpperCase();
-    
+    const avatarName = ticket.repositoryName.substring(0,2).toUpperCase()
 
 
     return (

@@ -7,7 +7,7 @@ import { Tooltip } from '@material-ui/core';
 import ThemeApi from "../../services/Theme"
 import {motion} from 'framer-motion'
 
-
+//fallback function to sort the creation time of the repo
 function generateTime(date) {
   let today = new Date(date)
   const dd = String(today.getDate()).padStart(2, '0');
@@ -25,10 +25,12 @@ export default function ChallengeCard({
   repositoryName,
   challengeId
 }) {
-  const darkMode = React.useContext(ThemeApi).darkTheme
-  const [coverImg,setCoverImg] = useState("")
-  const [date,setDate] = useState(null)
 
+  const darkMode = React.useContext(ThemeApi).darkTheme
+  const [coverImg, setCoverImg] = useState("")
+  const [date, setDate] = useState(null)
+
+  //function for getting the last update time
   const getUpdated = useCallback((date)=>{
       const dateNow =  Date.now()
       const updateRepoDate =new Date(date)
@@ -62,7 +64,7 @@ export default function ChallengeCard({
     (async ()=> {
       try{
         const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`)
-        setCoverImg(coverImage?coverImage.img:'')
+        setCoverImg(coverImage ? coverImage.img : '')
         try{
           const { data: repo } = await network.get(`/api/v1/challenges/public_repo?repo_name=${repositoryName}`)
           const updateDate = repo.updated_at
@@ -75,23 +77,25 @@ export default function ChallengeCard({
       }
     })()
   },[])
-  const avatarStyle = {backgroundColor:darkMode ? "#F5AF5D":"#C9AC80",margin:5}
+
+  const avatarStyle = { backgroundColor : darkMode ? "#F5AF5D" : "#C9AC80", margin : 5 }
 
   return (
-    <motion.div className="challenge-card"
+    <motion.div className = "challenge-card" //animation to the challenge card
     initial={{scale:0.03}}
     animate={{ scale: 1 }}
     transition={{default: { duration: 1.2 , delay:0.3}}}
     >
       <div className="challenge-card-creator-homepage">
         <div className="avatar-and-repo-name">
-        <Tooltip title={repositoryName.split("/")[0]}>
+        <Tooltip title={repositoryName.split("/")[0]}> 
         <Avatar style={avatarStyle}>{repositoryName.slice(0,2)}</Avatar>
         </Tooltip>
        {name}
         </div>
         <div>
           {
+            //getting the first 3 lables
             labels.slice(0,3).map(label=>{
             return <span className="home-page-challenge-labels" key={label.id}>{label.name}</span>
             })
@@ -110,7 +114,8 @@ export default function ChallengeCard({
         <Rating readOnly name="disabled" value={4}  />
       </div>
       <div className="challenge-card-description-homepage">
-        {description.length<100? description : description.slice(0,100).split(" ").slice(0,-1).join(" ")+"..."}
+        {//slicing the description to 100 letters and adding 3 dots if sliced
+        description.length<100? description : description.slice(0,100).split(" ").slice(0,-1).join(" ")+"..."}
         </div>
     </motion.div>
   );

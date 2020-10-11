@@ -63,8 +63,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Header() {
-  const changeTheme = React.useContext(ThemeApi).setDarkTheme
-  const darkMode = React.useContext(ThemeApi).darkTheme
+  const changeTheme = React.useContext(ThemeApi).setDarkTheme //setter for the theme
+  const darkMode = React.useContext(ThemeApi).darkTheme //setter for the theme
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);

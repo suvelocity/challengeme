@@ -6,21 +6,21 @@ import { Button } from '@material-ui/core';
 import ThemeApi from "../../services/Theme"
 
 
-const FilterMenu =( {formerSelection,updateFilters}) => {
-  //filters must have a value that's either a number/string or an array of such
+const FilterMenu =( {updateFilters}) => {
   const [labels,setLabels]  =useState([])
   const [open,setOpen]  = useState(false)
-  
   const darkMode = React.useContext(ThemeApi).darkTheme
   
   const submit= () => {
     updateFilters({labels})
     setOpen(false);
   }
+
   const clear= () => {
     updateFilters({labels:[]})
     setOpen(false);
   }
+
   const close= () => {
     setOpen(false);
   }
@@ -34,8 +34,8 @@ const FilterMenu =( {formerSelection,updateFilters}) => {
     
   }
 
-  const menuClass = open?'open filters':'filters'
-  const darkClass = darkMode?'filterMenu dark':'filterMenu'
+  const menuClass = open ? 'open filters' : 'filters'
+  const darkClass = darkMode ? 'filterMenu dark' : 'filterMenu'
   
   return (
     <div className={darkClass}>
@@ -49,7 +49,7 @@ const FilterMenu =( {formerSelection,updateFilters}) => {
 
           <Button 
             className='filterSubmit' 
-            variant={darkMode?'outlined':'contained'}
+            variant={ darkMode ? 'outlined' : 'contained' } 
             color='primary'
             onClick={submit} >
             submit
@@ -57,15 +57,15 @@ const FilterMenu =( {formerSelection,updateFilters}) => {
           
           <Button 
             className='filterClear' 
-            variant={darkMode?'outlined':'contained'}
+            variant={ darkMode ? 'outlined' : 'contained' }
             color='secondary'
-            onClick={clear} >
+            onClick={ clear } >
             clear
           </Button>
           
           <Button 
             className='filterCancel' 
-            variant={darkMode?'outlined':'contained'}
+            variant={ darkMode ? 'outlined' : 'contained' }
             color='default'
             onClick={close} >
             cancel
