@@ -70,7 +70,7 @@ export default function Landing() {
                 id="container"
             >
                 <div className={classes.challengeQuotes}>
-                    <div className="challengeMe">
+                    <div className="challengeMeTitleHomePage">
                         <b>CHALLENGE ME</b>
                     </div>
                     <div>

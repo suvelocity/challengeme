@@ -9,29 +9,12 @@ h1 {
     color: #fff;
 } */
 
-.challengeMe {
+.challengeMeTitleHomePage {
     font-size: 60px;
     text-shadow: "2px 2px 10px black";
-    animation: color 2s linear 1s infinite alternate;
     margin-bottom: 30px;
 }
 
-@keyframes color {
-    0% {
-        color: linear-gradient(
-            90deg,
-            rgba(255, 255, 255, 1) 0%,
-            rgba(51, 95, 174, 1) 100%
-        );
-    }
-    100% {
-        color: linear-gradient(
-            270deg,
-            rgba(255, 255, 255, 1) 0%,
-            rgba(51, 95, 174, 1) 100%
-        );
-    }
-}
 #container {
     position: relative;
     width: 100%;

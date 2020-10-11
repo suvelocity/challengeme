@@ -11,6 +11,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import LockIcon from "@material-ui/icons/Lock";
+import Swal from "sweetalert2";
 
 const useStyles = makeStyles((theme) => ({
     ForogotPassContainer: {
@@ -45,15 +46,20 @@ export default function Change({ data, handleChange }) {
     const history = useHistory();
     useEffect(() => {
         const timer = setTimeout(() => {
-            alert("Sorry, time is up");
-            setRedirect(true);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Sorry, time is up !",
+            }).then(()=>{
+                setRedirect(true);
+            })
         }, limit * 60 * 1000);
-        
+
         return () => {
             clearTimeout(timer);
-        }
-    },[]);
-    
+        };
+    }, []);
+
     return redirect ? (
         <Redirect to="/" />
     ) : (
