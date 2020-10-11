@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import network from "../../../services/network";
 import normalizeDate from "../helpers/normalizeDate";
 import { Button, Link } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
@@ -7,7 +8,7 @@ import Chip from "@material-ui/core/Chip";
 import "./ChallengePage.css";
 import SubmitModal from "../SubmitModal";
 import InfoTable from "../InfoTable/InfoTable";
-import network from "../../../services/network";
+
 
 // TODO: clean all console alert and logs before merge
 
@@ -135,16 +136,16 @@ function ChallengePage() {
         </div>
       </div>
 
-      <SubmitModal
-        isOpen={isModalOpen}
-        handleClose={handleModalClose}
-        challengeParamId={challengeParamId}
-        userId={userId}
-      />
-    </div>
-  ) : (
-    <div>Loading</div>
-  );
+			<SubmitModal
+				isOpen={isModalOpen}
+				handleClose={handleModalClose}
+				challengeParamId={challengeParamId}
+				userId={userId}
+			/>
+		</div>
+	) : (
+		<div>Loading</div>
+	);
 }
 
 export default ChallengePage;
