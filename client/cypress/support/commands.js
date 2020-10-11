@@ -7,10 +7,16 @@
 // commands please read more here:
 // https://on.cypress.io/custom-commands
 // ***********************************************
+
+
 //
 //
 // -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
+Cypress.Commands.add("login", () => {
+    cy.server()
+    cy.route('/api/v1/auth/login', {login: true})
+    cy.visit('http://localhost:3000')
+})
 //
 //
 // -- This is a child command --

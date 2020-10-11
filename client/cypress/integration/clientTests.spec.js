@@ -1,9 +1,7 @@
-describe("Client Tests", {
-  // retries: {
-  //   runMode: 3,
-  //   openMode: 2
-  // }
-}, () => {
+describe("Client Tests", () => {
+  before(() => {
+    cy.login()
+  })
   it("can get challenges", () => {
     cy.server();
     cy.route("**/api/v1/challenges", "fixture:homeFixtures/challenges");
@@ -22,12 +20,6 @@ describe("Client Tests", {
 
     cy.get("#TeamStatistics").click();
     cy.url().should("include", "teams");
-
-    cy.get("#ChallengeCard").click();
-    cy.url().should("include", "challenge-card");
-
-    cy.get("#ProfileStatistics").click();
-    cy.url().should("include", "profile");
 
     cy.get("#home").click();
     cy.url().should("include", "http://localhost:3000/statistics");
