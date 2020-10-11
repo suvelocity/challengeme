@@ -12,6 +12,7 @@ function ReviewsTab({ challengeId }) {
       const { data: reviewsArray } = await network.get(
         `/api/v1/reviews/byChallenge/${challengeId}`
       );
+      console.log('reviews',reviewsArray);
       setReviews(reviewsArray);
     };
     fetchReviews();

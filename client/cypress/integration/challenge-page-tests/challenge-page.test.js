@@ -1,4 +1,18 @@
 const MOCK = {
+  submitModal: {
+    header: 'Submit Your Solution',
+    rating: 'Rate this challenge',
+    review: {
+      header: 'Please leave your review here',
+      title: 'Title',
+      message: 'Message',
+    },
+  },
+  error: {
+    review: 'To send a review, the review must have both title and content!',
+    repo: 'This is not a valid repo!',
+    rating: 'To send an answer, you must rate the challenge!',
+  },
   jwtNodeJs: {
     id: 1,
     name: 'JWT - Node.js',
@@ -39,8 +53,36 @@ const MOCK = {
       createdAt: '2020-10-01T20:00:00.000Z',
       deletedAt: null,
       id: 2,
-      solutionRepository: 'sadasdasdsad',
+      solutionRepository: 'Tzach/solution',
       state: 'Fail',
+      updatedAt: '2020-10-01T20:00:00.000Z',
+      userId: 2,
+    },
+  ],
+  reviews: [
+    {
+      ChallengeId: 1,
+      User: { userName: 'OriSass' },
+      challengeId: 1,
+      content: 'had a really great time with that challenge',
+      createdAt: '2020-10-01T20:00:00.000Z',
+      deletedAt: null,
+      id: 1,
+      rating: 3,
+      title: 'great challenge',
+      updatedAt: '2020-10-01T20:00:00.000Z',
+      userId: 1,
+    },
+    {
+      ChallengeId: 1,
+      User: { userName: 'DrorMaman' },
+      challengeId: 1,
+      content: 'had a really hard time',
+      createdAt: '2020-10-01T20:00:00.000Z',
+      deletedAt: null,
+      id: 1,
+      rating: 5,
+      title: 'well made challenge',
       updatedAt: '2020-10-01T20:00:00.000Z',
       userId: 2,
     },
@@ -67,6 +109,15 @@ const MOCK = {
   blobImg: 'data:BLOB',
 };
 
+const PATH = {
+  openModal:
+    '#root > div > div.challenge-wrapper > div.challenge-right-wrapper > div.challenge-submit-btn > button',
+  submitAnswer:
+    'body > div:nth-child(7) > div.makeStyles-paper-7 > form > button > span.MuiButton-label',
+  rate:
+    'body > div:nth-child(7) > div.makeStyles-paper-7 > form > div:nth-child(3) > span > label:nth-child(9)',
+};
+
 const url = 'http://localhost:3000';
 
 const projectName = 'Challenge - Page Client';
@@ -77,13 +128,58 @@ describe(`${projectName} - test suite`, () => {
       challenge: MOCK.jwtNodeJs,
       author: MOCK.author,
     });
-    cy.route(`${url}/api/v1/challenges/1/submissions`, 
-      MOCK.submissions,
-    );
+    cy.route(`${url}/api/v1/challenges/1/submissions`, MOCK.submissions);
+    cy.route(`${url}/api/v1/reviews/byChallenge/1`, MOCK.reviews);
     cy.route(`${url}/api/v1/images?id=1`, MOCK.blobImg);
 
     cy.visit('http://localhost:3000/challenges/1');
 
-    cy.contains('JWT - Node.js');
+    cy.contains(MOCK.jwtNodeJs.name);
+    cy.contains(MOCK.jwtNodeJs.description);
+    cy.contains(MOCK.jwtNodeJs.createdAt);
+    cy.contains(MOCK.jwtNodeJs.updatedAt);
+    MOCK.jwtNodeJs.Labels.map((label) => {
+      cy.contains(label.name);
+    });
+  });
+
+  it('There is a submmit button, that opens a modal', () => {
+    cy.server();
+    cy.route(`${url}/api/v1/challenges/1`, {
+      challenge: MOCK.jwtNodeJs,
+      author: MOCK.author,
+    });
+    cy.route(`${url}/api/v1/challenges/1/submissions`, MOCK.submissions);
+    cy.route(`${url}/api/v1/reviews/byChallenge/1`, MOCK.reviews);
+    cy.route(`${url}/api/v1/images?id=1`, MOCK.blobImg);
+
+    cy.visit('http://localhost:3000/challenges/1');
+
+    cy.get(PATH.openModal).click();
+
+    cy.contains(MOCK.submitModal.header);
+    cy.contains(MOCK.submitModal.rating);
+    cy.contains(MOCK.submitModal.review.header);
+    cy.contains(MOCK.submitModal.review.title);
+    cy.contains(MOCK.submitModal.review.message);
+  });
+
+  it('Form validation, cannot send without required inputs', () => {
+    cy.server();
+    cy.route(`${url}/api/v1/challenges/1`, {
+      challenge: MOCK.jwtNodeJs,
+      author: MOCK.author,
+    });
+    cy.route(`${url}/api/v1/challenges/1/submissions`, MOCK.submissions);
+    cy.route(`${url}/api/v1/reviews/byChallenge/1`, MOCK.reviews);
+    cy.route(`${url}/api/v1/images?id=1`, MOCK.blobImg);
+
+    cy.visit('http://localhost:3000/challenges/1');
+
+    cy.get(PATH.openModal).click();
+    cy.get(PATH.submitAnswer).click();
+
+    cy.contains(MOCK.error.review);
+    cy.contains(MOCK.error.rating);
   });
 });
