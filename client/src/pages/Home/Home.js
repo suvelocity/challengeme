@@ -8,7 +8,7 @@ import FilterMenu from '../../components/FilterMenu/FilterMenu';
 
 export default function HomePage() {
   const [challenges, setChallenges] = useState([]);
-  const [filters, setFilters] = useState({labels:[],time:100});
+  const [filters, setFilters] = useState({labels:[]});
   const darkMode = React.useContext(ThemeApi).darkTheme
 
   const getFilters = useCallback(

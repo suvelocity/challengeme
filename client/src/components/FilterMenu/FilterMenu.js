@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import ChooseLabels from '../Choosers/ChooseLabels'
-import ChooseTime from '../Choosers/ChooseTime'
 import './FilterMenu.css'
 import './FilterMenuDark.css'
 import { Button } from '@material-ui/core';
@@ -9,19 +8,17 @@ import ThemeApi from "../../services/Theme"
 
 const FilterMenu =( {formerSelection,updateFilters}) => {
   //filters must have a value that's either a number/string or an array of such
-  const {labels:formerLabels,time:formerTime} = formerSelection
-  const [labels,setLabels]  =useState(formerLabels||[])
-  const [time,setTime]  = useState(formerTime||100)
+  const [labels,setLabels]  =useState([])
   const [open,setOpen]  = useState(false)
   
   const darkMode = React.useContext(ThemeApi).darkTheme
   
   const submit= () => {
-    updateFilters({labels,time})
+    updateFilters({labels})
     setOpen(false);
   }
   const clear= () => {
-    updateFilters({labels:[],time:100})
+    updateFilters({labels:[]})
     setOpen(false);
   }
   const close= () => {
@@ -75,9 +72,7 @@ const FilterMenu =( {formerSelection,updateFilters}) => {
           </Button>
           
         </div>
-        <ChooseLabels submitFilter={setLabels} />
-        {/* <ChooseTime submitFilter={setTime} /> */}
-      
+        <ChooseLabels submitFilter={setLabels} />      
       </div>
       </div>
       <div className='toggleOpen' 

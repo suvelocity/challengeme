@@ -3,6 +3,7 @@ const axios = require('axios');
 const filterResults = require('../../middleware/filterResults');
 const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
+const fs = require("fs")
 
 const { Submission, Challenge, Label } = require('../../models');
 
@@ -116,6 +117,42 @@ router.post('/:challengeId/apply', async (req, res) => {
     res.json({ status: 500, error: e })
   }
 
+})
+
+
+
+// router Post - new challenge
+router.post(`/`,async(req,res) => {
+  try {
+    const newRepo = req.body.repositoryName;
+    const check = await Challenge.findOne({
+      where:{
+        repositoryName: newRepo
+      }
+    })
+    if(check) {
+      return res.status(500).send('Repo is already in the system');
+    }
+    const newChallenge = await Challenge.create(req.body);
+    res.status(200).send(newChallenge);
+  } catch(err) {
+    res.status(400).send('Bad request');
+  }
+})
+
+// router Get - github/workflows
+router.get('/type', async (req,res) => {
+  try{
+    const files = fs.readdirSync('../.github/workflows');
+    let types = files.map(file =>
+      !file.includes("deploy")?
+      file.slice(0,-4)
+      :
+      null
+    )
+    types = types.filter(type => type!==null)
+    res.send(types)
+  }catch(e){res.send(e.message)}
 })
 
 module.exports = router;

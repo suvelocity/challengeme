@@ -42,7 +42,7 @@ export default function NewChallengeForm() {
 
   /* pull challenge's type options from .github/workflows folder */
   const openOptions = async () => {
-  const { data: types } = await network.get('/api/v1/new-challenge/type');
+  const { data: types } = await network.get('/api/v1/challenges/type');
   setOptionsArray(types.map((type, index) => 
     <MenuItem key={index} value={type}>{type}</MenuItem>
     ))
@@ -97,7 +97,7 @@ export default function NewChallengeForm() {
       }
       /* post newRepo to challenge table */
       try{
-        const { data : postedRepo } = await network.post(`/api/v1/new-challenge`, newRepo)
+        const { data : postedRepo } = await network.post(`/api/v1/challenges`, newRepo)
         await network.post("/api/v1/image",{
           challengeId: postedRepo.id,
           img: file.result
