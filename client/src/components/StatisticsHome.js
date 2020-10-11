@@ -64,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
 function StatisticsHome() {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
-
   const [topChallengesData, setTopChallengesData] = useState([]);
   const [topUsersData, setTopUsersData] = useState([]);
   const [topTeamsData, setTopTeamsData] = useState([]);
@@ -76,8 +75,17 @@ function StatisticsHome() {
     rawData: [
       {
         label: "Submitions", // name of the line (one or two words)
-        backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'], //raw color
-        borderColor: "cyan", //use the same as background color
+        backgroundColor: [
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628",
+        ],
+        borderColor: "black",
         fill: false, // change the line chart
         data: topChallengesData && [...topChallengesData.map(index => index.countSub), 0], // array of values for Y axis (numbers)
       },
@@ -90,8 +98,17 @@ function StatisticsHome() {
     rawData: [
       {
         label: "Submitions", // name of the line (one or two words)
-        backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'], //raw color
-        borderColor: "cyan", //use the same as background color
+        backgroundColor: [
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628",
+        ],
+        borderColor: "black",
         fill: false, // change the line chart
         data: topUsersData && [...topUsersData.map(index => index.countSub), 0], // array of values for Y axis (numbers)
       },
@@ -104,15 +121,23 @@ function StatisticsHome() {
     rawData: [
       {
         label: "Submitions", // name of the line (one or two words)
-        backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'], //raw color
-        borderColor: "cyan", //use the same as background color
+        backgroundColor: [
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628",
+        ],
+        borderColor: "black",
         fill: false, // change the line chart
-        data: topTeamsData && [...topTeamsData.map(team => team["Users.Submissions.teamSuccessSubmissions"]), 0], // array of values for Y axis (numbers)
+        data: topTeamsData && [...topTeamsData.map(team => team.Users[0] && team["Users"][0]["Submissions"][0]["teamSuccessSubmissions"]), 0], // array of values for Y axis (numbers)
       },
       // you can add as many object as you wand, each one will a different line with different color
     ],
   };
-
 
   useEffect(() => {
    getChallengesData();
@@ -127,6 +152,7 @@ function StatisticsHome() {
   };
   const getTeamsData = async () => {
     const { data: teamsInfo } = await axios.get('/api/v1/statistics/teams/top');
+    console.log(teamsInfo[0].Users[0].Submissions[0].teamSuccessSubmissions);
     setTopTeamsData(teamsInfo)
     setLoading(false);
   };
@@ -138,7 +164,6 @@ function StatisticsHome() {
   };
   
   return (
-    // <div className ={darkMode?"dark-home-page":"light-home-page"}>
     <div className={clsx(classes.main, darkMode?"dark-home-page":"light-home-page")}>
       <div className={classes.grid}>
       <h1 style={{gridArea: "header"}}>Statistics</h1>
@@ -198,7 +223,6 @@ function StatisticsHome() {
           </div>
         )}
       </div>
-    {/* </div> */}
     </div>
   );
 }

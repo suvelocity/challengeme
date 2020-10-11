@@ -85,7 +85,6 @@ function TeamStatistics() {
       .get(`/api/v1/statistics/teams/top-user`)
       .then((r) => r.data)
       .then((r) => {
-        console.log(r["Submissions.userSuccessSubmission"]);
         setTeamsTopUser(r);
         setLoading(false);
       });
@@ -107,16 +106,14 @@ function TeamStatistics() {
       .get(`/api/v1/statistics/teams/success-challenge`)
       .then((r) => r.data)
       .then((r) => {
-        console.log(r);
         setSuccessChallenges(r);
         setLoading(false);
       });
   };
 
   useEffect(() => {
-    console.log("effect");
     getInfo()
-  }, [])
+}, [])
 
   const lastWeekTeamsSubmissions = {
     labels: teamsLastWeekSub && teamsLastWeekSub.map(index => index.createdAt.split('T')[0]), // array of values for x axis (strings)
@@ -275,7 +272,6 @@ function TeamStatistics() {
         </div>
       )}
     </div>
-  {/* </div> */}
   </div>
 );
 }
