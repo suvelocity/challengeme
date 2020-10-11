@@ -5,11 +5,13 @@ const { Submission, Challenge } = require('../../models');
 
 const router = Router();
 
+// returns all challenges
 router.get('/', async (req, res) => {
   const allChallenges = await Challenge.findAll();
   res.json(allChallenges)
 })
 
+// return challenge submissions by challenge id
 router.get('/:challengeId/submissions', async (req, res) => {
   const { challengeId } = req.params;
   const allSubmission = await Submission.findAll({ where: {
@@ -18,6 +20,7 @@ router.get('/:challengeId/submissions', async (req, res) => {
   res.json(allSubmission)
 })
 
+// 
 router.post('/:challengeId/apply', async (req, res) => {
   const { solutionRepository } = req.body;
   const challengeId = req.params.challengeId;
