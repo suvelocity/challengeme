@@ -6,7 +6,7 @@ describe("Home page Tests", () => {
       cy.server();
       cy.route("**/api/v1/challenges", "fixture:challenges.json");
       cy.route("**/api/v1/challenges/labels", "fixture:labels.json");
-      cy.route("**/api/v1/challenges?labels=&time=100", "fixture:labelsToChallenges.json");
+      cy.route("**/api/v1/challenges?labels=", "fixture:labelsToChallenges.json");
       cy.route("**/api/v1/image?id=7", "fixture:image7.json");
       cy.visit("http://localhost:3000");
       cy.get("div.challenge-card").should("have.length", 6);
@@ -29,7 +29,7 @@ describe("Home page Tests", () => {
       cy.server();
       cy.route("**/api/v1/challenges", "fixture:challenges.json");
       cy.route("**/api/v1/challenges/labels", "fixture:labels.json");
-      cy.route("**/api/v1/challenges?labels=&time=100", "fixture:labelsToChallenges.json");
+      cy.route("**/api/v1/challenges?labels=", "fixture:labelsToChallenges.json");
       cy.route("**/api/v1/image?id=7", "fixture:image7.json");
       cy.visit("http://localhost:3000");
       cy.get(':nth-child(5) > .challenge-card-creator-homepage > .avatar-and-repo-name > .MuiAvatar-root').invoke('text').should("eq","Sh")
