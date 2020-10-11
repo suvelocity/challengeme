@@ -18,7 +18,6 @@ const userId = 2; //Mock until we merge shahar
 
 function ChallengePage() {
   const [challenge, setChallenge] = useState(null);
-  const [author, setAuthor] = useState({ username: "Dror" });
   const { challengeParamId } = useParams();
   const [blobedImg, setBlobedImg] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,8 +38,8 @@ function ChallengePage() {
           data: { challenge: challengeFromServer, author },
         } = await network.get(`/api/v1/challenges/${challengeParamId}`);
         console.log("challenge from server: ", challengeFromServer);
+        challengeFromServer.author = author;
         setChallenge(challengeFromServer);
-        setAuthor(author);
       } catch (error) {
         console.log(error);
         // TODO: handle error
@@ -54,10 +53,9 @@ function ChallengePage() {
     setIsModalOpen(false);
   }
   console.table(challenge);
-  console.table("author: ", author);
   console.log({ blobedImg });
 
-  return challenge && author ? (
+  return challenge ? (
     <div className="fullpage-wrapper">
       <div className="navbar">im navbar</div>
       <div className="challenge-wrapper">
@@ -71,7 +69,7 @@ function ChallengePage() {
           </div>
           <div className="challenge-rawdata">
             <span className="challenge-created-by">
-              <p> created by: </p> <p>{author.userName}</p>
+              <p> created by: </p> <p>{challenge.author.userName}</p>
             </span>
             <span className="challenge-created-at">
               <p> Created at: </p>{" "}

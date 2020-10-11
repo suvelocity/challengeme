@@ -45,7 +45,7 @@ challengeRouter.get("/", filterResults, async (req, res) => {
 
 challengeRouter.get("/:challengeId", async (req, res) => {
   try {
-    const challenge = await Challenge.findOne({
+    let challenge = await Challenge.findOne({
       where: { id: req.params.challengeId },
       include: [
         // TODO: add a ORM query to add prop to the challenge with 'rating':3 .... pay attention to round the result to integer
@@ -56,8 +56,8 @@ challengeRouter.get("/:challengeId", async (req, res) => {
       ],
     });
     const author = await challenge.getUser();
-    challenge.author = author;
-    res.json({ challenge });
+    challenge.author = "qwqwe";
+    res.json({ challenge, author });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
