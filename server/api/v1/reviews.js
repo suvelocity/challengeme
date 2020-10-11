@@ -26,8 +26,7 @@ reviewsRouter.get('/byChallenge/:challengeId', async (req, res) => {
   }
 });
 
-reviewsRouter.get(
-  '/byChallenge/:challengeId/averageRating',
+reviewsRouter.get('/byChallenge/:challengeId/averageRating',
   async (req, res) => {
     try {
       const rating = await Review.findAll({
