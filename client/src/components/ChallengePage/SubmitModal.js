@@ -30,7 +30,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 	/* eslint-disable no-unused-vars */
 	const { register, handleSubmit, errors } = useForm();
 	/* eslint-enable no-unused-vars */
-	const [userRating, setUserRating] = useState();
+	const [userRating, setUserRating] = useState("0");
 	const classes = useStyles();
 	const [modalStyle] = useState(getModalStyle);
 
@@ -49,15 +49,9 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 		} catch (error) {
 			console.error(error);
 		}
-		// data object looks like:
-		// {
-		//  commentContent: "the content of the comment"
-		//  commentTitle: "title for the comment"
-		//  rating: 4, -> can't be null
-		//  repository: "drormaman/pokedex", -> can't be null
-		//  userId: 3 -> can't be null
-		// }
 		console.log(formData);
+		handleClose();
+		setUserRating("0");
 	};
 
 	return (
@@ -117,8 +111,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 						<Typography variant="subtitle1">Rate this challenge</Typography>
 						<Rating
 							name="rating"
-							value={userRating}
-							// precision={0.5}
+							// value={userRating}
 							onChange={(_, value) => setUserRating(value)}
 						/>
 					</div>
