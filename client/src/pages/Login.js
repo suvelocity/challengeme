@@ -231,13 +231,12 @@ export default function Login() {
                                 className={classes.loginButton}
                             >
                                 Log in
-                        </Button>
+                            </Button>
                             <div>
                                 <span>don't have an account yet? </span>
                                 <Link to="/register" id="signUp">
                                     Sign up
-                            </Link>
-
+                                </Link>
                             </div>
                         </div>
                     </form>

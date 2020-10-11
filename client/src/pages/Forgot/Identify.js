@@ -8,30 +8,30 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles((theme) => ({
-  titleUserNameForgotPass: {
-      marginTop: "130px",
-      // marginBottom: "60px",
-      width: "320px",
-  },
-  userNameForgotPass: {
-      marginTop: "20px",
-      marginBottom: "10px",
-      width: "320px",
-  },
+    titleUserNameForgotPass: {
+        marginTop: "130px",
+        // marginBottom: "60px",
+        width: "320px",
+    },
+    userNameForgotPass: {
+        marginTop: "20px",
+        marginBottom: "10px",
+        width: "320px",
+    },
 
 }));
 export default function Identify(props) {
-  const classes = useStyles();
+    const classes = useStyles();
 
-  const { data, handleChange } = props;
+    const { data, handleChange } = props;
 
-  return (
-    <div className={classes.titleUserNameForgotPass}>
-     Enter your User Name :
-      <FormControl className={classes.userNameForgotPass}>
+    return (
+        <div className={classes.titleUserNameForgotPass}>
+            Enter your User Name :
+            <FormControl className={classes.userNameForgotPass}>
                 <InputLabel style={{ color: "grey" }}>User Name</InputLabel>
                 <Input
-                    id="userName"
+                    id="firstName"
                     type="text"
                     value={data.userName}
                     required
@@ -46,6 +46,6 @@ export default function Identify(props) {
                     }
                 />
             </FormControl>
-    </div>
-  );
+        </div>
+    );
 }
