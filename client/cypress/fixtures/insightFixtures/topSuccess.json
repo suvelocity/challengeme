@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "challengeId": 1,
+        "userId": 1,
+        "state": "SUCCESS",
+        "solutionRepository": "Moran1324/Authentication-Challenge-SOLUTION",
+        "createdAt": "2020-10-01T20:00:00.000Z",
+        "updatedAt": "2020-10-01T20:00:00.000Z",
+        "deletedAt": null,
+        "challenge_id": 1,
+        "countSub": 2,
+        "Challenge": {
+            "name": "JWT - Node.js"
+        }
+    },
+    {
+        "id": 4,
+        "challengeId": 2,
+        "userId": 1,
+        "state": "SUCCESS",
+        "solutionRepository": "Moran1324/Authentication-Challenge-SOLUTION",
+        "createdAt": "2020-10-01T20:00:00.000Z",
+        "updatedAt": "2020-10-01T20:00:00.000Z",
+        "deletedAt": null,
+        "challenge_id": 2,
+        "countSub": 1,
+        "Challenge": {
+            "name": "React - Calculator"
+        }
+    }
+]

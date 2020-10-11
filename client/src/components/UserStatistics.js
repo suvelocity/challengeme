@@ -79,7 +79,7 @@ function UserStatistics() {
             setLoading(false);
           });
         axios
-          .get(`/api/v1/statistics/users/sub-by-type`)
+          .get(`/api/v1/statistics/users/sub-by-category`)
           .then((r) => r.data)
           .then((r) => {
             console.log(r);
@@ -94,7 +94,7 @@ function UserStatistics() {
       }, [])
 
       const usersSubmissionType = {
-        labels: userSubByType && userSubByType.map(index => index.Challenge.type), // array of values for x axis (strings)
+        labels: userSubByType && userSubByType.map(index => index.Challenge.category), // array of values for x axis (strings)
         title: "Users top submissions by challenges type", // title for the chart
         rawData: [
           {
@@ -102,7 +102,7 @@ function UserStatistics() {
             backgroundColor: "green", //raw color
             borderColor: "green", //use the same as background color
             fill: false, // change the line chart
-            data: userSubByType && [...userSubByType.map(index => index.Challenge.CountByType), 0], // array of values for Y axis (numbers)
+            data: userSubByType && [...userSubByType.map(index => index.Challenge.CountByCategory), 0], // array of values for Y axis (numbers)
           },
           // you can add as many object as you wand, each one will a different line with different color
         ],
