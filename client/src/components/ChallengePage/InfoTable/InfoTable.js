@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import ReviewTab from './Tabs/ReviewsTab/ReviewsTab' 
 import SubmissionTab from './Tabs/SubmissionsTab/SubmissionTab'
-import './infoTable.css';
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -67,14 +66,14 @@ export default function InfoTable({challengeId}) {
     style={{
       width: "100%",
       height: "500px",
-      backgroundColor: "#4b79a1",
+      backgroundColor: "lightskyblue",
       border:'none',
       overflowY: "auto",
     }}>
     
-      <AppBar position="sticky">
-        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example" TabIndicatorProps={{style:{background:"white"}}}>
-          <Tab label="Submissions" {...a11yProps(0)}/>
+      <AppBar position="static">
+        <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
+          <Tab label="Submissions" {...a11yProps(0)} />
           <Tab label="Reviews" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
