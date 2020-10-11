@@ -1,0 +1,99 @@
+.dark-challenge-card{
+    width:300px;
+    height: 200px;
+    border: 1px solid white;
+    margin: 10px;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    background: #4B79A1;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #283E51, #4B79A1);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #283E51, #4B79A1); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+    
+}
+.light-challenge-card{
+    width:300px;
+    height: 200px;
+    border: 1px solid black;
+    margin: 10px;
+    position: relative;
+    overflow: hidden;
+    color: black;
+    background: #ECE9E6;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to top, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to top, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+}
+
+.challenge-card-description-homepage{
+    color: white;
+    width:300px;
+    overflow-wrap: break-word;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: #294054;
+    font-size: 20px;
+    transition: transform 0.4s ease-in-out;
+    transform: translateY(100%);
+}
+.challenge-card-description-homepage-light{
+    color: black;
+    width:300px;
+    overflow-wrap: break-word;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color:#F5F5F5;
+    font-size: 20px;
+    transition: transform 0.4s ease-in-out;
+    transform: translateY(100%);
+}
+
+
+.light-challenge-card:hover .challenge-card-description-homepage-light{
+    transform: translateY(0%);
+}
+.dark-challenge-card:hover .challenge-card-description-homepage{
+    transform: translateY(0%);
+}
+
+
+
+.challenge-card-data-homepage{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 5px;
+}
+
+.challenge-card-img-homepage{
+    width: 100%;
+    height:120px;
+}
+
+.challenge-card-creator-homepage{
+    display: flex;
+    padding-bottom: 2px;
+    align-items: center;
+}
+@media only screen and (max-width: 350px) {
+    .challenge-card-data-homepage{
+        font-size: 13px;
+        padding-top: 3.5px;
+    }
+    .light-challenge-card{
+        margin: 0;
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-right: 15px;
+        margin-left: 5px;
+
+
+
+    }
+
+  }
+  

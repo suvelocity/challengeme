@@ -1,0 +1,47 @@
+
+name: Build and Deploy to Google Compute Engine
+
+on:
+  push:
+    branches:
+    - master
+
+env:
+  PROJECT_ID: ${{ secrets.GCE_PROJECT }}
+  GCE_INSTANCE: instance-1
+  GCE_INSTANCE_ZONE: us-central1-a
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    # Setup gcloud CLI
+    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        version: '290.0.1'
+        service_account_key: ${{ secrets.GCE_SA_KEY }}
+        project_id: ${{ secrets.GCE_PROJECT }}
+
+    # Configure Docker to use the gcloud command-line tool as a credential
+    # helper for authentication
+    - run: |-
+        gcloud --quiet auth configure-docker
+    - name: Deploy
+      run: |-
+        gcloud --quiet compute ssh --zone us-central1-a instance-1 --command '
+          cd ../../var/www &&
+          sudo git pull origin &&
+          cd ./client &&
+          sudo npm ci &&
+          sudo npm run build &&
+          cd ../server &&
+          sudo npm ci &&
+          sudo npx sequelize db:migrate &&
+          sudo pm2 reset 0
+        '
+
