@@ -4,10 +4,16 @@ import ChallengeCard from '../../components/ChallengeCard/ChallengeCard';
 import "./Home.css"
 import ThemeApi from "../../services/Theme"
 import FilterMenu from '../../components/FilterMenu/FilterMenu';
+import { useLocation } from "react-router-dom"
 
+//function to get query params
+function useQuery() {    
+  return new URLSearchParams(useLocation().search);
+}
 
 export default function HomePage() {
   const [challenges, setChallenges] = useState([]);
+  const [filtered, setFiltered] = useState(false);
   const [filters, setFilters] = useState({labels:[]});
   const darkMode = React.useContext(ThemeApi).darkTheme
 
@@ -26,13 +32,23 @@ export default function HomePage() {
     [filters]
   ) 
 
+  let query = useQuery();
   useEffect(() => {
     (async () => {
       try{
-        const { data: challengesFromServer } = await network.get(
+        if(filtered!==true && query.get("labelId")){
+          const { data: challengesFromServer } = await network.get(
+          `/api/v1/challenges?labels=${query.get("labelId")}`)
+          typeof challengesFromServer ==="object"&&
+          setChallenges(challengesFromServer)
+          setFiltered(true)
+        }
+        else{
+          const { data: challengesFromServer } = await network.get(
           '/api/v1/challenges?'+getFilters())
           typeof challengesFromServer ==="object"&&
           setChallenges(challengesFromServer)
+        }
       }catch(e){}
     })();  
   }, [filters]);  
