@@ -7,7 +7,8 @@
 body {
   overflow-y: auto;
 }
-body::-webkit-scrollbar {
+
+*::-webkit-scrollbar {
   display: none;
 }
 
@@ -18,20 +19,34 @@ body::-webkit-scrollbar {
   height: 100%;
 }
 .navbar {
-  height: 5vh;
+  height: 1.7em;
   position: fixed;
-  background-color: #46505a;
+  background-color: #3f51b5;
   top: 0;
   min-width: 100%;
 }
-.challenge-wrapper {
-  background: linear-gradient(#ffffff, rgba(235, 240, 255,0.1));
+.light-challenge-wrapper {
+  transition: 500ms;
+  /* background: linear-gradient(#9b9b9b, rgba(235, 240, 255,0.1)); */
+  background-color: #fffef5;
   min-width: 100%;
-  height: 95vh;
+  height: 100%;
   color: black;
   font-family: 'PT Sans', sans-serif;
   font-weight: 800;
-  margin-top: 5vh;
+  margin-top: 1.7em;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+}
+.dark-challenge-wrapper {
+  transition: 500ms;
+  background-color: #141e30;
+  min-width: 100%;
+  height: 100%;
+  color: black;
+  font-family: 'PT Sans', sans-serif;
+  font-weight: 800;
+  margin-top: 1.7em;
   display: grid;
   grid-template-columns: 1fr 1.4fr;
 }
@@ -86,7 +101,7 @@ body::-webkit-scrollbar {
 .challenge-rawdata {
   font-size: 20px;
   border-radius: 10px;
-  background-color: #7cb8f0;
+  background-color: #4b79a1;
   height: fit-content;
   margin-top: 2vh;
 }
@@ -96,8 +111,8 @@ body::-webkit-scrollbar {
   align-items: baseline;
 }
 
-.challenge-labels {
-}
+  /* .challenge-labels {
+  } */
 .challenge-labels a {
   font-size: 24px;
   color: #ffffff;
@@ -119,19 +134,48 @@ body::-webkit-scrollbar {
   height: 100px;
   margin-bottom: 1.5vh;
 }
+
+.challenge-github-btn-dm {
+  height: 100px;
+  margin-bottom: 1.5vh;
+}
 .challenge-github-btn a {
+  transition: 500ms;
   font-size: 26px;
   border: 2px solid #3a1e85;
   width: 100%;
   height: 100%;
+  padding:6px;
+}
+.challenge-github-btn-dm a {
+  transition: 500ms;
+  font-size: 26px;
+  border: 2px solid #ffffff;
+  width: 100%;
+  height: 100%;
+  color: white;
+  padding:6px;
 }
 .challenge-github-btn a:hover {
+  transition: 500ms;
   background-color: #3a1e85;
   color: white;
   font-size: 26px;
   width: 100%;
   height: 100%;
   align-self: flex-end;
+  padding:6px;
+}
+
+.challenge-github-btn-dm a:hover {
+  transition: 500ms;
+  background-color:  #ffffff;
+  color: #3a1e85;
+  font-size: 26px;
+  width: 100%;
+  height: 100%;
+  align-self: flex-end;
+  padding:6px;
 }
 
 .challenge-title-description {
@@ -141,16 +185,31 @@ body::-webkit-scrollbar {
   /* height: fit-content; */
   /* margin-bottom: 0; */
 }
-h1 {
+.light-h1 {
+  transition: 500ms;
   font-size: 40px;
   color: black;
   text-align: center;
+}
+.dark-h1 {
+  transition: 500ms;
+  font-size: 40px;
+  color: rgb(255, 255, 255);
+  text-align: center;
+}
+.light-h2 {
+  transition: 500ms;
+  color: black;
+}
+.dark-h2 {
+  transition: 500ms;
+  color: white;
 }
 .challenge-description {
   flex-grow: 1;
   height: 100%;
   /* min-height: 100%; */
-  background-color: #7cb8f0;
+  background-color: #4b79a1;
   color: black;
   min-width: 100%;
 }
@@ -165,23 +224,57 @@ h1 {
 .challenge-solution-table {
   margin-top: 2vh;
   font-size: 24px;
-  /* background-color: #7cb8f0; */
+  /* background-color: #4b79a1; */
   /* max-height: 725px; */
   flex-grow: 1;
   /* margin-top: 3vh; */
 }
 
+
 .challenge-submit-btn {
   height: 100px;
   margin-bottom: 1.5vh;
 }
+
+.challenge-submit-btn-dm {
+  height: 100px;
+  margin-bottom: 1.5vh;
+}
+
 .challenge-submit-btn button {
+  transition: 500ms;
   font-size: 26px;
   border: 2px solid #3a1e85;
   width: 100%;
   height: 100%;
+  padding:6px;
 }
+
+.challenge-submit-btn-dm button {
+  color:white;
+  transition: 500ms;
+  font-size: 26px;
+  border: 2px solid #ffffff;
+  width: 100%;
+  height: 100%;
+  padding:6px;
+}
+
 .challenge-submit-btn button:hover {
+  transition: 500ms;
   background-color: #3a1e85;
   color: white;
+  padding:6px;
+}
+
+
+.challenge-submit-btn-dm button :hover {
+  transition: 500ms;
+  background-color:  #ffffff;
+  color: #3a1e85;
+  font-size: 26px;
+  width: 100%;
+  height: 100%;
+  align-self: flex-end;
+  padding:6px;
 }

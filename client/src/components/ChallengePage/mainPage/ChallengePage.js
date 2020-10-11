@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import network from "../../../services/network";
 import normalizeDate from "../helpers/normalizeDate"
-import { Button, Link } from "@material-ui/core";
+import { Button, Link } from "@material-ui/core"; 
 import Rating from "@material-ui/lab/Rating";
 import Chip from "@material-ui/core/Chip";
+// import white from '@material-ui/core/colors/white';
 
 // TODO: clean all console alert and logs before merge
 import SubmitModal from "../SubmitModal";
@@ -24,6 +25,7 @@ function ChallengePage() {
   const {challengeParamId } = useParams();
   const [blobedImg, setBlobedImg] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [darkModeIsOn, setDarkModeIsOn] = useState(false)
   useEffect(() => {
     const setImg = async () => {
       try {
@@ -65,8 +67,11 @@ function ChallengePage() {
 
   return challenge && author ? (
     <div className='fullpage-wrapper'>
-      <div className='navbar'>im navbar</div>
-      <div className='challenge-wrapper'>
+      <div className='navbar'>
+        <span>im navbar</span>
+        <button className="dark_mode_btn" onClick={() => {setDarkModeIsOn(!darkModeIsOn)}}>Dark Mode</button>
+      </div>
+      <div className={darkModeIsOn ? 'dark-challenge-wrapper' : 'light-challenge-wrapper'}>
         <div className='challenge-left-wrapper'>
           <div className='challenge-img-div'>
             <img className='challenge-img' src={blobedImg} alt={challenge.name}/>
@@ -84,7 +89,7 @@ function ChallengePage() {
             </span>
           </div>
           <div className='challenge-labels'>
-            <h2>Labels:</h2>
+            <h2 className={darkModeIsOn ? 'dark-h2' : 'light-h2'}>Labels:</h2>
             <span className='challenge-label'>
               {challenge['Labels'].map(label => (
                 <Link>  
@@ -112,7 +117,7 @@ function ChallengePage() {
             ))} */}
           </div>
           <div className='challenge-rating'>
-            <h2>Rating:</h2>
+            <h2 className={darkModeIsOn ? 'dark-h2' : 'light-h2'}>Rating:</h2>
             <Rating
               name='half-rating-read'
               defaultValue={challenge.averageRating}
@@ -121,7 +126,7 @@ function ChallengePage() {
               size='large'
             />
           </div>
-          <div className='challenge-github-btn'>
+          <div className={darkModeIsOn ? 'challenge-github-btn-dm' : 'challenge-github-btn'}>
             <Button color='primary' href={`https://www.github.com/${challenge.repositoryName}`}>
               To Github!
             </Button>
@@ -130,7 +135,7 @@ function ChallengePage() {
         <div className='challenge-right-wrapper'>
           <div className='challenge-title-description'>
             <div className='challenge-name'>
-              <h1>{challenge.name}</h1>
+              <h1 className={darkModeIsOn ? 'dark-h1' : 'light-h1'}>{challenge.name}</h1>
             </div>
             <div className='challenge-description'>
               <p>{challenge.description}</p>
@@ -141,7 +146,7 @@ function ChallengePage() {
              challengeId={challengeParamId}
               />
           </div>
-          <div className='challenge-submit-btn'>
+          <div className={darkModeIsOn ? 'challenge-submit-btn-dm' : 'challenge-submit-btn'}>
             <Button color='primary' onClick={setIsModalOpen}>
               Submit
             </Button>

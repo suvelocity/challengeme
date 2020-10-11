@@ -6,16 +6,32 @@
     grid-template-areas:
       "name status submittedAt";
     margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.4);
+    /* overflow: hidden; */
+    padding:10px;
+    text-align: center;
+    width:100% !important;
+    
+
   }
   #name { 
     grid-area: name; 
     justify-self: center;
+    margin:auto;
+
   }
   #status { 
     grid-area: status; 
     justify-self: center;
+    margin:auto;
+
   }
   #submittedAt { 
     grid-area: submittedAt;
     justify-self: center; 
+    margin:auto;
+
+  }
+  body::-webkit-scrollbar {
+    display: none;
   }
