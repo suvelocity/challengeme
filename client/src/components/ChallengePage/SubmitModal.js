@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { Rating } from "@material-ui/lab";
 import { useForm } from "react-hook-form";
-import network from '../../services/network'
+import network from "../../services/network";
 function getModalStyle() {
 	return {
 		outline: 0
@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 	/* eslint-disable no-unused-vars */
-	const { register, handleSubmit, watch, errors } = useForm();
+	const { register, handleSubmit, errors } = useForm();
 	/* eslint-enable no-unused-vars */
 	const [userRating, setUserRating] = useState();
 	const classes = useStyles();
@@ -57,12 +57,10 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 		console.log(formData);
 	};
 
-	// console.log(watch("repository"));
-
-	const isRepoExist = async repo => {
-		const response = await fetch(`https://api.github.com/repos/${repo}`);
-		return response.status !== 404;
-	};
+	// const isRepoExist = async repo => {
+	// 	const response = await fetch(`https://api.github.com/repos/${repo}`);
+	// 	return response.status !== 404;
+	// };
 
 	return (
 		<Modal
@@ -94,8 +92,8 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 						style={{ marginTop: 8 }}
 						inputRef={register({
 							required: true,
-							pattern: /^([^ ]+\/[^ ]+)$/,
-							validate: { isRepoExist }
+							pattern: /^([^ ]+\/[^ ]+)$/
+							// validate: { isRepoExist }
 						})}
 					/>
 					{errors.repository?.type === "pattern" && (
@@ -121,7 +119,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId, userId }) {
 							alignItems: "center",
 							justifyContent: "space-between"
 						}}>
-						<Typography component="subtitle1">Rate this challenge</Typography>
+						<Typography variant="subtitle1">Rate this challenge</Typography>
 						<Rating
 							name="rating"
 							value={userRating}
