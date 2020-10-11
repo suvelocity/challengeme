@@ -16,7 +16,7 @@ on:
 
 
 jobs:
-  tests:
+  build:
     runs-on: ubuntu-latest
 
     strategy:

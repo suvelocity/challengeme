@@ -20,8 +20,6 @@ router.get('/:challengeId/submissions', async (req, res) => {
 
 router.post('/:challengeId/apply', async (req, res) => {
   const { solutionRepository } = req.body;
-  const headers = req.headers;
-  console.log('MY HEADERS !!!!!!!!! ', headers);
   const challengeId = req.params.challengeId;
   const challenge = await Challenge.findByPk(challengeId);
   let submission = await Submission.findOne({
