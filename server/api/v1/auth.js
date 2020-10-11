@@ -110,7 +110,6 @@ usersRouter.post("/login", async (req, res) => {
   const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: expired
   });
-  console.log(currentUser);
   const accessToken = generateToken(currentUser);
   const isTokenExist = await RefreshToken.findOne({
     where: {
