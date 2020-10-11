@@ -71,11 +71,7 @@ router.get('/top-user', async (req, res) => {
         }
         }
       ],
-<<<<<<< Updated upstream
       order: [[sequelize.fn("COUNT", sequelize.col("challenge_id")), 'DESC']],
-=======
-      limit:5,
->>>>>>> Stashed changes
     })
     users.forEach(element => {
       delete element["UsersTeams.teamId"]

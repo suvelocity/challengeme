@@ -73,12 +73,7 @@ router.get("/sub-by-date", async (req, res) => {
   res.json([subByDate, req.user]);
 });
 
-<<<<<<< Updated upstream
 router.get("/sub-by-category", async(req, res) => {
-=======
-// returns the count of submissions with the same challenge type
-router.get("/sub-by-type", async(req, res) => {
->>>>>>> Stashed changes
   let loggedUser = req.user ? req.user.userId : 1
   const subByCategory = await Submission.findAll({
     include: [
