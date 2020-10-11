@@ -4,16 +4,18 @@ import Review from "./Review";
 import network from "../../../../../services/network";
 const challengeId = 2;
 function ReviewsTab({ challengeId }) {
-  // TODO: change the style with amit
-  // TODO: user can delete his review, bonus , can edit it
   const [reviews, setReviews] = useState(null);
   useEffect(() => {
     const fetchReviews = async () => {
-      const { data: reviewsArray } = await network.get(
+      const { data: reviewsArrayFromServer } = await network.get(
         `/api/v1/reviews/byChallenge/${challengeId}`
       );
-      console.log('reviews',reviewsArray);
-      setReviews(reviewsArray);
+
+      const reviewsWithContent = reviewsArrayFromServer.filter(
+        (review) => review.title && review.content
+      );
+      setReviews(reviewsWithContent);
+
     };
     fetchReviews();
     const liveReviews = setInterval(fetchReviews, 5000);

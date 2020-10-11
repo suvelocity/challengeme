@@ -17,11 +17,12 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       type: DataTypes.STRING,
       repositoryName: DataTypes.STRING,
+      boilerPlate: DataTypes.STRING,
       cover: DataTypes.STRING,
       category: DataTypes.STRING,
       userId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: false
       },
     },
     {
