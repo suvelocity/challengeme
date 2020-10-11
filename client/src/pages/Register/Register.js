@@ -10,8 +10,9 @@ import Stepper from "./Stepper";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import ErrorIcon from "@material-ui/icons/Error";
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from "@material-ui/core";
 import "../../styles/Register.css";
+import { motion } from "framer-motion";
 
 const useStyles = makeStyles((theme) => ({
     nextButton: {
@@ -21,6 +22,20 @@ const useStyles = makeStyles((theme) => ({
         color: "white",
     },
 }));
+
+const pageVariants = {
+    initial: {
+        opacity: 0,
+    },
+    in: {
+        opacity: 1,
+        transition: { duration: 0.5 },
+    },
+    out: {
+        opacity: 0,
+        transition: { duration: 0.5 },
+    },
+};
 
 function Register() {
     const classes = useStyles();
@@ -54,12 +69,18 @@ function Register() {
 
         let tempErrs = [];
         if (step === 1) {
-            if (firstName.length < 1 || !onlyLettersAndSpacesRegex.test(firstName))
+            if (
+                firstName.length < 1 ||
+                !onlyLettersAndSpacesRegex.test(firstName)
+            )
                 tempErrs.push({
                     field: "firstName",
                     message: "First name must contain only letters.",
                 });
-            if (lastName.length < 1 || !onlyLettersAndSpacesRegex.test(lastName))
+            if (
+                lastName.length < 1 ||
+                !onlyLettersAndSpacesRegex.test(lastName)
+            )
                 tempErrs.push({
                     field: "lastName",
                     message: "Last name  must contain only letters.",
@@ -76,17 +97,17 @@ function Register() {
             if (userName.length > 32)
                 tempErrs.push({
                     field: "userName",
-                    message:
-                        "Username to long.",
+                    message: "Username to long.",
                 });
             try {
-                const { data } = await network.post('/api/v1/auth/userexist', { userName });
+                const { data } = await network.post("/api/v1/auth/userexist", {
+                    userName,
+                });
             } catch (e) {
                 if (e.response.status === 409) {
                     tempErrs.push({
                         field: "userName",
-                        message:
-                            "Username already exists.",
+                        message: "Username already exists.",
                     });
                 }
             }
@@ -161,24 +182,21 @@ function Register() {
                 setErrors([]);
                 try {
                     setLoading(true);
-                    await network.post(
-                        "/api/v1/auth/register",
-                        {
-                            firstName,
-                            lastName,
-                            userName,
-                            email,
-                            password,
-                            birthDate,
-                            country,
-                            city,
-                            phoneNumber,
-                            githubAccount: gitHub,
-                            reasonOfRegistration: signUpReason,
-                            securityQuestion,
-                            securityAnswer,
-                        }
-                    );
+                    await network.post("/api/v1/auth/register", {
+                        firstName,
+                        lastName,
+                        userName,
+                        email,
+                        password,
+                        birthDate,
+                        country,
+                        city,
+                        phoneNumber,
+                        githubAccount: gitHub,
+                        reasonOfRegistration: signUpReason,
+                        securityQuestion,
+                        securityAnswer,
+                    });
                     setLoading(false);
                 } catch (err) {
                     tempErrs.push({
@@ -188,7 +206,7 @@ function Register() {
                 }
             }
         } else if (step === 5) {
-            history.push('/login');
+            history.push("/login");
             return;
         }
         if (tempErrs.length === 0) {
@@ -203,7 +221,6 @@ function Register() {
         setStep(step - 1);
         setErrors([]);
     };
-
 
     const handleChange = (input) => (e) => {
         switch (input) {
@@ -308,10 +325,18 @@ function Register() {
     };
 
     return (
-        <div className="registerGeneral">
+        <motion.div
+            initial="initial"
+            animate="in"
+            exit="out"
+            variants={pageVariants}
+            className="registerGeneral"
+        >
             <div className="containerHeaderRegister">
                 <div className="registerHeader">
-                    <div className="registerTitle">Register</div>
+                    <div className="registerTitle">
+                        <b>Register</b>
+                    </div>
                     <Stepper activeStep={step} />
                 </div>
             </div>
@@ -332,11 +357,12 @@ function Register() {
                 )}
                 {loading && <CircularProgress />}
                 <div className="containerSecond">
-                    {step !== 5 ?
+                    {step !== 5 ? (
                         <>
-
                             <div className="containerButtons">
-                                {step > 1 && <Button onClick={prevStep}>Back</Button>}
+                                {step > 1 && (
+                                    <Button onClick={prevStep}>Back</Button>
+                                )}
                                 <Button
                                     className={classes.nextButton}
                                     variant="contained"
@@ -347,7 +373,7 @@ function Register() {
                                 </Button>
                             </div>
                         </>
-                        :
+                    ) : (
                         <div className="containerButtons">
                             <Button
                                 className={classes.nextButton}
@@ -356,9 +382,9 @@ function Register() {
                                 onClick={nextStep}
                             >
                                 Back To Login Page
-                        </Button>
+                            </Button>
                         </div>
-                    }
+                    )}
 
                     <p>
                         Have an existing account?{" "}
@@ -366,7 +392,7 @@ function Register() {
                     </p>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }
 

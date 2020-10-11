@@ -18,9 +18,22 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import ErrorIcon from "@material-ui/icons/Error";
+import { motion } from "framer-motion";
 
 import "../styles/Login.css";
-
+const pageVariants = {
+    initial: {
+        opacity: 0,
+    },
+    in: {
+        opacity: 1,
+        transition: { duration: 1.5 },
+    },
+    out: {
+        opacity: 0,
+        transition: { duration: 1.5 },
+    },
+};
 const useStyles = makeStyles((theme) => ({
     userName: {
         marginTop: "110px",
@@ -98,130 +111,146 @@ export default function Login() {
     };
 
     return (
-        <div className="loginGeneral">
-            <div className="containerHeader">
-                <div className="loginHeader">
-                    <div className="loginTitle">Log in</div>
-                    <div className="orLoginWith">Or login with :</div>
-                    <div>
-                        <IconButton>
-                            <GitHubIcon style={{ color: "white" }} />
-                        </IconButton>
+        <>
+            <motion.div
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariants}
+                className="loginGeneral"
+            >
+                <div className="containerHeader">
+                    <div className="loginHeader">
+                        <div className="loginTitle">
+                            <b>Log in</b>
+                        </div>
+                        <div className="orLoginWith">
+                            Or login with :
+                            <IconButton>
+                                <GitHubIcon style={{ color: "white" }} />
+                            </IconButton>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="containerBody">
-                <form className="loginForm" onSubmit={loginFunc}>
-                    <div className="loginBody">
-                        <FormControl className={classes.userName}>
-                            <InputLabel
-                                style={{ color: "grey" }}
-                                htmlFor="standard-adornment-password"
-                            >
-                                User Name
-                            </InputLabel>
-                            <Input
-                                type="text"
-                                id="userNameField"
-                                name="userName"
-                                // color="secondary"
-                                value={userName}
-                                required
-                                onChange={updateField}
-                                endAdornment={
-                                    <InputAdornment
-                                        style={{ opacity: "0.7" }}
-                                        position="end"
-                                    >
-                                        <PeopleIcon />
-                                    </InputAdornment>
-                                }
-                            />
-                        </FormControl>
-                        <FormControl className={classes.password}>
-                            <InputLabel
-                                style={{ color: "grey" }}
-                                className={classes.labelPass}
-                                htmlFor="standard-adornment-password"
-                            >
-                                Password
-                            </InputLabel>
-                            <Input
-                                id="passwordField"
-                                name="password"
-                                value={password}
-                                required
-                                type={showPassword ? "text" : "password"}
-                                onChange={updateField}
-                                // color="secondary"
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
+                <div className="containerBody">
+                    <form className="loginForm" onSubmit={loginFunc}>
+                        <div className="loginBody">
+                            <FormControl className={classes.userName}>
+                                <InputLabel
+                                    style={{ color: "grey" }}
+                                    htmlFor="standard-adornment-password"
+                                >
+                                    User Name
+                                </InputLabel>
+                                <Input
+                                    type="text"
+                                    id="userNameField"
+                                    name="userName"
+                                    // color="secondary"
+                                    value={userName}
+                                    required
+                                    onChange={updateField}
+                                    endAdornment={
+                                        <InputAdornment
                                             style={{ opacity: "0.7" }}
-                                            aria-label="toggle password visibility"
-                                            onMouseDown={
-                                                handleClickShowPassword
-                                            }
-                                            onMouseUp={handleClickShowPassword}
+                                            position="end"
                                         >
-                                            {showPassword ? (
-                                                <Visibility />
-                                            ) : (
-                                                <VisibilityOff />
-                                            )}
-                                        </IconButton>
-                                        <LockIcon style={{ opacity: "0.7" }} />
-                                    </InputAdornment>
-                                }
-                            />
-                        </FormControl>
-                        <div className="RememberAndforgot">
-                            <FormControlLabel
-                                htmlFor="rememberMe"
-                                value="start"
-                                control={<Checkbox color="primary" />}
-                                label="Remember me"
-                                labelPlacement="end"
-                                name="rememberMe"
-                                type="checkbox"
-                                onChange={updateField}
-                            />
-                            <Link to="/forgot" className="forgotLabel">
-                                Forgot Password ?
-                            </Link>
-                        </div>
-                        {(error.userName || error.password || error.msg) && (
-                            <div className="containerError">
-                                <ErrorIcon
-                                    style={{
-                                        color: "white",
-                                        marginLeft: "4px",
-                                    }}
+                                            <PeopleIcon />
+                                        </InputAdornment>
+                                    }
                                 />
-                                <div className="errorInput">
-                                    {error.userName ||
-                                        error.password ||
-                                        error.msg}
-                                </div>
+                            </FormControl>
+                            <FormControl className={classes.password}>
+                                <InputLabel
+                                    style={{ color: "grey" }}
+                                    className={classes.labelPass}
+                                    htmlFor="standard-adornment-password"
+                                >
+                                    Password
+                                </InputLabel>
+                                <Input
+                                    id="passwordField"
+                                    name="password"
+                                    value={password}
+                                    required
+                                    type={showPassword ? "text" : "password"}
+                                    onChange={updateField}
+                                    // color="secondary"
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                style={{ opacity: "0.7" }}
+                                                aria-label="toggle password visibility"
+                                                onMouseDown={
+                                                    handleClickShowPassword
+                                                }
+                                                onMouseUp={
+                                                    handleClickShowPassword
+                                                }
+                                            >
+                                                {showPassword ? (
+                                                    <Visibility />
+                                                ) : (
+                                                    <VisibilityOff />
+                                                )}
+                                            </IconButton>
+                                            <LockIcon
+                                                style={{ opacity: "0.7" }}
+                                            />
+                                        </InputAdornment>
+                                    }
+                                />
+                            </FormControl>
+                            <div className="RememberAndforgot">
+                                <FormControlLabel
+                                    htmlFor="rememberMe"
+                                    value="start"
+                                    control={<Checkbox color="primary" />}
+                                    label="Remember me"
+                                    labelPlacement="end"
+                                    name="rememberMe"
+                                    type="checkbox"
+                                    onChange={updateField}
+                                />
+                                <Link to="/forgot" className="forgotLabel">
+                                    Forgot Password ?
+                                </Link>
                             </div>
-                        )}
-                        <Button
-                            type="submit"
-                            id="loginButton"
-                            className={classes.loginButton}
-                        >
-                            Log in
-                        </Button>
-                        <div>
-                            <span>don't have an account yet?</span>
-                            <Link to="/register" id="signUp">
-                                {" "}
-                                Sign up
-                            </Link>
+                            {(error.userName ||
+                                error.password ||
+                                error.msg) && (
+                                <div className="containerError">
+                                    <ErrorIcon
+                                        style={{
+                                            color: "white",
+                                            marginLeft: "4px",
+                                        }}
+                                    />
+                                    <div className="errorInput">
+                                        {error.userName ||
+                                            error.password ||
+                                            error.msg}
+                                    </div>
+                                </div>
+                            )}
+                            <Button
+                                type="submit"
+                                id="loginButton"
+                                className={classes.loginButton}
+                            >
+                                Log in
+                            </Button>
+                            <div>
+                                <span>don't have an account yet?</span>
+                                <Link to="/register" id="signUp">
+                                    {" "}
+                                    Sign up
+                                </Link>
+                            </div>
                         </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+                    </form>
+                </div>
+            </motion.div>
+        </>
     );
 }

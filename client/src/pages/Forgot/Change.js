@@ -13,8 +13,8 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import LockIcon from "@material-ui/icons/Lock";
 
 const useStyles = makeStyles((theme) => ({
-  ForogotPassContainer: {
-        marginTop: "80px",
+    ForogotPassContainer: {
+        marginTop: "90px",
         marginBottom: "10px",
         width: "320px",
     },
@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "30px",
         width: "320px",
     },
-
 }));
 export default function Change({ data, handleChange }) {
     const classes = useStyles();
@@ -59,8 +58,8 @@ export default function Change({ data, handleChange }) {
         <Redirect to="/" />
     ) : (
         <div className={classes.ForogotPassContainer}>
-            Attention! You have {<Timer limit={limit} unit={"minutes"} />} to
-            change your password.
+            <b> Attention!</b> You have{" "}
+            {<Timer limit={limit} unit={"minutes"} />} to change your password.
             <br />
             Enter new password :
             <FormControl className={classes.ForogotPasspassword}>

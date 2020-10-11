@@ -2,7 +2,23 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
-import "../styles/Guest.css";
+import { motion } from "framer-motion";
+import "../styles/Landing.css";
+
+const pageVariants = {
+    initial: {
+        opacity: 0,
+    },
+    in: {
+        opacity: 1,
+        transition: { duration: 1.5 },
+    },
+    out: {
+        opacity: 0,
+        transition: { duration: 1.5 },
+    },
+};
+
 const useStyles = makeStyles((theme) => ({
     challengeQuotes: {
         height: "60vh",
@@ -12,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
         alignItems: "center",
         fontSize: "50px",
         textShadow: "2px 2px 10px black",
-        color:"white",
+        color: "white",
     },
     loginHomePage: {
         marginBottom: "30px",
@@ -31,7 +47,8 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "20px",
         margin: "20px",
         width: "150px",
-        background: "linear-gradient(45deg, rgba(255, 255, 255, 0.54) 30%, white 90%)",
+        background:
+            "linear-gradient(45deg, rgba(255, 255, 255, 0.54) 30%, white 90%)",
         color: "black",
     },
     buttonsHomePage: {
@@ -45,8 +62,17 @@ export default function Landing() {
 
     return (
         <>
-            <div id="container">
+            <motion.div
+                initial="initial"
+                animate="in"
+                exit="out"
+                variants={pageVariants}
+                id="container"
+            >
                 <div className={classes.challengeQuotes}>
+                    <div className="challengeMe">
+                        <b>CHALLENGE ME</b>
+                    </div>
                     <div>
                         <span>
                             <b>Challenges</b>{" "}
@@ -71,9 +97,8 @@ export default function Landing() {
                         register
                     </Button>
                 </div>
-
                 <div class="wave"></div>
-            </div>
+            </motion.div>
         </>
     );
 }

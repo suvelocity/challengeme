@@ -27,7 +27,7 @@ export default function Identify(props) {
 
   return (
     <div className={classes.titleUserNameForgotPass}>
-     Enter your userName :
+     Enter your User Name :
       <FormControl className={classes.userNameForgotPass}>
                 <InputLabel style={{ color: "grey" }}>User Name</InputLabel>
                 <Input
