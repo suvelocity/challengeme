@@ -147,6 +147,10 @@ const url = 'http://localhost:3000';
 
 const projectName = 'Challenge page';
 describe(`${projectName} - Test suite`, () => {
+  before(() => {
+    cy.login();
+  });
+
   beforeEach(() => {
     cy.server();
     cy.route(`${url}/api/v1/challenges/1`, {
