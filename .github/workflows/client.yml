@@ -11,8 +11,8 @@ on:
       webhookUrl:
         description: 'Webhook Url'
         required: true
-      bearerToken:
-        description: 'Token for Access'
+      customHeaders:
+        description: 'Custom Headers'
         required: true
 
 
@@ -68,7 +68,7 @@ jobs:
       with:
         method: 'PATCH'
         url: ${{ github.event.inputs.webhookUrl }}
-        bearerToken: ${{ github.event.inputs.bearerToken }}
+        customHeaders: ${{ github.event.inputs.customHeaders }}
         data:  '{ "success":false }'
 
         
