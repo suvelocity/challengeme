@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -15,6 +15,9 @@ import './Header.css';
 import ThemeApi from "../../services/Theme"
 import DarkModeToggle from "react-dark-mode-toggle";
 import Search from '../Search/Search'
+import Cookies from 'js-cookie';
+import network from '../../services/network'
+import { Logged } from '../../context/LoggedInContext';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -68,6 +71,8 @@ function Header() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const location = useHistory();
+  const value = useContext(Logged);
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -76,6 +81,18 @@ function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const logOut = async () => {
+    try {
+      const { data: response } = await network.post('/api/v1/auth/logout', { token: Cookies.get("refreshToken") })
+      location.push('/login');
+      value.setLogged(false);
+      Cookies.remove("refreshToken")
+      Cookies.remove("accessToken")
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const headerStyle = {height:"12vh",maxHeight:"80px",minHeight:"40px",position:"sticky",top:0, backgroundColor:! darkMode && "#C9AC80"}
 
@@ -167,7 +184,7 @@ function Header() {
               </Link>
             </MenuItem> 
             <MenuItem onClick={handleClose}>
-              <Button style={{minWidth:150}} variant="contained" color="secondary">
+              <Button style={{minWidth:150}} variant="contained" color="secondary" onClick={logOut}>
               Log Out
               </Button>
             </MenuItem>

@@ -9,7 +9,6 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import LockIcon from "@material-ui/icons/Lock";
 import Swal from "sweetalert2";
 
@@ -20,12 +19,10 @@ const useStyles = makeStyles((theme) => ({
         width: "320px",
     },
     ForogotPasspassword: {
-        // marginTop: "60px",
         marginBottom: "10px",
         width: "320px",
     },
     ForogotPassconfirmPassword: {
-        // marginTop: "80px",
         marginBottom: "30px",
         width: "320px",
     },
@@ -37,13 +34,19 @@ export default function Change({ data, handleChange }) {
 
     const [redirect, setRedirect] = useState(false);
     const limit = 5;
-    const handleClickShowPassword = () => {
-        setShowPassword((prev) => !prev);
-    };
-    const handleClickShowConfirmPassword = () => {
-        setShowConfirmPassword((prev) => !prev);
-    };
-    const history = useHistory();
+
+    const hideBoth=()=>{
+        setShowPassword(false);
+        setShowConfirmPassword(false);
+    }
+    
+    useEffect(() => {
+        //Prevent special password eye bugs
+        document.addEventListener('mouseup', hideBoth );
+        document.addEventListener('dragend', hideBoth );
+
+    }, [])
+
     useEffect(() => {
         const timer = setTimeout(() => {
             Swal.fire({
@@ -87,8 +90,7 @@ export default function Change({ data, handleChange }) {
                                 <IconButton
                                     style={{ opacity: "0.7" }}
                                     aria-label="toggle password visibility"
-                                    onMouseDown={handleClickShowPassword}
-                                    onMouseUp={handleClickShowPassword}
+                                    onMouseDown={()=>setShowPassword(true)}
                                 >
                                     {showPassword ? (
                                         <Visibility />
@@ -120,8 +122,7 @@ export default function Change({ data, handleChange }) {
                                 <IconButton
                                     style={{ opacity: "0.7" }}
                                     aria-label="toggle password visibility"
-                                    onMouseDown={handleClickShowConfirmPassword}
-                                    onMouseUp={handleClickShowConfirmPassword}
+                                    onMouseDown={()=>setShowConfirmPassword(true)}
                                 >
                                     {showConfirmPassword ? (
                                         <Visibility />
