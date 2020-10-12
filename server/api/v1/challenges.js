@@ -21,13 +21,22 @@ challengeRouter.get('/', filterResults, async (req, res) => {
 
     const allChallenges = await Challenge.findAll({
       where: condition,
-      include: {
-        model: Label,
-        attributes: ['name'],
-      },
-	});
-	
-	const allChallengesJson = allChallenges
+      include: [
+        {
+          model: Label,
+          attributes: ['name'],
+        },
+        {
+          model: Review,
+          attributes: [
+            [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
+          ],
+        },
+      ],
+    });
+
+
+    
 
     /*
     const rating = await Review.findAll({
@@ -68,9 +77,8 @@ challengeRouter.get('/', filterResults, async (req, res) => {
     // const newArr = allChallenges.map((challenge) => {
     //   challenge['averageRating'] = 1;
     //   return challenge;
-	// });
-	
-	console.log('now',allChallenges);
+    // });
+
     res.json(allChallenges);
 
     if (labels) {
