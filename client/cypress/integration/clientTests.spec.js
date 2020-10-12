@@ -37,28 +37,16 @@ describe("Client Tests", () => {
 
     cy.visit("http://localhost:3000/statistics");
     cy.get("#topChallenges");
-    cy.get(
-      "#topChallengesPie"
-    ).click();
-    cy.get(
-      "#topChallengesBar"
-    ).click();
+    cy.get("#topChallengesPie").click();
+    cy.get("#topChallengesBar").click();
 
     cy.get("#topUsers");
-    cy.get(
-      "#topUsersPie"
-    ).click();
-    cy.get(
-      "#topUsersBar"
-    ).click();
+    cy.get("#topUsersPie").click();
+    cy.get("#topUsersBar").click();
 
     cy.get("#topTeams");
-    cy.get(
-      "#topTeamsLine"
-    ).click();
-    cy.get(
-      "#topTeamsBar"
-    ).click();
+    cy.get("#topTeamsLine").click();
+    cy.get("#topTeamsBar").click();
   });
 
   //Insights
@@ -74,33 +62,20 @@ describe("Client Tests", () => {
     cy.visit("http://localhost:3000/statistics/insights");
     
     cy.get("#SubmissionTotalChart");
-
     cy.get("#challengesMostSuccessChart");
     cy.get("#challengesMostSubChart");
 
     cy.get("#challengesByTypeChart");
-    cy.get(
-      "#challengesByTypeChartPie"
-    ).click();
-    cy.get(
-      "#challengesByTypeChartBar"
-    ).click();
+    cy.get("#challengesByTypeChartPie").click();
+    cy.get("#challengesByTypeChartBar").click();
 
     cy.get("#topByReview");
-    cy.get(
-      "#topByReviewPie"
-    ).click();
-    cy.get(
-      "#topByReviewBar"
-    ).click();
+    cy.get("#topByReviewPie").click();
+    cy.get("#topByReviewBar").click();
 
     cy.get("#subByDate");
-    cy.get(
-      "#subByDatePie"
-    ).click();
-    cy.get(
-      "#subByDateBar"
-    ).click();
+    cy.get("#subByDatePie").click();
+    cy.get("#subByDateBar").click();
   });
 
   //Users
@@ -115,32 +90,17 @@ describe("Client Tests", () => {
     cy.visit("http://localhost:3000/statistics/users");
 
     cy.get("#UserTopSubmissionsByType");
-    cy.get(
-      "#UserTopSubmissionsByTypePie"
-      ).click();
-    cy.get(
-      "#UserTopSubmissionsByTypeBar"
-      ).click();
+    cy.get("#UserTopSubmissionsByTypePie").click();
+    cy.get("#UserTopSubmissionsByTypeBar").click();
     
     cy.get("#topUsersBySuccess");
-    cy.get(
-      "#topUsersBySuccessPie"
-      ).click();
-    cy.get(
-      "#topUsersBySuccessBar"
-      ).click();
+    cy.get("#topUsersBySuccessPie").click();
+    cy.get("#topUsersBySuccessBar").click();
       
     cy.get("#UserSubmissionsByDate");
-
-    cy.get(
-      "#UserSubmissionsByDatePie"
-      ).click();
-    cy.get(
-      "#UserSubmissionsByDateLine"
-      ).click();
-    cy.get(
-      "#UserSubmissionsByDateBar"
-      ).click();
+    cy.get("#UserSubmissionsByDatePie").click();
+    cy.get("#UserSubmissionsByDateLine").click();
+    cy.get("#UserSubmissionsByDateBar").click();
 
     cy.get("#topUsersByTeam");
   });
@@ -156,35 +116,19 @@ describe("Client Tests", () => {
     cy.visit("http://localhost:3000/statistics/teams");
 
     cy.get("#lastWeekSubOfTeam");
-    cy.get(
-      "#lastWeekSubOfTeamPie"
-      ).click();
-    cy.get(
-      "#lastWeekSubOfTeamBar"
-      ).click();
+    cy.get("#lastWeekSubOfTeamPie").click();
+    cy.get("#lastWeekSubOfTeamBar").click();
     
     cy.get("#TopOfTheTeams");
-    cy.get(
-      "#TopOfTheTeamsPie"
-      ).click();
-    cy.get(
-      "#TopOfTheTeamsBar"
-      ).click();
+    cy.get("#TopOfTheTeamsPie").click();
+    cy.get("#TopOfTheTeamsBar").click();
 
     cy.get("#TopSuccessChallenges");
-    cy.get(
-      "#TopOfTheTeamsPie"
-      ).click();
-    cy.get(
-      "#TopOfTheTeamsBar"
-      ).click();
+    cy.get("#TopOfTheTeamsPie").click();
+    cy.get("#TopOfTheTeamsBar").click();
 
     cy.get("#TopOfTheTeams");
-    cy.get(
-      "#TopSuccessChallengesPie"
-      ).click();
-    cy.get(
-      "#TopSuccessChallengesBar"
-      ).click();
+    cy.get("#TopSuccessChallengesPie").click();
+    cy.get("#TopSuccessChallengesBar").click();
   });
 });
