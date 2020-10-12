@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ChooseLabels from '../Choosers/ChooseLabels'
 import './FilterMenu.css'
 import './FilterMenuDark.css'
+import './hamburger.css'
 import { Button } from '@material-ui/core';
 import ThemeApi from "../../services/Theme"
 
@@ -76,7 +77,17 @@ const FilterMenu =( {updateFilters}) => {
       </div>
       </div>
       <div className='toggleOpen' 
-      onClick={toggleOpenClick} />
+      onClick={toggleOpenClick}
+       >
+        <button class={open
+        ?"hamburger hamburger--arrowalt is-active":
+        "hamburger hamburger--arrowalt"} 
+        type="button">
+          <span class="hamburger-box">
+            <span class="hamburger-inner"></span>
+          </span>
+        </button>  
+      </div>
     </div>
     );
 }
