@@ -4,7 +4,6 @@ import Charts from "./charts/Charts";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import network from '../services/network'
 import ThemeApi from "../services/Theme"
-import '../pages/Home.css'
 import clsx from 'clsx';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -12,6 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import WorkIcon from '@material-ui/icons/Work';
+import './statistics.css'
 
 const useStyles = makeStyles((theme) => ({
   listRoot: {

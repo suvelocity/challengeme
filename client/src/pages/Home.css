@@ -1,6 +1,6 @@
 .dark-home-page{
  width:100%;
- /* display: flex; */
+ display: flex;
  background-color: black;
  flex-wrap: wrap;
  justify-content: center;
@@ -17,7 +17,7 @@
     background: linear-gradient(to right, #CFDEF3, #E0EAFC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     min-height: 90vh;
     width: 99vw;
-    /* display: flex; */
+    display: flex;
     flex-wrap: wrap;
     justify-content: center;
 }

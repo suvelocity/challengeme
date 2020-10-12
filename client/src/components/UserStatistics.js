@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Charts from "./charts/Charts";
 import ThemeApi from "../services/Theme"
-import '../pages/Home.css'
 import CircularProgress from "@material-ui/core/CircularProgress";
 import clsx from 'clsx';
 import List from '@material-ui/core/List';
@@ -12,6 +11,8 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import WorkIcon from '@material-ui/icons/Work';
 import network from '../services/network'
+import './statistics.css'
+
 
 
 const useStyles = makeStyles((theme) => ({

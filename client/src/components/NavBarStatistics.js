@@ -28,7 +28,6 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
 import MenuOpenIcon from "@material-ui/icons/MenuOpen";
-import "./statistics.css";
 import ThemeApi from "../services/Theme";
 
 const drawerWidth = 300;

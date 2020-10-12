@@ -4,6 +4,7 @@ import Charts from "./charts/Charts";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ThemeApi from "../services/Theme";
 import network from '../services/network'
+import './statistics.css'
 
 const useStyles = makeStyles((matches) => ({
   grid: {

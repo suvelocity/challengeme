@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Charts from "./charts/Charts";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ThemeApi from "../services/Theme"
-import '../pages/Home.css'
+import './statistics.css'
 import clsx from 'clsx';
 import network from '../services/network'
 

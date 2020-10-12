@@ -10,7 +10,6 @@ import UserStatistics from '../components/UserStatistics';
 import TeamStatistics from '../components/TeamStatistics';
 import Insights from '../components/Insights';
 import ButtonAppBar from '../components/Navigation/NavbarMock';
-import './Home.css'
 import clsx from 'clsx';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
