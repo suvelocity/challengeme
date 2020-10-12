@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+// import Home from './Home'; // used by old versions
+import Header from '../components/header/Header'
+import ThemeApi from '../services/Theme'
+import Statistics from './Statistics';
 import { Logged } from "../context/LoggedInContext";
-import Home from "./Home";
 import Register from "./Register/Register";
 import Login from "./Login";
 import Cookies from "js-cookie";
@@ -11,28 +14,57 @@ import network from "../services/network";
 import Landing from "./Landing";
 import { AnimatePresence } from "framer-motion";
 
-export default function Router() {
+import Home from './Home/Home'; // post- Shahar folder revolution
+import NewChallengeForm from '../components/NewChallenge/NewChallengeForm';
+
+  
+  
+  export default function Router() {
+    const [darkTheme,setDarkTheme] = useState(false)
     const [logged, setLogged] = useState(false);
     const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    const previousTheme = localStorage.getItem("darkMode") //get previous selected theme
+    if(previousTheme === "false"){
+      setDarkTheme(false)
+    }else if(previousTheme === "true"){
+      setDarkTheme(true)
+    }
+    else{
+      if(window.matchMedia('(prefers-color-scheme: dark)').matches){ //check default theme of the user
+        setDarkTheme(true)
+      }
+    }
+  })
+    
+
     useEffect(() => {
-        (async () => {
-            if (Cookies.get("accessToken")) {
-                try {
-                    const { data } = await network.get(
-                        "/api/v1/auth/validateToken"
-                    );
-                    setLogged(data);
-                    setLoading(false);
-                } catch (e) {
-                    setLoading(false);
-                    console.error(e);
-                }
-            } else {
-                setLoading(false);
-            }
-        })();
-    }, []);
+    
+      if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+        setDarkTheme(true)
+      }
+    })
+
+    useEffect(() => {// auth
+      (async () => {
+          if (Cookies.get("accessToken")) {
+              try {
+                  const { data } = await network.get(
+                      "/api/v1/auth/validateToken"
+                  );
+                  setLogged(data);
+                  setLoading(false);
+              } catch (e) {
+                  setLoading(false);
+                  console.error(e);
+              }
+          } else {
+              setLoading(false);
+          }
+      })();
+  }, []);
+
 
     return (
         <BrowserRouter>
@@ -71,14 +103,23 @@ export default function Router() {
                     </Logged.Provider>
                 ) : (
                     <Logged.Provider value={{ logged, setLogged }}>
-                        <Switch>
-                            <Route exact path="/">
-                                <Home />
+                    <ThemeApi.Provider value={{darkTheme,setDarkTheme}}>
+                        <Header/>
+                          <Switch>
+                            <Route exact path="/" >
+                              <Home />
+                            </Route>
+                            <Route path="/add_challenge">
+                              <NewChallengeForm />
+                            </Route>
+                            <Route path="/statistics">
+                              <Statistics />
                             </Route>
                             <Route path="*">
                                 <Redirect to="/" />
                             </Route>
-                        </Switch>
+                          </Switch>
+                        </ThemeApi.Provider>
                     </Logged.Provider>
                 )
             ) : (

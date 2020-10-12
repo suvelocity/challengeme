@@ -1,4 +1,9 @@
+
 server/checked-actions-memory.json
 checked-actions-memory.json
-node_modules
+server/.gitignore
 .env
+node_modules
+server/config/temp.sql
+Grequests/tempIgnored/t.js
+Grequests/getUserSucces.rest
