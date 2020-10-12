@@ -24,7 +24,7 @@ router.get("/top-users", async (req, res) => {
     });
     res.json(topUsers);
   } catch (err) {
-    res.json(err);
+    res.status(400).send(err);
   }
 });
 
@@ -57,7 +57,7 @@ router.get("/user-success", async (req, res) => {
     });
     res.json(subBySuccess);
   } catch (err) {
-    res.json(err);
+    res.status(400).send(err);
   }
 });
 
@@ -82,7 +82,7 @@ router.get("/sub-by-date", async (req, res) => {
 
     res.json(subByDate);
   } catch (err) {
-    res.json(err);
+    res.status(400).send(err);
   }
 });
 
@@ -109,7 +109,7 @@ router.get("/sub-by-type", async (req, res) => {
     });
     res.json(subByType);
   } catch (err) {
-    res.json(err);
+    res.status(400).send(err);
   }
 });
 
@@ -141,7 +141,7 @@ router.get("/unsolved-challenges", async (req, res) => {
 
     res.json(unsolvedChallenges);
   } catch (err) {
-    res.json(err);
+    res.status(400).send(err);
   }
 });
 
