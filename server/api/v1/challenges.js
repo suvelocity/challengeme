@@ -44,12 +44,9 @@ router.post('/:challengeId/apply', async (req, res) => {
   if(submission.state === 'FAIL') {
     await submission.update({ state: 'PENDING' })
   }
-/* ,
-        webhook:'https://api.ngrok.com' */
   try {
     const urltoSet = process.env.MY_URL.concat(`/api/v1/webhook/submission/${submission.id}`);
     const bearerToken = req.headers.authorization || 'bearer bananaSplit';
-    console.log(bearerToken)
     const pureToken = bearerToken.indexOf(' ')!== -1 ? bearerToken.split(' ')[1]: bearerToken;
     const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
       ref: 'master',
