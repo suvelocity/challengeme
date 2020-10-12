@@ -11,9 +11,9 @@ app.use('*', function(req,res){
     res.sendStatus(404)
 })
 
-// app.use(express.static(path.join(__dirname, "..", "client", 'build')))
-// app.use('/', (req, res, next) => {
-//   res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
-// });
+app.use(express.static(path.join(__dirname, "..", "client", 'build')))
+app.use('/', (req, res, next) => {
+  res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
+});
 
 module.exports = app;
