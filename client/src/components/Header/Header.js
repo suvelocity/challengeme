@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useContext} from 'react';
+import Cookies from "js-cookie";
 import { Link, NavLink } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -15,6 +16,11 @@ import './Header.css';
 import ThemeApi from "../../services/Theme"
 import DarkModeToggle from "react-dark-mode-toggle";
 import Search from '../Search/Search'
+import { Logged } from '../../context/LoggedInContext';
+import { useHistory } from 'react-router-dom';
+import network from '../../services/network';
+
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -63,11 +69,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Header() {
+  const location = useHistory();
+  const value = useContext(Logged);
   const changeTheme = React.useContext(ThemeApi).setDarkTheme //setter for the theme
   const darkMode = React.useContext(ThemeApi).darkTheme //setter for the theme
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
+
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -78,7 +88,17 @@ function Header() {
   };
 
   const headerStyle = {height:"12vh",maxHeight:"80px",minHeight:"40px",position:"sticky",top:0, backgroundColor:! darkMode && "#C9AC80"}
-
+  const logOut = async () => {
+    try {
+      const { data: response } = await network.post('/api/v1/auth/logout', { token: Cookies.get("refreshToken") })
+      location.push('/login');
+      value.setLogged(false);
+      Cookies.remove("refreshToken")
+      Cookies.remove("accessToken")
+    } catch (error) {
+      console.error(error)
+    }
+  }
   return (
     <div className={classes.root} >
       <AppBar  style={headerStyle}>
@@ -167,7 +187,7 @@ function Header() {
               </Link>
             </MenuItem> 
             <MenuItem onClick={handleClose}>
-              <Button style={{minWidth:150}} variant="contained" color="secondary">
+              <Button onClick={logOut} style={{minWidth:150}} variant="contained" color="secondary">
               Log Out
               </Button>
             </MenuItem>
