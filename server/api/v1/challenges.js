@@ -56,7 +56,7 @@ router.post('/:challengeId/apply', async (req, res) => {
         testRepo: challenge.repositoryName,
         solutionRepo: solutionRepository,
         webhookUrl: urltoSet,
-        customHeaders: {'authorization': bearerToken}
+        bearerToken: bearerToken
       }
     }, {
       headers: {
