@@ -36,7 +36,6 @@ describe("Client Tests", () => {
     cy.route("**/top-challenges", "fixture:homeFixtures/topChallenges.json").as("topChallenges");
 
     cy.visit("http://localhost:3000/statistics");
-
     cy.get("#topChallenges > .chart > .chartjs-render-monitor");
     cy.get(
       "#topChallenges > .MuiBottomNavigation-root > :nth-child(2)"
@@ -45,7 +44,6 @@ describe("Client Tests", () => {
       "#topChallenges > .MuiBottomNavigation-root > :nth-child(1)"
     ).click();
 
-    cy.get("#TopUsers > .chart > .chartjs-render-monitor");
     cy.get(
       "#TopUsers > .MuiBottomNavigation-root > :nth-child(2)"
     ).click();
@@ -55,10 +53,10 @@ describe("Client Tests", () => {
     
     cy.get("#topTeams > .chart > .chartjs-render-monitor");
     cy.get(
-      "#topTeams > > .MuiBottomNavigation-root > :nth-child(2)"
+      "#topTeams > .MuiBottomNavigation-root > :nth-child(2)"
     ).click();
     cy.get(
-      "#topTeams > > .MuiBottomNavigation-root > :nth-child(1)"
+      "#topTeams > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
     ).click();
   });
 

@@ -5,7 +5,7 @@ import axios from "axios";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import ThemeApi from "../services/Theme";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((matches) => ({
   grid: {
     display: "grid",
     gridGap: "40px",
@@ -16,12 +16,20 @@ const useStyles = makeStyles((theme) => ({
     height: "inherit",
     width: "inherit",
     gridTemplate: `
-      'header header header' 5vh
-      'smallChart smallChart smallChart' 30vh 
-      'rightChart sideChart sideChart' 30vh
-      'leftChart sideChart sideChart' 30vh
-      'byReview byReview perDay' 30vh
-      'byReview byReview perDay' 30vh `,
+    'header header' 5vh
+    'smallChart smallChart' 30vh 
+    'sideChart sideChart' 30vh
+    'leftChart rightChart' 30vh
+    'byReview  byReview' 30vh
+    'perDay  perDay' 30vh `,  
+    '@media (min-width:1000px)': {gridTemplate: `
+          'header header header' 5vh
+          'smallChart smallChart smallChart' 30vh 
+          'rightChart sideChart sideChart' 30vh
+          'leftChart sideChart sideChart' 30vh
+          'byReview byReview perDay' 30vh
+          'byReview byReview perDay' 30vh `
+    } 
   },
   divLight: {
     textAlign: "center",
@@ -50,13 +58,13 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   span: {
-    fontSize: "50px",
+    fontSize: "4vw",
   },
 }));
 
 function Insights() {
-  const classes = useStyles();
   const darkMode = React.useContext(ThemeApi).darkTheme;
+  const classes = useStyles();
 
   const getInfo = () => {
     axios
