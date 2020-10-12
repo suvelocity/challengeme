@@ -116,13 +116,13 @@ router.get("/top-user", async (req, res) => {
         }
       ],
       where: {
-        id: teamUsersIds
+        id: teamUsersIds[0]
       },
       attributes:["id", "userName"],
       order: [[sequelize.fn("COUNT", sequelize.col("user_id")), "DESC"]],
     })
 
-    res.send(teamUsersTopSuccess.slice(0, 5));
+    res.send([teamUsersTopSuccess.slice(0, 5), teamUsersIds[1] ]);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -151,7 +151,7 @@ router.get("/last-week-submissions", async (req, res) => {
         created_at: {
           [Op.gte]: new Date(Date.now() - sevenDays),
         },
-        userId: teamUsersIds,
+        userId: teamUsersIds[0],
       },
       order: [
         [sequelize.fn("DAY", sequelize.col("Submission.created_at")), "desc"],
@@ -177,7 +177,7 @@ router.get("/team-submissions", async (req, res) => {
         [sequelize.fn("COUNT", sequelize.col("id")), "teamSubmissions"]
       ],
       where: {
-        userId: teamUsersId,
+        userId: teamUsersId[0],
       },
       group: ['state']
     }); 
@@ -222,7 +222,7 @@ router.get("/success-challenge", async (req, res) => {
       ],
       where: {
         state: "SUCCESS",
-        userId: teamUsersIds,
+        userId: teamUsersIds[0],
       },
       include: [
         {

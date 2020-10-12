@@ -86,6 +86,7 @@ function TeamStatistics() {
   const [successChallenges, setSuccessChallenges] = useState([]);
   const [teamsLastWeekSub, setTeamsLastWeekSub] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [teamName, setTeamName] = useState()
   const darkMode = React.useContext(ThemeApi).darkTheme
 
   const getInfo = () => {
@@ -93,7 +94,8 @@ function TeamStatistics() {
       .get(`/api/v1/statistics/teams/top-user`)
       .then((r) => r.data)
       .then((r) => {
-        setTeamsTopUser(r);
+        setTeamsTopUser(r[0]);
+        setTeamName(r[1])
         setLoading(false);
       });
     network
@@ -199,7 +201,12 @@ function TeamStatistics() {
   return (
     <div className={clsx(classes.main, darkMode?"dark-home-page":"light-home-page")}>
     <div className={classes.grid}>
-    <h1 style={{gridArea: "header"}}>Team Statistics</h1>
+    {loading ? 
+    <div className={classes.root}>
+      <CircularProgress />
+    </div>
+    : <h1 style={{gridArea: "header"}}>{`${teamName} Statistics`}</h1>
+    }
       {loading ? (
         <div className={classes.root}>
           <CircularProgress />
