@@ -43,6 +43,7 @@ export default function ChallengePage() {
         let {
           data: { challenge: challengeFromServer, author },
         } = await network.get(`/api/v1/challenges/${challengeParamId}`);
+        console.log(challengeFromServer);
         challengeFromServer.author = author;
         setChallenge(challengeFromServer);
       } catch (error) {
@@ -89,7 +90,7 @@ export default function ChallengePage() {
             }
           >
             <span className='challenge-created-by'>
-              <p>Created By: </p> <p>{challenge.author.userName}</p>
+              {/* <p>Created By: </p> <p>{challenge.author.userName}</p> */}
             </span>
             <span className='challenge-created-at'>
               <p>Created At: </p>{' '}
