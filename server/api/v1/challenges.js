@@ -14,12 +14,15 @@ router.get('/',searchFilters, async (req, res) => {
     try {
       const allChallenges = await Challenge.findAll({
         where: condition,
+        group: 'id',
         include: [
           Label,
           {
             model: Review,
-            attributes: ['rating'],
-          },]
+            attributes: [[Sequelize.fn('AVG', Sequelize.col('rating')), 'avgRating']]
+            ,
+          },],
+
       });
       if(labels){ // if filter for labels
         const filterChallenges = allChallenges.filter((challenge)=>{

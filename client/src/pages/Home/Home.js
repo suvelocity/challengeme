@@ -18,6 +18,7 @@ export default function HomePage() {
   const darkMode = React.useContext(ThemeApi).darkTheme
   let query = useQuery();
 
+
   //function to sort the searched filters
   const getFilters = useCallback(
     () => {
@@ -49,6 +50,7 @@ export default function HomePage() {
         else{
           const { data: challengesFromServer } = await network.get(
           '/api/v1/challenges?'+ getFilters())
+          console.log(challengesFromServer)
           typeof challengesFromServer === "object" &&
           setChallenges(challengesFromServer)
         }
