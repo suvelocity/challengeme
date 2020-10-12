@@ -90,8 +90,10 @@ async function getTeamUsersIds(userId){
 
 // returns the 5 users with most successfull submissions in the team
 router.get("/top-user", async (req, res) => {
+  
   try {
-    const loggedUser = req.user ? req.user.userId : 1
+    const loggedUser = req.user ? req.user.id : 1
+    console.log(req.user)
 
     const teamUsersIds = await getTeamUsersIds(loggedUser)
 
@@ -129,7 +131,7 @@ router.get("/top-user", async (req, res) => {
 // returns last week submissions  for the logged in user team
 router.get("/last-week-submissions", async (req, res) => {
   try {
-    const loggedUser = req.user ? req.user.userId : 1
+    const loggedUser = req.user ? req.user.id : 1
 
     const teamUsersIds = await getTeamUsersIds(loggedUser)
 
@@ -164,7 +166,7 @@ router.get("/last-week-submissions", async (req, res) => {
 // returns the teams submissions status(total amount, pending, success, fail)
 router.get("/team-submissions", async (req, res) => {
   try {
-    const loggedUser = req.user ? req.user.userId : 1
+    const loggedUser = req.user ? req.user.id : 1
 
     const teamUsersId = await getTeamUsersIds(loggedUser)
 
@@ -207,7 +209,7 @@ router.get("/team-submissions", async (req, res) => {
 // returns the top 5 challenges, with the most successful submissions in the team
 router.get("/success-challenge", async (req, res) => {
   try {
-    const loggedUser = req.user ? req.user.userId : 1
+    const loggedUser = req.user ? req.user.id : 1
 
     const teamUsersIds = await getTeamUsersIds(loggedUser)
 
