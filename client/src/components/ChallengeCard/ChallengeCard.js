@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
 import network from "../../services/network"
 import "./ChallengeCard.css"
 import Avatar from "@material-ui/core/Avatar"
@@ -82,11 +83,11 @@ export default function ChallengeCard({
   const avatarStyle = { backgroundColor : darkMode ? "#F5AF5D" : "#C9AC80", margin : 5 }
 
   return (
+    <Link to={`/challenges/${challengeId}`}>
     <motion.div className = "challenge-card" //animation to the challenge card
     initial={{scale:0.03}}
     animate={{ scale: 1 }}
-    transition={{default: { duration: 1.2 , delay:0.3}}}
-    >
+    transition={{default: { duration: 1.2 , delay:0.3}}} >
       <div className="challenge-card-creator-homepage">
         <div className="avatar-and-repo-name">
         <Tooltip title={repositoryName.split("/")[0]}> 
@@ -119,5 +120,6 @@ export default function ChallengeCard({
         description.length<100? description : description.slice(0,100).split(" ").slice(0,-1).join(" ")+"..."}
         </div>
     </motion.div>
+    </Link>
   );
 }

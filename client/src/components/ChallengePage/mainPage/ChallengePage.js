@@ -31,7 +31,7 @@ export default function ChallengePage() {
     const setImg = async () => {
       try {
         const { data } = await network.get(
-          `/api/v1/images?id=${challengeParamId}`
+          `/api/v1/image?id=${challengeParamId}`
         );
         setBlobedImg(data.img);
       } catch (error) {
