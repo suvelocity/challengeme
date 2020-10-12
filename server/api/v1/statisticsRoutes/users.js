@@ -33,7 +33,7 @@ router.get("/top-users", async (req, res) => {
 // returns the amount of successful and failed submissions from all submissions
 router.get("/user-success", async (req, res) => {
   try {
-    const loggedUser = req.user ? req.user.userId : 1;
+    const loggedUser = req.user ? req.user.id : 1;
     const subBySuccess = await Submission.findAll({
       group: ["state"],
       attributes: [
@@ -42,12 +42,12 @@ router.get("/user-success", async (req, res) => {
         "createdAt",
         [sequelize.fn("COUNT", sequelize.col("user_id")), "CountByUserID"],
       ],
-      include: [
-        {
-          model: User,
-          attributes: ["id", "userName"],
-        },
-      ],
+      // include: [
+      //   {
+      //     model: User,
+      //     attributes: ["id", "userName"],
+      //   },
+      // ],
       where: {
         [Op.and]: [
           { userId: loggedUser },
@@ -55,7 +55,7 @@ router.get("/user-success", async (req, res) => {
         ],
       },
     });
-    res.json(subBySuccess);
+    res.json([subBySuccess, req.user.userName]);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -64,7 +64,7 @@ router.get("/user-success", async (req, res) => {
 // returns the submissions per day from the last 5 days
 router.get("/sub-by-date", async (req, res) => {
   try {
-    const loggedUser = req.user ? req.user.userId : 1;
+    const loggedUser = req.user ? req.user.id : 1;
     const fiveDays = 5 * 24 * 60 * 60 * 1000;
     const subByDate = await Submission.findAll({
       group: [sequelize.fn("DAY", sequelize.col("created_at"))],
@@ -89,7 +89,7 @@ router.get("/sub-by-date", async (req, res) => {
 // returns the count of submissions with the same challenge type
 router.get("/sub-by-type", async (req, res) => {
   try {
-    const loggedUser = req.user ? req.user.userId : 1;
+    const loggedUser = req.user ? req.user.id : 1;
     const subByType = await Submission.findAll({
       include: [
         {
@@ -116,7 +116,7 @@ router.get("/sub-by-type", async (req, res) => {
 // returns the count of unsolved challenges
 router.get("/unsolved-challenges", async (req, res) => {
   try {
-    const loggedUser = req.user ? req.user.userId : 3;
+    const loggedUser = req.user ? req.user.id : 3;
     // gets user submissions grouped by challenge id
     const userSubmissions = await Submission.findAll({
       group: ["challenge_id"],

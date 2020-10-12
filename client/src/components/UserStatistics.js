@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
 
 function UserStatistics() {
     const classes = useStyles();
-    const [topUsers, setTopUsers] = useState([{User: {userName: "user"}}]);
+    const [topUsers, setTopUsers] = useState([[],{User: {userName: "user"}}]);
     const [userSubByType, setUserSubByType] = useState(null);
     const [userSubByDate, setUserSubByDate] = useState(null);
     const [userUnsolvedChallenges, setUserUnsolvedChallenges] = useState([]);
@@ -178,10 +178,10 @@ function UserStatistics() {
           // you can add as many object as you wand, each one will a different line with different color
         ],
       };
-    
+    // console.log(topUsers)
       const DataTopUsers = {
         labels: ['Success', 'Fail'], // array of values for x axis (strings)
-        title:`${topUsers[0].User.userName}'s submissions`, // title for the chart
+        title:`${topUsers[1]}'s submissions`, // title for the chart
         rawData: [
           {
             label: "Submitions", // name of the line (one or two words)
@@ -197,7 +197,7 @@ function UserStatistics() {
             ],
             borderColor: "black",
             fill: false, // change the line chart
-            data: topUsers && [...topUsers.map(index => index.CountByUserID), 0],
+            data: topUsers && [...topUsers[0].map(index => index.CountByUserID), 0],
           },
         ],
       };

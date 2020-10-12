@@ -5,11 +5,11 @@ const app = require("../../app");
 require("mysql2/node_modules/iconv-lite").encodingExists("foo");
 
 const { Submission, Challenge, User, Teams, UsersTeams } = require("../../models");
-const challenges = require("./mocks/challenges");
-const submissions = require("./mocks/submissions");
-const users = require("./mocks/users");
-const teams = require("./mocks/teams");
-const usersTeams = require("./mocks/usersTeams");
+const challenges = require("../mocks/challenges");
+const submissions = require("../mocks/submissions");
+const users = require("../mocks/users");
+const teams = require("../mocks/teams");
+const usersTeams = require("../mocks/usersTeams");
 
 //mock data
 
@@ -25,12 +25,24 @@ describe("insights tests", () => {
         expect(challengesRes.length).toBe(3);
         const submissionsRes = await Submission.bulkCreate(submissions);
         expect(submissionsRes.length).toBe(6);
-        const userRes = await User.bulkCreate(users);
+        const userRes = await User.bulkCreate(await users());
         expect(userRes.length).toBe(3);
         const teamsRes = await Teams.bulkCreate(teams);
         expect(teamsRes.length).toBe(3);
         const usersTeamsRes = await UsersTeams.bulkCreate(usersTeams);
         expect(usersTeamsRes.length).toBe(6);
+
+        const loginResponse = await request(app)
+      .post("/api/v1/auth/login")
+      .send({
+        userName: "dekdekdek",
+        password: "blabla96",
+        rememberMe: false
+      }); 
+
+      app.use((req, res) => {
+        req.set("authorization", loginResponse.Response.rawHeaders.accessToken)
+      })
 
     });
 

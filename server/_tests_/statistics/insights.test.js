@@ -5,10 +5,10 @@ const app = require("../../app");
 require("mysql2/node_modules/iconv-lite").encodingExists("foo");
 
 const { Submission, Challenge, User, Review } = require("../../models");
-const challenges = require("./mocks/challenges");
-const submissions = require("./mocks/submissions");
-const users = require("./mocks/users");
-const reviews = require("./mocks/reviews");
+const challenges = require("../mocks/challenges");
+const submissions = require("../mocks/submissions");
+const users = require("../mocks/users");
+const reviews = require("../mocks/reviews");
 
 
 //mock data
@@ -16,18 +16,33 @@ const reviews = require("./mocks/reviews");
 describe("insights tests", () => {
   beforeAll(async () => {
     console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+
     await Challenge.destroy({ truncate: true, force: true });
     await Submission.destroy({ truncate: true, force: true });
     await User.destroy({ truncate: true, force: true });
     await Review.destroy({ truncate: true, force: true });
+
     const challengesRes = await Challenge.bulkCreate(challenges);
     expect(challengesRes.length).toBe(3);
     const submissionsRes = await Submission.bulkCreate(submissions);
     expect(submissionsRes.length).toBe(6);
-    const userRes = await User.bulkCreate(users);
+    const userRes = await User.bulkCreate(await users());
     expect(userRes.length).toBe(3);
     const reviewRes = await Review.bulkCreate(reviews);
     expect(reviewRes.length).toBe(7);
+
+    const loginResponse = await request(app)
+      .post("/api/v1/auth/login")
+      .send({
+        userName: "dekdekdek",
+        password: "blabla96",
+        rememberMe: false
+      }); 
+
+      app.use((req, res) => {
+        req.set("authorization", loginResponse.Response.rawHeaders.accessToken)
+      })
+
   });
 
   afterAll(async () => {
