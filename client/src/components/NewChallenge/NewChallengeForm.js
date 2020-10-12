@@ -225,7 +225,7 @@ export default function NewChallengeForm() {
         <InputLabel id='Challenge type'  style={textFieldStyle}>Challenge type</InputLabel>
         <Select
           labelId='Challenge type'
-          id='Challenge type'
+          id='types'
           className='newChallengeFormFeild'
           value={repoType}
           onChange={event => setRepoType(event.target.value)}
