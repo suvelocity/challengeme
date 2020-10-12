@@ -133,7 +133,7 @@ function UserStatistics() {
 
       const usersSubmissionByDate = {
         labels: userSubByDate && userSubByDate.map(index => index.createdAt.split('T')[0]), // array of values for x axis (strings)
-        title: "Users Submissions by the last 5 days", // title for the chart
+        title: "Your Submissions by the last 5 days", // title for the chart
         rawData: [
           {
             label: "Date of submission", // name of the line (one or two words)
@@ -157,7 +157,7 @@ function UserStatistics() {
 
       const usersSubmissionType = {
         labels: userSubByType && userSubByType.map(index => index.Challenge.type), // array of values for x axis (strings)
-        title: "User's top submissions by challenges type", // title for the chart
+        title: "Your top submissions by challenges type", // title for the chart
         rawData: [
           {
             label: "Amount submissions", // name of the line (one or two words)
@@ -181,7 +181,7 @@ function UserStatistics() {
     // console.log(topUsers)
       const DataTopUsers = {
         labels: ['Success', 'Fail'], // array of values for x axis (strings)
-        title:`${topUsers[1]}'s submissions`, // title for the chart
+        title:`Your submissions`, // title for the chart
         rawData: [
           {
             label: "Submitions", // name of the line (one or two words)
@@ -205,7 +205,13 @@ function UserStatistics() {
     return (
       <div className={clsx(classes.main, darkMode?"dark-home-page":"light-home-page")}>
       <div className={classes.grid}>
-      <h1 style={{gridArea: "header"}}>Users Statistics</h1>
+      {loading ? (
+         <div className={classes.root}>
+         <CircularProgress />
+       </div>
+     ) : (
+      <h1 style={{gridArea: "header"}}>{`${topUsers[1]} Statistics`}</h1>
+     )}
         {loading ? (
           <div className={classes.root}>
             <CircularProgress />
@@ -216,7 +222,7 @@ function UserStatistics() {
           style={{ gridArea: "sideList"}}
         >
           <List className={clsx(classes.listRoot, darkMode? classes.divDark: classes.divLight)} id="topUsersByTeam">
-            <h3>Unsolved Challenges</h3>
+            <h3>Your Unsolved Challenges</h3>
             {userUnsolvedChallenges.map((challenge) => 
               <ListItem>
                 <ListItemAvatar>

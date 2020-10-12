@@ -49,7 +49,7 @@ async function getTeamUsersIds(userId){
   //returns the logged user team
   const userTeam = await Teams.findOne({
     attributes:[
-      "id"
+      "id", "name"
     ],
     include: [
       {
@@ -85,7 +85,7 @@ async function getTeamUsersIds(userId){
   // returns array with users ids
   const usersId = currentTeamUsers.Users.map((value) => value.id);
 
-  return usersId
+  return [usersId, userTeam.name]
 }
 
 // returns the 5 users with most successfull submissions in the team
