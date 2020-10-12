@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-// import Home from './Home'; // used by old versions
 import ThemeApi from '../services/Theme'
 import Statistics from './Statistics';
 import { Logged } from "../context/LoggedInContext";
@@ -12,7 +11,6 @@ import VlidatingMail from "./Register/VlidatingMail";
 import network from "../services/network";
 import Landing from "./Landing";
 import { AnimatePresence } from "framer-motion";
-
 import Home from './Home/Home'; // post- Shahar folder revolution
 import NewChallengeForm from '../components/NewChallenge/NewChallengeForm';
 import Header from '../components/Header/Header'
