@@ -4,13 +4,15 @@ const { User } = require("../models");
 const bcrypt = require("bcrypt");
 
 const mockUser = require("./mocks/users");
+const mockLogins = require("./mocks/usersLogin");
+const originalAnswer = mockUser[2].securityAnswer
 
 describe("Register & Login Tests", () => {
   beforeAll(async () => {
     await User.destroy({ truncate: true, force: true }); 
-    mockUser.user2.password = await bcrypt.hash(mockUser.user2.password, 10);
-    mockUser.user2.securityAnswer= await bcrypt.hash(mockUser.user2.securityAnswer, 10);
-    await User.create(mockUser.user2);
+    mockUser[2].password = await bcrypt.hash(mockUser[2].password, 10);
+    mockUser[2].securityAnswer= await bcrypt.hash(mockUser[2].securityAnswer, 10);
+    await User.create(mockUser[2]);
   })
   afterAll(async () => {
     await server.close();
@@ -20,13 +22,13 @@ describe("Register & Login Tests", () => {
 
     const questionResponse = await request(server)
       .post("/api/v1/auth/getquestion")
-      .send({userName: mockUser.resetPassword.userName});
+      .send({userName: mockUser[2].userName});
     expect(questionResponse.status).toBe(200);
-    expect(questionResponse.body.securityQuestion).toBe(mockUser.user2.securityQuestion);
+    expect(questionResponse.body.securityQuestion).toBe(mockUser[2].securityQuestion);
 
     const answerRequest = {
-      securityAnswer : mockUser.resetPassword.securityAnswer,
-      userName : mockUser.resetPassword.userName
+      securityAnswer : originalAnswer,
+      userName : mockUser[2].userName
     }
 
     const answerResponse = await request(server)
@@ -46,7 +48,7 @@ describe("Register & Login Tests", () => {
     expect(newPasswordResponse.status).toBe(200);
 
     const loginAfterChangedPasswordRequest = {
-      userName: mockUser.resetPassword.userName, 
+      userName: mockUser[2].userName, 
       password:"87654321",
       rememberMe: true
     }
@@ -58,7 +60,7 @@ describe("Register & Login Tests", () => {
 
     const oldPasswordLoginResponse = await request(server)
       .post("/api/v1/auth/login")
-      .send(mockUser.resetPasswordLogin);
+      .send(mockLogins[2]);
     expect(oldPasswordLoginResponse.status).toBe(403);
 
     done();
