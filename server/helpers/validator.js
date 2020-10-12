@@ -73,7 +73,7 @@ const pwdUpdateValidation = (data) => {
 
 module.exports.loginValidation = loginValidation;
 module.exports.registerValidation = registerValidation;
-module.exports.userValidation=userValidation;
+module.exports.userValidation = userValidation;
 module.exports.tokenValidation = tokenValidation;
 module.exports.pwdUpdateValidation = pwdUpdateValidation;
 module.exports.answerValidation = answerValidation;

@@ -129,28 +129,27 @@ if (submission.state === 'SUCCESS') {
 return res.json({ error: 'already success' });
 }
 
-if (submission.state !== 'FAIL') {
-await submission.update({ state: 'PENDING' });
-}
-
-try {
-const { status } = await axios.post(
-`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
-{
-  ref: 'master',
-  inputs: {
-    name: `aa${process.env.ENV_NAME}${submission.id}`,
-    testRepo: challenge.repositoryName,
-    solutionRepo: solutionRepository,
-  },
-},
-{
-  headers: {
-    'Content-Type': 'application/json',
-    Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
-  },
-}
-);
+  if(submission.state === 'FAIL') {
+    await submission.update({ state: 'PENDING' })
+  }
+  try {
+    const urltoSet = process.env.MY_URL.concat(`/api/v1/webhook/submission/${submission.id}`);
+    const bearerToken = req.headers.authorization || 'bearer bananaSplit';
+    const pureToken = bearerToken.indexOf(' ')!== -1 ? bearerToken.split(' ')[1]: bearerToken;
+    const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
+      ref: 'master',
+      inputs: {
+        testRepo: challenge.repositoryName,
+        solutionRepo: solutionRepository,
+        webhookUrl: urltoSet,
+        bearerToken: pureToken
+      }
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
+      }
+    }) 
 
 res.json({ status });
 } catch (e) {
