@@ -6,13 +6,15 @@ const bcrypt = require("bcrypt");
 const { User, RefreshToken } = require("../models");
 
 const mockUser = require("./mocks/users");
+const mockLogins = require("./mocks/usersLogin")
 //login logout and register tests
 
 describe("Register & Login Tests", () => {
   beforeAll(async () => {
     await User.destroy({ truncate: true, force: true });
-    mockUser.user.password = await bcrypt.hash(mockUser.user.password, 10);
-    await User.create(mockUser.user);
+    mockUser[0].password = await bcrypt.hash(mockUser[0].password, 10);
+    mockUser[0].securityAnswer = await bcrypt.hash(mockUser[0].securityAnswer, 10);
+    await User.create(mockUser[0]);
 
   })
   afterAll(async () => {
@@ -21,12 +23,8 @@ describe("Register & Login Tests", () => {
 
   // user register
   test("User Can Register if the userName Unique", async (done) => {
-    // const registerResponse = await request(server)
-    //   .post("/api/v1/auth/register")
-    //   .send(mockUser.reg);
-    // expect(registerResponse.body.message).toBe("Email Invalid");
 
-    const regToken = jwt.sign(mockUser.reg, process.env.EMAIL_TOKEN_SECRET);
+    const regToken = jwt.sign(mockUser[1], process.env.EMAIL_TOKEN_SECRET);
 
     const createUserResponse = await request(server)
       .post("/api/v1/auth/createuser")
@@ -35,7 +33,7 @@ describe("Register & Login Tests", () => {
 
     const invalidRegisterResponse = await request(server)
       .post("/api/v1/auth/register")
-      .send(mockUser.reg);
+      .send(mockUser[1]);
     expect(invalidRegisterResponse.status).toBe(409);
 
     done();
@@ -51,7 +49,7 @@ describe("Register & Login Tests", () => {
 
     const loginResponse = await request(server)
       .post("/api/v1/auth/login")
-      .send(mockUser.login);
+      .send(mockLogins[0]);
 
     expect(loginResponse.status).toBe(200);
     expect(loginResponse.headers['set-cookie'][2].slice(0, 11)).toBe('accessToken');
@@ -64,9 +62,9 @@ describe("Register & Login Tests", () => {
         token: refreshTokenInDB
       }
     })
-    expect(validRefreshTokenInDB.userName).toBe(mockUser.login.userName)
+    expect(validRefreshTokenInDB.userName).toBe(mockLogins[0].userName)
     expect(loginResponse.body.userDetails.userName).toBe(
-      mockUser.login.userName
+      mockLogins[0].userName
     );
 
     done();
@@ -76,7 +74,7 @@ describe("Register & Login Tests", () => {
 
     const loginResponse = await request(server)
       .post("/api/v1/auth/login")
-      .send(mockUser.login);
+      .send(mockLogins[0]);
     expect(loginResponse.status).toBe(200);
 
     const refreshToken = loginResponse.headers['set-cookie'][3].split('=')[1].split(';')[0];
@@ -105,7 +103,7 @@ describe("Register & Login Tests", () => {
 
     const userExist = await request(server)
       .post("/api/v1/auth/userexist")
-      .send({ userName: mockUser.reg.userName });
+      .send({ userName: mockUser[1].userName });
     expect(userExist.status).toBe(409);
 
     const userNotExist = await request(server)
@@ -121,7 +119,7 @@ describe("Register & Login Tests", () => {
 
     const loginResponse = await request(server)
       .post("/api/v1/auth/login")
-      .send(mockUser.login);
+      .send(mockLogins[0]);
     expect(loginResponse.status).toBe(200);
 
     const refreshToken = loginResponse.headers['set-cookie'][3].split('=')[1].split(';')[0];
@@ -141,8 +139,4 @@ describe("Register & Login Tests", () => {
 
     done();
   });
-
-
-
-
 });
