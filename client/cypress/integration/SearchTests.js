@@ -1,10 +1,10 @@
 describe("Search Tests", () => {
-    before(()=>{
-        cy.login()
-    })
     it("Can search with labels", () => {
         const typedText = 'react';
         cy.server();
+        cy.setCookie("accessToken","21323213213")
+        cy.setCookie("name","shahar")
+        cy.route("GET", "**/api/v1/auth/validateToken", { valid : true })  
         cy.route("**/api/v1/challenges?challengeName=react&labels=1", "fixture:search.json");
         cy.route("**/api/v1/challenges/labels", "fixture:labels.json");
         cy.route("**/api/v1/challenges?labels=", "fixture:labelsToChallenges.json");

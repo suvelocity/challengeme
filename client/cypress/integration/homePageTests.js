@@ -1,34 +1,43 @@
 const expectedDescription = "https://github.com/suvelocity/Authentication-Challenge-TEMPLATE"
 
 describe("Home page Tests", () => {
-    before(()=>{
-      cy.login()
-    })
+
     it("Can get challenges", () => {
-      cy.server();
+      cy.server()
+      cy.setCookie("accessToken","21323213213")
+      cy.setCookie("name","shahar")
+      cy.route("GET", "**/api/v1/auth/validateToken", { valid : true })    
       cy.route("**/api/v1/challenges", "fixture:challenges.json");
       cy.route("**/api/v1/challenges/labels", "fixture:labels.json");
       cy.route("**/api/v1/challenges?labels=", "fixture:labelsToChallenges.json");
       cy.route("**/api/v1/image?id=7", "fixture:image7.json");
-      cy.visit("http://localhost:3000");
+      cy.visit('http://localhost:3000');
       cy.get("div.challenge-card").should("have.length", 6);
     });
 
     it("Check Theme Toggle", () => {
-      cy.visit("http://localhost:3000");  
-      if(cy.get("div .dark").should("not.exist")) {
-        cy.get('.MuiAvatar-root').click()
+      cy.server()
+      cy.setCookie("accessToken","21323213213")
+      cy.setCookie("name","shahar")
+      cy.route("GET", "**/api/v1/auth/validateToken", { valid : true })  
+      if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+        cy.get('.MuiToolbar-root > .MuiAvatar-root').click()
+        cy.get(':nth-child(2) > g > path').click()
+        cy.get("div.dark").should('not.exist') 
+      }  
+      else{
+        (cy.get("div .dark").should("not.exist")) 
+        cy.get('.MuiToolbar-root > .MuiAvatar-root').click()
         cy.get(':nth-child(2) > g > path').click()
         cy.get("div.dark").should('exist')
-      } else {
-        cy.get('.MuiAvatar-root').click()
-        cy.get(':nth-child(2) > g > path').click()
-        cy.get("div.dark").should('not.exist')
-      }
+      } 
     });
   
     it("Checks challenge cards", () => {
       cy.server();
+      cy.setCookie("accessToken","21323213213")
+      cy.setCookie("name","shahar")
+      cy.route("GET", "**/api/v1/auth/validateToken", { valid : true })    
       cy.route("**/api/v1/challenges", "fixture:challenges.json");
       cy.route("**/api/v1/challenges/labels", "fixture:labels.json");
       cy.route("**/api/v1/challenges?labels=", "fixture:labelsToChallenges.json");
@@ -40,6 +49,9 @@ describe("Home page Tests", () => {
 
     it("Can filter by labels", () => {
       cy.server();
+      cy.setCookie("accessToken","21323213213")
+      cy.setCookie("name","shahar")
+      cy.route("GET", "**/api/v1/auth/validateToken", { valid : true })    
       cy.route("**/api/v1/challenges", "fixture:challenges.json");
       cy.route("**/api/v1/challenges/labels", "fixture:labels.json");
       cy.route("**/api/v1/challenges?labels=", "fixture:labelsToChallenges.json");

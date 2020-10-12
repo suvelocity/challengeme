@@ -11,11 +11,7 @@
 //
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })
-Cypress.Commands.add("login", () => { 
-    cy.server()
-    cy.route("**/api/v1/login",{})
-    cy.visit("http://localhost:3000");
- })
+
 //
 //
 // -- This is a child command --
@@ -29,8 +25,13 @@ Cypress.Commands.add("login", () => {
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.commands.add('login', () => {
+Cypress.Commands.add('login', () => {
   cy.server();
-  cy.route('/api/v1/auth/login', { login: true });
-  cy.visit('http://localhost:3000');
+  cy.route("POST", "**/api/v1/auth/login", "fixture:login.json").as(
+    "loginUser"
+  );
+  cy.visit('http://localhost:3000/login');
+  cy.get("#userNameField").type("Test");
+  cy.get("#passwordField").type("12345678");
+  cy.get("#loginButton").click();
 });
