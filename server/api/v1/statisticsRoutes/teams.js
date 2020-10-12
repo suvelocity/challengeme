@@ -180,11 +180,23 @@ router.get("/team-submissions", async (req, res) => {
       group: ['state']
     }); 
 
+    success = submissionsStatus.find(element=>{
+      return element.state === "SUCCESS"
+    });
+    fail = submissionsStatus.find(element=>{
+      return element.state === "FAIL"
+    });
+    pending = submissionsStatus.find(element=>{
+      return element.state === "PENDING"
+    });
+    
     const teamSubmissionsStatus = {
-      all: submissionsStatus.reduce((count, element) => count += element.teamSubmissions, 0),
-      fail: submissionsStatus[0].teamSubmissions,
-      success: submissionsStatus[1].teamSubmissions,
-      pending: submissionsStatus[2].teamSubmissions,
+      all: submissionsStatus.reduce((count, element) =>{
+        return count + element.dataValues.teamSubmissions
+      }, 0),
+      fail: fail? fail.dataValues.teamSubmissions:0,
+      success: success? success.dataValues.teamSubmissions:0,
+      pending: pending? pending.dataValues.teamSubmissions:0,
     };
     res.json(teamSubmissionsStatus);
   } catch (err) {
