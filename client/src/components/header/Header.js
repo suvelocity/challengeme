@@ -109,6 +109,7 @@ function Header() {
           <Typography variant='h6' className={classes.title}>
             <NavLink
               to='/'
+              exact
               activeStyle={{ color: darkMode?'#F5CB39':"white"}}
               className='link-rout'
             >
@@ -130,22 +131,26 @@ function Header() {
 
           <div style={{ flex: 1 }}></div> 
           {/* Make space between the search input and the rest of the header. */}
-          <Button color='inherit'>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginRight: '10px',
-              }}
-            >
-              <EqualizerIcon />
-              &nbsp;
-              <Link to="/statistics" style={{textDecoration:"none",color:"white"}}>
-              <span className='header-link-title'>Statistics</span>
-              </Link>
-            </div>
-          </Button>
-          </ NavLink> 
+          <NavLink 
+          to="/statistics"
+           style={{textDecoration:"none",color:"white"}}
+           exact
+            activeStyle={{ color: darkMode?'#F5CB39':"white"}}
+           >
+            <Button color='inherit'>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginRight: '10px',
+                }}
+              >
+                <EqualizerIcon />
+                &nbsp;
+                <span className='header-link-title'>Statistics</span>
+              </div>
+            </Button>
+          </NavLink>
           <Tooltip title={Cookies.get("name")}>
             <Avatar
               aria-label='account of current user'
@@ -192,7 +197,7 @@ function Header() {
               </Link>
             </MenuItem> 
             <MenuItem onClick={handleClose}>
-              <Button onClick={logOut} style={{minWidth:150}} variant="contained" color="secondary">
+              <Button className='arara' onClick={logOut} style={{minWidth:150}} variant="contained" color="secondary">
               Log Out
               </Button>
             </MenuItem>
