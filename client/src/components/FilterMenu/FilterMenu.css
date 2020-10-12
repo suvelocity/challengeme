@@ -16,7 +16,8 @@
 }
 
 .filters{
-  transition: 1s;
+  transition: .5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  /* transition-timing-function: cubic-bezier(.5,.01,1,.31); */
   background-color: white;
   height: 50vh;
   width: 0;
@@ -25,7 +26,8 @@
 }
 
 .filters.open{
-  transition: .5s;
+  transition: .5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  /* transition-timing-function: cubic-bezier(.5,.01,1,.31); */
   
   border-width: 0 2px 2px 0px ;
   width: 90vw;
