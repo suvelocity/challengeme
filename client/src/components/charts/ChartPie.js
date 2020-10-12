@@ -1,5 +1,6 @@
 import React from 'react';
 import {Pie} from 'react-chartjs-2';
+import './charts.css';
 
 function ChartPie({data}){
     const state = {
@@ -15,7 +16,7 @@ function ChartPie({data}){
     }
 
     return(
-        <div>
+        <div className="canvas-container">
         <Pie
           data={state}
           options={{
