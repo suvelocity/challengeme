@@ -9,6 +9,8 @@ import DonutSmallIcon from '@material-ui/icons/DonutSmall';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import './charts.css';
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+
 
 function Charts(props) {
     const [chartType,setChartType] = useState(props.chart[0])
@@ -20,7 +22,8 @@ function Charts(props) {
             labels: props.data.labels,
             title: props.data.title,
             label: props.data.rawData[0].label,
-            data: props.data.rawData[0].data
+            data: props.data.rawData[0].data,
+            colors: props.data.rawData[0].backgroundColor
         }
     }
     
@@ -46,7 +49,7 @@ function Charts(props) {
     }));
     const classes = useStyles();
   return (
-    <div className={classes.chart} id={props.name}>
+    <div className={clsx(classes.chart)} id={props.name}>
         <div className="chart">
             {
                 selectChart()         
@@ -64,15 +67,15 @@ function Charts(props) {
             >
             {
             (props.chart.includes(0) && props.chart.length > 1 ) &&
-            <BottomNavigationAction label="Bar" icon={<EqualizerIcon />} />
+            <BottomNavigationAction label="Bar" icon={<EqualizerIcon />} id={props.name + "Bar"} />
             }
             {
             (props.chart.includes(1) && props.chart.length > 1 ) &&
-            <BottomNavigationAction label="Line" icon={<TimelineIcon />} />
+            <BottomNavigationAction label="Line" icon={<TimelineIcon />} id={props.name + "Line"} />
             }
             {
             (props.chart.includes(2) && props.chart.length > 1 && props.data.rawData.length === 1) &&
-            <BottomNavigationAction label="Pie" icon={<DonutSmallIcon/>} />
+            <BottomNavigationAction label="Pie" icon={<DonutSmallIcon/>} id={props.name + "Pie"} />
             }
         </BottomNavigation>
         }
