@@ -130,7 +130,6 @@ function Header() {
 
           <div style={{ flex: 1 }}></div> 
           {/* Make space between the search input and the rest of the header. */}
-          <NavLink id="statistics" to="./statistics">
           <Button color='inherit'>
             <div
               style={{
