@@ -50,7 +50,8 @@ export default function HomePage() {
           const { data: challengesFromServer } = await network.get(
           '/api/v1/challenges?'+ getFilters())
           typeof challengesFromServer === "object" &&
-          setChallenges(challengesFromServer)
+          console.log(challengesFromServer);
+          setChallenges(challengesFromServer)          
         }
       }catch(e){}
     })();  
@@ -74,6 +75,7 @@ export default function HomePage() {
         description={challenge.description}
         repositoryName = {challenge.repositoryName}
         labels = {challenge.Labels}
+        rating = {challenge.Reviews}
         />
         ))}
         </div>
