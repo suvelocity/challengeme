@@ -20,7 +20,7 @@ function SearchTicket({ ticket, closeSearch }) {
 
 
     return (
-  <Link to='/' style={{textDecoration: 'none'}}>
+  <Link to={`/challenges/${ticket.id}`} style={{textDecoration: 'none'}}>
             <div className="SearchTicket" onClick={closeSearch}>
                 <Avatar className={classes.blueGrey}>{avatarName}</Avatar>
                 <div className="ticketName">{ticket.name}</div>

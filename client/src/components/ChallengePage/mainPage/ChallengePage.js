@@ -27,6 +27,8 @@ export default function ChallengePage() {
   const [blobedImg, setBlobedImg] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [darkModeIsOn, setDarkModeIsOn] = useState(false);
+ 
+  console.log(challenge)
   useEffect(() => {
     const setImg = async () => {
       try {
@@ -59,17 +61,6 @@ export default function ChallengePage() {
 
   return challenge ? (
     <div className='fullpage-wrapper'>
-      <div className={darkModeIsOn ? 'navbar-dm' : 'navbar'}>
-        <span>im navbar</span>
-        <button
-          className='dark_mode_btn'
-          onClick={() => {
-            setDarkModeIsOn(!darkModeIsOn);
-          }}
-        >
-          Dark Mode
-        </button>
-      </div>
       <div
         className={
           darkModeIsOn ? 'dark-challenge-wrapper' : 'light-challenge-wrapper'
@@ -89,7 +80,7 @@ export default function ChallengePage() {
             }
           >
             <span className='challenge-created-by'>
-              <p>Created By: </p> <p>{challenge.author.userName}</p>
+              <p>{`Created By:${challenge.author&&challenge.author.userName}`}</p>
             </span>
             <span className='challenge-created-at'>
               <p>Created At: </p>{' '}
