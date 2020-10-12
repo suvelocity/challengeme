@@ -145,7 +145,7 @@ function Header() {
               </Link>
             </div>
           </Button>
-          <Tooltip title={Cookies.get("userFirstName")}>
+          <Tooltip title={Cookies.get("name")}>
             <Avatar
               aria-label='account of current user'
               aria-controls='menu-appbar'
@@ -154,7 +154,7 @@ function Header() {
               color='inherit'
               style={{ cursor: 'pointer', backgroundColor: darkMode?'purple':"#7BACB4"}}
             >
-              {Cookies.get("userFirstName").slice(0, 2)}
+              {Cookies.get("name").slice(0, 2)}
             </Avatar>
           </Tooltip>
           <Menu

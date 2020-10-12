@@ -4,7 +4,7 @@
     box-shadow: 0px 2px 7px 2px black;
 }
 .challenge-card{
-    width:400px;
+    max-width:400px;
     height: 250px;
     margin: 10px;
     position: relative;
@@ -46,14 +46,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 5px;
-    padding-right: 4px;
+    padding-left: 15px;
+    padding-right: 12px;
+    padding-top: 9px;
+    padding-bottom: 9px;
 
 }
 
 .challenge-card-img-homepage{
     width: 100%;
-    height:150px;
+    height:137px;
 }
 .avatar-and-repo-name{
     display: flex;
@@ -69,11 +71,10 @@
 .challenge-card-creator-homepage{
     display: grid;
     grid-template-columns: 60% 40%;
-    /* padding-bottom: 2px; */
     align-items: center;            
-    /* justify-content: space-between; */
 }
 .labels-container{
+    padding-right: 10px;
     display: flex;
     justify-content: flex-end;
 }
@@ -91,8 +92,8 @@
 }
 
 .home-page-challenge-labels{
-    font-size: 10px;
-    padding:5px;
+    font-size: 11px;
+    padding:8px;
     color: black;
     border: 1px solid black;
     border-radius: 8px;
@@ -113,5 +114,17 @@
         margin-right: 15px;
         margin-left: 5px;
     }
+
+  }
+
+  @media only screen and (max-width: 400px) {
+  
+    .avatar-and-repo-name{
+        padding-left: 5px;
+    }
+    .home-page-challenge-labels{
+        padding:4px
+    }
+
 
   }
