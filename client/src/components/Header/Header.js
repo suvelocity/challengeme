@@ -85,10 +85,12 @@ function Header() {
   const logOut = async () => {
     try {
       const { data: response } = await network.post('/api/v1/auth/logout', { token: Cookies.get("refreshToken") })
-      location.push('/login');
-      value.setLogged(false);
       Cookies.remove("refreshToken")
       Cookies.remove("accessToken")
+      Cookies.remove("name")
+      Cookies.remove("userId")
+      value.setLogged(false);
+      location.push('/login');
     } catch (error) {
       console.error(error)
     }
