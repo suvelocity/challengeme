@@ -1,14 +1,9 @@
-const path = require("path");
 const express = require('express')
 const fs = require('fs');
 
 
 const app = express()
 app.use(express.json( {limit: '50mb'}))
-
-
-app.use('/api/v1/' ,require('./api/v1'))
-
 
 app.use('/api', require('./api')) // if auth works this can probably go
 

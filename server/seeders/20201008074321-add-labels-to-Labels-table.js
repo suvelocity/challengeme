@@ -1,5 +1,5 @@
 'use strict';
-const labels = require('../_tests_/statistics/mocks/labels');
+const labels = require('../_tests_/mocks/labels');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {

@@ -1,5 +1,5 @@
 'use strict';
-const labelsToChallenge = require('../_tests_/statistics/mocks/labelsToChallenge');
+const labelsToChallenge = require('../_tests_/mocks/labelsToChallenge');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -7,6 +7,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('labels_to_challenges', null, {});
+    await queryInterface.bulkDelete('labels_to_challenges');
   }
 };

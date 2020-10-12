@@ -76,6 +76,8 @@ function Header() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const location = useHistory();
+  const value = useContext(Logged);
 
 
 
@@ -86,6 +88,20 @@ function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const logOut = async () => {
+    try {
+      const { data: response } = await network.post('/api/v1/auth/logout', { token: Cookies.get("refreshToken") })
+      Cookies.remove("refreshToken")
+      Cookies.remove("accessToken")
+      Cookies.remove("name")
+      Cookies.remove("userId")
+      value.setLogged(false);
+      location.push('/login');
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const headerStyle = {height:"12vh",maxHeight:"80px",minHeight:"40px",position:"sticky",top:0, backgroundColor:! darkMode && "#C9AC80"}
   const logOut = async () => {

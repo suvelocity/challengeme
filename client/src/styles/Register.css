@@ -84,3 +84,11 @@ span.MuiStepConnector-line.MuiStepConnector-lineHorizontal {
     margin-left: 5px;
     color: white;
 }
+
+
+.MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded{
+    width:500px;
+    left: auto !important;
+    margin-left: auto ;
+    margin-right: auto ;
+}

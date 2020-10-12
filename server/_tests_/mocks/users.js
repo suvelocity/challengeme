@@ -1,53 +1,61 @@
 module.exports = [
+    /* 
+        these user are valid for registertion.
+        if U want to add them directly to your DB -->
+            mockUser.password = await bcrypt.hash(mockUser.password, 10);
+            mockUser.securityAnswer = await bcrypt.hash(mockUser.securityAnswer, 10);
+            await User.create(mockUser); 
+    */
+
     {
-        firstName: "dekel",
-        lastName: "vaknin",
-        userName: "dek",
+        first_name: "dekel",
+        last_name: "vaknin",
+        user_name: "dek",
         email: "dek@gmail.com",
         password: "blabla96",
-        birthDate: new Date('1996/04/01'),
+        birth_date: new Date('1996/04/01'),
         country: "israel",
         city: "jerusalem",
-        phoneNumber: "0546666666",
-        githubAccount: "dekel.github",
-        reasonOfRegistration: "cats videos",
-        securityQuestion: "dog",
-        securityAnswer: "budy",
-        createdAt: new Date(),
-        updatedAt: new Date()
+        phone_number: "0546666666",
+        github_account: "dekel.github",
+        reason_of_registration: "cats videos",
+        security_question: "dog",
+        security_answer: "budy",
+        created_at: new Date(),
+        updated_at: new Date()
     },
     {
-        firstName: "roy",
-        lastName: "shnitzer",
-        userName: "shnizel",
+        first_name: "roy",
+        last_name: "shnitzer",
+        user_name: "shnizel",
         email: "shnizel@gmail.com",
         password: "shnizel1",
-        birthDate: new Date('1997/04/01'),
+        birth_date: new Date('1997/04/01'),
         country: "israel",
         city: "tuval",
-        phoneNumber: "0546666668",
-        githubAccount: "shnizel.github",
-        reasonOfRegistration: "coding",
-        securityQuestion: "favorate library",
-        securityAnswer: "sequelize",
-        createdAt: new Date(),
-        updatedAt: new Date()
+        phone_number: "0546666668",
+        github_account: "shnizel.github",
+        reason_of_registration: "coding",
+        security_question: "favorate library",
+        security_answer: "sequelize",
+        created_at: new Date(),
+        updated_at: new Date()
     },
     {
-        firstName: "david",
-        lastName: "boostrap",
-        userName: "boosty",
+        first_name: "david",
+        last_name: "boostrap",
+        user_name: "boosty",
         email: "boosty@gmail.com",
         password: "boosty0",
-        birthDate: new Date('1997/04/01'),
+        birth_date: new Date('1997/04/01'),
         country: "gamadim",
         city: "gamzo",
-        phoneNumber: "0546666667",
-        githubAccount: "david.github",
-        reasonOfRegistration: "design",
-        securityQuestion: "favorate library",
-        securityAnswer: "boostrap",
-        createdAt: new Date(),
-        updatedAt: new Date()
+        phone_number: "0546666667",
+        github_account: "david.github",
+        reason_of_registration: "design",
+        security_question: "favorate library",
+        security_answer: "boostrap",
+        created_at: new Date(),
+        updated_at: new Date()
     }
 ]

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import axios from "../../services/network";
+import React from "react";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -8,27 +7,26 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles((theme) => ({
-  titleUserNameForgotPass: {
-      marginTop: "130px",
-      // marginBottom: "60px",
-      width: "320px",
-  },
-  userNameForgotPass: {
-      marginTop: "20px",
-      marginBottom: "10px",
-      width: "320px",
-  },
+    titleUserNameForgotPass: {
+        marginTop: "130px",
+        width: "320px",
+    },
+    userNameForgotPass: {
+        marginTop: "20px",
+        marginBottom: "10px",
+        width: "320px",
+    },
 
 }));
 export default function Identify(props) {
-  const classes = useStyles();
+    const classes = useStyles();
 
-  const { data, handleChange } = props;
+    const { data, handleChange } = props;
 
-  return (
-    <div className={classes.titleUserNameForgotPass}>
-     Enter your User Name :
-      <FormControl className={classes.userNameForgotPass}>
+    return (
+        <div className={classes.titleUserNameForgotPass}>
+            Enter your User Name :
+            <FormControl className={classes.userNameForgotPass}>
                 <InputLabel style={{ color: "grey" }}>User Name</InputLabel>
                 <Input
                     id="userName"
@@ -46,6 +44,6 @@ export default function Identify(props) {
                     }
                 />
             </FormControl>
-    </div>
-  );
+        </div>
+    );
 }
