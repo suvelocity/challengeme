@@ -9,12 +9,13 @@ async function establishConnection(){
     process.env.MY_URL = url;
   }
   console.log('Client Ip Adress', process.env.IP_ADRESS);
-  app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
-  })
 }
 establishConnection(); 
 
 // setInterval(checkActions, 10000)
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`)
+})
 
 
