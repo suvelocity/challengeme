@@ -85,8 +85,8 @@ const useStyles = makeStyles((theme) => ({
 function UserStatistics() {
     const classes = useStyles();
     const [topUsers, setTopUsers] = useState([{User: {userName: "user"}}]);
-    const [userSubByType, setUserSubByType] = useState([]);
-    const [userSubByDate, setUserSubByDate] = useState([]);
+    const [userSubByType, setUserSubByType] = useState(null);
+    const [userSubByDate, setUserSubByDate] = useState(null);
     const [userUnsolvedChallenges, setUserUnsolvedChallenges] = useState([]);
     const [loading, setLoading] = useState(true);
     const darkMode = React.useContext(ThemeApi).darkTheme
@@ -117,7 +117,8 @@ function UserStatistics() {
           .get(`/api/v1/statistics/users/sub-by-date`)
           .then((r) => r.data)
           .then((r) => {
-            setUserSubByDate(r[0]);
+              setUserSubByDate(r);
+            
             setLoading(false);
           });
       };
@@ -125,7 +126,10 @@ function UserStatistics() {
       useEffect(() => {
         getInfo()
       }, [])
-      
+      if (userSubByDate){
+
+        console.log(userSubByDate);
+      }
 
       const usersSubmissionByDate = {
         labels: userSubByDate && userSubByDate.map(index => index.createdAt.split('T')[0]), // array of values for x axis (strings)

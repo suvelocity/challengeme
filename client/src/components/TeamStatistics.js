@@ -114,6 +114,7 @@ function TeamStatistics() {
       .get(`/api/v1/statistics/teams/success-challenge`)
       .then((r) => r.data)
       .then((r) => {
+        console.log(r);
         setSuccessChallenges(r);
         setLoading(false);
       });
