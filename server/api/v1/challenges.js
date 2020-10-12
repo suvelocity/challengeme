@@ -1,9 +1,7 @@
 const { Router } = require('express');
 const axios = require('axios');
 const searchFilters = require('../../middleware/searchFilters');
-const fs = require("fs")
 const { Sequelize } = require('sequelize');
-const Op = Sequelize.Op;
 
 // const { Submission, Challenge, Label } = require('../../models');
 const {  Submission,  User,Challenge,Label,labels_to_challenge,Review,} = require('../../models');
@@ -30,6 +28,7 @@ router.get('/',searchFilters, async (req, res) => {
             return x.id == label  ;
           })
         })
+
       });
       res.json(filterChallenges);
     } else { // else dont filter
@@ -40,34 +39,8 @@ router.get('/',searchFilters, async (req, res) => {
     }
   })
 
-router.get('/:challengeId', async (req, res) => {
-  try {
-    let challenge = await Challenge.findOne({
-      where: { id: req.params.challengeId },
-      include: [
-        // TODO: add a ORM query to add prop to the challenge with 'rating':3 .... pay attention to round the result to integer
-        {
-          model: Label,
-          attributes: ['name'],
-        },
-        {
-          model: Review,
-          attributes: [
-            [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
-          ],
-        },
-      ],
-    });
 
-    const author = await challenge.getUser();
-    challenge.author = 'qwqwe';
-    res.json({ challenge, author });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
   
-
 router.get('/:challengeId/submissions', async (req, res) => {
   try {
     const { challengeId } = req.params;
@@ -79,6 +52,7 @@ router.get('/:challengeId/submissions', async (req, res) => {
 })
 
 //get repo details if its public
+
 router.get('/public_repo', async (req, res) => {
   try {
     const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`, {
@@ -115,6 +89,7 @@ router.post('/:challengeId/apply', async (req, res) => {
   if (!submission) {
     submission = await Submission.create({
       challengeId,
+
 userId: req.body.userId,
 state: 'PENDING',
 solutionRepository,
@@ -177,25 +152,38 @@ router.post(`/`,async(req,res) => {
   }
 })
 
-// router Get - github/workflows
-router.get('/type', async (req,res) => {
-  try{
-    const files = fs.readdirSync('../.github/workflows');
-    let types = files.map(file =>
-      !file.includes("deploy")?
-      file.slice(0,-4)
-      :
-      null
-    )
-    types = types.filter(type => type!==null)
-    res.send(types)
-  }catch(e){res.send(e.message)}
-})
-
 //get all labels
 router.get('/labels', async (req, res) => {
   const allLabels = await Label.findAll();
   res.json(allLabels.map(({id,name})=>{return{label:name,value:id}}))
 })
 
+router.get('/:challengeId', async (req, res) => {
+  try {
+    console.log("got to the right endpoint $$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+    let challenge = await Challenge.findOne({
+      where: { id: req.params.challengeId },
+      include: [
+        // TODO: add a ORM query to add prop to the challenge with 'rating':3 .... pay attention to round the result to integer
+        // [User],
+        {
+          model: Label,
+          attributes: ['name'],
+        },
+        {
+          model: Review,
+          attributes: [
+            [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
+          ],
+        },
+      ],
+    });
+
+    const author = await challenge.getUser();
+    challenge.author = 'qwqwe';
+    res.json({ challenge, author });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
 module.exports = router;

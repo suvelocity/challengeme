@@ -10,6 +10,7 @@ myCon = {
     tls: {
         rejectUnauthorized: false
     }
+
 }
 
 class Communicator {

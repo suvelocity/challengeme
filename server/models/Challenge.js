@@ -3,6 +3,10 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Challenge extends Model {
     static associate(models) {
+      
+      this.belongsTo(models.User, {
+        foreignKey: "author",
+      })
       this.hasMany(models.Submission, {
         foreignKey: "challenge_id",
       });
@@ -22,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       repositoryName: DataTypes.STRING,
       cover: DataTypes.STRING,
+      author: DataTypes.STRING
     },
     {
       sequelize,
