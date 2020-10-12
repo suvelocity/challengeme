@@ -25,9 +25,15 @@ const useStyles = makeStyles((theme) => ({
     width: "inherit",
     gridTemplate: `
     'header header' 5vh
-      'headChart topChart' 300px 
-      'bottomChart bottomChart' 300px`,
-  },
+    'headChart headChart' 60vh 
+    'topChart topChart' 60vh 
+    'bottomChart bottomChart' 60vh`,
+    '@media (min-width:1000px)': {gridTemplate: `
+      'header header' 5vh
+      'headChart topChart' 45vh 
+      'bottomChart bottomChart' 45vh`
+} 
+  }, 
   divLight: {
     textAlign: "center",
     alignContent: "center",
@@ -55,7 +61,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   span: {
-    fontSize: "30px",
+    fontSize: "4vw",
   },
 }));
 
@@ -64,8 +70,6 @@ const useStyles = makeStyles((theme) => ({
 function StatisticsHome() {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
-
-  const [loadingTeams, setLoadingTeams] = useState(true);
   const [topChallengesData, setTopChallengesData] = useState([]);
   const [topUsersData, setTopUsersData] = useState([]);
   const [topTeamsData, setTopTeamsData] = useState([]);
@@ -161,7 +165,6 @@ function StatisticsHome() {
     const { data: usersInfo } = await axios.get('/api/v1/statistics/users/top-users');
     setTopUsersData(usersInfo)
     setLoading(false);
-    
   };
   
   return (
@@ -218,7 +221,7 @@ function StatisticsHome() {
               name="topTeams"
               width={"450px"}
               height={"70px"}
-              chart={[0, 1]}
+              chart={[0, 2]}
               data={teamData}
             />
           </div>
