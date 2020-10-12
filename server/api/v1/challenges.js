@@ -30,6 +30,7 @@ router.get('/',searchFilters, async (req, res) => {
             return x.id == label  ;
           })
         })
+
       });
       res.json(filterChallenges);
     } else { // else dont filter
@@ -67,7 +68,6 @@ router.get('/:challengeId', async (req, res) => {
   }
 });
   
-
 router.get('/:challengeId/submissions', async (req, res) => {
   try {
     const { challengeId } = req.params;
@@ -79,6 +79,7 @@ router.get('/:challengeId/submissions', async (req, res) => {
 })
 
 //get repo details if its public
+
 router.get('/public_repo', async (req, res) => {
   try {
     const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`, {
@@ -94,7 +95,7 @@ router.get('/public_repo', async (req, res) => {
   }
 })
 
-challengeRouter.post('/:challengeId/apply', async (req, res) => {
+router.post('/:challengeId/apply', async (req, res) => {
   const challengeId = req.params.challengeId;
   const { commentContent, commentTitle, rating, userId } = req.body;
   const solutionRepository = req.body.repository;
@@ -115,6 +116,7 @@ challengeRouter.post('/:challengeId/apply', async (req, res) => {
   if (!submission) {
     submission = await Submission.create({
       challengeId,
+
 userId: req.body.userId,
 state: 'PENDING',
 solutionRepository,
