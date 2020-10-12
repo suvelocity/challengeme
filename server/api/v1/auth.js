@@ -4,7 +4,7 @@ const usersRouter = Router();
 const { User, RefreshToken } = require("../../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const checkToken = require('../../helpers/checkToken');
+const checkToken = require('../../middleware/checkToken');
 const { loginValidation, registerValidation, tokenValidation, pwdUpdateValidation, answerValidation, userValidation } = require('../../helpers/validator');
 const mailer = require('../../helpers/communicator');
 
