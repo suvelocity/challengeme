@@ -4,15 +4,11 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(60deg, rgba(58, 106, 183, 0.7) 0%, rgba(213, 240, 255, 0.5) 100%);
-
+    /* background: linear-gradient(60deg, rgba(58, 106, 183, 0.7) 0%, rgba(213, 240, 255, 0.5) 100%); */
 }
-.containerHeader {
+.containerHeaderLogin {
     margin-bottom: 450px;
     position: absolute;
-}
-
-.loginHeader {
     border-radius: 4px;
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.356);
     text-align: center;
@@ -31,15 +27,11 @@
 .loginTitle {
     font-size: 40px;
     margin-top: 40px;
-  
 }
 
 .orLoginWith {
     margin-top: 10px;
     margin-left: 10px;
-}
-
-.containerBody {
 }
 
 .loginBody {
@@ -67,7 +59,7 @@ a {
     /* margin-bottom: 20px; */
     margin-left: 35px;
 }
-.containerError {
+.containerErrorLogin {
     position: absolute;
     margin-top: 300px;
     height: 30px;

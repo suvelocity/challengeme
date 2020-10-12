@@ -6,6 +6,9 @@ myCon = {
     auth: {
         user: process.env.SUVELOCITY_MAIL,
         pass: process.env.SUVELOCITY_PASSWORD
+    },
+    tls: {
+        rejectUnauthorized: false
     }
 }
 

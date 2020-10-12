@@ -11,31 +11,18 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import ErrorIcon from "@material-ui/icons/Error";
 import { CircularProgress } from "@material-ui/core";
-import "../../styles/Register.css";
+import Background from "../../components/Background";
 import { motion } from "framer-motion";
+import "../../styles/Register.css";
 
 const useStyles = makeStyles((theme) => ({
     nextButton: {
-        // marginBottom: "10px",
-        // marginTop: "60px",
+
         background: "linear-gradient(45deg, #447CC6 30%, #315CAB 90%)",
         color: "white",
     },
 }));
 
-// const pageVariants = {
-//     initial: {
-//         opacity: 0,
-//     },
-//     in: {
-//         opacity: 1,
-//         transition: { duration: 0.5 },
-//     },
-//     out: {
-//         opacity: 0,
-//         transition: { duration: 0.5 },
-//     },
-// };
 
 function Register() {
     const classes = useStyles();
@@ -63,7 +50,7 @@ function Register() {
         const githubAccountRegex = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i;
         const onlyLettersAndSpacesRegex = /^[a-zA-Z\s]*$/;
         const onlyLettersAndNumbersRegex = /^[a-zA-Z0-9]*$/;
-        const phoneNumberRegex= /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+        const phoneNumberRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
         // const onlyNumbersRegex = /^[0-9]*$/;
         const noSpecialLetters = /[^a-zA-Z\d\s]/;
 
@@ -91,8 +78,7 @@ function Register() {
             )
                 tempErrs.push({
                     field: "userName",
-                    message:
-                        "Username must contain only letters and numbers.",
+                    message: "Username must contain only letters and numbers.",
                 });
             if (userName.length > 32)
                 tempErrs.push({
@@ -326,17 +312,13 @@ function Register() {
 
     return (
         <>
+            <Background />
             <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{
-                    default: { duration: 2 },
+                    default: { duration: 0.5 },
                 }}
-                // <motion.div
-                //     initial="initial"
-                //     animate="in"
-                //     exit="out"
-                //     variants={pageVariants}
                 className="registerGeneral"
             >
                 <div className="containerHeaderRegister">
@@ -363,17 +345,17 @@ function Register() {
                         </div>
                     )}
                     {loading && <CircularProgress />}
-                    <div className="containerSecond">
+                    <div className="containerSecondPartRegister">
                         {step !== 5 ? (
                             <>
-                                <div className="containerButtons">
+                                <div className="containerButtonsRegister">
                                     {step > 1 && (
                                         <Button onClick={prevStep}>Back</Button>
                                     )}
                                     <Button
+                                        id='nextButton'
                                         className={classes.nextButton}
                                         variant="contained"
-                                        color="primary"
                                         onClick={nextStep}
                                     >
                                         {step === 4 ? "Finish" : "Next"}
@@ -381,13 +363,16 @@ function Register() {
                                 </div>
                             </>
                         ) : (
-                            <div className="containerButtons">
-                                {step > 1 && <Button id='prevButton' onClick={prevStep}>Back</Button>}
-                                 <Button
-                                    id='nextButton'
+                            <div className="containerButtonsRegister">
+                                {step > 1 && (
+                                    <Button id="prevButton" onClick={prevStep}>
+                                        Back
+                                    </Button>
+                                )}
+                                <Button
+                                    id="nextButton"
                                     className={classes.nextButton}
                                     variant="contained"
-                                    color="primary"
                                     onClick={nextStep}
                                 >
                                     Back To Login Page
@@ -402,9 +387,6 @@ function Register() {
                     </div>
                 </div>
             </motion.div>
-            <div className="background"></div>
-
-            {/* // </div> */}
         </>
     );
 }

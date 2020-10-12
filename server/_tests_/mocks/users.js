@@ -12,7 +12,7 @@ module.exports = {
     githubAccount: "MTN-G",
     reasonOfRegistration: "HUNGRY",
     securityQuestion: "Where was your best family vacation as a kid?",
-    securityAnswer: "Switzerland",
+    securityAnswer: "switzerland",
   },
   reg: {
     firstName: "Matan",
@@ -27,17 +27,17 @@ module.exports = {
     githubAccount: "MTN-G",
     reasonOfRegistration: "HUNGRY",
     securityQuestion: "Where was your best family vacation as a kid?",
-    securityAnswer: "Switzerland",
+    securityAnswer: "switzerland",
   },
   login: {
     userName: "matanGreenvald",
     password: "12345678",
-    rememberMe: "false"
+    rememberMe: false
   },
   user2: {
     firstName: "Matan",
     lastName: "Greenvald",
-    userName: "MTN2798",
+    userName: "MTN",
     password: "12345678",
     email: "mgk@gmail.com",
     birthDate: "02-07-1998",
@@ -47,11 +47,17 @@ module.exports = {
     githubAccount: "MTN-G",
     reasonOfRegistration: "HUNGRY",
     securityQuestion: "Where was your best family vacation as a kid?",
-    securityAnswer: "Switzerland",
+    securityAnswer: "switzerland",
   },
   resetPassword : {
-    userName: "MTN2798",
+    userName: "MTN",
     password: "12345678",
-    rememberMe: "false",
+    rememberMe: false,
+    securityAnswer: "switzerland",
+  },
+  resetPasswordLogin : {
+    userName: "MTN",
+    password: "12345678",
+    rememberMe: false
   },
 };
