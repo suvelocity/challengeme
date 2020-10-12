@@ -137,10 +137,12 @@ function Header() {
             >
               <EqualizerIcon />
               &nbsp;
+              <Link to="/statistics" style={{textDecoration:"none",color:"white"}}>
               <span className='header-link-title'>Statistics</span>
+              </Link>
             </div>
           </Button>
-          <Tooltip title='hhhhhhhh'>
+          <Tooltip title={Cookies.get("userFirstName")}>
             <Avatar
               aria-label='account of current user'
               aria-controls='menu-appbar'
@@ -149,8 +151,7 @@ function Header() {
               color='inherit'
               style={{ cursor: 'pointer', backgroundColor: darkMode?'purple':"#7BACB4"}}
             >
-              HH
-              {/* Cookie.get(username).slice(0, 2) */}
+              {Cookies.get("userFirstName").slice(0, 2)}
             </Avatar>
           </Tooltip>
           <Menu
