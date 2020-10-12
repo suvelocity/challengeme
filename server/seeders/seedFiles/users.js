@@ -29,7 +29,7 @@ module.exports = [
     github_account: "MTN-G",
     reason_of_registration: "HUNGRY",
     security_question: "What is the name, breed, and color of your favorite pet?",
-    security_answer: "Lafa Shawarma" ,
+    security_answer: "Lafa Shawarma",
     created_at: new Date(),
     updated_at: new Date()
   },
