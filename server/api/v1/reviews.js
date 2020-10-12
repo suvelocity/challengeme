@@ -26,6 +26,7 @@ reviewsRouter.get('/byChallenge/:challengeId', async (req, res) => {
   }
 });
 
+// Every challenge comes back with an average challenge
 reviewsRouter.get(
   '/byChallenge/:challengeId/averageRating',
   async (req, res) => {

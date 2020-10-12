@@ -9,6 +9,9 @@ module.exports = (sequelize, DataTypes) => {
         through: "labels_to_challenges",
         foreignKey: "challenge_id",
       });
+      this.hasMany(models.Review, {
+        foreignKey: "challengeId",
+      });
     }
   }
   Challenge.init(
