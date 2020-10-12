@@ -155,19 +155,31 @@ function StatisticsHome() {
   }, []);
 
   const getChallengesData = async () => {
-    const { data: challengeInfo } = await network.get('/api/v1/statistics/insights/top-challenges');
-    setTopChallengesData(challengeInfo);
-    setLoading(false);
+    try {
+      const { data: challengeInfo } = await network.get('/api/v1/statistics/insights/top-challenges');
+      setTopChallengesData(challengeInfo);
+      setLoading(false);
+    }catch(err){
+      console.error(err);
+    }
   };
   const getTeamsData = async () => {
-    const { data: teamsInfo } = await network.get('/api/v1/statistics/teams/top');
-    setTopTeamsData(teamsInfo)
-    setLoading(false);
+    try{
+      const { data: teamsInfo } = await network.get('/api/v1/statistics/teams/top');
+      setTopTeamsData(teamsInfo)
+      setLoading(false);
+    }catch(err){
+      console.error(err);
+    }
   };
   const getUsersData = async () => {
-    const { data: usersInfo } = await network.get('/api/v1/statistics/users/top-users');
-    setTopUsersData(usersInfo)
-    setLoading(false);
+    try{
+      const { data: usersInfo } = await network.get('/api/v1/statistics/users/top-users');
+      setTopUsersData(usersInfo)
+      setLoading(false);
+    }catch(err){
+      console.error(err);
+    }
   };
   
   return (

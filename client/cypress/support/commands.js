@@ -11,7 +11,12 @@
 //
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })
-
+Cypress.Commands.add("login", () => {
+  cy.setCookie("accessToken", "21323213213");
+  cy.setCookie("name", "shahar");
+  cy.server()
+  cy.route("GET", "**/api/v1/auth/validateToken", { valid: true });
+});
 //
 //
 // -- This is a child command --
@@ -25,13 +30,3 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-Cypress.Commands.add('login', () => {
-  cy.server();
-  cy.route("POST", "**/api/v1/auth/login", "fixture:login.json").as(
-    "loginUser"
-  );
-  cy.visit('http://localhost:3000/login');
-  cy.get("#userNameField").type("Test");
-  cy.get("#passwordField").type("12345678");
-  cy.get("#loginButton").click();
-});
