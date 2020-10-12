@@ -58,7 +58,7 @@ const useStyles = makeStyles((matches) => ({
     width: "100%",
   },
   span: {
-    fontSize: "500%",
+    fontSize: "4vw",
   },
 }));
 
