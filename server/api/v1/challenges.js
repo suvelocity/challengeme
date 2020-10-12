@@ -197,7 +197,6 @@ router.get('/:challengeId', async (req, res) => {
     });
 
     const author = await challenge.getUser();
-    challenge.author = 'qwqwe';
     res.json({ challenge, author });
   } catch (error) {
     res.status(500).json({ message: error.message });
