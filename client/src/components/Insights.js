@@ -125,7 +125,8 @@ function Insights() {
   const [numberOfChallenges, setNumOfChallenges] = useState(null);
 
   const topChallengesData = {
-    labels: challengesTop && challengesTop.map((e) => e.Challenge.name), // array of values for x axis (strings)
+    // labels: challengesTop && challengesTop.map((e) => e.Challenge.name), // array of values for x axis (strings)
+    labels: ['a','b','c'], // array of values for x axis (strings)
     title: "Top Challenges (most submissions)",
     rawData: [
       {
@@ -147,9 +148,8 @@ function Insights() {
     ],
   };
   const topChallengeByReview = {
-    labels:
-      challengeByReview &&
-      challengeByReview.map((challenge) => challenge.Challenge.name), // array of values for x axis (strings)
+    labels:['a','b','c'],
+      // challengeByReview && challengeByReview.map((challenge) => challenge.Challenge.name), // array of values for x axis (strings)
     title: "Top Challenges (by review)",
     rawData: [
       {
@@ -198,7 +198,8 @@ function Insights() {
   };
 
   const challengesSuccessData = {
-    labels: challengesSuccess && challengesSuccess.map((e) => e.Challenge.name), // array of values for x axis (strings)
+    // labels: challengesSuccess && challengesSuccess.map((e) => e.Challenge.name), // array of values for x axis (strings)
+    labels: ['a','b','c'], // array of values for x axis (strings)
     title: "Challenges With Most Success",
     rawData: [
       {

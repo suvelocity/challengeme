@@ -76,8 +76,10 @@ function StatisticsHome() {
   const [topTeamsData, setTopTeamsData] = useState([]);
   const darkMode = React.useContext(ThemeApi).darkTheme
 
+    console.log(topChallengesData)
   const challengeData = {
-    labels: topChallengesData && topChallengesData.map(index => index.Challenge.name), // array of values for x axis (strings)
+    labels: ['a','c','b'],
+    // labels: topChallengesData.length>0 && topChallengesData.map(index => index.Challenge.name), // array of values for x axis (strings)
     title: "Top Rated Challenges", // title for the chart
     rawData: [
       {
