@@ -1,0 +1,44 @@
+[
+    {
+        "ratingAVG": 4,
+        "Challenge": {
+            "id": 1,
+            "name": "JWT - Node.js",
+            "description": "https://github.com/suvelocity/Authentication-Challenge-TEMPLATE",
+            "type": "static",
+            "repositoryName": "suvelocity/Authentication-Challenge",
+            "cover": "https://storage.googleapis.com/challenges-cover/jwt.png",
+            "createdAt": "2020-10-01T20:00:00.000Z",
+            "updatedAt": "2020-10-01T20:00:00.000Z",
+            "deletedAt": null
+        }
+    },
+    {
+        "ratingAVG": 2.6667,
+        "Challenge": {
+            "id": 2,
+            "name": "React - Calculator",
+            "description": "https://github.com/suvelocity/calculator-challenge",
+            "type": "client",
+            "repositoryName": "suvelocity/calculator-challange-tests",
+            "cover": "https://storage.googleapis.com/challenges-cover/calc.jpg",
+            "createdAt": "2020-10-01T20:00:00.000Z",
+            "updatedAt": "2020-10-01T20:00:00.000Z",
+            "deletedAt": null
+        }
+    },
+    {
+        "ratingAVG": 2,
+        "Challenge": {
+            "id": 3,
+            "name": "Js - Drag N Scale",
+            "description": "https://github.com/suvelocity/DragAndScaleBoilerplate",
+            "type": "static",
+            "repositoryName": "suvelocity/drag-n-scale",
+            "cover": "https://storage.googleapis.com/challenges-cover/dragnscale_f.png",
+            "createdAt": "2020-10-01T20:00:00.000Z",
+            "updatedAt": "2020-10-01T20:00:00.000Z",
+            "deletedAt": null
+        }
+    }
+]

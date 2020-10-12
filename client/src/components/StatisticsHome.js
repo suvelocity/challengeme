@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Charts from "./charts/Charts";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import axios from 'axios';
 import ThemeApi from "../services/Theme"
 import '../pages/Home.css'
 import clsx from 'clsx';
+import network from '../services/network'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,9 +15,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   grid: {
-    marginTop: "4rem",
     display: "grid",
-    gridGap: "20px",
+    gridGap: "40px",
     textAlign: "center",
     alignContent: "center",
     justifyContent: "center",
@@ -25,19 +24,35 @@ const useStyles = makeStyles((theme) => ({
     height: "inherit",
     width: "inherit",
     gridTemplate: `
-      'headChart topChart' 300px 
-      'bottomChart bottomChart' 300px`,
-  },
-  div: {
+    'header header' 5vh
+    'headChart headChart' 45vh 
+    'topChart topChart' 45vh 
+    'bottomChart bottomChart' 45vh / 1vw`,
+    '@media (min-width:1000px)': {
+      gridTemplate: `
+      'header header' 5vh
+      'headChart topChart' 45vh 
+      'bottomChart bottomChart' 45vh`
+} 
+  }, 
+  divLight: {
     textAlign: "center",
     alignContent: "center",
     padding: "20px",
     fontWeight: "bold",
-    backgroundColor: "lightgray",
-    borderRadius: "20px",
-    boxShadow: "6px 6px 12px black",
+    backgroundImage: "radial-gradient(circle, #9C8249, #F5D690)",
+    boxShadow: "15px 15px 0px #AD8C40",
+  },
+  divDark: {
+    textAlign: "center",
+    alignContent: "center",
+    padding: "20px",
+    fontWeight: "bold",
+    backgroundImage: "radial-gradient(circle, #DCE5E8, #53676E)",
+    boxShadow: "15px 15px 0px #696969",
   },
   main: {
+    marginTop: "4rem",
     display: "grid",
     padding: "10px",
     alignContent: "center",
@@ -47,61 +62,15 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
   },
   span: {
-    fontSize: "30px",
+    fontSize: "4vw",
   },
 }));
 
 
 
-const teamData = {
-  labels: ["January", "February", "March", "April", "May"], // array of values for x axis (strings)
-  title: "Top Teams", // title for the chart
-  rawData: [
-    {
-      label: "Team1", // name of the line (one or two words)
-      backgroundColor: "red", //raw color
-      borderColor: "red", //use the same as background color
-      fill: false, // change the line chart
-      data: [2, 5, 10, 17, 25], // array of values for Y axis (numbers)
-    },
-    {
-      label: "Team2", // name of the line (one or two words)
-      backgroundColor: "green", //raw color
-      borderColor: "green", //use the same as background color
-      fill: false, // change the line chart
-      data: [5, 8, 15, 25, 31], // array of values for Y axis (numbers)
-    },
-    {
-      label: "Team3", // name of the line (one or two words)
-      backgroundColor: "blue", //raw color
-      borderColor: "blue", //use the same as background color
-      fill: false, // change the line chart
-      data: [3, 9, 14, 22, 29], // array of values for Y axis (numbers)
-    },
-    {
-      label: "Team4", // name of the line (one or two words)
-      backgroundColor: "yellow", //raw color
-      borderColor: "yellow", //use the same as background color
-      fill: false, // change the line chart
-      data: [1, 6, 7, 11, 13], // array of values for Y axis (numbers)
-    },
-    {
-      label: "Team5", // name of the line (one or two words)
-      backgroundColor: "black", //raw color
-      borderColor: "black", //use the same as background color
-      fill: false, // change the line chart
-      data: [1, 5, 10, 16, 22], // array of values for Y axis (numbers)
-    },
-    // you can add as many object as you wand, each one will a different line with different color
-  ],
-};
-
-
 function StatisticsHome() {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
-
-  const imageStyle = { backgroundColor: "lightgray" };
   const [topChallengesData, setTopChallengesData] = useState([]);
   const [topUsersData, setTopUsersData] = useState([]);
   const [topTeamsData, setTopTeamsData] = useState([]);
@@ -113,8 +82,17 @@ function StatisticsHome() {
     rawData: [
       {
         label: "Submitions", // name of the line (one or two words)
-        backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'], //raw color
-        borderColor: "cyan", //use the same as background color
+        backgroundColor: [
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628",
+        ],
+        borderColor: "black",
         fill: false, // change the line chart
         data: topChallengesData && [...topChallengesData.map(index => index.countSub), 0], // array of values for Y axis (numbers)
       },
@@ -127,8 +105,17 @@ function StatisticsHome() {
     rawData: [
       {
         label: "Submitions", // name of the line (one or two words)
-        backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'], //raw color
-        borderColor: "cyan", //use the same as background color
+        backgroundColor: [
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628",
+        ],
+        borderColor: "black",
         fill: false, // change the line chart
         data: topUsersData && [...topUsersData.map(index => index.countSub), 0], // array of values for Y axis (numbers)
       },
@@ -141,15 +128,23 @@ function StatisticsHome() {
     rawData: [
       {
         label: "Submitions", // name of the line (one or two words)
-        backgroundColor: ['red', 'blue' , 'green' , 'yellow' , 'purple' , 'black' , 'pink' , 'gray'], //raw color
-        borderColor: "cyan", //use the same as background color
+        backgroundColor: [
+          "#e65a78",
+          "#6698e8",
+          "#6aa870",
+          "#9e8662",
+          "#b287c9",
+          "#787878",
+          "#afeddb",
+          "#f79628",
+        ],
+        borderColor: "black",
         fill: false, // change the line chart
-        data: topTeamsData && [...topTeamsData.map(team => team["Users.Submissions.teamSuccessSubmissions"]), 0], // array of values for Y axis (numbers)
+        data: topTeamsData && [...topTeamsData.map(team => team.Users[0] && team["Users"][0]["Submissions"][0]["teamSuccessSubmissions"]), 0], // array of values for Y axis (numbers)
       },
       // you can add as many object as you wand, each one will a different line with different color
     ],
   };
-
 
   useEffect(() => {
    getChallengesData();
@@ -158,26 +153,25 @@ function StatisticsHome() {
   }, []);
 
   const getChallengesData = async () => {
-    const { data: challengeInfo } = await axios.get('/api/v1/statistics/insights/top-challenges');
+    const { data: challengeInfo } = await network.get('/api/v1/statistics/insights/top-challenges');
     setTopChallengesData(challengeInfo);
     setLoading(false);
   };
   const getTeamsData = async () => {
-    const { data: teamsInfo } = await axios.get('/api/v1/statistics/teams/top');
+    const { data: teamsInfo } = await network.get('/api/v1/statistics/teams/top');
     setTopTeamsData(teamsInfo)
     setLoading(false);
   };
   const getUsersData = async () => {
-    const { data: usersInfo } = await axios.get('/api/v1/statistics/users/top-users');
+    const { data: usersInfo } = await network.get('/api/v1/statistics/users/top-users');
     setTopUsersData(usersInfo)
     setLoading(false);
-    // console.log(usersInfo[0].User.userName)
   };
   
   return (
-    // <div className ={darkMode?"dark-home-page":"light-home-page"}>
     <div className={clsx(classes.main, darkMode?"dark-home-page":"light-home-page")}>
       <div className={classes.grid}>
+      <h1 style={{gridArea: "header"}}>Statistics</h1>
         {loading ? (
           <div className={classes.root}>
             <CircularProgress />
@@ -185,13 +179,13 @@ function StatisticsHome() {
         ) : (
           <div
             id="firstChart"
-            className={classes.div}
-            style={{ gridArea: "headChart", ...imageStyle }}
+            className={darkMode ? classes.divDark : classes.divLight}
+            style={{ gridArea: "headChart"}}
           >
             <Charts
-              name="TopTeams"
-              width={"400px"}
-              height={"2000px"}
+              name="topChallenges"
+              width={"30vw"}
+              height={"33vh"}
               chart={[0, 2]}
               data={challengeData}
             />
@@ -203,13 +197,13 @@ function StatisticsHome() {
           </div>
         ) : (
           <div
-            className={classes.div}
-            style={{ gridArea: "topChart", ...imageStyle }}
+            className={darkMode ? classes.divDark : classes.divLight}
+            style={{ gridArea: "topChart"}}
           >
             <Charts
-              name="TopUsers"
-              width={"450px"}
-              height={"70px"}
+              name="topUsers"
+              width={"30vw"}
+              height={"33vh"}
               chart={[0, 2]}
               data={userData}
             />
@@ -221,20 +215,19 @@ function StatisticsHome() {
           </div>
         ) : (
           <div
-            className={classes.div}
-            style={{ gridArea: "bottomChart", ...imageStyle }}
+            className={darkMode ? classes.divDark : classes.divLight}
+            style={{ gridArea: "bottomChart"}}
           >
             <Charts
               name="topTeams"
-              width={"450px"}
-              height={"70px"}
-              chart={[0, 1]}
+              width={"30vw"}
+              height={"33vh"}
+              chart={[0, 2]}
               data={teamData}
             />
           </div>
         )}
       </div>
-    {/* </div> */}
     </div>
   );
 }

@@ -14,7 +14,6 @@ import './Home.css'
 import clsx from 'clsx';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import ProfileStatistics from '../components/ProfileStatistics';
 
 const useStyles = makeStyles({
     root: {
@@ -45,7 +44,6 @@ function Statistics() {
                 <Route path={`${path}/users`} component={UserStatistics}/>
                 <Route path={`${path}/teams`} component={TeamStatistics} />
                 <Route path={`${path}/insights`} component={Insights} />
-                <Route path={`${path}/profile`} component={ProfileStatistics} />
             </Switch>
             </div>
            </div>

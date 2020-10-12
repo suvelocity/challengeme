@@ -1,5 +1,6 @@
 import React from 'react';
 import {Bar} from 'react-chartjs-2';
+import './charts.css';
 
 function ChartBar({data}) {
    
@@ -8,7 +9,7 @@ function ChartBar({data}) {
         datasets: data.rawData
       }
   return (
-    <>
+    <div className="canvas-container">
     <Bar
           data={state}
           options={{
@@ -20,10 +21,11 @@ function ChartBar({data}) {
             legend:{
               display:false,
               position:'right'
-            }
+            },
+            responsive: true,
           }}
         />
-    </>
+    </div>
   );
 }
 
