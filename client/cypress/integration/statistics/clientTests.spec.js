@@ -1,10 +1,11 @@
 describe("Client Tests", () => {
-  before(() => {
+  beforeEach(() => {
     cy.login()
   })
 
   // Navbar
   it("Check NavBar Links", () => {
+    cy.visit("http://localhost:3000");
     cy.get('#statistics').click()
     const insights = cy.get("#Insights").click();
     cy.url().should("include", "insights");
@@ -37,7 +38,7 @@ describe("Client Tests", () => {
     cy.get("#topUsersBar").click();
 
     cy.get("#topTeams");
-    cy.get("#topTeamsLine").click();
+    cy.get("#topTeamsPie").click();
     cy.get("#topTeamsBar").click();
   });
 

@@ -98,21 +98,21 @@ function UserStatistics() {
           .then((r) => {
             setUserUnsolvedChallenges(r);
             setLoading(false);
-          });
+          }).catch(err => console.error(err));
         network
           .get('/api/v1/statistics/users/user-success')
           .then((r) => r.data)
           .then((r) => {
             setTopUsers(r);
             setLoading(false);
-          });
+          }).catch(err => console.error(err));;
         network
           .get(`/api/v1/statistics/users/sub-by-type`)
           .then((r) => r.data)
           .then((r) => {
             setUserSubByType(r);
             setLoading(false);
-          });
+          }).catch(err => console.error(err));;
           network
           .get(`/api/v1/statistics/users/sub-by-date`)
           .then((r) => r.data)
@@ -120,7 +120,7 @@ function UserStatistics() {
               setUserSubByDate(r);
             
             setLoading(false);
-          });
+          }).catch(err => console.error(err));;
       };
      
       useEffect(() => {
@@ -197,7 +197,7 @@ function UserStatistics() {
             ],
             borderColor: "black",
             fill: false, // change the line chart
-            data: topUsers && [...topUsers[0].map(index => index.CountByUserID), 0],
+            data: Array.isArray(topUsers) && [...topUsers.map(index => index.CountByUserID), 0],
           },
         ],
       };

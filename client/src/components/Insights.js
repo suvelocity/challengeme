@@ -74,42 +74,42 @@ function Insights() {
       .then((r) => {
         setChallengesTop(r);
         setLoading(false);
-      });
+      }).catch(err => console.error(err));;
     network
       .get(`/api/v1/statistics/insights/challenges-type`)
       .then((r) => r.data)
       .then((r) => {
         setChallengesType(r);
         setLoading(false);
-      });
+      }).catch(err => console.error(err));;
     network
       .get(`/api/v1/statistics/insights/top-success`)
       .then((r) => r.data)
       .then((r) => {
         setChallengesSuccess(r);
         setLoading(false);
-      });
+      }).catch(err => console.error(err));;
     network
       .get(`/api/v1/statistics/insights/challenges-by-reviews`)
       .then((r) => r.data)
       .then((r) => {
         setChallengeByReview(r);
         setLoading(false);
-      });
+      }).catch(err => console.error(err));;
     network
       .get(`/api/v1/statistics/insights/sub-by-date`)
       .then((r) => r.data)
       .then((r) => {
         setSubByDate(r);
         setLoading(false);
-      });
+      }).catch(err => console.error(err));;
     network
       .get(`/api/v1/challenges`)
       .then((r) => r.data.length)
       .then((r) => {
         setNumOfChallenges(r);
         setLoading(false);
-      });
+      }).catch(err => console.error(err));;
   };
 
   useEffect(() => {

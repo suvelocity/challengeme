@@ -11,11 +11,12 @@
 //
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })
-Cypress.Commands.add("login", () => { 
-    cy.server()
-    cy.route("**/api/v1/login",{})
-    cy.visit("http://localhost:3000");
- })
+Cypress.Commands.add("login", () => {
+  cy.setCookie("accessToken", "21323213213");
+  cy.setCookie("name", "shahar");
+  cy.server()
+  cy.route("GET", "**/api/v1/auth/validateToken", { valid: true });
+});
 //
 //
 // -- This is a child command --

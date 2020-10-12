@@ -97,21 +97,21 @@ function TeamStatistics() {
         setTeamsTopUser(r[0]);
         setTeamName(r[1])
         setLoading(false);
-      });
+      }).catch(err => console.error(err));;
     network
       .get('/api/v1/statistics/teams/last-week-submissions')
       .then((r) => r.data)
       .then((r) => {
         setTeamsLastWeekSub(r);
         setLoading(false);
-      });
+      }).catch(err => console.error(err));;
     network
       .get(`/api/v1/statistics/teams/team-submissions`)
       .then((r) => r.data)
       .then((r) => {
         setTopTeams(r);
         setLoading(false);
-      });
+      }).catch(err => console.error(err));;
       network
       .get(`/api/v1/statistics/teams/success-challenge`)
       .then((r) => r.data)
@@ -119,7 +119,7 @@ function TeamStatistics() {
         console.log(r);
         setSuccessChallenges(r);
         setLoading(false);
-      });
+      }).catch(err => console.error(err));;
   };
 
   useEffect(() => {

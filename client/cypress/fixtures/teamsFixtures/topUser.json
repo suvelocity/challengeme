@@ -1,8 +1,14 @@
 [
-    {
-        "id": 1,
-        "firstName": "michael",
-        "lastName": "byalsky",
-        "Submissions.userSuccessSubmission": 6
-    }
+    [
+        {
+            "id": 1,
+            "userName": "matanGreenvald",
+            "Submissions": [
+                {
+                    "userSuccessSubmission": 2
+                }
+            ]
+        }
+    ],
+    "teamA"
 ]
