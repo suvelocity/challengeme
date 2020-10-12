@@ -154,9 +154,8 @@ function StatisticsHome() {
   };
   const getTeamsData = async () => {
     const { data: teamsInfo } = await axios.get('/api/v1/statistics/teams/top');
-    console.log(teamsInfo[0].Users[0].Submissions[0].teamSuccessSubmissions);
     setTopTeamsData(teamsInfo)
-    setLoadingTeams(false);
+    setLoading(false);
   };
   const getUsersData = async () => {
     const { data: usersInfo } = await axios.get('/api/v1/statistics/users/top-users');
@@ -208,7 +207,7 @@ function StatisticsHome() {
             />
           </div>
         )}
-        {loadingTeams ? (
+        {loading ? (
           <div className={classes.root}>
             <CircularProgress />
           </div>
