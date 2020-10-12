@@ -15,8 +15,6 @@ const useStyles = makeStyles((theme) => ({
         width: "320px",
     },
     github: {
-        // marginTop: "80px",
-        // marginBottom: "20px",
         width: "320px",
     },
 }));
@@ -27,7 +25,7 @@ function Extras({ values, handleChange }) {
         <div className="containerExtra">
             <FormControl className={classes.reason}>
                 <InputLabel id="demo-mutiple-checkbox-label">
-                Choose your sign-up reason...
+                    Choose your sign-up reason...
                 </InputLabel>
                 <Select
                     id="signUpReason"

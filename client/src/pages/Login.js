@@ -120,9 +120,9 @@ export default function Login() {
         <>
             <Background />
             <motion.div
-             onMouseUp={
-                ()=>setShowPassword(false)
-            }
+                onMouseUp={
+                    () => setShowPassword(false)
+                }
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{
@@ -179,14 +179,14 @@ export default function Login() {
                                     endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton
-                                            id="reveal"
+                                                id="reveal"
                                                 style={{ opacity: "0.7" }}
                                                 aria-label="toggle password visibility"
                                                 onMouseDown={
-                                                   ()=> setShowPassword(true)
+                                                    () => setShowPassword(true)
                                                 }
                                                 onMouseUp={
-                                                    ()=>setShowPassword(false)
+                                                    () => setShowPassword(false)
                                                 }
                                             >
                                                 {showPassword ? (
@@ -253,4 +253,4 @@ export default function Login() {
             </motion.div>
         </>
     );
-}
+};

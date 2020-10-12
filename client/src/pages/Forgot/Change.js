@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Timer from "./TImer";
 import FormControl from "@material-ui/core/FormControl";
 import { makeStyles } from "@material-ui/core/styles";
@@ -35,16 +35,15 @@ export default function Change({ data, handleChange }) {
     const [redirect, setRedirect] = useState(false);
     const limit = 5;
 
-    const hideBoth=()=>{
+    const hideBoth = () => {
         setShowPassword(false);
         setShowConfirmPassword(false);
     }
-    
+
     useEffect(() => {
         //Prevent special password eye bugs
-        document.addEventListener('mouseup', hideBoth );
-        document.addEventListener('dragend', hideBoth );
-
+        document.addEventListener('mouseup', hideBoth);
+        document.addEventListener('dragend', hideBoth);
     }, [])
 
     useEffect(() => {
@@ -90,7 +89,7 @@ export default function Change({ data, handleChange }) {
                                 <IconButton
                                     style={{ opacity: "0.7" }}
                                     aria-label="toggle password visibility"
-                                    onMouseDown={()=>setShowPassword(true)}
+                                    onMouseDown={() => setShowPassword(true)}
                                 >
                                     {showPassword ? (
                                         <Visibility />
@@ -112,7 +111,7 @@ export default function Change({ data, handleChange }) {
                         Confirm Password
                 </InputLabel>
                     <Input
-                         id='confirmNewPassword'
+                        id='confirmNewPassword'
                         name="confirmP"
                         value={data.confirmPassword}
                         type={showConfirmPassword ? "text" : "password"}
@@ -122,7 +121,7 @@ export default function Change({ data, handleChange }) {
                                 <IconButton
                                     style={{ opacity: "0.7" }}
                                     aria-label="toggle password visibility"
-                                    onMouseDown={()=>setShowConfirmPassword(true)}
+                                    onMouseDown={() => setShowConfirmPassword(true)}
                                 >
                                     {showConfirmPassword ? (
                                         <Visibility />

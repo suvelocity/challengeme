@@ -20,7 +20,6 @@ function ValidatingMail() {
                 }).then(() => {
                     history.push("/login");
                 });
-                // alert("Email Confirmation Failed!");
             });
     }, []);
 

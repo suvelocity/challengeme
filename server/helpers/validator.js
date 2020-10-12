@@ -7,7 +7,7 @@ const registerValidation = (data) => {
     firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
     lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
     userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
-    email: Joi.string().min(6).email().regex(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g).required(),
+    email: Joi.string().min(6).email().required(),
     country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
     city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
     birthDate: Joi.number().max((new Date()).valueOf()).required(),
@@ -73,7 +73,7 @@ const pwdUpdateValidation = (data) => {
 
 module.exports.loginValidation = loginValidation;
 module.exports.registerValidation = registerValidation;
-module.exports.userValidation=userValidation;
+module.exports.userValidation = userValidation;
 module.exports.tokenValidation = tokenValidation;
 module.exports.pwdUpdateValidation = pwdUpdateValidation;
 module.exports.answerValidation = answerValidation;

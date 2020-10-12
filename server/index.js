@@ -3,7 +3,7 @@ const ngrok = require('ngrok');
 const app = require('./app');
 const port = process.env.PORT || 8080
 async function establishConnection(){
-  console.log(process.env.NODE_ENV)
+  console.log(process.env.NODE_ENV || 'development' )
   if(process.env.NODE_ENV === 'development'){
     const url = await ngrok.connect(port);
     process.env.MY_URL = url;

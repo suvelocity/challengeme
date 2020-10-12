@@ -19,18 +19,14 @@ const useStyles = makeStyles((theme) => ({
         width: "320px",
     },
     confirmPassword: {
-        // marginTop: "80px",
         marginBottom: "10px",
         width: "320px",
     },
     question: {
-        // marginTop: "80px",
         marginBottom: "10px",
         width: "320px",
     },
     answer: {
-        // marginTop: "80px",
-        // marginBottom: "20px",
         width: "320px",
     },
 }));
@@ -70,8 +66,8 @@ function Security({ values, handleChange }) {
                                 {showPassword ? (
                                     <Visibility />
                                 ) : (
-                                    <VisibilityOff />
-                                )}
+                                        <VisibilityOff />
+                                    )}
                             </IconButton>
                             <LockIcon style={{ opacity: "0.7" }} />
                         </InputAdornment>
@@ -102,8 +98,8 @@ function Security({ values, handleChange }) {
                                 {showConfirmPassword ? (
                                     <Visibility />
                                 ) : (
-                                    <VisibilityOff />
-                                )}
+                                        <VisibilityOff />
+                                    )}
                             </IconButton>
                             <LockIcon style={{ opacity: "0.7" }} />
                         </InputAdornment>
@@ -111,16 +107,13 @@ function Security({ values, handleChange }) {
                 />
             </FormControl>
             <FormControl className={classes.question}>
-            <InputLabel id="demo-mutiple-checkbox-label">Security Question</InputLabel>
+                <InputLabel id="demo-mutiple-checkbox-label">Security Question</InputLabel>
                 <Select
                     id="securityQuestion"
                     autoWidth={true}
                     value={values.securityQuestion}
                     onChange={handleChange("securityQuestion")}
                 >
-                    {/* <MenuItem value="" disabled>
-                        Choose Security Question...
-                    </MenuItem> */}
                     <MenuItem value="When you were young, what did you want to be when you grew up?">
                         When you were young, what did you want to be when you
                         grew up?

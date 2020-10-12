@@ -59,7 +59,7 @@ usersRouter.post("/register", async (req, res) => {
 usersRouter.post('/createuser', (req, res) => {
   const { error } = tokenValidation(req.body);
   if (error) {
-    return res.status(400).json({ success: false, message: "Token required" },)
+    return res.status(400).json({ success: false, message: "Don't mess with me" })
   }
   jwt.verify(req.body.token, process.env.EMAIL_TOKEN_SECRET, async (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Token" });
@@ -95,8 +95,7 @@ usersRouter.post("/login", async (req, res) => {
   //Joi Validation
   const { error } = loginValidation(req.body);
   if (error) {
-    console.log(error);
-    return res.status(400).json({ success: false, message: "Don't mess with us" })
+    return res.status(400).json({ success: false, message: "Don't mess with me" })
   }
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser)
@@ -142,7 +141,7 @@ usersRouter.post("/token", async (req, res) => {
   //Joi Validation
   const { error } = tokenValidation(req.body);
   if (error) {
-    return res.status(400).json({ success: false, message: "Refresh Token Required" })
+    return res.status(400).json({ success: false, message: "Don't mess with me" })
   }
   const refreshToken = req.body.token;
   const validRefreshToken = await RefreshToken.findOne({
@@ -167,19 +166,14 @@ usersRouter.post("/logout", async (req, res) => {
   //Joi Validation
   const { error } = tokenValidation(req.body);
   if (error) {
-    console.log("Joi");
-    return res.status(400).json({ success: false, message: "Refresh Token Required" })
+    return res.status(400).json({ success: false, message: "Don't mess with me" })
   }
-  // if (!req.body.token) {console.log("no token" );return res.status(400).json({ message: "Refresh Token Required" })};
-  // check if token exist and delete it
   const result = await RefreshToken.destroy({
     where: {
       token: req.body.token,
     },
   });
-  console.log(result);
   if (!result) return res.status(400).json({ message: "Refresh Token is required" });
-  console.log("success");
   res.json({ message: "User Logged Out Successfully" });
 });
 
@@ -217,10 +211,9 @@ usersRouter.patch("/passwordupdate", async (req, res) => {
   //Joi Valodation 
   const { error } = pwdUpdateValidation(req.body);
   if (error) {
-    return res.status(400).json({ success: false, message: "Reset password failed" })
+    return res.status(400).json({ success: false, message: "Don't mess with me" })
   }
   const resetToken = req.body.resetToken;
-  // if (!resetToken) return res.status(400).json({ message: "Reset Token Required" });
   jwt.verify(resetToken, process.env.RESET_PASSWORD_TOKEN, async (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Token" });
     const hashPassword = await bcrypt.hash(req.body.password, 10);
