@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Switch, Route, useRouteMatch } from "react-router-dom";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
 import NavBarStatistics from '../components/NavBarStatistics';
 import ThemeApi from "../services/Theme"
 import StatisticsHome from '../components/StatisticsHome';
