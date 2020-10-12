@@ -94,7 +94,7 @@ router.get('/public_repo', async (req, res) => {
   }
 })
 
-challengeRouter.post('/:challengeId/apply', async (req, res) => {
+router.post('/:challengeId/apply', async (req, res) => {
   const challengeId = req.params.challengeId;
   const { commentContent, commentTitle, rating, userId } = req.body;
   const solutionRepository = req.body.repository;
