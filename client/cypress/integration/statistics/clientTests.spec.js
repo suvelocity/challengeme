@@ -2,18 +2,10 @@ describe("Client Tests", () => {
   before(() => {
     cy.login()
   })
-  it("can get challenges", () => {
-    cy.server();
-    cy.route("**/api/v1/challenges", "fixture:homeFixtures/challenges");
-    cy.visit("http://localhost:3000");
-    cy.get("div#challenges").should("have.length", 3);
-    // cy.route('**/api/v1/challenges', '@challenges')
-  });
-
 
   // Navbar
   it("Check NavBar Links", () => {
-    cy.visit("http://localhost:3000/statistics");
+    cy.get('#statistics').click()
     const insights = cy.get("#Insights").click();
     cy.url().should("include", "insights");
 

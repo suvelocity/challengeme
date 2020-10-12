@@ -126,6 +126,7 @@ function Header() {
 
           <div style={{ flex: 1 }}></div> 
           {/* Make space between the search input and the rest of the header. */}
+          <NavLink id="statistics" to="./statistics">
           <Button color='inherit'>
             <div
               style={{
@@ -139,6 +140,7 @@ function Header() {
               <span className='header-link-title'>Statistics</span>
             </div>
           </Button>
+          </NavLink>
           <Tooltip title='hhhhhhhh'>
             <Avatar
               aria-label='account of current user'

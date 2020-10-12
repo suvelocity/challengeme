@@ -10,7 +10,7 @@ router.use("/auth", require("./auth"));
 router.use('/challenges', checkToken, require('./challenges'));
 router.use('/image', checkToken, require('./image'));
 router.use('/webhook', checkToken, require('./webhook'));
-router.use('/statistics', checkToken, require('./statisticsRoutes'));
+router.use('/statistics', /* checkToken */ require('./statisticsRoutes'));
 router.use('/labels', checkToken, require('./labels'));
 // router.use('/new-challenge', require('./newChallenge')); this does not exist, seems to be accounted for in challenges
 
