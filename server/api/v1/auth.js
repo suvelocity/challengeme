@@ -87,6 +87,8 @@ usersRouter.post("/userexist", async (req, res) => {
 
 // Validate Token
 usersRouter.get("/validateToken", checkToken, (req, res) => {
+  // const {user} = req
+  // res.cookie("userFirstName",user.firstName)
   res.json({ valid: true })
 })
 
@@ -133,6 +135,7 @@ usersRouter.post("/login", async (req, res) => {
   res.cookie('name', currentUser.firstName)
   res.cookie('accessToken', accessToken)
   res.cookie('refreshToken', refreshToken)
+  res.cookie('userFirstName', currentUser.firstName)
   res.json({ userDetails: currentUser });
 });
 

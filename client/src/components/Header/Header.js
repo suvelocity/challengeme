@@ -1,5 +1,6 @@
-import React, { useContext } from 'react';
-import { Link, NavLink, useHistory } from 'react-router-dom';
+import React, {useContext} from 'react';
+import Cookies from "js-cookie";
+import { Link, NavLink } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -15,9 +16,11 @@ import './Header.css';
 import ThemeApi from "../../services/Theme"
 import DarkModeToggle from "react-dark-mode-toggle";
 import Search from '../Search/Search'
-import Cookies from 'js-cookie';
-import network from '../../services/network'
 import { Logged } from '../../context/LoggedInContext';
+import { useHistory } from 'react-router-dom';
+import network from '../../services/network';
+
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -74,6 +77,8 @@ function Header() {
   const location = useHistory();
   const value = useContext(Logged);
 
+
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -97,7 +102,6 @@ function Header() {
   }
 
   const headerStyle = {height:"12vh",maxHeight:"80px",minHeight:"40px",position:"sticky",top:0, backgroundColor:! darkMode && "#C9AC80"}
-
   return (
     <div className={classes.root} >
       <AppBar  style={headerStyle}>
@@ -137,11 +141,13 @@ function Header() {
             >
               <EqualizerIcon />
               &nbsp;
+              <Link to="/statistics" style={{textDecoration:"none",color:"white"}}>
               <span className='header-link-title'>Statistics</span>
+              </Link>
             </div>
           </Button>
           </NavLink>
-          <Tooltip title='hhhhhhhh'>
+          <Tooltip title={Cookies.get("userFirstName")}>
             <Avatar
               aria-label='account of current user'
               aria-controls='menu-appbar'
@@ -150,8 +156,7 @@ function Header() {
               color='inherit'
               style={{ cursor: 'pointer', backgroundColor: darkMode?'purple':"#7BACB4"}}
             >
-              HH
-              {/* Cookie.get(username).slice(0, 2) */}
+              {Cookies.get("userFirstName").slice(0, 2)}
             </Avatar>
           </Tooltip>
           <Menu
@@ -188,7 +193,7 @@ function Header() {
               </Link>
             </MenuItem> 
             <MenuItem onClick={handleClose}>
-              <Button style={{minWidth:150}} variant="contained" color="secondary" onClick={logOut}>
+              <Button onClick={logOut} style={{minWidth:150}} variant="contained" color="secondary">
               Log Out
               </Button>
             </MenuItem>
