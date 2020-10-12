@@ -10,6 +10,7 @@
 //
 //
 // -- This is a parent command --
+// Cypress.Commands.add("login", (email, password) => { ... })
 Cypress.Commands.add("login", () => { 
     cy.server()
     cy.route("**/api/v1/login",{})
