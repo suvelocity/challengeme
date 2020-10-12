@@ -1,46 +1,108 @@
 const { Router } = require('express');
 const axios = require('axios');
-const searchFilters = require('../../middleware/searchFilters');
-const fs = require("fs")
-
-const { Submission, Challenge, Label } = require('../../models');
+const filterResults = require('../middleware/filterResults');
+const { Sequelize } = require('sequelize');
+const Op = Sequelize.Op;
+const fs = require("fs");
+  
+const {
+  Submission,
+  User,
+  Challenge,
+  Label,
+  labels_to_challenge,
+  Review,
+} = require('../../models');
 
 const router = Router();
 
-//get all challenges
-router.get('/',searchFilters, async (req, res) => {
-  const {condition,labels} = req
-    try {
-      const allChallenges = await Challenge.findAll({
-        where: condition,
-        include: [Label]
-      });
-      if(labels){ // if filter for labels
-        const filterChallenges = allChallenges.filter((challenge)=>{
-          return labels.some((label)=>{ // if at least one of the existing labels
-            return challenge.Labels.some((x)=>{ // matches at least one of the Challenge's labels 
-            return x.id == label  ;
-          })
-        })
+  // Gett all challenges
+router.get('/', filterResults, async (req, res) => {
+  try {
+    const { condition, labels } = req;
+
+    const allChallenges = await Challenge.findAll({
+      where: condition,
+      include: [
+        {
+          model: Label,
+          attributes: ['name'],
+        },
+        {
+          model: Review,
+          attributes: ['rating'],
+        },
+      ],
+    });
+
+    if (labels) {
+      const filterChallenges = allChallenges.filter((challenge) => {
+        return labels.some((label) => {
+          return challenge.Labels.some((x) => {
+            return x.id == label;
+          });
+        });
       });
       res.json(filterChallenges);
-    } else { // else dont filter
-      res.json(allChallenges)
+    } else {
+      res.json(allChallenges);
     }
-    } catch (error) {
-      res.send('an error has happened')
-    }
-  })
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+
+router.get('/:challengeId', async (req, res) => {
+  try {
+    let challenge = await Challenge.findOne({
+      where: { id: req.params.challengeId },
+      include: [
+        // TODO: add a ORM query to add prop to the challenge with 'rating':3 .... pay attention to round the result to integer
+        {
+          model: Label,
+          attributes: ['name'],
+        },
+        {
+          model: Review,
+          attributes: [
+            [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
+          ],
+        },
+      ],
+    });
+
+    const author = await challenge.getUser();
+    challenge.author = 'qwqwe';
+    res.json({ challenge, author });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+router.get('/labels', async (req, res) => {
+  try {
+    const allLabels = await Label.findAll();
+    res.json(
+      allLabels.map(({ id, name }) => {
+        return { label: name, value: id };
+      })
+    );
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
 
 router.get('/:challengeId/submissions', async (req, res) => {
-  const { challengeId } = req.params;
-  const allSubmission = await Submission.findAll({ where: {
-    challengeId
-  } });
-  res.json(allSubmission)
-})
-
-//get repo details if its public
+  try {
+    const { challengeId } = req.params;
+    const allSubmission = await Submission.findAll({ where: { challengeId } });
+    res.json(allSubmission);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+});
+  
+  //get repo details if its public
 router.get('/public_repo', async (req, res) => {
   try {
     const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`, {
@@ -57,13 +119,22 @@ router.get('/public_repo', async (req, res) => {
 })
 
 router.post('/:challengeId/apply', async (req, res) => {
-  const { solutionRepository } = req.body;
   const challengeId = req.params.challengeId;
+  const { commentContent, commentTitle, rating, userId } = req.body;
+  const solutionRepository = req.body.repository;
+  // adding review
+  await Review.create({
+    userId,
+    challengeId,
+    title: commentTitle,
+    content: commentContent,
+    rating,
+  });
   const challenge = await Challenge.findByPk(challengeId);
   let submission = await Submission.findOne({
     where: {
-      solutionRepository
-    }
+      solutionRepository,
+    },
   });
   if (!submission) {
     submission = await Submission.create({
