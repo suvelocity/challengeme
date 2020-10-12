@@ -48,14 +48,15 @@ router.post('/:challengeId/apply', async (req, res) => {
         webhook:'https://api.ngrok.com' */
   try {
     const urltoSet = process.env.MY_URL.concat(`/api/v1/webhook/submission/${submission.id}`);
-    //console.log(urltoSet);
+    const bearerToken = req.headers.authorization || 'bearer bananaSplit';
+    console.log(bearerToken)
     const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
       ref: 'master',
       inputs: {
-        //name: `${solutionRepository}-Submission${submission.id}`,
         testRepo: challenge.repositoryName,
         solutionRepo: solutionRepository,
-        webhookUrl: urltoSet
+        webhookUrl: urltoSet,
+        bearerToken: bearerToken
       }
     }, {
       headers: {

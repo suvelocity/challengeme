@@ -4,13 +4,16 @@ on:
     inputs:
       testRepo:
         description: 'Testing repository'
-        required: false
+        required: true
       solutionRepo:
         description: 'Solution repository'
-        required: false
+        required: true
       webhookUrl:
         description: 'Location'
-        required: false
+        required: true
+      bearerToken:
+        description: 'Token for Access'
+        required: true
 
 
 jobs:
@@ -75,4 +78,5 @@ jobs:
       with:
         method: 'PATCH'
         url: ${{ github.event.inputs.webhookUrl }}
+        bearerToken: ${{ github.event.inputs.bearerToken }}
         data:  '{ "success":false }'

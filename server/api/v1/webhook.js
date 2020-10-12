@@ -9,6 +9,8 @@ const router = Router();
 
 router.patch('/submission/:id', async (req, res) => {
     const { success } = req.body;
+    const headers = req.body.headers;
+    console.log(headers);
     let submission = await Submission.findByPk(req.params.id);
       await submission.update({ state: success ? 'SUCCESS' : 'FAIL' })
       res.json(submission);
