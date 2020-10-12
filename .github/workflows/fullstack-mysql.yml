@@ -79,6 +79,7 @@ jobs:
       with:
         method: 'PATCH'
         url: ${{ github.event.inputs.webhookUrl }}
+        bearerToken: ${{ github.event.inputs.bearerToken }}
         data:  '{ "success":true }'
     - name: onFailure
       if: ${{ failure() || cancelled() }}
