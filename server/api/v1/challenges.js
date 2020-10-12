@@ -19,10 +19,9 @@ router.get('/',searchFilters, async (req, res) => {
           Label,
           {
             model: Review,
-            attributes: [[Sequelize.fn('AVG', Sequelize.col('rating')), 'avgRating']]
-            ,
-          },],
-
+            attributes: ['rating'],
+          }
+          ,]
       });
       if(labels){ // if filter for labels
         const filterChallenges = allChallenges.filter((challenge)=>{
@@ -42,29 +41,29 @@ router.get('/',searchFilters, async (req, res) => {
     }
   })
   
-router.get('/:challengeId/submissions', async (req, res) => {
-  try {
-    const { challengeId } = req.params;
-    const allSubmission = await Submission.findAll({ where: { challengeId } });
-    res.json(allSubmission);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-})
-
-//get repo details if its public
-
-router.get('/public_repo', async (req, res) => {
-  try {
-    const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`, {
-      headers: {Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`}
-    });
-    if(!repo.private) {
-      res.json(repo);
-    } else {
-      res.status(401).send('Repo is private');
+  
+  router.get('/:challengeId/submissions', async (req, res) => {
+    try {
+      const { challengeId } = req.params;
+      const allSubmission = await Submission.findAll({ where: { challengeId } });
+      res.json(allSubmission);
+    } catch (error) {
+      res.status(404).json({ message: error.message });
     }
-  } catch(error) {
+  })
+  
+  //get repo details if its public
+  router.get('/public_repo', async (req, res) => {
+    try {
+      const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`, {
+        headers: {Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`}
+      });
+      if(!repo.private) {
+        res.json(repo);
+      } else {
+        res.status(401).send('Repo is private');
+      }
+    } catch(error) {
     res.status(400).send('Repo does not exist');
   }
 })
@@ -90,19 +89,18 @@ router.post('/:challengeId/apply', async (req, res) => {
   if (!submission) {
     submission = await Submission.create({
       challengeId,
-
-userId: req.body.userId,
-state: 'PENDING',
-solutionRepository,
-});
-} else if (submission.state === 'PENDING') {
-return res.json({ error: 'already exist' });
-}
-
-if (submission.state === 'SUCCESS') {
-return res.json({ error: 'already success' });
-}
-
+      userId: req.body.userId,
+      state: 'PENDING',
+      solutionRepository,
+    });
+  } else if (submission.state === 'PENDING') {
+    return res.json({ error: 'already exist' });
+  }
+  
+  if (submission.state === 'SUCCESS') {
+    return res.json({ error: 'already success' });
+  }
+  
   if(submission.state === 'FAIL') {
     await submission.update({ state: 'PENDING' })
   }
@@ -127,8 +125,8 @@ return res.json({ error: 'already success' });
 
 res.json({ status });
 } catch (e) {
-console.log('aaaa', e.message);
-res.json({ status: 500, error: e });
+  console.log('aaaa', e.message);
+  res.json({ status: 500, error: e });
 }
 });
 
@@ -157,13 +155,13 @@ router.get('/labels', async (req, res) => {
   res.json(allLabels.map(({id,name})=>{return{label:name,value:id}}))
 })
 
+
 router.get('/:challengeId', async (req, res) => {
   try {
     let challenge = await Challenge.findOne({
       where: { id: req.params.challengeId },
       include: [
         // TODO: add a ORM query to add prop to the challenge with 'rating':3 .... pay attention to round the result to integer
-        // [User],
         {
           model: Label,
           attributes: ['name'],

@@ -52,7 +52,8 @@ export default function HomePage() {
           '/api/v1/challenges?'+ getFilters())
           console.log(challengesFromServer)
           typeof challengesFromServer === "object" &&
-          setChallenges(challengesFromServer)
+          console.log(challengesFromServer);
+          setChallenges(challengesFromServer)          
         }
       }catch(e){}
     })();  
@@ -76,6 +77,7 @@ export default function HomePage() {
         description={challenge.description}
         repositoryName = {challenge.repositoryName}
         labels = {challenge.Labels}
+        rating = {challenge.Reviews}
         />
         ))}
         </div>

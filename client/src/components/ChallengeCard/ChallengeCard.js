@@ -25,7 +25,8 @@ export default function ChallengeCard({
   labels,
   createdAt,
   repositoryName,
-  challengeId
+  challengeId,
+  rating
 }) {
 
   const darkMode = React.useContext(ThemeApi).darkTheme
@@ -83,6 +84,17 @@ export default function ChallengeCard({
     })()
   },[])
 
+  //rating function
+  const getRating = () => {
+    // console.log(rating);
+    if(rating.length === 0){
+      return 0
+    }else{
+      return rating.map(review => review.rating).reduce((pv, cv) => pv + cv, 0)/rating.length
+    }
+    
+  }
+
   const avatarStyle = { backgroundColor : darkMode ? "#F5AF5D" : "#C9AC80", margin : 5, marginRight: 20 }
   return (
     <Link to={`/challenges/${challengeId}`} style={{textDecoration:'none'}}>
@@ -116,7 +128,7 @@ export default function ChallengeCard({
           date&&
          "Updated: "+ date
         }
-        <Rating readOnly name="disabled" value={4}  />
+        <Rating readOnly name="disabled" value={getRating()}  />
       </div>
       <div className="challenge-card-description-homepage">
         {//slicing the description to 100 letters and adding 3 dots if sliced
