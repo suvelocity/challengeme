@@ -45,7 +45,8 @@ describe('Submission process', () => {
         const password = '12345678';
         const userName = 'matanGreenvald';
         const {headers} = await request(app).post('/api/v1/auth/login').send({userName, password, rememberMe:false})
-        accessToken = headers['set-cookie'][0].split(';')[0].split('=')[1];
+        const index = headers['set-cookie'].findIndex(string => string.indexOf('accessToken') === 0);
+        accessToken = headers['set-cookie'][index].split(';')[0].split('=')[1];
         done();
       });
     test('Posting submisson and status change to PENDING + can Post Submissions that had FAIL status', async () => {
