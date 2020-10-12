@@ -163,8 +163,6 @@ function StatisticsHome() {
     setLoading(false);
     
   };
-
-  console.log(topTeamsData);
   
   return (
     <div className={clsx(classes.main, darkMode?"dark-home-page":"light-home-page")}>
