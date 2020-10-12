@@ -101,8 +101,8 @@ function Header() {
     }
   }
 
-  const headerStyle = {height:"60px",position:"fixed", top:0, justifyContent:'center', backgroundColor:! darkMode && "#C9AC80"} 
-   return (
+  const headerStyle = {height:"12vh",maxHeight:"80px",minHeight:"40px",position:"sticky",top:0, backgroundColor:! darkMode && "#C9AC80"}
+  return (
     <div className={classes.root} >
       <AppBar  style={headerStyle}>
         <Toolbar>
@@ -146,7 +146,8 @@ function Header() {
               </Link>
             </div>
           </Button>
-          <Tooltip title={Cookies.get("name")}>
+          </NavLink>
+          <Tooltip title={Cookies.get("userFirstName")}>
             <Avatar
               aria-label='account of current user'
               aria-controls='menu-appbar'
@@ -155,7 +156,7 @@ function Header() {
               color='inherit'
               style={{ cursor: 'pointer', backgroundColor: darkMode?'purple':"#7BACB4"}}
             >
-              {Cookies.get("name").slice(0, 2)}
+              {Cookies.get("userFirstName").slice(0, 2)}
             </Avatar>
           </Tooltip>
           <Menu

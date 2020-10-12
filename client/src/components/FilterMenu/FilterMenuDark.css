@@ -12,7 +12,7 @@
 }
 
 .dark .filters h3{
-  background-color:#cc7a00;
+  background-color:#800080;
   color: #eee;
 }
 
@@ -51,3 +51,5 @@
 .dark .timeFilter{
   color: #ddd;
 }
+
+/* try to implement orange range input */

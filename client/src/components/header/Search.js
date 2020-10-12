@@ -1,22 +1,23 @@
-import React, { useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { fade ,makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import network from '../../services/network';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
-import SearchTicket from "./SearchTicket"
-import FilterMenu from "../FilterMenu/FilterMenu"
+// import  ChooseCategory from "./ChooseCategory"
+// import  SearchTicket from "./SearchTicket"
+// import  ChooseLabels from "./ChooseLabels"
 import './Search.css'
-import './SearchDark.css'
-import ThemeApi from "../../services/Theme"
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    // maxWidth: 600,
     marginBottom: 20,
   },
   media: {
     height: 0,
-    paddingTop: '37.25%', 
+    paddingTop: '37.25%', // 16:9
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -60,6 +61,7 @@ const useStyles = makeStyles((theme) => ({
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     transition: theme.transitions.create('width'),
     width: '100%',
@@ -72,35 +74,20 @@ const useStyles = makeStyles((theme) => ({
 const Search =() => {
   const classes = useStyles();
   const [searching,setSearching]  = useState(false)
+  const [openFilter,setOpenFilter]  = useState(false)
   const [results,setResults]  = useState([])
-  const [filters,setFilters]  = useState({})
-  const darkMode = React.useContext(ThemeApi).darkTheme
+  const [filters,setFilters]  = useState({categories:[],labels:[]})
 
-
-  //get all the filters sorted to the url
-  const getFilters = useCallback(
-    () => {
-      const filterNames = Object.keys(filters)
-      const filterString = filterNames.map(name=>{
-        const value = filters[name]
-        let valueString = (typeof value === 'object')
-        ? value.join(',')
-        :value
-        return `${name}=${valueString}`
-      }).join('&')
-      return '&'+filterString
-    },
-    [filters]
-  ) 
-
-  //search function to the the challenges
   const search= (e) => {
-    let {value : query} = e.target
-    if(!query.length){return setResults([])}
-    if(query==='*'){ query =''}
+    let {value} = e.target
+    if(!value.length){return setResults([])}
+    if(value==='*'){ value =''}
     try{
-      const url = `/api/v1/challenges`+`?challengeName=${query}`
-       + getFilters() 
+      const nameQuery=`challengeName=${value}`
+      const categoryQuery = `categories=${filters.categories.join(',')}`
+      const labelsQuery = `labels=${filters.labels.join(',')}`
+      const url = `/api/v1/challenges?${nameQuery}&${categoryQuery}&${labelsQuery}`
+      console.log(url)
       network.get(url)
       .then(({data})=>{
         setResults(data)
@@ -109,14 +96,10 @@ const Search =() => {
       console.error(error)
     }
   }
-  
-  //close search function
   const closeSearch= () => {
     setResults([])
     setSearching(false)
   }
-
-  //exit search function
   const exitSearch = (e) => {
     const {key,target} = e
     if(!target.value.length){
@@ -126,19 +109,19 @@ const Search =() => {
       }
     }
   }
-
-
-  const resultsList = (results && results.length > 0
-    ?
-    results.map((result)=>{
-      return <SearchTicket ticket={result} key={result.id} closeSearch={closeSearch}/>;
-    })
-    :
-    <span id='no-results'>
-      no results found
-    </span>
-  )
-  //search bar item
+//   const resultsList = (results&&results.length>0
+//     ?results.map((result)=>{
+//       return <SearchTicket ticket={result} key={result.id} closeSearch={closeSearch}/>;
+//     })
+//     :'no results found')
+  
+    const addFilters = (name,newFilter) => {
+      const updated= {...filters}
+      updated[name] = newFilter
+      console.log(updated)
+      setOpenFilter(false)
+      setFilters(updated)
+    }
   const searchInput = <div 
   className={classes.search}>
     <div className={classes.searchIcon}>
@@ -146,7 +129,7 @@ const Search =() => {
     </div>
     <InputBase
       id={'searchBar'}
-      placeholder={searching ? 'press esc to close' : 'Search'}
+      placeholder={searching?'press esc to close':'Search'}
       onFocus={()=>{setSearching(true)}}
       onChange={search}
       onKeyUp={exitSearch}
@@ -160,13 +143,17 @@ const Search =() => {
   </div>
 
   return (
-    <div id='search' className={darkMode && 'dark'}> 
+    <div id='search'>
       {searchInput}
       <div id='searchResults' className={searching?'open':'closed'}>
-        <FilterMenu formerSelection={filters} updateFilters={setFilters} />
+        {/* <ChooseLabels submitFilter={addFilters}/> */}
+        {/* {openFilter
+          ?<ChooseCategory formerSelection={filters.categories} submitFilter={addFilters}/>
+          :<button onClick={() => {setOpenFilter(true)}}>
+            Choose Category 
+          </button>} */}
         <div className='display'>
-        <button className='searchClose' onClick={closeSearch}>X</button>
-        {resultsList}
+        {/* {resultsList} */}
         </div>
       </div>
     </div>

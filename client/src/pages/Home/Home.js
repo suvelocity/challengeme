@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import network from '../../services/network';
 import ChallengeCard from '../../components/ChallengeCard/ChallengeCard';
-import "./Home.css"
+import "./Home-old.css"
 import ThemeApi from "../../services/Theme"
 import FilterMenu from '../../components/FilterMenu/FilterMenu';
 import { useLocation } from "react-router-dom"
@@ -56,7 +56,6 @@ export default function HomePage() {
     })();  
   }, [filters]);  
 
-  
   return (
     <div 
     className={darkMode && "dark"}>
@@ -64,21 +63,19 @@ export default function HomePage() {
       <FilterMenu 
       formerSelection={filters} 
       updateFilters={setFilters} />
-     <div className={"challenges-container"}>
       {challenges.map((challenge) => (
         <ChallengeCard
-        key={challenge.id}
-        challengeId={challenge.id}
-        createdAt={challenge.createdAt}
-        name={challenge.name}
-        description={challenge.description}
-        repositoryName = {challenge.repositoryName}
-        labels = {challenge.Labels}
+          key={challenge.id}
+          challengeId={challenge.id}
+          createdAt={challenge.createdAt}
+          name={challenge.name}
+          description={challenge.description}
+          repositoryName = {challenge.repositoryName}
+          labels = {challenge.Labels}
         />
-        ))}
-        </div>
+      ))}
+      </div>
      
     </div>
-      </div>
   )
 }
