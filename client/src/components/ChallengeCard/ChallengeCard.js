@@ -82,8 +82,7 @@ export default function ChallengeCard({
     })()
   },[])
 
-  const avatarStyle = { backgroundColor : darkMode ? "#F5AF5D" : "#C9AC80", margin : 8 }
-
+  const avatarStyle = { backgroundColor : darkMode ? "#F5AF5D" : "#C9AC80", margin : 5, marginRight: 20 }
   return (
     <div className = "challenge-card" //animation to the challenge card
     >
@@ -94,10 +93,10 @@ export default function ChallengeCard({
         </Tooltip>
        {name}
         </div>
-        <div>
+        <div className="labels-container">
           {
-            //getting the first 3 lables
-            labels.slice(0,3).map(label=>{
+            //getting the first 2 lables
+            labels.slice(0,2).map(label=>{
             return <span className="home-page-challenge-labels" key={label.id}>{label.name}</span>
             })
           }

@@ -1,6 +1,6 @@
 .filterMenu{
-  top:12vh;
-  transition: 1s;
+  top:65px;
+  transition: 0.3s;
   position: fixed;
   display: flex;
   flex-direction: row;
@@ -16,7 +16,7 @@
 }
 
 .filters{
-  transition: 1s;
+  transition: 0.3s;
   background-color: white;
   height: 50vh;
   width: 0;
@@ -25,7 +25,7 @@
 }
 
 .filters.open{
-  transition: .5s;
+  transition: .2s;
   
   border-width: 0 2px 2px 0px ;
   width: 90vw;
@@ -37,12 +37,11 @@
 }
 
 .toggleOpen{
-  transition: .5s;
+  transition: .3s;
   background-color:#C9AC80;
   height:50px;
   min-width:50px;
   border-radius: 0 50% 50% 0;
-  margin-top: 20px;
   opacity: 0.7; 
 }
 
@@ -51,7 +50,7 @@
 }
 .filters h3{
   color:white;
-  background-color: #7BACB4;
+  background-color: #C9AC80;
   padding-left: 10px;
   margin:0; 
   margin-bottom:5px;
