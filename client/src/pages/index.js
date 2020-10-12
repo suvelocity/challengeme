@@ -81,9 +81,6 @@ export default function Router() {
                     <Route exact path='/auth'>
                       <VlidatingMail />
                     </Route>
-                    <Route exact path='/challenges/:challengeParamId'>
-                      <ChallengePage />
-                    </Route>
                     <Route exact path='/'>
                       <Landing />
                     </Route>
@@ -109,10 +106,9 @@ export default function Router() {
                 <Route path='/statistics'>
                   <Statistics />
                 </Route>
-                <Route
-                  path='/challenges/:challengeParamId'
-                  component={ChallengePage}
-                />
+                <Route exact path='/challenges/:challengeParamId'>
+                      <ChallengePage />
+                    </Route>
                 <Route path='*'>
                   <Redirect to='/' />
                 </Route>

@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Modal, TextField, Button, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import Cookies from "js-cookie";
-import { Rating } from "@material-ui/lab";
-import { useForm } from "react-hook-form";
-import network from "../../services/network";
+import React, { useState } from 'react';
+import { Modal, TextField, Button, Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Cookies from 'js-cookie';
+import { Rating } from '@material-ui/lab';
+import { useForm } from 'react-hook-form';
+import network from '../../services/network';
 
 function getModalStyle() {
   return {
@@ -14,16 +14,16 @@ function getModalStyle() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    position: "absolute",
+    position: 'absolute',
     width: 400,
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
+    border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
   formValidationError: {
-    color: "red",
-    fontSize: "0.8em",
+    color: 'red',
+    fontSize: '0.8em',
   },
 }));
 
@@ -31,7 +31,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
   /* eslint-disable no-unused-vars */
   const { register, handleSubmit, errors } = useForm();
   /* eslint-enable no-unused-vars */
-  const [userRating, setUserRating] = useState("0");
+  const [userRating, setUserRating] = useState('0');
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
 
@@ -39,7 +39,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
     // VIEW SUBMITTED SUCCESSFULLY/FAILED TO SUBMITT MESSAGE and close modal
     const formData = {
       ...data,
-      userId: Cookies.get("userId"),
+      userId: Cookies.get('userId'),
     };
     try {
       const res = await network.post(
@@ -52,7 +52,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
     }
     console.log(formData);
     handleClose();
-    setUserRating("0");
+    setUserRating('0');
   };
 
   return (
@@ -62,17 +62,19 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
       aria-labelledby='simple-modal-title'
       aria-describedby='simple-modal-description'
       style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}>
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
       <div style={modalStyle} className={classes.paper}>
         <form
           onSubmit={handleSubmit(submitForm)}
           style={{
-            display: "flex",
-            flexDirection: "column",
-          }}>
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
           <Typography variant='h5'>Submit Your Solution</Typography>
           <TextField
             label='Solution repository'
@@ -86,19 +88,21 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
               pattern: /^([^ ]+\/[^ ]+)$/,
             })}
           />
-          {errors.repository?.type === "pattern" && (
+          {errors.repository?.type === 'pattern' && (
             <Typography
               variant='caption'
               id='required-repo'
-              className={classes.formValidationError}>
+              className={classes.formValidationError}
+            >
               The text should look like "username/repository-name"
             </Typography>
           )}
-          {errors.repository?.type === "required" && (
+          {errors.repository?.type === 'required' && (
             <Typography
               variant='caption'
               className={classes.formValidationError}
-              id='required-repo'>
+              id='required-repo'
+            >
               Please enter a solution repository
             </Typography>
           )}
@@ -107,10 +111,11 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
           <div
             style={{
               marginTop: 12,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}>
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
             <Typography variant='subtitle1'>Rate this challenge</Typography>
             <Rating
               name='rating'
@@ -122,16 +127,17 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
             name='rating'
             type='number'
             value={userRating}
-            ref={register({ required: true, min: "1" })}
+            ref={register({ required: true, min: '1' })}
             hidden
             readOnly
           />
-          {(errors.rating?.type === "required" ||
-            errors.rating?.type === "min") && (
+          {(errors.rating?.type === 'required' ||
+            errors.rating?.type === 'min') && (
             <Typography
               variant='caption'
               id='required-rating'
-              className={classes.formValidationError}>
+              className={classes.formValidationError}
+            >
               Please rate this challenge
             </Typography>
           )}
@@ -147,10 +153,11 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
             inputRef={register({ maxLength: 100 })}
             variant='filled'
           />
-          {errors.commentTitle?.type === "maxLength" && (
+          {errors.commentTitle?.type === 'maxLength' && (
             <Typography
               variant='caption'
-              className={classes.formValidationError}>
+              className={classes.formValidationError}
+            >
               Title should be less than 100 characters
             </Typography>
           )}
@@ -165,10 +172,11 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
             variant='filled'
             style={{ marginTop: 8 }}
           />
-          {errors.commentContent?.type === "maxLength" && (
+          {errors.commentContent?.type === 'maxLength' && (
             <Typography
               variant='caption'
-              className={classes.formValidationError}>
+              className={classes.formValidationError}
+            >
               Your message should be less than 100 characters
             </Typography>
           )}
@@ -178,7 +186,8 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
             color='primary'
             type='submit'
             id='submit-form'
-            style={{ marginTop: 16 }}>
+            style={{ marginTop: 16 }}
+          >
             submit
           </Button>
         </form>

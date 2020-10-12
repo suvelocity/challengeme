@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
   Challenge.init(
     {
       name: DataTypes.STRING,
+      boilerPlate: DataTypes.STRING,
       description: DataTypes.STRING,
       type: DataTypes.STRING,
       repositoryName: DataTypes.STRING,

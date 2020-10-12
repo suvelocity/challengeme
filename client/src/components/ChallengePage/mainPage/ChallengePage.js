@@ -45,6 +45,7 @@ export default function ChallengePage() {
         let {
           data: { challenge: challengeFromServer, author },
         } = await network.get(`/api/v1/challenges/${challengeParamId}`);
+        console.log('challenge',challengeFromServer);
         challengeFromServer.author = author;
         setChallenge(challengeFromServer);
       } catch (error) {
@@ -80,7 +81,7 @@ export default function ChallengePage() {
             }
           >
             <span className='challenge-created-by'>
-              <p>{`Created By:${challenge.author&&challenge.author.userName}`}</p>
+              {/* <p>Created By: </p> <p>{challenge.author.userName}</p> */}
             </span>
             <span className='challenge-created-at'>
               <p>Created At: </p>{' '}
@@ -98,9 +99,7 @@ export default function ChallengePage() {
             <h2 className={darkModeIsOn ? 'dark-h2' : 'light-h2'}>Labels:</h2>
             <span className='challenge-label'>
               {challenge['Labels'].map((label) => (
-                <Link
-                  to={`/?labelId=${label['labels_to_challenges']['label_id']}`}
-                >
+                <Link to={`/?labelId=${label['labels_to_challenges']['label_id']}`}>
                   {console.log(label)}
                   <Chip color='primary' label={label.name} component='a' />
                 </Link>

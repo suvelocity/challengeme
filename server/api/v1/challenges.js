@@ -38,8 +38,6 @@ router.get('/',searchFilters, async (req, res) => {
       res.send('an error has happened')
     }
   })
-
-
   
 router.get('/:challengeId/submissions', async (req, res) => {
   try {
@@ -131,8 +129,6 @@ res.json({ status: 500, error: e });
 }
 });
 
-
-
 // router Post - new challenge
 router.post(`/`,async(req,res) => {
   try {
@@ -160,7 +156,6 @@ router.get('/labels', async (req, res) => {
 
 router.get('/:challengeId', async (req, res) => {
   try {
-    console.log("got to the right endpoint $$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
     let challenge = await Challenge.findOne({
       where: { id: req.params.challengeId },
       include: [
@@ -180,7 +175,6 @@ router.get('/:challengeId', async (req, res) => {
     });
 
     const author = await challenge.getUser();
-    challenge.author = 'qwqwe';
     res.json({ challenge, author });
   } catch (error) {
     res.status(500).json({ message: error.message });
