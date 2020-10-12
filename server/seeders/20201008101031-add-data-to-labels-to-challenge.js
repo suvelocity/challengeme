@@ -7,6 +7,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('labels_to_challenges', null, {});
+    await queryInterface.bulkDelete('labels_to_challenges');
   }
 };

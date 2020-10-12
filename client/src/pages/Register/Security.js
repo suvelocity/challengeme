@@ -11,7 +11,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import LockIcon from "@material-ui/icons/Lock";
-import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 const useStyles = makeStyles((theme) => ({
     password: {
         marginTop: "60px",
@@ -19,18 +19,14 @@ const useStyles = makeStyles((theme) => ({
         width: "320px",
     },
     confirmPassword: {
-        // marginTop: "80px",
-        marginBottom: "30px",
+        marginBottom: "10px",
         width: "320px",
     },
     question: {
-        // marginTop: "80px",
         marginBottom: "10px",
         width: "320px",
     },
     answer: {
-        // marginTop: "80px",
-        // marginBottom: "20px",
         width: "320px",
     },
 }));
@@ -70,8 +66,8 @@ function Security({ values, handleChange }) {
                                 {showPassword ? (
                                     <Visibility />
                                 ) : (
-                                    <VisibilityOff />
-                                )}
+                                        <VisibilityOff />
+                                    )}
                             </IconButton>
                             <LockIcon style={{ opacity: "0.7" }} />
                         </InputAdornment>
@@ -102,30 +98,40 @@ function Security({ values, handleChange }) {
                                 {showConfirmPassword ? (
                                     <Visibility />
                                 ) : (
-                                    <VisibilityOff />
-                                )}
+                                        <VisibilityOff />
+                                    )}
                             </IconButton>
                             <LockIcon style={{ opacity: "0.7" }} />
                         </InputAdornment>
                     }
                 />
             </FormControl>
-            <Select
-                id="securityQuestion"
-                className={classes.question}
-                displayEmpty
-                value={values.securityQuestion}
-                onChange={handleChange("securityQuestion")}
-            >
-                <MenuItem value="" disabled>
-                    Choose Security Question...
-                </MenuItem>
-                <MenuItem value="When you were young, what did you want to be when you grew up?">When you were young, what did you want to be when you grew up?</MenuItem>
-                <MenuItem value="Who was your childhood hero?">Who was your childhood hero?</MenuItem>
-                <MenuItem value="Where was your best family vacation as a kid?">Where was your best family vacation as a kid?</MenuItem>
-                <MenuItem value="What is the name, breed, and color of your favorite pet?">What is the name, breed, and color of your favorite pet?</MenuItem>
-                <MenuItem value="What was the first concert you attended?">What was the first concert you attended?</MenuItem>
-            </Select>
+            <FormControl className={classes.question}>
+                <InputLabel id="demo-mutiple-checkbox-label">Security Question</InputLabel>
+                <Select
+                    id="securityQuestion"
+                    autoWidth={true}
+                    value={values.securityQuestion}
+                    onChange={handleChange("securityQuestion")}
+                >
+                    <MenuItem value="When you were young, what did you want to be when you grew up?">
+                        When you were young, what did you want to be when you
+                        grew up?
+                    </MenuItem>
+                    <MenuItem value="Who was your childhood hero?">
+                        Who was your childhood hero?
+                    </MenuItem>
+                    <MenuItem value="Where was your best family vacation as a kid?">
+                        Where was your best family vacation as a kid?
+                    </MenuItem>
+                    <MenuItem value="What is the name, breed, and color of your favorite pet?">
+                        What is the name, breed, and color of your favorite pet?
+                    </MenuItem>
+                    <MenuItem value="What was the first concert you attended?">
+                        What was the first concert you attended?
+                    </MenuItem>
+                </Select>
+            </FormControl>
             <FormControl className={classes.answer}>
                 <InputLabel style={{ color: "grey" }}>
                     Enter your answer

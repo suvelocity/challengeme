@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "../services/network";
@@ -64,6 +64,13 @@ export default function Login() {
 
     const value = useContext(Logged);
 
+    useEffect(() => {
+        //Prevent special password eye bugs
+        document.addEventListener('mouseup', () => { setShowPassword(false) });
+        document.addEventListener('dragend', () => { setShowPassword(false) });
+
+    }, [])
+
     const updateField = (e) => {
         switch (e.currentTarget.name) {
             case "password":
@@ -77,9 +84,7 @@ export default function Login() {
                 break;
         }
     };
-    const handleClickShowPassword = () => {
-        setShowPassword((prev) => !prev);
-    };
+
     const loginFunc = async (e) => {
         const formErrors = {};
         e.preventDefault();
@@ -99,7 +104,7 @@ export default function Login() {
         }
         //request to server
         try {
-            const { data: response } = await axios.post("/api/v1/auth/login", {
+            await axios.post("/api/v1/auth/login", {
                 userName: userName,
                 password: password,
                 rememberMe: rememberMe,
@@ -115,6 +120,9 @@ export default function Login() {
         <>
             <Background />
             <motion.div
+                onMouseUp={
+                    () => setShowPassword(false)
+                }
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{
@@ -171,13 +179,14 @@ export default function Login() {
                                     endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton
+                                                id="reveal"
                                                 style={{ opacity: "0.7" }}
                                                 aria-label="toggle password visibility"
                                                 onMouseDown={
-                                                    handleClickShowPassword
+                                                    () => setShowPassword(true)
                                                 }
                                                 onMouseUp={
-                                                    handleClickShowPassword
+                                                    () => setShowPassword(false)
                                                 }
                                             >
                                                 {showPassword ? (
@@ -231,19 +240,17 @@ export default function Login() {
                                 className={classes.loginButton}
                             >
                                 Log in
-                        </Button>
+                            </Button>
                             <div>
                                 <span>don't have an account yet? </span>
                                 <Link to="/register" id="signUp">
                                     Sign up
-                            </Link>
-
+                                </Link>
                             </div>
-                        )
                         </div>
                     </form>
                 </div>
             </motion.div>
         </>
     );
-}
+};

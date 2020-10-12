@@ -63,10 +63,6 @@ export default function Forgot() {
                 break;
         }
     };
-    const prevStep = () => {
-        if (step === 1) return;
-        setStep((prevStep) => prevStep - 1);
-    };
 
     const getQuestion = async (userName) => {
         if (
@@ -84,7 +80,6 @@ export default function Forgot() {
                     userName,
                 }
             );
-            console.log(response);
             setSecQuestion(response.securityQuestion);
             setStep(2);
         } catch (e) {
@@ -170,7 +165,7 @@ export default function Forgot() {
                 );
         }
     };
-    console.log(error);
+
     return (
         <>
             <Background />
@@ -204,6 +199,7 @@ export default function Forgot() {
                     )}
                     <div className="containerButtonsForgotPass">
                         <Button
+                            id='nextButton'
                             className={classes.nextButtonForgotPass}
                             variant="contained"
                             onClick={nextStep}
