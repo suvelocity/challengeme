@@ -10,11 +10,13 @@ import GitHubIcon from "@material-ui/icons/GitHub";
 
 const useStyles = makeStyles((theme) => ({
     reason: {
-        marginTop: "130px",
-        marginBottom: "30px",
+        marginTop: "110px",
+        marginBottom: "20px",
         width: "320px",
     },
     github: {
+        // marginTop: "80px",
+        // marginBottom: "20px",
         width: "320px",
     },
 }));
@@ -23,25 +25,29 @@ function Extras({ values, handleChange }) {
 
     return (
         <div className="containerExtra">
-            <Select
-            id="signUpReason"
-            className={classes.reason}
-                displayEmpty
-                value={values.signUpReason}
-                onChange={handleChange("signUpReason")}
-            >
-                <MenuItem value="" disabled>
-                    Choose your sign-up reason...
-                </MenuItem>
-                <MenuItem value="Student">Student</MenuItem>
-                <MenuItem value="Challenge Myself">Challenge Myself</MenuItem>
-                <MenuItem value="Other">Other</MenuItem>
-            </Select>
-
+            <FormControl className={classes.reason}>
+                <InputLabel id="demo-mutiple-checkbox-label">
+                Choose your sign-up reason...
+                </InputLabel>
+                <Select
+                    id="signUpReason"
+                    className={classes.reason}
+                    value={values.signUpReason}
+                    onChange={handleChange("signUpReason")}
+                >
+                    <MenuItem value="Student">Student</MenuItem>
+                    <MenuItem value="Challenge Myself">
+                        Challenge Myself
+                    </MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                </Select>
+            </FormControl>
             <FormControl className={classes.github}>
-                <InputLabel style={{ color: "grey" }}>Enter your GitHub Account Username</InputLabel>
+                <InputLabel style={{ color: "grey" }}>
+                    Enter your GitHub Account Username
+                </InputLabel>
                 <Input
-                id="github"
+                    id="github"
                     type="text"
                     value={values.gitHub}
                     required

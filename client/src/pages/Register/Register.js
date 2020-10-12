@@ -17,17 +17,31 @@ import "../../styles/Register.css";
 
 const useStyles = makeStyles((theme) => ({
     nextButton: {
-
+        // marginBottom: "10px",
+        // marginTop: "60px",
         background: "linear-gradient(45deg, #447CC6 30%, #315CAB 90%)",
         color: "white",
     },
 }));
 
+// const pageVariants = {
+//     initial: {
+//         opacity: 0,
+//     },
+//     in: {
+//         opacity: 1,
+//         transition: { duration: 0.5 },
+//     },
+//     out: {
+//         opacity: 0,
+//         transition: { duration: 0.5 },
+//     },
+// };
 
 function Register() {
     const classes = useStyles();
     const [errors, setErrors] = useState([]);
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(4);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [userName, setUserName] = useState("");

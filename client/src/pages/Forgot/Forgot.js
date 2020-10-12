@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Forgot() {
     const classes = useStyles();
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
     const [error, setError] = useState("");
     const [userName, setUserName] = useState("");
     const [secQuestion, setSecQuestion] = useState("");
