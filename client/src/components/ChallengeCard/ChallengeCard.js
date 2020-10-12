@@ -79,7 +79,7 @@ export default function ChallengeCard({
     })()
   },[])
 
-  const avatarStyle = { backgroundColor : darkMode ? "#F5AF5D" : "#C9AC80", margin : 5 }
+  const avatarStyle = { backgroundColor : darkMode ? "#F5AF5D" : "#C9AC80", margin : 8 }
 
   return (
     <motion.div className = "challenge-card" //animation to the challenge card

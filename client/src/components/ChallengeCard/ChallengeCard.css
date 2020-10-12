@@ -3,8 +3,8 @@
     background: #4B79A1;  /* fallback for old browsers */
 }
 .challenge-card{
-    width:300px;
-    height: 200px;
+    width:400px;
+    height: 250px;
     margin: 10px;
     position: relative;
     overflow: hidden;
@@ -19,7 +19,7 @@
 }
 .challenge-card-description-homepage{
     color: black;
-    width:300px;
+    width:100%;
     overflow-wrap: break-word;
     position: absolute;
     bottom: 0;
@@ -51,12 +51,12 @@
 
 .challenge-card-img-homepage{
     width: 100%;
-    height:112px;
+    height:150px;
 }
 .avatar-and-repo-name{
     display: flex;
     align-items: center;
-    max-width: 300px;
+    font-size: 18px;
     overflow-x: hidden;
 
 }
@@ -76,7 +76,7 @@
 .dark .home-page-challenge-labels{
     color: white;
     background-color: #267EB5;
-    margin-right: 5px;
+    margin-right: 8px;
 }
 
 .home-page-challenge-labels{
@@ -86,7 +86,7 @@
     border: 1px solid black;
     border-radius: 8px;
     background-color: #EEDCB4;
-    margin-right: 5px;
+    margin-right: 8px;
 }
 
 
