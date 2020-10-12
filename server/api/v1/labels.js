@@ -1,36 +1,31 @@
 const { Router } = require('express');
-const axios = require('axios');
-const filterResults = require('./middleware/filterResults');
-const { Sequelize } = require('sequelize');
-const Op = Sequelize.Op;
+const { labelsToChallenge } = require('../../models');
+const router = Router();
 
-const { Label } = require('../../models');
+/*
+  GET REQUEST FROM challenge.js
+*/
 
-const labelRouter = Router();
-
-labelRouter.get('/', async (req, res) => {
-  try {
-      const allLabels = await Label.findAll({});
-      res.json(allLabels)
-  } catch (error) {
-    res.status(404).json({ message: error.message });
+router.post('/', async (req, res) => { // /api/v1/labels
+  let challenge = req.body.challengeId;
+  let labels = req.body.labels;
+  if(labels.length > 0) {
+    try {
+      await labelsToChallenge.bulkCreate(
+        labels.map(label => (
+          {
+            labelId: label,
+            challengeId: challenge
+          }
+        ))
+      );
+      res.status(200).send('Success');
+    } catch(error) { 
+      res.status(400).send('Bad request');
+    }
+  } else {
+    res.status(406).send('No labels chosen');
   }
-})
+});
 
-
-
-
-// challengeRouter.get("/:challengeId", async (req, res) => {
-//   try {
-//     const challenge = await Challenge.findOne({
-//       where: { id: req.params.challengeId },
-//       include: [Label]
-//     });
-//     res.json(challenge);
-//   } catch (error) {
-//     res.status(500).json({ message: error.message });
-//   }
-// });
-
-
-module.exports = labelRouter;
+module.exports = router;

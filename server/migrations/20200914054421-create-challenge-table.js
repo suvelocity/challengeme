@@ -8,10 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
       name: {
         type: Sequelize.STRING
       },
@@ -23,21 +19,6 @@ module.exports = {
       },
       repository_name: {
         type: Sequelize.STRING
-      },
-      boiler_plate: 
-      {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      cover:
-      {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      category:
-      {
-        type: Sequelize.STRING,
-        allowNull: true,
       },
       created_at: {
         allowNull: false,

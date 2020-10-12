@@ -1,9 +1,10 @@
 const { Router } = require('express');
 const axios = require('axios');
-const filterResults = require('./middleware/filterResults');
+const filterResults = require('../middleware/filterResults');
 const { Sequelize } = require('sequelize');
 const Op = Sequelize.Op;
-
+const fs = require("fs");
+  
 const {
   Submission,
   User,
@@ -13,9 +14,10 @@ const {
   Review,
 } = require('../../models');
 
-const challengeRouter = Router();
+const router = Router();
 
-challengeRouter.get('/', filterResults, async (req, res) => {
+  // Gett all challenges
+router.get('/', filterResults, async (req, res) => {
   try {
     const { condition, labels } = req;
 
@@ -50,7 +52,7 @@ challengeRouter.get('/', filterResults, async (req, res) => {
   }
 });
 
-challengeRouter.get('/:challengeId', async (req, res) => {
+router.get('/:challengeId', async (req, res) => {
   try {
     let challenge = await Challenge.findOne({
       where: { id: req.params.challengeId },
@@ -77,7 +79,7 @@ challengeRouter.get('/:challengeId', async (req, res) => {
   }
 });
 
-challengeRouter.get('/labels', async (req, res) => {
+router.get('/labels', async (req, res) => {
   try {
     const allLabels = await Label.findAll();
     res.json(
@@ -90,7 +92,7 @@ challengeRouter.get('/labels', async (req, res) => {
   }
 });
 
-challengeRouter.get('/:challengeId/submissions', async (req, res) => {
+router.get('/:challengeId/submissions', async (req, res) => {
   try {
     const { challengeId } = req.params;
     const allSubmission = await Submission.findAll({ where: { challengeId } });
@@ -99,8 +101,24 @@ challengeRouter.get('/:challengeId/submissions', async (req, res) => {
     res.status(404).json({ message: error.message });
   }
 });
+  
+  //get repo details if its public
+router.get('/public_repo', async (req, res) => {
+  try {
+    const { data: repo } = await axios.get(`https://api.github.com/repos/${req.query.repo_name}`, {
+      headers: {Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`}
+    });
+    if(!repo.private) {
+      res.json(repo);
+    } else {
+      res.status(401).send('Repo is private');
+    }
+  } catch(error) {
+    res.status(400).send('Repo does not exist');
+  }
+})
 
-challengeRouter.post('/:challengeId/apply', async (req, res) => {
+router.post('/:challengeId/apply', async (req, res) => {
   const challengeId = req.params.challengeId;
   const { commentContent, commentTitle, rating, userId } = req.body;
   const solutionRepository = req.body.repository;
@@ -121,46 +139,87 @@ challengeRouter.post('/:challengeId/apply', async (req, res) => {
   if (!submission) {
     submission = await Submission.create({
       challengeId,
-      userId: req.body.userId,
       state: 'PENDING',
-      solutionRepository,
+      solutionRepository
     });
   } else if (submission.state === 'PENDING') {
-    return res.json({ error: 'already exist' });
+    return res.json({ error: 'already exist' })
   }
 
   if (submission.state === 'SUCCESS') {
-    return res.json({ error: 'already success' });
+    return res.json({ error: 'already success' })
   }
 
-  if (submission.state !== 'FAIL') {
-    await submission.update({ state: 'PENDING' });
+  if(submission.state === 'FAIL') {
+    await submission.update({ state: 'PENDING' })
   }
-
+/* ,
+        webhook:'https://api.ngrok.com' */
   try {
-    const { status } = await axios.post(
-      `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
-      {
-        ref: 'master',
-        inputs: {
-          name: `aa${process.env.ENV_NAME}${submission.id}`,
-          testRepo: challenge.repositoryName,
-          solutionRepo: solutionRepository,
-        },
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
-        },
+    const urltoSet = process.env.MY_URL.concat(`/api/v1/webhook/submission/${submission.id}`);
+    //console.log(urltoSet);
+    const { status } = await axios.post(`https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`, {
+      ref: 'master',
+      inputs: {
+        //name: `${solutionRepository}-Submission${submission.id}`,
+        testRepo: challenge.repositoryName,
+        solutionRepo: solutionRepository,
+        webhookUrl: urltoSet
       }
-    );
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
+      }
+    }) 
 
-    res.json({ status });
+    res.json({ status })
   } catch (e) {
-    console.log('aaaa', e.message);
-    res.json({ status: 500, error: e });
+    res.json({ status: 500, error: e })
   }
-});
 
-module.exports = challengeRouter;
+})
+
+
+
+// router Post - new challenge
+router.post(`/`,async(req,res) => {
+  try {
+    const newRepo = req.body.repositoryName;
+    const check = await Challenge.findOne({
+      where:{
+        repositoryName: newRepo
+      }
+    })
+    if(check) {
+      return res.status(500).send('Repo is already in the system');
+    }
+    const newChallenge = await Challenge.create(req.body);
+    res.status(200).send(newChallenge);
+  } catch(err) {
+    res.status(400).send('Bad request');
+  }
+})
+
+// router Get - github/workflows
+router.get('/type', async (req,res) => {
+  try{
+    const files = fs.readdirSync('../.github/workflows');
+    let types = files.map(file =>
+      !file.includes("deploy")?
+      file.slice(0,-4)
+      :
+      null
+    )
+    types = types.filter(type => type!==null)
+    res.send(types)
+  }catch(e){res.send(e.message)}
+})
+
+//get all labels
+router.get('/labels', async (req, res) => {
+  const allLabels = await Label.findAll();
+  res.json(allLabels.map(({id,name})=>{return{label:name,value:id}}))
+})
+
+module.exports = router;
