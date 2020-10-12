@@ -1,7 +1,7 @@
 const request = require("supertest");
 const server = require("../app");
 const { User } = require("../models");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const mockUser = require("./mocks/users");
 const mockLogins = require("./mocks/usersLogin");
@@ -10,8 +10,8 @@ const originalAnswer = mockUser[2].securityAnswer
 describe("Reset Password", () => {
   beforeAll(async () => {
     await User.destroy({ truncate: true, force: true });
-    mockUser[2].password = await bcrypt.hash(mockUser[2].password, 10);
-    mockUser[2].securityAnswer = await bcrypt.hash(mockUser[2].securityAnswer, 10);
+    mockUser[2].password = await bcrypt.hashSync(mockUser[2].password, 10);
+    mockUser[2].securityAnswer = await bcrypt.hashSync(mockUser[2].securityAnswer, 10);
     await User.create(mockUser[2]);
   })
   afterAll(async () => {

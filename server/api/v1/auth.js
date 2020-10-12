@@ -2,7 +2,7 @@ require('dotenv').config()
 const { Router } = require("express");
 const usersRouter = Router();
 const { User, RefreshToken } = require("../../models");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const checkToken = require('../../middleware/checkToken');
 const { loginValidation, registerValidation, tokenValidation, pwdUpdateValidation, answerValidation, userValidation } = require('../../helpers/validator');
@@ -20,8 +20,8 @@ usersRouter.post("/register", async (req, res) => {
 
   if (checkUser) return res.status(409).send("user name already exists");
 
-  const hashPassword = await bcrypt.hash(req.body.password, 10);
-  const hashsecurityAnswer = await bcrypt.hash(req.body.securityAnswer, 10);
+  const hashPassword = await bcrypt.hashSync(req.body.password, 10);
+  const hashsecurityAnswer = await bcrypt.hashSync(req.body.securityAnswer, 10);
   const newUser = {
     userName: req.body.userName,
     firstName: req.body.firstName,
@@ -219,7 +219,7 @@ usersRouter.patch("/passwordupdate", async (req, res) => {
   const resetToken = req.body.resetToken;
   jwt.verify(resetToken, process.env.RESET_PASSWORD_TOKEN, async (err, decoded) => {
     if (err) return res.status(403).json({ message: "Invalid Token" });
-    const hashPassword = await bcrypt.hash(req.body.password, 10);
+    const hashPassword = await bcrypt.hashSync(req.body.password, 10);
     await User.update({ password: hashPassword }, {
       where: {
         userName: decoded.userName

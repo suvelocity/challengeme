@@ -3,8 +3,8 @@
 /* 
         these user are valid for registertion.
         if U want to add them directly to your DB -->
-        mockUser.password = await bcrypt.hash(mockUser.password, 10);
-        mockUser.securityAnswer = await bcrypt.hash(mockUser.securityAnswer, 10);
+        mockUser.password = await bcrypt.hashSync(mockUser.password, 10);
+        mockUser.securityAnswer = await bcrypt.hashSync(mockUser.securityAnswer, 10);
         await User.create(mockUser); 
 */
 

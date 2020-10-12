@@ -2,7 +2,7 @@ require('dotenv').config()
 const request = require("supertest");
 const server = require("../app");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { User, RefreshToken } = require("../models");
 
 const mockUser = require("./mocks/users");
@@ -12,8 +12,8 @@ const mockLogins = require("./mocks/usersLogin")
 describe("Register & Login Tests", () => {
   beforeAll(async () => {
     await User.destroy({ truncate: true, force: true });
-    mockUser[0].password = await bcrypt.hash(mockUser[0].password, 10);
-    mockUser[0].securityAnswer = await bcrypt.hash(mockUser[0].securityAnswer, 10);
+    mockUser[0].password = await bcrypt.hashSync(mockUser[0].password, 10);
+    mockUser[0].securityAnswer = await bcrypt.hashSync(mockUser[0].securityAnswer, 10);
     await User.create(mockUser[0]);
 
   })
