@@ -28,58 +28,10 @@ challengeRouter.get('/', filterResults, async (req, res) => {
         },
         {
           model: Review,
-          attributes: [
-            [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
-          ],
+          attributes: ['rating'],
         },
       ],
     });
-
-
-    
-
-    /*
-    const rating = await Review.findAll({
-      attributes: ['challengeId', 'rating'],
-    });
-
-    const ratingArr = rating.reduce(
-      (all, { challengeId, rating }) => ({
-        ...all,
-        [challengeId]: (all[challengeId] || []).concat(rating),
-      }),
-      {}
-    );
-
-    const averageRatings = Object.entries(ratingArr).reduce(
-      (all, [challengeId, ratings]) => {
-        return {
-          ...all,
-          [challengeId]: ratings.reduce((a, b) => a + b) / ratings.length,
-        };
-      },
-      {}
-    );
-
-    const allChallengesWithRatings = allChallenges.map((challenge) => ({
-      ...challenge,
-      averageRating: averageRatings[challenge.id] != null
-        ? averageRatings[challenge.id]
-        : null,
-	}));
-
-	const allChallengesWithRatings = allChallenges.map(challenge => {
-		const mappedChallenge =  {
-			...challenge, averageRating: 1
-		}
-	})
-	*/
-    // const newArr = allChallenges.map((challenge) => {
-    //   challenge['averageRating'] = 1;
-    //   return challenge;
-    // });
-
-    res.json(allChallenges);
 
     if (labels) {
       const filterChallenges = allChallenges.filter((challenge) => {
@@ -108,18 +60,18 @@ challengeRouter.get('/:challengeId', async (req, res) => {
           model: Label,
           attributes: ['name'],
         },
+        {
+          model: Review,
+          attributes: [
+            [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
+          ],
+        },
       ],
     });
-    const rating = await Review.findAll({
-      where: { challengeId: req.params.challengeId },
-      attributes: ['challengeId', 'rating'],
-    });
-    const rawAverageRating = rating.map((item) => item.rating);
-    const averageRating =
-      rawAverageRating.reduce((a, b) => a + b) / rawAverageRating.length;
+
     const author = await challenge.getUser();
     challenge.author = 'qwqwe';
-    res.json({ challenge, author, averageRating });
+    res.json({ challenge, author });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
