@@ -1,0 +1,16 @@
+.upload-img-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+.upload-img-secondary-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 65vw;
+    min-width: 200px;
+  }
+

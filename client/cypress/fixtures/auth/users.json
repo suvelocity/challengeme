@@ -1,0 +1,17 @@
+{
+  "first_name": "Betzalel",
+  "last_name": "Silverman",
+  "user_name": "BuzzyBee",
+  "email": "BuzzyBee@gmail.com",
+  "password": "BuzzyTheMan",
+  "birth_date": "1996-07-28",
+  "country": "Israel",
+  "city": "Tel-Aviv",
+  "phone_number": "0542222223",
+  "github_account": "Betzalel",
+  "reason_of_registration": "student",
+  "security_question": "what is your boss name",
+  "security_answer": "Gilad",
+  "created_at": "2020-10-11T10:42:08.916Z",
+  "updated_at": "2020-10-11T10:42:08.916Z"
+}

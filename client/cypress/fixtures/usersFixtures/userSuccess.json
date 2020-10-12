@@ -1,0 +1,12 @@
+[
+    {
+        "id": 1,
+        "state": "SUCCESS",
+        "createdAt": "2020-10-06T20:12:38.000Z",
+        "CountByUserID": 6,
+        "User": {
+            "id": 1,
+            "userName": "miki"
+        }
+    }
+]

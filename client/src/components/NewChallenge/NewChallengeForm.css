@@ -1,0 +1,113 @@
+.newChallenge {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #F7F5E0;
+  
+}
+
+.newChallengeDark{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #141e30; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #141e30, #243b55); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #141e30, #243b55); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+ }
+
+ .newChallengeDark .newChallengeForm{
+  background: #4B79A1;  /* fallback for old browsers */
+  color: azure;
+ }
+
+.newChallengeForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 70vw;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  min-width: 260px;
+
+
+}
+.newChallengeFormheader{
+  padding-top: 2vh;
+}
+
+.descriptionTextArea {
+  min-width: 40vw;
+  max-width: 65vw;
+  max-height: 30vh;
+}
+#menu- > div.MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded{
+  max-width: 40vw;
+}
+.newChallengeFormFeild {
+  width: 40vw;
+  min-width: 200px;
+  display: flex;
+  justify-content: center;
+}
+
+.newChallengeFormButtons {
+  display: flex;
+  justify-content: space-evenly;
+  width: 40vw;
+  min-width: 260px;
+}
+
+.newChallengeFormDisplayErrors {
+  white-space: pre;
+  width: 80%;
+  font-size: 8px;
+  min-width: 200px;
+}
+
+.MuiAlert-standardError{
+  font-size: 10px !important;
+
+}
+.MuiAlertTitle-root{
+  font-size: 11px !important;
+}
+
+@media (max-width: 715px){
+  .MuiAlert-standardError{
+    font-size: 9px !important;
+  
+  }
+  .MuiAlertTitle-root{
+    font-size: 10px !important;
+  }
+}
+
+
+@media (max-width: 635px){
+  .MuiAlert-standardError{
+    font-size: 8px !important;
+  
+  }
+  .MuiAlertTitle-root{
+    font-size: 9px !important;
+  }
+}
+@media (max-width: 500px){
+  .MuiAlert-standardError{
+    font-size: 7px !important;
+  
+  }
+
+}
+
+@media (max-width: 440px){
+  .MuiAlert-standardError{
+    font-size: 6px!important;
+  
+  }
+  
+}
