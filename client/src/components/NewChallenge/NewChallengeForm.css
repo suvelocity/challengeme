@@ -44,7 +44,9 @@
   max-width: 65vw;
   max-height: 30vh;
 }
-
+#menu- > div.MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded{
+  max-width: 40vw;
+}
 .newChallengeFormFeild {
   width: 40vw;
   min-width: 200px;

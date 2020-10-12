@@ -5,7 +5,7 @@ import Avatar from "@material-ui/core/Avatar"
 import Rating from '@material-ui/lab/Rating';
 import { Tooltip } from '@material-ui/core';
 import ThemeApi from "../../services/Theme"
-import {motion} from 'framer-motion'
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 
 //fallback function to sort the creation time of the repo
@@ -29,6 +29,8 @@ export default function ChallengeCard({
 
   const darkMode = React.useContext(ThemeApi).darkTheme
   const [coverImg, setCoverImg] = useState("")
+  const [loading, setLoading] = useState(true)
+
   const [date, setDate] = useState(null)
 
   //function for getting the last update time
@@ -66,6 +68,7 @@ export default function ChallengeCard({
       try{
         const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`)
         setCoverImg(coverImage ? coverImage.img : '')
+        setLoading(false)
         try{
           const { data: repo } = await network.get(`/api/v1/challenges/public_repo?repo_name=${repositoryName}`)
           const updateDate = repo.updated_at
@@ -79,13 +82,10 @@ export default function ChallengeCard({
     })()
   },[])
 
-  const avatarStyle = { backgroundColor : darkMode ? "#F5AF5D" : "#C9AC80", margin : 5 }
+  const avatarStyle = { backgroundColor : darkMode ? "#F5AF5D" : "#C9AC80", margin : 8 }
 
   return (
-    <motion.div className = "challenge-card" //animation to the challenge card
-    initial={{scale:0.03}}
-    animate={{ scale: 1 }}
-    transition={{default: { duration: 1.2 , delay:0.3}}}
+    <div className = "challenge-card" //animation to the challenge card
     >
       <div className="challenge-card-creator-homepage">
         <div className="avatar-and-repo-name">
@@ -104,8 +104,11 @@ export default function ChallengeCard({
         </div>
       </div>
       {
+      !loading?
       coverImg.length > 0 &&
       <img className="challenge-card-img-homepage" src={coverImg} />
+      :
+      <CircularProgress />
       }
       <div className="challenge-card-data-homepage">
         {
@@ -118,6 +121,6 @@ export default function ChallengeCard({
         {//slicing the description to 100 letters and adding 3 dots if sliced
         description.length<100? description : description.slice(0,100).split(" ").slice(0,-1).join(" ")+"..."}
         </div>
-    </motion.div>
+    </div>
   );
 }

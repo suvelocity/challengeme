@@ -43,7 +43,7 @@ export default function NewChallengeForm() {
 
   /* pull challenge's type options from .github/workflows folder */
   const openOptions = async () => {
-  const { data: types } = await network.get('/api/v1/challenges/type');
+  const { data: types } = await network.get('/api/v1/types');
   setOptionsArray(types.map((type, index) => 
     <MenuItem key={index} value={type}>{type}</MenuItem>
     ))
@@ -58,25 +58,30 @@ export default function NewChallengeForm() {
     if(repoName.length < 2 || repoName.match(spaces) || repoName.match(hebrew)) {
       newBadInput.push(generateAlert("Repository's name is too short","Minimum 2 characters. Don't use hebrew letters")      );
     }
-    try {
-      if(repoLink.length > 2 && !repoLink.match(spaces) && !repoLink.match(hebrew)) {
-        await network.get(`/api/v1/challenges/public_repo?repo_name=${repoLink}`);
-      } else {
-        throw new Error();
-      }
-    } catch(err) {
-      newBadInput.push(generateAlert("Repository's Link is not valid.\n Check the suggestions below:","- Type the Github repository in this format: owner/repo\n- Change your repository to public\n- Check for type errors.\nDon't use Hebrew letters")
-      );
+    if(repoLink === repoBoiler){
+      newBadInput.push(generateAlert("Repository links must be diffrent",""));
     }
-    try {
-      if(repoBoiler.length > 2 && !repoBoiler.match(spaces) && !repoBoiler.match(hebrew)) {
-        await network.get(`/api/v1/challenges/public_repo?repo_name=${repoBoiler}`);
-      } else {
-        throw new Error();
+    else{
+      try {
+        if(repoLink.length > 2 && !repoLink.match(spaces) && !repoLink.match(hebrew)) {
+          await network.get(`/api/v1/challenges/public_repo?repo_name=${repoLink}`);
+        } else {
+          throw new Error();
+        }
+      } catch(err) {
+        newBadInput.push(generateAlert("Repository's Link is not valid.\n Check the suggestions below:","- Type the Github repository in this format: owner/repo\n- Change your repository to public\n- Check for type errors.\nDon't use Hebrew letters")
+        );
       }
-    } catch(err) {
-      newBadInput.push(generateAlert("Repository's Boilerplate Link is not valid.\n Check the suggestions below:","- Type the Github boilerplate repository in this format: owner/repo\n- Change your boilerplate repository to public\n- Check for type errors.\nDon't use Hebrew letters")
-      );
+      try {
+        if(repoBoiler.length > 2 && !repoBoiler.match(spaces) && !repoBoiler.match(hebrew)) {
+          await network.get(`/api/v1/challenges/public_repo?repo_name=${repoBoiler}`);
+        } else {
+          throw new Error();
+        }
+      } catch(err) {
+        newBadInput.push(generateAlert("Repository's Boilerplate Link is not valid.\n Check the suggestions below:","- Type the Github boilerplate repository in this format: owner/repo\n- Change your boilerplate repository to public\n- Check for type errors.\nDon't use Hebrew letters")
+        );
+    }
     }
     if(repoDescription.length < 20 || !!repoDescription.match(spaces) || !!repoDescription.match(hebrew)) {
       newBadInput.push(generateAlert("Repository's Description is too short","Minimum 2 characters. Don't use hebrew letters")
@@ -220,7 +225,7 @@ export default function NewChallengeForm() {
         <InputLabel id='Challenge type'  style={textFieldStyle}>Challenge type</InputLabel>
         <Select
           labelId='Challenge type'
-          id='Challenge type'
+          id='types'
           className='newChallengeFormFeild'
           value={repoType}
           onChange={event => setRepoType(event.target.value)}
