@@ -37,10 +37,7 @@ function Statistics() {
             </Switch>
             </div>
            </div>
-           </div>
-       
-            
-        
+           </div>      
     )
 }
 
