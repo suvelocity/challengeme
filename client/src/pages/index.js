@@ -80,6 +80,9 @@ export default function Router() {
                     <Route exact path='/auth'>
                       <VlidatingMail />
                     </Route>
+                    <Route exact path='/challenges/:challengeParamId'>
+                      <ChallengePage />
+                    </Route>
                     <Route exact path='/'>
                       <Landing />
                     </Route>

@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.RefreshToken, {
         foreignKey: "userName",
       });
+      this.hasMany(models.Challenge, {
+        foreignKey: "author",
+        sourceKey: "id"
+      });
     }
   }
   User.init(
