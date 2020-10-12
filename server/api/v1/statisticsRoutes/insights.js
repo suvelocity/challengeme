@@ -4,10 +4,10 @@ const { Op } = require("sequelize");
 const router = Router();
 const { Submission, Challenge, Review } = require("../../../models");
 
-// returns the 5 challenges with most submitions
+// returns the 5 challenges with most submissions
 router.get("/top-challenges", async (req, res) => {
-  try{
-    const sub = await Submission.findAll({
+  try {
+    const topChallenges = await Submission.findAll({
       attributes: {
         include: [
           [sequelize.fn("COUNT", sequelize.col("challenge_id")), "countSub"],
@@ -15,23 +15,23 @@ router.get("/top-challenges", async (req, res) => {
       },
       include: {
         model: Challenge,
-        attributes: ["name"]
+        attributes: ["name"],
       },
       group: ["challenge_id"],
       order: [[sequelize.fn("COUNT", sequelize.col("challenge_id")), "DESC"]],
       limit: 5,
     });
-  
-    res.json(sub);
-  }catch(err){
-    res.json(err)
+
+    res.json(topChallenges);
+  } catch (err) {
+    res.status(400).send(err);
   }
 });
 
-// returns the 5 challenges with most successful submitions
+// returns the 5 challenges with most successful submissions
 router.get("/top-success", async (req, res) => {
-  try{
-    const sub = await Submission.findAll({
+  try {
+    const mostSuccessful = await Submission.findAll({
       attributes: {
         include: [
           [sequelize.fn("COUNT", sequelize.col("challenge_id")), "countSub"],
@@ -46,16 +46,16 @@ router.get("/top-success", async (req, res) => {
       order: [[sequelize.fn("COUNT", sequelize.col("challenge_id")), "DESC"]],
       limit: 5,
     });
-    res.json(sub);
-  }catch(err){
-    res.json(err)
+    res.json(mostSuccessful);
+  } catch (err) {
+    res.status(400).send(err);
   }
 });
 
 // returns the count of challenges from same type('type name' + 'count')
 router.get("/challenges-type", async (req, res) => {
-  try{
-    const challengeType = await Challenge.findAll({
+  try {
+    const challengesByType = await Challenge.findAll({
       attributes: [
         "type",
         [sequelize.fn("COUNT", sequelize.col("type")), "countType"],
@@ -64,16 +64,17 @@ router.get("/challenges-type", async (req, res) => {
       order: [[sequelize.fn("COUNT", sequelize.col("type")), "DESC"]],
       limit: 5,
     });
-    res.json(challengeType);
-  }catch(err){
-    res.json(err)
+    res.json(challengesByType);
+  } catch (err) {
+    res.status(400).send(err);
   }
 });
 
-// returns the count of submitions submited per day from the last 5 days 
+// returns the count of submissions submitted per day from the last 5 days
 router.get("/sub-by-date", async (req, res) => {
-  try{
-    const subByDate = await Submission.findAll({
+  try {
+    const fiveDays = 5 * 24 * 60 * 60 * 1000;
+    const submissionsByDate = await Submission.findAll({
       group: [sequelize.fn("DAY", sequelize.col("createdAt"))],
       attributes: [
         [sequelize.fn("COUNT", sequelize.col("id")), "countByDay"],
@@ -81,41 +82,39 @@ router.get("/sub-by-date", async (req, res) => {
       ],
       where: {
         created_at: {
-          //432000000
-          [Op.gte]: new Date(Date.now() - 2.628e+9),
+          [Op.gte]: new Date(Date.now() - fiveDays),
         },
       },
     });
-    res.json(subByDate);
-  }catch(err){
-    res.json(err)
+    res.json(submissionsByDate);
+  } catch (err) {
+    res.status(400).send(err);
   }
 });
 
-// returns top 5 challenges ordered by rating averge (from reviews) 
+// returns top 5 challenges ordered by rating average (from reviews)
 router.get("/challenges-by-reviews", async (req, res) => {
-try{
-  let allChallenges = await Review.findAll({
-    attributes: [[sequelize.fn('AVG', sequelize.col('rating')), 'ratingAVG']],
-    include: {
-      model: Challenge,
-    },
-    group: ['challenge_id'],
-    order: [[sequelize.fn('AVG', sequelize.col('rating')), 'DESC']],
-    limit: 5
-  })
+  try {
+    const challengesByRating = await Review.findAll({
+      attributes: [[sequelize.fn("AVG", sequelize.col("rating")), "ratingAVG"]],
+      include: {
+        model: Challenge,
+      },
+      group: ["challenge_id"],
+      order: [[sequelize.fn("AVG", sequelize.col("rating")), "DESC"]],
+      limit: 5,
+    });
 
-  allChallenges = allChallenges.map(element => {
+    // returns the average rating as number
+    const challengesTopRating = challengesByRating.map((element) => {
+      element.dataValues.ratingAVG = Number(element.dataValues.ratingAVG);
+      return element;
+    });
 
-    element.dataValues.ratingAVG = Number(element.dataValues.ratingAVG)
-    return element
-
-  });
-
-  res.json(allChallenges)
-}catch(err){
-  res.json(err)
-}
+    res.json(challengesTopRating);
+  } catch (err) {
+    res.status(400).send(err);
+  }
 });
 
 module.exports = router;

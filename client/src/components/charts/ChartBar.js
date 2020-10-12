@@ -21,7 +21,8 @@ function ChartBar({data}) {
             legend:{
               display:false,
               position:'right'
-            }
+            },
+            responsive: true,
           }}
         />
     </div>

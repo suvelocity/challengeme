@@ -26,9 +26,10 @@ function ChartPie({data}){
               fontSize:20
             },
             legend:{
-              display:true,
+              display:false,
               position:'right'
-            }
+            },
+            responsive: true,
           }}
         />
       </div>

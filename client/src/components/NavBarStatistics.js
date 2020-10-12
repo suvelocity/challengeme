@@ -12,7 +12,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 // import MenuIcon from '@material-ui/icons/Menu';
-import { brown } from '@material-ui/core/colors'
+import { brown } from "@material-ui/core/colors";
 import "./statistics.css";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
@@ -28,9 +28,13 @@ import GroupOutlinedIcon from "@material-ui/icons/GroupOutlined";
 import InsertChartOutlinedIcon from "@material-ui/icons/InsertChartOutlined";
 import AssistantOutlinedIcon from "@material-ui/icons/AssistantOutlined";
 import AssignmentIndOutlinedIcon from "@material-ui/icons/AssignmentIndOutlined";
+import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
-import './statistics.css'
+import MenuOpenIcon from "@material-ui/icons/MenuOpen";
+import "./statistics.css";
+import ThemeApi from "../services/Theme";
+
 const drawerWidth = 300;
 
 const routesIcons = [
@@ -60,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     marginTop: "3.4rem",
     zIndex: "1",
-    height: "100%",
+    height: "93%",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -118,9 +122,16 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
+  whitePaper: {
+    background: "#ffe57f",
+  },
+  darkPaper: {
+    background: "#78909c",
+  },
 }));
 
 export default function NavBarStatistics() {
+  const darkMode = React.useContext(ThemeApi).darkTheme;
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -138,15 +149,28 @@ export default function NavBarStatistics() {
       <CssBaseline />
       <Drawer
         variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
+        className={clsx(
+          classes.drawer,
+          {
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
-          }),
+          },
+          {
+            [classes.darkPaper]: darkMode,
+            [classes.whitePaper]: !darkMode,
+          }
+        )}
+        classes={{
+          paper: clsx(
+            {
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            },
+            {
+              [classes.darkPaper]: darkMode,
+              [classes.whitePaper]: !darkMode,
+            }
+          ),
         }}
       >
         <div className={classes.toolbar}>
@@ -157,18 +181,17 @@ export default function NavBarStatistics() {
               onClick={handleDrawerOpen}
               edge="start"
             >
-              <SearchIcon />
+              <MenuIcon />
             </IconButton>
           ) : (
             <div>
               <IconButton onClick={handleDrawerClose}>
                 {theme.direction === "rtl" ? (
-                  <ChevronRightIcon />
+                  <MenuOpenIcon />
                 ) : (
-                  <ChevronLeftIcon />
+                  <MenuOpenIcon />
                 )}
               </IconButton>
-              <ComboBox />
             </div>
           )}
         </div>

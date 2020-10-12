@@ -4,9 +4,13 @@
 }
 
 .chart{
-    height: auto !important;
+    /* height: auto !important; */
+    
 }
 
-.canvas-container{
-    height: 25vh;
+@media (max-width:1000px){
+    .chart{
+        height: 150px;
+        width: 35vw;
+    }
 }
