@@ -1,12 +1,4 @@
 module.exports = [
-    /* 
-        these user are valid for registertion.
-        if U want to add them directly to your DB -->
-            mockUser.password = await bcrypt.hash(mockUser.password, 10);
-            mockUser.securityAnswer = await bcrypt.hash(mockUser.securityAnswer, 10);
-            await User.create(mockUser); 
-    */
-
     {
         id:1,
         first_name: "dekel",
