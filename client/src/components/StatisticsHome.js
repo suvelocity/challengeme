@@ -197,7 +197,7 @@ function StatisticsHome() {
             style={{ gridArea: "topChart"}}
           >
             <Charts
-              name="TopUsers"
+              name="topUsers"
               width={"450px"}
               height={"70px"}
               chart={[0, 2]}

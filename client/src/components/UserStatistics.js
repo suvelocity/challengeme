@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
     height: "inherit",
     width: "inherit",
     gridTemplate: `
-    'header header' 45vh
+    'header header' 5vh
     'sideList sideList' 45vh
     'headChart headChart' 45vh
     'bottomChart bottomChart' 45vh

@@ -36,8 +36,16 @@ const useStyles = makeStyles((theme) => ({
     width: "inherit",
     gridTemplate: `
     'header header ' 5vh
-      'headChart sideList ' 45vh 
-      'bottomChart bottomRightChart' 45vh`,
+      'sideList sideList ' 45vh 
+      'headChart headChart' 45vh
+      'bottomChart bottomChart' 45vh
+      'bottomRightChart bottomRightChart' 45vh`,
+      '@media (min-width:1000px)' : {
+        gridTemplate: `
+        'header header ' 5vh
+        'headChart sideList ' 45vh 
+        'bottomChart bottomRightChart' 45vh`,
+      },
   },
   divLight: {
     textAlign: "center",

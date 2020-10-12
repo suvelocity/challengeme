@@ -31,33 +31,22 @@ describe("Client Tests", () => {
   it("Checks home page charts", () => {
     cy.server();
 
-    cy.route("**/top-users", "fixture:homeFixtures/users.json").as("getUsers");
+    cy.route("**/users/top-users", "fixture:homeFixtures/users.json").as("getUsers");
     cy.route("**/teams/top", "fixture:homeFixtures/topTeams.json").as("getTeams");
-    cy.route("**/top-challenges", "fixture:homeFixtures/topChallenges.json").as("topChallenges");
+    cy.route("**/insights/top-challenges", "fixture:homeFixtures/topChallenges.json").as("getTopChallenges");
 
     cy.visit("http://localhost:3000/statistics");
-    cy.get("#topChallenges > .chart > .chartjs-render-monitor");
-    cy.get(
-      "#topChallenges > .MuiBottomNavigation-root > :nth-child(2)"
-    ).click();
-    cy.get(
-      "#topChallenges > .MuiBottomNavigation-root > :nth-child(1)"
-    ).click();
+    cy.get("#topChallenges");
+    cy.get("#topChallengesPie").click();
+    cy.get("#topChallengesBar").click();
 
-    cy.get(
-      "#TopUsers > .MuiBottomNavigation-root > :nth-child(2)"
-    ).click();
-    cy.get(
-      "#TopUsers > .MuiBottomNavigation-root > :nth-child(1)"
-    ).click();
-    
-    cy.get("#topTeams > .chart > .chartjs-render-monitor");
-    cy.get(
-      "#topTeams > .MuiBottomNavigation-root > :nth-child(2)"
-    ).click();
-    cy.get(
-      "#topTeams > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
-    ).click();
+    cy.get("#topUsers");
+    cy.get("#topUsersPie").click();
+    cy.get("#topUsersBar").click();
+
+    cy.get("#topTeams");
+    cy.get("#topTeamsLine").click();
+    cy.get("#topTeamsBar").click();
   });
 
   //Insights
@@ -73,35 +62,20 @@ describe("Client Tests", () => {
     cy.visit("http://localhost:3000/statistics/insights");
     
     cy.get("#SubmissionTotalChart");
-
     cy.get("#challengesMostSuccessChart");
     cy.get("#challengesMostSubChart");
 
     cy.get("#challengesByTypeChart");
-    cy.get(
-      "#challengesByTypeChart > .MuiBottomNavigation-root > :nth-child(2)"
-    ).click();
-    cy.get(
-      "#challengesByTypeChart > .MuiBottomNavigation-root > :nth-child(1)"
-    ).click();
+    cy.get("#challengesByTypeChartPie").click();
+    cy.get("#challengesByTypeChartBar").click();
 
     cy.get("#topByReview");
-    cy.get(
-      "#topByReview > .MuiBottomNavigation-root > :nth-child(2)"
-    ).click();
-    cy.get(
-      "#topByReview > .MuiBottomNavigation-root > :nth-child(1)"
-    ).click();
+    cy.get("#topByReviewPie").click();
+    cy.get("#topByReviewBar").click();
 
     cy.get("#subByDate");
-    cy.get(
-      "#subByDate > .MuiBottomNavigation-root > :nth-child(2)"
-    ).click();
-    cy.get(
-      "#subByDate > .MuiBottomNavigation-root > :nth-child(1)"
-    ).click();
-
-
+    cy.get("#subByDatePie").click();
+    cy.get("#subByDateBar").click();
   });
 
   //Users
@@ -116,32 +90,17 @@ describe("Client Tests", () => {
     cy.visit("http://localhost:3000/statistics/users");
 
     cy.get("#UserTopSubmissionsByType");
-    cy.get(
-      "#UserTopSubmissionsByType > .MuiBottomNavigation-root > :nth-child(2)"
-      ).click();
-    cy.get(
-      "#UserTopSubmissionsByType > .MuiBottomNavigation-root > :nth-child(1)"
-      ).click();
+    cy.get("#UserTopSubmissionsByTypePie").click();
+    cy.get("#UserTopSubmissionsByTypeBar").click();
     
-    cy.get("#topUsersBySuccess > .chart > .chartjs-render-monitor");
-    cy.get(
-      "#topUsersBySuccess > .MuiBottomNavigation-root > :nth-child(2)"
-      ).click();
-    cy.get(
-      "#topUsersBySuccess > .MuiBottomNavigation-root > :nth-child(1)"
-      ).click();
+    cy.get("#topUsersBySuccess");
+    cy.get("#topUsersBySuccessPie").click();
+    cy.get("#topUsersBySuccessBar").click();
       
-    cy.get("#UserSubmissionsByDate > .chart > .chartjs-render-monitor");
-
-    cy.get(
-      "#UserSubmissionsByDate > .MuiBottomNavigation-root > :nth-child(3) > .MuiBottomNavigationAction-wrapper"
-      ).click();
-    cy.get(
-      "#UserSubmissionsByDate > .MuiBottomNavigation-root > :nth-child(2) > .MuiBottomNavigationAction-wrapper"
-      ).click();
-    cy.get(
-      "#UserSubmissionsByDate > .MuiBottomNavigation-root > :nth-child(1) > .MuiBottomNavigationAction-wrapper"
-      ).click();
+    cy.get("#UserSubmissionsByDate");
+    cy.get("#UserSubmissionsByDatePie").click();
+    cy.get("#UserSubmissionsByDateLine").click();
+    cy.get("#UserSubmissionsByDateBar").click();
 
     cy.get("#topUsersByTeam");
   });
@@ -156,36 +115,20 @@ describe("Client Tests", () => {
 
     cy.visit("http://localhost:3000/statistics/teams");
 
-    cy.get("#lastWeekSubOfTeam > .chart > .chartjs-render-monitor");
-    cy.get(
-      "#lastWeekSubOfTeam > .MuiBottomNavigation-root > :nth-child(2) > .MuiBottomNavigationAction-wrapper"
-      ).click();
-    cy.get(
-      "#lastWeekSubOfTeam > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
-      ).click();
+    cy.get("#lastWeekSubOfTeam");
+    cy.get("#lastWeekSubOfTeamPie").click();
+    cy.get("#lastWeekSubOfTeamBar").click();
     
-    cy.get("#TopOfTheTeams > .chart > .chartjs-render-monitor");
-    cy.get(
-      "#TopOfTheTeams > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
-      ).click();
-    cy.get(
-      "#TopOfTheTeams > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
-      ).click();
+    cy.get("#TopOfTheTeams");
+    cy.get("#TopOfTheTeamsPie").click();
+    cy.get("#TopOfTheTeamsBar").click();
 
-    cy.get("#TopSuccessChallenges > .chart > .chartjs-render-monitor");
-    cy.get(
-      "#TopOfTheTeams > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
-      ).click();
-    cy.get(
-      "#TopOfTheTeams > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
-      ).click();
+    cy.get("#TopSuccessChallenges");
+    cy.get("#TopOfTheTeamsPie").click();
+    cy.get("#TopOfTheTeamsBar").click();
 
-    cy.get("#TopOfTheTeams > .chart > .chartjs-render-monitor");
-    cy.get(
-      "#TopSuccessChallenges > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
-      ).click();
-    cy.get(
-      "#TopSuccessChallenges > .MuiBottomNavigation-root > .MuiButtonBase-root.Mui-selected > .MuiBottomNavigationAction-wrapper"
-      ).click();
+    cy.get("#TopOfTheTeams");
+    cy.get("#TopSuccessChallengesPie").click();
+    cy.get("#TopSuccessChallengesBar").click();
   });
 });
