@@ -37,7 +37,7 @@ describe("Register & Login Tests", () => {
 
     const newPasswordRequest = {
       resetToken: answerResponse.body.resetToken,
-      password: "654321"
+      password: "87654321"
     }
 
     const newPasswordResponse = await request(server)
@@ -47,8 +47,8 @@ describe("Register & Login Tests", () => {
 
     const loginAfterChangedPasswordRequest = {
       userName: mockUser.resetPassword.userName, 
-      password:"654321",
-      rememberMe: "true"
+      password:"87654321",
+      rememberMe: true
     }
 
     const loginAfterChangedPasswordRes = await request(server)
@@ -58,7 +58,7 @@ describe("Register & Login Tests", () => {
 
     const oldPasswordLoginResponse = await request(server)
       .post("/api/v1/auth/login")
-      .send(mockUser.resetPassword);
+      .send(mockUser.resetPasswordLogin);
     expect(oldPasswordLoginResponse.status).toBe(403);
 
     done();

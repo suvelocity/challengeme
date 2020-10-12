@@ -1,6 +1,37 @@
-describe("Error test", () => {
-  it("Can get all errors and submit register form", () => {
+describe("redirect", () => {
+  it("can redirect to home for inexact urls", () => {
+    cy.visit("/dfhksjdfhkjdsfhdk");
+    cy.url().should("equal", "http://localhost:3000/");
+    cy.visit("/login/a");
+    cy.url().should("equal", "http://localhost:3000/");
+    cy.visit("/register/a");
+    cy.url().should("equal", "http://localhost:3000/");
+    cy.visit("/forgot/a");
+    cy.url().should("equal", "http://localhost:3000/");
+  });
+
+  it("can redirect from login", () => {
+    cy.visit("/login");
+    cy.contains("Forgot Password ?").click();
+    cy.url().should("equal", "http://localhost:3000/forgot");
+    cy.visit("/login");
+    cy.contains("Sign up").click();
+    cy.url().should("equal", "http://localhost:3000/register");
+  });
+  it("can redirect from register", () => {
     cy.visit("/register");
+    cy.contains("Login Here").click();
+    cy.url().should("equal", "http://localhost:3000/login");
+  });
+  it("can redirect from forgot", () => {
+    cy.visit("/forgot");
+    cy.contains("Login Here").click();
+    cy.url().should("equal", "http://localhost:3000/login");
+  });
+});
+
+describe("Register Form Test", () => {
+  it("Can get all errors and submit register form", () => {
     const pages = [
       {
         inputs: [
@@ -153,11 +184,19 @@ describe("Error test", () => {
               },
             ],
             trueValue: "myAnswerrrr",
-          }
+          },
         ],
       },
     ];
-
+    cy.server();
+    cy.route("POST", "**/api/v1/auth/userexist", { notExist: true });
+    cy.route("POST", "**/api/v1/auth/register", {
+      message: "Waiting for mail validation",
+    }).as("register");
+    cy.route("POST", "**/api/v1/auth/createuser", {
+      message: "Register Success",
+    }).as("createUser");
+    cy.visit("/register");
     pages.forEach((page) => {
       page.inputs.forEach((input) => {
         if (input.type === "select 2") {
@@ -168,7 +207,6 @@ describe("Error test", () => {
           cy.get('[data-value="Who was your childhood hero?"]').click();
         } else {
           input.errors.forEach((error) => {
-            //cy.get(`#${input.field}`).select(error.trueValue, {force: true});
             cy.get(`#${input.field}`).type(error.falseValue);
             cy.get("#nextButton").click();
             cy.get(".errorInputRegister").should("contain", error.message);
@@ -180,6 +218,190 @@ describe("Error test", () => {
       //Move to next page
       cy.get("#nextButton").click();
     });
-    cy.get('.MuiCircularProgress-svg').should('exist');
+    cy.wait("@register");
+
+    cy.visit("/auth?token=djfhskdfhdskjf");
+    cy.wait("@createUser");
+    cy.url().should("equal", "http://localhost:3000/login");
+  });
+});
+
+describe("login Tests", () => {
+  it("can login", () => {
+    cy.server();
+    cy.route("POST", "**/api/v1/auth/login", "fixture:login.json").as(
+      "loginUser"
+    );
+
+    cy.visit("/login");
+    cy.get("#userNameField").type("Test");
+    cy.get("#passwordField").type("12345678");
+    cy.get("#loginButton").click();
+    cy.wait("@loginUser");
+    cy.url().should("equal", "http://localhost:3000/");
+  });
+  it("login errors", () => {
+    const inputs = [
+      {
+        field: "userNameField",
+        errors: [
+          {
+            falseValue: "Test!",
+            message: "invalid userName",
+          },
+          {
+            falseValue: "Teeeeeeeeeeeeeeeeeeeeeeeeeeeeeest!",
+            message: "userName must be 1-32 characters long",
+          },
+        ],
+        trueValue: "Test",
+      },
+      {
+        field: "passwordField",
+        errors: [
+          {
+            falseValue: "test",
+            message: "password must be at least 8 characters long",
+          },
+        ],
+        trueValue: "12345678",
+      },
+    ];
+    cy.visit("/login");
+    cy.get(`#passwordField`).type("a");
+    inputs.forEach((input) => {
+      input.errors.forEach((error) => {
+        cy.get(`#${input.field}`).type(error.falseValue);
+        cy.get("#loginButton").click();
+        cy.get(".errorInput").should("contain", error.message);
+        cy.get(`#${input.field}`).clear();
+      });
+      cy.get(`#${input.field}`).type(input.trueValue);
+    });
+    cy.get("#loginButton").click();
+    cy.get(".errorInput").should("not.exist");
+  });
+});
+
+describe("Change password", () => {
+  it("can send a request to change password", () => {
+    cy.server();
+    cy.route("POST", "**/api/v1/auth/getquestion", {
+      securityQuestion:
+        "What is the name, breed, and color of your favorite pet?",
+    }).as("getQuestion");
+    cy.route("POST", "**/api/v1/auth/validateanswer", {
+      resetToken: "423984732",
+    }).as("validateAnswer");
+    cy.route("PATCH", "**/api/v1/auth/passwordupdate", {
+      message: "Changed Password Sucsessfuly",
+    }).as("passwordUpdate");
+
+    cy.visit("/forgot");
+    cy.get("#userName").type("Amir");
+    cy.get("#nextButton").click();
+    cy.wait("@getQuestion");
+
+    cy.get("#answer").type("Dogeyyyyyy");
+    cy.get("#nextButton").click();
+    cy.wait("@validateAnswer");
+
+    cy.get("#newPassword").type("12345678");
+    cy.get("#confirmNewPassword").type("12345678");
+    cy.get("#nextButton").click();
+    cy.wait("@passwordUpdate");
+    cy.get('.swal2-confirm').click();
+    cy.url().should("equal", "http://localhost:3000/login");
+  });
+
+  it("can show errors", () => {
+    const pages = [
+      {
+        inputs: [
+          {
+            field: "userName",
+            errors: [
+              {
+                falseValue: "Teeeeeeeeeeeeeeeeeeeeeeeeeeeeeest",
+                message: "Please enter a valid username",
+              },
+              {
+                falseValue: "Test!",
+                message: "Please enter a valid username",
+              },
+            ],
+            trueValue: "Test",
+          },
+        ],
+      },
+      {
+        inputs: [
+          {
+            field: "answer",
+            errors: [
+              {
+                falseValue: "short",
+                message: "Answer should be longer",
+              },
+              {
+                falseValue: "longanswer!",
+                message: "Answer can not contain special characters",
+              },
+            ],
+            trueValue: "legal answer",
+          },
+        ],
+      },
+      {
+        inputs: [
+          {
+            field: "newPassword",
+            errors: [
+              {
+                falseValue: "short",
+                message: "password should be at least 8 characters",
+              },
+            ],
+            trueValue: "newPassword",
+          },
+          {
+            field: "confirmNewPassword",
+            errors: [
+              {
+                falseValue: "doNotMatch",
+                message: "passwords do not match",
+              },
+            ],
+            trueValue: "newPassword",
+          },
+        ],
+      },
+    ];
+    cy.server();
+    cy.route("POST", "**/api/v1/auth/getquestion", {
+      securityQuestion:
+        "What is the name, breed, and color of your favorite pet?",
+    }).as("getQuestion");
+    cy.route("POST", "**/api/v1/auth/validateanswer", {
+      resetToken: "423984732",
+    }).as("validateAnswer");
+    cy.route("PATCH", "**/api/v1/auth/passwordupdate", {
+      message: "Changed Password Sucsessfuly",
+    }).as("passwordUpdate");
+
+    cy.visit("/forgot");
+
+    pages.forEach((page) => {
+      page.inputs.forEach((input) => {
+        input.errors.forEach((error) => {
+          cy.get(`#${input.field}`).type(error.falseValue);
+          cy.get("#nextButton").click();
+          cy.get(".errorInputForgotPass").should("contain", error.message);
+          cy.get(`#${input.field}`).clear();
+        });
+        cy.get(`#${input.field}`).type(input.trueValue);
+      });
+      cy.get("#nextButton").click();
+    });
   });
 });

@@ -10,10 +10,10 @@ const mockUser = require("./mocks/users");
 
 describe("Register & Login Tests", () => {
   beforeAll(async () => {
-    await User.destroy({ truncate: true, force: true }); 
+    await User.destroy({ truncate: true, force: true });
     mockUser.user.password = await bcrypt.hash(mockUser.user.password, 10);
     await User.create(mockUser.user);
-   
+
   })
   afterAll(async () => {
     await server.close();
@@ -25,12 +25,12 @@ describe("Register & Login Tests", () => {
     //   .post("/api/v1/auth/register")
     //   .send(mockUser.reg);
     // expect(registerResponse.body.message).toBe("Email Invalid");
-    
+
     const regToken = jwt.sign(mockUser.reg, process.env.EMAIL_TOKEN_SECRET);
 
     const createUserResponse = await request(server)
       .post("/api/v1/auth/createuser")
-      .send({token: regToken});
+      .send({ token: regToken });
     expect(createUserResponse.status).toBe(201);
 
     const invalidRegisterResponse = await request(server)
@@ -46,16 +46,19 @@ describe("Register & Login Tests", () => {
 
     const invalidLoginResponse = await request(server)
       .post("/api/v1/auth/login")
-      .send({ userName: "supposed", password: "toFail", rememberMe: true});
+      .send({ userName: "supposed", password: "toFail123", rememberMe: true });
     expect(invalidLoginResponse.status).toBe(403);
 
     const loginResponse = await request(server)
       .post("/api/v1/auth/login")
       .send(mockUser.login);
+
     expect(loginResponse.status).toBe(200);
-    expect(loginResponse.headers['set-cookie'][0].slice(0, 11)).toBe('accessToken');
-    expect(loginResponse.headers['set-cookie'][1].slice(0, 12)).toBe('refreshToken');
-    const refreshTokenInDB = loginResponse.headers['set-cookie'][1].split('=')[1].split(';')[0];
+    expect(loginResponse.headers['set-cookie'][2].slice(0, 11)).toBe('accessToken');
+    expect(loginResponse.headers['set-cookie'][3].slice(0, 12)).toBe('refreshToken');
+
+
+    const refreshTokenInDB = loginResponse.headers['set-cookie'][3].split('=')[1].split(';')[0];
     const validRefreshTokenInDB = await RefreshToken.findOne({
       where: {
         token: refreshTokenInDB
@@ -69,7 +72,6 @@ describe("Register & Login Tests", () => {
     done();
   });
 
-
   test("User get new access token", async (done) => {
 
     const loginResponse = await request(server)
@@ -77,8 +79,8 @@ describe("Register & Login Tests", () => {
       .send(mockUser.login);
     expect(loginResponse.status).toBe(200);
 
-    const refreshToken = loginResponse.headers['set-cookie'][1].split('=')[1].split(';')[0];
-    const accessToken = loginResponse.headers['set-cookie'][0].split('=')[1].split(';')[0];
+    const refreshToken = loginResponse.headers['set-cookie'][3].split('=')[1].split(';')[0];
+    const accessToken = loginResponse.headers['set-cookie'][2].split('=')[1].split(';')[0];
 
     const validateToken = await request(server)
       .get("/api/v1/auth/validateToken")
@@ -103,12 +105,12 @@ describe("Register & Login Tests", () => {
 
     const userExist = await request(server)
       .post("/api/v1/auth/userexist")
-      .send({userName: mockUser.reg.userName});
+      .send({ userName: mockUser.reg.userName });
     expect(userExist.status).toBe(409);
 
     const userNotExist = await request(server)
       .post("/api/v1/auth/userexist")
-      .send({userName: "Alibaba"});
+      .send({ userName: "Alibaba" });
     expect(userNotExist.status).toBe(200);
 
     done();
@@ -122,7 +124,7 @@ describe("Register & Login Tests", () => {
       .send(mockUser.login);
     expect(loginResponse.status).toBe(200);
 
-    const refreshToken = loginResponse.headers['set-cookie'][1].split('=')[1].split(';')[0];
+    const refreshToken = loginResponse.headers['set-cookie'][3].split('=')[1].split(';')[0];
 
     const logOutResponse = await request(server)
       .post("/api/v1/auth/logout")

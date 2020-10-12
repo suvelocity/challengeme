@@ -183,8 +183,8 @@ export default function Login() {
                                                 {showPassword ? (
                                                     <Visibility />
                                                 ) : (
-                                                    <VisibilityOff />
-                                                )}
+                                                        <VisibilityOff />
+                                                    )}
                                             </IconButton>
                                             <LockIcon
                                                 style={{ opacity: "0.7" }}
@@ -211,20 +211,20 @@ export default function Login() {
                             {(error.userName ||
                                 error.password ||
                                 error.msg) && (
-                                <div className="containerErrorLogin">
-                                    <ErrorIcon
-                                        style={{
-                                            color: "white",
-                                            marginLeft: "4px",
-                                        }}
-                                    />
-                                    <div className="errorInput">
-                                        {error.userName ||
-                                            error.password ||
-                                            error.msg}
+                                    <div className="containerErrorLogin">
+                                        <ErrorIcon
+                                            style={{
+                                                color: "white",
+                                                marginLeft: "4px",
+                                            }}
+                                        />
+                                        <div className="errorInput">
+                                            {error.userName ||
+                                                error.password ||
+                                                error.msg}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
                             <Button
                                 type="submit"
                                 id="loginButton"

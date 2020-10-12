@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 export default function Forgot() {
     const classes = useStyles();
-    const [step, setStep] = useState(3);
+    const [step, setStep] = useState(1);
     const [error, setError] = useState("");
     const [userName, setUserName] = useState("");
     const [secQuestion, setSecQuestion] = useState("");
@@ -74,7 +74,7 @@ export default function Forgot() {
             userName.length > 32 ||
             /\W/.test(userName)
         ) {
-            setError("Please enter a valid username ");
+            setError("Please enter a valid username");
             return;
         }
         try {
@@ -84,7 +84,6 @@ export default function Forgot() {
                     userName,
                 }
             );
-            console.log(response);
             setSecQuestion(response.securityQuestion);
             setStep(2);
         } catch (e) {
@@ -204,6 +203,7 @@ export default function Forgot() {
                     )}
                     <div className="containerButtonsForgotPass">
                         <Button
+                            id='nextButton'
                             className={classes.nextButtonForgotPass}
                             variant="contained"
                             onClick={nextStep}
