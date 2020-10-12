@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/jest ",
-    "migrate": "node_modules/.bin/sequelize db:migrate"
+    "test": "node_modules/.bin/jest",
+    "test_liam": "NODE_ENV=test jest --detectOpenHandles",
+    "migrate": "node_modules/.bin/sequelize db:migrate",
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -23,18 +25,25 @@
     ]
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "axios": "^0.20.0",
+    "bcrypt": "^5.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jest": "^26.5.2",
     "mysql2": "^2.2.5",
+    "nodemon": "^2.0.4",
     "ngrok": "^3.3.0",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "jsonwebtoken": "^8.5.1",
+    "nodemailer": "^6.4.13",
+    "supertest": "^5.0.0"
   },
   "devDependencies": {
     "jest": "^26.5.2",
     "nock": "^13.0.4",
     "puppeteer": "^5.3.1",
     "sequelize-cli": "^6.2.0",
-    "supertest": "^5.0.0"
+    "supertest": "^4.0.2"
   }
 }

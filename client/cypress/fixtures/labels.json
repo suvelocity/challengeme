@@ -1,0 +1,59 @@
+
+[
+    {
+      "label": "React",
+      "value": 1
+    },
+    {
+      "label": "Node",
+      "value": 2
+    },
+    {
+      "label": "Express",
+      "value": 3
+    },
+    {
+      "label": "JavaScript",
+      "value": 4
+    },
+    {
+      "label": "HTML",
+      "value": 5
+    },
+    {
+      "label": "CSS",
+      "value": 6
+    },
+    {
+      "label": "TypeScript",
+      "value": 7
+    },
+    {
+      "label": "SQL",
+      "value": 8
+    },
+    {
+      "label": "ORM",
+      "value": 9
+    },
+    {
+      "label": "MongoDB",
+      "value": 10
+    },
+    {
+      "label": "Object-Oriented",
+      "value": 11
+    },
+    {
+      "label": "Secure Coding",
+      "value": 12
+    },
+    {
+      "label": "Git workflow",
+      "value": 13
+    },
+    {
+      "label": "Package management",
+      "value": 14
+    }
+  ]
