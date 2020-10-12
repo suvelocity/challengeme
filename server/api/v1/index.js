@@ -2,9 +2,6 @@ const { Router } = require("express");
 const checkToken = require("../../middleware/checkToken")
 const router = Router();
 
-const checkToken = require('../../middleware/checkToken');
-
-
 router.use("/auth", require("./auth"));
 
 router.use('/challenges', checkToken, require('./challenges'));

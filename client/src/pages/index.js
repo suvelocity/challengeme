@@ -15,7 +15,7 @@ import { AnimatePresence } from "framer-motion";
 
 import Home from './Home/Home'; // post- Shahar folder revolution
 import NewChallengeForm from '../components/NewChallenge/NewChallengeForm';
-import Header from '../components/header/Header'
+import Header from '../components/Header/Header'
 
 
 
