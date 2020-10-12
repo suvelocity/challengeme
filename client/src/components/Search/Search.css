@@ -1,38 +1,45 @@
 #searchResults{
-  margin-top: 10px;
-  transition: .7s;
+  margin-top: 14px;
+  transition: .3s;
   display: flex;
   flex-direction: column;
   /* align-items: center; */
-  height:80vh;
+  height:60vh;
   width:96vw;
   max-width: 400px;
-  left:1.2vw;
+  left:0;
   background-image:linear-gradient(to top, #555 ,#eaeaea);
   position:fixed;
   z-index:3;
-  overflow-y: scroll;
   background-color: #fff;;
-  border-left:10px solid #e2ccac;
-  border-bottom:10px solid #e2ccac;
+  border-left:5px solid #91816b;
+  border-bottom:10px solid #91816b;
   border-radius:  0 0 10px 15px;
 }
 #searchResults.closed{
-  transition: 1.2s;
+  transition: 0.2s;
   border-bottom:0px solid navy;
   border-radius:  0 0 50% 50%;
   height:0px;
   font-size:0;
-  /* width:1px;
-  left:50vw; */
-  /* visibility: hidden; */
 }
-#searchResults>.display{
+#searchResults .display{
   color:white;
   display: flex;
   flex-direction: column;
-  /* align-items: center; */
   position: relative;
+  overflow-y: scroll;
+}
+#seperator{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  min-height: 57px;
+  border-bottom: solid 2px rgba(0, 0, 0, 0.747);
+  background-image:linear-gradient(to top, #555 ,#eaeaea);
+}
+#seperator.closed{
+  display: none;
 }
 #no-results{
   align-self: center;
@@ -42,7 +49,6 @@
 }
 #searchResults::-webkit-scrollbar-track {
   width:10px;
-  /* background-color: red; */
 }
 #searchResults::-webkit-scrollbar-thumb {
   transition: .5s;
@@ -55,15 +61,14 @@
 }
 
 .searchClose{
-  /* position: absolute; */
-  right: 0px;
+  position: absolute;
+  right: 0;
   top: 0px;
   transition: .2s;
   cursor: pointer;
   width:fit-content;
   align-self: flex-end;
   color: rgba(255, 255, 255, .5);
-  /* background-color:blue; */
   background-color: rgba(180, 11, 11, .6);
   width: 1.5em;
   height: 1.5em;
@@ -80,14 +85,7 @@
   right:2.5px;
   color: rgb(255, 255, 255);
   background-color: rgba(212, 18, 18, 0.8);
-  /* width: 2em;
-  height: 2em; */
-  
-}
 
-#searchResults .filterMenu{
-  position:sticky;
-  top:10px;
 }
 
 #searchResults h3::before{
@@ -95,11 +93,11 @@
 }
 
 #searchResults .filters{
-  transition: 1s;
+  transition: 0.3s;
   max-width: 200px;
 }
 #searchResults .filters.open{
-  transition: 1s;
+  transition: 0.3s;
   max-width: 300px;
 }
 

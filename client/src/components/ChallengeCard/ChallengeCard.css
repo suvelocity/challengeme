@@ -1,9 +1,11 @@
 .dark  .challenge-card{
     color: white;
     background: #4B79A1;  /* fallback for old browsers */
+    box-shadow: 0px 2px 7px 2px black;
 }
 .challenge-card{
-    width:400px;
+    max-width:400px;
+    min-width: 250px;
     height: 250px;
     margin: 10px;
     position: relative;
@@ -11,6 +13,7 @@
     color: black;
     background-color:#D8DFE2;
     background: radial-gradient(circle, rgba(230,230,230,1) 0%, rgb(209, 202, 202) 100%);
+    box-shadow: 0px 2px 7px 2px #a79d9d;
 }
 
 .dark .challenge-card-description-homepage{
@@ -44,27 +47,37 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 5px;
-    padding-right: 4px;
+    padding-left: 15px;
+    padding-right: 12px;
+    padding-top: 9px;
+    padding-bottom: 9px;
 
 }
 
 .challenge-card-img-homepage{
     width: 100%;
-    height:150px;
+    height:137px;
 }
 .avatar-and-repo-name{
     display: flex;
     align-items: center;
-    font-size: 18px;
+    max-width: 300px;
     overflow-x: hidden;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+
 
 }
 .challenge-card-creator-homepage{
+    display: grid;
+    grid-template-columns: 60% 40%;
+    align-items: center;            
+}
+.labels-container{
+    padding-right: 10px;
     display: flex;
-    padding-bottom: 2px;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 .challenge-card-date-homepage{
@@ -76,17 +89,17 @@
 .dark .home-page-challenge-labels{
     color: white;
     background-color: #267EB5;
-    margin-right: 8px;
+    margin-right: 5px;
 }
 
 .home-page-challenge-labels{
-    font-size: 10px;
-    padding:5px;
+    font-size: 11px;
+    padding:8px;
     color: black;
     border: 1px solid black;
     border-radius: 8px;
     background-color: #EEDCB4;
-    margin-right: 8px;
+    margin-right: 5px;
 }
 
 
@@ -102,5 +115,17 @@
         margin-right: 15px;
         margin-left: 5px;
     }
+
+  }
+
+  @media only screen and (max-width: 400px) {
+  
+    .avatar-and-repo-name{
+        padding-left: 5px;
+    }
+    .home-page-challenge-labels{
+        padding:4px
+    }
+
 
   }

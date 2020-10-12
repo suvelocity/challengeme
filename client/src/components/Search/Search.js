@@ -163,13 +163,15 @@ const Search =() => {
     <div id='search' className={darkMode && 'dark'}> 
       {searchInput}
       <div id='searchResults' className={searching?'open':'closed'}>
+        <div id="seperator" className={searching?'open':'closed'}>
         <FilterMenu formerSelection={filters} updateFilters={setFilters} />
-        <div className='display'>
         <button className='searchClose' onClick={closeSearch}>X</button>
+        </div>
+        <div className='display'>
         {resultsList}
         </div>
       </div>
     </div>
   );
 }
-export default Search 
+export default Search
