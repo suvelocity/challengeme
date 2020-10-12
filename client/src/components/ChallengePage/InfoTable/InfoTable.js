@@ -79,7 +79,7 @@ export default function InfoTable({ challengeId }) {
         <SubmissionTab challengeId={challengeId} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {/* <ReviewTab challengeId={challengeId} /> */}
+        <ReviewTab challengeId={challengeId} />
       </TabPanel>
     </div>
   );
