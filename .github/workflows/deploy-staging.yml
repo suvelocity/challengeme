@@ -47,6 +47,7 @@ jobs:
           cd ../../var/www &&
           sudo git fetch --all &&
           sudo git checkout staging &&
+          sudo git stash &&
           sudo git pull origin staging &&
           cd ./server &&
           sudo npm ci &&
