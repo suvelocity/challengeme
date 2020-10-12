@@ -1,19 +1,22 @@
-module.exports = [
-    /* 
+const bcrypt = require('bcrypt')
+
+/* 
         these user are valid for registertion.
         if U want to add them directly to your DB -->
-            mockUser.password = await bcrypt.hash(mockUser.password, 10);
-            mockUser.securityAnswer = await bcrypt.hash(mockUser.securityAnswer, 10);
-            await User.create(mockUser); 
-    */
+        mockUser.password = await bcrypt.hash(mockUser.password, 10);
+        mockUser.securityAnswer = await bcrypt.hash(mockUser.securityAnswer, 10);
+        await User.create(mockUser); 
+*/
 
+module.exports = async () => {
+     return [
     {
-        first_name: "dekel",
-        last_name: "vaknin",
-        user_name: "dek",
+        firstName: "dekel",
+        lastName: "vaknin",
+        userName: "dekdekdek",
         email: "dek@gmail.com",
-        password: "blabla96",
-        birth_date: new Date('1996/04/01'),
+        password: await bcrypt.hash("blabla96", 10),
+        birthDate: new Date('1996/04/01'),
         country: "israel",
         city: "jerusalem",
         phone_number: "0546666666",
@@ -25,12 +28,12 @@ module.exports = [
         updated_at: new Date()
     },
     {
-        first_name: "roy",
-        last_name: "shnitzer",
-        user_name: "shnizel",
+        firstName: "roy",
+        lastName: "shnitzer",
+        userName: "shnizel123",
         email: "shnizel@gmail.com",
-        password: "shnizel1",
-        birth_date: new Date('1997/04/01'),
+        password: await bcrypt.hash("shnizel12", 10),
+        birthDate: new Date('1997/04/01'),
         country: "israel",
         city: "tuval",
         phone_number: "0546666668",
@@ -42,12 +45,12 @@ module.exports = [
         updated_at: new Date()
     },
     {
-        first_name: "david",
-        last_name: "boostrap",
-        user_name: "boosty",
+        firstName: "david",
+        lastName: "boostrap",
+        userName: "boosty123",
         email: "boosty@gmail.com",
-        password: "boosty0",
-        birth_date: new Date('1997/04/01'),
+        password: await bcrypt.hash("boosty012", 10),
+        birthDate: new Date('1997/04/01'),
         country: "gamadim",
         city: "gamzo",
         phone_number: "0546666667",
@@ -59,3 +62,4 @@ module.exports = [
         updated_at: new Date()
     }
 ]
+}

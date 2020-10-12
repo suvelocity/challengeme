@@ -8,6 +8,7 @@ module.exports = [
     */
 
     {
+        id:1,
         first_name: "dekel",
         last_name: "vaknin",
         user_name: "dekdekdek",
@@ -25,6 +26,7 @@ module.exports = [
         updated_at: new Date(),
     },
     {
+        id:2,
         first_name: "roy",
         last_name: "shnitzer",
         user_name: "shnizel123",
@@ -42,6 +44,7 @@ module.exports = [
         updated_at: new Date(),
     },
     {
+        id:3,
         first_name: "david",
         last_name: "boostrap",
         user_name: "boostyboo",

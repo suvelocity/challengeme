@@ -1,5 +1,9 @@
 import React from 'react';
-import {Line} from 'react-chartjs-2';
+import {Line, defaults} from 'react-chartjs-2';
+import './charts.css';
+defaults.global.maintainAspectRatio = false
+
+
 
 function ChartLine({data}){
     const state = {
@@ -7,21 +11,23 @@ function ChartLine({data}){
         datasets: data.rawData
       }
 
+
     return(
-      <div>
+      <div className="canvas-container">
         <Line
           data={state}
           options={{
             title:{
               display:true,
               text:data.title,
-              fontSize:20
+              fontSize:20        
             },
             legend:{
-              display:true,
+              display:false,
               backgroundColor: 'rgba(75,192,192,1)',
               position:'right'
-            }
+            },
+            responsive: true,
           }}
         />
       </div>

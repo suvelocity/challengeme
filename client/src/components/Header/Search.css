@@ -1,0 +1,30 @@
+#searchResults{
+    /* padding-top: 20px; */
+    transition: .65s;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+    height:90vh;
+    width:96vw;
+    left:1.2vw;
+    background-image:linear-gradient(to top, #555 ,#eaeaea);
+    position:fixed;
+    z-index:3;
+    overflow: hidden;
+    background-color: #fff;;
+  }
+  #searchResults>.display{
+    color:white;
+    display: flex;
+    flex-direction: column;
+    /* align-items: center; */
+  
+  }
+  #searchResults.closed{
+    border-radius:  0 0 50% 50%;
+    height:0px;
+    font-size:0;
+    /* width:1px;
+    left:50vw; */
+    /* visibility: hidden; */
+  }

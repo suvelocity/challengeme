@@ -28,6 +28,7 @@ router.get('/',searchFilters, async (req, res) => {
             return x.id == label  ;
           })
         })
+
       });
       res.json(filterChallenges);
     } else { // else dont filter

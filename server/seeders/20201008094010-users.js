@@ -1,5 +1,6 @@
 'use strict';
-const users = require('../_tests_/mocks/users');
+const users = require('./seedFiles/users');
+const bcrypt = require('bcrypt')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
