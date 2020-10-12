@@ -30,7 +30,7 @@ describe("redirect", () => {
   });
 });
 
-describe("Rgister Form Test", () => {
+describe("Register Form Test", () => {
   it("Can get all errors and submit register form", () => {
     const pages = [
       {
@@ -223,7 +223,6 @@ describe("Rgister Form Test", () => {
     cy.visit("/auth?token=djfhskdfhdskjf");
     cy.wait("@createUser");
     cy.url().should("equal", "http://localhost:3000/login");
-    // cy.get('.MuiCircularProgress-svg').should('exist');
   });
 });
 
@@ -311,7 +310,7 @@ describe("Change password", () => {
     cy.get("#confirmNewPassword").type("12345678");
     cy.get("#nextButton").click();
     cy.wait("@passwordUpdate");
-
+    cy.get('.swal2-confirm').click();
     cy.url().should("equal", "http://localhost:3000/login");
   });
 

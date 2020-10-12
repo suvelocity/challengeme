@@ -28,3 +28,9 @@ Cypress.Commands.add("login", () => {
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.commands.add('login', () => {
+  cy.server();
+  cy.route('/api/v1/auth/login', { login: true });
+  cy.visit('http://localhost:3000');
+});

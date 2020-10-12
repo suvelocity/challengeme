@@ -17,26 +17,10 @@ import "../../styles/Register.css";
 
 const useStyles = makeStyles((theme) => ({
     nextButton: {
-        // marginBottom: "10px",
-        // marginTop: "60px",
         background: "linear-gradient(45deg, #447CC6 30%, #315CAB 90%)",
         color: "white",
     },
 }));
-
-// const pageVariants = {
-//     initial: {
-//         opacity: 0,
-//     },
-//     in: {
-//         opacity: 1,
-//         transition: { duration: 0.5 },
-//     },
-//     out: {
-//         opacity: 0,
-//         transition: { duration: 0.5 },
-//     },
-// };
 
 function Register() {
     const classes = useStyles();
@@ -65,7 +49,6 @@ function Register() {
         const onlyLettersAndSpacesRegex = /^[a-zA-Z\s]*$/;
         const onlyLettersAndNumbersRegex = /^[a-zA-Z0-9]*$/;
         const phoneNumberRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
-        // const onlyNumbersRegex = /^[0-9]*$/;
         const noSpecialLetters = /[^a-zA-Z\d\s]/;
 
         let tempErrs = [];
@@ -367,6 +350,7 @@ function Register() {
                                         <Button onClick={prevStep}>Back</Button>
                                     )}
                                     <Button
+                                        id='nextButton'
                                         className={classes.nextButton}
                                         variant="contained"
                                         onClick={nextStep}
@@ -376,22 +360,22 @@ function Register() {
                                 </div>
                             </>
                         ) : (
-                            <div className="containerButtonsRegister">
-                                {step > 1 && (
-                                    <Button id="prevButton" onClick={prevStep}>
-                                        Back
-                                    </Button>
-                                )}
-                                <Button
-                                    id="nextButton"
-                                    className={classes.nextButton}
-                                    variant="contained"
-                                    onClick={nextStep}
-                                >
-                                    Back To Login Page
+                                <div className="containerButtonsRegister">
+                                    {step > 1 && (
+                                        <Button id="prevButton" onClick={prevStep}>
+                                            Back
+                                        </Button>
+                                    )}
+                                    <Button
+                                        id="nextButton"
+                                        className={classes.nextButton}
+                                        variant="contained"
+                                        onClick={nextStep}
+                                    >
+                                        Back To Login Page
                                 </Button>
-                            </div>
-                        )}
+                                </div>
+                            )}
 
                         <p>
                             Have an existing account?{" "}
