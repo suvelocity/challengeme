@@ -76,7 +76,7 @@ describe("Client Tests", () => {
 
     cy.route("**/unsolved-challenges", "fixture:usersFixtures/unsolvedChallenges.json").as("getUnsolvedChallenges");
     cy.route("**/user-success", "fixture:usersFixtures/userSuccess.json").as("getUserSuccess");
-    cy.route("**/sub-by-category", "fixture:usersFixtures/subByCategory.json").as("getSubByCategory");
+    cy.route("**/sub-by-type", "fixture:usersFixtures/subByCategory.json").as("getSubByCategory");
     cy.route("**/sub-by-date", "fixture:usersFixtures/subByDate.json").as("getSubByDate");
 
     cy.visit("http://localhost:3000/statistics/users");

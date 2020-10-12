@@ -2,12 +2,30 @@
   {
       "id": 1,
       "name": "teamA",
-      "Users": []
+      "Users": [
+          {
+              "userName": "matanGreenvald",
+              "Submissions": [
+                  {
+                      "teamSuccessSubmissions": 2
+                  }
+              ]
+          }
+      ]
   },
   {
       "id": 2,
       "name": "teamB",
-      "Users": []
+      "Users": [
+          {
+              "userName": "itayBrand",
+              "Submissions": [
+                  {
+                      "teamSuccessSubmissions": 1
+                  }
+              ]
+          }
+      ]
   },
   {
       "id": 3,

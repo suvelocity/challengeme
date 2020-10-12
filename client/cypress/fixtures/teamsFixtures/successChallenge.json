@@ -1,13 +1,13 @@
 [
     {
-        "challengeSuccesses": 3,
+        "challengeSuccesses": 1,
         "challengeId": 1,
         "Challenge": {
             "name": "JWT - Node.js"
         }
     },
     {
-        "challengeSuccesses": 3,
+        "challengeSuccesses": 1,
         "challengeId": 2,
         "Challenge": {
             "name": "React - Calculator"
