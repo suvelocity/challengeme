@@ -1,27 +1,16 @@
 'use strict';
 const users = require('./seedFiles/users');
 const newUsers = require('../_tests_/mocks/newUsersForAuth');
-const bcrypt = require("bcrypt");
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-      const hashed = await Promise.resolve(Promise.all(newUsers.map( async user => {
-        const securityAnswer = await bcrypt.hash(user.security_answer, 10);
-        const password = await bcrypt.hash(user.password, 10);
-        return {password, securityAnswer};
-      })))
       const updatedUsers = newUsers.map((user,i)=>{
-        user.securityAnswer = hashed[i].securityAnswer,
-        user.password=hashed[i].password
+        user.security_answer = '$2b$10$1aOEp802.PGhWtsBPWeSj.US5s5/5TjBEh6tBYzm74Gri/NtARIjS'
+        user.password='$2b$10$ex.YGM5a5/BqvlYEulf0hO7mCuM0tFgB8AqJDF0A8G6Dlra1LQ0Dq'
       return user
       })
-      
-      // users.forEach( async (user, i ) => {
-      //   user.security_answer = hashed[i].securityAnswer;
-      //   user.password = hashed[i].password;
-      // })
-    await queryInterface.bulkDelete('users',users,null);
-    await queryInterface.bulkInsert('users', newUsers);
+    await queryInterface.bulkDelete('users',null);
+    await queryInterface.bulkInsert('users', updatedUsers);
   },
   
   down: async (queryInterface, Sequelize) => {
