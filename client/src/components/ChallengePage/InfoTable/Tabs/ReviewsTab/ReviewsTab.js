@@ -7,10 +7,11 @@ function ReviewsTab({ challengeId }) {
   const [reviews, setReviews] = useState(null);
   useEffect(() => {
     const fetchReviews = async () => {
+      debugger
       const { data: reviewsArrayFromServer } = await network.get(
         `/api/v1/reviews/byChallenge/${challengeId}`
       );
-
+      debugger;
       const reviewsWithContent = reviewsArrayFromServer.filter(
         (review) => review.title && review.content
       );
