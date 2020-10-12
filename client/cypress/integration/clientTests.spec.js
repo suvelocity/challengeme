@@ -42,9 +42,10 @@ describe("Client Tests", () => {
       "#topChallenges > .MuiBottomNavigation-root > :nth-child(2)"
     ).click();
     cy.get(".chart > :nth-child(1) > .chartjs-render-monitor");
-    cy.get("#TopUsers > .chart > .chartjs-render-monitor");
+    cy.get("#TopUsers > .chart > .chartjs-render-monitor")
+
     cy.get(
-      "#TopUsers > .MuiBottomNavigation-root > :nth-child(2) > .MuiBottomNavigationAction-wrapper"
+      "#TopUsers > .MuiBottomNavigation-root > :nth-child(2)"
     ).click();
     cy.get("#TopUsers > .chart > :nth-child(1) > .chartjs-render-monitor");
     cy.get("#topTeams > .chart > .chartjs-render-monitor");
