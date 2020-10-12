@@ -6,8 +6,6 @@ const checkToken = require('./middleware/checkToken')
 
 const app = express()
 app.use(express.json( {limit: '50mb'}))
-const cors = require('cors');
-app.use(cors())
 
 // app.use('/api/v1/', checkToken ,require('./api/v1'))
 

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 // import Home from './Home'; // used by old versions
-import Header from '../components/Header/Header'
+import Header from '../components/header/Header'
 import ThemeApi from '../services/Theme'
 import Statistics from './Statistics';
 import { Logged } from "../context/LoggedInContext";
