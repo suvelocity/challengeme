@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import Header from '../components/Header/Header'
 import ThemeApi from '../services/Theme'
 import Statistics from './Statistics';
 import { Logged } from "../context/LoggedInContext";
@@ -15,6 +14,7 @@ import { AnimatePresence } from "framer-motion";
 
 import Home from './Home/Home'; // post- Shahar folder revolution
 import NewChallengeForm from '../components/NewChallenge/NewChallengeForm';
+import Header from '../components/header/Header'
 
 
 
