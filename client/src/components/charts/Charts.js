@@ -67,15 +67,15 @@ function Charts(props) {
             >
             {
             (props.chart.includes(0) && props.chart.length > 1 ) &&
-            <BottomNavigationAction label="Bar" icon={<EqualizerIcon />} />
+            <BottomNavigationAction label="Bar" icon={<EqualizerIcon />} id={props.name + "Bar"} />
             }
             {
             (props.chart.includes(1) && props.chart.length > 1 ) &&
-            <BottomNavigationAction label="Line" icon={<TimelineIcon />} />
+            <BottomNavigationAction label="Line" icon={<TimelineIcon />} id={props.name + "Line"} />
             }
             {
             (props.chart.includes(2) && props.chart.length > 1 && props.data.rawData.length === 1) &&
-            <BottomNavigationAction label="Pie" icon={<DonutSmallIcon/>} />
+            <BottomNavigationAction label="Pie" icon={<DonutSmallIcon/>} id={props.name + "Pie"} />
             }
         </BottomNavigation>
         }
