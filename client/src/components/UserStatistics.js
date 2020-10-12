@@ -13,6 +13,8 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import WorkIcon from '@material-ui/icons/Work';
 
+
+
 const useStyles = makeStyles((theme) => ({
   listRoot: {
     width: '100%',
@@ -35,9 +37,17 @@ const useStyles = makeStyles((theme) => ({
     height: "inherit",
     width: "inherit",
     gridTemplate: `
-    'header header ' 5vh
-      'headChart sideList ' 45vh 
-      'bottomChart bottomRightChart' 45vh`,
+    'header header' 45vh
+    'sideList sideList' 45vh
+    'headChart headChart' 45vh
+    'bottomChart bottomChart' 45vh
+    'bottomRightChart bottomRightChart' 45vh`,
+      '@media (min-width:1000px)' : {
+        gridTemplate: `
+        'header header ' 5vh
+        'headChart sideList ' 45vh 
+        'bottomChart bottomRightChart' 45vh`,
+      },
   },
    divLight: {
     textAlign: "center",

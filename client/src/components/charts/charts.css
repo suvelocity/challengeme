@@ -6,3 +6,7 @@
 .chart{
     height: auto !important;
 }
+
+.canvas-container{
+    height: 30vh;
+}
