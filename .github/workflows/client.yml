@@ -4,18 +4,21 @@ on:
     inputs:
       testRepo:
         description: 'Testing repository'
-        required: false
+        required: true
       solutionRepo:
         description: 'Solution repository'
-        required: false
+        required: true
       webhookUrl:
-        description: 'Location'
-        required: false
+        description: 'Webhook Url'
+        required: true
+      bearerToken:
+        description: 'Token for Access'
+        required: true
 
 
 
 jobs:
-  tests:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -58,6 +61,7 @@ jobs:
       with:
         method: 'PATCH'
         url: ${{ github.event.inputs.webhookUrl }}
+        bearerToken: ${{ github.event.inputs.bearerToken }}
         data:  '{ "success":true }'
     - name: onFailure
       if: ${{ failure() || cancelled() }}
@@ -65,6 +69,7 @@ jobs:
       with:
         method: 'PATCH'
         url: ${{ github.event.inputs.webhookUrl }}
+        bearerToken: ${{ github.event.inputs.bearerToken }}
         data:  '{ "success":false }'
 
         

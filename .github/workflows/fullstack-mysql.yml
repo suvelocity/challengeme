@@ -4,13 +4,16 @@ on:
     inputs:
       testRepo:
         description: 'Testing repository'
-        required: false
+        required: true
       solutionRepo:
         description: 'Solution repository'
-        required: false
+        required: true
       webhookUrl:
-        description: 'Location'
-        required: false
+        description: 'Webhook Url'
+        required: true
+      bearerToken:
+        description: 'Token for Access'
+        required: true
 
 jobs:
   build:
@@ -27,7 +30,7 @@ jobs:
     strategy:
       matrix:
         node-version: [10.x]
-    name: ${{ github.event.inputs.name }}
+    name: ${{ github.event.inputs.solutionRepo }}
     steps:
     - uses: actions/checkout@v2
     - name: Run challenge (Node.js ${{ matrix.node-version }})
@@ -76,6 +79,7 @@ jobs:
       with:
         method: 'PATCH'
         url: ${{ github.event.inputs.webhookUrl }}
+        bearerToken: ${{ github.event.inputs.bearerToken }}
         data:  '{ "success":true }'
     - name: onFailure
       if: ${{ failure() || cancelled() }}
@@ -83,4 +87,5 @@ jobs:
       with:
         method: 'PATCH'
         url: ${{ github.event.inputs.webhookUrl }}
+        bearerToken: ${{ github.event.inputs.bearerToken }}
         data:  '{ "success":false }'
