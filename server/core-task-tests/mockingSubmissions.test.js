@@ -3,8 +3,9 @@
  */
 const request = require('supertest');
 const app = require('../app');
-const {Submission, Challenge, User} = require('../models');
+const {Submission, Challenge, User, Review} = require('../models');
 const {challengeArr, solutionRepos, failRepos} = require('./mockData');
+const review = { commentContent : 'why you do this', commentTitle: 'annoying', rating: 3, userId: 1 }
 const nock = require('nock');
 let accessToken;
 const userToAdd = {
@@ -27,6 +28,7 @@ describe('Submission process', () => {
         await Challenge.destroy({ truncate: true, force: true });
         await Submission.destroy({ truncate: true, force: true });
         await User.destroy({ truncate: true, force: true });
+        await Review.destroy({ truncate: true, force: true });
         await Challenge.bulkCreate(challengeArr);
         await User.create({...userToAdd});
         await Submission.create({
@@ -65,7 +67,8 @@ describe('Submission process', () => {
             inputs: {              
               testRepo: testRepo,
               solutionRepo: solutionRepos[0].repo,
-              webhookUrl: webhookUrl
+              webhookUrl: webhookUrl,
+              bearerToken: accessToken
             }
         })
         .reply(200)
@@ -85,7 +88,8 @@ describe('Submission process', () => {
             inputs: {              
               testRepo: testRepo,
               solutionRepo: failRepos[0].repo,
-              webhookUrl: webhookUrl
+              webhookUrl: webhookUrl,
+              bearerToken: accessToken
             }
         })
         .reply(200)
@@ -104,18 +108,19 @@ describe('Submission process', () => {
             inputs: {              
               testRepo: testRepo,
               solutionRepo: solutionRepos[1].repo,
-              webhookUrl: webhookUrl
+              webhookUrl: webhookUrl,
+              bearerToken: accessToken
             }
         })
         .reply(200)
     
 
         await request(app).post(`/api/v1/challenges/${solutionRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
-        .send({solutionRepository:solutionRepos[0].repo});
+        .send({repository:solutionRepos[0].repo , ...review});
         await request(app).post(`/api/v1/challenges/${failRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
-        .send({solutionRepository:failRepos[0].repo});
+        .send({repository:failRepos[0].repo, ...review});
         await request(app).post(`/api/v1/challenges/${solutionRepos[1].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
-        .send({solutionRepository:solutionRepos[1].repo});
+        .send({repository:solutionRepos[1].repo, ...review});
         expect(githubPostmock1.isDone()).toEqual(true);
         expect(githubPostmock2.isDone()).toEqual(true);
         expect(githubPostmock3.isDone()).toEqual(true);
