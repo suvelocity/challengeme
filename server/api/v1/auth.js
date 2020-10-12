@@ -167,16 +167,19 @@ usersRouter.post("/logout", async (req, res) => {
   //Joi Validation
   const { error } = tokenValidation(req.body);
   if (error) {
+    console.log("Joi");
     return res.status(400).json({ success: false, message: "Refresh Token Required" })
   }
-  if (!req.body.token) return res.status(400).json({ message: "Refresh Token Required" });
+  // if (!req.body.token) {console.log("no token" );return res.status(400).json({ message: "Refresh Token Required" })};
   // check if token exist and delete it
   const result = await RefreshToken.destroy({
     where: {
       token: req.body.token,
     },
   });
+  console.log(result);
   if (!result) return res.status(400).json({ message: "Refresh Token is required" });
+  console.log("success");
   res.json({ message: "User Logged Out Successfully" });
 });
 

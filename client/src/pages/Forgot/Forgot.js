@@ -63,10 +63,6 @@ export default function Forgot() {
                 break;
         }
     };
-    const prevStep = () => {
-        if (step === 1) return;
-        setStep((prevStep) => prevStep - 1);
-    };
 
     const getQuestion = async (userName) => {
         if (
@@ -169,7 +165,7 @@ export default function Forgot() {
                 );
         }
     };
-    console.log(error);
+  
     return (
         <>
             <Background />

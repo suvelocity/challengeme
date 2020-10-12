@@ -22,7 +22,7 @@ function Security({
 }) {
     const classes = useStyles();
 
-    console.log(data);
+    
     return (
         <div className={classes.securityQTitle}>
             <span>{data.secQuestion}</span>
