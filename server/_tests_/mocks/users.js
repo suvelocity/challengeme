@@ -8,14 +8,14 @@ const bcrypt = require('bcrypt')
         await User.create(mockUser); 
 */
 
-module.exports = async () => {
-     return [
+module.exports = 
+     [
     {
         firstName: "dekel",
         lastName: "vaknin",
         userName: "dekdekdek",
         email: "dek@gmail.com",
-        password: await bcrypt.hash("blabla96", 10),
+        password: `$2b$10$w0sk1cmwwBBjQvr235FSfuFrto6nE9/89.wbk8j64EMYvjIaHfqxG`, // password: 'blabla96'
         birthDate: new Date('1996/04/01'),
         country: "israel",
         city: "jerusalem",
@@ -32,7 +32,7 @@ module.exports = async () => {
         lastName: "shnitzer",
         userName: "shnizel123",
         email: "shnizel@gmail.com",
-        password: await bcrypt.hash("shnizel12", 10),
+        password: `$2b$10$Fum1pybDxkg/weGCRmFAveI91lrYa8cCPVZhekXVAHxgCf1MPA8Lu`, //password: 'shnizel12'
         birthDate: new Date('1997/04/01'),
         country: "israel",
         city: "tuval",
@@ -49,7 +49,7 @@ module.exports = async () => {
         lastName: "boostrap",
         userName: "boosty123",
         email: "boosty@gmail.com",
-        password: await bcrypt.hash("boosty012", 10),
+        password: `$2b$10$1H44ZX3FBfs/HpcdSPjWFeaOXSmwT9ELceSTtIYKLDA9BkmGpWYWW`, //password: 'boosty012'
         birthDate: new Date('1997/04/01'),
         country: "gamadim",
         city: "gamzo",
@@ -62,4 +62,3 @@ module.exports = async () => {
         updated_at: new Date()
     }
 ]
-}
