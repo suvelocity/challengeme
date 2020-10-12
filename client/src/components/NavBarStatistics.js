@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
     position: "relative",
     marginTop: "3.4rem",
     zIndex: "1",
-    height: "100%",
+    height: "93%",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -123,7 +123,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   whitePaper: {
-    background: "#b28704",
+    background: "#ffe57f",
   },
   darkPaper: {
     background: "#78909c",
