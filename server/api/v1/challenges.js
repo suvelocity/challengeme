@@ -19,7 +19,8 @@ router.get('/',searchFilters, async (req, res) => {
           {
             model: Review,
             attributes: ['rating'],
-          },]
+          }
+          ,]
       });
       if(labels){ // if filter for labels
         const filterChallenges = allChallenges.filter((challenge)=>{

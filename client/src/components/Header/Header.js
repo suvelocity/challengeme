@@ -146,6 +146,7 @@ function Header() {
               </Link>
             </div>
           </Button>
+          </ NavLink> 
           <Tooltip title={Cookies.get("name")}>
             <Avatar
               aria-label='account of current user'
