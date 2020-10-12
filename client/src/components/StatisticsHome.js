@@ -25,10 +25,11 @@ const useStyles = makeStyles((theme) => ({
     width: "inherit",
     gridTemplate: `
     'header header' 5vh
-    'headChart headChart' 60vh 
-    'topChart topChart' 60vh 
-    'bottomChart bottomChart' 60vh`,
-    '@media (min-width:1000px)': {gridTemplate: `
+    'headChart headChart' 45vh 
+    'topChart topChart' 45vh 
+    'bottomChart bottomChart' 45vh / 1vw`,
+    '@media (min-width:1000px)': {
+      gridTemplate: `
       'header header' 5vh
       'headChart topChart' 45vh 
       'bottomChart bottomChart' 45vh`
@@ -183,8 +184,8 @@ function StatisticsHome() {
           >
             <Charts
               name="topChallenges"
-              width={"400px"}
-              height={"200px"}
+              width={"30vw"}
+              height={"33vh"}
               chart={[0, 2]}
               data={challengeData}
             />
@@ -201,8 +202,8 @@ function StatisticsHome() {
           >
             <Charts
               name="topUsers"
-              width={"450px"}
-              height={"70px"}
+              width={"30vw"}
+              height={"33vh"}
               chart={[0, 2]}
               data={userData}
             />
@@ -219,8 +220,8 @@ function StatisticsHome() {
           >
             <Charts
               name="topTeams"
-              width={"450px"}
-              height={"70px"}
+              width={"30vw"}
+              height={"33vh"}
               chart={[0, 2]}
               data={teamData}
             />

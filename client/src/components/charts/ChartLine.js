@@ -27,7 +27,7 @@ function ChartLine({data}){
               backgroundColor: 'rgba(75,192,192,1)',
               position:'right'
             },
-            
+            responsive: true,
           }}
         />
       </div>
