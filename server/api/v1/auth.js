@@ -102,7 +102,7 @@ usersRouter.post("/login", async (req, res) => {
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser)
     return res.status(403).json({ message: "User or Password are incorrect" });
-  const validPass = await bcrypt.compare(
+  const validPass = await bcrypt.compareSync(
     req.body.password,
     currentUser.password
   );
@@ -200,7 +200,7 @@ usersRouter.post("/validateanswer", async (req, res) => {
   }
   const currentUser = await userIsExist(req.body.userName);
   if (!currentUser) return res.status(403).json({ message: "Wrong Answer" });
-  const validAnswer = await bcrypt.compare(
+  const validAnswer = await bcrypt.compareSync(
     req.body.securityAnswer,
     currentUser.securityAnswer
   );
