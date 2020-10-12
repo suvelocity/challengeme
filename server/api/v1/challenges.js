@@ -1,7 +1,6 @@
 const { Router } = require('express');
 const axios = require('axios');
 const searchFilters = require('../../middleware/searchFilters');
-const fs = require("fs")
 
 const { Submission, Challenge, Label } = require('../../models');
 
@@ -128,21 +127,6 @@ router.post(`/`,async(req,res) => {
   } catch(err) {
     res.status(400).send('Bad request');
   }
-})
-
-// router Get - github/workflows
-router.get('/type', async (req,res) => {
-  try{
-    const files = fs.readdirSync('../.github/workflows');
-    let types = files.map(file =>
-      !file.includes("deploy")?
-      file.slice(0,-4)
-      :
-      null
-    )
-    types = types.filter(type => type!==null)
-    res.send(types)
-  }catch(e){res.send(e.message)}
 })
 
 //get all labels
