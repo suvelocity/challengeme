@@ -47,7 +47,7 @@ router.get('/', searchFilters, async (req, res) => {
       res.json(allChallenges);
     }
   } catch (error) {
-    res.send('an error has happened');
+    res.send(error.message);
   }
 });
 
