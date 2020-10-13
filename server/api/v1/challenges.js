@@ -1,21 +1,16 @@
-const { Router } = require('express');
-const axios = require('axios');
-const searchFilters = require('../../middleware/searchFilters');
-const fs = require('fs');
-const { Sequelize } = require('sequelize');
-
-const {
-  Submission,
-  User,
-  Challenge,
-  Label,
-  Review,
-} = require('../../models');
+const { Router } = require("express");
+const axios = require("axios");
+const searchFilters = require("../../middleware/searchFilters");
+const fs = require("fs");
+const { Sequelize } = require("sequelize");
 
 const router = Router();
 
+const { Submission, User, Challenge, Label, Review } = require("../../models");
+
 //get all challenges
-router.get('/', searchFilters, async (req, res) => {
+router.get("/", searchFilters, async (req, res) => {
+  // TODO: (shahar)  refactor this endpoint, leave that one clean to only expose All challenges, create 3 more endpoints (by name,by label...)
   const { condition, labels } = req;
   try {
     const allChallenges = await Challenge.findAll({
@@ -24,7 +19,7 @@ router.get('/', searchFilters, async (req, res) => {
         Label,
         {
           model: Review,
-          attributes: ['rating'],
+          attributes: ["rating"],
         },
       ],
     });
@@ -45,11 +40,12 @@ router.get('/', searchFilters, async (req, res) => {
       res.json(allChallenges);
     }
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(400).json({ message: error.message }); //
   }
 });
 
-router.get('/:challengeId/submissions', async (req, res) => {
+router.get("/:challengeId/submissions", async (req, res) => {
+  // TODO: include user
   try {
     const { challengeId } = req.params;
     const allSubmission = await Submission.findAll({ where: { challengeId } });
@@ -59,71 +55,7 @@ router.get('/:challengeId/submissions', async (req, res) => {
   }
 });
 
-//get repo details if its public
-
-router.get('/public_repo', async (req, res) => {
-  try {
-    const { data: repo } = await axios.get(
-      `https://api.github.com/repos/${req.query.repo_name}`,
-      {
-        headers: { Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}` },
-      }
-    );
-    if (!repo.private) {
-      res.json(repo);
-    } else {
-      res.status(401).send('Repo is private');
-    }
-  } catch (error) {
-    res.status(400).send('Repo does not exist');
-  }
-});
-
-
-// router Post - new challenge
-router.post(`/`, async (req, res) => {
-  try {
-    const newRepo = req.body.repositoryName;
-    const check = await Challenge.findOne({
-      where: {
-        repositoryName: newRepo,
-      },
-    });
-    if (check) {
-      return res.status(500).send('Repo is already in the system');
-    }
-    const newChallenge = await Challenge.create(req.body);
-    res.status(200).send(newChallenge);
-  } catch (err) {
-    res.status(400).send('Bad request');
-  }
-});
-
-// router Get - github/workflows
-router.get('/type', async (req, res) => {
-  try {
-    const files = fs.readdirSync('../.github/workflows');
-    let types = files.map((file) =>
-      !file.includes('deploy') ? file.slice(0, -4) : null
-    );
-    types = types.filter((type) => type !== null);
-    res.send(types);
-  } catch (e) {
-    res.send(e.message);
-  }
-});
-
-//get all labels
-router.get('/labels', async (req, res) => {
-  const allLabels = await Label.findAll();
-  res.json(
-    allLabels.map(({ id, name }) => {
-      return { label: name, value: id };
-    })
-  );
-});
-
-router.get('/:challengeId', async (req, res) => {
+router.get("/:challengeId", async (req, res) => {
   try {
     let challenge = await Challenge.findOne({
       where: { id: req.params.challengeId },
@@ -131,12 +63,12 @@ router.get('/:challengeId', async (req, res) => {
         // TODO: add a ORM query to add prop to the challenge with 'rating':3 .... pay attention to round the result to integer
         {
           model: Label,
-          attributes: ['name'],
+          attributes: ["name"],
         },
         {
           model: Review,
           attributes: [
-            [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
+            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"],
           ],
         },
       ],
@@ -148,9 +80,74 @@ router.get('/:challengeId', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-module.exports = router;
 
-router.post('/:challengeId/apply', async (req, res) => {
+//get repo details if its public
+
+router.get("/public_repo", async (req, res) => {
+  // TODO: relocate that endpoint to new route (maybe 'services')
+  try {
+    const { data: repo } = await axios.get(
+      `https://api.github.com/repos/${req.query.repo_name}`,
+      {
+        headers: { Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}` },
+      }
+    );
+    if (!repo.private) {
+      res.json(repo);
+    } else {
+      res.status(401).send("Repo is private");
+    }
+  } catch (error) {
+    res.status(400).send("Repo does not exist");
+  }
+});
+
+// router Post - new challenge
+router.post(`/`, async (req, res) => {
+  try {
+    const { repositoryName: newRepo } = req.body;
+    const repoExists = await Challenge.findOne({
+      where: {
+        repositoryName: newRepo,
+      },
+    });
+    if (repoExists) {
+      return res.status(500).send("Repo is already in the system"); //TODO: 500?
+    }
+    const newChallenge = await Challenge.create(req.body);
+    res.status(200).send(newChallenge); // TODO: status and json request
+  } catch (err) {
+    res.status(400).send("Bad request"); // TODO: make proper error response
+  }
+});
+
+// router Get - github/workflows
+router.get("/type", async (req, res) => {
+  // TODO:  thats probably doesn't belongs here... relocate that
+  try {
+    const files = fs.readdirSync("../.github/workflows");
+    let types = files.map((file) =>
+      !file.includes("deploy") ? file.slice(0, -4) : null
+    );
+    types = types.filter((type) => type !== null);
+    res.send(types);
+  } catch (e) {
+    res.send(e.message);
+  }
+});
+
+// get all label
+router.get("/labels", async (req, res) => {
+  // TODO:  reloacte to label route
+  const allLabels = await Label.findAll();
+  res.json(
+    allLabels.map(({ id, name }) => {
+      return { label: name, value: id };
+    })
+  );
+});
+
+router.post("/:challengeId/apply", async (req, res) => {
   const challengeId = req.params.challengeId;
   const { commentContent, commentTitle, rating, userId } = req.body;
   const solutionRepository = req.body.repository;
@@ -172,31 +169,31 @@ router.post('/:challengeId/apply', async (req, res) => {
     submission = await Submission.create({
       challengeId,
       userId: req.body.userId,
-      state: 'PENDING',
+      state: "PENDING",
       solutionRepository,
     });
-  } else if (submission.state === 'PENDING') {
-    return res.json({ error: 'already exist' });
+  } else if (submission.state === "PENDING") {
+    return res.json({ error: "already exist" });
   }
 
-  if (submission.state === 'SUCCESS') {
-    return res.json({ error: 'already success' });
+  if (submission.state === "SUCCESS") {
+    return res.json({ error: "already success" });
   }
 
-  if (submission.state === 'FAIL') {
-    await submission.update({ state: 'PENDING' });
+  if (submission.state === "FAIL") {
+    await submission.update({ state: "PENDING" });
   }
   try {
     const urltoSet = process.env.MY_URL.concat(
       `/api/v1/webhook/submission/${submission.id}`
     );
-    const bearerToken = req.headers.authorization || 'bearer bananaSplit';
+    const bearerToken = req.headers.authorization || "bearer bananaSplit";
     const pureToken =
-      bearerToken.indexOf(' ') !== -1 ? bearerToken.split(' ')[1] : bearerToken;
+      bearerToken.indexOf(" ") !== -1 ? bearerToken.split(" ")[1] : bearerToken;
     const { status } = await axios.post(
       `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
       {
-        ref: 'master',
+        ref: "master", //set ref as variable to knoe in which branch
         inputs: {
           testRepo: challenge.repositoryName,
           solutionRepo: solutionRepository,
@@ -206,7 +203,7 @@ router.post('/:challengeId/apply', async (req, res) => {
       },
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
         },
       }
@@ -214,7 +211,9 @@ router.post('/:challengeId/apply', async (req, res) => {
 
     res.json({ status });
   } catch (e) {
-    console.log('aaaa', e.message);
+    console.log("aaaa", e.message);
     res.json({ status: 500, error: e });
   }
 });
+
+module.exports = router;
