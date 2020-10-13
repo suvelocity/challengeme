@@ -19,10 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       field :"challenge_id",
       type:DataTypes.INTEGER
     } ,
-    img: DataTypes.BLOB
+    img: DataTypes.TEXT("long")
   }, {
     sequelize,
     modelName: 'Image',
+    tableName: 'images',
     paranoid: true
   });
   return Image;

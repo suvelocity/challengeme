@@ -3,12 +3,12 @@ const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const router = Router();
 
-const { Submission, Teams, User, Challenge } = require("../../../models");
+const { Submission, Team, User, Challenge } = require("../../../models");
 
 // returns the 5 teams with the most successfull submissions
 router.get("/top", async (req, res) => {
   try {
-    const topTeams = await Teams.findAll({
+    const topTeams = await Team.findAll({
       group: ["id"],
       attributes: ["id", "name"],
       include: [
@@ -47,7 +47,7 @@ router.get("/top", async (req, res) => {
 
 async function getTeamUsersIds(userId){
   //returns the logged user team
-  const userTeam = await Teams.findOne({
+  const userTeam = await Team.findOne({
     attributes:[
       "id", "name"
     ],
@@ -66,7 +66,7 @@ async function getTeamUsersIds(userId){
   });
 
   // get team users 
-  const currentTeamUsers = await Teams.findOne({
+  const currentTeamUsers = await Team.findOne({
     where: {
       id: userTeam.id,
     },

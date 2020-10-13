@@ -5,17 +5,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       
       this.belongsTo(models.User, {
-        foreignKey: "author",
+        foreignKey: "authorId",
       })
       this.hasMany(models.Submission, {
-        foreignKey: "challenge_id",
+        foreignKey: "challengeId",
       });
       this.hasMany(models.Review, {
         foreignKey: 'challengeId'
       });
       this.belongsToMany(models.Label,{
-        through: 'labels_to_challenges',
-        foreignKey: 'challenge_id'
+        through: 'LabelChallenge',
+        foreignKey: 'challengeId'
       });
     }
   }
@@ -26,8 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       type: DataTypes.STRING,
       repositoryName: DataTypes.STRING,
-      cover: DataTypes.STRING,
-      author: DataTypes.STRING
+      authorId: DataTypes.STRING
     },
     {
       sequelize,

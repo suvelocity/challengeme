@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { labelsToChallenge } = require('../../models');
+const { LabelChallenge } = require('../../models');
 const router = Router();
 
 /*
@@ -9,9 +9,9 @@ const router = Router();
 router.post('/', async (req, res) => { // /api/v1/labels
   let challenge = req.body.challengeId;
   let labels = req.body.labels;
-  if(labels.length > 0) {
+  if (labels.length > 0) {
     try {
-      await labelsToChallenge.bulkCreate(
+      await LabelChallenge.bulkCreate(
         labels.map(label => (
           {
             labelId: label,
@@ -20,7 +20,7 @@ router.post('/', async (req, res) => { // /api/v1/labels
         ))
       );
       res.status(200).send('Success');
-    } catch(error) { 
+    } catch (error) {
       res.status(400).send('Bad request');
     }
   } else {

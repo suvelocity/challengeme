@@ -4,13 +4,11 @@ const searchFilters = require('../../middleware/searchFilters');
 const fs = require('fs');
 const { Sequelize } = require('sequelize');
 
-// const { Submission, Challenge, Label } = require('../../models');
 const {
   Submission,
   User,
   Challenge,
   Label,
-  labels_to_challenge,
   Review,
 } = require('../../models');
 

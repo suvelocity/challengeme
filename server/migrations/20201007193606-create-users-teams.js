@@ -29,6 +29,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('UsersTeams');
+    await queryInterface.dropTable('users_teams');
   }
 };

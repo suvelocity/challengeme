@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Submission, {
         foreignKey: "userId",
       });
-      this.belongsToMany(models.Teams, { through: 'UsersTeams', foreignKey: 'userId' });
+      this.belongsToMany(models.Team, { through: 'UserTeam', foreignKey: 'userId' });
       this.hasMany(models.Review, {
         foreignKey: 'challengeId'
       })
@@ -20,8 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "userName",
       });
       this.hasMany(models.Challenge, {
-        foreignKey: "author",
-        sourceKey: "id"
+        foreignKey: "authorId"
       });
     }
   }
@@ -44,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "User",
+      tableName: "users",
       paranoid: true,
     }
   );

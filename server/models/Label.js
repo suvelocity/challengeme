@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsToMany(models.Challenge,{
-        through: 'labels_to_challenges',
-        foreignKey: 'label_id'
+        through: 'LabelChallenge',
+        foreignKey: 'labelId'
       });
     }
   };
