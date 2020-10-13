@@ -123,7 +123,7 @@ export default function ChallengePage() {
           >
             <Button
               color='primary'
-              href={`https://github.com/suvelocity/${challenge.boilerPlate}`}
+              href={`https://github.com/${challenge.boilerPlate}`}
             >
               Fork boiler plate
             </Button>
