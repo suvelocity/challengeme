@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Submission extends Model {
     static associate(models) {
       this.belongsTo(models.Challenge, {
-        foreignKey: "challengeIid",
+        foreignKey: "challengeId",
       });
 
       this.belongsTo(models.User, {
