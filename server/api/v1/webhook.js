@@ -1,5 +1,5 @@
-const { Router } = require('express');
-const { Submission } = require('../../models');
+const { Router } = require("express");
+const { Submission } = require("../../models");
 const router = Router();
 
 /* {
@@ -7,15 +7,13 @@ const router = Router();
     success: false // true or false
 } */
 
-router.patch('/submission/:id', async (req, res) => {
-    const { success } = req.body;
-    const headers = req.headers;
-    console.log(headers);
-    let submission = await Submission.findByPk(req.params.id);
-      await submission.update({ state: success ? 'SUCCESS' : 'FAIL' })
-      res.json(submission);
-})
-
-
+router.patch("/submission/:id", async (req, res) => {
+  const { success } = req.body;
+  const headers = req.headers;
+  console.log(headers);
+  let submission = await Submission.findByPk(req.params.id);
+  await submission.update({ state: success ? "SUCCESS" : "FAIL" });
+  res.json(submission);
+});
 
 module.exports = router;

@@ -7,7 +7,7 @@ function ReviewsTab({ challengeId }) {
   const [reviews, setReviews] = useState(null);
   useEffect(() => {
     const fetchReviews = async () => {
-      debugger
+      debugger;
       const { data: reviewsArrayFromServer } = await network.get(
         `/api/v1/reviews/byChallenge/${challengeId}`
       );
@@ -16,7 +16,6 @@ function ReviewsTab({ challengeId }) {
         (review) => review.title && review.content
       );
       setReviews(reviewsWithContent);
-
     };
     fetchReviews();
     const liveReviews = setInterval(fetchReviews, 5000);
@@ -33,6 +32,7 @@ function ReviewsTab({ challengeId }) {
       } = review;
       return (
         <Review
+          key={index}
           author={userName}
           createdAt={createdAt}
           title={title}
