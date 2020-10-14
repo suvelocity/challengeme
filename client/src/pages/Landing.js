@@ -97,7 +97,7 @@ export default function Landing() {
                         register
                     </Button>
                 </div>
-                <div class="wave"></div>
+                <div className="wave"></div>
             </motion.div>
         </>
     );

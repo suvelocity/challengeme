@@ -20,7 +20,6 @@ function SubmissionTab({ challengeId }) {
     const liveSubmissions = setInterval(fetchSubmissions, 7000);
     return () => clearInterval(liveSubmissions);
   }, [challengeId]);
-  console.log({ submissions });
   return (
     <div>
       <Submission
