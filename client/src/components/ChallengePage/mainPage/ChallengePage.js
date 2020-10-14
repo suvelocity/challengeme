@@ -27,7 +27,6 @@ export default function ChallengePage() {
   const [blobedImg, setBlobedImg] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [darkModeIsOn, setDarkModeIsOn] = useState(false);
- 
   console.log(challenge)
   useEffect(() => {
     const setImg = async () => {
@@ -99,7 +98,7 @@ export default function ChallengePage() {
             <h2 className={darkModeIsOn ? 'dark-h2' : 'light-h2'}>Labels:</h2>
             <span className='challenge-label'>
               {challenge['Labels'].map((label) => (
-                <Link to={`/?labelId=${label['labels_to_challenges']['label_id']}`}>
+                <Link to={`/?labelId=${label['LabelChallenge']['LabelId']}`}>
                   {console.log(label)}
                   <Chip color='primary' label={label.name} component='a' />
                 </Link>
