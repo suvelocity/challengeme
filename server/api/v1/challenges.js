@@ -1,7 +1,6 @@
 const { Router } = require("express");
 const axios = require("axios");
 const searchFilters = require("../../middleware/searchFilters");
-const fs = require("fs");
 const { Sequelize } = require("sequelize");
 
 const router = Router();
@@ -10,7 +9,6 @@ const { Submission, User, Challenge, Label, Review } = require("../../models");
 
 //get all challenges
 router.get("/", searchFilters, async (req, res) => {
-  // TODO: (shahar)  refactor this endpoint, leave that one clean to only expose All challenges, create 3 more endpoints (by name,by label...)
   const { condition, labels } = req;
   try {
     const allChallenges = await Challenge.findAll({
@@ -40,7 +38,7 @@ router.get("/", searchFilters, async (req, res) => {
       res.json(allChallenges);
     }
   } catch (error) {
-    res.status(400).json({ message: error.message }); //
+    res.status(400).json({ message: "can't get all challenges" }); //
   }
 });
 
@@ -48,57 +46,15 @@ router.get("/:challengeId/submissions", async (req, res) => {
   // TODO: include user
   try {
     const { challengeId } = req.params;
-    const allSubmission = await Submission.findAll({ where: { challengeId } });
+    const allSubmission = await Submission.findAll(
+      {
+        where: {
+          challengeId
+        }
+      });
     res.json(allSubmission);
   } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-});
-
-router.get("/:challengeId", async (req, res) => {
-  try {
-    let challenge = await Challenge.findOne({
-      where: { id: req.params.challengeId },
-      include: [
-        // TODO: add a ORM query to add prop to the challenge with 'rating':3 .... pay attention to round the result to integer
-        {
-          model: Label,
-          attributes: ["name"],
-        },
-        {
-          model: Review,
-          attributes: [
-            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"],
-          ],
-        },
-      ],
-    });
-
-    const author = await challenge.getUser();
-    res.json({ challenge, author });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-//get repo details if its public
-
-router.get("/public_repo", async (req, res) => {
-  // TODO: relocate that endpoint to new route (maybe 'services')
-  try {
-    const { data: repo } = await axios.get(
-      `https://api.github.com/repos/${req.query.repo_name}`,
-      {
-        headers: { Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}` },
-      }
-    );
-    if (!repo.private) {
-      res.json(repo);
-    } else {
-      res.status(401).send("Repo is private");
-    }
-  } catch (error) {
-    res.status(400).send("Repo does not exist");
+    res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
 
@@ -112,75 +68,22 @@ router.post(`/`, async (req, res) => {
       },
     });
     if (repoExists) {
-      return res.status(500).send("Repo is already in the system"); //TODO: 500?
+      return res.status(409).json({ message: "Repo is already in the system" });
     }
     const newChallenge = await Challenge.create(req.body);
-    res.status(200).send(newChallenge); // TODO: status and json request
+    res.json(newChallenge);
   } catch (err) {
-    res.status(400).send("Bad request"); // TODO: make proper error response
+    res.status(400).json({ message: "Cannot process request" });
   }
 });
-
-// router Get - github/workflows
-router.get("/type", async (req, res) => {
-  // TODO:  thats probably doesn't belongs here... relocate that
-  try {
-    const files = fs.readdirSync("../.github/workflows");
-    let types = files.map((file) =>
-      !file.includes("deploy") ? file.slice(0, -4) : null
-    );
-    types = types.filter((type) => type !== null);
-    res.send(types);
-  } catch (e) {
-    res.send(e.message);
-  }
-});
-
-// get all label
-router.get("/labels", async (req, res) => {
-  // TODO:  reloacte to label route
-  const allLabels = await Label.findAll();
-  res.json(
-    allLabels.map(({ id, name }) => {
-      return { label: name, value: id };
-    })
-  );
-});
-
-router.get('/:challengeId', async (req, res) => {
-  try {
-    let challenge = await Challenge.findOne({
-      where: { id: req.params.challengeId },
-      include: [
-        // TODO: add a ORM query to add prop to the challenge with 'rating':3 .... pay attention to round the result to integer
-        {
-          model: Label,
-          attributes: ['name'],
-        },
-        {
-          model: Review,
-          attributes: [
-            [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
-          ],
-        },
-      ],
-    });
-
-    const author = await challenge.getUser();
-    res.json({ challenge, author });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
 
 router.post('/:challengeId/apply', async (req, res) => {
   const challengeId = req.params.challengeId;
-  const { commentContent, commentTitle, rating, userId } = req.body;
+  const { commentContent, commentTitle, rating, } = req.body;
   const solutionRepository = req.body.repository;
   // adding review
   await Review.create({
-    userId,
+    userId: req.user.userId,
     challengeId,
     title: commentTitle,
     content: commentContent,
@@ -216,9 +119,9 @@ router.post('/:challengeId/apply', async (req, res) => {
     );
     const bearerToken = req.headers.authorization || 'bearer myToken';
     const pureToken =
-    bearerToken.indexOf(' ') !== -1 ? bearerToken.split(' ')[1] : bearerToken;
+      bearerToken.indexOf(' ') !== -1 ? bearerToken.split(' ')[1] : bearerToken;
     const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || 'master'; // In case somehow the process env branches are not set.
-    console.log('CHALLENGE TYPE !!!!!' , challenge.repositoryName, challenge.type)
+    console.log('CHALLENGE TYPE !!!!!', challenge.repositoryName, challenge.type)
     const { status } = await axios.post(
       `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
       {
@@ -239,9 +142,33 @@ router.post('/:challengeId/apply', async (req, res) => {
     );
 
     res.json({ status });
-  } catch (e) {
-    console.log('aaaa', e.message);
-    res.status(500).json({  error: e });
+  } catch {
+    res.status(400).json({ message: "Cannot process request" });
+  }
+});
+
+router.get("/:challengeId", async (req, res) => {
+  try {
+    let challenge = await Challenge.findOne({
+      where: { id: req.params.challengeId },
+      include: [
+        // TODO: add a ORM query to add prop to the challenge with 'rating':3 .... pay attention to round the result to integer
+        {
+          model: Label,
+          attributes: ["name"],
+        },
+        {
+          model: Review,
+          attributes: [
+            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"],
+          ],
+        },
+      ],
+    });
+    const author = await challenge.getUser();
+    res.json({ challenge, author });
+  } catch (error) {
+    res.status(400).json({ message: "Cannot process request" });
   }
 });
 

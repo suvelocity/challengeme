@@ -8,7 +8,7 @@ describe("Home page Tests", () => {
       cy.setCookie("name","shahar")
       cy.route("GET", "**/api/v1/auth/validateToken", { valid : true })    
       cy.route("**/api/v1/challenges", "fixture:challenges.json");
-      cy.route("**/api/v1/challenges/labels", "fixture:labels.json");
+      cy.route("**/api/v1/labels", "fixture:labels.json");
       cy.route("**/api/v1/challenges?labels=", "fixture:labelsToChallenges.json");
       cy.route("**/api/v1/image?id=7", "fixture:image7.json");
       cy.visit('http://localhost:3000');
@@ -39,7 +39,7 @@ describe("Home page Tests", () => {
       cy.setCookie("name","shahar")
       cy.route("GET", "**/api/v1/auth/validateToken", { valid : true })    
       cy.route("**/api/v1/challenges", "fixture:challenges.json");
-      cy.route("**/api/v1/challenges/labels", "fixture:labels.json");
+      cy.route("**/api/v1/labels", "fixture:labels.json");
       cy.route("**/api/v1/challenges?labels=", "fixture:labelsToChallenges.json");
       cy.route("**/api/v1/image?id=7", "fixture:image7.json");
       cy.visit("http://localhost:3000");
@@ -53,7 +53,7 @@ describe("Home page Tests", () => {
       cy.setCookie("name","shahar")
       cy.route("GET", "**/api/v1/auth/validateToken", { valid : true })    
       cy.route("**/api/v1/challenges", "fixture:challenges.json");
-      cy.route("**/api/v1/challenges/labels", "fixture:labels.json");
+      cy.route("**/api/v1/labels", "fixture:labels.json");
       cy.route("**/api/v1/challenges?labels=", "fixture:labelsToChallenges.json");
       cy.route("**/api/v1/challenges?labels=1", "fixture:filteredChallenges.json");
       cy.route("**/api/v1/image?id=7", "fixture:image7.json");

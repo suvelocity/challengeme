@@ -64,7 +64,7 @@ export default function NewChallengeForm() {
     else{
       try {
         if(repoLink.length > 2 && !repoLink.match(spaces) && !repoLink.match(hebrew)) {
-          await network.get(`/api/v1/challenges/public_repo?repo_name=${repoLink}`);
+          await network.get(`/api/v1/services/public_repo?repo_name=${repoLink}`);
         } else {
           throw new Error();
         }
@@ -74,7 +74,7 @@ export default function NewChallengeForm() {
       }
       try {
         if(repoBoiler.length > 2 && !repoBoiler.match(spaces) && !repoBoiler.match(hebrew)) {
-          await network.get(`/api/v1/challenges/public_repo?repo_name=${repoBoiler}`);
+          await network.get(`/api/v1/services/public_repo?repo_name=${repoBoiler}`);
         } else {
           throw new Error();
         }

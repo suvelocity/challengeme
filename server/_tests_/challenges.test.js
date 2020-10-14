@@ -75,7 +75,7 @@ describe('testing challenges endpoints', () => {
 
   it('Can get all labels', async (done) => {
     await Label.bulkCreate(labelsMock);
-    const { body } = await request(app).get('/api/v1/challenges/labels')
+    const { body } = await request(app).get('/api/v1/labels')
     .set('authorization', `bearer ${generateToken(userMock)}`);
     console.log('All labels:', body);
     expect(body.length).toBe(11);

@@ -50,9 +50,7 @@ export default function HomePage() {
         else{
           const { data: challengesFromServer } = await network.get(
           '/api/v1/challenges?'+ getFilters())
-          console.log(challengesFromServer)
           typeof challengesFromServer === "object" &&
-          console.log(challengesFromServer);
           setChallenges(challengesFromServer)          
         }
       }catch(e){}

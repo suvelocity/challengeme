@@ -6,7 +6,7 @@ describe("Search Tests", () => {
         cy.setCookie("name","shahar")
         cy.route("GET", "**/api/v1/auth/validateToken", { valid : true })  
         cy.route("**/api/v1/challenges?challengeName=react&labels=1", "fixture:search.json");
-        cy.route("**/api/v1/challenges/labels", "fixture:labels.json");
+        cy.route("**/api/v1/labels", "fixture:labels.json");
         cy.route("**/api/v1/challenges?labels=", "fixture:labelsToChallenges.json");
         cy.visit("http://localhost:3000");
         cy.get('#searchResults').should('have.class','closed');

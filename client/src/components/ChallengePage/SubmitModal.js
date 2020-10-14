@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, TextField, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Cookies from 'js-cookie';
 import { Rating } from '@material-ui/lab';
 import { useForm } from 'react-hook-form';
 import network from '../../services/network';
@@ -37,20 +36,15 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
 
   const submitForm = async (data) => {
     // VIEW SUBMITTED SUCCESSFULLY/FAILED TO SUBMITT MESSAGE and close modal
-    const formData = {
-      ...data,
-      userId: Cookies.get('userId'),
-    };
     try {
       const res = await network.post(
         `/api/v1/challenges/${challengeParamId}/apply`,
-        formData
+        data
       );
       console.log(res);
     } catch (error) {
       console.error(error);
     }
-    console.log(formData);
     handleClose();
     setUserRating('0');
   };

@@ -72,7 +72,8 @@ export default function ChallengeCard({
         setCoverImg(coverImage ? coverImage.img : '')
         setLoading(false)
         try{
-          const { data: repo } = await network.get(`/api/v1/challenges/public_repo?repo_name=${repositoryName}`)
+          const { data: repo } = await network.get(`/api/v1/services/public_repo?repo_name=${repositoryName}`)
+          console.log(repo);
           const updateDate = repo.updated_at
           getUpdated(updateDate)
         }catch(e){

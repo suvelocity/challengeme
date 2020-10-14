@@ -43,7 +43,7 @@ usersRouter.post("/register", async (req, res) => {
   community! To start challenging your friends and undertake challenges
   yourself, click on the buttom bellow.
 </p>
-<form action="${process.env.IP_ADRESS}/auth">
+<form action="${process.env.IP_ADDRESS}/auth">
 <input name="token" value="${mailedToken}" type="hidden">
   <button style="width: 200px; background-color: purple; color: white;">GET SHWIFFTY</button>
 </form>`, (err, info) => {

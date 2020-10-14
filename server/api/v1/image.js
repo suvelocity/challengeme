@@ -2,7 +2,7 @@ const { Router } = require('express');
 const { Image } = require('../../models');
 const router = Router();
 
-router.get('/', async (req, res) => { // /api/v1/image?id=
+router.get('/', async (req, res) => { 
     let challengeId = req.query.id ;
     try{
         const image = await Image.findOne({
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => { // /api/v1/image?id=
 });
 
 
-router.post('/', async (req, res) => { // /api/v1/image
+router.post('/', async (req, res) => { 
     let image = req.body ;
     try {
         const checkIfExists = await Image.findOne({
