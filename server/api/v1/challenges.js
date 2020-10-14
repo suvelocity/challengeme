@@ -14,10 +14,13 @@ router.get("/", searchFilters, async (req, res) => {
     const allChallenges = await Challenge.findAll({
       where: condition,
       include: [
-        Label,
+        {
+          model:Label,
+          attributes:["id","name"]
+        },
         {
           model: Review,
-          attributes: ["rating"],
+          attributes: ["rating"], // TODO: add here sequelize function to agreagate and savarage the rating and tound to mispar shalem
         },
         {
           model: User,
