@@ -3,10 +3,37 @@ module.exports = [
         userId: 1,
         challengeId: 1,
         title: "My First Review",
-        content: 'I liked this challenge alot!',
-        rating: 5,
+        content: 'dsfdsfI liked this challenge alot!',
+        rating: 1,
         createdAt: "2020-10-01 20:00:00",
         updatedAt: "2020-10-01 20:00:00"
+    },
+    {
+        userId: 1,
+        challengeId: 2,
+        title: "My Second Review",
+        content: 'Very hard challenge, but good practice...',
+        rating: 2,
+        createdAt: "2020-10-02 20:00:00",
+        updatedAt: "2020-10-02 20:00:00"
+    },
+    {
+        userId: 1,
+        challengeId: 2,
+        title: "My Second Review",
+        content: 'Very hard challenge, but good practice...',
+        rating: 3,
+        createdAt: "2020-10-02 20:00:00",
+        updatedAt: "2020-10-02 20:00:00"
+    },
+    {
+        userId: 1,
+        challengeId: 2,
+        title: "My Second Review",
+        content: 'Very hard challenge, but good practice...',
+        rating: 1,
+        createdAt: "2020-10-02 20:00:00",
+        updatedAt: "2020-10-02 20:00:00"
     },
     {
         userId: 1,

@@ -13,7 +13,7 @@ module.exports =
     {
         firstName: "dekel",
         lastName: "vaknin",
-        userName: "dekdekdek",
+        userName: "dek12345",
         email: "dek@gmail.com",
         password: `$2b$10$w0sk1cmwwBBjQvr235FSfuFrto6nE9/89.wbk8j64EMYvjIaHfqxG`, // password: 'blabla96'
         birthDate: new Date('1996/04/01'),
@@ -23,7 +23,7 @@ module.exports =
         github_account: "dekel.github",
         reason_of_registration: "cats videos",
         security_question: "dog",
-        security_answer: "budy",
+        security_answer: "budybudy",
         created_at: new Date(),
         updated_at: new Date()
     },

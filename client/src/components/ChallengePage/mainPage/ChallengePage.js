@@ -96,7 +96,7 @@ export default function ChallengePage() {
           >
             <h2 className={darkModeIsOn ? 'dark-h2' : 'light-h2'}>Labels:</h2>
             <span className='challenge-label'>
-              {challenge['Labels'].map((label) => (
+              {challenge['Lbaels']&&challenge['Labels'].map((label) => (
                 <Link to={`/?labelId=${label['labels_to_challenges']['label_id']}`}>
                   <Chip color='primary' label={label.name} component='a' />
                 </Link>

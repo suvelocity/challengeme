@@ -19,6 +19,10 @@ router.get("/", searchFilters, async (req, res) => {
           model: Review,
           attributes: ["rating"],
         },
+        {
+          model: User,
+          attributes: ["userName"],
+        },
       ],
     });
     if (labels) {
@@ -117,7 +121,7 @@ router.post('/:challengeId/apply', async (req, res) => {
     await submission.update({ state: "PENDING" });
   }
   try {
-    const urltoSet = process.env.IP_ADDRESS.concat(
+    const urltoSet = process.env.MY_URL.concat(
       `/api/v1/webhook/submission/${submission.id}`
     );
     const bearerToken = req.headers.authorization || 'bearer myToken';

@@ -28,8 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     challengeId: DataTypes.INTEGER,
     title: DataTypes.STRING,
     content: DataTypes.TEXT,
-    rating: DataTypes.INTEGER,
-    deletedAt: DataTypes.DATE
+    rating: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Review',
