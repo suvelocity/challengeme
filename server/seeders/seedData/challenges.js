@@ -1,0 +1,35 @@
+module.exports = [
+  {
+    id:1,
+    name:"JWT - Node.js",
+    description:'Build a site\'s Security system and learn encryption',
+    type:'static',
+    repository_name: "suvelocity/Authentication-Challenge",
+    boiler_plate:"suvelocity/Authentication-Challenge-TEMPLATE",
+     author_id:1,
+    created_at: "2020-10-01 20:00:00",
+    updated_at: "2020-10-01 20:00:00",
+  },
+  {
+    id:2,
+    name:"React - Calculator",
+    description:'Create a Calculator and learn react',
+    type:'client',
+    repository_name: "suvelocity/calculator-challange-tests",
+    boiler_plate:"suvelocity/calculator-challenge",
+    author_id:1,
+    created_at: "2020-10-01 20:00:00",
+    updated_at: "2020-10-01 20:00:00",
+  },
+  {
+    id:3,
+    name:"JS - Drag N Scale",
+    description:'Create a draggable, scalable element and learn responsive js',
+    type:'static',
+    repository_name: "suvelocity/drag-n-scale",
+    boiler_plate:"DragAndScaleBoilerplate",
+    author_id:1,
+    created_at: "2020-10-01 20:00:00",
+    updated_at: "2020-10-01 20:00:00",
+  }
+]

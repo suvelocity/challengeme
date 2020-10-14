@@ -1,12 +1,12 @@
 'use strict';
-const labelsToChallenge = require('../_tests_/mocks/labelsToChallenge');
-
+const labelsToChallenges  = require('./seedData/labelsToChallenges')
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('labels_to_challenges', labelsToChallenge, {});
+    await queryInterface.bulkInsert('labels_to_challenges', labelsToChallenges, {});
   },
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete('labels_to_challenges');
   }
-};
+}
+

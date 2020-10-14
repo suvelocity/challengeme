@@ -30,10 +30,10 @@ async function establishConnection(){
     const url = await ngrok.connect(port);
     process.env.IP_ADDRESS = url;
   }
-  console.log('Client Ip Address', process.env.IP_ADDRESS);
+  console.log('Client Ip Address', process.env.MY_URL);
 }
 
-establishConnection(); 
+// establishConnection(); 
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
