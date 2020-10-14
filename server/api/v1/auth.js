@@ -87,8 +87,6 @@ usersRouter.post("/userexist", async (req, res) => {
 
 // Validate Token
 usersRouter.get("/validateToken", checkToken, (req, res) => {
-  // const {user} = req
-  // res.cookie("userFirstName",user.firstName)
   res.json({ valid: true })
 })
 
@@ -109,10 +107,14 @@ usersRouter.post("/login", async (req, res) => {
   if (!validPass)
     return res.status(403).json({ message: "User or Password incorrect" });
   const expired = req.body.rememberMe ? "365 days" : "24h";
-  const refreshToken = jwt.sign(currentUser, process.env.REFRESH_TOKEN_SECRET, {
+const infoForCookie = {
+  userId: currentUser.id,
+  userName: currentUser.userName
+}
+  const refreshToken = jwt.sign(infoForCookie, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: expired
   });
-  const accessToken = generateToken(currentUser);
+  const accessToken = generateToken(infoForCookie);
   const isTokenExist = await RefreshToken.findOne({
     where: {
       userName: currentUser.userName
@@ -131,11 +133,9 @@ usersRouter.post("/login", async (req, res) => {
     });
   }
 
-  res.cookie('userId', currentUser.id)
   res.cookie('name', currentUser.firstName)
   res.cookie('accessToken', accessToken)
   res.cookie('refreshToken', refreshToken)
-  res.cookie('userFirstName', currentUser.firstName)
   res.json({ userDetails: currentUser });
 });
 
