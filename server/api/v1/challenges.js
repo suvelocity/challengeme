@@ -211,21 +211,23 @@ router.post('/:challengeId/apply', async (req, res) => {
     await submission.update({ state: "PENDING" });
   }
   try {
-    const urltoSet = process.env.MY_URL.concat(
+    const urltoSet = process.env.IP_ADDRESS.concat(
       `/api/v1/webhook/submission/${submission.id}`
     );
-    const bearerToken = req.headers.authorization || "bearer bananaSplit";
+    const bearerToken = req.headers.authorization || 'bearer myToken';
     const pureToken =
-      bearerToken.indexOf(" ") !== -1 ? bearerToken.split(" ")[1] : bearerToken;
+    bearerToken.indexOf(' ') !== -1 ? bearerToken.split(' ')[1] : bearerToken;
+    const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || 'master'; // In case somehow the process env branches are not set.
+    console.log('CHALLENGE TYPE !!!!!' , challenge.repositoryName, challenge.type)
     const { status } = await axios.post(
       `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
       {
-        ref: "master", //set ref as variable to knoe in which branch
+        ref: ref, // the branch that the actions are run on
         inputs: {
-          testRepo: challenge.repositoryName,
-          solutionRepo: solutionRepository,
-          webhookUrl: urltoSet,
-          bearerToken: pureToken,
+          testRepo: challenge.repositoryName, // Repository to run the tests on
+          solutionRepo: solutionRepository, // The repository that holds the submitted solution
+          webhookUrl: urltoSet, // the url to come back to when the action is finished
+          bearerToken: pureToken, // the access token to get back to our server ** currently not in use
         },
       },
       {
