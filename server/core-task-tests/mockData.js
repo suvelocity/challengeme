@@ -42,11 +42,23 @@ const challengeArr = [
     created_at: "2020-10-01",
     updated_at: "2020-10-01",
     deleted_at: null
+    },
+    {
+        id: 5,
+        name: "JWT - Node.js",
+        description: "https://github.com/suvelocity/Authentication-Challenge-TEMPLATE",
+        type: "static",
+        repositoryName: "suvelocity/Authentication-Challenge",
+        cover: "https://storage.googleapis.com/challenges-cover/jwt.png",
+        createdAt: "2020-10-04T13:40:00.000Z",
+        updatedAt: "2020-10-04T13:40:00.000Z",
+        deletedAt: null
     }
 ];
 
 const solutionRepos = [
     {repo:'royc67/PromiseBoilerplate', challengeId:1},
+    {repo:'david35008/Authentication-Challenge-SOLUTION', challengeId:5},
     {repo:'ZBejavu/calculator-challenge', challengeId:2},
     {repo:'giladyavneh/challenge-sequelize-template', challengeId:4}
 ];
