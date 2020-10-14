@@ -9,7 +9,6 @@ function Submission({bold, name, status, submittedAt, solution, userId, solution
     const cookieUserId = Cookies.get('userId');
     // TODO: conditionall render an a tag to the submission if the id match
     
-    console.table({cookieUserId, userId})
     return bold ? (
         <div className="submission">
                 <div id="name"><strong>{name}</strong></div>

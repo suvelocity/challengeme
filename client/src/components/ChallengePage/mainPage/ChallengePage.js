@@ -28,7 +28,6 @@ export default function ChallengePage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [darkModeIsOn, setDarkModeIsOn] = useState(false);
  
-  console.log(challenge)
   useEffect(() => {
     const setImg = async () => {
       try {
@@ -37,7 +36,7 @@ export default function ChallengePage() {
         );
         setBlobedImg(data.img);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     const fetchChallenge = async () => {
@@ -45,11 +44,10 @@ export default function ChallengePage() {
         let {
           data: { challenge: challengeFromServer, author },
         } = await network.get(`/api/v1/challenges/${challengeParamId}`);
-        console.log('challenge',challengeFromServer);
         challengeFromServer.author = author;
         setChallenge(challengeFromServer);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     setImg();
@@ -100,7 +98,6 @@ export default function ChallengePage() {
             <span className='challenge-label'>
               {challenge['Labels'].map((label) => (
                 <Link to={`/?labelId=${label['labels_to_challenges']['label_id']}`}>
-                  {console.log(label)}
                   <Chip color='primary' label={label.name} component='a' />
                 </Link>
               ))}

@@ -79,12 +79,12 @@ const FilterMenu =( {updateFilters}) => {
       <div className='toggleOpen' 
       onClick={toggleOpenClick}
        >
-        <button class={open
+        <button className={open
         ?"hamburger hamburger--arrowalt is-active":
         "hamburger hamburger--arrowalt"} 
         type="button">
-          <span class="hamburger-box">
-            <span class="hamburger-inner"></span>
+          <span className="hamburger-box">
+            <span className="hamburger-inner"></span>
           </span>
         </button>  
       </div>
