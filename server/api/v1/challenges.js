@@ -43,11 +43,14 @@ router.get("/", searchFilters, async (req, res) => {
 });
 
 router.get("/:challengeId/submissions", async (req, res) => {
-  // TODO: include user
   try {
     const { challengeId } = req.params;
     const allSubmission = await Submission.findAll(
       {
+        include:[{
+          model:User,
+          attributes:["userName"]
+        }],
         where: {
           challengeId
         }

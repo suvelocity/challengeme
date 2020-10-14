@@ -107,10 +107,10 @@ usersRouter.post("/login", async (req, res) => {
   if (!validPass)
     return res.status(403).json({ message: "User or Password incorrect" });
   const expired = req.body.rememberMe ? "365 days" : "24h";
-const infoForCookie = {
-  userId: currentUser.id,
-  userName: currentUser.userName
-}
+  const infoForCookie = {
+    userId: currentUser.id,
+    userName: currentUser.userName
+  }
   const refreshToken = jwt.sign(infoForCookie, process.env.REFRESH_TOKEN_SECRET, {
     expiresIn: expired
   });
@@ -134,6 +134,7 @@ const infoForCookie = {
   }
 
   res.cookie('name', currentUser.firstName)
+  res.cookie('userName', currentUser.userName)
   res.cookie('accessToken', accessToken)
   res.cookie('refreshToken', refreshToken)
   res.json({ userDetails: currentUser });
