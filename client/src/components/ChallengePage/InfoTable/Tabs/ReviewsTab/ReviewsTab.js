@@ -14,7 +14,6 @@ function ReviewsTab({ challengeId }) {
         (review) => review.title && review.content
       );
       setReviews(reviewsWithContent);
-
     };
     fetchReviews();
     const liveReviews = setInterval(fetchReviews, 5000);
@@ -31,6 +30,7 @@ function ReviewsTab({ challengeId }) {
       } = review;
       return (
         <Review
+          key={index}
           author={userName}
           createdAt={createdAt}
           title={title}
