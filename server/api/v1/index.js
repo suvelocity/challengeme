@@ -8,7 +8,7 @@ router.use("/auth", require("./auth"));
 router.use('/challenges', checkToken, require('./challenges'));
 router.use('/image', checkToken, require('./image'));
 router.use('/statistics', checkToken, require('./statisticsRoutes'));
-router.use('/types',checkToken, require('./types'));
+router.use('/types', checkToken, require('./types'));
 router.use('/labels', checkToken, require('./labels'));
 router.use('/reviews', checkToken, require('./reviews'));
 

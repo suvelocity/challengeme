@@ -148,7 +148,7 @@ router.get('/:challengeId', async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-module.exports = router;
+
 
 router.post('/:challengeId/apply', async (req, res) => {
   const challengeId = req.params.challengeId;
@@ -215,6 +215,8 @@ router.post('/:challengeId/apply', async (req, res) => {
     res.json({ status });
   } catch (e) {
     console.log('aaaa', e.message);
-    res.json({ status: 500, error: e });
+    res.status(500).json({  error: e });
   }
 });
+
+module.exports = router;
