@@ -46,6 +46,8 @@ export default function Forgot() {
             case "confirmP":
                 setConfirmPassword(e.target.value);
                 break;
+            default:
+                break;
         }
     };
 
@@ -60,6 +62,8 @@ export default function Forgot() {
                 break;
             case 3:
                 resetPassword(password, confirmPassword, resetToken);
+                break;
+            default:
                 break;
         }
     };
@@ -163,6 +167,8 @@ export default function Forgot() {
                         handleChange={handleChange}
                     />
                 );
+            default:
+                return;
         }
     };
 

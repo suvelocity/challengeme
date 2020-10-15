@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import Cookies from "js-cookie";
 import { Link, NavLink } from 'react-router-dom';
 import { fade, makeStyles } from '@material-ui/core/styles';
@@ -89,7 +89,7 @@ function Header() {
 
   const logOut = async () => {
     try {
-      const { data: response } = await network.post('/api/v1/auth/logout', { token: Cookies.get("refreshToken") })
+      await network.post('/api/v1/auth/logout', { token: Cookies.get("refreshToken") })
       Cookies.remove("refreshToken")
       Cookies.remove("accessToken")
       Cookies.remove("name")
@@ -101,16 +101,16 @@ function Header() {
     }
   }
 
-  const headerStyle = {height:"60px",position:"fixed", top:0, justifyContent:'center', backgroundColor:! darkMode && "#C9AC80"} 
-   return (
+  const headerStyle = { height: "60px", position: "fixed", top: 0, justifyContent: 'center', backgroundColor: !darkMode && "#C9AC80" }
+  return (
     <div className={classes.root} >
-      <AppBar  style={headerStyle}>
+      <AppBar style={headerStyle}>
         <Toolbar>
           <Typography variant='h6' className={classes.title}>
             <NavLink
               to='/'
               exact
-              activeStyle={{ color: darkMode?'#F5CB39':"white"}}
+              activeStyle={{ color: darkMode ? '#F5CB39' : "white" }}
               className='link-rout'
             >
               <div
@@ -129,14 +129,14 @@ function Header() {
 
           <Search />
 
-          <div style={{ flex: 1 }}></div> 
+          <div style={{ flex: 1 }}></div>
           {/* Make space between the search input and the rest of the header. */}
-          <NavLink 
-          to="/statistics"
-           style={{textDecoration:"none",color:"white"}}
-           exact
-            activeStyle={{ color: darkMode?'#F5CB39':"white"}}
-           >
+          <NavLink
+            to="/statistics"
+            style={{ textDecoration: "none", color: "white" }}
+            exact
+            activeStyle={{ color: darkMode ? '#F5CB39' : "white" }}
+          >
             <Button color='inherit'>
               <div
                 style={{
@@ -158,7 +158,7 @@ function Header() {
               aria-haspopup='true'
               onClick={handleMenu}
               color='inherit'
-              style={{ cursor: 'pointer', backgroundColor: darkMode?'purple':"#7BACB4"}}
+              style={{ cursor: 'pointer', backgroundColor: darkMode ? 'purple' : "#7BACB4" }}
             >
               {Cookies.get("name").slice(0, 2)}
             </Avatar>
@@ -178,27 +178,27 @@ function Header() {
             open={open}
             onClose={handleClose}
           >
-            <MenuItem  style={{paddingLeft:60}}>
+            <MenuItem style={{ paddingLeft: 60 }}>
               <DarkModeToggle
                 checked={darkMode}
-                onChange={()=>
-                {
-                  localStorage.setItem("darkMode",!darkMode)
-                  changeTheme(prev => !prev)}
+                onChange={() => {
+                  localStorage.setItem("darkMode", !darkMode)
+                  changeTheme(prev => !prev)
                 }
-                  size={45}
-                />
+                }
+                size={45}
+              />
             </MenuItem>
             <MenuItem>
-              <Link to="/add_challenge" onClick={handleClose} style={{textDecoration:"none"}} >
-              <Button style={{minWidth:150}} variant="contained" color="primary">
-              Add Challenge
+              <Link to="/add_challenge" onClick={handleClose} style={{ textDecoration: "none" }} >
+                <Button style={{ minWidth: 150 }} variant="contained" color="primary">
+                  Add Challenge
               </Button>
               </Link>
-            </MenuItem> 
+            </MenuItem>
             <MenuItem onClick={handleClose}>
-              <Button className='arara' onClick={logOut} style={{minWidth:150}} variant="contained" color="secondary">
-              Log Out
+              <Button className='arara' onClick={logOut} style={{ minWidth: 150 }} variant="contained" color="secondary">
+                Log Out
               </Button>
             </MenuItem>
           </Menu>

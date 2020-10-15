@@ -2,7 +2,6 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Review from "./Review";
 import network from "../../../../../services/network";
-const challengeId = 2;
 function ReviewsTab({ challengeId }) {
   const [reviews, setReviews] = useState(null);
   useEffect(() => {

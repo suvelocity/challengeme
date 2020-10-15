@@ -22,12 +22,11 @@ function normalizeDate(dateTime) {
 
 export default function ChallengePage() {
   const [challenge, setChallenge] = useState(null);
-  const [author, setAuthor] = useState({ username: 'Dror' });
   const { challengeParamId } = useParams();
   const [blobedImg, setBlobedImg] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [darkModeIsOn, setDarkModeIsOn] = useState(false);
- 
+  const [darkModeIsOn] = useState(false);
+
   useEffect(() => {
     const setImg = async () => {
       try {
@@ -96,7 +95,7 @@ export default function ChallengePage() {
           >
             <h2 className={darkModeIsOn ? 'dark-h2' : 'light-h2'}>Labels:</h2>
             <span className='challenge-label'>
-              {challenge['Lbaels']&&challenge['Labels'].map((label) => (
+              {challenge['Lbaels'] && challenge['Labels'].map((label) => (
                 <Link to={`/?labelId=${label['labels_to_challenges']['label_id']}`}>
                   <Chip color='primary' label={label.name} component='a' />
                 </Link>
@@ -168,6 +167,6 @@ export default function ChallengePage() {
       />
     </div>
   ) : (
-    <div>Loading</div>
-  );
+      <div>Loading</div>
+    );
 }

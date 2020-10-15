@@ -21,7 +21,7 @@ function ValidatingMail() {
                     history.push("/login");
                 });
             });
-    }, []);
+    }, [history, token]);
 
     return <div></div>;
 }

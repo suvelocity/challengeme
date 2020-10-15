@@ -22,19 +22,6 @@ import { motion } from "framer-motion";
 import Background from "../components/Background";
 import "../styles/Login.css";
 
-const pageVariants = {
-    initial: {
-        opacity: 0,
-    },
-    in: {
-        opacity: 1,
-        transition: { duration: 1.5 },
-    },
-    out: {
-        opacity: 0,
-        transition: { duration: 1.5 },
-    },
-};
 const useStyles = makeStyles((theme) => ({
     userNameLoginInput: {
         marginTop: "110px",
@@ -81,6 +68,8 @@ export default function Login() {
                 break;
             case "rememberMe":
                 setRememberMe((prevState) => !prevState);
+                break;
+            default:
                 break;
         }
     };

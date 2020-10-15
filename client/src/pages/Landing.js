@@ -38,11 +38,9 @@ const useStyles = makeStyles((theme) => ({
         margin: "20px",
         width: "150px",
         background: "linear-gradient(45deg, #447CC6 30%, #315CAB 90%)",
-        color: "white",
     },
     registerHomePage: {
         marginBottom: "30px",
-        color: "white",
         padding: "20px 0",
         fontSize: "20px",
         margin: "20px",

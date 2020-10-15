@@ -44,10 +44,12 @@ function Register() {
     const history = useHistory();
 
     const nextStep = async () => {
+          // eslint-disable-next-line
         const validateEmailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
         const githubAccountRegex = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i;
         const onlyLettersAndSpacesRegex = /^[a-zA-Z\s]*$/;
         const onlyLettersAndNumbersRegex = /^[a-zA-Z0-9]*$/;
+        // eslint-disable-next-line
         const phoneNumberRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
         const noSpecialLetters = /[^a-zA-Z\d\s]/;
 
@@ -83,7 +85,7 @@ function Register() {
                     message: "Username to long.",
                 });
             try {
-                const { data } = await network.post("/api/v1/auth/userexist", {
+                await network.post("/api/v1/auth/userexist", {
                     userName,
                 });
             } catch (e) {
