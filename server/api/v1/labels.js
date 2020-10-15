@@ -15,32 +15,25 @@ router.post("/", async (req, res) => {
       );
       res.json({ message: "lables created successfully" });
     } catch (error) {
-      res.status(400).json({ message: "Cannot process request" });
+      res.status(400).json({ message: "Cannot process request" })
     }
   } else {
     res.status(400).json({ message: "No labels chosen" });
   }
 });
 
-//get all label
-// router.get("/", async (req, res) => {
-//   try {
-//     const allLabels = await Label.findAll();
-//     res.json(
-//       allLabels.map(({ id, name }) => {
-//         return { label: name, value: id };
-//       })
-//     );
-//   } catch (error) {
-//     res.status(400).json({ message: "Cannot process request" });
-//   }
-// });
+
+// get all label
 router.get("/", async (req, res) => {
   try {
-    const allLabels = await Label.findAll({ attributes: ["id", "name"] });
-    res.json(allLabels);
+    const allLabels = await Label.findAll();
+    res.json(
+      allLabels.map(({ id, name }) => {
+        return { label: name, value: id };
+      })
+    );
   } catch (error) {
-    res.status(400).json({ message: "Cannot process request" });
+    res.status(400).json({ message: "Cannot process request" })
   }
 });
 
