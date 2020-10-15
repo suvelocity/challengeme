@@ -22,19 +22,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-//get all label
-// router.get("/", async (req, res) => {
-//   try {
-//     const allLabels = await Label.findAll();
-//     res.json(
-//       allLabels.map(({ id, name }) => {
-//         return { label: name, value: id };
-//       })
-//     );
-//   } catch (error) {
-//     res.status(400).json({ message: "Cannot process request" });
-//   }
-// });
 router.get("/", async (req, res) => {
   try {
     const allLabels = await Label.findAll({ attributes: ["id", "name"] });

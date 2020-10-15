@@ -2,11 +2,6 @@ const { Router } = require("express");
 const { Submission } = require("../../models");
 const router = Router();
 
-/* {
-    solutionRepo: 'TheAlmightyCrumb/calculator-challenge-Submission7', // first part Solution Repository after it Submission Id
-    success: false // true or false
-} */
-
 router.patch("/submission/:id", async (req, res) => {
   try {
     const { success } = req.body;
@@ -15,7 +10,7 @@ router.patch("/submission/:id", async (req, res) => {
     await submission.update({ state: success ? "SUCCESS" : "FAIL" });
     res.json(submission);
   } catch (error) {
-    res.status(400).json({ message: "Cannot process request" })
+    res.status(400).json({ message: "Cannot process request" });
   }
 });
 
