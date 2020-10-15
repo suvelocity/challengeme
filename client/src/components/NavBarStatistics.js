@@ -3,27 +3,18 @@ import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
   Drawer,
-  AppBar,
-  Toolbar,
   List,
   CssBaseline,
-  Typography,
   Divider,
   IconButton,
 } from "@material-ui/core";
-// import MenuIcon from '@material-ui/icons/Menu';
-import { brown } from "@material-ui/core/colors";
 import "./statistics.css";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ContactMailOutlinedIcon from "@material-ui/icons/ContactMailOutlined";
 import GroupOutlinedIcon from "@material-ui/icons/GroupOutlined";
 import InsertChartOutlinedIcon from "@material-ui/icons/InsertChartOutlined";
-import AssistantOutlinedIcon from "@material-ui/icons/AssistantOutlined";
-import AssignmentIndOutlinedIcon from "@material-ui/icons/AssignmentIndOutlined";
 import MenuIcon from "@material-ui/icons/Menu";
 import { Link } from "react-router-dom";
 import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";

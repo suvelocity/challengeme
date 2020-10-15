@@ -9,7 +9,7 @@ const ChooseLabels =({ submitFilter }) => {
     ()=>{
       (
         ()=>{
-          network.get(`/api/v1/challenges/labels`)
+          network.get(`/api/v1/labels`)
           .then(({data})=>{
             setLabels(data)
           })  

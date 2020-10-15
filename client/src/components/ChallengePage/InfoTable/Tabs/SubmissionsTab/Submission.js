@@ -3,11 +3,9 @@ import './Submission.css';
 import Cookies from "js-cookie";
 
 
-function Submission({bold, name, status, submittedAt, solution, userId, solutionRepository}) {
-    // TODO: get the user id from the cookies
+function Submission({bold, name, status, submittedAt, userName, solutionRepository}) {
      
-    const cookieUserId = Cookies.get('userId');
-    // TODO: conditionall render an a tag to the submission if the id match
+    const cookieUserName = Cookies.get('userName');
     
     return bold ? (
         <div className="submission">
@@ -19,7 +17,7 @@ function Submission({bold, name, status, submittedAt, solution, userId, solution
     (
         <div className="submission">
              <div id="name">{name}</div>
-             {cookieUserId===userId ? 
+             { cookieUserName ===  userName ? 
              <div id="status">
                 <a href={`https://www.github.com/${solutionRepository}`} 
              alt="click to navigate to your solution">

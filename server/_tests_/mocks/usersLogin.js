@@ -5,7 +5,7 @@ module.exports = [
     // these login details match respectively to the user in "./mocks/users"
 
     {
-        userName: "dekdekdek",
+        userName: "dek12345",
         password: "blabla96",
         rememberMe: false
     },

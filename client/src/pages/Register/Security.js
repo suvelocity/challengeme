@@ -9,7 +9,6 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import IconButton from "@material-ui/core/IconButton";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import LockIcon from "@material-ui/icons/Lock";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 const useStyles = makeStyles((theme) => ({

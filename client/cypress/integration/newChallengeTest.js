@@ -41,8 +41,8 @@ describe("Inserted New Challenge", () => {
         cy.setCookie("name","shahar")
         cy.route("GET", "**/api/v1/auth/validateToken", { valid : true })  
         cy.route("**/api/v1/types", "fixture:types.json");
-        cy.route("**/api/v1/challenges/public_repo?repo_name=suvelocity/drag-n-scale", 'public');
-        cy.route("**/api/v1/challenges/public_repo?repo_name=suvelocity/DragAndScaleBoilerplate", 'public');
+        cy.route("**/api/v1/services/public_repo?repo_name=suvelocity/drag-n-scale", 'public');
+        cy.route("**/api/v1/services/public_repo?repo_name=suvelocity/DragAndScaleBoilerplate", 'public');
         cy.route('post',"**/api/v1/challenges", {id:5}) ;
         cy.route('post', "**/api/v1/image", 'success') ;
         cy.visit("http://localhost:3000");

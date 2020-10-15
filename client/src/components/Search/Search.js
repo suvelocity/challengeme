@@ -99,7 +99,7 @@ const Search =() => {
     if(!query.length){return setResults([])}
     if(query==='*'){ query =''}
     try{
-      const url = `/api/v1/challenges`+`?challengeName=${query}`
+      const url = `/api/v1/challenges?challengeName=${query}`
        + getFilters() 
       network.get(url)
       .then(({data})=>{
@@ -160,7 +160,7 @@ const Search =() => {
   </div>
 
   return (
-    <div id='search' className={darkMode && 'dark'}> 
+    <div id='search' className={darkMode ? 'dark' : undefined}> 
       {searchInput}
       <div id='searchResults' className={searching?'open':'closed'}>
         <div id="seperator" className={searching?'open':'closed'}>

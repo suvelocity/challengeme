@@ -33,7 +33,7 @@ export default function Router() {
         setDarkTheme(true);
       }
     }
-  })
+  }, [])
 
   useEffect(() => {
     
@@ -52,7 +52,6 @@ export default function Router() {
           setLoading(false);
         } catch (e) {
           setLoading(false);
-          console.error(e);
         }
       } else {
         setLoading(false);

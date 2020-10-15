@@ -7,14 +7,14 @@ import FilterMenu from '../../components/FilterMenu/FilterMenu';
 import { useLocation } from "react-router-dom"
 
 //function to get query params
-function useQuery() {    
+function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-export default function HomePage() {
+export default function Home() {
   const [challenges, setChallenges] = useState([]);
   const [filtered, setFiltered] = useState(false);
-  const [filters, setFilters] = useState({labels:[]});
+  const [filters, setFilters] = useState({ labels: [] });
   const darkMode = React.useContext(ThemeApi).darkTheme
   let query = useQuery();
 
@@ -23,66 +23,65 @@ export default function HomePage() {
   const getFilters = useCallback(
     () => {
       const filterNames = Object.keys(filters)
-      const filterString = filterNames.map(name=>{
+      const filterString = filterNames.map(name => {
         const value = filters[name]
         let valueString = (typeof value === 'object')
-        ? value.join(',')
-        :value
+          ? value.join(',')
+          : value
         return `${name}=${valueString}`
       }).join('&')
       return filterString
     },
     [filters]
-  ) 
+  )
 
   useEffect(() => {
     (async () => {
-      try{
+      try {
         //checking if there is query params and the page loaded once
-        if(filtered!==true && query.get("labelId")){
+        if (filtered !== true && query.get("labelId")) {
           const { data: challengesFromServer } = await network.get(
-          `/api/v1/challenges?labels=${query.get("labelId")}`)
+            `/api/v1/challenges?labels=${query.get("labelId")}`)
           //checking if there is the challenges data is array
           typeof challengesFromServer === "object" &&
-          setChallenges(challengesFromServer)
+            setChallenges(challengesFromServer)
           setFiltered(true)
         }
-        else{
+        else {
           const { data: challengesFromServer } = await network.get(
-          '/api/v1/challenges?'+ getFilters())
-          console.log(challengesFromServer)
+            '/api/v1/challenges?' + getFilters())
           typeof challengesFromServer === "object" &&
-          console.log(challengesFromServer);
-          setChallenges(challengesFromServer)          
+            setChallenges(challengesFromServer)
         }
-      }catch(e){}
-    })();  
-  }, [filters]);  
+      } catch (e) { }
+    })();
+    // eslint-disable-next-line
+  }, [filters]);
 
-  
+
   return (
-    <div 
-    className={darkMode && "dark"}>
-      <div className ="home-page">
-      <FilterMenu 
-      formerSelection={filters} 
-      updateFilters={setFilters} />
-     <div className={"challenges-container"}>
-      {challenges.map((challenge) => (
-        <ChallengeCard
-        key={challenge.id}
-        challengeId={challenge.id}
-        createdAt={challenge.createdAt}
-        name={challenge.name}
-        description={challenge.description}
-        repositoryName = {challenge.repositoryName}
-        labels = {challenge.Labels}
-        rating = {challenge.Reviews}
-        />
-        ))}
+    <div
+      className={darkMode ? "dark" : undefined}>
+      <div className="home-page">
+        <FilterMenu
+          formerSelection={filters}
+          updateFilters={setFilters} />
+        <div className={"challenges-container"}>
+          {challenges.map((challenge) => (
+            <ChallengeCard
+              key={challenge.id}
+              challengeId={challenge.id}
+              createdAt={challenge.createdAt}
+              name={challenge.name}
+              description={challenge.description}
+              repositoryName={challenge.repositoryName}
+              labels={challenge.Labels}
+              rating={challenge.Reviews}
+            />
+          ))}
         </div>
-     
-    </div>
+
       </div>
+    </div>
   )
 }

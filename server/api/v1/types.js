@@ -14,7 +14,9 @@ router.get('/', async (req,res) => {
       )
       types = types.filter(type => type!==null)
       res.send(types)
-    }catch(e){res.send(e.message)}
+    }catch(error){
+      res.status(400).json({ message: "Cannot process request" })
+    }
 })
 
 module.exports = router;

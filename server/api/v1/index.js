@@ -6,6 +6,7 @@ router.use('/webhook', require('./webhook'));
 router.use("/auth", require("./auth"));
 
 router.use('/challenges', checkToken, require('./challenges'));
+router.use('/services', checkToken, require('./services'));
 router.use('/image', checkToken, require('./image'));
 router.use('/statistics', checkToken, require('./statisticsRoutes'));
 router.use('/types', checkToken, require('./types'));
