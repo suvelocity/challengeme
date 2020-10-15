@@ -10,14 +10,15 @@ import ReviewTab from "./Tabs/ReviewsTab/ReviewsTab";
 import SubmissionTab from "./Tabs/SubmissionsTab/SubmissionTab";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
+  // TODO: delete that component, not necessary anymore, follow figma design
   return (
     <div
-      role='tabpanel'
+      role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      {...other}>
+      {...other}
+    >
       {value === index && (
         <Box p={3}>
           <Typography>{children}</Typography>
@@ -65,14 +66,16 @@ export default function InfoTable({ challengeId }) {
         backgroundColor: "#4b79a1",
         border: "none",
         overflowY: "auto",
-      }}>
-      <AppBar position='static'>
+      }}
+    >
+      <AppBar position="static">
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label='simple tabs example'>
-          <Tab label='Submissions' {...a11yProps(0)} />
-          <Tab label='Reviews' {...a11yProps(1)} />
+          aria-label="simple tabs example"
+        >
+          <Tab label="Submissions" {...a11yProps(0)} />
+          <Tab label="Reviews" {...a11yProps(1)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
