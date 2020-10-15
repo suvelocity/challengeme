@@ -1,44 +1,21 @@
 const { Router } = require("express");
 const axios = require("axios");
-const { Sequelize } = require("sequelize");
-const { QueryTypes } = require("sequelize");
+const { Sequelize, Op } = require("sequelize");
 const router = Router();
 
-const {
-  Submission,
-  User,
-  Challenge,
-  Label,
-  Review,
-  sequelize,
-} = require("../../models");
+const { Submission, User, Challenge, Label, Review } = require("../../models");
 
-//get all challenges
-// router.get("/", async (req, res) => {
-//   try {
-//     const query = `SELECT ch.id, ch.name, description, type, repository_name as repositoryName, boiler_plate as boilerPlate, ch.created_at as createdAt, ch.updated_at as updatedAs, ravg.avarage_raiting as averageRating ,u.user_name as authorUserName
-//     FROM challenges ch
-//     JOIN (SELECT challenge_id,avg(rating) as avarage_raiting FROM reviews  GROUP BY challenge_id) ravg
-//     ON (ch.id = ravg.challenge_id)
-//     JOIN users u
-//     ON (ch.author_id = u.id)
-//     JOIN labels lb
-//     ON (ch.id = lb.challenge_id)
-//     `;
-//     const allChallenges = await sequelize.query(query, {
-//       logging: console.log, // will log the query to the console
-//       plain: false, // when true it will return only the first row,
-//       raw: true, //since we dont have a model definition here
-//       type: QueryTypes.SELECT,
-//     });
-//     res.json(allChallenges);
-//   } catch (error) {
-//     res.status(400).json({ message: error.message }); //
-//   }
-// });
 router.get("/", async (req, res) => {
   try {
+    const name = req.query.name || "";
+    let labels = req.query.labels || [];
+
     const allChallenges = await Challenge.findAll({
+      where: {
+        name: {
+          [Op.like]: `%${name}%`,
+        },
+      },
       include: [
         {
           model: User,
@@ -47,20 +24,20 @@ router.get("/", async (req, res) => {
         },
         {
           model: Label,
+          attributes: ["name"],
         },
         {
           model: Review,
-          group: ["challengeId"],
           attributes: [
-            "challengeId",
-            [sequelize.fn("AVG", sequelize.col("rating")), "avarageRaiting"],
+            [Sequelize.fn("AVG", Sequelize.col("rating")), "avarageRaiting"],
           ],
         },
       ],
+      group: ["id"],
     });
     res.json(allChallenges);
   } catch (error) {
-    res.status(400).json({ message: error.message }); //
+    res.status(400).json({ message: "couldn't get challenges" }); //
   }
 });
 
@@ -69,7 +46,6 @@ router.get("/:challengeId", async (req, res) => {
     let challenge = await Challenge.findOne({
       where: { id: req.params.challengeId },
       include: [
-        // TODO: add a ORM query to add prop to the challenge with 'rating':3 .... pay attention to round the result to integer
         {
           model: Label,
           attributes: ["name"],
@@ -89,9 +65,7 @@ router.get("/:challengeId", async (req, res) => {
     });
     res.json({ challenge });
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: "Cannot process request", b: error.message });
+    res.status(400).json({ message: "Cannot process request" });
   }
 });
 
