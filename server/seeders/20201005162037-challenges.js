@@ -1,5 +1,6 @@
 'use strict';
-const challenges = require('./seedFiles/challenges');
+//20201005162037-challenges.js
+const challenges = require('./seedData/challenges');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
