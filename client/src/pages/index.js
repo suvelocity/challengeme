@@ -12,12 +12,13 @@ import network from "../services/network";
 import Landing from "./Landing";
 import { AnimatePresence } from "framer-motion";
 import ChallengePage from "../components/ChallengePage/mainPage/ChallengePage";
-import Home from "./Home/Home"; // post- Shahar folder revolution
 import NewChallengeForm from "../components/NewChallenge/NewChallengeForm";
 import Header from "../components/Header/Header";
 import ChallengeErrorBoundry from "../services/ChallengeErrorBoundry";
 import HomeErrorBoundry from "../services/HomeErrorBoundry";
 import AuthErrorBoundry from "../services/AuthErrorBoundry";
+import AddChallengeErrorBoundry from "../services/AddChallengeErrorBoundry";
+const Home = lazy(() => import("./Home/Home"));
 
 export default function Router() {
   const [darkTheme, setDarkTheme] = useState(false);
