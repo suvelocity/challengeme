@@ -12,15 +12,19 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Submission, {
         foreignKey: "userId",
       });
-      this.belongsToMany(models.Team, { through: 'UserTeam', foreignKey: 'userId' });
+      this.belongsToMany(models.Team, {
+        through: "UserTeam",
+        foreignKey: "userId",
+      });
       this.hasMany(models.Review, {
-        foreignKey: 'challengeId'
-      })
+        foreignKey: "challengeId",
+      });
       this.hasMany(models.RefreshToken, {
         foreignKey: "userName",
       });
       this.hasMany(models.Challenge, {
-        foreignKey: "authorId"
+        foreignKey: "authorId",
+        as: "Author",
       });
     }
   }
