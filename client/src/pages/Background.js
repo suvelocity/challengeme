@@ -13,6 +13,7 @@ export default function Background({ darkMode }) {
                 zIndex: "-1",
                 height: "100vh",
                 width: "100%",
+                backgroundAttachment: "fixed",
             }}
         ></div>
     );

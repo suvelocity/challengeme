@@ -16,13 +16,13 @@ function Header({ darkMode, setDarkMode }) {
     window.addEventListener("resize", displayWindowSize);
 
     return (
-        <header>
+        <>
             {!navOrMenu ? (
                 <WideNav darkMode={darkMode} setDarkMode={setDarkMode} />
             ) : (
                 <NarrowNav darkMode={darkMode} setDarkMode={setDarkMode} />
             )}
-        </header>
+        </>
     );
 }
 

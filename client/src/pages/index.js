@@ -110,16 +110,16 @@ export default function Router() {
                                             <UserInfo />
                                         </Route>
                                     </UserInfoErrorBoundry>
-                                    <HomeErrorBoundry>
+                                    {/* <HomeErrorBoundry>
                                         <Route exact path="/">
                                             <Home />
                                         </Route>
-                                    </HomeErrorBoundry>
-                                    <HomeErrorBoundry>
+                                    </HomeErrorBoundry> */}
+                                    {/* <HomeErrorBoundry>
                                         <Route path="*">
                                             <Redirect to="/" />
                                         </Route>
-                                    </HomeErrorBoundry>
+                                    </HomeErrorBoundry> */}
                                 </Suspense>
                             </Switch>
                         </div>
