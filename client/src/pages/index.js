@@ -10,15 +10,14 @@ import ValidatingMail from "./Authentication/Register/ValidatingMail";
 import network from "../services/network";
 import Landing from "./Authentication/Landing";
 import { AnimatePresence } from "framer-motion";
-import ChallengePage from "./OneChallenge/ChallengePage";
-import NewChallengeForm from "./NewChallenge/NewChallengeForm";
 import Header from "../components/Header/Header";
 import ChallengeErrorBoundry from "../ErrorHandling/ChallengeErrorBoundry";
 import HomeErrorBoundry from "../ErrorHandling/HomeErrorBoundry";
 import AuthErrorBoundry from "../ErrorHandling/AuthErrorBoundry";
 import AddChallengeErrorBoundry from "../ErrorHandling/AddChallengeErrorBoundry";
-import Home from "./Home/Home";
-// const Home = lazy(() => import("../Home"));
+const Home = lazy(() => import("./Home/Home"));
+const ChallengePage = lazy(() => import("./OneChallenge/ChallengePage"));
+const NewChallengeForm = lazy(() => import("./NewChallenge/NewChallengeForm"));
 
 export default function Router() {
   const [darkTheme, setDarkTheme] = useState(false);
@@ -100,33 +99,37 @@ export default function Router() {
           <Logged.Provider value={{ logged, setLogged }}>
             <ThemeApi.Provider value={{ darkTheme, setDarkTheme }}>
               <Header />
-              <Switch>
-                <HomeErrorBoundry>
-                  <Route exact path='/'>
-                    <Home />
-                  </Route>
-                </HomeErrorBoundry>
-                <AddChallengeErrorBoundry>
-                  <Route path='/add_challenge'>
-                    <NewChallengeForm />
-                  </Route>
-                </AddChallengeErrorBoundry>
-                <ChallengeErrorBoundry>
-                  <Route exact path='/challenges/:challengeParamId'>
-                    <ChallengePage />
-                  </Route>
-                </ChallengeErrorBoundry>
-                <HomeErrorBoundry>
-                  <Route path='*'>
-                    <Redirect to='/' />
-                  </Route>
-                </HomeErrorBoundry>
-              </Switch>
+              <Suspense fallback={<h1>hi</h1>}>
+                {" "}
+                {/*TODO:add loading component*/}
+                <Switch>
+                  <HomeErrorBoundry>
+                    <Route exact path='/'>
+                      <Home />
+                    </Route>
+                  </HomeErrorBoundry>
+                  <AddChallengeErrorBoundry>
+                    <Route path='/add_challenge'>
+                      <NewChallengeForm />
+                    </Route>
+                  </AddChallengeErrorBoundry>
+                  <ChallengeErrorBoundry>
+                    <Route exact path='/challenges/:challengeParamId'>
+                      <ChallengePage />
+                    </Route>
+                  </ChallengeErrorBoundry>
+                  <HomeErrorBoundry>
+                    <Route path='*'>
+                      <Redirect to='/' />
+                    </Route>
+                  </HomeErrorBoundry>
+                </Switch>
+              </Suspense>
             </ThemeApi.Provider>
           </Logged.Provider>
         )
       ) : (
-        <div></div>
+        <div></div> //TODO:add loading component
       )}
     </BrowserRouter>
   );

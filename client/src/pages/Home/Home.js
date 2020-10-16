@@ -13,7 +13,7 @@ function useQuery() {
 export default function Home() {
   const [challenges, setChallenges] = useState([]);
   const [filtered, setFiltered] = useState(false);
-  const [filters, setFilters] = useState({ labels: [] });
+  const [filters] = useState({ labels: [] });
   const darkMode = React.useContext(ThemeApi).darkTheme;
   let query = useQuery();
 

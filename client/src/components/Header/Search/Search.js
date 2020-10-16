@@ -71,7 +71,7 @@ const Search = () => {
   const classes = useStyles();
   const [searching, setSearching] = useState(false);
   const [results, setResults] = useState([]);
-  const [filters, setFilters] = useState({});
+  const [filters] = useState({});
   const darkMode = React.useContext(ThemeApi).darkTheme;
 
   //get all the filters sorted to the url
