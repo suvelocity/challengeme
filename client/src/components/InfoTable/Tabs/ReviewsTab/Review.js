@@ -31,6 +31,7 @@ function Review({ author, createdAt, title, content, rating }) {
         }
       }
     }
+    // eslint-disable-next-line
   }, []);
   // TODO: refactor to the figma suggestions
   return (

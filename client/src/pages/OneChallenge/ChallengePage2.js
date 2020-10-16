@@ -68,6 +68,7 @@ export default function ChallengePage() {
         setImage(data.img);
       } catch (error) {}
     };
+
     const fetchChallenge = async () => {
       try {
         let {

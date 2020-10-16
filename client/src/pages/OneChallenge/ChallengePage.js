@@ -27,36 +27,33 @@ function ChallengePage() {
   const [rating, setRating] = useState(0);
   const [date, setDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const getUpdated = useCallback(
-    (date) => {
-      const dateNow = Date.now();
-      const updateRepoDate = new Date(date);
-      let diff = (dateNow - updateRepoDate.getTime()) / 1000 / 60 / 60;
-      if (diff < 24) {
-        setDate(`${Math.floor(diff)} Hours ago`);
+  const getUpdated = useCallback((date) => {
+    const dateNow = Date.now();
+    const updateRepoDate = new Date(date);
+    let diff = (dateNow - updateRepoDate.getTime()) / 1000 / 60 / 60;
+    if (diff < 24) {
+      setDate(`${Math.floor(diff)} Hours ago`);
+    } else {
+      diff = diff / 24;
+      diff = Math.floor(diff);
+      if (diff < 8) {
+        setDate(`${Math.floor(diff)} Days ago`);
       } else {
-        diff = diff / 24;
-        diff = Math.floor(diff);
-        if (diff < 8) {
-          setDate(`${Math.floor(diff)} Days ago`);
+        diff = Math.floor(diff / 7);
+        if (diff < 5) {
+          setDate(`${Math.floor(diff)} Weeks ago`);
         } else {
-          diff = Math.floor(diff / 7);
-          if (diff < 5) {
-            setDate(`${Math.floor(diff)} Weeks ago`);
+          diff = Math.floor(diff / 4);
+          if (diff < 13) {
+            setDate(`${Math.floor(diff)} Months ago`);
           } else {
-            diff = Math.floor(diff / 4);
-            if (diff < 13) {
-              setDate(`${Math.floor(diff)} Months ago`);
-            } else {
-              diff = Math.floor(diff / 12);
-              setDate(`${Math.floor(diff)} Years ago`);
-            }
+            diff = Math.floor(diff / 12);
+            setDate(`${Math.floor(diff)} Years ago`);
           }
         }
       }
-    },
-    [id]
-  );
+    }
+  }, []);
 
   useEffect(() => {
     const getSubmissionInterval = setInterval(async () => {
@@ -99,6 +96,7 @@ function ChallengePage() {
     setImg();
     fetchChallenge();
     return () => clearInterval(getSubmissionInterval);
+    // eslint-disable-next-line
   }, [id]);
 
   function handleModalClose() {
@@ -151,7 +149,7 @@ function ChallengePage() {
     <div style={{ marginTop: 100 }} className='one-challenge-container'>
       <div className='one-challenge-info'>
         <h1>{challenge.name}</h1>
-        <img src={image} />
+        <img src={image} alt='' />
         <div className='one-challenge-description'>
           Description:
           <br />
