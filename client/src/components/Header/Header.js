@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Cookies from "js-cookie";
 import { Link, NavLink } from "react-router-dom";
 import { fade, makeStyles } from "@material-ui/core/styles";
@@ -17,6 +17,7 @@ import Search from "./Search/Search";
 import { Logged } from "../../context/LoggedInContext";
 import { useHistory } from "react-router-dom";
 import network from "../../services/network";
+import ChooseLabels from "../Choosers/ChooseLabels";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -69,7 +70,7 @@ function Header({ darkMode, setDarkMode }) {
   const open = Boolean(anchorEl);
   const location = useHistory();
   const value = useContext(Logged);
-
+  const [labels, setLabels] = useState([]);
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -126,6 +127,12 @@ function Header({ darkMode, setDarkMode }) {
             </NavLink>
           </Typography>
           <Search />
+          <div style={{ width: "50vw" }}>
+            <ChooseLabels submitFilter={setLabels} />
+            <Link to={`/?labels=${labels.join(",")}`}>
+              <Button>submit</Button>
+            </Link>
+          </div>
           <div style={{ flex: 1 }}></div>
           {/* Make space between the search input and the rest of the header. */}
           <Tooltip title={Cookies.get("name")}>

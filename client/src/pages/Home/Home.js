@@ -10,10 +10,10 @@ function useQuery() {
 }
 
 export default function Home() {
-  const [filtered, setFiltered] = useState(false);
   const allChallenges = useContext(AllChallenges).challenges;
   const [challenges, setChallenges] = useState(allChallenges);
   const [revertLabelFiltering, setRevertLabelFiltering] = useState(false);
+  const [previousQuery, setPreviousQuery] = useState("");
 
   let query = useQuery();
 
@@ -21,7 +21,7 @@ export default function Home() {
     (async () => {
       try {
         //checking if there is query params and the page loaded once
-        if (query.get("labelId") && !filtered) {
+        if (query.get("labelId") && query.get("labelId") !== previousQuery) {
           const filteredByLabelChallenges = [];
           for (let i = 0; i < challenges.length; i++) {
             for (let label of challenges[i].Labels) {
@@ -31,8 +31,8 @@ export default function Home() {
             }
           }
           setRevertLabelFiltering(true);
-          setFiltered(true);
           setChallenges(filteredByLabelChallenges);
+          setPreviousQuery(query.get("labelId"));
         } else {
           setChallenges(allChallenges);
         }
@@ -40,11 +40,38 @@ export default function Home() {
     })();
     // eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    (() => {
+      if (query.get("labels") && query.get("labels") !== previousQuery) {
+        const filteredByLabelChallenges = [];
+        const searchedLabels = query.get("labels").split(",");
+        const labelsToMatch = searchedLabels.length;
+        for (let i = 0; i < challenges.length; i++) {
+          let labelsMatched = 0;
+          for (let label of challenges[i].Labels) {
+            for (let labelToCheck of searchedLabels) {
+              if (label.id === Number(labelToCheck)) {
+                labelsMatched += 1;
+              }
+            }
+          }
+          if (labelsMatched === labelsToMatch) {
+            filteredByLabelChallenges.push(challenges[i]);
+          }
+        }
+        setPreviousQuery(query.get("labels"));
+        setRevertLabelFiltering(true);
+        setChallenges(filteredByLabelChallenges);
+      }
+    })();
+    // eslint-disable-next-line
+  }, [query]);
 
   const resetLabelFiltering = useCallback(() => {
     setRevertLabelFiltering(false);
     setChallenges(allChallenges);
-  }, [revertLabelFiltering]);
+    // eslint-disable-next-line
+  }, []);
   return (
     <div>
       <div className='home-page'>

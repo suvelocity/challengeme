@@ -120,9 +120,13 @@ export default function Router() {
                       </Route>
                     </UserInfoErrorBoundry>
                     <HomeErrorBoundry>
-                      <Route exact path='/'>
-                        <Home />
-                      </Route>
+                      {challenges.length > 0 ? (
+                        <Route exact path='/'>
+                          <Home />
+                        </Route>
+                      ) : (
+                        <h1>loading</h1>
+                      )}
                     </HomeErrorBoundry>
                     <HomeErrorBoundry>
                       <Route path='*'>
