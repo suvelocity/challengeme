@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
         {
           model: Review,
           attributes: [
-            [Sequelize.fn("AVG", Sequelize.col("rating")), "avarageRaiting"],
+            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRaiting"],
           ],
         },
       ],

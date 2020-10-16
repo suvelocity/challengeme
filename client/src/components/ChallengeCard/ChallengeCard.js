@@ -132,7 +132,7 @@ export default function ChallengeCard({
           <Rating
             readOnly
             name='disabled'
-            value={Math.round(rating.avarageRaiting)}
+            value={Math.round(rating.averageRaiting)}
           />
         </div>
         <div className='challenge-card-description-homepage'>
