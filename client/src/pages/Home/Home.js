@@ -1,60 +1,56 @@
-import React, { useCallback, useEffect, useState } from "react";
-import network from "../../services/network";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import ChallengeCard from "../../components/ChallengeCard/ChallengeCard";
 import "./Home.css";
 import { useLocation } from "react-router-dom";
-
+import AllChallenges from "../../context/AllChallengesContext";
+import { Button } from "@material-ui/core";
 //function to get query params
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 export default function Home() {
-  const [challenges, setChallenges] = useState([]);
   const [filtered, setFiltered] = useState(false);
-  const [filters] = useState({ labels: [] });
-  let query = useQuery();
+  const allChallenges = useContext(AllChallenges).challenges;
+  const [challenges, setChallenges] = useState(allChallenges);
+  const [revertLabelFiltering, setRevertLabelFiltering] = useState(false);
 
-  //function to sort the searched filters
-  const getFilters = useCallback(() => {
-    const filterNames = Object.keys(filters);
-    const filterString = filterNames
-      .map((name) => {
-        const value = filters[name];
-        let valueString = typeof value === "object" ? value.join(",") : value;
-        return `${name}=${valueString}`;
-      })
-      .join("&");
-    return filterString;
-  }, [filters]);
+  let query = useQuery();
 
   useEffect(() => {
     (async () => {
       try {
         //checking if there is query params and the page loaded once
-        if (filtered !== true && query.get("labelId")) {
-          const { data: challengesFromServer } = await network.get(
-            `/api/v1/challenges?labels=${query.get("labelId")}`
-          );
-          //checking if there is the challenges data is array
-          typeof challengesFromServer === "object" &&
-            setChallenges(challengesFromServer);
+        if (query.get("labelId") && !filtered) {
+          const filteredByLabelChallenges = [];
+          for (let i = 0; i < challenges.length; i++) {
+            for (let label of challenges[i].Labels) {
+              if (label.id === Number(query.get("labelId"))) {
+                filteredByLabelChallenges.push(challenges[i]);
+              }
+            }
+          }
+          setRevertLabelFiltering(true);
           setFiltered(true);
+          setChallenges(filteredByLabelChallenges);
         } else {
-          const { data: challengesFromServer } = await network.get(
-            "/api/v1/challenges?" + getFilters()
-          );
-          typeof challengesFromServer === "object" &&
-            setChallenges(challengesFromServer);
+          setChallenges(allChallenges);
         }
       } catch (e) {}
     })();
     // eslint-disable-next-line
-  }, [filters]);
+  }, []);
 
+  const resetLabelFiltering = useCallback(() => {
+    setRevertLabelFiltering(false);
+    setChallenges(allChallenges);
+  }, [revertLabelFiltering]);
   return (
     <div>
       <div className='home-page'>
+        {revertLabelFiltering && (
+          <Button onClick={resetLabelFiltering}>Revert label filtering</Button>
+        )}
         <div className={"challenges-container"}>
           {challenges.map((challenge) => (
             <ChallengeCard
