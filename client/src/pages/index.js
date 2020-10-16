@@ -1,6 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import ThemeApi from "../context/ThemeContext";
 import { Logged } from "../context/LoggedInContext";
 import Register from "./Authentication/Register/Register";
 import Login from "./Authentication/Login";
@@ -93,36 +92,34 @@ export default function Router() {
           </Logged.Provider>
         ) : (
           <Logged.Provider value={{ logged, setLogged }}>
-            <ThemeApi.Provider value={{ darkTheme, setDarkTheme }}>
-              <Header />
-              {/*TODO:add loading component*/}
-              <div className={darkTheme ? "dark" : undefined}>
-                <Switch>
-                  <Suspense fallback={<h1>loading..</h1>}>
-                    <ChallengeErrorBoundry>
-                      <Route exact path='/challenges/:id'>
-                        <ChallengePage />
-                      </Route>
-                    </ChallengeErrorBoundry>
-                    <UserInfoErrorBoundry>
-                      <Route exact path='/user_info'>
-                        <UserInfo />
-                      </Route>
-                    </UserInfoErrorBoundry>
-                    <HomeErrorBoundry>
-                      <Route exact path='/'>
-                        <Home />
-                      </Route>
-                    </HomeErrorBoundry>
-                    <HomeErrorBoundry>
-                      <Route path='*'>
-                        <Redirect to='/' />
-                      </Route>
-                    </HomeErrorBoundry>
-                  </Suspense>
-                </Switch>
-              </div>
-            </ThemeApi.Provider>
+            <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
+            {/*TODO:add loading component*/}
+            <div className={darkTheme ? "dark" : undefined}>
+              <Switch>
+                <Suspense fallback={<h1>loading..</h1>}>
+                  <ChallengeErrorBoundry>
+                    <Route exact path='/challenges/:id'>
+                      <ChallengePage />
+                    </Route>
+                  </ChallengeErrorBoundry>
+                  <UserInfoErrorBoundry>
+                    <Route exact path='/user_info'>
+                      <UserInfo />
+                    </Route>
+                  </UserInfoErrorBoundry>
+                  <HomeErrorBoundry>
+                    <Route exact path='/'>
+                      <Home />
+                    </Route>
+                  </HomeErrorBoundry>
+                  <HomeErrorBoundry>
+                    <Route path='*'>
+                      <Redirect to='/' />
+                    </Route>
+                  </HomeErrorBoundry>
+                </Suspense>
+              </Switch>
+            </div>
           </Logged.Provider>
         )
       ) : (

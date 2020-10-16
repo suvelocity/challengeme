@@ -5,7 +5,6 @@ import network from "../../../services/network";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import "./Search.css";
-import ThemeApi from "../../../context/ThemeContext";
 import SearchTicket from "./SearchTicket";
 
 const useStyles = makeStyles((theme) => ({
@@ -72,7 +71,6 @@ const Search = () => {
   const [searching, setSearching] = useState(false);
   const [results, setResults] = useState([]);
   const [filters] = useState({});
-  const darkMode = React.useContext(ThemeApi).darkTheme;
 
   //get all the filters sorted to the url
   const getFilters = useCallback(() => {
@@ -162,7 +160,7 @@ const Search = () => {
   );
 
   return (
-    <div id='search' className={darkMode ? "dark" : undefined}>
+    <div id='search'>
       {searchInput}
       <div id='searchResults' className={searching ? "open" : "closed"}>
         <div id='seperator' className={searching ? "open" : "closed"}>

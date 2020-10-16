@@ -134,6 +134,7 @@ function ChallengePage() {
       );
     } else {
       return (
+        //fail
         <div>
           <p>
             {`You have already solved this challenge on ${generateTime(

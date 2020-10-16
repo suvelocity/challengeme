@@ -12,7 +12,6 @@ import Menu from "@material-ui/core/Menu";
 import Avatar from "@material-ui/core/Avatar";
 import HomeIcon from "@material-ui/icons/Home";
 import "./Header.css";
-import ThemeApi from "../../context/ThemeContext";
 import DarkModeToggle from "react-dark-mode-toggle";
 import Search from "./Search/Search";
 import { Logged } from "../../context/LoggedInContext";
@@ -64,9 +63,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Header() {
-  const changeTheme = React.useContext(ThemeApi).setDarkTheme; //setter for the theme
-  const darkMode = React.useContext(ThemeApi).darkTheme; //setter for the theme
+function Header({ darkMode, setDarkMode }) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -166,7 +163,7 @@ function Header() {
                 checked={darkMode}
                 onChange={() => {
                   localStorage.setItem("darkMode", !darkMode);
-                  changeTheme((prev) => !prev);
+                  setDarkMode((prev) => !prev);
                 }}
                 size={45}
               />

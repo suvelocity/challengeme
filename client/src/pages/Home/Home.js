@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import network from "../../services/network";
 import ChallengeCard from "../../components/ChallengeCard/ChallengeCard";
 import "./Home.css";
-import ThemeApi from "../../context/ThemeContext";
 import { useLocation } from "react-router-dom";
 
 //function to get query params
@@ -14,7 +13,6 @@ export default function Home() {
   const [challenges, setChallenges] = useState([]);
   const [filtered, setFiltered] = useState(false);
   const [filters] = useState({ labels: [] });
-  const darkMode = React.useContext(ThemeApi).darkTheme;
   let query = useQuery();
 
   //function to sort the searched filters
@@ -55,7 +53,7 @@ export default function Home() {
   }, [filters]);
 
   return (
-    <div className={darkMode ? "dark" : undefined}>
+    <div>
       <div className='home-page'>
         <div className={"challenges-container"}>
           {challenges.map((challenge) => (
