@@ -17,7 +17,7 @@ const getCurrentBranch = () => new Promise((resolve, reject) => {
         resolve(DEFAULT_BRANCH)
         //reject(new Error(stderr))
       }else{
-          resolve (stdout);
+          resolve (stdout.replace('\n', ''));
       }
     }); 
 })
