@@ -55,7 +55,7 @@ export default function Home() {
 
   return (
     <div>
-      <Background />
+      {/* <Background /> */}
       <div className='home-page'>
         <div className='challenges-container'>
           {challenges.map((challenge) => (
