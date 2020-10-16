@@ -129,7 +129,7 @@ router.post("/:challengeId/apply", async (req, res) => {
   if (!submission) {
     submission = await Submission.create({
       challengeId,
-      userId: req.body.userId,
+      userId: req.user.userId,
       state: "PENDING",
       solutionRepository,
     });
@@ -155,7 +155,14 @@ router.post("/:challengeId/apply", async (req, res) => {
     console.log(
       "CHALLENGE TYPE !!!!!",
       challenge.repositoryName,
-      challenge.type
+      challenge.type, 
+      ref,
+      solutionRepository,
+      urltoSet,
+      'token', 
+      pureToken,
+      process.env.GITHUB_REPO,
+      process.env.GITHUB_ACCESS_TOKEN
     );
     const { status } = await axios.post(
       `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
@@ -177,8 +184,8 @@ router.post("/:challengeId/apply", async (req, res) => {
     );
 
     res.json({ status });
-  } catch {
-    res.status(400).json({ message: "Cannot process request" });
+  } catch(e) {
+    res.status(400).json({ message: e });
   }
 });
 
