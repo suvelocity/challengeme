@@ -14,10 +14,10 @@ import Header from "../components/Header/Header";
 import ChallengeErrorBoundry from "../ErrorHandling/ChallengeErrorBoundry";
 import HomeErrorBoundry from "../ErrorHandling/HomeErrorBoundry";
 import AuthErrorBoundry from "../ErrorHandling/AuthErrorBoundry";
-import AddChallengeErrorBoundry from "../ErrorHandling/AddChallengeErrorBoundry";
+import UserInfoErrorBoundry from "../ErrorHandling/UserInfoErrorBoundry";
 const Home = lazy(() => import("./Home/Home"));
+const UserInfo = lazy(() => import("./UserInfo/UserInfo"));
 const ChallengePage = lazy(() => import("./OneChallenge/ChallengePage"));
-const NewChallengeForm = lazy(() => import("./NewChallenge/NewChallengeForm"));
 
 export default function Router() {
   const [darkTheme, setDarkTheme] = useState(false);
@@ -25,24 +25,20 @@ export default function Router() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const previousTheme = localStorage.getItem("darkMode"); //get previous selected theme
-    if (previousTheme === "false") {
-      setDarkTheme(false);
-    } else if (previousTheme === "true") {
-      setDarkTheme(true);
-    } else {
-      if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-        //check default theme of the user
+    if (logged) {
+      const previousTheme = localStorage.getItem("darkMode"); //get previous selected theme
+      if (previousTheme === "false") {
+        setDarkTheme(false);
+      } else if (previousTheme === "true") {
         setDarkTheme(true);
+      } else {
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          //check default theme of the user
+          setDarkTheme(true);
+        }
       }
     }
-  }, []);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setDarkTheme(true);
-    }
-  }, []);
+  }, [logged]);
 
   useEffect(() => {
     // auth
@@ -99,32 +95,31 @@ export default function Router() {
           <Logged.Provider value={{ logged, setLogged }}>
             <ThemeApi.Provider value={{ darkTheme, setDarkTheme }}>
               <Header />
-              <Suspense fallback={<h1>hi</h1>}>
-                {" "}
-                {/*TODO:add loading component*/}
-                <Switch>
+              {/*TODO:add loading component*/}
+              <Switch>
+                <Suspense fallback={<h1>loading..</h1>}>
+                  <ChallengeErrorBoundry>
+                    <Route exact path='/challenges/:id'>
+                      <ChallengePage />
+                    </Route>
+                  </ChallengeErrorBoundry>
+                  <UserInfoErrorBoundry>
+                    <Route exact path='/user_info'>
+                      <UserInfo />
+                    </Route>
+                  </UserInfoErrorBoundry>
                   <HomeErrorBoundry>
                     <Route exact path='/'>
                       <Home />
                     </Route>
                   </HomeErrorBoundry>
-                  <AddChallengeErrorBoundry>
-                    <Route path='/add_challenge'>
-                      <NewChallengeForm />
-                    </Route>
-                  </AddChallengeErrorBoundry>
-                  <ChallengeErrorBoundry>
-                    <Route exact path='/challenges/:challengeParamId'>
-                      <ChallengePage />
-                    </Route>
-                  </ChallengeErrorBoundry>
                   <HomeErrorBoundry>
                     <Route path='*'>
                       <Redirect to='/' />
                     </Route>
                   </HomeErrorBoundry>
-                </Switch>
-              </Suspense>
+                </Suspense>
+              </Switch>
             </ThemeApi.Provider>
           </Logged.Provider>
         )

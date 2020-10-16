@@ -171,18 +171,15 @@ function Header() {
                 size={45}
               />
             </MenuItem>
-            <MenuItem>
-              <Link
-                to='/add_challenge'
-                onClick={handleClose}
-                style={{ textDecoration: "none" }}
-              >
+            <MenuItem onClick={handleClose}>
+              <Link to='/user_info'>
                 <Button
+                  className='arara'
                   style={{ minWidth: 150 }}
                   variant='contained'
-                  color='primary'
+                  color='default'
                 >
-                  Add Challenge
+                  info
                 </Button>
               </Link>
             </MenuItem>

@@ -22,7 +22,7 @@ function normalizeDate(dateTime) {
 
 export default function ChallengePage() {
   const [challenge, setChallenge] = useState(null);
-  const { challengeParamId } = useParams();
+  const { id } = useParams();
   const [image, setImage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [darkModeIsOn] = useState(false); // TODO: subscribe to global state , create recoil Atom to the state
@@ -30,9 +30,7 @@ export default function ChallengePage() {
   useEffect(() => {
     const setImg = async () => {
       try {
-        const { data } = await network.get(
-          `/api/v1/image?id=${challengeParamId}`
-        );
+        const { data } = await network.get(`/api/v1/image?id=${id}`);
         setImage(data.img);
       } catch (error) {
         console.error(error);
@@ -42,7 +40,7 @@ export default function ChallengePage() {
       try {
         let {
           data: { challenge: challengeFromServer, author },
-        } = await network.get(`/api/v1/challenges/${challengeParamId}`);
+        } = await network.get(`/api/v1/challenges/${id}`);
         challengeFromServer.author = author; // TODO: format request to the server api...
         setChallenge(challengeFromServer);
       } catch (error) {
@@ -51,7 +49,7 @@ export default function ChallengePage() {
     };
     setImg();
     fetchChallenge();
-  }, [challengeParamId]);
+  }, [id]);
 
   function handleModalClose() {
     setIsModalOpen(false);
@@ -92,13 +90,15 @@ export default function ChallengePage() {
             <h2 className={darkModeIsOn ? "dark-h2" : "light-h2"}>Labels:</h2>
             <span className='challenge-label'>
               {challenge["Labels"] &&
-                challenge["Labels"].map((label) => (
-                  <Link
-                    to={`/?labelId=${label["labels_to_challenges"]["label_id"]}`}
-                  >
-                    <Chip color='primary' label={label.name} component='a' />
-                  </Link>
-                ))}
+                challenge["Labels"].map((label) => {
+                  return (
+                    <Link
+                      to={`/?labelId=${label["LabelChallenge"]["labelId"]}`}
+                    >
+                      <Chip color='primary' label={label.name} component='a' />
+                    </Link>
+                  );
+                })}
             </span>
           </div>
           <div className='challenge-rating'>
@@ -142,10 +142,7 @@ export default function ChallengePage() {
             </div>
           </div>
           <div className='challenge-solution-table'>
-            <InfoTable
-              challengeId={challengeParamId}
-              darkModeIsOn={darkModeIsOn}
-            />
+            <InfoTable challengeId={id} darkModeIsOn={darkModeIsOn} />
           </div>
           <div
             className={
@@ -162,7 +159,7 @@ export default function ChallengePage() {
       <SubmitModal
         isOpen={isModalOpen}
         handleClose={handleModalClose}
-        challengeParamId={challengeParamId}
+        challengeParamId={id}
       />
     </div>
   ) : (
