@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import ChooseLabels from "../../components/Choosers/ChooseLabels";
 import network from "../../services/network";
-import ThemeApi from "../../context/ThemeContext";
 import AddImg from "../../components/AddImg/AddImg";
 import Swal from "sweetalert2";
 import "./NewChallengeForm.css";
@@ -41,7 +40,6 @@ export default function NewChallengeForm() {
   const [repoLabels, setRepoLabels] = useState([]);
   const [file, setFile] = useState({});
   const [badInput, setBadInput] = useState([]);
-  const darkMode = React.useContext(ThemeApi).darkTheme;
   const history = useHistory();
 
   useEffect(() => {
@@ -253,7 +251,7 @@ export default function NewChallengeForm() {
   const classes = useStyles();
 
   return (
-    <div className={darkMode ? "newChallengeDark" : `newChallenge`}>
+    <div className={`newChallenge`}>
       <form className='newChallengeForm'>
         <Typography
           variant='h5'

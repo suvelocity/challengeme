@@ -41,31 +41,29 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:challengeId", async (req, res) => {
+router.get("/:challengeId/:userName/submission", async (req, res) => {
   try {
-    let challenge = await Challenge.findOne({
-      where: { id: req.params.challengeId },
+    const { challengeId } = req.params;
+    const { userName } = req.params;
+    const { id } = await User.findOne({
+      where: { userName },
+      attributes: ["id"],
+    });
+    const submission = await Submission.findOne({
       include: [
         {
-          model: Label,
-          attributes: ["name"],
-        },
-        {
-          model: Review,
-          attributes: [
-            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"],
-          ],
-        },
-        {
           model: User,
-          as: "Author",
-          attributes: ["email", "userName"],
+          attributes: ["userName"],
         },
       ],
+      where: {
+        challengeId,
+        userId: id,
+      },
     });
-    res.json({ challenge });
+    res.json(submission);
   } catch (error) {
-    res.status(400).json({ message: "Cannot process request" });
+    res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
 
@@ -155,11 +153,11 @@ router.post("/:challengeId/apply", async (req, res) => {
     console.log(
       "CHALLENGE TYPE !!!!!",
       challenge.repositoryName,
-      challenge.type, 
+      challenge.type,
       ref,
       solutionRepository,
       urltoSet,
-      'token', 
+      "token",
       pureToken,
       process.env.GITHUB_REPO,
       process.env.GITHUB_ACCESS_TOKEN
@@ -184,9 +182,36 @@ router.post("/:challengeId/apply", async (req, res) => {
     );
 
     res.json({ status });
-  } catch(e) {
+  } catch (e) {
     res.status(400).json({ message: e });
   }
 });
 
+router.get("/:challengeId", async (req, res) => {
+  try {
+    let challenge = await Challenge.findOne({
+      where: { id: req.params.challengeId },
+      include: [
+        {
+          model: Label,
+          attributes: ["name"],
+        },
+        {
+          model: Review,
+          attributes: [
+            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"],
+          ],
+        },
+        {
+          model: User,
+          as: "Author",
+          attributes: ["email", "userName"],
+        },
+      ],
+    });
+    res.json({ challenge });
+  } catch (error) {
+    res.status(400).json({ message: "Cannot process request" });
+  }
+});
 module.exports = router;
