@@ -96,30 +96,32 @@ export default function Router() {
             <ThemeApi.Provider value={{ darkTheme, setDarkTheme }}>
               <Header />
               {/*TODO:add loading component*/}
-              <Switch>
-                <Suspense fallback={<h1>loading..</h1>}>
-                  <ChallengeErrorBoundry>
-                    <Route exact path='/challenges/:id'>
-                      <ChallengePage />
-                    </Route>
-                  </ChallengeErrorBoundry>
-                  <UserInfoErrorBoundry>
-                    <Route exact path='/user_info'>
-                      <UserInfo />
-                    </Route>
-                  </UserInfoErrorBoundry>
-                  <HomeErrorBoundry>
-                    <Route exact path='/'>
-                      <Home />
-                    </Route>
-                  </HomeErrorBoundry>
-                  <HomeErrorBoundry>
-                    <Route path='*'>
-                      <Redirect to='/' />
-                    </Route>
-                  </HomeErrorBoundry>
-                </Suspense>
-              </Switch>
+              <div className={darkTheme ? "dark" : undefined}>
+                <Switch>
+                  <Suspense fallback={<h1>loading..</h1>}>
+                    <ChallengeErrorBoundry>
+                      <Route exact path='/challenges/:id'>
+                        <ChallengePage />
+                      </Route>
+                    </ChallengeErrorBoundry>
+                    <UserInfoErrorBoundry>
+                      <Route exact path='/user_info'>
+                        <UserInfo />
+                      </Route>
+                    </UserInfoErrorBoundry>
+                    <HomeErrorBoundry>
+                      <Route exact path='/'>
+                        <Home />
+                      </Route>
+                    </HomeErrorBoundry>
+                    <HomeErrorBoundry>
+                      <Route path='*'>
+                        <Redirect to='/' />
+                      </Route>
+                    </HomeErrorBoundry>
+                  </Suspense>
+                </Switch>
+              </div>
             </ThemeApi.Provider>
           </Logged.Provider>
         )

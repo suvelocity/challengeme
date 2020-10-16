@@ -30,7 +30,6 @@ export default function ChallengeCard({
   const darkMode = React.useContext(ThemeApi).darkTheme;
   const [coverImg, setCoverImg] = useState("");
   const [loading, setLoading] = useState(true);
-
   const [date, setDate] = useState(null);
 
   //function for getting the last update time
