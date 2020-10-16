@@ -5,7 +5,7 @@ import "./ChallengeCard.css";
 import Avatar from "@material-ui/core/Avatar";
 import Rating from "@material-ui/lab/Rating";
 import { Tooltip } from "@material-ui/core";
-import ThemeApi from "../../services/Theme";
+import ThemeApi from "../../context/ThemeContext";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
 //fallback function to sort the creation time of the repo

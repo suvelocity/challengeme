@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap");
+
+.challengeMeTitleHomePage {
+  font-size: 60px;
+  text-shadow: "2px 2px 10px black";
+  margin-bottom: 30px;
+}
+
+#container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(
+    29deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(68, 112, 195, 1) 47%
+  );
+  /* background: url(https://drive.google.com/uc?export=view&id=1mbWoZY-Go_jMIA8No10aMRgguih0MsI1); */
+  background-size: cover;
+}
+.wave {
+  position: absolute;
+  width: 100%;
+  height: 150px;
+  top: 0;
+  left: 0;
+  background: url("wave.png");
+  animation: wave 8s linear infinite;
+}
+.wave::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 150px;
+  top: 0;
+  left: 0;
+  background: url("wave.png");
+  opacity: 0.2;
+  animation: wave-reverse 8s linear infinite;
+}
+.wave::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 150px;
+  top: 0;
+  left: 0;
+  background: url("wave.png");
+  opacity: 0.8;
+  animation-delay: -4s;
+  animation: wave 16s linear infinite;
+}
+@keyframes wave {
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: 1280px;
+  }
+}
+@keyframes wave-reverse {
+  0% {
+    background-position: 1280px;
+  }
+  100% {
+    background-position: 0;
+  }
+}

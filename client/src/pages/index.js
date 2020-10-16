@@ -1,24 +1,24 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import ThemeApi from "../services/Theme";
-import Statistics from "./Statistics";
+import ThemeApi from "../context/ThemeContext";
 import { Logged } from "../context/LoggedInContext";
-import Register from "./Register/Register";
-import Login from "./Login";
+import Register from "./Authentication/Register/Register";
+import Login from "./Authentication/Login";
 import Cookies from "js-cookie";
-import Forgot from "./Forgot/Forgot";
-import VlidatingMail from "./Register/VlidatingMail";
+import Forgot from "./Authentication/ForgotPasswordPage/Forgot";
+import ValidatingMail from "./Authentication/Register/ValidatingMail";
 import network from "../services/network";
-import Landing from "./Landing";
+import Landing from "./Authentication/Landing";
 import { AnimatePresence } from "framer-motion";
-import ChallengePage from "../components/ChallengePage/mainPage/ChallengePage";
-import NewChallengeForm from "../components/NewChallenge/NewChallengeForm";
+import ChallengePage from "./OneChallenge/ChallengePage";
+import NewChallengeForm from "./NewChallenge/NewChallengeForm";
 import Header from "../components/Header/Header";
-import ChallengeErrorBoundry from "../services/ChallengeErrorBoundry";
-import HomeErrorBoundry from "../services/HomeErrorBoundry";
-import AuthErrorBoundry from "../services/AuthErrorBoundry";
-import AddChallengeErrorBoundry from "../services/AddChallengeErrorBoundry";
-const Home = lazy(() => import("./Home/Home"));
+import ChallengeErrorBoundry from "../ErrorHandling/ChallengeErrorBoundry";
+import HomeErrorBoundry from "../ErrorHandling/HomeErrorBoundry";
+import AuthErrorBoundry from "../ErrorHandling/AuthErrorBoundry";
+import AddChallengeErrorBoundry from "../ErrorHandling/AddChallengeErrorBoundry";
+import Home from "./Home/Home";
+// const Home = lazy(() => import("../Home"));
 
 export default function Router() {
   const [darkTheme, setDarkTheme] = useState(false);
@@ -82,7 +82,7 @@ export default function Router() {
                         <Forgot />
                       </Route>
                       <Route exact path='/auth'>
-                        <VlidatingMail />
+                        <ValidatingMail />
                       </Route>
                       <Route exact path='/'>
                         <Landing />
@@ -111,9 +111,6 @@ export default function Router() {
                     <NewChallengeForm />
                   </Route>
                 </AddChallengeErrorBoundry>
-                <Route path='/statistics'>
-                  <Statistics />
-                </Route>
                 <ChallengeErrorBoundry>
                   <Route exact path='/challenges/:challengeParamId'>
                     <ChallengePage />
