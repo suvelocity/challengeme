@@ -24,6 +24,7 @@ export default function ChallengePage() {
   const [challenge, setChallenge] = useState(null);
   const { id } = useParams();
   const [image, setImage] = useState("");
+  const [rating, setRating] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [darkModeIsOn] = useState(false); // TODO: subscribe to global state , create recoil Atom to the state
 
@@ -43,6 +44,7 @@ export default function ChallengePage() {
         } = await network.get(`/api/v1/challenges/${id}`);
         challengeFromServer.author = author; // TODO: format request to the server api...
         setChallenge(challengeFromServer);
+        setRating(Math.round(challengeFromServer.Reviews[0].averageRating));
       } catch (error) {
         console.error(error);
       }
@@ -105,8 +107,7 @@ export default function ChallengePage() {
             <h2 className={darkModeIsOn ? "dark-h2" : "light-h2"}>Rating:</h2>
             <Rating
               name='half-rating-read'
-              defaultValue={5}
-              precision={0.5}
+              value={rating}
               readOnly
               size='large'
             />

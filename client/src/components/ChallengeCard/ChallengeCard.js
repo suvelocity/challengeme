@@ -86,20 +86,6 @@ export default function ChallengeCard({
     // eslint-disable-next-line
   }, []);
 
-  //rating function
-  const getRating = () => {
-    //TODO:change this
-    // console.log(rating);
-    if (rating.length === 0) {
-      return 0;
-    } else {
-      return (
-        rating.map((review) => review.rating).reduce((pv, cv) => pv + cv, 0) /
-        rating.length
-      );
-    }
-  };
-
   const avatarStyle = {
     backgroundColor: darkMode ? "#F5AF5D" : "#C9AC80",
     margin: 5,
@@ -143,7 +129,11 @@ export default function ChallengeCard({
         )}
         <div className='challenge-card-data-homepage'>
           {date && "Updated: " + date}
-          <Rating readOnly name='disabled' value={getRating()} />
+          <Rating
+            readOnly
+            name='disabled'
+            value={Math.round(rating.avarageRaiting)}
+          />
         </div>
         <div className='challenge-card-description-homepage'>
           {

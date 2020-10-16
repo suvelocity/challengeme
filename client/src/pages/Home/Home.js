@@ -67,7 +67,7 @@ export default function Home() {
               description={challenge.description}
               repositoryName={challenge.repositoryName}
               labels={challenge.Labels}
-              rating={challenge.Reviews}
+              rating={challenge.Reviews[0]}
             />
           ))}
         </div>
