@@ -32,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    // backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: "black",
     "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
@@ -165,12 +166,12 @@ const Search = () => {
     <div id='search' className={darkMode ? "dark" : undefined}>
       {searchInput}
       <div id='searchResults' className={searching ? "open" : "closed"}>
-        <div id='seperator' className={searching ? "open" : "closed"}>
+        {/* <div id='seperator' className={searching ? "open" : "closed"}>
           <button className='searchClose' onClick={closeSearch}>
             X
           </button>
         </div>
-        <div className='display'>{resultsList}</div>
+        <div className='display'>{resultsList}</div> */}
       </div>
     </div>
   );

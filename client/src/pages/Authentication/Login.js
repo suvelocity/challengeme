@@ -19,7 +19,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import GitHubIcon from "@material-ui/icons/GitHub";
 import ErrorIcon from "@material-ui/icons/Error";
 import { motion } from "framer-motion";
-import Background from "./styles/Background";
+import Background from "../Background";
 import "./styles/Login.css";
 
 const useStyles = makeStyles((theme) => ({
