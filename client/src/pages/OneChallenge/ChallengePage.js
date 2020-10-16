@@ -177,7 +177,10 @@ function ChallengePage() {
         <div className='challenge-label'>
           {challenge["Labels"] &&
             challenge["Labels"].map((label) => (
-              <Link to={`/?labelId=${label["LabelChallenge"]["labelId"]}`}>
+              <Link
+                key={label.id}
+                to={`/?labelId=${label["LabelChallenge"]["labelId"]}`}
+              >
                 <Chip color='primary' label={label.name} component='a' />
               </Link>
             ))}
