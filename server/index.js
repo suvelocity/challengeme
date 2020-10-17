@@ -17,7 +17,7 @@ const getCurrentBranch = () => new Promise((resolve, reject) => {
         resolve(DEFAULT_BRANCH)
         //reject(new Error(stderr))
       }else{
-          resolve (stdout);
+          resolve (stdout.replace('\n', ''));
       }
     }); 
 })
@@ -39,5 +39,3 @@ establishConnection();
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
-
-

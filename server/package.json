@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test jest challenges",
+    "test": "NODE_ENV=test jest",
     "migrate": "node_modules/.bin/sequelize db:migrate",
     "dev": "nodemon index.js",
     "devTest": "NODE_ENV=test nodemon index.js"
