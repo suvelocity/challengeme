@@ -35,37 +35,41 @@ describe("testing challenges endpoints", () => {
 
   it("Can get all challenges", async (done) => {
     await Challenge.bulkCreate(challengesMock);
-    const { body } = await request(app)
+    const response = await request(app)
       .get("/api/v1/challenges")
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
-    expect(body.length).toBe(3);
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(3);
     done();
   });
 
   it("Can get challenge by name", async (done) => {
     await Challenge.bulkCreate(challengesMock);
-    const { body } = await request(app)
+    const response = await request(app)
       .get("/api/v1/challenges?name=React - Calculator")
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
-    expect(body.length).toBe(1);
-    expect(body[0].name).toBe("React - Calculator");
+    expect(response.status).toBe(200);
+    expect(response.body.length).toBe(1);
+    expect(response.body[0].name).toBe("React - Calculator");
     done();
   });
 
   it("Can get all github types", async (done) => {
-    const { body } = await request(app)
+    const response = await request(app)
       .get("/api/v1/types")
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
-    expect(body.length).toBe(6);
+    expect(response.body.length).toBe(6);
+    expect(response.status).toBe(200);
     done();
   });
 
   it("Can get all labels", async (done) => {
     await Label.bulkCreate(labelsMock);
-    const { body } = await request(app)
+    const response = await request(app)
       .get("/api/v1/labels")
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
-    expect(body.length).toBe(11);
+    expect(response.body.length).toBe(11);
+    expect(response.status).toBe(200);
     done();
   });
 
@@ -73,12 +77,13 @@ describe("testing challenges endpoints", () => {
     await Challenge.bulkCreate(challengesMock);
     await User.bulkCreate(usersMock);
     await Submission.bulkCreate(submissionsMock);
-    const { body } = await request(app)
+    const response = await request(app)
       .get("/api/v1/challenges/1/dek12345/submission")
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
-    expect(body.userId).toBe(1);
-    expect(body.state).toBe("SUCCESS");
-    expect(Array.isArray(body)).toBe(false);
+    expect(response.body.userId).toBe(1);
+    expect(response.body.state).toBe("SUCCESS");
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(false);
     done();
   });
 });
@@ -86,12 +91,12 @@ describe("testing challenges endpoints", () => {
 // it("Can post new challenge - send error if challenge's repo is already exists", async (done) => {
 //   await request(app).post('/api/v1/challenges').send(challengesMock[0])
 //   .set('authorization', `bearer ${generateToken(usersMock[0])}`)
-//   const { body } = await request(app).get('/api/v1/challenges?challengeName=JWT - Node.js')
+//   const response = await request(app).get('/api/v1/challenges?challengeName=JWT - Node.js')
 //   .set('authorization', `bearer ${generateToken(usersMock[0])}`)
 //   .expect(200);
-//   console.log('challenge:', body );
-//   expect(body.length).toBe(1);
-//   expect(body[0].name).toBe('JWT - Node.js');
+//   console.log('challenge:', response.body );
+//   expect(response.body.length).toBe(1);
+//   expect(response.body[0].name).toBe('JWT - Node.js');
 //   await request(app).post('/api/v1/challenges').send(challengesMock[0])
 //   .set('authorization', `bearer ${generateToken(usersMock[0])}`)
 //   .expect(500);
