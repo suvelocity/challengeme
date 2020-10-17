@@ -38,6 +38,7 @@ router.get("/", async (req, res) => {
     });
     res.json(allChallenges);
   } catch (error) {
+    console.log('error challenges', error)
     res.status(400).json({ message: "couldn't get challenges" }); //
   }
 });
