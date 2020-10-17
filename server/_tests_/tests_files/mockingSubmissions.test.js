@@ -33,7 +33,7 @@ describe('Submission process', () => {
         await User.destroy({ truncate: true, force: true });
         await Review.destroy({ truncate: true, force: true });
         await Challenge.bulkCreate(challengeArr);
-        await User.create({...userToAdd});
+        await User.create(userToAdd);
         await Submission.create({
           challengeId: solutionRepos[0].challengeId,
           state: 'FAIL',
@@ -59,7 +59,6 @@ describe('Submission process', () => {
         let testRepo = challenges.find(challenge=> challenge.id === solutionRepos[0].challengeId).repositoryName;
         const successId = initialSubmissions.find(submission => submission.solutionRepository === solutionRepos[0].repo).id;
         let webhookUrl = process.env.MY_URL.concat(`/api/v1/webhook/submission/${successId}`);
-        console.log('AAAAAAAAAAAAAAAAAAAAAAAAA',ref)
         const githubPostmock1 = nock(`https://api.github.com`, {reqHeaders: {
           'Content-Type': 'application/json',
           Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
@@ -117,7 +116,7 @@ describe('Submission process', () => {
         })
         .reply(200)
     
-        const myUser = User.findOne();
+        const myUser = await User.findOne();
         await request(app).post(`/api/v1/challenges/${solutionRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
         .send({repository:solutionRepos[0].repo , ...review, user:myUser});
         await request(app).post(`/api/v1/challenges/${failRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
@@ -136,6 +135,7 @@ describe('Submission process', () => {
     },10000);
     test('webhook simulation, state change from PENDING to SUCCESS or FAIL', async () => {
       let submissions = await Submission.findAll();
+      console.log("AAAAAAAAA", submissions);
       const successId = submissions.find(submission => submission.solutionRepository === solutionRepos[0].repo).id;
       const successId2 = submissions.find(submission => submission.solutionRepository === solutionRepos[1].repo).id;
       const failId = submissions.find(submission => submission.solutionRepository === failRepos[0].repo).id;
