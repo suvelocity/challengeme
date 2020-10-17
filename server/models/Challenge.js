@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsToMany(models.Label, {
         through: "LabelChallenge",
         foreignKey: "challengeId",
+        as: "labels",
       });
     }
   }
