@@ -10,7 +10,6 @@ import network from "../services/network";
 import Landing from "./Authentication/Landing";
 import { AnimatePresence } from "framer-motion";
 import Header from "../components/Header/Header";
-import NavBar from "../components/Header/NavBar";
 import ChallengeErrorBoundry from "../ErrorHandling/ChallengeErrorBoundry";
 import HomeErrorBoundry from "../ErrorHandling/HomeErrorBoundry";
 import AuthErrorBoundry from "../ErrorHandling/AuthErrorBoundry";
@@ -110,16 +109,16 @@ export default function Router() {
                                             <UserInfo />
                                         </Route>
                                     </UserInfoErrorBoundry>
-                                    {/* <HomeErrorBoundry>
+                                    <HomeErrorBoundry>
                                         <Route exact path="/">
                                             <Home />
                                         </Route>
-                                    </HomeErrorBoundry> */}
-                                    {/* <HomeErrorBoundry>
+                                    </HomeErrorBoundry>
+                                    <HomeErrorBoundry>
                                         <Route path="*">
                                             <Redirect to="/" />
                                         </Route>
-                                    </HomeErrorBoundry> */}
+                                    </HomeErrorBoundry>
                                 </Suspense>
                             </Switch>
                         </div>

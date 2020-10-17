@@ -3,8 +3,8 @@ import network from "../../services/network";
 import ChallengeCard from "../../components/ChallengeCard/ChallengeCard";
 import "./Home.css";
 import { useLocation } from "react-router-dom";
-
 import Background from "../Background";
+
 //function to get query params
 function useQuery() {
   return new URLSearchParams(useLocation().search);

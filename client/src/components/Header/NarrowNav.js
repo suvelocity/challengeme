@@ -23,53 +23,11 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
+import Button from "@material-ui/core/Button";
 
 import InfoIcon from "@material-ui/icons/Info";
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
-    // root: {
-    //     flexGrow: 0,
-    // },
-    // menuButton: {
-    //     marginRight: theme.spacing(2),
-    // },
-    // search: {
-    //     position: "relative",
-    //     borderRadius: theme.shape.borderRadius,
-    //     backgroundColor: fade(theme.palette.common.white, 0.15),
-    //     "&:hover": {
-    //         backgroundColor: fade(theme.palette.common.white, 0.25),
-    //     },
-    //     marginRight: theme.spacing(2),
-    //     marginLeft: 0,
-    //     width: "100%",
-    //     [theme.breakpoints.up("sm")]: {
-    //         marginLeft: theme.spacing(3),
-    //         width: "auto",
-    //     },
-    // },
-    // searchIcon: {
-    //     padding: theme.spacing(0, 2),
-    //     height: "100%",
-    //     position: "absolute",
-    //     pointerEvents: "none",
-    //     display: "flex",
-    //     alignItems: "center",
-    //     justifyContent: "center",
-    // },
-    // inputRoot: {
-    //     color: "inherit",
-    // },
-    // inputInput: {
-    //     padding: theme.spacing(1, 1, 1, 0),
-    //     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    //     transition: theme.transitions.create("width"),
-    //     width: "100%",
-    //     [theme.breakpoints.up("md")]: {
-    //         width: "20ch",
-    //     },
-    // },
-
     darkModeToggle: {
         marginRight: "10px;",
     },
@@ -108,12 +66,12 @@ const useStyles = makeStyles((theme) => ({
     drawerPaper: {
         width: drawerWidth,
         backgroundColor: "white",
-        boxShadow:"10px 0px 35px 0px rgba(51,51,51,0.7)"
+        boxShadow: "10px 0px 35px 0px rgba(51,51,51,0.7)",
     },
     drawerPaperDark: {
         width: drawerWidth,
         backgroundColor: "rgb(51,51,51)",
-        boxShadow:"2px 0px 35px 0px black"
+        boxShadow: "2px 0px 35px 0px black",
     },
     generalDrawerHeader: {
         display: "flex",
@@ -148,6 +106,15 @@ const useStyles = makeStyles((theme) => ({
     },
     avatarUserInfo: {
         margin: "20px",
+    },
+    logOut: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    heyName: {
+        marginTop: "8px",
+        marginLeft: "7px",
     },
 }));
 
@@ -185,6 +152,12 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
     const headerStyle = {
         backgroundColor: darkMode ? "rgb(51,51,51)" : "white",
     };
+    const letterColor = {
+        color: darkMode ? "white" : "black",
+    };
+    const dividerColor = {
+        backgroundColor: darkMode ? "white" : "black",
+    };
     return (
         <>
             <AppBar
@@ -202,8 +175,9 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
                         edge="start"
                         className={clsx(classes.menuButton, openNavBar && classes.hide)}
                     >
-                        <MenuIcon style={{ color: "black" }} />
+                        <MenuIcon style={letterColor} />
                     </IconButton>
+                    <Search />
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -230,34 +204,61 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
                                 {Cookies.get("name").slice(0, 2)}
                             </Avatar>
                         </Tooltip>
+                        <div className={classes.heyName} style={letterColor}>
+                            <b>Hey {Cookies.get("name")}</b>
+                        </div>
                     </div>
                     <div className={classes.drawerHeader}>
                         <IconButton onClick={handleDrawerClose}>
-                            <ChevronLeftIcon />
+                            <ChevronLeftIcon style={letterColor}/>
                         </IconButton>
                     </div>
                 </div>
-                <Divider />
+                <Divider style={dividerColor}/>
                 <List className={classes.list}>
                     <Link to="/" className="link-rout">
-                        <ListItem button onClick={handleDrawerClose}>
+                        <ListItem button onClick={handleDrawerClose} style={letterColor}>
                             <ListItemIcon>
-                                <HomeIcon />
+                                <HomeIcon style={letterColor}/>
                             </ListItemIcon>
                             <ListItemText primary={"Home"} />
                         </ListItem>
                     </Link>
-                    <Divider />
+                    <Divider style={dividerColor}/>
                     <Link to="/user_info" className="link-rout">
-                        <ListItem button onClick={handleDrawerClose}>
+                        <ListItem button onClick={handleDrawerClose} style={letterColor}>
                             <ListItemIcon>
-                                <InfoIcon />
+                                <InfoIcon style={letterColor}/>
                             </ListItemIcon>
                             <ListItemText primary={"Info"} />
                         </ListItem>
                     </Link>
+                    <Divider style={dividerColor}/>
+                    <ListItem className={classes.logOut} onClick={handleDrawerClose}>
+                        <DarkModeToggle
+                            className={classes.darkModeToggle}
+                            checked={darkMode}
+                            onChange={() => {
+                                localStorage.setItem("darkMode", !darkMode);
+                                setDarkMode((prev) => !prev);
+                            }}
+                            size={45}
+                        />
+                    </ListItem>
+                    <Divider style={dividerColor} />
+                    <ListItem className={classes.logOut} onClick={handleDrawerClose}>
+                        <Button
+                            className={classes.logOutButton}
+                            onClick={logOut}
+                            style={{ minWidth: 150 }}
+                            variant="contained"
+                            color="secondary"
+                        >
+                            Log Out
+                        </Button>
+                    </ListItem>
                 </List>
-                <Divider />
+                <Divider style={dividerColor}/>
             </Drawer>
         </>
     );
