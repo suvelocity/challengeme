@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import ErrorIcon from "@material-ui/icons/Error";
 import { CircularProgress } from "@material-ui/core";
-import Background from "../styles/Background";
+import Background from "../../Background";
 import { motion } from "framer-motion";
 import "../styles/Register.css";
 

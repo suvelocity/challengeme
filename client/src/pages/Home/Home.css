@@ -1,19 +1,7 @@
-.dark .home-page {
-  background: #141e30; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #141e30,
-    #243b55
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #141e30,
-    #243b55
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
+
 .home-page {
   overflow-x: hidden;
-  height: 89.2vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
 }
@@ -21,6 +9,8 @@
 .challenges-container {
   /* padding-top: 110px; */
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  /* flex-wrap: wrap; */
+  /* justify-content: center; */
+  margin-top: 100px;
 }

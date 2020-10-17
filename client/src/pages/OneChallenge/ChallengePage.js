@@ -27,6 +27,7 @@ function ChallengePage() {
   const [rating, setRating] = useState(0);
   const [date, setDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const getUpdated = useCallback((date) => {
     const dateNow = Date.now();
     const updateRepoDate = new Date(date);
@@ -151,68 +152,72 @@ function ChallengePage() {
   };
 
   return challenge ? (
-    <div style={{ marginTop: 100 }} className='one-challenge-container'>
-      <div className='one-challenge-info'>
-        <h1>{challenge.name}</h1>
-        <img src={image} alt='' />
-        <div className='one-challenge-description'>
-          Description:
-          <br />
-          <p>{challenge.description}</p>
-        </div>
+    <div style={{ overflowY: "auto", height: "100vh", width: "100%" }}>
+      <div className='one-challenge-container'>
+        <div className='one-challenge-info'>
+          <h1 className='one-challenge-info-title'>
+            <b>{challenge.name}</b>
+          </h1>
+          <img className='one-challenge-info-image' src={image} alt='' />
+          <div className='one-challenge-description'>
+            <b>Description:</b>
+            <br />
+            {challenge.description}
 
-        <div className='one-challenge-author'>
-          Created by: {challenge.Author.userName}
-        </div>
-        <div className='one-challenge-uploaded-at'>
-          <p>Created At: {generateTime(challenge.createdAt) + " "} </p>
-        </div>
-        <div className='one-challenge-updated-at'>
-          <p>Updated At: {date ? date : ""}</p>
-        </div>
-        <div className='one-challenge-rating'>
-          <Rating
-            name='half-rating-read'
-            value={rating}
-            readOnly
-            size='large'
-          />
-        </div>
-        <div className='challenge-label'>
-          {challenge["Labels"] &&
-            challenge["Labels"].map((label) => (
-              <Link
-                key={label.id}
-                to={`/?labelId=${label["LabelChallenge"]["labelId"]}`}
-              >
-                <Chip color='primary' label={label.name} component='a' />
-              </Link>
-            ))}
-        </div>
-        <Button
-          color='primary'
-          href={`https://github.com/${challenge.boilerPlate}`}
-          target='_blank'
-        >
-          Start this challenge
-        </Button>
-      </div>
-      <div className='one-challenge-reviews-and-submissions'>
-        <div className='one-challenge-submission-container'>
-          <div className='one-challenge-submit-btn'>
-            <div className='submission-status'>{getSubmissionStatus()}</div>
-            <Button color='primary' onClick={() => setIsModalOpen(true)}>
-              Submit
-            </Button>
+            <div className='one-challenge-author'>
+              Created by: {challenge.Author.userName}
+            </div>
+            <div className='one-challenge-uploaded-at'>
+              Created At: {generateTime(challenge.createdAt) + " "}
+            </div>
+            <div className='one-challenge-updated-at'>
+              Updated At: {date ? date : ""}
+            </div>
+            <div className='one-challenge-rating'>
+              <Rating
+                name='half-rating-read'
+                value={rating}
+                readOnly
+                size='large'
+              />
+            </div>
+            <div className='challenge-label'>
+              {challenge["Labels"] &&
+                challenge["Labels"].map((label) => (
+                  <Link
+                    key={label.id}
+                    to={`/?labelId=${label["LabelChallenge"]["labelId"]}`}
+                  >
+                    <Chip color='primary' label={label.name} component='a' />
+                  </Link>
+                ))}
+            </div>
           </div>
-          <SubmitModal
-            isOpen={isModalOpen}
-            handleClose={handleModalClose}
-            challengeParamId={id}
-          />
+          <Button
+            color='primary'
+            href={`https://github.com/${challenge.boilerPlate}`}
+            target='_blank'
+          >
+            Start this challenge
+          </Button>
         </div>
-        <div className='one-challenge-reviews-container'>
-          <ReviewsTab challengeId={challenge.id} />
+        <div className='one-challenge-reviews-and-submissions'>
+          <div className='one-challenge-submission-container'>
+            <div className='one-challenge-submit-btn'>
+              <div className='submission-status'>{getSubmissionStatus()}</div>
+              <Button color='primary' onClick={() => setIsModalOpen(true)}>
+                Submit
+              </Button>
+            </div>
+            <SubmitModal
+              isOpen={isModalOpen}
+              handleClose={handleModalClose}
+              challengeParamId={id}
+            />
+          </div>
+          <div className='one-challenge-reviews-container'>
+            <ReviewsTab challengeId={challenge.id} />
+          </div>
         </div>
       </div>
     </div>
