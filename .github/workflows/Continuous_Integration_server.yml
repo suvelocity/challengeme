@@ -14,6 +14,16 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
+    env:
+      NODE_ENV: "test"
+      DB_TEST: "challenge_test"
+      IP_ADDRESS: "http://localhost:3000"
+      RESET_PASSWORD_TOKEN: "dslkfrjr894utjeriiofj2389ey378wegsdyr8gf578th45igojkldfmvsf934rj490je"
+      ACCESS_TOKEN_SECRET: "sdlkmf4930fjerfdfokvmdsldm1920ejeiockdv950gij54eorjflrf9430r4rjo34plre"
+      EMAIL_TOKEN_SECRET: "dsvldfmldkm54y89j5effdc389ejewkmcsldmf4390rfwemdpvmdlfkg509gker0krkf94f"
+      REFRESH_TOKEN_SECRET: "dfgklfmg834t3958tjervr9fft4ejrfknf32893rufjriofj5905t4i5t905itreokf5822"
+      SUVELOCITY_MAIL: suvelocity@gmail.com
+      SUVELOCITY_PASSWORD: icaatmnluvhrtbvo
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     services:
@@ -41,16 +51,9 @@ jobs:
       - name: create and migrate DB, then test
         run: |
           npm run initDB &&
-          npm run migrate &&
+          npm run migrate
+        working-directory: ./server
+      - name: create and migrate DB, then test
+        run: |
           npm run test
-        env:
-          NODE_ENV: "test"
-          DB_TEST: "challenge_test"
-          IP_ADDRESS: "http://localhost:3000"
-          RESET_PASSWORD_TOKEN: "dslkfrjr894utjeriiofj2389ey378wegsdyr8gf578th45igojkldfmvsf934rj490je"
-          ACCESS_TOKEN_SECRET: "sdlkmf4930fjerfdfokvmdsldm1920ejeiockdv950gij54eorjflrf9430r4rjo34plre"
-          EMAIL_TOKEN_SECRET: "dsvldfmldkm54y89j5effdc389ejewkmcsldmf4390rfwemdpvmdlfkg509gker0krkf94f"
-          REFRESH_TOKEN_SECRET: "dfgklfmg834t3958tjervr9fft4ejrfknf32893rufjriofj5905t4i5t905itreokf5822"
-          SUVELOCITY_MAIL: suvelocity@gmail.com
-          SUVELOCITY_PASSWORD: icaatmnluvhrtbvo
         working-directory: ./server
