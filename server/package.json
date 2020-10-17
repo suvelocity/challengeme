@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test jest",
+    "test": "jest --detectOpenHandles --forceExit",
+    "initDB":"node_modules/.bin/sequelize db:create",
     "migrate": "node_modules/.bin/sequelize db:migrate",
-    "dev": "nodemon index.js",
+    "dev": "NODE_ENV=devlopment nodemon index.js",
     "devTest": "NODE_ENV=test nodemon index.js"
   },
   "repository": {
