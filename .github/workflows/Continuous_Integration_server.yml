@@ -21,7 +21,7 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: maps_test
+          MYSQL_DATABASE: challenge_test
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
@@ -51,4 +51,6 @@ jobs:
           ACCESS_TOKEN_SECRET: "sdlkmf4930fjerfdfokvmdsldm1920ejeiockdv950gij54eorjflrf9430r4rjo34plre"
           EMAIL_TOKEN_SECRET: "dsvldfmldkm54y89j5effdc389ejewkmcsldmf4390rfwemdpvmdlfkg509gker0krkf94f"
           REFRESH_TOKEN_SECRET: "dfgklfmg834t3958tjervr9fft4ejrfknf32893rufjriofj5905t4i5t905itreokf5822"
+          SUVELOCITY_MAIL: suvelocity@gmail.com
+          SUVELOCITY_PASSWORD: icaatmnluvhrtbvo
         working-directory: ./server
