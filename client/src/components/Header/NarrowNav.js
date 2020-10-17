@@ -24,6 +24,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
+import ChooseLabels from "../Choosers/ChooseLabels";
 
 import InfoIcon from "@material-ui/icons/Info";
 const drawerWidth = 240;
@@ -124,6 +125,7 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
     const location = useHistory();
     const value = useContext(Logged);
     const [openNavBar, setOpenNavBar] = useState(false);
+    const [labels, setLabels] = useState([]);
 
     const handleDrawerOpen = () => {
         setOpenNavBar(true);

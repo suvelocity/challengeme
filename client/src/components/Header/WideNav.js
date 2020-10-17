@@ -17,6 +17,7 @@ import Search from "./Search/Search";
 import { Logged } from "../../context/LoggedInContext";
 import { useHistory } from "react-router-dom";
 import network from "../../services/network";
+import ChooseLabels from "../Choosers/ChooseLabels";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen,
         }),
-
     },
     appBarShift: {
         width: `calc(100% - ${drawerWidth}px)`,
@@ -102,6 +102,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
     const open = Boolean(anchorEl);
     const location = useHistory();
     const value = useContext(Logged);
+    const [labels, setLabels] = useState([]);
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -159,6 +160,13 @@ export default function WideNav({ darkMode, setDarkMode }) {
                     </NavLink>
                 </Typography>
                 <Search />
+                <div style={{ width: "50vw" }}>
+                    <ChooseLabels submitFilter={setLabels} />
+                    <Link to={`/?labels=${labels.join(",")}`}>
+                        <Button>submit</Button>
+                    </Link>
+                </div>
+
                 <div style={{ flex: 1 }}></div>
                 {/* Make space between the search input and the rest of the header. */}
                 <DarkModeToggle

@@ -8,9 +8,7 @@ body {
   overflow-x: hidden;
   /* font-family: "Roboto", sans-serif; */
 }
-.dark body{
-  background-color: rgb(33,33,33);
-}
+
 ::-webkit-scrollbar-track {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
