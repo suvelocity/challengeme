@@ -1,4 +1,4 @@
-name: static mysql
+name: server mysql
 on:
   workflow_dispatch:
     inputs:
