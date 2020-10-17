@@ -2,8 +2,8 @@ const { Router } = require("express");
 const checkToken = require("../../middleware/checkToken");
 const router = Router();
 
-router.use("/webhook", require("./webhook"));
 router.use("/auth", require("./auth"));
+router.use("/webhook", require("./webhook"));
 
 router.use("/challenges", require("./challenges"));
 router.use("/user_info", checkToken, require("./userInfo"));

@@ -1,4 +1,4 @@
-name: client
+name: server only
 on:
   workflow_dispatch:
     inputs:
@@ -17,9 +17,11 @@ on:
 
 
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [10.x]
@@ -45,14 +47,16 @@ jobs:
         path: ./_cloned-app
     - name: Install solution dependencies
       run: npm ci
-      working-directory: ./_cloned-app/
-    - name: Init solution
-      run: npm run init
-      working-directory: ./_cloned-app/
+      working-directory: ./_cloned-app
       continue-on-error: true
-    - name: Run solution web server
-      run: npm start & npx wait-on http://localhost:3000
-      working-directory: ./_cloned-app/
+    - name: Install solution dependencies
+      run: npm run init
+      working-directory: ./_cloned-app
+      continue-on-error: true
+    - name: Install solution dependencies
+      run: npm start
+      working-directory: ./_cloned-app
+      continue-on-error: true
     - name: Run test on cloned app
       run: npm run test
       working-directory: ./challenge
@@ -71,6 +75,3 @@ jobs:
         url: ${{ github.event.inputs.webhookUrl }}
         bearerToken: ${{ github.event.inputs.bearerToken }}
         data:  '{ "success":false }'
-
-        
-

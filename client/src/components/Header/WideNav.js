@@ -94,6 +94,15 @@ const useStyles = makeStyles((theme) => ({
     avatarUserInfo: {
         margin: "20px",
     },
+    filterButton: {
+        backgroundColor: "rgb(219,219,219)",
+        marginLeft: "10px",
+    },
+    filterButtonDark:{
+        backgroundColor: "rgb(81,81,81)",
+        color:"white",
+        marginLeft: "10px",
+    }
 }));
 
 export default function WideNav({ darkMode, setDarkMode }) {
@@ -130,6 +139,9 @@ export default function WideNav({ darkMode, setDarkMode }) {
     const headerStyle = {
         backgroundColor: darkMode ? "rgb(51,51,51)" : "white",
     };
+    const letterColor = {
+        color: darkMode ? "white" : "black",
+    };
     return (
         <AppBar
             position="fixed"
@@ -153,19 +165,26 @@ export default function WideNav({ darkMode, setDarkMode }) {
                                 marginRight: "10px",
                             }}
                         >
-                            <HomeIcon />
+                            <HomeIcon style={letterColor} />
                             &nbsp;
-                            <span className="header-link-title">ChallangeMe</span>
+                            <span style={letterColor} className="header-link-title">
+                                ChallangeMe
+                            </span>
                         </div>
                     </NavLink>
                 </Typography>
-                <Search />
-                <div style={{ width: "50vw" }}>
+                <Search darkMode={darkMode} setDarkMode={setDarkMode} />
+                <div style={{ width: "200px" }}>
                     <ChooseLabels submitFilter={setLabels} />
-                    <Link to={`/?labels=${labels.join(",")}`}>
-                        <Button>submit</Button>
-                    </Link>
                 </div>
+                <Link className="link-rout" to={`/?labels=${labels.join(",")}`}>
+                    <Button
+                        variant="contained"
+                        className={darkMode ? classes.filterButtonDark : classes.filterButton}
+                    >
+                        filter
+                    </Button>
+                </Link>
 
                 <div style={{ flex: 1 }}></div>
                 {/* Make space between the search input and the rest of the header. */}
