@@ -58,9 +58,6 @@ const useStyles = makeStyles((theme) => ({
     menuButton: {
         marginRight: theme.spacing(2),
     },
-    hide: {
-        display: "none",
-    },
     drawer: {
         width: drawerWidth,
     },
@@ -117,6 +114,15 @@ const useStyles = makeStyles((theme) => ({
         marginTop: "8px",
         marginLeft: "7px",
     },
+    filterButton: {
+        backgroundColor: "rgb(219,219,219)",
+        marginLeft: "10px",
+    },
+    filterButtonDark: {
+        backgroundColor: "rgb(81,81,81)",
+        color: "white",
+        marginLeft: "10px",
+    },
 }));
 
 export default function NarrowNav({ darkMode, setDarkMode }) {
@@ -157,9 +163,11 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
     const letterColor = {
         color: darkMode ? "white" : "black",
     };
-    const dividerColor = {
-        backgroundColor: darkMode ? "white" : "black",
-    };
+    const dividerColor = darkMode
+        ? {
+              backgroundColor: "rgba(255,255,255,0.3)",
+          }
+        : {};
     return (
         <>
             <AppBar
@@ -175,11 +183,22 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
                         aria-label="open drawer"
                         onClick={handleDrawerOpen}
                         edge="start"
-                        className={clsx(classes.menuButton, openNavBar && classes.hide)}
+                        className={clsx(classes.menuButton)}
                     >
                         <MenuIcon style={letterColor} />
                     </IconButton>
-                    <Search />
+                    <Search darkMode={darkMode} setDarkMode={setDarkMode} />
+                    <div  style={{ width: "200px",marginLeft:"10px" }}>
+                        <ChooseLabels  submitFilter={setLabels} />
+                    </div>
+                    <Link className="link-rout" to={`/?labels=${labels.join(",")}`}>
+                        <Button
+                            variant="contained"
+                            className={darkMode ? classes.filterButtonDark : classes.filterButton}
+                        >
+                            filter
+                        </Button>
+                    </Link>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -212,30 +231,30 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
                     </div>
                     <div className={classes.drawerHeader}>
                         <IconButton onClick={handleDrawerClose}>
-                            <ChevronLeftIcon style={letterColor}/>
+                            <ChevronLeftIcon style={letterColor} />
                         </IconButton>
                     </div>
                 </div>
-                <Divider style={dividerColor}/>
+                <Divider style={dividerColor} />
                 <List className={classes.list}>
                     <Link to="/" className="link-rout">
                         <ListItem button onClick={handleDrawerClose} style={letterColor}>
                             <ListItemIcon>
-                                <HomeIcon style={letterColor}/>
+                                <HomeIcon style={letterColor} />
                             </ListItemIcon>
                             <ListItemText primary={"Home"} />
                         </ListItem>
                     </Link>
-                    <Divider style={dividerColor}/>
+                    <Divider style={dividerColor} />
                     <Link to="/user_info" className="link-rout">
                         <ListItem button onClick={handleDrawerClose} style={letterColor}>
                             <ListItemIcon>
-                                <InfoIcon style={letterColor}/>
+                                <InfoIcon style={letterColor} />
                             </ListItemIcon>
                             <ListItemText primary={"Info"} />
                         </ListItem>
                     </Link>
-                    <Divider style={dividerColor}/>
+                    <Divider style={dividerColor} />
                     <ListItem className={classes.logOut} onClick={handleDrawerClose}>
                         <DarkModeToggle
                             className={classes.darkModeToggle}
@@ -259,8 +278,8 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
                             Log Out
                         </Button>
                     </ListItem>
+                    <Divider style={dividerColor} />
                 </List>
-                <Divider style={dividerColor}/>
             </Drawer>
         </>
     );
