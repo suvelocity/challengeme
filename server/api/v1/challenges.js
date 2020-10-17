@@ -179,8 +179,10 @@ router.post("/:challengeId/apply", async (req, res) => {
           Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
         },
       }
-    );
-
+    ).catch(e=>{
+      console.error(e);
+    });
+      
     res.json({ status });
   } catch (e) {
     res.status(400).json({ message: e });
