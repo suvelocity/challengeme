@@ -1,12 +1,38 @@
-.one-challenge-container {
-  display: flex;
+:root {
+  --width-ticket: 45vw;
 }
 
-.one-challenge-info{
-  margin: 100px 10px 20px 30px ;
+.link-rout {
+  text-decoration: none;
+}
+.one-challenge-container {
+  margin-top:100px;
+  display: flex;
+  justify-content: space-evenly;
+  /* flex-direction: column; */
+  align-items: flex-start
+}
+
+.one-challenge-container-column{
+  margin-top:100px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+}
+.one-challenge-challenge-container{
+  margin-bottom: 30px  ;
   background-color: white;
   border-radius:5px;
-  width: 40%;
+  width: var(--width-ticket);
+  box-shadow: 15px 15px 25px 1px rgb(161, 161, 161);
+}
+
+.one-challenge-description-title{
+  display: flex;
+}
+.challenge-label{
+  margin-left: auto;
 }
 .one-challenge-info-title{
   text-align: center
@@ -14,22 +40,73 @@
 .one-challenge-info-image{
 width:100%;
 }
-.one-challenge-description{
+.one-challenge-info-container{
   margin-left: 10px;
 }
+
 .one-challenge-reviews-and-submissions {
-  margin: 100px 10px 20px 30px ;
+  width: var(--width-ticket);
+  /* margin: 100px  ; */
   border-radius:5px;
   display: flex;
   flex-direction: column;
 }
 .one-challenge-submission-container{
+  width: 100%;
   background-color: white;
   border-radius:5px;
   margin-bottom:30px;
+  box-shadow: 15px 15px 25px 1px rgb(161, 161, 161);
 }
-
+.one-challenge-submit-btn{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 .one-challenge-reviews-container{
+  width: 100%;
   border-radius:5px;
   background-color: white;
+  box-shadow: 15px 15px 25px 1px rgb(161, 161, 161);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 30px  ;
 }
+
+/* dark container*/
+.dark  .one-challenge-challenge-container,.dark .one-challenge-submission-container,.dark .one-challenge-reviews-container{
+  color: white;
+  background: rgb(39,44,52);  /* fallback for old browsers */
+  box-shadow: 15px 15px 25px 1px black;
+}
+
+.one-challenge-labels{
+
+  font-size: 11px;
+  padding:5px 8px;
+  color: white;
+  border-radius: 8px;
+  background: linear-gradient(270deg, rgba(55,99,192,1) 0%, rgba(87,159,223,1) 100%);
+  margin-right: 5px;
+  display:inline
+}
+.dark .one-challenge-labels{
+  background: linear-gradient(270deg, rgba(37,66,128,1) 0%, rgba(63,114,160,1) 100%);
+
+}
+
+@media (max-width: 900px){
+  .one-challenge-container {
+    margin-top:80px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+  }
+.one-challenge-reviews-and-submissions, .one-challenge-challenge-container{
+  width: 95vw;
+  }
+  }

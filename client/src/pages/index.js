@@ -16,6 +16,9 @@ import HomeErrorBoundry from "../ErrorHandling/HomeErrorBoundry";
 import AuthErrorBoundry from "../ErrorHandling/AuthErrorBoundry";
 import UserInfoErrorBoundry from "../ErrorHandling/UserInfoErrorBoundry";
 import Loading from "../components/Loading/Loading";
+
+import NewChallengeForm from './NewChallenge/NewChallengeForm';
+
 const Home = lazy(() => import("./Home/Home"));
 const UserInfo = lazy(() => import("./UserInfo/UserInfo"));
 const ChallengePage = lazy(() => import("./OneChallenge/ChallengePage"));
@@ -27,7 +30,7 @@ export default function Router() {
     const [challenges, setChallenges] = useState([]);
     const appBg = darkTheme
         ? { backgroundColor: "rgb(33,33,33)" }
-        : { backgroundColor: "rgb(232,244,248)" };
+        : { backgroundColor: "rgb(188,208,234)" };
     useEffect(() => {
         if (logged) {
             const previousTheme = localStorage.getItem("darkMode"); //get previous selected theme
@@ -46,7 +49,7 @@ export default function Router() {
             try {
                 const { data: challengesFromServer } = await network.get("/api/v1/challenges");
                 typeof challengesFromServer === "object" && setChallenges(challengesFromServer);
-            } catch {}
+            } catch { }
         })();
     }, [logged]);
 
@@ -102,46 +105,49 @@ export default function Router() {
                         </AnimatePresence>
                     </Logged.Provider>
                 ) : (
-                    <Logged.Provider value={{ logged, setLogged }}>
-                        <AllChallenges.Provider value={{ challenges }}>
-                            <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
-                            {/*TODO:add loading component*/}
-                            <div style={appBg} className={darkTheme ? "dark" : undefined}>
-                                <Switch>
-                                    <Suspense fallback={<Loading darkMode={darkTheme}/>}>
-                                        <ChallengeErrorBoundry>
-                                            <Route exact path="/challenges/:id">
-                                                <ChallengePage />
-                                            </Route>
-                                        </ChallengeErrorBoundry>
-                                        <UserInfoErrorBoundry>
-                                            <Route exact path="/user_info">
-                                                <UserInfo />
-                                            </Route>
-                                        </UserInfoErrorBoundry>
-                                        <HomeErrorBoundry>
-                                            {challenges.length > 0 ? (
-                                                <Route exact path="/">
-                                                    <Home />
+                        <Logged.Provider value={{ logged, setLogged }}>
+                            <AllChallenges.Provider value={{ challenges }}>
+                                <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
+                                {/*TODO:add loading component*/}
+                                <div style={appBg} className={darkTheme ? "dark" : undefined}>
+                                    <Switch>
+                                        <Route exact path="/add">
+                                            <NewChallengeForm />
+                                        </Route>
+                                        <Suspense fallback={<Loading darkMode={darkTheme} />}>
+                                            <ChallengeErrorBoundry>
+                                                <Route exact path="/challenges/:id">
+                                                    <ChallengePage darkMode={darkTheme} />
                                                 </Route>
-                                            ) : (
-                                                <Loading darkMode={darkTheme}/>
-                                            )}
-                                        </HomeErrorBoundry>
-                                        <HomeErrorBoundry>
-                                            <Route path="*">
-                                                <Redirect to="/" />
-                                            </Route>
-                                        </HomeErrorBoundry>
-                                    </Suspense>
-                                </Switch>
-                            </div>
-                        </AllChallenges.Provider>
-                    </Logged.Provider>
-                )
+                                            </ChallengeErrorBoundry>
+                                            <UserInfoErrorBoundry>
+                                                <Route exact path="/user_info">
+                                                    <UserInfo />
+                                                </Route>
+                                            </UserInfoErrorBoundry>
+                                            <HomeErrorBoundry>
+                                                {challenges.length > 0 ? (
+                                                    <Route exact path="/">
+                                                        <Home />
+                                                    </Route>
+                                                ) : (
+                                                        <Loading darkMode={darkTheme} />
+                                                    )}
+                                            </HomeErrorBoundry>
+                                            <HomeErrorBoundry>
+                                                <Route path="*">
+                                                    <Redirect to="/" />
+                                                </Route>
+                                            </HomeErrorBoundry>
+                                        </Suspense>
+                                    </Switch>
+                                </div>
+                            </AllChallenges.Provider>
+                        </Logged.Provider>
+                    )
             ) : (
-                <Loading firstLoading={true} />
-            )}
+                    <Loading firstLoading={true} />
+                )}
         </BrowserRouter>
     );
 }

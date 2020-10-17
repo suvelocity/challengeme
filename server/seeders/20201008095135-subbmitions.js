@@ -1,12 +1,12 @@
 'use strict';
-const submissions = require('../_tests_/mocks/submissions');
+const submissions = require('./seedFiles/submissions');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('Submissions', submissions, {});
+    await queryInterface.bulkInsert('submissions', submissions, {});
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('Submissions', null, {});
+    await queryInterface.bulkDelete('submissions', null, {});
   }
 };
