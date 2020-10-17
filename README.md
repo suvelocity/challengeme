@@ -16,4 +16,4 @@ Only once - init
 - create .env file from example and fill the params (repo name / access token)
 - you should [create access token](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token) from github user who have admin permission on the forked repo - probably be the team leader
 
-'
+trigger CI
