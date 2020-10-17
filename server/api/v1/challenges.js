@@ -147,7 +147,8 @@ router.post("/:challengeId/apply", async (req, res) => {
     const urltoSet = process.env.MY_URL.concat(
       `/api/v1/webhook/submission/${submission.id}`
     );
-    const pureToken = jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h', })
+    const pureToken = 'dfd'
+    // jwt.sign(challengeId, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h', })
     const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || "master"; // In case somehow the process env branches are not set.
     const { status } = await axios.post(
       `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
