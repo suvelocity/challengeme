@@ -26,6 +26,9 @@ router.get("/", async (req, res) => {
         {
           model: Label,
           as: 'labels',
+          through: {
+            attributes: [],
+          },
           attributes: [[Sequelize.fn('MAX', 'labels.name'), 'name'], [Sequelize.fn('MAX', 'labels.id'), 'id']],
         },
         {
