@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Router } = require("express");
 const axios = require("axios");
 const { Sequelize, Op } = require("sequelize");
@@ -146,22 +147,9 @@ router.post("/:challengeId/apply", async (req, res) => {
     const urltoSet = process.env.MY_URL.concat(
       `/api/v1/webhook/submission/${submission.id}`
     );
-    const bearerToken = req.headers.authorization || "bearer myToken";
-    const pureToken =
-      bearerToken.indexOf(" ") !== -1 ? bearerToken.split(" ")[1] : bearerToken;
+    const pureToken = 'dfd'
+    // jwt.sign(challengeId, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h', })
     const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || "master"; // In case somehow the process env branches are not set.
-    console.log(
-      "CHALLENGE TYPE !!!!!",
-      challenge.repositoryName,
-      challenge.type,
-      ref,
-      solutionRepository,
-      urltoSet,
-      "token",
-      pureToken,
-      process.env.GITHUB_REPO,
-      process.env.GITHUB_ACCESS_TOKEN
-    );
     const { status } = await axios.post(
       `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
       {
@@ -179,13 +167,13 @@ router.post("/:challengeId/apply", async (req, res) => {
           Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
         },
       }
-    ).catch(e=>{
+    ).catch(e => {
       console.error(e);
     });
-      
+
     res.json({ status });
   } catch (e) {
-    res.status(400).json({ message: e });
+    res.status(400).json({ message: "Cannot process request" });
   }
 });
 
