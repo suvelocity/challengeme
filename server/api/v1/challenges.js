@@ -21,12 +21,12 @@ router.get("/", async (req, res) => {
         {
           model: User,
           as: "Author",
-          attributes: ["userName"],
+          attributes: [[Sequelize.fn('MAX', 'user.name'), 'userName']],
         },
         {
           model: Label,
           as: 'labels',
-          attributes: ["name", "id"],
+          attributes: [[Sequelize.fn('MAX', 'labels.name'), 'name'], [Sequelize.fn('MAX', 'labels.id'), 'id']],
         },
         {
           model: Review,
@@ -35,7 +35,7 @@ router.get("/", async (req, res) => {
           ],
         },
       ],
-      group: ["id", "labels.name", "labels.id"],
+      group: ["id"],
     });
     res.json(allChallenges);
   } catch (error) {
