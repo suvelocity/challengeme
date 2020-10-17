@@ -87,7 +87,6 @@ router.get("/:challengeId/submissions", async (req, res) => {
     res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
-
 // router Post - new challenge
 router.post(`/`, async (req, res) => {
   try {
