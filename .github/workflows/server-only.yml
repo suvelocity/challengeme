@@ -1,4 +1,4 @@
-name: static type
+name: server only
 on:
   workflow_dispatch:
     inputs:
