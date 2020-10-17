@@ -1,8 +1,0 @@
-.dark #searchResults{
-  background-image:linear-gradient(to top, #222 ,#777);
-  border-color: #0e1724
-}
-
-.dark #searchResults>.display{
-  color:#eee;
-}

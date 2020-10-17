@@ -1,0 +1,35 @@
+.one-challenge-container {
+  display: flex;
+}
+
+.one-challenge-info{
+  margin: 100px 10px 20px 30px ;
+  background-color: white;
+  border-radius:5px;
+  width: 40%;
+}
+.one-challenge-info-title{
+  text-align: center
+}
+.one-challenge-info-image{
+width:100%;
+}
+.one-challenge-description{
+  margin-left: 10px;
+}
+.one-challenge-reviews-and-submissions {
+  margin: 100px 10px 20px 30px ;
+  border-radius:5px;
+  display: flex;
+  flex-direction: column;
+}
+.one-challenge-submission-container{
+  background-color: white;
+  border-radius:5px;
+  margin-bottom:30px;
+}
+
+.one-challenge-reviews-container{
+  border-radius:5px;
+  background-color: white;
+}

@@ -1,3 +1,4 @@
+require("dotenv").config();
 const { Router } = require("express");
 const axios = require("axios");
 const { Sequelize, Op } = require("sequelize");
@@ -24,12 +25,12 @@ router.get("/", async (req, res) => {
         },
         {
           model: Label,
-          attributes: ["name"],
+          attributes: ["name", "id"],
         },
         {
           model: Review,
           attributes: [
-            [Sequelize.fn("AVG", Sequelize.col("rating")), "avarageRaiting"],
+            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRaiting"],
           ],
         },
       ],
@@ -41,31 +42,29 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:challengeId", async (req, res) => {
+router.get("/:challengeId/:userName/submission", async (req, res) => {
   try {
-    let challenge = await Challenge.findOne({
-      where: { id: req.params.challengeId },
+    const { challengeId } = req.params;
+    const { userName } = req.params;
+    const { id } = await User.findOne({
+      where: { userName },
+      attributes: ["id"],
+    });
+    const submission = await Submission.findOne({
       include: [
         {
-          model: Label,
-          attributes: ["name"],
-        },
-        {
-          model: Review,
-          attributes: [
-            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"],
-          ],
-        },
-        {
           model: User,
-          as: "Author",
-          attributes: ["email", "userName"],
+          attributes: ["userName"],
         },
       ],
+      where: {
+        challengeId,
+        userId: id,
+      },
     });
-    res.json({ challenge });
+    res.json(submission);
   } catch (error) {
-    res.status(400).json({ message: "Cannot process request" });
+    res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
 
@@ -129,7 +128,7 @@ router.post("/:challengeId/apply", async (req, res) => {
   if (!submission) {
     submission = await Submission.create({
       challengeId,
-      userId: req.body.userId,
+      userId: req.user.userId,
       state: "PENDING",
       solutionRepository,
     });
@@ -148,15 +147,9 @@ router.post("/:challengeId/apply", async (req, res) => {
     const urltoSet = process.env.MY_URL.concat(
       `/api/v1/webhook/submission/${submission.id}`
     );
-    const bearerToken = req.headers.authorization || "bearer myToken";
-    const pureToken =
-      bearerToken.indexOf(" ") !== -1 ? bearerToken.split(" ")[1] : bearerToken;
+    const pureToken = 'dfd'
+    // jwt.sign(challengeId, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h', })
     const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || "master"; // In case somehow the process env branches are not set.
-    console.log(
-      "CHALLENGE TYPE !!!!!",
-      challenge.repositoryName,
-      challenge.type
-    );
     const { status } = await axios.post(
       `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
       {
@@ -174,12 +167,41 @@ router.post("/:challengeId/apply", async (req, res) => {
           Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
         },
       }
-    );
+    ).catch(e => {
+      console.error(e);
+    });
 
     res.json({ status });
-  } catch {
+  } catch (e) {
     res.status(400).json({ message: "Cannot process request" });
   }
 });
 
+router.get("/:challengeId", async (req, res) => {
+  try {
+    let challenge = await Challenge.findOne({
+      where: { id: req.params.challengeId },
+      include: [
+        {
+          model: Label,
+          attributes: ["name"],
+        },
+        {
+          model: Review,
+          attributes: [
+            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"],
+          ],
+        },
+        {
+          model: User,
+          as: "Author",
+          attributes: ["email", "userName"],
+        },
+      ],
+    });
+    res.json({ challenge });
+  } catch (error) {
+    res.status(400).json({ message: "Cannot process request" });
+  }
+});
 module.exports = router;
