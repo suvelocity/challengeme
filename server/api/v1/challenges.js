@@ -38,6 +38,7 @@ router.get("/", async (req, res) => {
     });
     res.json(allChallenges);
   } catch (error) {
+    console.error(error)
     res.status(400).json({ message: "couldn't get challenges" }); //
   }
 });
@@ -64,6 +65,7 @@ router.get("/:challengeId/:userName/submission", async (req, res) => {
     });
     res.json(submission);
   } catch (error) {
+    console.error(error)
     res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
@@ -84,6 +86,7 @@ router.get("/:challengeId/submissions", async (req, res) => {
     });
     res.json(allSubmission);
   } catch (error) {
+    console.error(error)
     res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
@@ -102,6 +105,7 @@ router.post(`/`, async (req, res) => {
     const newChallenge = await Challenge.create(req.body);
     res.json(newChallenge);
   } catch (err) {
+    console.error(error)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -172,6 +176,7 @@ router.post("/:challengeId/apply", async (req, res) => {
 
     res.json({ status });
   } catch (e) {
+    console.error(error)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -200,6 +205,7 @@ router.get("/:challengeId", async (req, res) => {
     });
     res.json({ challenge });
   } catch (error) {
+    console.error(error)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
