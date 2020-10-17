@@ -5,7 +5,7 @@ const router = Router();
 router.use("/webhook", require("./webhook"));
 router.use("/auth", require("./auth"));
 
-router.use("/challenges", require("./challenges"));
+router.use("/challenges", checkToken, require("./challenges"));
 router.use("/user_info", checkToken, require("./userInfo"));
 router.use("/services", checkToken, require("./services"));
 router.use("/image", checkToken, require("./image"));

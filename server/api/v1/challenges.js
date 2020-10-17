@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
         },
         {
           model: Label,
-          attributes: ["name"],
+          attributes: ["name", "id"],
         },
         {
           model: Review,

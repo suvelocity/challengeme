@@ -1,10 +1,10 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { fade, makeStyles } from "@material-ui/core/styles";
 import { red } from "@material-ui/core/colors";
-import network from "../../../services/network";
 import InputBase from "@material-ui/core/InputBase";
 import SearchIcon from "@material-ui/icons/Search";
 import "./Search.css";
+import AllChallenges from "../../../context/AllChallengesContext";
 import SearchTicket from "./SearchTicket";
 
 const useStyles = makeStyles((theme) => ({
@@ -69,73 +69,49 @@ const useStyles = makeStyles((theme) => ({
 
 const Search = () => {
   const classes = useStyles();
-  const [searching, setSearching] = useState(false);
   const [results, setResults] = useState([]);
-  const [filters] = useState({});
-
-  //get all the filters sorted to the url
-  const getFilters = useCallback(() => {
-    const filterNames = Object.keys(filters);
-    const filterString = filterNames
-      .map((name) => {
-        const value = filters[name];
-        let valueString = typeof value === "object" ? value.join(",") : value;
-        return `${name}=${valueString}`;
-      })
-      .join("&");
-    return "&" + filterString;
-  }, [filters]);
+  const [searching, setSearching] = useState([]);
+  const allChallenges = useContext(AllChallenges).challenges;
+  const [searchValue, setSearchValue] = useState("");
 
   //search function to the the challenges
   const search = (e) => {
-    let { value: query } = e.target;
-    if (!query.length) {
+    setSearchValue(e.target.value);
+    let { value } = e.target;
+    if (value.length === 0) {
+      setSearchValue("");
       return setResults([]);
     }
-    if (query === "*") {
-      query = "";
-    }
     try {
-      const url = `/api/v1/challenges?challengeName=${query}` + getFilters();
-      network.get(url).then(({ data }) => {
-        setResults(data);
-      });
+      const filteredChallenges = [];
+      for (let i = 0; i < allChallenges.length; i++) {
+        if (allChallenges[i].name.toLowerCase().includes(value.toLowerCase())) {
+          filteredChallenges.push(allChallenges[i]);
+        }
+      }
+      setResults(filteredChallenges);
     } catch (error) {
       console.error(error);
     }
   };
 
-  //close search function
-  const closeSearch = () => {
+  const closeSearch = useCallback(() => {
+    setSearchValue("");
     setResults([]);
-    setSearching(false);
-  };
-
-  //exit search function
-  const exitSearch = (e) => {
-    const { key, target } = e;
-    if (!target.value.length) {
-      if (key === "Escape") {
-        closeSearch();
-        target.blur();
-      }
-    }
-  };
+  }, []);
 
   const resultsList =
-    results && results.length > 0 ? (
-      results.map((result) => {
-        return (
-          <SearchTicket
-            ticket={result}
-            key={result.id}
-            closeSearch={closeSearch}
-          />
-        );
-      })
-    ) : (
-      <span id='no-results'>no results found</span>
-    );
+    results &&
+    results.length > 0 &&
+    results.map((result) => {
+      return (
+        <SearchTicket
+          ticket={result}
+          key={result.id}
+          closeSearch={closeSearch}
+        />
+      );
+    });
   //search bar item
   const searchInput = (
     <div className={classes.search}>
@@ -144,17 +120,17 @@ const Search = () => {
       </div>
       <InputBase
         id={"searchBar"}
-        placeholder={searching ? "press esc to close" : "Search"}
+        placeholder={"Search..."}
         onFocus={() => {
           setSearching(true);
         }}
         onChange={search}
-        onKeyUp={exitSearch}
         autoComplete='off'
         classes={{
           root: classes.inputRoot,
           input: classes.inputInput,
         }}
+        value={searchValue}
         inputProps={{ "aria-label": "search" }}
       />
     </div>
@@ -164,12 +140,7 @@ const Search = () => {
     <div id='search'>
       {searchInput}
       <div id='searchResults' className={searching ? "open" : "closed"}>
-        {/* <div id='seperator' className={searching ? "open" : "closed"}>
-          <button className='searchClose' onClick={closeSearch}>
-            X
-          </button>
-        </div>
-        <div className='display'>{resultsList}</div> */}
+        <div className='display'>{resultsList}</div>
       </div>
     </div>
   );

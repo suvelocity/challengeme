@@ -1,63 +1,86 @@
-import React, { useCallback, useEffect, useState } from "react";
-import network from "../../services/network";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import ChallengeCard from "../../components/ChallengeCard/ChallengeCard";
 import "./Home.css";
 import { useLocation } from "react-router-dom";
-
 import Background from "../Background";
+import AllChallenges from "../../context/AllChallengesContext";
+import { Button } from "@material-ui/core";
 //function to get query params
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
 export default function Home() {
-  const [challenges, setChallenges] = useState([]);
-  const [filtered, setFiltered] = useState(false);
-  const [filters] = useState({ labels: [] });
-  let query = useQuery();
+  const allChallenges = useContext(AllChallenges).challenges;
+  const [challenges, setChallenges] = useState(allChallenges);
+  const [revertLabelFiltering, setRevertLabelFiltering] = useState(false);
+  const [previousQuery, setPreviousQuery] = useState("");
 
-  //function to sort the searched filters
-  const getFilters = useCallback(() => {
-    const filterNames = Object.keys(filters);
-    const filterString = filterNames
-      .map((name) => {
-        const value = filters[name];
-        let valueString = typeof value === "object" ? value.join(",") : value;
-        return `${name}=${valueString}`;
-      })
-      .join("&");
-    return filterString;
-  }, [filters]);
+  let query = useQuery();
 
   useEffect(() => {
     (async () => {
       try {
         //checking if there is query params and the page loaded once
-        if (filtered !== true && query.get("labelId")) {
-          const { data: challengesFromServer } = await network.get(
-            `/api/v1/challenges?labels=${query.get("labelId")}`
-          );
-          //checking if there is the challenges data is array
-          typeof challengesFromServer === "object" &&
-            setChallenges(challengesFromServer);
-          setFiltered(true);
+        if (query.get("labelId") && query.get("labelId") !== previousQuery) {
+          const filteredByLabelChallenges = [];
+          for (let i = 0; i < challenges.length; i++) {
+            for (let label of challenges[i].Labels) {
+              if (label.id === Number(query.get("labelId"))) {
+                filteredByLabelChallenges.push(challenges[i]);
+              }
+            }
+          }
+          setRevertLabelFiltering(true);
+          setChallenges(filteredByLabelChallenges);
+          setPreviousQuery(query.get("labelId"));
         } else {
-          const { data: challengesFromServer } = await network.get(
-            "/api/v1/challenges?" + getFilters()
-          );
-          typeof challengesFromServer === "object" &&
-            setChallenges(challengesFromServer);
+          setChallenges(allChallenges);
         }
       } catch (e) {}
     })();
     // eslint-disable-next-line
-  }, [filters]);
+  }, []);
+  useEffect(() => {
+    (() => {
+      if (query.get("labels") && query.get("labels") !== previousQuery) {
+        const filteredByLabelChallenges = [];
+        const searchedLabels = query.get("labels").split(",");
+        const labelsToMatch = searchedLabels.length;
+        for (let i = 0; i < challenges.length; i++) {
+          let labelsMatched = 0;
+          for (let label of challenges[i].Labels) {
+            for (let labelToCheck of searchedLabels) {
+              if (label.id === Number(labelToCheck)) {
+                labelsMatched += 1;
+              }
+            }
+          }
+          if (labelsMatched === labelsToMatch) {
+            filteredByLabelChallenges.push(challenges[i]);
+          }
+        }
+        setPreviousQuery(query.get("labels"));
+        setRevertLabelFiltering(true);
+        setChallenges(filteredByLabelChallenges);
+      }
+    })();
+    // eslint-disable-next-line
+  }, [query]);
 
+  const resetLabelFiltering = useCallback(() => {
+    setRevertLabelFiltering(false);
+    setChallenges(allChallenges);
+    // eslint-disable-next-line
+  }, []);
   return (
     <div>
       {/* <Background /> */}
       <div className='home-page'>
-        <div className='challenges-container'>
+        {revertLabelFiltering && (
+          <Button onClick={resetLabelFiltering}>Revert label filtering</Button>
+        )}
+        <div className={"challenges-container"}>
           {challenges.map((challenge) => (
             <ChallengeCard
               key={challenge.id}
