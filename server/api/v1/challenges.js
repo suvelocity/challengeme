@@ -35,7 +35,7 @@ router.get("/", async (req, res) => {
           ],
         },
       ],
-      group: ["id"],
+      group: ["id", "labels.name", "labels.id"],
     });
     res.json(allChallenges);
   } catch (error) {
