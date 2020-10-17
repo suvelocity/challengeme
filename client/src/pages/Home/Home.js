@@ -88,7 +88,11 @@ export default function Home() {
               description={challenge.description}
               repositoryName={challenge.repositoryName}
               labels={challenge.Labels}
-              rating={challenge.Reviews[0]}
+              rating={
+                typeof challenge.Reviews[0] === "object"
+                  ? challenge.Reviews[0]
+                  : null
+              }
             />
           ))}
         </div>

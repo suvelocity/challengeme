@@ -81,7 +81,11 @@ function ChallengePage() {
           data: { challenge: challengeFromServer },
         } = await network.get(`/api/v1/challenges/${id}`);
         setChallenge(challengeFromServer);
-        setRating(Math.round(challengeFromServer.Reviews[0].averageRating));
+        setRating(
+          typeof challengeFromServer.Reviews[0] === "object"
+            ? Math.round(challengeFromServer.Reviews[0].averageRating)
+            : 0
+        );
         try {
           const { data: repo } = await network.get(
             `/api/v1/services/public_repo?repo_name=${challengeFromServer.repositoryName}`
