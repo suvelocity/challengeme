@@ -168,7 +168,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
                             <HomeIcon style={letterColor} />
                             &nbsp;
                             <span style={letterColor} className="header-link-title">
-                                ChallangeMe
+                                ChallengeMe
                             </span>
                         </div>
                     </NavLink>

@@ -108,10 +108,10 @@ export default function Router() {
                             {/*TODO:add loading component*/}
                             <div style={appBg} className={darkTheme ? "dark" : undefined}>
                                 <Switch>
-                                    <Suspense fallback={<Loading darkMode={darkTheme}/>}>
+                                    <Suspense fallback={<Loading darkMode={darkTheme} />}>
                                         <ChallengeErrorBoundry>
                                             <Route exact path="/challenges/:id">
-                                                <ChallengePage />
+                                                <ChallengePage darkMode={darkTheme}/>
                                             </Route>
                                         </ChallengeErrorBoundry>
                                         <UserInfoErrorBoundry>
@@ -125,7 +125,7 @@ export default function Router() {
                                                     <Home />
                                                 </Route>
                                             ) : (
-                                                <Loading darkMode={darkTheme}/>
+                                                <Loading darkMode={darkTheme} />
                                             )}
                                         </HomeErrorBoundry>
                                         <HomeErrorBoundry>
