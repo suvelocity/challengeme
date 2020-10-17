@@ -1,5 +1,4 @@
 module.exports = [
-
   {
     challengeId: 1,
     userId: 1,
