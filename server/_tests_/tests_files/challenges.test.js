@@ -32,27 +32,27 @@ describe("testing challenges endpoints", () => {
     await Submission.destroy({ truncate: true, force: true });
     await User.destroy({ truncate: true, force: true });
   });
+  //TODO: fix the abiguess query at the challenge model
+  // xit("Can get all challenges", async (done) => {
+  //   await Challenge.bulkCreate(challengesMock);
+  //   const response = await request(app)
+  //     .get("/api/v1/challenges")
+  //     .set("authorization", `bearer ${generateToken(usersMock[0])}`);
+  //   expect(response.status).toBe(200);
+  //   expect(response.body.length).toBe(3);
+  //   done();
+  // });
 
-  xit("Can get all challenges", async (done) => {
-    await Challenge.bulkCreate(challengesMock);
-    const response = await request(app)
-      .get("/api/v1/challenges")
-      .set("authorization", `bearer ${generateToken(usersMock[0])}`);
-    expect(response.status).toBe(200);
-    expect(response.body.length).toBe(3);
-    done();
-  });
-
-  xit("Can get challenge by name", async (done) => {
-    await Challenge.bulkCreate(challengesMock);
-    const response = await request(app)
-      .get("/api/v1/challenges?name=React - Calculator")
-      .set("authorization", `bearer ${generateToken(usersMock[0])}`);
-    expect(response.status).toBe(200);
-    expect(response.body.length).toBe(1);
-    expect(response.body[0].name).toBe("React - Calculator");
-    done();
-  });
+  // xit("Can get challenge by name", async (done) => {
+  //   await Challenge.bulkCreate(challengesMock);
+  //   const response = await request(app)
+  //     .get("/api/v1/challenges?name=React - Calculator")
+  //     .set("authorization", `bearer ${generateToken(usersMock[0])}`);
+  //   expect(response.status).toBe(200);
+  //   expect(response.body.length).toBe(1);
+  //   expect(response.body[0].name).toBe("React - Calculator");
+  //   done();
+  // });
 
   it("Can get all github types", async (done) => {
     const response = await request(app)
