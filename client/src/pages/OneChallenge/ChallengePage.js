@@ -18,30 +18,28 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "10px",
     },
     getStartedButtonContainer: {
+        marginTop:"auto",
         display: "flex",
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "flex-end",
     },
     SubmitdButton: {
         background: "linear-gradient(270deg, rgba(55,99,192,1) 0%, rgba(87,159,223,1) 100%)",
         color: "white",
         marginBottom: "10px",
-        width: "40%",
-        fontSize: "20px",
+        fontSize: "15px",
     },
     SubmitdButtonFail: {
         background: "linear-gradient(270deg, rgba(193,36,36,1) 0%, rgba(214,95,95,1) 100%)",
         color: "white",
         marginBottom: "10px",
-        width: "40%",
-        fontSize: "20px",
+        fontSize: "15px",
     },
     SubmitdButtonSuccess: {
         background: "linear-gradient(270deg, rgba(36,193,67,1) 0%, rgba(130,214,95,1) 100%);",
         color: "white",
         marginBottom: "10px",
-        width: "40%",
-        fontSize: "20px",
+        fontSize: "15px",
     },
 }));
 
@@ -210,14 +208,12 @@ function ChallengePage({ darkMode }) {
             return (
                 <div style={{ textAlign: "center" }}>
                     <p>
-                        <div style={{ fontSize: "25px", fontWeight: "bold" }}>SUCCESS</div>
-                        <br />
-                        {`
-            You have already solved this challenge on ${generateTime(
-                submissionStatus.createdAt
-            )} You can submit
-            another solution if you’d like:
-              `}
+                        <div style={{ fontSize: "25px", fontWeight: "bold", marginBottom: "5px" }}>
+                            SUCCESS
+                        </div>
+                        You have already solved this challenge on{" "}
+                        {generateTime(submissionStatus.createdAt)}
+                        <br /> You can submit another solution if you’d like:
                     </p>
                 </div>
             );
@@ -232,11 +228,12 @@ function ChallengePage({ darkMode }) {
                 //fail
                 <div style={{ textAlign: "center" }}>
                     <p>
-                        <div style={{ fontSize: "25px", fontWeight: "bold" }}>FAIL</div>
-                        <br />
-                        {`You tried to solved this challenge on ${generateTime(
-                            submissionStatus.createdAt
-                        )} You can try to submit again`}
+                        <div style={{ fontSize: "25px", fontWeight: "bold", marginBottom: "5px" }}>
+                            FAIL
+                        </div>
+                        You tried to solved this challenge on{" "}
+                        {generateTime(submissionStatus.createdAt)} <br /> You can try to submit
+                        again
                     </p>
                 </div>
             );
@@ -297,7 +294,7 @@ function ChallengePage({ darkMode }) {
                     </div>
                 </div>
 
-                <div className="one-challenge-reviews-and-submissions">
+                {/* <div className="one-challenge-reviews-and-submissions"> */}
                     <div className="one-challenge-submission-container">
                         {loadingReq ? (
                             <div className="one-challenge-submit-btn">
@@ -316,12 +313,12 @@ function ChallengePage({ darkMode }) {
                         />
                     </div>
                     <div className="one-challenge-reviews-container">
-                        <br />
+                        <b className="one-challenge-reviews-title">Reviews :</b>
                         <ReviewsTab challengeId={challenge.id} />
                     </div>
                 </div>
             </div>
-        </div>
+        // </div>
     ) : (
         <Loading darkMode={darkMode} />
     );

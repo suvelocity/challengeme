@@ -11,14 +11,14 @@
   margin-bottom: 15px;
   background-color: rgb(224, 224, 224);
   border-radius:3px;
-  overflow: hidden;
+  /* overflow: hidden; */
   padding: 10px;
   text-align: center;
   box-shadow: 5px 5px 10px 1px rgb(182, 182, 182);
 }
 
 .dark .review{
-  background-color: rgb(68, 68, 68);
+  background-color: rgb(114, 114, 114);
   color:white;
   box-shadow:5px 5px 10px 1px rgba(0, 0, 0, 0.637);
 }

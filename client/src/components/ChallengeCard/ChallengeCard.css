@@ -7,16 +7,34 @@
     margin-bottom: 30px;
     border-radius:3px;
     color: black;
-    box-shadow: 15px 15px 25px 1px rgb(161, 161, 161);
-    transition: all .2s ease-in-out;
+    /* box-shadow: 15px 15px 25px 1px rgb(161, 161, 161); */
+    box-shadow:
+    0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12)
+  ;
+  
+    transition: scale 1s ease-in-out;
 }
 .dark  .challenge-card{
     color: white;
-    background: rgb(39,44,52);  /* fallback for old browsers */
-    box-shadow: 15px 15px 25px 1px black;
+    /* background: rgb(39,44,52);   */
+    background: rgb(60, 62, 65); 
+    /* box-shadow: 15px 15px 25px 1px black; */
+    box-shadow:
+    0 2.8px 2.2px rgba(0, 0, 0, 0.116),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048),
+    0 12.5px 10px rgba(0, 0, 0, 0.151),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.349),
+    0 41.8px 33.4px rgba(0, 0, 0, 0.185),
+    0 100px 80px rgba(0, 0, 0, 0.322)
+  ;
 }
 .challenge-card:hover {
-    transform: scale(1.01);
+    transform: scale(1.006);
 }
 
 .chalenge-card-profile-pic {
@@ -55,18 +73,18 @@
     padding-right: 10px;
     display: flex;
     margin-left: auto;
-    margin-right: 20px;
+    margin-right: 5px;
 }
 .home-page-challenge-labels{
     font-size: 11px;
     padding:5px 8px;
     color: white;
-    border-radius: 8px;
-    background: linear-gradient(270deg, rgba(55,99,192,1) 0%, rgba(87,159,223,1) 100%);
+    border-radius: 2px;
+    background: linear-gradient(270deg, rgb(133, 133, 133) 0%, rgb(184, 184, 184) 100%);
     margin-right: 5px;
 }
 .dark .home-page-challenge-labels{
-    background: linear-gradient(270deg, rgba(37,66,128,1) 0%, rgba(63,114,160,1) 100%);
+    background: linear-gradient(270deg, rgb(54, 54, 54) 0%, rgb(122, 122, 122) 100%);
 
 }
 
