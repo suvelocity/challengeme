@@ -27,3 +27,7 @@
 .infoButton{
   margin:5px
 }
+
+.MuiToolbar-regular {
+min-height: 60px !important;
+}
