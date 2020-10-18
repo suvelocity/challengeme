@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import Cookies from "js-cookie";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";

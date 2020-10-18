@@ -94,6 +94,20 @@ function ChallengePage({ darkMode }) {
     }, []);
 
     useEffect(() => {
+        (async () => {
+            const { data: submission } = await network.get(
+                `/api/v1/challenges/${id}/${Cookies.get("userName")}/submission`
+            );
+            if (submission) {
+                setSubmissionStatus({
+                    state: submission.state,
+                    createdAt: submission.createdAt,
+                });
+            } else {
+                setSubmissionStatus(null);
+            }
+            setLoadingReq(true);
+        })();
         const getSubmissionInterval = setInterval(async () => {
             const { data: submission } = await network.get(
                 `/api/v1/challenges/${id}/${Cookies.get("userName")}/submission`

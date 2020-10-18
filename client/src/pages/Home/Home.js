@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import ChallengeCard from "../../components/ChallengeCard/ChallengeCard";
 import "./Home.css";
 import { useLocation } from "react-router-dom";
-import Background from "../Background";
 import AllChallenges from "../../context/AllChallengesContext";
 import { Button } from "@material-ui/core";
 //function to get query params

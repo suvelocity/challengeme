@@ -111,9 +111,6 @@ export default function Router() {
                                 {/*TODO:add loading component*/}
                                 <div style={appBg} className={darkTheme ? "dark" : undefined}>
                                     <Switch>
-                                        <Route exact path="/add">
-                                            <NewChallengeForm />
-                                        </Route>
                                         <Suspense fallback={<Loading darkMode={darkTheme} />}>
                                             <ChallengeErrorBoundry>
                                                 <Route exact path="/challenges/:id">
