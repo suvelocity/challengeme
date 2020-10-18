@@ -8,7 +8,7 @@
 }
 
 .containerHeaderRegister {
-    margin-bottom: 475px;
+    margin-bottom: 575px;
     position: absolute;
 }
 
@@ -37,7 +37,7 @@
     background-color: rgba(255, 255, 255, 0.972);
     border-radius: 5px;
     width: 600px;
-    height: 430px;
+    height: 530px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -70,7 +70,7 @@ span.MuiStepConnector-line.MuiStepConnector-lineHorizontal {
 
 .containerErrorRegister {
     position: absolute;
-    margin-top: 295px;
+    margin-top: 375px;
     height: 40px;
     border-radius: 5px;
     width: 400px;
@@ -84,7 +84,13 @@ span.MuiStepConnector-line.MuiStepConnector-lineHorizontal {
     margin-left: 5px;
     color: white;
 }
-
+.confirmMessage{
+    font-size:20px;
+    margin-top:120px;
+    line-height: 50px;
+    letter-spacing: 2px; 
+    text-align: center;
+}
 /* 
 .MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded{
     width:500px;

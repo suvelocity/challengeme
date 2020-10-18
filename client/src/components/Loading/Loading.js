@@ -5,14 +5,14 @@ function Loading({ darkMode, firstLoading }) {
         if (firstLoading) {
             return { backgroundColor: "white" };
         } else if (darkMode) {
-            return { backgroundColor: "rgb(33,33,33)" };
+            return { backgroundColor: "transparent" };
         } else {
-            return { backgroundColor: "rgb(232,244,248)" };
+            return { backgroundColor: "transparent" };
         }
     };
     return (
         <div style={getBackground()} className="loaderContainer">
-            <div className="loader"></div>
+            {/* <div className="loader"></div> */}
         </div>
     );
 }

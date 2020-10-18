@@ -49,9 +49,12 @@
 .challenge-card-img-homepage-loading{
     width: 100%;
     height:100%;
-    display: flex;
-    justify-content:center;
-    align-items:center;
+    background: linear-gradient(270deg, rgb(182, 182, 182) 0%, rgba(236,236,236,1) 100%);
+    border-radius: 3px 0px 0px 3px ;
+}
+.dark .challenge-card-img-homepage-loading{
+    background-color: rgb(59, 59, 59);
+
 }
 
 .challenge-card-info {

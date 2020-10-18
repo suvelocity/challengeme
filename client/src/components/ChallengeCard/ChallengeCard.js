@@ -88,9 +88,7 @@ export default function ChallengeCard({
                             <img className="challenge-card-img-homepage" src={coverImg} alt=" " />
                         )
                     ) : (
-                        <div className="challenge-card-img-homepage-loading">
-                            <CircularProgress />
-                        </div>
+                        <div className="challenge-card-img-homepage-loading"></div>
                     )}
                 </div>
                 <div className="challenge-card-info">
