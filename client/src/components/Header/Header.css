@@ -1,24 +1,33 @@
-@media only screen and (max-width: 650px) {
-  .header-link-title {
-    font-size: 0px;
-    /* display: 'none'; */
-  }
-}
 
+.header-link-title {
+  display: 'none';
+}
 .link-rout {
   text-decoration: none;
 }
 
-.MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters{
+/* .MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters{
   max-height: 40px;
   top: 0%;
-}
-@media (min-width: 600px){
+} */
+
+/* @media (min-width: 600px){
 .MuiToolbar-regular {
     min-height: 40px;
 }
-}
+} */
+
+
 #menu-appbar{
-  max-width: 213px;;
+  max-width: 213px;
+  margin-top:49px;
+  margin-left:38px;
 }
 
+.infoButton{
+  margin:5px
+}
+
+.MuiToolbar-regular {
+min-height: 60px !important;
+}

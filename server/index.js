@@ -17,7 +17,7 @@ const getCurrentBranch = () => new Promise((resolve, reject) => {
         resolve(DEFAULT_BRANCH)
         //reject(new Error(stderr))
       }else{
-          resolve (stdout);
+          resolve (stdout.replace('\n', ''));
       }
     }); 
 })
@@ -28,7 +28,8 @@ async function establishConnection(){
 
   if(env === 'development'){
     const url = await ngrok.connect(port);
-    process.env.IP_ADDRESS = url;
+    process.env.MY_URL = url;
+    console.log('MY_URL' ,process.env.MY_URL);
   }
   console.log('Client Ip Address', process.env.IP_ADDRESS);
 }
@@ -38,5 +39,3 @@ establishConnection();
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
-
-

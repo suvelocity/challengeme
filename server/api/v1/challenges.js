@@ -1,162 +1,122 @@
-const { Router } = require('express');
-const axios = require('axios');
-const searchFilters = require('../../middleware/searchFilters');
-const fs = require('fs');
-const { Sequelize } = require('sequelize');
-
-const {
-  Submission,
-  User,
-  Challenge,
-  Label,
-  Review,
-} = require('../../models');
-
+require("dotenv").config();
+const { Router } = require("express");
+const axios = require("axios");
+const { Sequelize, Op } = require("sequelize");
 const router = Router();
 
-//get all challenges
-router.get('/', searchFilters, async (req, res) => {
-  const { condition, labels } = req;
+const { Submission, User, Challenge, Label, Review } = require("../../models");
+
+router.get("/", async (req, res) => {
   try {
+    const name = req.query.name || "";
+    let labels = req.query.labels || [];
+
     const allChallenges = await Challenge.findAll({
-      where: condition,
-      include: [
-        Label,
-        {
-          model: Review,
-          attributes: ['rating'],
-        },
-      ],
-    });
-    if (labels) {
-      // if filter for labels
-      const filterChallenges = allChallenges.filter((challenge) => {
-        return labels.some((label) => {
-          // if at least one of the existing labels
-          return challenge.Labels.some((x) => {
-            // matches at least one of the Challenge's labels
-            return x.id == label;
-          });
-        });
-      });
-      res.json(filterChallenges);
-    } else {
-      // else dont filter
-      res.json(allChallenges);
-    }
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
-
-router.get('/:challengeId/submissions', async (req, res) => {
-  try {
-    const { challengeId } = req.params;
-    const allSubmission = await Submission.findAll({ where: { challengeId } });
-    res.json(allSubmission);
-  } catch (error) {
-    res.status(404).json({ message: error.message });
-  }
-});
-
-//get repo details if its public
-
-router.get('/public_repo', async (req, res) => {
-  try {
-    const { data: repo } = await axios.get(
-      `https://api.github.com/repos/${req.query.repo_name}`,
-      {
-        headers: { Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}` },
-      }
-    );
-    if (!repo.private) {
-      res.json(repo);
-    } else {
-      res.status(401).send('Repo is private');
-    }
-  } catch (error) {
-    res.status(400).send('Repo does not exist');
-  }
-});
-
-
-// router Post - new challenge
-router.post(`/`, async (req, res) => {
-  try {
-    const newRepo = req.body.repositoryName;
-    const check = await Challenge.findOne({
       where: {
-        repositoryName: newRepo,
+        name: {
+          [Op.like]: `%${name}%`,
+        },
       },
-    });
-    if (check) {
-      return res.status(500).send('Repo is already in the system');
-    }
-    const newChallenge = await Challenge.create(req.body);
-    res.status(200).send(newChallenge);
-  } catch (err) {
-    res.status(400).send('Bad request');
-  }
-});
-
-// router Get - github/workflows
-router.get('/type', async (req, res) => {
-  try {
-    const files = fs.readdirSync('../.github/workflows');
-    let types = files.map((file) =>
-      !file.includes('deploy') ? file.slice(0, -4) : null
-    );
-    types = types.filter((type) => type !== null);
-    res.send(types);
-  } catch (e) {
-    res.send(e.message);
-  }
-});
-
-//get all labels
-router.get('/labels', async (req, res) => {
-  const allLabels = await Label.findAll();
-  res.json(
-    allLabels.map(({ id, name }) => {
-      return { label: name, value: id };
-    })
-  );
-});
-
-router.get('/:challengeId', async (req, res) => {
-  try {
-    let challenge = await Challenge.findOne({
-      where: { id: req.params.challengeId },
       include: [
-        // TODO: add a ORM query to add prop to the challenge with 'rating':3 .... pay attention to round the result to integer
+        {
+          model: User,
+          as: "Author",
+          attributes: ["userName"],
+        },
         {
           model: Label,
-          attributes: ['name'],
+          attributes: ["name", "id"],
         },
         {
           model: Review,
           attributes: [
-            [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
+            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRaiting"],
           ],
         },
       ],
+      group: ["id"],
     });
-
-    const author = await challenge.getUser();
-    res.json({ challenge, author });
+    res.json(allChallenges);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error)
+    res.status(400).json({ message: "couldn't get challenges" }); //
   }
 });
-module.exports = router;
 
-router.post('/:challengeId/apply', async (req, res) => {
+router.get("/:challengeId/:userName/submission", async (req, res) => {
+  try {
+    const { challengeId } = req.params;
+    const { userName } = req.params;
+    const { id } = await User.findOne({
+      where: { userName },
+      attributes: ["id"],
+    });
+    const submission = await Submission.findOne({
+      include: [
+        {
+          model: User,
+          attributes: ["userName"],
+        },
+      ],
+      where: {
+        challengeId,
+        userId: id,
+      },
+    });
+    res.json(submission);
+  } catch (error) {
+    console.error(error)
+    res.status(400).json({ message: "can't get the challenge submissions" });
+  }
+});
+
+router.get("/:challengeId/submissions", async (req, res) => {
+  try {
+    const { challengeId } = req.params;
+    const allSubmission = await Submission.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ["userName"],
+        },
+      ],
+      where: {
+        challengeId,
+      },
+    });
+    res.json(allSubmission);
+  } catch (error) {
+    console.error(error)
+    res.status(400).json({ message: "can't get the challenge submissions" });
+  }
+});
+// router Post - new challenge
+router.post(`/`, async (req, res) => {
+  try {
+    const { repositoryName: newRepo } = req.body;
+    const repoExists = await Challenge.findOne({
+      where: {
+        repositoryName: newRepo,
+      },
+    });
+    if (repoExists) {
+      return res.status(409).json({ message: "Repo is already in the system" });
+    }
+    const newChallenge = await Challenge.create(req.body);
+    res.json(newChallenge);
+  } catch (err) {
+    console.error(error)
+    res.status(400).json({ message: "Cannot process request" });
+  }
+});
+
+router.post("/:challengeId/apply", async (req, res) => {
   const challengeId = req.params.challengeId;
-  const { commentContent, commentTitle, rating, userId } = req.body;
+  const { commentContent, commentTitle, rating } = req.body;
   const solutionRepository = req.body.repository;
   // adding review
   await Review.create({
-    userId,
+    userId: req.user.userId,
     challengeId,
     title: commentTitle,
     content: commentContent,
@@ -171,30 +131,28 @@ router.post('/:challengeId/apply', async (req, res) => {
   if (!submission) {
     submission = await Submission.create({
       challengeId,
-      userId: req.body.userId,
-      state: 'PENDING',
+      userId: req.user.userId,
+      state: "PENDING",
       solutionRepository,
     });
-  } else if (submission.state === 'PENDING') {
-    return res.json({ error: 'already exist' });
+  } else if (submission.state === "PENDING") {
+    return res.json({ error: "already exist" });
   }
 
-  if (submission.state === 'SUCCESS') {
-    return res.json({ error: 'already success' });
+  if (submission.state === "SUCCESS") {
+    return res.json({ error: "already success" });
   }
 
-  if (submission.state === 'FAIL') {
-    await submission.update({ state: 'PENDING' });
+  if (submission.state === "FAIL") {
+    await submission.update({ state: "PENDING" });
   }
   try {
-    const urltoSet = process.env.IP_ADDRESS.concat(
+    const urltoSet = process.env.MY_URL.concat(
       `/api/v1/webhook/submission/${submission.id}`
     );
-    const bearerToken = req.headers.authorization || 'bearer myToken';
-    const pureToken =
-    bearerToken.indexOf(' ') !== -1 ? bearerToken.split(' ')[1] : bearerToken;
-    const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || 'master'; // In case somehow the process env branches are not set.
-    console.log('CHALLENGE TYPE !!!!!' , challenge.repositoryName, challenge.type)
+    const pureToken = 'dfd'
+    // jwt.sign(challengeId, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h', })
+    const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || "master"; // In case somehow the process env branches are not set.
     const { status } = await axios.post(
       `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
       {
@@ -208,15 +166,47 @@ router.post('/:challengeId/apply', async (req, res) => {
       },
       {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
           Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
         },
       }
-    );
+    ).catch(e => {
+      console.error(e);
+    });
 
     res.json({ status });
   } catch (e) {
-    console.log('aaaa', e.message);
-    res.json({ status: 500, error: e });
+    console.error(error)
+    res.status(400).json({ message: "Cannot process request" });
   }
 });
+
+router.get("/:challengeId", async (req, res) => {
+  try {
+    let challenge = await Challenge.findOne({
+      where: { id: req.params.challengeId },
+      include: [
+        {
+          model: Label,
+          attributes: ["name"],
+        },
+        {
+          model: Review,
+          attributes: [
+            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"],
+          ],
+        },
+        {
+          model: User,
+          as: "Author",
+          attributes: ["email", "userName"],
+        },
+      ],
+    });
+    res.json({ challenge });
+  } catch (error) {
+    console.error(error)
+    res.status(400).json({ message: "Cannot process request" });
+  }
+});
+module.exports = router;

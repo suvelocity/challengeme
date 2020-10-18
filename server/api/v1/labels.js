@@ -1,30 +1,33 @@
-const { Router } = require('express');
-const { LabelChallenge } = require('../../models');
+const { Router } = require("express");
+const { LabelChallenge, Label } = require("../../models");
 const router = Router();
 
-/*
-  GET REQUEST FROM challenge.js
-*/
-
-router.post('/', async (req, res) => { // /api/v1/labels
-  let challenge = req.body.challengeId;
-  let labels = req.body.labels;
+router.post("/", async (req, res) => {
+  let { challengeId } = req.body;
+  let { labels: labelsArray } = req.body;
   if (labels.length > 0) {
     try {
       await LabelChallenge.bulkCreate(
-        labels.map(label => (
-          {
-            labelId: label,
-            challengeId: challenge
-          }
-        ))
+        labelsArray.map((label) => ({
+          labelId: label,
+          challengeId,
+        }))
       );
-      res.status(200).send('Success');
+      res.json({ message: "lables created successfully" });
     } catch (error) {
-      res.status(400).send('Bad request');
+      res.status(400).json({ message: "Cannot process request" });
     }
   } else {
-    res.status(406).send('No labels chosen');
+    res.status(400).json({ message: "No labels chosen" });
+  }
+});
+
+router.get("/", async (req, res) => {
+  try {
+    const allLabels = await Label.findAll({ attributes: ["id", "name"] });
+    res.json(allLabels);
+  } catch (error) {
+    res.status(400).json({ message: "Cannot process request" });
   }
 });
 

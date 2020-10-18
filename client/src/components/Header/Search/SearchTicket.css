@@ -1,0 +1,13 @@
+.SearchTicket {
+    display: grid;
+    width: auto;
+    grid-template-columns: 1fr 4fr 3fr;
+    align-items: center;
+    padding: 2vh;
+    border-radius: 3px;
+     
+}
+
+.SearchTicket:hover{
+    background-color: rgba(180,180,180,0.8);
+}    

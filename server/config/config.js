@@ -7,8 +7,9 @@ module.exports = {
     host: process.env.DB_HOST || "127.0.0.1",
     dialect: "mysql",
     define: { underscored: true },
-    "seederStorage": "sequelize",
-    "seederStorageTableName": "sequelize_seeds"
+    logging: false,
+    // "seederStorage": "sequelize",
+    // "seederStorageTableName": "sequelize_seeds"
   },
   test: {
     username: process.env.DB_USERNAME || "root",
@@ -17,6 +18,7 @@ module.exports = {
     host: process.env.DB_HOST || "127.0.0.1",
     dialect: "mysql",
     define: { underscored: true },
+    logging: false,
   },
   production: {
     username: process.env.DB_USERNAME || "root",
