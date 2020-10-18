@@ -98,11 +98,11 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "rgb(219,219,219)",
         marginLeft: "10px",
     },
-    filterButtonDark:{
+    filterButtonDark: {
         backgroundColor: "rgb(81,81,81)",
-        color:"white",
+        color: "white",
         marginLeft: "10px",
-    }
+    },
 }));
 
 export default function WideNav({ darkMode, setDarkMode }) {
@@ -174,8 +174,8 @@ export default function WideNav({ darkMode, setDarkMode }) {
                     </NavLink>
                 </Typography>
                 <Search darkMode={darkMode} setDarkMode={setDarkMode} />
-                <div style={{ width: "200px" }}>
-                    <ChooseLabels submitFilter={setLabels} />
+                <div style={{ minWidth: "150px", width: "fit-content" }}>
+                    <ChooseLabels darkMode={darkMode} submitFilter={setLabels} />
                 </div>
                 <Link className="link-rout" to={`/?labels=${labels.join(",")}`}>
                     <Button
@@ -226,6 +226,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
                     keepMounted
                     open={open}
                     onClose={handleClose}
+                    className={classes.menu}
                 >
                     <Link to="/user_info" className="link-rout">
                         <Button

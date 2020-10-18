@@ -156,11 +156,9 @@ width:100%;
   .one-challenge-reviews-container,.one-challenge-submission-container, .one-challenge-challenge-container{
   width: 95vw;
   margin: 0px 30px 30px 30px  ;
+  max-height: none;
+  overflow-y:none;
+  height: auto;
 
   }
-  .one-challenge-reviews-container,.one-challenge-reviews-container{
-    max-height: none;
-    overflow-y:none;
-    height: auto;
-  }
-  }
+}

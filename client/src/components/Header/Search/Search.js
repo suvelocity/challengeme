@@ -6,6 +6,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import "./Search.css";
 import AllChallenges from "../../../context/AllChallengesContext";
 import SearchTicket from "./SearchTicket";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -89,9 +90,13 @@ const useStyles = makeStyles((theme) => ({
 const Search = ({ darkMode, setDarkMode }) => {
     const classes = useStyles();
     const [results, setResults] = useState([]);
-    const [searching, setSearching] = useState([]);
+    const [searching, setSearching] = useState(false);
     const allChallenges = useContext(AllChallenges).challenges;
     const [searchValue, setSearchValue] = useState("");
+
+    const letterColor = {
+        color: darkMode ? "white" : "black",
+    };
 
     //search function to the the challenges
     const search = (e) => {
@@ -123,11 +128,15 @@ const Search = ({ darkMode, setDarkMode }) => {
         results &&
         results.length > 0 &&
         results.map((result) => {
-            return <SearchTicket ticket={result} key={result.id} closeSearch={closeSearch} />;
+            return (
+                <SearchTicket
+                    darkMode={darkMode}
+                    ticket={result}
+                    key={result.id}
+                    closeSearch={closeSearch}
+                />
+            );
         });
-    const letterColor = {
-        color: darkMode ? "white" : "black",
-    };
     //search bar item
     const searchInput = (
         <div className={darkMode ? classes.search : classes.searchLight}>
@@ -152,14 +161,21 @@ const Search = ({ darkMode, setDarkMode }) => {
             />
         </div>
     );
+    const SearchContainerStyle = {
+        backgroundColor: darkMode ? "rgb(51,51,51)" : "white",
+        color: darkMode ? "white" : "black",
+    };
 
     return (
-        <div id="search">
-            {searchInput}
-            <div id="searchResults" className={searching ? "open" : "closed"}>
-                <div className="display">{resultsList}</div>
+        <>
+            <div id="search">{searchInput}</div>
+            <Divider />
+            <div id="searchResults" className={results.length !== 0 ? "open" : "closed"}>
+                <div className="display" style={SearchContainerStyle}>
+                    {resultsList}
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 export default Search;

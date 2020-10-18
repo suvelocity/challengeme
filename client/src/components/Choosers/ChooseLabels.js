@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import network from "../../services/network";
 import Selector from "react-select";
 import "./ChooseLabel.css";
-const ChooseLabels = ({ submitFilter }) => {
+const ChooseLabels = ({ submitFilter, darkMode }) => {
     const [labels, setLabels] = useState([]);
 
     useEffect(
@@ -26,31 +26,25 @@ const ChooseLabels = ({ submitFilter }) => {
     const selectionChange = (a) => {
         submitFilter(a ? a.map((x) => x.value) : []);
     };
+
     const customStyles = {
         option: (provided, state) => ({
             ...provided,
             borderBottom: "1px dotted black",
-            color: "blue",
+            color: darkMode ? "white" : "blue",
+            backgroundColor: darkMode ? "rgb(51,51,51)" : "white",
+        height: "100%"
         }),
         control: (provided) => ({
             ...provided,
             backgroundColor: "neutral30",
-            color: "white",
-            //     // none of react-select's styles are passed to <Control />
-            //     width: 400,
         }),
-        // singleValue: (provided, state) => {
-        //     const opacity = state.isDisabled ? 0.5 : 1;
-        //     const transition = "opacity 300ms";
-
-        // return { ...provided, opacity, transition };
-        // },
     };
     return (
         <div className="labelFilter">
             <Selector
                 className="selectLabels"
-                maxMenuHeight={100}
+                maxMenuHeight={300}
                 placeholder="select labels"
                 isMulti
                 name="labels"
