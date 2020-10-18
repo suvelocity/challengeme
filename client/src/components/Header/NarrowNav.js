@@ -188,8 +188,8 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
                         <MenuIcon style={letterColor} />
                     </IconButton>
                     <Search darkMode={darkMode} setDarkMode={setDarkMode} />
-                    <div style={{ width: "200px", marginLeft: "10px" }}>
-                        <ChooseLabels submitFilter={setLabels} />
+                    <div style={{ minWidth: "150px", width: "fit-content", marginLeft: "10px" }}>
+                        <ChooseLabels darkMode={darkMode} submitFilter={setLabels} />
                     </div>
                     <Link className="link-rout" to={`/?labels=${labels.join(",")}`}>
                         <Button

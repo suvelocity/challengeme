@@ -10,16 +10,16 @@ import PhoneIcon from "@material-ui/icons/Phone";
 
 const useStyles = makeStyles((theme) => ({
     country: {
-        marginTop: "60px",
-        marginBottom: "10px",
+        marginTop: "70px",
+        marginBottom: "30px",
         width: "320px",
     },
     city: {
-        marginBottom: "20px",
+        marginBottom: "30px",
         width: "320px",
     },
     birthDate: {
-        marginBottom: "10px",
+        marginBottom: "30px",
         width: "320px",
         appearance: "none",
         fontFamily: "Helvetica, arial, sans-serif",

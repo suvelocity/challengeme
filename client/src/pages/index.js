@@ -16,8 +16,8 @@ import HomeErrorBoundry from "../ErrorHandling/HomeErrorBoundry";
 import AuthErrorBoundry from "../ErrorHandling/AuthErrorBoundry";
 import UserInfoErrorBoundry from "../ErrorHandling/UserInfoErrorBoundry";
 import Loading from "../components/Loading/Loading";
-
-import NewChallengeForm from './NewChallenge/NewChallengeForm';
+import "../index.css";
+import NewChallengeForm from "./NewChallenge/NewChallengeForm";
 
 const Home = lazy(() => import("./Home/Home"));
 const UserInfo = lazy(() => import("./UserInfo/UserInfo"));
@@ -49,7 +49,7 @@ export default function Router() {
             try {
                 const { data: challengesFromServer } = await network.get("/api/v1/challenges");
                 typeof challengesFromServer === "object" && setChallenges(challengesFromServer);
-            } catch { }
+            } catch {}
         })();
     }, [logged]);
 
@@ -105,46 +105,49 @@ export default function Router() {
                         </AnimatePresence>
                     </Logged.Provider>
                 ) : (
-                        <Logged.Provider value={{ logged, setLogged }}>
-                            <AllChallenges.Provider value={{ challenges }}>
-                                <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
-                                {/*TODO:add loading component*/}
-                                <div style={appBg} className={darkTheme ? "dark" : undefined}>
-                                    <Switch>
-                                        <Suspense fallback={<Loading darkMode={darkTheme} />}>
-                                            <ChallengeErrorBoundry>
-                                                <Route exact path="/challenges/:id">
-                                                    <ChallengePage darkMode={darkTheme} />
+                    <Logged.Provider value={{ logged, setLogged }}>
+                        <AllChallenges.Provider value={{ challenges }}>
+                            <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
+                            {/*TODO:add loading component*/}
+                            <div
+                                // style={appBg}
+                                className={darkTheme ? "dark" : "light"}
+                            >
+                                <Switch>
+                                    <Suspense fallback={<Loading darkMode={darkTheme} />}>
+                                        <ChallengeErrorBoundry>
+                                            <Route exact path="/challenges/:id">
+                                                <ChallengePage darkMode={darkTheme} />
+                                            </Route>
+                                        </ChallengeErrorBoundry>
+                                        <UserInfoErrorBoundry>
+                                            <Route exact path="/user_info">
+                                                <UserInfo />
+                                            </Route>
+                                        </UserInfoErrorBoundry>
+                                        <HomeErrorBoundry>
+                                            {challenges.length > 0 ? (
+                                                <Route exact path="/">
+                                                    <Home />
                                                 </Route>
-                                            </ChallengeErrorBoundry>
-                                            <UserInfoErrorBoundry>
-                                                <Route exact path="/user_info">
-                                                    <UserInfo />
-                                                </Route>
-                                            </UserInfoErrorBoundry>
-                                            <HomeErrorBoundry>
-                                                {challenges.length > 0 ? (
-                                                    <Route exact path="/">
-                                                        <Home />
-                                                    </Route>
-                                                ) : (
-                                                        <Loading darkMode={darkTheme} />
-                                                    )}
-                                            </HomeErrorBoundry>
-                                            <HomeErrorBoundry>
-                                                <Route path="*">
-                                                    <Redirect to="/" />
-                                                </Route>
-                                            </HomeErrorBoundry>
-                                        </Suspense>
-                                    </Switch>
-                                </div>
-                            </AllChallenges.Provider>
-                        </Logged.Provider>
-                    )
+                                            ) : (
+                                                <Loading darkMode={darkTheme} />
+                                            )}
+                                        </HomeErrorBoundry>
+                                        {/* <HomeErrorBoundry>
+                                            <Route path="*">
+                                                <Redirect to="/" />
+                                            </Route>
+                                        </HomeErrorBoundry> */}
+                                    </Suspense>
+                                </Switch>
+                            </div>
+                        </AllChallenges.Provider>
+                    </Logged.Provider>
+                )
             ) : (
-                    <Loading firstLoading={true} />
-                )}
+                <Loading firstLoading={true} />
+            )}
         </BrowserRouter>
     );
 }

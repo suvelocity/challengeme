@@ -13,16 +13,16 @@ import LockIcon from "@material-ui/icons/Lock";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 const useStyles = makeStyles((theme) => ({
     password: {
-        marginTop: "60px",
-        marginBottom: "10px",
+        marginTop: "70px",
+        marginBottom: "30px",
         width: "320px",
     },
     confirmPassword: {
-        marginBottom: "10px",
+        marginBottom: "30px",
         width: "320px",
     },
     question: {
-        marginBottom: "10px",
+        marginBottom: "30px",
         width: "320px",
     },
     answer: {

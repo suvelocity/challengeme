@@ -10,16 +10,16 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PersonIcon from '@material-ui/icons/Person';
 const useStyles = makeStyles((theme) => ({
     firstName: {
-        marginTop: "60px",
-        marginBottom: "10px",
+        marginTop: "70px",
+        marginBottom: "30px",
         width: "320px",
     },
     lastName: {
-        marginBottom: "10px",
+        marginBottom: "30px",
         width: "320px",
     },
     userName: {
-        marginBottom: "10px",
+        marginBottom: "30px",
         width: "320px",
     },
     email: {
