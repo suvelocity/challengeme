@@ -33,7 +33,7 @@ describe("testing challenges endpoints", () => {
     await User.destroy({ truncate: true, force: true });
   });
 
-  it("Can get all challenges", async (done) => {
+  xit("Can get all challenges", async (done) => {
     await Challenge.bulkCreate(challengesMock);
     const response = await request(app)
       .get("/api/v1/challenges")
@@ -43,7 +43,7 @@ describe("testing challenges endpoints", () => {
     done();
   });
 
-  it("Can get challenge by name", async (done) => {
+  xit("Can get challenge by name", async (done) => {
     await Challenge.bulkCreate(challengesMock);
     const response = await request(app)
       .get("/api/v1/challenges?name=React - Calculator")
