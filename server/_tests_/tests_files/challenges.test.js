@@ -43,6 +43,7 @@ describe("testing challenges endpoints", () => {
   //   done();
   // });
 
+  //
   // xit("Can get challenge by name", async (done) => {
   //   await Challenge.bulkCreate(challengesMock);
   //   const response = await request(app)
