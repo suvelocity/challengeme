@@ -16,9 +16,8 @@ const ChooseLabels = ({ labels, chooseLabels, setChooseLabels, submitFilter, dar
                     setChooseLabels(optionsForSelector);
                 } catch { }
             })();
-        },
-        []
-    );
+                // eslint-disable-next-line
+        }, []);
 
     const selectionChange = (choosens) => {
         submitFilter(choosens);

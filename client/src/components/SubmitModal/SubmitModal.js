@@ -37,7 +37,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
   const submitForm = async (data) => {
     // VIEW SUBMITTED SUCCESSFULLY/FAILED TO SUBMITT MESSAGE and close modal
     try {
-      const res = await network.post(
+      await network.post(
         `/api/v1/challenges/${challengeParamId}/apply`,
         data
       );
@@ -126,14 +126,14 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
           />
           {(errors.rating?.type === 'required' ||
             errors.rating?.type === 'min') && (
-            <Typography
-              variant='caption'
-              id='required-rating'
-              className={classes.formValidationError}
-            >
-              Please rate this challenge
-            </Typography>
-          )}
+              <Typography
+                variant='caption'
+                id='required-rating'
+                className={classes.formValidationError}
+              >
+                Please rate this challenge
+              </Typography>
+            )}
           <Typography variant='subtitle1' style={{ marginTop: 16 }}>
             Please leave your review here
           </Typography>

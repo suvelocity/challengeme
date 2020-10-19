@@ -89,7 +89,6 @@ const useStyles = makeStyles((theme) => ({
 const Search = ({ darkMode, setDarkMode }) => {
   const classes = useStyles();
   const [results, setResults] = useState([]);
-  const [searching, setSearching] = useState(false);
   const allChallenges = useContext(AllChallenges).challenges;
   const [searchValue, setSearchValue] = useState("");
 
@@ -126,7 +125,6 @@ const Search = ({ darkMode, setDarkMode }) => {
 //TODO find good practice way
   const onSearchLooseFocus = () => {
     setTimeout(() => {
-        setSearching(false);
         setResults([]);
         setSearchValue("");
     }, 200)
@@ -155,9 +153,6 @@ const Search = ({ darkMode, setDarkMode }) => {
         style={letterColor}
         id={"searchBar"}
         placeholder={"Search..."}
-        onFocus={() => {
-          setSearching(true);
-        }}
         onChange={search}
         autoComplete="off"
         classes={{

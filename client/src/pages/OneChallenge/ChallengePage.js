@@ -132,7 +132,6 @@ function ChallengePage({ darkMode }) {
                 let {
                     data: challengeFromServer,
                 } = await network.get(`/api/v1/challenges/${id}`);
-                console.log(challengeFromServer);
                 setChallenge(challengeFromServer);
                 setRating(
                     challengeFromServer.averageRaiting
