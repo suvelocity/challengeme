@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import network from "../../services/network";
 import Selector from "react-select";
 import "./ChooseLabel.css";
-const ChooseLabels = ({ submitFilter, darkMode }) => {
-    const [labels, setLabels] = useState([]);
-
+const ChooseLabels = ({ labels, chooseLabels, setChooseLabels, submitFilter, darkMode }) => {
     useEffect(
         // gets existing labels
         () => {
@@ -15,16 +13,14 @@ const ChooseLabels = ({ submitFilter, darkMode }) => {
                         value: labelData.id,
                         label: labelData.name,
                     }));
-                    setLabels(optionsForSelector);
-                    console.log(data);
-                } catch {}
+                    setChooseLabels(optionsForSelector);
+                } catch { }
             })();
-        },
-        []
-    );
+                // eslint-disable-next-line
+        }, []);
 
-    const selectionChange = (a) => {
-        submitFilter(a ? a.map((x) => x.value) : []);
+    const selectionChange = (choosens) => {
+        submitFilter(choosens);
     };
 
     const customStyles = {
@@ -33,7 +29,7 @@ const ChooseLabels = ({ submitFilter, darkMode }) => {
             borderBottom: "1px dotted black",
             color: darkMode ? "white" : "blue",
             backgroundColor: darkMode ? "rgb(51,51,51)" : "white",
-        height: "100%"
+            height: "100%"
         }),
         control: (provided) => ({
             ...provided,
@@ -43,6 +39,7 @@ const ChooseLabels = ({ submitFilter, darkMode }) => {
     return (
         <div className="labelFilter">
             <Selector
+                value={labels}
                 className="selectLabels"
                 maxMenuHeight={300}
                 placeholder="select labels"
@@ -50,7 +47,7 @@ const ChooseLabels = ({ submitFilter, darkMode }) => {
                 name="labels"
                 onChange={selectionChange}
                 closeMenuOnSelect={false}
-                options={labels}
+                options={chooseLabels}
                 styles={customStyles}
             />
         </div>

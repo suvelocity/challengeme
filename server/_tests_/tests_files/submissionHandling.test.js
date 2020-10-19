@@ -1,11 +1,12 @@
 
 const request = require('supertest');
-const app = require('../app');
+const app = require('../../app');
 const ngrok = require('ngrok');
 const port = process.env.TEST_PORT || 4040;
-const {Submission, Challenge, User, Review} = require('../models');
-const {challengeArr, solutionRepos, failRepos} = require('./mockData');
+const {Submission, Challenge, User, Review} = require('../../models');
+const {challengeArr, solutionRepos, failRepos} = require('../mocks/mockingSubmissions');
 process.env.MY_URL = 'testingAddress';
+const getCurrentBranch = require('../../helpers/getCurrentBranch')
 let server;
 let accessToken;
 const review = { commentContent : 'why you do this', commentTitle: 'annoying', rating: 3, userId: 1 }
@@ -31,6 +32,8 @@ describe('Submission process', () => {
         server = app.listen(port, () => {
             console.log(`Example app listening at http://localhost:${port}`)
           })
+        process.env.MY_BRANCH = await getCurrentBranch();
+        console.log('current branch' , process.env.MY_BRANCH);  
         await Challenge.destroy({ truncate: true, force: true });
         await Submission.destroy({ truncate: true, force: true });
         await User.destroy({ truncate: true, force: true });
@@ -52,17 +55,16 @@ describe('Submission process', () => {
         done();
       });
     test('Posting submisson and status change to PENDING', async (done) => {
-        const myUser = User.findOne();
         await request(app).post(`/api/v1/challenges/${solutionRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
-        .send({repository:solutionRepos[0].repo, ...review, user:myUser});
+        .send({repository:solutionRepos[0].repo, ...review});
         await request(app).post(`/api/v1/challenges/${solutionRepos[1].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
-        .send({repository:solutionRepos[1].repo, ...review, user:myUser});
+        .send({repository:solutionRepos[1].repo, ...review});
         await request(app).post(`/api/v1/challenges/${solutionRepos[2].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
-        .send({repository:solutionRepos[2].repo, ...review, user:myUser});
+        .send({repository:solutionRepos[2].repo, ...review});
         await request(app).post(`/api/v1/challenges/${solutionRepos[3].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
-        .send({repository:solutionRepos[3].repo, ...review, user:myUser});
+        .send({repository:solutionRepos[3].repo, ...review});
         await request(app).post(`/api/v1/challenges/${failRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
-        .send({repository:failRepos[0].repo, ...review, user:myUser});
+        .send({repository:failRepos[0].repo, ...review});
         let submissions = await Submission.findAll();
         expect(submissions.length).toBe(5);
         submissions.forEach(submission => expect(submission.state).toBe('PENDING'));
