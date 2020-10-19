@@ -224,7 +224,8 @@ router.post("/:challengeId/apply", async (req, res) => {
     });
 
     res.json({ status });
-  } catch (e) {
+  } catch (error) {
+    console.error(error)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
