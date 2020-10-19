@@ -2,6 +2,7 @@ require("dotenv").config();
 const { Router } = require("express");
 const axios = require("axios");
 const { Sequelize, Op } = require("sequelize");
+const jwt = require("jsonwebtoken");
 const router = Router();
 
 const { Submission, User, Challenge, Label, Review } = require("../../models");
