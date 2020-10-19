@@ -90,11 +90,12 @@ router.get("/:challengeId/:userName/submission", async (req, res) => {
   try {
     const { challengeId } = req.params;
     const { userName } = req.params;
+
     const { id } = await User.findOne({
       where: { userName },
       attributes: ["id"],
     });
-    const submission = await Submission.findOne({
+    const testSubmission = await Submission.findAll({
       include: [
         {
           model: User,
@@ -106,7 +107,16 @@ router.get("/:challengeId/:userName/submission", async (req, res) => {
         userId: id,
       },
     });
-    res.json(submission);
+    const timeNow = Date.now();
+    const recentSubmission = testSubmission[testSubmission.length - 1].dataValues;
+    if(recentSubmission.state === 'PENDING'){
+      if((timeNow - recentSubmission.createdAt.getTime()) > 600000){
+        let submissionThatIsStuck = await Submission.findByPk(recentSubmission.id);
+        await submissionThatIsStuck.update({ state: "FAIL" });
+        console.log('its because zach is crazy');
+      }
+    }
+    res.json(testSubmission[testSubmission.length - 1]);
   } catch (error) {
     console.error(error)
     res.status(400).json({ message: "can't get the challenge submissions" });
@@ -166,29 +176,22 @@ router.post("/:challengeId/apply", async (req, res) => {
     rating,
   });
   const challenge = await Challenge.findByPk(challengeId);
-  let submission = await Submission.findOne({
+  const pendingSubmission = await Submission.findOne({
     where: {
       solutionRepository,
+      state: "PENDING"
     },
   });
-  if (!submission) {
-    submission = await Submission.create({
-      challengeId,
-      userId: req.user.userId,
-      state: "PENDING",
-      solutionRepository,
-    });
-  } else if (submission.state === "PENDING") {
-    return res.json({ error: "already exist" });
+  if (pendingSubmission) {
+    return res.status(400).json({ message: "already submitting" });
   }
+  submission = await Submission.create({
+    challengeId,
+    userId: req.user.userId,
+    state: "PENDING",
+    solutionRepository,
+  });
 
-  if (submission.state === "SUCCESS") {
-    return res.json({ error: "already success" });
-  }
-
-  if (submission.state === "FAIL") {
-    await submission.update({ state: "PENDING" });
-  }
   try {
     const urltoSet = process.env.MY_URL.concat(
       `/api/v1/webhook/submission/${submission.id}`
