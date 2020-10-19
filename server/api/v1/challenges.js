@@ -108,12 +108,14 @@ router.get("/:challengeId/:userName/submission", async (req, res) => {
       },
     });
     const timeNow = Date.now();
-    const recentSubmission = testSubmission[testSubmission.length - 1].dataValues;
-    if(recentSubmission.state === 'PENDING'){
-      if((timeNow - recentSubmission.createdAt.getTime()) > 600000){
-        let submissionThatIsStuck = await Submission.findByPk(recentSubmission.id);
-        await submissionThatIsStuck.update({ state: "FAIL" });
-        console.log('its because zach is crazy');
+    if (testSubmission.length > 0) {
+      const recentSubmission = testSubmission[testSubmission.length - 1].dataValues;
+      if (recentSubmission.state === 'PENDING') {
+        if ((timeNow - recentSubmission.createdAt.getTime()) > 600000) {
+          let submissionThatIsStuck = await Submission.findByPk(recentSubmission.id);
+          await submissionThatIsStuck.update({ state: "FAIL" });
+          console.log('its because zach is crazy');
+        }
       }
     }
     res.json(testSubmission[testSubmission.length - 1]);
@@ -200,7 +202,6 @@ router.post("/:challengeId/apply", async (req, res) => {
     const pureToken =
       bearerToken.indexOf(" ") !== -1 ? bearerToken.split(" ")[1] : bearerToken;
     const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || "master"; // In case somehow the process env branches are not set.
-    console.log('GOT HERE')
     const { status } = await axios.post(
       `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
       {

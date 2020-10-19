@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import network from "../../services/network";
 import { Button } from "@material-ui/core";
@@ -11,6 +11,8 @@ import Cookies from "js-cookie";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Loading from "../../components/Loading/Loading";
+import FilteredLabels from '../../context/FilteredLabelsContext';
+
 const useStyles = makeStyles((theme) => ({
     getStartedButton: {
         background: "linear-gradient(270deg, rgba(55,99,192,1) 0%, rgba(87,159,223,1) 100%)",
@@ -63,6 +65,8 @@ function ChallengePage({ darkMode }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const classes = useStyles();
     const [loadingReq, setLoadingReq] = useState(false);
+
+    const filteredLabels = useContext(FilteredLabels);
 
     const getUpdated = useCallback((date) => {
         const dateNow = Date.now();
@@ -259,7 +263,8 @@ function ChallengePage({ darkMode }) {
                                         <Link
                                             className="link-rout"
                                             key={label.id}
-                                            to={`/?labelId=${label.id}`}
+                                            to={`/`}
+                                            onClick={() => filteredLabels.setFilteredLabels([label.id])}
                                         >
                                             <div className="one-challenge-labels">{label.name}</div>
                                         </Link>

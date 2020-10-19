@@ -14,7 +14,7 @@ export default function Home() {
             try {
                 if (filteredLabels.filteredLabels.length > 0) {
                     const filteredByLabelChallenges = [];
-                    allChallenges.forEach((challenge, index) => {
+                    allChallenges.forEach((challenge) => {
                         if (filteredLabels.filteredLabels.every((label) => challenge.Labels.map(label => label.id).includes(label))) {
                             if (!filteredByLabelChallenges.includes(challenge)) {
                                 filteredByLabelChallenges.push(challenge);
@@ -30,6 +30,10 @@ export default function Home() {
         // eslint-disable-next-line
     }, [filteredLabels]);
 
+    useEffect(() => {
+        return () => filteredLabels.setFilteredLabels([])
+    }, [])
+
     return (
         <div>
             {/* <Background /> */}
@@ -37,21 +41,21 @@ export default function Home() {
                 <div className={"challenges-container"}>
                     {challengesFiltered.length > 0 ? (
                         challengesFiltered.map((challenge) => {
-                        return (
-                            <ChallengeCard
-                                key={challenge.id}
-                                challengeId={challenge.id}
-                                createdAt={challenge.createdAt}
-                                name={challenge.name}
-                                description={challenge.description}
-                                repositoryName={challenge.repositoryName}
-                                labels={challenge.Labels}
-                                rating={challenge.averageRaiting}
-                                submissions={challenge.submissionsCount}
-                            />
-                        )
-                        
-                    })):<h1>Not Found</h1>}
+                            return (
+                                <ChallengeCard
+                                    key={challenge.id}
+                                    challengeId={challenge.id}
+                                    createdAt={challenge.createdAt}
+                                    name={challenge.name}
+                                    description={challenge.description}
+                                    repositoryName={challenge.repositoryName}
+                                    labels={challenge.Labels}
+                                    rating={challenge.averageRaiting}
+                                    submissions={challenge.submissionsCount}
+                                />
+                            )
+
+                        })) : <h1>Not Found</h1>}
                 </div>
             </div>
         </div>
