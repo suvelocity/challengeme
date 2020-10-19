@@ -23,6 +23,7 @@ export default function ChallengeCard({
     repositoryName,
     challengeId,
     rating,
+    submissions,
 }) {
     const [coverImg, setCoverImg] = useState("");
     const [loading, setLoading] = useState(true);
@@ -114,7 +115,7 @@ export default function ChallengeCard({
                             name="disabled"
                             value={rating ? Math.round(rating) : 0}
                         />
-                        <div className="number-of-submissions">502 Submission</div>
+                        <div className="number-of-submissions">{submissions} Submission</div>
                     </div>
 
                     <div className="challenge-card-description-homepage">

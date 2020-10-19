@@ -4,12 +4,13 @@
 const request = require('supertest');
 const app = require('../../app');
 const {Submission, Challenge, User, Review} = require('../../models');
+const jwt = require("jsonwebtoken");
 const {challengeArr, solutionRepos, failRepos} = require('../mocks/mockingSubmissions');
 const review = { commentContent : 'why you do this', commentTitle: 'annoying', rating: 3, userId: 1 }
 const nock = require('nock');
-const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || 'master';
+const getCurrentBranch = require('../../helpers/getCurrentBranch')
+let ref;
 process.env.MY_URL = 'testingAddress';
-console.log(ref);
 let accessToken;
 const userToAdd = {
   firstName: "Matan",
@@ -28,20 +29,25 @@ const userToAdd = {
 }
 describe('Submission process', () => {
     beforeAll(async (done) => {
+        ref = await getCurrentBranch();
+        process.env.MY_BRANCH = ref;
+        console.log('current branch' , ref);    
         await Challenge.destroy({ truncate: true, force: true });
         await Submission.destroy({ truncate: true, force: true });
         await User.destroy({ truncate: true, force: true });
         await Review.destroy({ truncate: true, force: true });
         await Challenge.bulkCreate(challengeArr);
-        await User.create(userToAdd);
+        await User.create({...userToAdd});
         await Submission.create({
           challengeId: solutionRepos[0].challengeId,
           state: 'FAIL',
+          userId: 1,
           solutionRepository: solutionRepos[0].repo
         });
         await Submission.create({
           challengeId: failRepos[0].challengeId,
           state: 'FAIL',
+          userId: 1,
           solutionRepository: failRepos[0].repo
         });
         const password = '12345678';
@@ -49,6 +55,11 @@ describe('Submission process', () => {
         const {headers} = await request(app).post('/api/v1/auth/login').send({userName, password, rememberMe:false})
         const index = headers['set-cookie'].findIndex(string => string.indexOf('accessToken') === 0);
         accessToken = headers['set-cookie'][index].split(';')[0].split('=')[1];
+        const user = await User.findOne({
+          where: {email: "mgk@gmail.com"}
+        })
+        accessToken = jwt.sign({userId:user.dataValues.id, userName: user.dataValues.userName}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h', })
+        console.log(accessToken)
         done();
       });
     test('Posting submisson and status change to PENDING + can Post Submissions that had FAIL status', async () => {
@@ -96,7 +107,6 @@ describe('Submission process', () => {
         })
         .reply(200)
 
-
         challengeType = challenges.find(challenge => challenge.id === solutionRepos[1].challengeId).type;
         testRepo = challengeArr.find(challenge=> challenge.id === solutionRepos[1].challengeId).repositoryName;
         webhookUrl = process.env.MY_URL.concat(`/api/v1/webhook/submission/${3}`);
@@ -116,13 +126,12 @@ describe('Submission process', () => {
         })
         .reply(200)
     
-        const myUser = await User.findOne();
         await request(app).post(`/api/v1/challenges/${solutionRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
-        .send({repository:solutionRepos[0].repo , ...review, user:myUser});
+        .send({repository:solutionRepos[0].repo , ...review});
         await request(app).post(`/api/v1/challenges/${failRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
-        .send({repository:failRepos[0].repo, ...review, user:myUser});
+        .send({repository:failRepos[0].repo, ...review});
         await request(app).post(`/api/v1/challenges/${solutionRepos[1].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
-        .send({repository:solutionRepos[1].repo, ...review, user:myUser});
+        .send({repository:solutionRepos[1].repo, ...review});
         expect(githubPostmock1.isDone()).toEqual(true);
         expect(githubPostmock2.isDone()).toEqual(true);
         expect(githubPostmock3.isDone()).toEqual(true);
@@ -135,7 +144,6 @@ describe('Submission process', () => {
     },10000);
     test('webhook simulation, state change from PENDING to SUCCESS or FAIL', async () => {
       let submissions = await Submission.findAll();
-      console.log("AAAAAAAAA", submissions);
       const successId = submissions.find(submission => submission.solutionRepository === solutionRepos[0].repo).id;
       const successId2 = submissions.find(submission => submission.solutionRepository === solutionRepos[1].repo).id;
       const failId = submissions.find(submission => submission.solutionRepository === failRepos[0].repo).id;

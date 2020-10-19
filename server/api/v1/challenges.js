@@ -42,6 +42,16 @@ router.get("/", async (req, res) => {
 
     const allChallengesId = allChallenges.map((challenge) => challenge.id)
 
+    const challengeSubmittions = await Submission.findAll({
+      where: {
+        challengeId: allChallengesId
+      },
+      attributes: [
+        [Sequelize.fn("COUNT", Sequelize.col("id")), "submissionsCount"], 'challengeId'
+      ],
+      group:['challengeId']
+    })
+
     const reviewsAvg = await Review.findAll({
       where: {
         challengeId: allChallengesId
@@ -61,6 +71,16 @@ router.get("/", async (req, res) => {
 
       if (!challenge.dataValues.averageRaiting) {
         challenge.dataValues.averageRaiting = null
+      }
+
+      challengeSubmittions.forEach(countSubmissions => {
+        if (countSubmissions.dataValues.challengeId === challenge.dataValues.id) {
+        challenge.dataValues.submissionsCount = countSubmissions.dataValues.submissionsCount
+        }
+      })
+
+      if(!challenge.dataValues.submissionsCount) {
+        challenge.dataValues.submissionsCount = 0
       }
       return challenge
     })
@@ -179,9 +199,11 @@ router.post("/:challengeId/apply", async (req, res) => {
     const urltoSet = process.env.MY_URL.concat(
       `/api/v1/webhook/submission/${submission.id}`
     );
-    const pureToken = 'dfd'
-    // jwt.sign(challengeId, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h', })
+    const bearerToken = jwt.sign({userId: req.user.userId, userName: req.user.userName}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
+    const pureToken =
+      bearerToken.indexOf(" ") !== -1 ? bearerToken.split(" ")[1] : bearerToken;
     const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || "master"; // In case somehow the process env branches are not set.
+    console.log('GOT HERE')
     const { status } = await axios.post(
       `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
       {
@@ -205,7 +227,6 @@ router.post("/:challengeId/apply", async (req, res) => {
 
     res.json({ status });
   } catch (e) {
-    console.error(error)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -230,6 +251,14 @@ router.get("/:challengeId", async (req, res) => {
       ],
     });
 
+    const challengeSubmittions = await Submission.findAll({
+      where: { challengeId: req.params.challengeId },
+      attributes: [
+        [Sequelize.fn("COUNT", Sequelize.col("id")), "submissionsCount"], 'challengeId'
+      ],
+      group:['challengeId']
+    })
+
     const averageRaiting = await Review.findAll({
       where: { challengeId: req.params.challengeId },
       attributes: [
@@ -239,7 +268,8 @@ router.get("/:challengeId", async (req, res) => {
       group: ['challengeId']
     })
 
-    challenge.dataValues.averageRaiting = averageRaiting ? averageRaiting[0].dataValues.averageRating : null;
+    challenge.dataValues.averageRaiting = averageRaiting[0] ? averageRaiting[0].dataValues.averageRating : null;
+    challenge.dataValues.submissionsCount = challengeSubmittions[0] ? challengeSubmittions[0].dataValues.submissionsCount : 0;
 
     res.json(challenge);
   } catch (error) {

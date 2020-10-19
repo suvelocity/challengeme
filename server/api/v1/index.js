@@ -5,7 +5,7 @@ const router = Router();
 router.use(require('../../middleware/morgan'));
 
 router.use("/auth", require("./auth"));
-router.use("/webhook", require("./webhook"));
+router.use("/webhook", checkToken, require("./webhook"));
 
 router.use("/challenges",checkToken,  require("./challenges"));
 router.use("/user_info", checkToken, require("./userInfo"));

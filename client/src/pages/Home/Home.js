@@ -91,6 +91,7 @@ export default function Home() {
                                 repositoryName={challenge.repositoryName}
                                 labels={challenge.Labels}
                                 rating={challenge.averageRaiting}
+                                submissions={challenge.submissionsCount}
                             />
                         )
                     })}

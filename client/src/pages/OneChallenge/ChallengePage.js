@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: "10px",
     },
     getStartedButtonContainer: {
-        marginTop:"auto",
+        marginTop: "auto",
         display: "flex",
         justifyContent: "center",
         alignItems: "flex-end",
@@ -53,6 +53,7 @@ function generateTime(date) {
 }
 
 function ChallengePage({ darkMode }) {
+    const [submissions, setSubmissions] = useState();
     const [challenge, setChallenge] = useState(null);
     const { id } = useParams();
     const [image, setImage] = useState("");
@@ -124,12 +125,12 @@ function ChallengePage({ darkMode }) {
             try {
                 const { data } = await network.get(`/api/v1/image?id=${id}`);
                 setImage(data.img);
-            } catch (error) {}
+            } catch (error) { }
         };
         const fetchChallenge = async () => {
             try {
                 let {
-                    data: challengeFromServer ,
+                    data: challengeFromServer,
                 } = await network.get(`/api/v1/challenges/${id}`);
                 console.log(challengeFromServer);
                 setChallenge(challengeFromServer);
@@ -138,6 +139,7 @@ function ChallengePage({ darkMode }) {
                         ? Math.round(challengeFromServer.averageRaiting)
                         : 0
                 );
+                setSubmissions(challengeFromServer.submissionsCount)
                 try {
                     const { data: repo } = await network.get(
                         `/api/v1/services/public_repo?repo_name=${challengeFromServer.repositoryName}`
@@ -147,7 +149,7 @@ function ChallengePage({ darkMode }) {
                 } catch (e) {
                     setDate(generateTime(challenge.createdAt));
                 }
-            } catch (error) {}
+            } catch (error) { }
         };
         setImg();
         fetchChallenge();
@@ -269,6 +271,10 @@ function ChallengePage({ darkMode }) {
                             {challenge.description}
                         </div>
                         <div className="one-challenge-author-uploaded-updated">
+                            {/* TODO add css  */}
+                            <div>
+                                Submissions: {submissions}
+                            </div>
                             <div className="one-challenge-author">
                                 Created by: {challenge.Author.userName}
                             </div>
@@ -296,33 +302,33 @@ function ChallengePage({ darkMode }) {
                 </div>
 
                 {/* <div className="one-challenge-reviews-and-submissions"> */}
-                    <div className="one-challenge-submission-container">
-                        {loadingReq ? (
-                            <div className="one-challenge-submit-btn">
-                                <div className="submission-status">{getSubmissionStatus()}</div>
-                                {getSubmissionButton()}
-                            </div>
-                        ) : (
+                <div className="one-challenge-submission-container">
+                    {loadingReq ? (
+                        <div className="one-challenge-submit-btn">
+                            <div className="submission-status">{getSubmissionStatus()}</div>
+                            {getSubmissionButton()}
+                        </div>
+                    ) : (
                             <div style={{ textAlign: "center" }}>
                                 <CircularProgress style={{ margin: "30px" }} />
                             </div>
                         )}
-                        <SubmitModal
-                            isOpen={isModalOpen}
-                            handleClose={handleModalClose}
-                            challengeParamId={id}
-                        />
-                    </div>
-                    <div className="one-challenge-reviews-container">
-                        <b className="one-challenge-reviews-title">Reviews :</b>
-                        <ReviewsTab challengeId={challenge.id} />
-                    </div>
+                    <SubmitModal
+                        isOpen={isModalOpen}
+                        handleClose={handleModalClose}
+                        challengeParamId={id}
+                    />
+                </div>
+                <div className="one-challenge-reviews-container">
+                    <b className="one-challenge-reviews-title">Reviews :</b>
+                    <ReviewsTab challengeId={challenge.id} />
                 </div>
             </div>
+        </div>
         // </div>
     ) : (
-        <Loading darkMode={darkMode} />
-    );
+            <Loading darkMode={darkMode} />
+        );
 }
 
 export default ChallengePage;
