@@ -156,6 +156,7 @@ const Search = ({ darkMode, setDarkMode }) => {
                     root: classes.inputRoot,
                     input: classes.inputInput,
                 }}
+                onBlur={() => {setSearching(false); setResults([]); setSearchValue("")}}
                 value={searchValue}
                 inputProps={{ "aria-label": "search" }}
             />
