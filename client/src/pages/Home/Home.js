@@ -36,7 +36,7 @@ export default function Home() {
                 } else {
                     setChallenges(allChallenges);
                 }
-            } catch (e) {}
+            } catch (e) { }
         })();
         // eslint-disable-next-line
     }, []);
@@ -80,22 +80,20 @@ export default function Home() {
                     <Button onClick={resetLabelFiltering}>Revert label filtering</Button>
                 )}
                 <div className={"challenges-container"}>
-                    {challenges.map((challenge) => (
-                        <ChallengeCard
-                            key={challenge.id}
-                            challengeId={challenge.id}
-                            createdAt={challenge.createdAt}
-                            name={challenge.name}
-                            description={challenge.description}
-                            repositoryName={challenge.repositoryName}
-                            labels={challenge.Labels}
-                            rating={
-                                typeof challenge.Reviews[0] === "object"
-                                    ? challenge.Reviews[0]
-                                    : null
-                            }
-                        />
-                    ))}
+                    {challenges.map((challenge) => {
+                        return (
+                            <ChallengeCard
+                                key={challenge.id}
+                                challengeId={challenge.id}
+                                createdAt={challenge.createdAt}
+                                name={challenge.name}
+                                description={challenge.description}
+                                repositoryName={challenge.repositoryName}
+                                labels={challenge.Labels}
+                                rating={challenge.averageRaiting}
+                            />
+                        )
+                    })}
                 </div>
             </div>
         </div>

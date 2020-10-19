@@ -16,7 +16,6 @@ const ChooseLabels = ({ submitFilter, darkMode }) => {
                         label: labelData.name,
                     }));
                     setLabels(optionsForSelector);
-                    console.log(data);
                 } catch {}
             })();
         },

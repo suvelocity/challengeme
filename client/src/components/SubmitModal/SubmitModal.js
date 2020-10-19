@@ -41,7 +41,6 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
         `/api/v1/challenges/${challengeParamId}/apply`,
         data
       );
-      console.log(res);
     } catch (error) {
       console.error(error);
     }

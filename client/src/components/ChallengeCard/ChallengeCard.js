@@ -97,7 +97,7 @@ export default function ChallengeCard({
                         <div className="labels-container">
                             {
                                 //getting the first 2 lables
-                                labels.slice(0, 2).map((label) => {
+                                labels.map((label) => {
                                     return (
                                         <span className="home-page-challenge-labels" key={label.id}>
                                             {label.name}
@@ -112,7 +112,7 @@ export default function ChallengeCard({
                         <Rating
                             readOnly
                             name="disabled"
-                            value={rating ? Math.round(rating.averageRaiting) : 0}
+                            value={rating ? Math.round(rating) : 0}
                         />
                         <div className="number-of-submissions">502 Submission</div>
                     </div>

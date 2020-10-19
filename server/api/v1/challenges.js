@@ -26,20 +26,49 @@ router.get("/", async (req, res) => {
         {
           model: Label,
           attributes: ["name", "id"],
+          through: {
+            attributes: []
+          }
         },
-        {
-          model: Review,
-          attributes: [
-            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRaiting"],
-          ],
-        },
+        // {
+        //   model: Review,
+        //   attributes: [
+        //     [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRaiting"],
+        //   ],
+        // },
       ],
-      group: ["id"],
+      // group: ["id"],
     });
-    res.json(allChallenges);
+
+    const allChallengesId = allChallenges.map((challenge) => challenge.id)
+
+    const reviewsAvg = await Review.findAll({
+      where: {
+        challengeId: allChallengesId
+      },
+      attributes: [
+        [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRaiting"], 'challengeId'
+      ],
+      group: ['challengeId']
+    })
+
+    const allChallengesWithReviews = allChallenges.map((challenge, index) => {
+      reviewsAvg.forEach(review => {
+        if (review.dataValues.challengeId === challenge.dataValues.id) {
+          challenge.dataValues.averageRaiting = review.dataValues.averageRaiting
+        }
+      });
+
+      if (!challenge.dataValues.averageRaiting) {
+        challenge.dataValues.averageRaiting = null
+      }
+      return challenge
+    })
+
+    res.json(allChallengesWithReviews)
   } catch (error) {
     console.error(error)
-    res.status(400).json({ message: "couldn't get challenges" }); //
+    res.status(400).json({ message: "can't get the challenges" });
   }
 });
 
@@ -183,18 +212,15 @@ router.post("/:challengeId/apply", async (req, res) => {
 
 router.get("/:challengeId", async (req, res) => {
   try {
-    let challenge = await Challenge.findOne({
+    const challenge = await Challenge.findOne({
       where: { id: req.params.challengeId },
       include: [
         {
           model: Label,
-          attributes: ["name"],
-        },
-        {
-          model: Review,
-          attributes: [
-            [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"],
-          ],
+          attributes: ["name","id"],
+          through: {
+            attributes: []
+          }
         },
         {
           model: User,
@@ -203,7 +229,19 @@ router.get("/:challengeId", async (req, res) => {
         },
       ],
     });
-    res.json({ challenge });
+
+    const averageRaiting = await Review.findAll({
+      where: { challengeId: req.params.challengeId },
+      attributes: [
+        [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"],
+        'challengeId'
+      ],
+      group: ['challengeId']
+    })
+
+    challenge.dataValues.averageRaiting = averageRaiting ? averageRaiting[0].dataValues.averageRating : null;
+
+    res.json(challenge);
   } catch (error) {
     console.error(error)
     res.status(400).json({ message: "Cannot process request" });

@@ -129,12 +129,13 @@ function ChallengePage({ darkMode }) {
         const fetchChallenge = async () => {
             try {
                 let {
-                    data: { challenge: challengeFromServer },
+                    data: challengeFromServer ,
                 } = await network.get(`/api/v1/challenges/${id}`);
+                console.log(challengeFromServer);
                 setChallenge(challengeFromServer);
                 setRating(
-                    typeof challengeFromServer.Reviews[0] === "object"
-                        ? Math.round(challengeFromServer.Reviews[0].averageRating)
+                    challengeFromServer.averageRaiting
+                        ? Math.round(challengeFromServer.averageRaiting)
                         : 0
                 );
                 try {
@@ -257,7 +258,7 @@ function ChallengePage({ darkMode }) {
                                         <Link
                                             className="link-rout"
                                             key={label.id}
-                                            to={`/?labelId=${label["LabelChallenge"]["labelId"]}`}
+                                            to={`/?labelId=${label.id}`}
                                         >
                                             <div className="one-challenge-labels">{label.name}</div>
                                         </Link>
