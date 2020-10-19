@@ -1,86 +1,42 @@
-import React, { useEffect, useState, useContext, useCallback } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import ChallengeCard from "../../components/ChallengeCard/ChallengeCard";
 import "./Home.css";
-import { useLocation } from "react-router-dom";
 import AllChallenges from "../../context/AllChallengesContext";
-import { Button } from "@material-ui/core";
-//function to get query params
-function useQuery() {
-    return new URLSearchParams(useLocation().search);
-}
+import FilteredLabels from '../../context/FilteredLabelsContext';
 
 export default function Home() {
     const allChallenges = useContext(AllChallenges).challenges;
-    const [challenges, setChallenges] = useState(allChallenges);
-    const [revertLabelFiltering, setRevertLabelFiltering] = useState(false);
-    const [previousQuery, setPreviousQuery] = useState("");
-
-    let query = useQuery();
+    const filteredLabels = useContext(FilteredLabels);
+    const [challengesFiltered, setChallengesFiltered] = useState(allChallenges);
 
     useEffect(() => {
         (async () => {
             try {
-                //checking if there is query params and the page loaded once
-                if (query.get("labelId") && query.get("labelId") !== previousQuery) {
+                if (filteredLabels.filteredLabels.length > 0) {
                     const filteredByLabelChallenges = [];
-                    for (let i = 0; i < challenges.length; i++) {
-                        for (let label of challenges[i].Labels) {
-                            if (label.id === Number(query.get("labelId"))) {
-                                filteredByLabelChallenges.push(challenges[i]);
+                    allChallenges.forEach((challenge, index) => {
+                        if (filteredLabels.filteredLabels.every((label) => challenge.Labels.map(label => label.id).includes(label))) {
+                            if (!filteredByLabelChallenges.includes(challenge)) {
+                                filteredByLabelChallenges.push(challenge);
                             }
                         }
-                    }
-                    setRevertLabelFiltering(true);
-                    setChallenges(filteredByLabelChallenges);
-                    setPreviousQuery(query.get("labelId"));
+                    })
+                    setChallengesFiltered(filteredByLabelChallenges);
                 } else {
-                    setChallenges(allChallenges);
+                    setChallengesFiltered(allChallenges);
                 }
             } catch (e) { }
         })();
         // eslint-disable-next-line
-    }, []);
-    useEffect(() => {
-        (() => {
-            if (query.get("labels") && query.get("labels") !== previousQuery) {
-                const filteredByLabelChallenges = [];
-                const searchedLabels = query.get("labels").split(",");
-                const labelsToMatch = searchedLabels.length;
-                for (let i = 0; i < challenges.length; i++) {
-                    let labelsMatched = 0;
-                    for (let label of challenges[i].Labels) {
-                        for (let labelToCheck of searchedLabels) {
-                            if (label.id === Number(labelToCheck)) {
-                                labelsMatched += 1;
-                            }
-                        }
-                    }
-                    if (labelsMatched === labelsToMatch) {
-                        filteredByLabelChallenges.push(challenges[i]);
-                    }
-                }
-                setPreviousQuery(query.get("labels"));
-                setRevertLabelFiltering(true);
-                setChallenges(filteredByLabelChallenges);
-            }
-        })();
-        // eslint-disable-next-line
-    }, [query]);
+    }, [filteredLabels]);
 
-    const resetLabelFiltering = useCallback(() => {
-        setRevertLabelFiltering(false);
-        setChallenges(allChallenges);
-        // eslint-disable-next-line
-    }, []);
     return (
         <div>
             {/* <Background /> */}
             <div className="home-page">
-                {revertLabelFiltering && (
-                    <Button onClick={resetLabelFiltering}>Revert label filtering</Button>
-                )}
                 <div className={"challenges-container"}>
-                    {challenges.map((challenge) => {
+                    {challengesFiltered.length > 0 ? (
+                        challengesFiltered.map((challenge) => {
                         return (
                             <ChallengeCard
                                 key={challenge.id}
@@ -94,7 +50,8 @@ export default function Home() {
                                 submissions={challenge.submissionsCount}
                             />
                         )
-                    })}
+                        
+                    })):<h1>Not Found</h1>}
                 </div>
             </div>
         </div>

@@ -30,14 +30,7 @@ router.get("/", async (req, res) => {
             attributes: []
           }
         },
-        // {
-        //   model: Review,
-        //   attributes: [
-        //     [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRaiting"],
-        //   ],
-        // },
       ],
-      // group: ["id"],
     });
 
     const allChallengesId = allChallenges.map((challenge) => challenge.id)
@@ -49,7 +42,7 @@ router.get("/", async (req, res) => {
       attributes: [
         [Sequelize.fn("COUNT", Sequelize.col("id")), "submissionsCount"], 'challengeId'
       ],
-      group:['challengeId']
+      group: ['challengeId']
     })
 
     const reviewsAvg = await Review.findAll({
@@ -75,11 +68,11 @@ router.get("/", async (req, res) => {
 
       challengeSubmittions.forEach(countSubmissions => {
         if (countSubmissions.dataValues.challengeId === challenge.dataValues.id) {
-        challenge.dataValues.submissionsCount = countSubmissions.dataValues.submissionsCount
+          challenge.dataValues.submissionsCount = countSubmissions.dataValues.submissionsCount
         }
       })
 
-      if(!challenge.dataValues.submissionsCount) {
+      if (!challenge.dataValues.submissionsCount) {
         challenge.dataValues.submissionsCount = 0
       }
       return challenge
@@ -199,7 +192,7 @@ router.post("/:challengeId/apply", async (req, res) => {
     const urltoSet = process.env.MY_URL.concat(
       `/api/v1/webhook/submission/${submission.id}`
     );
-    const bearerToken = jwt.sign({userId: req.user.userId, userName: req.user.userName}, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
+    const bearerToken = jwt.sign({ userId: req.user.userId, userName: req.user.userName }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
     const pureToken =
       bearerToken.indexOf(" ") !== -1 ? bearerToken.split(" ")[1] : bearerToken;
     const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || "master"; // In case somehow the process env branches are not set.
@@ -238,7 +231,7 @@ router.get("/:challengeId", async (req, res) => {
       include: [
         {
           model: Label,
-          attributes: ["name","id"],
+          attributes: ["name", "id"],
           through: {
             attributes: []
           }
@@ -256,7 +249,7 @@ router.get("/:challengeId", async (req, res) => {
       attributes: [
         [Sequelize.fn("COUNT", Sequelize.col("id")), "submissionsCount"], 'challengeId'
       ],
-      group:['challengeId']
+      group: ['challengeId']
     })
 
     const averageRaiting = await Review.findAll({
