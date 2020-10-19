@@ -123,6 +123,7 @@ const Search = ({ darkMode, setDarkMode }) => {
     setResults([]);
   }, []);
 
+//TODO find good practice way
   const onSearchLooseFocus = () => {
     setTimeout(() => {
         setSearching(false);
