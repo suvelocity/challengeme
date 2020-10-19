@@ -4,7 +4,7 @@ module.exports = [
     first_name: "cyber4S",
     last_name: "suvelocity",
     user_name: "suvelocity",
-    password: "12345678",
+    password: "zachiscrazy",
     email: "suvelocity@gmail.com",
     birth_date: new Date('1997/06/17'),
     country: "Israel",
