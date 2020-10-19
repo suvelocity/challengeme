@@ -1,9 +1,0 @@
-V challenges   
-V images  
-V labels  
-V labels_to_challenges  
-V reviews  
-V submissions  
-V users    
-V teams  
-V users_teams  
