@@ -232,6 +232,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
                 >
                     <Link to="/user_info" className="link-rout">
                         <Button
+                            onClick={() => setAnchorEl(null) }
                             className={classes.infoButton}
                             style={{ minWidth: 150 }}
                             variant="contained"

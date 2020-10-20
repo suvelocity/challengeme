@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Rating } from '@material-ui/lab';
 import { useForm } from 'react-hook-form';
 import network from '../../services/network';
+import { Alert, AlertTitle } from "@material-ui/lab";
 
 function getModalStyle() {
   return {
@@ -33,20 +34,66 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
   const [userRating, setUserRating] = useState('0');
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
+  const [badInput, setBadInput] = useState([]);
+  const spaces = new RegExp(/^(\s{1,})$/);
+  const hebrew = new RegExp(/^.*([\u0590-\u05FF]{1,}).*$/);
+
+
+  /* function to generate alerts for bad or missing inputs */
+  const generateAlert = (title, message) => (
+    <>
+      <Alert severity='error'>
+        <AlertTitle>{title}</AlertTitle>
+        {message}
+      </Alert>
+      <br />
+    </>
+  );
 
   const submitForm = async (data) => {
     // VIEW SUBMITTED SUCCESSFULLY/FAILED TO SUBMITT MESSAGE and close modal
+
+    const newBadInput = []
     try {
-      await network.post(
-        `/api/v1/challenges/${challengeParamId}/apply`,
-        data
+      if (
+        data.repository.length > 2 &&
+        !data.repository.match(spaces) &&
+        !data.repository.match(hebrew)
+      ) {
+        await network.get(
+          `/api/v1/services/public_repo?repo_name=${data.repository}`
+        );
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      newBadInput.push(
+        generateAlert(
+          "Repository's Link is not valid.\n Check the suggestions below:",
+          "- Type the Github repository in this format: owner/repo\n- Change your repository to public\n- Check for type errors.\nDon't use Hebrew letters"
+        )
       );
-    } catch (error) {
-      console.error(error);
     }
-    handleClose();
-    setUserRating('0');
-  };
+    console.log(data.repository)
+    if (newBadInput.length > 0) {
+      setBadInput(newBadInput);
+      setTimeout(() => {
+        return setBadInput([]);
+      }, 8000);
+    } else {
+      try {
+        await network.post(
+          `/api/v1/challenges/${challengeParamId}/apply`,
+          data
+        );
+      }
+      catch (error) {
+        console.error(error);
+      }
+      handleClose();
+      setUserRating('0');
+    };
+  }
 
   return (
     <Modal
@@ -81,6 +128,9 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
               pattern: /^([^ ]+\/[^ ]+)$/,
             })}
           />
+          <Typography color='error' className='newChallengeFormDisplayErrors'>
+            {badInput}
+          </Typography>
           {errors.repository?.type === 'pattern' && (
             <Typography
               variant='caption'
@@ -184,6 +234,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
             submit
           </Button>
         </form>
+
       </div>
     </Modal>
   );
