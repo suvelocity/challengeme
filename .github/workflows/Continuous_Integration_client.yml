@@ -27,19 +27,9 @@ jobs:
       - name: Install client dependencies
         run: npm ci
         working-directory: ./client
-      # - name: Install  Client dependencies
-      #   run: |
-      #     npm ci &&
-      #     npm install -g wait-on
-      # working-directory: ./client
       - name: Run web server
         run: npm start & npx wait-on http://localhost:3000
-        # - name: start the App and wait for it to load
-        #   run: |
-        #     npm start &&
-        #     wait-on http://localhost:3000/
         working-directory: ./client
       - name: Cypress run
         run: npx cypress run
         working-directory: ./client
-        # uses: cypress-io/github-action@v2
