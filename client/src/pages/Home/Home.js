@@ -30,6 +30,8 @@ export default function Home() {
         // eslint-disable-next-line
     }, [filteredLabels]);
 
+    console.log(challengesFiltered);
+
     useEffect(() => {
         return () => filteredLabels.setFilteredLabels([])
     }, [])
@@ -52,6 +54,8 @@ export default function Home() {
                                     labels={challenge.Labels}
                                     rating={challenge.averageRaiting}
                                     submissions={challenge.submissionsCount}
+                                    createdAt={challenge.createdAt}
+                                    authorName={challenge.Author.userName}
                                 />
                             )
 

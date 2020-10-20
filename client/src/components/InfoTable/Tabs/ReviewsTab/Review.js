@@ -5,6 +5,8 @@ import "./Review.css";
 function Review({ author, createdAt, title, content, rating }) {
   const [date, setDate] = useState("");
 
+  console.log("render");
+
   useEffect(() => {
     const dateNow = Date.now();
     const updateRepoDate = new Date(createdAt);
