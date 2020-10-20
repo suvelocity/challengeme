@@ -108,3 +108,12 @@
 [1018/220651.473:ERROR:crash_report_database_win.cc(457)] unexpected header
 [1018/222151.500:ERROR:crash_report_database_win.cc(457)] unexpected header
 [1018/223651.507:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1020/203648.718:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1020/204648.732:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1020/204648.733:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
+[1020/204648.735:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1020/204648.735:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1020/205148.726:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1020/210648.743:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1020/212148.754:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1020/213648.763:ERROR:crash_report_database_win.cc(457)] unexpected header
