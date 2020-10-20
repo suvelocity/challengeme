@@ -15,6 +15,7 @@ import "./Header.css";
 import DarkModeToggle from "react-dark-mode-toggle";
 import Search from "./Search/Search";
 import { Logged } from "../../context/LoggedInContext";
+import FilteredLabels from '../../context/FilteredLabelsContext';
 import { useHistory } from "react-router-dom";
 import network from "../../services/network";
 import ChooseLabels from "../Choosers/ChooseLabels";
@@ -98,20 +99,23 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: "rgb(219,219,219)",
         marginLeft: "10px",
     },
-    filterButtonDark:{
+    filterButtonDark: {
         backgroundColor: "rgb(81,81,81)",
-        color:"white",
+        color: "white",
         marginLeft: "10px",
-    }
+    },
 }));
 
 export default function WideNav({ darkMode, setDarkMode }) {
+    const filteredLabels = useContext(FilteredLabels);
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const location = useHistory();
     const value = useContext(Logged);
     const [labels, setLabels] = useState([]);
+    const [chooseLabels, setChooseLabels] = useState([]);
+
 
     const handleMenu = (event) => {
         setAnchorEl(event.currentTarget);
@@ -146,8 +150,6 @@ export default function WideNav({ darkMode, setDarkMode }) {
         <AppBar
             position="fixed"
             className={clsx(classes.appBarRegolar)}
-            //     [classes.appBarShift]: open,
-            // })}
             style={headerStyle}
         >
             <Toolbar>
@@ -155,7 +157,6 @@ export default function WideNav({ darkMode, setDarkMode }) {
                     <NavLink
                         to="/"
                         exact
-                        // activeStyle={{ color: darkMode ? "#F5CB39" : "black" }}
                         className="link-rout"
                     >
                         <div
@@ -168,24 +169,25 @@ export default function WideNav({ darkMode, setDarkMode }) {
                             <HomeIcon style={letterColor} />
                             &nbsp;
                             <span style={letterColor} className="header-link-title">
-                                ChallangeMe
+                                ChallengeMe
                             </span>
                         </div>
                     </NavLink>
                 </Typography>
                 <Search darkMode={darkMode} setDarkMode={setDarkMode} />
-                <div style={{ width: "200px" }}>
-                    <ChooseLabels submitFilter={setLabels} />
+                <div style={{ minWidth: "150px", width: "fit-content" }}>
+                    <ChooseLabels labels={labels} chooseLabels={chooseLabels} setChooseLabels={setChooseLabels} darkMode={darkMode} submitFilter={setLabels} />
                 </div>
-                <Link className="link-rout" to={`/?labels=${labels.join(",")}`}>
-                    <Button
-                        variant="contained"
-                        className={darkMode ? classes.filterButtonDark : classes.filterButton}
-                    >
-                        filter
+                <Button
+                    onClick={() => {
+                        filteredLabels.setFilteredLabels(labels ? labels.map(label => label.value) : [])
+                        setLabels([])
+                    }}
+                    variant="contained"
+                    className={darkMode ? classes.filterButtonDark : classes.filterButton}
+                >
+                    filter
                     </Button>
-                </Link>
-
                 <div style={{ flex: 1 }}></div>
                 {/* Make space between the search input and the rest of the header. */}
                 <DarkModeToggle
@@ -226,6 +228,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
                     keepMounted
                     open={open}
                     onClose={handleClose}
+                    className={classes.menu}
                 >
                     <Link to="/user_info" className="link-rout">
                         <Button

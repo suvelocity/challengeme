@@ -113,10 +113,10 @@ export default function Login() {
       <Background />
       <motion.div
         onMouseUp={() => setShowPassword(false)}
-        initial={{ opacity: 0, scale: 0.8 }}
+        initial={{ opacity: 0.2, scale: 0.8 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{
-          default: { duration: 0.5 },
+          default: { duration: 0.2 },
         }}
         className='loginGeneral'
       >
