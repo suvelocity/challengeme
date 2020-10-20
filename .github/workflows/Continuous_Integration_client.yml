@@ -40,4 +40,6 @@ jobs:
         #     wait-on http://localhost:3000/
         working-directory: ./client
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        run: npx cypress run
+        working-directory: ./client
+        # uses: cypress-io/github-action@v2
