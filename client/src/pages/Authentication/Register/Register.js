@@ -25,11 +25,11 @@ const useStyles = makeStyles((theme) => ({
 function Register() {
   const classes = useStyles();
   const [errors, setErrors] = useState([]);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(5);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("dor@gmail.com");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [birthDate, setBirthDate] = useState("");
