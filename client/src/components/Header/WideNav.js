@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Link, NavLink } from "react-router-dom";
 import clsx from "clsx";
@@ -117,7 +117,19 @@ export default function WideNav({ darkMode, setDarkMode }) {
   const [chooseLabels, setChooseLabels] = useState([]);
   const currentLocation = useLocation();
 
-  console.log(currentLocation);
+  useEffect(() => {
+    if (currentLocation.pathname !== "/") {
+      setLabels([]);
+    } else {
+      const newFilter = chooseLabels.filter(
+        (label) =>
+          label.value ===
+          (filteredLabels ? filteredLabels.filteredLabels[0] : null)
+      );
+      setLabels(newFilter);
+    }
+  }, [currentLocation]);
+
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -189,7 +201,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
               filteredLabels.setFilteredLabels(
                 labels ? labels.map((label) => label.value) : []
               );
-              setLabels([]);
+              //   setLabels([]);
             }}
             variant="contained"
             className={

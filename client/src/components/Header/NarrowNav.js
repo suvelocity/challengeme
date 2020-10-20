@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
@@ -25,6 +25,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
 import ChooseLabels from "../Choosers/ChooseLabels";
+import FilteredLabels from "../../context/FilteredLabelsContext";
 
 import InfoIcon from "@material-ui/icons/Info";
 const drawerWidth = 240;
@@ -127,12 +128,27 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NarrowNav({ darkMode, setDarkMode }) {
   const classes = useStyles();
-
+  const filteredLabels = useContext(FilteredLabels);
+  const [labels, setLabels] = useState([]);
+  const [chooseLabels, setChooseLabels] = useState([]);
   const location = useHistory();
   const value = useContext(Logged);
   const [openNavBar, setOpenNavBar] = useState(false);
-  const [labels, setLabels] = useState([]);
   const currentLocation = useLocation();
+
+  useEffect(() => {
+    console.log(currentLocation);
+    if (currentLocation.pathname !== "/") {
+      setLabels([]);
+    } else {
+      const newFilter = chooseLabels.filter(
+        (label) =>
+          label.value ===
+          (filteredLabels ? filteredLabels.filteredLabels[0] : null)
+      );
+      setLabels(newFilter);
+    }
+  }, [currentLocation]);
 
   const handleDrawerOpen = () => {
     setOpenNavBar(true);
@@ -197,21 +213,32 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
             }}
           >
             {currentLocation.pathname === "/" ? (
-              <ChooseLabels darkMode={darkMode} submitFilter={setLabels} />
+              <ChooseLabels
+                labels={labels}
+                chooseLabels={chooseLabels}
+                setChooseLabels={setChooseLabels}
+                darkMode={darkMode}
+                submitFilter={setLabels}
+              />
             ) : null}
           </div>
-          <Link className="link-rout" to={`/?labels=${labels.join(",")}`}>
-            {currentLocation.pathname === "/" ? (
-              <Button
-                variant="contained"
-                className={
-                  darkMode ? classes.filterButtonDark : classes.filterButton
-                }
-              >
-                filter
-              </Button>
-            ) : null}
-          </Link>
+          {/* <Link className="link-rout" to={`/?labels=${labels.join(",")}`}> */}
+          {currentLocation.pathname === "/" ? (
+            <Button
+              onClick={() => {
+                filteredLabels.setFilteredLabels(
+                  labels ? labels.map((label) => label.value) : []
+                );
+              }}
+              variant="contained"
+              className={
+                darkMode ? classes.filterButtonDark : classes.filterButton
+              }
+            >
+              filter
+            </Button>
+          ) : null}
+          {/* </Link> */}
         </Toolbar>
       </AppBar>
       <Drawer
