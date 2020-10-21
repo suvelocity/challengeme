@@ -18,17 +18,6 @@ const useStyles = makeStyles((theme) => ({
     p: {
         fontSize: "30px",
     },
-    goBack: {
-        width: "200px",
-        fontSize: "30px",
-        margin: "auto",
-        marginBottom: "15px",
-        border: "none",
-        background: "transparent",
-        textDecoration: "underline",
-        cursor: "pointer",
-        
-    },
     goHome: {
         width: "200px",
         fontSize: "30px",
@@ -43,7 +32,6 @@ const NotFound = () => {
         <div className={classes.container}>
             <h3 className={classes.h3}>404 page not found</h3>
             <p className={classes.p} >We are sorry but the page you are looking for does not exist.</p>
-            <button className={classes.goBack} onClick={() => location.goBack()}>Go Back</button>
             <Link to='/'><div className={classes.goHome}>Go Home</div></Link>
             <img src={pageNotFound} alt=' ' />
         </div>
