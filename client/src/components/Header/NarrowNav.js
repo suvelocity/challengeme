@@ -147,6 +147,7 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
       );
       setLabels(newFilter);
     }
+    // eslint-disable-next-line
   }, [currentLocation]);
 
   const handleDrawerOpen = () => {
@@ -181,8 +182,8 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
   };
   const dividerColor = darkMode
     ? {
-        backgroundColor: "rgba(255,255,255,0.3)",
-      }
+      backgroundColor: "rgba(255,255,255,0.3)",
+    }
     : {};
   return (
     <>

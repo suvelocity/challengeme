@@ -20,12 +20,10 @@ const ChooseLabels = ({
             label: labelData.name,
           }));
           setChooseLabels(optionsForSelector);
-        } catch {}
+        } catch { }
       })();
       // eslint-disable-next-line
-    },
-    []
-  );
+    }, []);
 
   const selectionChange = (choosens) => {
     submitFilter(choosens);

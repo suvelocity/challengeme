@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import pageNotFound from '../images/pageNotFound.png';
 
@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 const NotFound = () => {
     const classes = useStyles();
-    const location = useHistory()
 
     return (
         <div className={classes.container}>

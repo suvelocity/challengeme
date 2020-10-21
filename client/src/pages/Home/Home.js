@@ -32,6 +32,7 @@ export default function Home() {
 
     useEffect(() => {
         return () => filteredLabels.setFilteredLabels([])
+        // eslint-disable-next-line
     }, [])
 
     return (
@@ -45,7 +46,6 @@ export default function Home() {
                                 <ChallengeCard
                                     key={challenge.id}
                                     challengeId={challenge.id}
-                                    createdAt={challenge.createdAt}
                                     name={challenge.name}
                                     description={challenge.description}
                                     repositoryName={challenge.repositoryName}
