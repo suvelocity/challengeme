@@ -12,7 +12,7 @@ function Loading({ darkMode, firstLoading }) {
     };
     return (
         <div style={getBackground()} className="loaderContainer">
-            {/* <div className="loader"></div> */}
+            <div className="loader"></div>
         </div>
     );
 }

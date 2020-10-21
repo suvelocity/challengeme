@@ -231,7 +231,6 @@ function ChallengePage({ darkMode }) {
             );
         } else {
             return (
-                //fail
                 <div style={{ textAlign: "center" }}>
                     <p>
                         <div style={{ fontSize: "25px", fontWeight: "bold", marginBottom: "5px" }}>
@@ -275,7 +274,6 @@ function ChallengePage({ darkMode }) {
                             {challenge.description}
                         </div>
                         <div className="one-challenge-author-uploaded-updated">
-                            {/* TODO add css  */}
                             <div>
                                 Submissions: {submissions}
                             </div>
@@ -304,8 +302,6 @@ function ChallengePage({ darkMode }) {
                         </Button>
                     </div>
                 </div>
-
-                {/* <div className="one-challenge-reviews-and-submissions"> */}
                 <div className="one-challenge-submission-container">
                     {loadingReq ? (
                         <div className="one-challenge-submit-btn">
@@ -329,7 +325,6 @@ function ChallengePage({ darkMode }) {
                 </div>
             </div>
         </div>
-        // </div>
     ) : (
             <Loading darkMode={darkMode} />
         );

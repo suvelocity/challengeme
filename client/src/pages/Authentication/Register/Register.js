@@ -29,7 +29,7 @@ function Register() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("dor@gmail.com");
+  const [email, setEmail] = useState("");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [birthDate, setBirthDate] = useState("");

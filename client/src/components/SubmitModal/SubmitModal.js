@@ -74,7 +74,6 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
         )
       );
     }
-    console.log(data.repository)
     if (newBadInput.length > 0) {
       setBadInput(newBadInput);
       setTimeout(() => {

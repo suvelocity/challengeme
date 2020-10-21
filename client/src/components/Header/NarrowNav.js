@@ -137,7 +137,6 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
   const currentLocation = useLocation();
 
   useEffect(() => {
-    console.log(currentLocation);
     if (currentLocation.pathname !== "/") {
       setLabels([]);
     } else {

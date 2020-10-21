@@ -19,6 +19,7 @@ import UserInfoErrorBoundry from "../ErrorHandling/UserInfoErrorBoundry";
 import Loading from "../components/Loading/Loading";
 import "../index.css";
 
+const NotFound = lazy(() => import('../pages/NotFound'));
 const Home = lazy(() => import("./Home/Home"));
 const UserInfo = lazy(() => import("./UserInfo/UserInfo"));
 const ChallengePage = lazy(() => import("./OneChallenge/ChallengePage"));
@@ -30,9 +31,6 @@ export default function Router() {
     const [challenges, setChallenges] = useState([]);
     const [filteredLabels, setFilteredLabels] = useState([]);
 
-    // const appBg = darkTheme
-    //     ? { backgroundColor: "rgb(33,33,33)" }
-    //     : { backgroundColor: "rgb(188,208,234)" };
     useEffect(() => {
         if (logged) {
             const previousTheme = localStorage.getItem("darkMode"); //get previous selected theme
@@ -111,39 +109,25 @@ export default function Router() {
                             <AllChallenges.Provider value={{ challenges }}>
                                 <FilteredLabels.Provider value={{ filteredLabels, setFilteredLabels }}>
                                     <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
-                                    {/*TODO:add loading component*/}
-                                    <div
-                                        // style={appBg}
-                                        className={darkTheme ? "dark" : "light"}
-                                    >
-                                        <Switch>
-                                            <Suspense fallback={<Loading darkMode={darkTheme} />}>
-                                                <ChallengeErrorBoundry>
+                                    <div className={darkTheme ? "dark" : "light"} >
+                                        <Suspense fallback={<Loading darkMode={darkTheme} />}>
+                                            <HomeErrorBoundry>
+                                                <Switch >
                                                     <Route exact path="/challenges/:id">
                                                         <ChallengePage darkMode={darkTheme} />
                                                     </Route>
-                                                </ChallengeErrorBoundry>
-                                                <UserInfoErrorBoundry>
                                                     <Route exact path="/user_info">
-                                                        <UserInfo darkMode={darkTheme}/>
+                                                        <UserInfo darkMode={darkTheme} />
                                                     </Route>
-                                                </UserInfoErrorBoundry>
-                                                <HomeErrorBoundry>
-                                                    {challenges.length > 0 ? (
-                                                        <Route exact path="/">
-                                                            <Home />
-                                                        </Route>
-                                                    ) : (
-                                                            <Loading darkMode={darkTheme} />
-                                                        )}
-                                                </HomeErrorBoundry>
-                                                {/* <HomeErrorBoundry>
-                                            <Route path="*">
-                                                <Redirect to="/" />
-                                            </Route>
-                                        </HomeErrorBoundry> */}
-                                            </Suspense>
-                                        </Switch>
+                                                    <Route exact path="/">
+                                                        <Home />
+                                                    </Route>
+                                                    <Route path="*">
+                                                        <NotFound />
+                                                    </Route>
+                                                </Switch>
+                                            </HomeErrorBoundry>
+                                        </Suspense>
                                     </div>
                                 </FilteredLabels.Provider>
                             </AllChallenges.Provider>
