@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 function Register() {
   const classes = useStyles();
   const [errors, setErrors] = useState([]);
-  const [step, setStep] = useState(5);
+  const [step, setStep] = useState(1);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [userName, setUserName] = useState("");
