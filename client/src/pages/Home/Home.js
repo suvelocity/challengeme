@@ -30,8 +30,6 @@ export default function Home() {
         // eslint-disable-next-line
     }, [filteredLabels]);
 
-    console.log(challengesFiltered);
-
     useEffect(() => {
         return () => filteredLabels.setFilteredLabels([])
     }, [])

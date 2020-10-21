@@ -16,7 +16,7 @@ export default class HomeErrorBoundry extends Component {
 
   render() {
     if (this.state.hasError) {
-      return <div>Cannot get home page</div>;
+      return <div style={{marginTop: '100px'}}  >Cannot get the page</div>;
     }
     return this.props.children;
   }

@@ -28,7 +28,6 @@ const ChooseLabels = ({
   );
 
   const selectionChange = (choosens) => {
-    console.log(choosens);
     submitFilter(choosens);
   };
 

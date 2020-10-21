@@ -147,7 +147,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
       Cookies.remove("name");
       Cookies.remove("userId");
       value.setLogged(false);
-      location.push("/login");
+      location.push("/");
     } catch (error) {
       console.error(error);
     }
@@ -201,7 +201,6 @@ export default function WideNav({ darkMode, setDarkMode }) {
               filteredLabels.setFilteredLabels(
                 labels ? labels.map((label) => label.value) : []
               );
-              //   setLabels([]);
             }}
             variant="contained"
             className={
@@ -255,6 +254,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
         >
           <Link to="/user_info" className="link-rout">
             <Button
+            onClick={()=> setAnchorEl(null)}
               className={classes.infoButton}
               style={{ minWidth: 150 }}
               variant="contained"
