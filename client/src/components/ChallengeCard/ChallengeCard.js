@@ -25,6 +25,8 @@ export default function ChallengeCard({
     challengeId,
     rating,
     submissions,
+    authorName,
+    createdAt
 }) {
     const [coverImg, setCoverImg] = useState("");
     const [loading, setLoading] = useState(true);
@@ -126,6 +128,11 @@ export default function ChallengeCard({
                                 ? description
                                 : description.slice(0, 100).split(" ").slice(0, -1).join(" ") +
                                   "..."
+                        }
+                    </div>
+                    <div className="challenge-card-description-homepage">
+                        {
+                        `${createdAt.split('T')[0]} || by ${authorName}`
                         }
                     </div>
                 </div>
