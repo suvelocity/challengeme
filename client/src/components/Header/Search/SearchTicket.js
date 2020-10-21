@@ -21,8 +21,8 @@ function SearchTicket({ ticket, closeSearch, darkMode }) {
 
     const dividerColor = darkMode
         ? {
-              backgroundColor: "rgba(255,255,255,0.3)",
-          }
+            backgroundColor: "rgba(255,255,255,0.3)",
+        }
         : {};
 
     const letterColor = {
@@ -34,7 +34,7 @@ function SearchTicket({ ticket, closeSearch, darkMode }) {
                 <Avatar className={classes.blueGrey}>{avatarName}</Avatar>
                 <div className="ticketName">{ticket.name}</div>
                 <div className="ticketRating">
-                    <Rating name="" value={rating} style={{opacity: 1.5}}disabled />
+                    <Rating name="" value={rating} style={{ opacity: 1.5 }} disabled />
                 </div>
             </div>
             <Divider style={dividerColor} />

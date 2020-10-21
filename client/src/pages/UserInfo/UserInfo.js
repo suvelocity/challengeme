@@ -75,7 +75,7 @@ function UserInfo({ darkMode }) {
                 const username = Cookies.get("userName");
                 const { data: info } = await network.get(`/api/v1/user_info/${username}`);
                 setUserInfo(info[0]);
-            } catch {}
+            } catch { }
         })();
     }, []);
     return userInfo.firstName ? (
@@ -142,8 +142,8 @@ function UserInfo({ darkMode }) {
             </div>
         </div>
     ) : (
-        <div></div>
-    );
+            <div></div>
+        );
 }
 
 export default UserInfo;

@@ -349,22 +349,22 @@ function Register() {
                 </div>
               </>
             ) : (
-              <div className='containerButtonsRegister'>
-                {step > 1 && (
-                  <Button id='prevButton' onClick={prevStep}>
-                    Back
-                  </Button>
-                )}
-                <Button
-                  id='nextButton'
-                  className={classes.nextButton}
-                  variant='contained'
-                  onClick={nextStep}
-                >
-                  Back To Login Page
+                <div className='containerButtonsRegister'>
+                  {step > 1 && (
+                    <Button id='prevButton' onClick={prevStep}>
+                      Back
+                    </Button>
+                  )}
+                  <Button
+                    id='nextButton'
+                    className={classes.nextButton}
+                    variant='contained'
+                    onClick={nextStep}
+                  >
+                    Back To Login Page
                 </Button>
-              </div>
-            )}
+                </div>
+              )}
 
             <p>
               Have an existing account? <Link to='/login'>Login Here</Link>

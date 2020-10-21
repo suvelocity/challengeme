@@ -18,7 +18,7 @@ import FilteredLabels from "../../../context/FilteredLabelsContext";
 import { useHistory, useLocation } from "react-router-dom";
 import network from "../../../services/network";
 import ChooseLabels from "../../Choosers/ChooseLabels";
-import useStyles from './WideNavStyle'; 
+import useStyles from './WideNavStyle';
 
 export default function WideNav({ darkMode, setDarkMode }) {
   const filteredLabels = useContext(FilteredLabels);

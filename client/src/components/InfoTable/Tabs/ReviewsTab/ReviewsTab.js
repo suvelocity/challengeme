@@ -22,7 +22,7 @@ function ReviewsTab({ challengeId }) {
     return () => clearInterval(liveReviews);
   }, [challengeId]);
 
-  return reviews.length !==0 ? (
+  return reviews.length !== 0 ? (
     reviews.map((review, index) => {
       const {
         createdAt,
@@ -43,10 +43,10 @@ function ReviewsTab({ challengeId }) {
       );
     })
   ) : (
-    <div>
-   {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
-  </div>
-  );
+      <div>
+        {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
+      </div>
+    );
 }
 
 export default ReviewsTab;

@@ -37,7 +37,6 @@ export default function Home() {
 
     return (
         <div>
-            {/* <Background /> */}
             <div className="home-page">
                 <div className={"challenges-container"}>
                     {challengesFiltered.length > 0 ? (

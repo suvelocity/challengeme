@@ -16,7 +16,7 @@ export default class ErrorBoundry extends Component {
 
   render() {
     if (this.state.hasError) {
-      return <div style={{marginTop: '100px'}}  >Cannot get the page</div>;
+      return <div style={{ marginTop: '100px' }}  >Cannot get the page</div>;
     }
     return this.props.children;
   }

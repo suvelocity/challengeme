@@ -20,8 +20,8 @@ function Header({ darkMode, setDarkMode }) {
             {!navOrMenu ? (
                 <WideNav darkMode={darkMode} setDarkMode={setDarkMode} />
             ) : (
-                <NarrowNav darkMode={darkMode} setDarkMode={setDarkMode} />
-            )}
+                    <NarrowNav darkMode={darkMode} setDarkMode={setDarkMode} />
+                )}
         </>
     );
 }

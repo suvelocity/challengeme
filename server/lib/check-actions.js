@@ -50,12 +50,12 @@ module.exports = async () => {
     const string1 = 'Submission';
     const index = data.jobs[0].name.lastIndexOf(string1);
     const stringLength = string1.length;//index === -1 ? string2.length : string1.length;
-    const submissionId = data.jobs[0].name.slice(index+stringLength);
-    let submission; 
+    const submissionId = data.jobs[0].name.slice(index + stringLength);
+    let submission;
     try {
-    if (!isNaN(submissionId)) {
-      submission = await Submission.findByPk(parseInt(submissionId));
-    }
+      if (!isNaN(submissionId)) {
+        submission = await Submission.findByPk(parseInt(submissionId));
+      }
     } catch (e) {
       console.log('error on', submissionId, e)
       // checkedIds[run.id] = true;
