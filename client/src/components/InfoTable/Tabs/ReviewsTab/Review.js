@@ -44,8 +44,7 @@ function Review({ author, createdAt, title, content, rating }) {
         <Rating
           name='half-rating-read'
           defaultValue={rating}
-          // TODO: round the raiting
-          precision={0.5}
+          precision={1}
           readOnly
         />
       </div>

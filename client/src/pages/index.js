@@ -12,8 +12,7 @@ import network from "../services/network";
 import Landing from "./Authentication/Landing";
 import { AnimatePresence } from "framer-motion";
 import Header from "../components/Header/Header";
-import HomeErrorBoundry from "../ErrorHandling/HomeErrorBoundry";
-import AuthErrorBoundry from "../ErrorHandling/AuthErrorBoundry";
+import ErrorBoundry from "../components/ErrorBoundry";
 import Loading from "../components/Loading/Loading";
 import "../index.css";
 
@@ -74,7 +73,7 @@ export default function Router() {
                 !logged ? (
                     <Logged.Provider value={{ logged, setLogged }}>
                         <AnimatePresence>
-                            <AuthErrorBoundry>
+                            <ErrorBoundry>
                                 <Route
                                     render={({ location }) => (
                                         <Switch location={location} key={location.pathname}>
@@ -99,7 +98,7 @@ export default function Router() {
                                         </Switch>
                                     )}
                                 />
-                            </AuthErrorBoundry>
+                            </ErrorBoundry>
                         </AnimatePresence>
                     </Logged.Provider>
                 ) : (
@@ -109,7 +108,7 @@ export default function Router() {
                                     <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
                                     <div className={darkTheme ? "dark" : "light"} >
                                         <Suspense fallback={<Loading darkMode={darkTheme} />}>
-                                            <HomeErrorBoundry>
+                                            <ErrorBoundry>
                                                 <Switch >
                                                     <Route exact path="/challenges/:id">
                                                         <ChallengePage darkMode={darkTheme} />
@@ -124,7 +123,7 @@ export default function Router() {
                                                         <NotFound />
                                                     </Route>
                                                 </Switch>
-                                            </HomeErrorBoundry>
+                                            </ErrorBoundry>
                                         </Suspense>
                                     </div>
                                 </FilteredLabels.Provider>

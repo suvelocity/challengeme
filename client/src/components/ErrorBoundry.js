@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-export default class AddChallengeErrorBoundry extends Component {
+export default class ErrorBoundry extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -16,7 +16,7 @@ export default class AddChallengeErrorBoundry extends Component {
 
   render() {
     if (this.state.hasError) {
-      return <div>Cannot get add challenge page</div>;
+      return <div style={{marginTop: '100px'}}  >Cannot get the page</div>;
     }
     return this.props.children;
   }

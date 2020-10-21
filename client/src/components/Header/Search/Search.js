@@ -122,12 +122,14 @@ const Search = ({ darkMode, setDarkMode }) => {
     setResults([]);
   }, []);
 
-//TODO find good practice way
-  const onSearchLooseFocus = () => {
-    setTimeout(() => {
-        setResults([]);
-        setSearchValue("");
-    }, 200)
+  //TODO find good practice way
+  const onSearchLoseFocus = (e) => {
+    // setTimeout(() => {
+    // setResults([]);
+    console.log(e);
+    e.currentTarget.value = ''
+    setSearchValue("");
+    // }, 200)
   };
 
   const resultsList =
@@ -159,7 +161,7 @@ const Search = ({ darkMode, setDarkMode }) => {
           root: classes.inputRoot,
           input: classes.inputInput,
         }}
-        onBlur={onSearchLooseFocus}
+        onBlur={onSearchLoseFocus}
         value={searchValue}
         inputProps={{ "aria-label": "search" }}
       />
