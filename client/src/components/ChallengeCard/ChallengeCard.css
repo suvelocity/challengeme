@@ -75,6 +75,7 @@
 .labels-container{
     padding-right: 10px;
     display: flex;
+    overflow-wrap: break-word;
     margin-left: auto;
     margin-right: 5px;
 }
@@ -104,6 +105,7 @@
 }
 @media (max-width: 700px) {
     .challenge-card{
+        overflow-wrap: break-all;
         flex-direction: column;
         height: auto;
     }
@@ -114,6 +116,25 @@
     .challenge-card-img-homepage{
         border-radius: 3px 3px 0px 0px ;
     }
+
+    .first-row-container{
+     flex-direction: column;
+    }
+
+    
+.challenge-card-info {
+    margin:0;
+    padding:10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.labels-container {
+    align-self: center;
+    margin-left: 0;
+}
+.challenge-card-description-homepage{
+    overflow-wrap: break-word;
+}
 }
 
 

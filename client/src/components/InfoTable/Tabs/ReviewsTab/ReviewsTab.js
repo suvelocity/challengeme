@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 import Review from "./Review";
 import network from "../../../../services/network";
 function ReviewsTab({ challengeId }) {
-  const [reviews, setReviews] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchReviews = async () => {
       const { data: reviewsArrayFromServer } = await network.get(
@@ -13,12 +15,14 @@ function ReviewsTab({ challengeId }) {
         (review) => review.title && review.content
       );
       setReviews(reviewsWithContent);
+      setLoading(false)
     };
     fetchReviews();
     const liveReviews = setInterval(fetchReviews, 5000);
     return () => clearInterval(liveReviews);
   }, [challengeId]);
-  return reviews ? (
+
+  return reviews.length !==0 ? (
     reviews.map((review, index) => {
       const {
         createdAt,
@@ -39,7 +43,9 @@ function ReviewsTab({ challengeId }) {
       );
     })
   ) : (
-    <h1>Loading....</h1>
+    <div>
+   {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
+  </div>
   );
 }
 

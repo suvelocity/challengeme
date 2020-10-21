@@ -125,7 +125,7 @@ export default function Router() {
                                                 </ChallengeErrorBoundry>
                                                 <UserInfoErrorBoundry>
                                                     <Route exact path="/user_info">
-                                                        <UserInfo />
+                                                        <UserInfo darkMode={darkTheme}/>
                                                     </Route>
                                                 </UserInfoErrorBoundry>
                                                 <HomeErrorBoundry>

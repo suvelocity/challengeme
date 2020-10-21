@@ -40,7 +40,8 @@
 ;  display: flex;
   flex-direction: column;
   max-height: calc(100vh - 130px);
-  overflow-y:scroll;
+  overflow-y: auto;
+  padding: 0px 3px;
   
 }
 .one-challenge-info-container{
@@ -52,7 +53,8 @@
   display: flex;
 }
 .challenge-label{
-  margin-left: auto;
+  display: flex;
+margin-left:auto ;
 }
 .one-challenge-description-body{
   margin-top:10px;
@@ -67,7 +69,9 @@
 .one-challenge-info-image{
 width:100%;
 }
-
+.one-challenge-labels{
+  margin-left:10px ;
+}
 
 .one-challenge-reviews-and-submissions {
   width: var(--width-ticket);
@@ -143,7 +147,10 @@ width:100%;
   background: linear-gradient(270deg, rgb(54, 54, 54) 0%, rgb(122, 122, 122) 100%);
 
 }
-
+.submission-status{
+  padding :10px;
+  text-align: center;
+}
 @media (max-width: 900px){
   .one-challenge-container {
     margin-top:80px;
@@ -160,5 +167,14 @@ width:100%;
   overflow-y:none;
   height: auto;
 
+  }
+
+  .one-challenge-description-title{
+    flex-direction: column-reverse;
+  }
+  .challenge-label{
+   align-self: center;
+   margin: 0;
+   margin-bottom: 10px;
   }
 }
