@@ -4,7 +4,8 @@ import "./Review.css";
 
 function Review({ author, createdAt, title, content, rating }) {
   const [date, setDate] = useState("");
-
+  
+  // TODO: POP: use moment instead
   useEffect(() => {
     const dateNow = Date.now();
     const updateRepoDate = new Date(createdAt);
