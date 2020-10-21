@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
   },
 }));
+// TODO: POPO: Refactor steps switches to one json configuration
 export default function Forgot() {
   const classes = useStyles();
   const [step, setStep] = useState(1);
