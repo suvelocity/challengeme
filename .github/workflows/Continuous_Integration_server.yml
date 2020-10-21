@@ -50,5 +50,4 @@ jobs:
           EMAIL_TOKEN_SECRET: "dsvldfmldkm54y89j5effdc389ejewkmcsldmf4390rfwemdpvmdlfkg509gker0krkf94f"
           REFRESH_TOKEN_SECRET: "dfgklfmg834t3958tjervr9fft4ejrfknf32893rufjriofj5905t4i5t905itreokf5822"
           SUVELOCITY_MAIL: suvelocity@gmail.com
-          SUVELOCITY_PASSWORD: icaatmnluvhrtbvo
         working-directory: ./server

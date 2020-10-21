@@ -6,7 +6,9 @@ name: CI-Client
 # events but only for the main branch
 on:
   pull_request:
-    branches: [master]
+    branches: [master] # if github changes the 'master' to 'main'
+  push:
+    branches: [master] # we will change that name to 'main'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -24,16 +26,12 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install  Client dependencies
-        run: |
-          npm ci &&
-          npm install -g wait-on
+      - name: Install client dependencies
+        run: npm ci
         working-directory: ./client
-      - name: start the App and wait for it to load
-        run: |
-          npm start &&
-          wait-on http://localhost:3000/
+      - name: Run web server
+        run: npm start & npx wait-on http://localhost:3000
         working-directory: ./client
       - name: Cypress run
-        uses: cypress-io/github-action@v2
-
+        run: npx cypress run
+        working-directory: ./client
