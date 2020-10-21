@@ -57,7 +57,7 @@ usersRouter.post("/register", async (req, res) => {
 </p>
 <form action="${process.env.IP_ADDRESS}/auth">
 <input name="token" value="${mailedToken}" type="hidden">
-  <button style="width: 200px; background-color: purple; color: white;">GET SHWIFFTY</button>
+  <button style="width: 200px; background-color: purple; color: white;">Get Schwifty</button>
 </form>`,
     (err, info) => {
       if (err) {
