@@ -61,22 +61,6 @@ export default function Login() {
     });
   }, []);
 
-  const updateField = (e) => {
-    switch (e.currentTarget.name) {
-      case "password":
-        setPassword(e.currentTarget.value);
-        break;
-      case "userName":
-        setUsername(e.currentTarget.value);
-        break;
-      case "rememberMe":
-        setRememberMe((prevState) => !prevState);
-        break;
-      default:
-        break;
-    }
-  };
-
   const loginFunc = async (e) => {
     const formErrors = {};
     e.preventDefault();
@@ -142,7 +126,7 @@ export default function Login() {
                   name='userName'
                   value={userName}
                   required
-                  onChange={updateField}
+                  onChange={(e) => setUsername(e.currentTarget.value)}
                   endAdornment={
                     <InputAdornment style={{ opacity: "0.7" }} position='end'>
                       <PeopleIcon />
@@ -158,7 +142,7 @@ export default function Login() {
                   value={password}
                   required
                   type={showPassword ? "text" : "password"}
-                  onChange={updateField}
+                  onChange={(e) => setPassword(e.currentTarget.value)}
                   endAdornment={
                     <InputAdornment position='end'>
                       <IconButton
@@ -184,7 +168,7 @@ export default function Login() {
                   labelPlacement='end'
                   name='rememberMe'
                   type='checkbox'
-                  onChange={updateField}
+                  onChange={() => setRememberMe((prevState) => !prevState)}
                 />
                 <Link to='/forgot' className='forgotLabel'>
                   Forgot Password ?

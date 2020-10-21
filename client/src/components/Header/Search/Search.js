@@ -122,14 +122,11 @@ const Search = ({ darkMode, setDarkMode }) => {
     setResults([]);
   }, []);
 
-  //TODO find good practice way
-  const onSearchLoseFocus = (e) => {
-    // setTimeout(() => {
-    // setResults([]);
-    console.log(e);
-    e.currentTarget.value = ''
-    setSearchValue("");
-    // }, 200)
+  const onSearchLoseFocus = () => {
+    setTimeout(() => {
+      setResults([]);
+      setSearchValue("");
+    }, 200)
   };
 
   const resultsList =

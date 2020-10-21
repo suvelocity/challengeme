@@ -16,7 +16,7 @@
     "clsx": "^1.1.1",
     "cypress": "^5.3.0",
     "cypress-file-upload": "^4.1.1",
-    "framer-motion": "^2.8.0",
+    "framer-motion": "^2.9.4",
     "jest": "^24.9.0",
     "js-cookie": "^2.2.1",
     "match-sorter": "^4.2.1",

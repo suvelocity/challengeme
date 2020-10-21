@@ -10,7 +10,6 @@ import ReviewTab from "./Tabs/ReviewsTab/ReviewsTab";
 import SubmissionTab from "./Tabs/SubmissionsTab/SubmissionTab";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-  // TODO: delete that component, not necessary anymore, follow figma design
   return (
     <div
       role="tabpanel"

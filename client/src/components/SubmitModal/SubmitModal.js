@@ -51,9 +51,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
   );
 
   const submitForm = async (data) => {
-    // VIEW SUBMITTED SUCCESSFULLY/FAILED TO SUBMITT MESSAGE and close modal
-
-    const newBadInput = []
+    let newBadInput;
     try {
       if (
         data.repository.length > 2 &&
@@ -67,14 +65,12 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
         throw new Error();
       }
     } catch (err) {
-      newBadInput.push(
-        generateAlert(
-          "Repository's Link is not valid.\n Check the suggestions below:",
-          "- Type the Github repository in this format: owner/repo\n- Change your repository to public\n- Check for type errors.\nDon't use Hebrew letters"
-        )
+      newBadInput = generateAlert(
+        "Repository's Link is not valid.\n Check the suggestions below:",
+        "- Type the Github repository in this format: owner/repo\n- Change your repository to public\n- Check for type errors.\nDon't use Hebrew letters"
       );
     }
-    if (newBadInput.length > 0) {
+    if (newBadInput) {
       setBadInput(newBadInput);
       setTimeout(() => {
         return setBadInput([]);
@@ -161,7 +157,6 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
             <Typography variant='subtitle1'>Rate this challenge</Typography>
             <Rating
               name='rating'
-              // value={userRating}
               onChange={(_, value) => setUserRating(value)}
             />
           </div>
