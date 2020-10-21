@@ -2,18 +2,17 @@ import React, { useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Link } from "react-router-dom";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
 import Avatar from "@material-ui/core/Avatar";
 import HomeIcon from "@material-ui/icons/Home";
-import "./Header.css";
+import ".././Header.css";
 import DarkModeToggle from "react-dark-mode-toggle";
-import Search from "./Search/Search";
-import { Logged } from "../../context/LoggedInContext";
+import Search from "../Search/Search";
+import { Logged } from "../../../context/LoggedInContext";
 import { useHistory, useLocation } from "react-router-dom";
-import network from "../../services/network";
+import network from "../../../services/network";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
@@ -24,107 +23,10 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Button from "@material-ui/core/Button";
-import ChooseLabels from "../Choosers/ChooseLabels";
-import FilteredLabels from "../../context/FilteredLabelsContext";
-
+import ChooseLabels from "../../Choosers/ChooseLabels";
+import FilteredLabels from "../../../context/FilteredLabelsContext";
+import useStyles from './NarrowNavStyled';
 import InfoIcon from "@material-ui/icons/Info";
-const drawerWidth = 240;
-const useStyles = makeStyles((theme) => ({
-  darkModeToggle: {
-    marginRight: "10px;",
-  },
-  infoButton: {
-    margin: "10px",
-  },
-  logOutButton: {
-    margin: "10px",
-  },
-  root: {
-    display: "flex",
-  },
-  appBar: {
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  drawer: {
-    width: drawerWidth,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-    backgroundColor: "white",
-    boxShadow: "10px 0px 35px 0px rgba(51,51,51,0.7)",
-  },
-  drawerPaperDark: {
-    width: drawerWidth,
-    backgroundColor: "rgb(51,51,51)",
-    boxShadow: "2px 0px 35px 0px black",
-  },
-  generalDrawerHeader: {
-    display: "flex",
-  },
-  drawerHeader: {
-    marginLeft: "auto",
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-  list: {
-    padding: 0,
-  },
-  avatarUserInfo: {
-    margin: "20px",
-  },
-  logOut: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  heyName: {
-    marginTop: "8px",
-    marginLeft: "7px",
-  },
-  filterButton: {
-    backgroundColor: "rgb(219,219,219)",
-    marginLeft: "10px",
-  },
-  filterButtonDark: {
-    backgroundColor: "rgb(81,81,81)",
-    color: "white",
-    marginLeft: "10px",
-  },
-}));
 
 export default function NarrowNav({ darkMode, setDarkMode }) {
   const classes = useStyles();
@@ -190,7 +92,6 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
-          // [classes.appBarShift]: openNavBar,
         })}
         style={headerStyle}
       >
@@ -222,7 +123,6 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
               />
             ) : null}
           </div>
-          {/* <Link className="link-rout" to={`/?labels=${labels.join(",")}`}> */}
           {currentLocation.pathname === "/" ? (
             <Button
               onClick={() => {
@@ -238,7 +138,6 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
               filter
             </Button>
           ) : null}
-          {/* </Link> */}
         </Toolbar>
       </AppBar>
       <Drawer

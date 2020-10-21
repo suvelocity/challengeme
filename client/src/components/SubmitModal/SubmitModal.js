@@ -28,9 +28,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SubmitModal({ isOpen, handleClose, challengeParamId }) {
-  /* eslint-disable no-unused-vars */
   const { register, handleSubmit, errors } = useForm();
-  /* eslint-enable no-unused-vars */
   const [userRating, setUserRating] = useState('0');
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);

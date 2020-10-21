@@ -22,8 +22,7 @@ const ChooseLabels = ({
           setChooseLabels(optionsForSelector);
         } catch { }
       })();
-      // eslint-disable-next-line
-    }, []);
+    }, [setChooseLabels]);
 
   const selectionChange = (choosens) => {
     submitFilter(choosens);

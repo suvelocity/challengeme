@@ -32,8 +32,8 @@ function Review({ author, createdAt, title, content, rating }) {
         }
       }
     }
-    // eslint-disable-next-line
-  }, []);
+
+  }, [createdAt]);
   return (
     <div className='review'>
       <div className='title'>{title}</div>

@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import { Link, NavLink } from "react-router-dom";
 import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
@@ -11,100 +10,15 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Menu from "@material-ui/core/Menu";
 import Avatar from "@material-ui/core/Avatar";
 import HomeIcon from "@material-ui/icons/Home";
-import "./Header.css";
+import "../Header.css";
 import DarkModeToggle from "react-dark-mode-toggle";
-import Search from "./Search/Search";
-import { Logged } from "../../context/LoggedInContext";
-import FilteredLabels from "../../context/FilteredLabelsContext";
+import Search from "../Search/Search";
+import { Logged } from "../../../context/LoggedInContext";
+import FilteredLabels from "../../../context/FilteredLabelsContext";
 import { useHistory, useLocation } from "react-router-dom";
-import network from "../../services/network";
-import ChooseLabels from "../Choosers/ChooseLabels";
-
-const drawerWidth = 240;
-const useStyles = makeStyles((theme) => ({
-  appBarRegolar: {
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  darkModeToggle: {
-    marginRight: "10px;",
-  },
-  infoButton: {
-    margin: "10px",
-  },
-  logOutButton: {
-    margin: "10px",
-  },
-  root: {
-    display: "flex",
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  hide: {
-    display: "none",
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  generalDrawerHeader: {
-    display: "flex",
-  },
-  drawerHeader: {
-    marginLeft: "auto",
-    display: "flex",
-    alignItems: "center",
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-    justifyContent: "flex-end",
-  },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-    marginLeft: 0,
-  },
-  list: {
-    padding: 0,
-  },
-  avatarUserInfo: {
-    margin: "20px",
-  },
-  filterButton: {
-    backgroundColor: "rgb(219,219,219)",
-    marginLeft: "10px",
-  },
-  filterButtonDark: {
-    backgroundColor: "rgb(81,81,81)",
-    color: "white",
-    marginLeft: "10px",
-  },
-}));
+import network from "../../../services/network";
+import ChooseLabels from "../../Choosers/ChooseLabels";
+import useStyles from './WideNavStyle'; 
 
 export default function WideNav({ darkMode, setDarkMode }) {
   const filteredLabels = useContext(FilteredLabels);
@@ -212,7 +126,6 @@ export default function WideNav({ darkMode, setDarkMode }) {
           </Button>
         ) : null}
         <div style={{ flex: 1 }}></div>
-        {/* Make space between the search input and the rest of the header. */}
         <DarkModeToggle
           className={classes.darkModeToggle}
           checked={darkMode}

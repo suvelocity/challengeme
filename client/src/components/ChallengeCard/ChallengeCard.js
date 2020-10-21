@@ -1,27 +1,13 @@
-import React, { 
-    // useCallback,
-     useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import network from "../../services/network";
 import "./ChallengeCard.css";
 import Rating from "@material-ui/lab/Rating";
 
-//fallback function to sort the creation time of the repo
-// function generateTime(date) {
-//     let today = new Date(date);
-//     const dd = String(today.getDate()).padStart(2, "0");
-//     const mm = String(today.getMonth() + 1).padStart(2, "0");
-//     const yyyy = today.getFullYear();
-//     today = `${yyyy}-${mm}-${dd}`;
-//     return `${today}`;
-// }
-
 export default function ChallengeCard({
     name,
     description,
     labels,
-    // createdAt,
-    repositoryName,
     challengeId,
     rating,
     submissions,
@@ -30,36 +16,7 @@ export default function ChallengeCard({
 }) {
     const [coverImg, setCoverImg] = useState("");
     const [loading, setLoading] = useState(true);
-    // const [date, setDate] = useState(null);
 
-    // //function for getting the last update time
-    // const getUpdated = useCallback((date) => {
-    //     const dateNow = Date.now();
-    //     const updateRepoDate = new Date(date);
-    //     let diff = (dateNow - updateRepoDate.getTime()) / 1000 / 60 / 60;
-    //     if (diff < 24) {
-    //         setDate(`${Math.floor(diff)} Hours ago`);
-    //     } else {
-    //         diff = diff / 24;
-    //         diff = Math.floor(diff);
-    //         if (diff < 8) {
-    //             setDate(`${Math.floor(diff)} Days ago`);
-    //         } else {
-    //             diff = Math.floor(diff / 7);
-    //             if (diff < 5) {
-    //                 setDate(`${Math.floor(diff)} Weeks ago`);
-    //             } else {
-    //                 diff = Math.floor(diff / 4);
-    //                 if (diff < 13) {
-    //                     setDate(`${Math.floor(diff)} Months ago`);
-    //                 } else {
-    //                     diff = Math.floor(diff / 12);
-    //                     setDate(`${Math.floor(diff)} Years ago`);
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }, []);
 
     useEffect(() => {
         (async () => {
@@ -67,15 +24,6 @@ export default function ChallengeCard({
                 const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`);
                 setCoverImg(coverImage ? coverImage.img : "");
                 setLoading(false);
-            //     try {
-            //         const { data: repo } = await network.get(
-            //             `/api/v1/services/public_repo?repo_name=${repositoryName}`
-            //         );
-            //         // const updateDate = repo.updated_at;
-            //         // getUpdated(updateDate);
-            //     } catch (e) {
-            //         // setDate(generateTime(createdAt));
-            //     }
             } catch (err) {
                 console.error(err.message);
             }
@@ -92,8 +40,8 @@ export default function ChallengeCard({
                             <img className="challenge-card-img-homepage" src={coverImg} alt=" " />
                         )
                     ) : (
-                        <div className="challenge-card-img-homepage-loading"></div>
-                    )}
+                            <div className="challenge-card-img-homepage-loading"></div>
+                        )}
                 </div>
                 <div className="challenge-card-info">
                     <div className="first-row-container">
@@ -127,12 +75,12 @@ export default function ChallengeCard({
                             description.length < 100
                                 ? description
                                 : description.slice(0, 100).split(" ").slice(0, -1).join(" ") +
-                                  "..."
+                                "..."
                         }
                     </div>
                     <div className="challenge-card-description-homepage">
                         {
-                        `${createdAt.split('T')[0]} || by ${authorName}`
+                            `${createdAt.split('T')[0]} || by ${authorName}`
                         }
                     </div>
                 </div>

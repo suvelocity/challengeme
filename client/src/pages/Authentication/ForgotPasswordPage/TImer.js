@@ -4,7 +4,6 @@ export default function Timer({ limit, unit }) {
   const [time, setTime] = useState(unit === "minutes" ? limit * 60 : limit);
   useEffect(() => {
     const interval =  setInterval(() => {
-      console.log('live' +time);
       setTime((time) => time - 1)}, 1000);
     return () => clearInterval(interval)
   }, []);
