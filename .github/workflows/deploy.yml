@@ -2,12 +2,12 @@ name: Build and Deploy to Google Compute Engine
 
 on:
   push:
-    branches:        
-    - staging  
+    branches:
+    - master
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
-  GCE_INSTANCE: instance-staging-2
+  GCE_INSTANCE: instance-1
   GCE_INSTANCE_ZONE: us-central1-a
 
 jobs:
@@ -38,17 +38,14 @@ jobs:
       working-directory: ./client
     - name: Copy build
       run: |-
-        gcloud compute scp --recurse --zone us-central1-a ./build root@instance-staging-2:../../var/www/client
+        gcloud compute scp --recurse --zone us-central1-a ./build root@instance-1:../../var/www/client
       working-directory: ./client
     - name: Deploy
       run: |-
-        gcloud --quiet compute ssh --zone us-central1-a instance-staging-2 --command '
+        gcloud --quiet compute ssh --zone us-central1-a instance-1 --command '
           cd ../../var/www &&
-          sudo git fetch --all &&
-          sudo git checkout staging &&
-          sudo git stash &&
-          sudo git pull origin staging &&
+          sudo git pull origin &&
           cd ./server &&
           sudo npm ci &&
           sudo npx sequelize db:migrate &&
-          sudo pm2 reload 0
+          sudo pm2 reload 0 
