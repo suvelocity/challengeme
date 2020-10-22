@@ -145,7 +145,6 @@ describe('Submission process', () => {
         
     },10000);
     test('webhook simulation, state change from PENDING to SUCCESS or FAIL', async () => {
-      //let submissions = await Submission.findAll();
       const successId = 3// submissions.find(submission => submission.solutionRepository === solutionRepos[0].repo && submission.id >1).id;
       const successId2 = 5//submissions.find(submission => submission.solutionRepository === solutionRepos[1].repo).id;
       const failId = 4//submissions.find(submission => submission.solutionRepository === failRepos[0].repo).id;
