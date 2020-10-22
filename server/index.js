@@ -9,7 +9,7 @@ async function establishConnection(){
   process.env.MY_BRANCH = await getCurrentBranch();
   console.log('current branch' , process.env.MY_BRANCH);
 
-  if(env === 'development'){
+  if (env === 'development') {
     const url = await ngrok.connect(port);
     process.env.MY_URL = url;
     console.log('MY_URL' ,process.env.MY_URL);
