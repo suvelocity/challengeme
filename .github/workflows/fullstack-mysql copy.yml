@@ -1,4 +1,4 @@
-name: server mysql
+name: full stack mysql
 on:
   workflow_dispatch:
     inputs:
@@ -14,7 +14,6 @@ on:
       bearerToken:
         description: 'Token for Access'
         required: true
-
 
 jobs:
   build:
@@ -51,18 +50,27 @@ jobs:
       with:
         repository: ${{ github.event.inputs.solutionRepo }}
         path: ./_cloned-app
-    - name: Install solution dependencies
+    - name: Install solution client dependencies
       run: npm ci
-      working-directory: ./_cloned-app/
-      continue-on-error: true
-    - name: Init solution
+      working-directory: ./_cloned-app/client
+    - name: Init client solution
       run: npm run init
-      working-directory: ./_cloned-app/
+      working-directory: ./_cloned-app/client
       continue-on-error: true
-    # - name: Start solution
-    #   run: npm start
-    #   working-directory: ./_cloned-app/
+    - name: Install solution server dependencies
+      run: npm ci
+      working-directory: ./_cloned-app/server
+    - name: Init server solution dependencies
+      run: npm run init
+      working-directory: ./_cloned-app/server
+      continue-on-error: true
+    # - name: Start server solution dependencies
+    #   run: npm start & npx wait-on http://localhost:8080
+    #   working-directory: ./_cloned-app/server
     #   continue-on-error: true
+    - name: Run solution client dependencies
+      run: npm start & npx wait-on http://localhost:3000
+      working-directory: ./_cloned-app/client
     - name: Run test on cloned app
       run: npm run test
       working-directory: ./challenge
