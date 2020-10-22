@@ -71,3 +71,4 @@ jobs:
         url: ${{ github.event.inputs.webhookUrl }}
         bearerToken: ${{ github.event.inputs.bearerToken }}
         data:  '{ "success":false }'
+
