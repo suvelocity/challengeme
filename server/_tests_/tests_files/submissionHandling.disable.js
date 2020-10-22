@@ -41,6 +41,7 @@ describe('Submission process', () => {
         await User.create({...userToAdd});
         await Challenge.bulkCreate(challengeArr);
         await Submission.create({
+            userId: 1,
             challengeId: solutionRepos[0].challengeId,
             state: 'FAIL',
             solutionRepository: solutionRepos[0].repo
@@ -65,9 +66,14 @@ describe('Submission process', () => {
         .send({repository:solutionRepos[3].repo, ...review});
         await request(app).post(`/api/v1/challenges/${failRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
         .send({repository:failRepos[0].repo, ...review});
-        let submissions = await Submission.findAll();
-        expect(submissions.length).toBe(5);
-        submissions.forEach(submission => expect(submission.state).toBe('PENDING'));
+        let pendingSubmission = await Submission.findAll({
+            where:{state:"PENDING"}
+        });
+        let failedSubmission = await Submission.findAll({
+            where:{state:"FAIL"}
+        });
+        expect(failedSubmission.length).toBe(1);
+        expect(pendingSubmission.length).toBe(5);
         done();
     });
     test('Getting Submission Status back to database', async (done) => {
@@ -78,7 +84,7 @@ describe('Submission process', () => {
                 function checking(){
                     setTimeout(async()=>{
                         submissions = await Submission.findAll();
-                        expect(submissions.length).toBe(5);
+                        expect(submissions.length).toBe(6);
                         if(submissions.every(submission => submission.state !== 'PENDING')){
                             console.log('success');
                             return resolve('success');
@@ -96,16 +102,14 @@ describe('Submission process', () => {
     },200000);
     
     test('Correct status on the Submissions', async (done) => {
-        const allSubmissions = await Submission.findAll();
-        expect(allSubmissions.length).toBe(5);
-        solutionRepos.forEach(solution => {
-            const index = allSubmissions.findIndex(submission => submission.solutionRepository === solution.repo && submission.state === 'SUCCESS');
-            expect(index).toBeGreaterThan(-1);
-        })
-        failRepos.forEach(fail => {
-            const index = allSubmissions.findIndex(submission => submission.solutionRepository === fail.repo && submission.state === 'FAIL');
-            expect(index).toBeGreaterThan(-1);
-        })
+        let successSubmission = await Submission.findAll({
+            where:{state:"SUCCESS"}
+        });
+        let failedSubmission = await Submission.findAll({
+            where:{state:"FAIL"}
+        });
+        expect(failedSubmission.length).toBe(2);
+        expect(successSubmission.length).toBe(4);
         done();
     })
 

@@ -111,7 +111,7 @@ router.get("/:challengeId/:userName/submission", async (req, res) => {
     if (testSubmission.length > 0) {
       const recentSubmission = testSubmission[testSubmission.length - 1].dataValues;
       if (recentSubmission.state === 'PENDING') {
-        if ((timeNow - recentSubmission.createdAt.getTime()) > 600000) {
+        if ((timeNow - recentSubmission.createdAt.getTime()) > 150000) {
           let submissionThatIsStuck = await Submission.findByPk(recentSubmission.id);
           await submissionThatIsStuck.update({ state: "FAIL" });
           console.log('its because zach is crazy');
