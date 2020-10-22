@@ -1,9 +1,9 @@
 const request = require('supertest');
 const jwt = require("jsonwebtoken");
-const app = require('../app');
-const { Image } = require('../models');
-const imageMock = require('./mocks/images');
-const userMock = require('./mocks/user')
+const app = require("../../app");
+const { Image } = require("../../models");
+const imageMock = require('../mocks/images');
+const userMock = require('../mocks/user')
 
 function generateToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "900s" });
