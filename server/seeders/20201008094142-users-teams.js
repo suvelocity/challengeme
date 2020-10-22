@@ -1,4 +1,3 @@
-'use strict';
 const usersTeams = require('./seedFiles/usersTeams');
 
 module.exports = {
@@ -8,5 +7,5 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete('users_teams', null, {});
-  }
+  },
 };

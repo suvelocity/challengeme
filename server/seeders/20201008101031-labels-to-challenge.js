@@ -1,4 +1,3 @@
-'use strict';
 const labelsToChallenge = require('./seedFiles/labelsToChallenge');
 
 module.exports = {
@@ -8,5 +7,5 @@ module.exports = {
 
   down: async (queryInterface, Sequelize) => {
     await queryInterface.bulkDelete('labels_to_challenges', null, {});
-  }
+  },
 };
