@@ -1,0 +1,16 @@
+
+.home-page {
+  overflow-x: hidden;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.challenges-container {
+  /* padding-top: 110px; */
+  display: flex;
+  flex-direction: column;
+  /* flex-wrap: wrap; */
+  /* justify-content: center; */
+  margin-top: 100px;
+}

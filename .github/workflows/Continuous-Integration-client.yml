@@ -1,0 +1,43 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI-Client
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  pull_request:
+    branches: [master] # if github changes the 'master' to 'main'
+  push:
+    branches: [master] # we will change that name to 'main'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Setup node  (Node.js ${{ matrix.node-version }})
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install client dependencies
+        run: npm ci
+        working-directory: ./client
+      - name: Run web server
+        run: npm start & npx wait-on http://localhost:3000
+        working-directory: ./client
+      - name: Cypress run
+        run: npx cypress run
+        working-directory: ./client
+      # DO NOT DELETE BELOW , we will need to add the secret to the repo and intialize the Cypress project
+      # - name: Cypress run and record
+      #   run: npx cypress run --record
+      #   working-directory: ./client
+      #   env:
+      #     CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}       

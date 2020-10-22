@@ -20,6 +20,13 @@ module.exports = {
       repository_name: {
         type: Sequelize.STRING
       },
+      boiler_plate: {
+        type: Sequelize.STRING
+      },
+      author_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

@@ -1,0 +1,35 @@
+[
+  {
+      "id": 1,
+      "name": "teamA",
+      "Users": [
+          {
+              "userName": "matanGreenvald",
+              "Submissions": [
+                  {
+                      "teamSuccessSubmissions": 2
+                  }
+              ]
+          }
+      ]
+  },
+  {
+      "id": 2,
+      "name": "teamB",
+      "Users": [
+          {
+              "userName": "itayBrand",
+              "Submissions": [
+                  {
+                      "teamSuccessSubmissions": 1
+                  }
+              ]
+          }
+      ]
+  },
+  {
+      "id": 3,
+      "name": "cyber4s",
+      "Users": []
+  }
+]

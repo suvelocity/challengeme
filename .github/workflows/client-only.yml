@@ -72,5 +72,3 @@ jobs:
         bearerToken: ${{ github.event.inputs.bearerToken }}
         data:  '{ "success":false }'
 
-        
-

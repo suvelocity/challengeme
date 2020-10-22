@@ -1,0 +1,53 @@
+[
+    {
+        "id": 1,
+        "challengeId": 1,
+        "userId": 1,
+        "state": "SUCCESS",
+        "solutionRepository": "Moran1324/Authentication-Challenge-SOLUTION",
+        "createdAt": "2020-10-06T20:12:38.000Z",
+        "updatedAt": "2020-10-06T20:12:38.000Z",
+        "deletedAt": null,
+        "challenge_id": 1,
+        "Challenge": {
+            "id": 1,
+            "category": "Express",
+            "name": "JWT - Node.js",
+            "CountByCategory": 3
+        }
+    },
+    {
+        "id": 4,
+        "challengeId": 2,
+        "userId": 1,
+        "state": "SUCCESS",
+        "solutionRepository": "Moran1324/Authentication-Challenge-SOLUTION",
+        "createdAt": "2020-10-08T19:25:58.000Z",
+        "updatedAt": "2020-10-08T19:25:58.000Z",
+        "deletedAt": null,
+        "challenge_id": 2,
+        "Challenge": {
+            "id": 2,
+            "category": "React",
+            "name": "React - Calculator",
+            "CountByCategory": 3
+        }
+    },
+    {
+        "id": 6,
+        "challengeId": 3,
+        "userId": 1,
+        "state": "PENDING",
+        "solutionRepository": "Moran1324/Authentication-Challenge-SOLUTION",
+        "createdAt": "2020-10-01T20:00:00.000Z",
+        "updatedAt": "2020-10-01T20:00:00.000Z",
+        "deletedAt": null,
+        "challenge_id": 3,
+        "Challenge": {
+            "id": 3,
+            "category": "JavaScript",
+            "name": "Js - Drag N Scale",
+            "CountByCategory": 3
+        }
+    }
+]

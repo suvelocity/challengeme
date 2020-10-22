@@ -3,6 +3,9 @@ const fs = require('fs').promises;
 
 const { Submission } = require('../models');
 module.exports = async () => {
+  console.error('url', process.env.MY_URL);
+  const urltoSet = process.env.MY_URL.concat('/api/v1/submissions');
+  console.log(urltoSet)
   console.log('Runs check started')
   let data;
   try {
@@ -37,17 +40,24 @@ module.exports = async () => {
       return;
     }
 
-    if(!data || !data.jobs || !data.jobs[0]) {
+    if (!data || !data.jobs || !data.jobs[0]) {
       // checkedIds[run.id] = true;
       return;
     }
-
-    const submissionId = data.jobs[0].name.replace(`aa${process.env.ENV_NAME}`, '');
-    let submission; 
+    //const finalIndex = //index === -1 ? data.jobs[0].name.lastIndexOf(string2): index;
+    //const string2 = 'Submition';
+    //const submissionId = data.jobs[0].name.replace(`aa${process.env.ENV_NAME}`, '');
+    const string1 = 'Submission';
+    const index = data.jobs[0].name.lastIndexOf(string1);
+    const stringLength = string1.length;//index === -1 ? string2.length : string1.length;
+    const submissionId = data.jobs[0].name.slice(index + stringLength);
+    let submission;
     try {
-      submission = await Submission.findByPk(parseInt(submissionId));
+      if (!isNaN(submissionId)) {
+        submission = await Submission.findByPk(parseInt(submissionId));
+      }
     } catch (e) {
-      console.log('error on', submissionId , e)
+      console.log('error on', submissionId, e)
       // checkedIds[run.id] = true;
       return;
     }

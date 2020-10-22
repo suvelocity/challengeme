@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "node_modules/.bin/sequelize db:migrate"
+    "test": "jest --detectOpenHandles --forceExit --runInBand",
+    "initDB": "node_modules/.bin/sequelize db:create",
+    "migrate": "node_modules/.bin/sequelize db:migrate",
+    "dev": "nodemon index.js",
+    "devTest": "NODE_ENV=test nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -23,13 +26,23 @@
     ]
   },
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "axios": "^0.20.0",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
+    "nodemailer": "^6.4.13",
+    "nodemon": "^2.0.4",
     "sequelize": "^6.3.5"
   },
   "devDependencies": {
-    "sequelize-cli": "^6.2.0"
+    "jest": "^26.5.3",
+    "ngrok": "^3.3.0",
+    "nock": "^13.0.4",
+    "sequelize-cli": "^6.2.0",
+    "supertest": "^4.0.2"
   }
 }
