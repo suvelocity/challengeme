@@ -69,7 +69,7 @@ describe('Submission process', () => {
         let challengeType = challenges.find(challenge => challenge.id === solutionRepos[0].challengeId).type;
         let testRepo = challenges.find(challenge=> challenge.id === solutionRepos[0].challengeId).repositoryName;
         const successId = initialSubmissions.find(submission => submission.solutionRepository === solutionRepos[0].repo).id;
-        let webhookUrl = process.env.MY_URL.concat(`/api/v1/webhook/submission/${successId}`);
+        let webhookUrl = process.env.MY_URL.concat(`/api/v1/webhook/submission/${3}`);
         const githubPostmock1 = nock(`https://api.github.com`, {reqHeaders: {
           'Content-Type': 'application/json',
           Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
@@ -90,7 +90,7 @@ describe('Submission process', () => {
         challengeType = challenges.find(challenge => challenge.id === failRepos[0].challengeId).type;
         testRepo = challengeArr.find(challenge=> challenge.id === failRepos[0].challengeId).repositoryName;
         const failId = initialSubmissions.find(submission => submission.solutionRepository === failRepos[0].repo).id;
-        webhookUrl = process.env.MY_URL.concat(`/api/v1/webhook/submission/${failId}`);
+        webhookUrl = process.env.MY_URL.concat(`/api/v1/webhook/submission/${4}`);
         const githubPostmock2 = nock(`https://api.github.com`, {reqHeaders: {
           'Content-Type': 'application/json',
           Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
@@ -109,7 +109,7 @@ describe('Submission process', () => {
 
         challengeType = challenges.find(challenge => challenge.id === solutionRepos[1].challengeId).type;
         testRepo = challengeArr.find(challenge=> challenge.id === solutionRepos[1].challengeId).repositoryName;
-        webhookUrl = process.env.MY_URL.concat(`/api/v1/webhook/submission/${3}`);
+        webhookUrl = process.env.MY_URL.concat(`/api/v1/webhook/submission/${5}`);
         const githubPostmock3 = nock(`https://api.github.com`, {reqHeaders: {
           'Content-Type': 'application/json',
           Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`
@@ -137,16 +137,18 @@ describe('Submission process', () => {
         expect(githubPostmock3.isDone()).toEqual(true);
 
 
-        let submissions = await Submission.findAll();
+        let submissions = await Submission.findAll({
+          where:{state: "PENDING"}
+        });
         expect(submissions.length).toBe(3);
         submissions.forEach(submission => expect(submission.state).toBe('PENDING'));
         
     },10000);
     test('webhook simulation, state change from PENDING to SUCCESS or FAIL', async () => {
-      let submissions = await Submission.findAll();
-      const successId = submissions.find(submission => submission.solutionRepository === solutionRepos[0].repo).id;
-      const successId2 = submissions.find(submission => submission.solutionRepository === solutionRepos[1].repo).id;
-      const failId = submissions.find(submission => submission.solutionRepository === failRepos[0].repo).id;
+      //let submissions = await Submission.findAll();
+      const successId = 3// submissions.find(submission => submission.solutionRepository === solutionRepos[0].repo && submission.id >1).id;
+      const successId2 = 5//submissions.find(submission => submission.solutionRepository === solutionRepos[1].repo).id;
+      const failId = 4//submissions.find(submission => submission.solutionRepository === failRepos[0].repo).id;
       await request(app).patch(`/api/v1/webhook/submission/${successId}`).set('authorization',`bearer ${accessToken}`)
       .send({success: true });
       await request(app).patch(`/api/v1/webhook/submission/${successId2}`).set('authorization',`bearer ${accessToken}`)

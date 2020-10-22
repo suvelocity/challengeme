@@ -6,17 +6,17 @@ module.exports = [
 
     {
         userName: "dek12345",
-        password: "blabla96",
+        password: "12345678",
         rememberMe: false
     },
     {
         userName: "shnizel123",
-        password: "shnizel1",
+        password: "87654321",
         rememberMe: false
     },
     {
-        userName: "boostyboo",
-        password: "boosty000",
+        userName: "boosty123",
+        password: "123454321",
         rememberMe: false
     }
 ]

@@ -81,7 +81,7 @@ router.get("/", async (req, res) => {
 
     res.json(allChallengesWithReviews)
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "can't get the challenges" });
   }
 });
@@ -111,7 +111,7 @@ router.get("/:challengeId/:userName/submission", async (req, res) => {
     if (testSubmission.length > 0) {
       const recentSubmission = testSubmission[testSubmission.length - 1].dataValues;
       if (recentSubmission.state === 'PENDING') {
-        if ((timeNow - recentSubmission.createdAt.getTime()) > 600000) {
+        if ((timeNow - recentSubmission.createdAt.getTime()) > 150000) {
           let submissionThatIsStuck = await Submission.findByPk(recentSubmission.id);
           await submissionThatIsStuck.update({ state: "FAIL" });
           console.log('its because zach is crazy');
@@ -120,7 +120,7 @@ router.get("/:challengeId/:userName/submission", async (req, res) => {
     }
     res.json(testSubmission[testSubmission.length - 1]);
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
@@ -141,7 +141,7 @@ router.get("/:challengeId/submissions", async (req, res) => {
     });
     res.json(allSubmission);
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
@@ -160,41 +160,41 @@ router.post(`/`, async (req, res) => {
     const newChallenge = await Challenge.create(req.body);
     res.json(newChallenge);
   } catch (err) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
 
 router.post("/:challengeId/apply", async (req, res) => {
-  const challengeId = req.params.challengeId;
-  const { commentContent, commentTitle, rating } = req.body;
-  const solutionRepository = req.body.repository;
-  // adding review
-  await Review.create({
-    userId: req.user.userId,
-    challengeId,
-    title: commentTitle,
-    content: commentContent,
-    rating,
-  });
-  const challenge = await Challenge.findByPk(challengeId);
-  const pendingSubmission = await Submission.findOne({
-    where: {
-      solutionRepository,
-      state: "PENDING"
-    },
-  });
-  if (pendingSubmission) {
-    return res.status(400).json({ message: "already submitting" });
-  }
-  submission = await Submission.create({
-    challengeId,
-    userId: req.user.userId,
-    state: "PENDING",
-    solutionRepository,
-  });
-
   try {
+    const challengeId = req.params.challengeId;
+    const { commentContent, commentTitle, rating } = req.body;
+    const solutionRepository = req.body.repository;
+    // adding review
+    await Review.create({
+      userId: req.user.userId,
+      challengeId,
+      title: commentTitle,
+      content: commentContent,
+      rating,
+    });
+    const challenge = await Challenge.findByPk(challengeId);
+    const pendingSubmission = await Submission.findOne({
+      where: {
+        solutionRepository,
+        state: "PENDING"
+      },
+    });
+    if (pendingSubmission) {
+      return res.status(400).json({ message: "already submitting" });
+    }
+    submission = await Submission.create({
+      challengeId,
+      userId: req.user.userId,
+      state: "PENDING",
+      solutionRepository,
+    });
+
     const urltoSet = process.env.MY_URL.concat(
       `/api/v1/webhook/submission/${submission.id}`
     );
@@ -202,6 +202,19 @@ router.post("/:challengeId/apply", async (req, res) => {
     const pureToken =
       bearerToken.indexOf(" ") !== -1 ? bearerToken.split(" ")[1] : bearerToken;
     const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || "master"; // In case somehow the process env branches are not set.
+    console.log({
+      ref: ref, // the branch that the actions are run on
+      inputs: {
+        testRepo: challenge.repositoryName, // Repository to run the tests on
+        solutionRepo: solutionRepository, // The repository that holds the submitted solution
+        webhookUrl: urltoSet, // the url to come back to when the action is finished
+        bearerToken: pureToken, // the access token to get back to our server ** currently not in use
+      },
+    },
+      {
+        "Content-Type": "application/json",
+        Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
+      },challenge.type)
     const { status } = await axios.post(
       `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
       {
@@ -219,13 +232,13 @@ router.post("/:challengeId/apply", async (req, res) => {
           Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
         },
       }
-    ).catch(e => {
-      console.error(e);
+    ).catch(error => {
+      console.error(error.message);
     });
 
     res.json({ status });
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -272,7 +285,7 @@ router.get("/:challengeId", async (req, res) => {
 
     res.json(challenge);
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });

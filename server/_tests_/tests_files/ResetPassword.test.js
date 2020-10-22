@@ -1,10 +1,10 @@
 const request = require("supertest");
-const server = require("../app");
-const { User } = require("../models");
+const server = require("../../app");
+const { User } = require("../../models");
 const bcrypt = require("bcryptjs");
 
-const mockUser = require("./mocks/users");
-const mockLogins = require("./mocks/usersLogin");
+const mockUser = require("../mocks/users");
+const mockLogins = require("../mocks/usersLogin")
 const originalAnswer = mockUser[2].securityAnswer
 
 describe("Reset Password", () => {

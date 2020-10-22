@@ -1,16 +1,9 @@
 const request = require("supertest");
 const jwt = require("jsonwebtoken");
 const app = require("../../app");
-const {
-  Challenge,
-  Label,
-  LabelChallenge,
-  Submission,
-  User,
-} = require("../../models");
+const { Challenge, Label, LabelChallenge, Submission, User, } = require("../../models");
 const challengesMock = require("../mocks/challenges");
 const labelsMock = require("../mocks/labels");
-const labelChallengeMock = require("../mocks/LabelChallenge");
 const usersMock = require("../mocks/users");
 const submissionsMock = require("../mocks/submissions");
 
@@ -33,17 +26,17 @@ describe("testing challenges endpoints", () => {
     await User.destroy({ truncate: true, force: true });
   });
 
-  xit("Can get all challenges", async (done) => {
+  it("Can get all challenges", async (done) => {
     await Challenge.bulkCreate(challengesMock);
     const response = await request(app)
       .get("/api/v1/challenges")
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
     expect(response.status).toBe(200);
-    expect(response.body.length).toBe(3);
+    expect(response.body.length).toBe(10);
     done();
   });
 
-  xit("Can get challenge by name", async (done) => {
+  it("Can get challenge by name", async (done) => {
     await Challenge.bulkCreate(challengesMock);
     const response = await request(app)
       .get("/api/v1/challenges?name=React - Calculator")
@@ -58,7 +51,7 @@ describe("testing challenges endpoints", () => {
     const response = await request(app)
       .get("/api/v1/types")
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
-    expect(response.body.length).toBe(6);
+    expect(response.body.length).toBe(7);
     expect(response.status).toBe(200);
     done();
   });
@@ -86,19 +79,19 @@ describe("testing challenges endpoints", () => {
     expect(Array.isArray(response.body)).toBe(false);
     done();
   });
+  
+  xit("Can post new challenge - send error if challenge's repo is already exists", async (done) => {
+    await request(app).post('/api/v1/challenges').send(challengesMock[0])
+    .set('authorization', `bearer ${generateToken(usersMock[0])}`)
+    const response = await request(app).get('/api/v1/challenges?challengeName=JWT - Node.js')
+    .set('authorization', `bearer ${generateToken(usersMock[0])}`)
+    .expect(200);
+    console.log('challenge:', response.body );
+    expect(response.body.length).toBe(1);
+    expect(response.body[0].name).toBe('JWT - Node.js');
+    await request(app).post('/api/v1/challenges').send(challengesMock[0])
+    .set('authorization', `bearer ${generateToken(usersMock[0])}`)
+    .expect(500);
+    done()
+  })
 });
-
-// it("Can post new challenge - send error if challenge's repo is already exists", async (done) => {
-//   await request(app).post('/api/v1/challenges').send(challengesMock[0])
-//   .set('authorization', `bearer ${generateToken(usersMock[0])}`)
-//   const response = await request(app).get('/api/v1/challenges?challengeName=JWT - Node.js')
-//   .set('authorization', `bearer ${generateToken(usersMock[0])}`)
-//   .expect(200);
-//   console.log('challenge:', response.body );
-//   expect(response.body.length).toBe(1);
-//   expect(response.body[0].name).toBe('JWT - Node.js');
-//   await request(app).post('/api/v1/challenges').send(challengesMock[0])
-//   .set('authorization', `bearer ${generateToken(usersMock[0])}`)
-//   .expect(500);
-//   done()
-// })

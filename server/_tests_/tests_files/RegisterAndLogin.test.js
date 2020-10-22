@@ -1,12 +1,11 @@
 require('dotenv').config()
 const request = require("supertest");
-const server = require("../app");
+const server = require("../../app");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const { User, RefreshToken } = require("../models");
-
-const mockUser = require("./mocks/users");
-const mockLogins = require("./mocks/usersLogin")
+const { User, RefreshToken } = require("../../models");
+const mockUser = require("../mocks/users");
+const mockLogins = require("../mocks/usersLogin")
 //login logout and register tests
 
 describe("Register & Login Tests", () => {
@@ -18,6 +17,7 @@ describe("Register & Login Tests", () => {
 
   })
   afterAll(async () => {
+    // await User.destroy({ truncate: true, force: true });
     await server.close();
   });
 
