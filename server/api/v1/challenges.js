@@ -81,7 +81,7 @@ router.get("/", async (req, res) => {
 
     res.json(allChallengesWithReviews)
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "can't get the challenges" });
   }
 });
@@ -120,7 +120,7 @@ router.get("/:challengeId/:userName/submission", async (req, res) => {
     }
     res.json(testSubmission[testSubmission.length - 1]);
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
@@ -141,7 +141,7 @@ router.get("/:challengeId/submissions", async (req, res) => {
     });
     res.json(allSubmission);
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
@@ -160,7 +160,7 @@ router.post(`/`, async (req, res) => {
     const newChallenge = await Challenge.create(req.body);
     res.json(newChallenge);
   } catch (err) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -214,7 +214,7 @@ router.post("/:challengeId/apply", async (req, res) => {
       {
         "Content-Type": "application/json",
         Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
-      })
+      },challenge.type)
     const { status } = await axios.post(
       `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
       {
@@ -232,13 +232,13 @@ router.post("/:challengeId/apply", async (req, res) => {
           Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
         },
       }
-    ).catch(e => {
-      // console.error(e);
+    ).catch(error => {
+      console.error(error.message);
     });
 
     res.json({ status });
   } catch (error) {
-    // console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -285,7 +285,7 @@ router.get("/:challengeId", async (req, res) => {
 
     res.json(challenge);
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });

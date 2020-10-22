@@ -21,7 +21,7 @@ usersRouter.post("/register", async (req, res) => {
     //Joi validation
     const { error } = registerValidation(req.body);
     if (error) {
-      console.error(error)
+      console.error(error.message)
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     // if user name already exist return error
@@ -61,7 +61,7 @@ usersRouter.post("/register", async (req, res) => {
 </form>`,
       (err, info) => {
         if (error) {
-          console.error(error)
+          console.error(error.message)
           res.status(400).json({ message: "Email Invalid" });
         } else {
           res.json({ message: "Waiting For Mail Validation" });
@@ -69,7 +69,7 @@ usersRouter.post("/register", async (req, res) => {
       }
     );
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -79,7 +79,7 @@ usersRouter.post("/createuser", (req, res) => {
   try {
     const { error } = tokenValidation(req.body);
     if (error) {
-      console.error(error)
+      console.error(error.message)
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     jwt.verify(
@@ -87,7 +87,7 @@ usersRouter.post("/createuser", (req, res) => {
       process.env.EMAIL_TOKEN_SECRET,
       async (err, decoded) => {
         if (error) {
-          console.error(error)
+          console.error(error.message)
           return res.status(403).json({ message: "Invalid Token" });
         }
         delete decoded.iat;
@@ -100,7 +100,7 @@ usersRouter.post("/createuser", (req, res) => {
       }
     );
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -111,7 +111,7 @@ usersRouter.post("/userexist", async (req, res) => {
     //User Validation
     const { error } = userValidation(req.body);
     if (error) {
-      console.error(error)
+      console.error(error.message)
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const currentUser = await userIsExist(req.body.userName);
@@ -119,7 +119,7 @@ usersRouter.post("/userexist", async (req, res) => {
       return res.status(409).json({ message: "user name already exists" });
     res.json({ notExist: true });
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -135,7 +135,7 @@ usersRouter.post("/login", async (req, res) => {
     //Joi Validation
     const { error } = loginValidation(req.body);
     if (error) {
-      console.error(error)
+      console.error(error.message)
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const currentUser = await userIsExist(req.body.userName);
@@ -187,7 +187,7 @@ usersRouter.post("/login", async (req, res) => {
     res.cookie("refreshToken", refreshToken);
     res.json({ userDetails: currentUser });
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -198,7 +198,7 @@ usersRouter.post("/token", async (req, res) => {
     //Joi Validation
     const { error } = tokenValidation(req.body);
     if (error) {
-      console.error(error)
+      console.error(error.message)
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const refreshToken = req.body.token;
@@ -211,7 +211,7 @@ usersRouter.post("/token", async (req, res) => {
       return res.status(403).json({ message: "Invalid Refresh Token" });
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
       if (error) {
-        console.error(error)
+        console.error(error.message)
         return res.status(403).json({ message: "Invalid Refresh Token" });
       }
       delete decoded.iat;
@@ -221,7 +221,7 @@ usersRouter.post("/token", async (req, res) => {
       res.json({ message: "token updated" });
     });
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -232,7 +232,7 @@ usersRouter.post("/logout", async (req, res) => {
     //Joi Validation
     const { error } = tokenValidation(req.body);
     if (error) {
-      console.error(error)
+      console.error(error.message)
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const result = await RefreshToken.destroy({
@@ -244,7 +244,7 @@ usersRouter.post("/logout", async (req, res) => {
       return res.status(400).json({ message: "Refresh Token is required" });
     res.json({ message: "User Logged Out Successfully" });
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -254,7 +254,7 @@ usersRouter.post("/getquestion", async (req, res) => {
   try {
     const { error } = userValidation(req.body);
     if (error) {
-      console.error(error)
+      console.error(error.message)
       res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const currentUser = await userIsExist(req.body.userName);
@@ -265,7 +265,7 @@ usersRouter.post("/getquestion", async (req, res) => {
       });
     res.json({ securityQuestion: currentUser.securityQuestion });
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -276,7 +276,7 @@ usersRouter.post("/validateanswer", async (req, res) => {
     //Joi Validation
     const { error } = answerValidation(req.body);
     if (error) {
-      console.error(error)
+      console.error(error.message)
       res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const currentUser = await userIsExist(req.body.userName);
@@ -291,7 +291,7 @@ usersRouter.post("/validateanswer", async (req, res) => {
     });
     res.json({ resetToken });
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -302,7 +302,7 @@ usersRouter.patch("/passwordupdate", async (req, res) => {
     //Joi Valodation
     const { error } = pwdUpdateValidation(req.body);
     if (error) {
-      console.error(error)
+      console.error(error.message)
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const resetToken = req.body.resetToken;
@@ -324,7 +324,7 @@ usersRouter.patch("/passwordupdate", async (req, res) => {
       }
     );
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -342,7 +342,7 @@ async function userIsExist(userName) {
       return false;
     }
   } catch (error) {
-    console.error(error)
+    console.error(error.message)
     res.status(400).json({ message: "Cannot process request" });
   }
 }
