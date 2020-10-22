@@ -51,9 +51,11 @@ describe('testing challenges endpoints', () => {
 
   it('Can get all github types', async (done) => {
     const response = await request(app)
+
       .get('/api/v1/types')
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
     expect(response.body.length).toBe(7);
+
     expect(response.status).toBe(200);
     done();
   });
