@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import UserDetails from "./UserDetails";
-import PersonalDetails from "./PersonalDetails";
-import Confirm from "./Confirm";
-import Security from "./Security";
-import Extras from "./Extras";
-import network from "../../../services/network";
-import Stepper from "./Stepper";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import ErrorIcon from "@material-ui/icons/Error";
-import { CircularProgress } from "@material-ui/core";
-import Background from "../../Background";
-import { motion } from "framer-motion";
-import "../styles/Register.css";
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import ErrorIcon from '@material-ui/icons/Error';
+import { CircularProgress } from '@material-ui/core';
+import { motion } from 'framer-motion';
+import UserDetails from './UserDetails';
+import PersonalDetails from './PersonalDetails';
+import Confirm from './Confirm';
+import Security from './Security';
+import Extras from './Extras';
+import network from '../../../services/network';
+import Stepper from './Stepper';
+import Background from '../../Background';
+import '../styles/Register.css';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   nextButton: {
-    background: "linear-gradient(45deg, #447CC6 30%, #315CAB 90%)",
-    color: "white",
+    background: 'linear-gradient(45deg, #447CC6 30%, #315CAB 90%)',
+    color: 'white',
   },
 }));
 
@@ -26,20 +26,20 @@ function Register() {
   const classes = useStyles();
   const [errors, setErrors] = useState([]);
   const [step, setStep] = useState(1);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [userName, setUserName] = useState("");
-  const [email, setEmail] = useState("");
-  const [country, setCountry] = useState("");
-  const [city, setCity] = useState("");
-  const [birthDate, setBirthDate] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [securityQuestion, setSecurityQuestion] = useState("");
-  const [securityAnswer, setSecurityAnswer] = useState("");
-  const [signUpReason, setSignUpReason] = useState("");
-  const [gitHub, setGitHub] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [userName, setUserName] = useState('');
+  const [email, setEmail] = useState('');
+  const [country, setCountry] = useState('');
+  const [city, setCity] = useState('');
+  const [birthDate, setBirthDate] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [securityQuestion, setSecurityQuestion] = useState('');
+  const [securityAnswer, setSecurityAnswer] = useState('');
+  const [signUpReason, setSignUpReason] = useState('');
+  const [gitHub, setGitHub] = useState('');
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
@@ -53,112 +53,126 @@ function Register() {
     const phoneNumberRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
     const noSpecialLetters = /[^a-zA-Z\d\s]/;
 
-    let tempErrs = [];
+    const tempErrs = [];
     if (step === 1) {
-      if (firstName.length < 1 || !onlyLettersAndSpacesRegex.test(firstName))
+      if (firstName.length < 1 || !onlyLettersAndSpacesRegex.test(firstName)) {
         tempErrs.push({
-          field: "firstName",
-          message: "First name must contain only letters.",
+          field: 'firstName',
+          message: 'First name must contain only letters.',
         });
-      if (lastName.length < 1 || !onlyLettersAndSpacesRegex.test(lastName))
+      }
+      if (lastName.length < 1 || !onlyLettersAndSpacesRegex.test(lastName)) {
         tempErrs.push({
-          field: "lastName",
-          message: "Last name must contain only letters.",
+          field: 'lastName',
+          message: 'Last name must contain only letters.',
         });
-      if (userName.length < 1 || !onlyLettersAndNumbersRegex.test(userName))
+      }
+      if (userName.length < 1 || !onlyLettersAndNumbersRegex.test(userName)) {
         tempErrs.push({
-          field: "userName",
-          message: "Username must contain only letters and numbers.",
+          field: 'userName',
+          message: 'Username must contain only letters and numbers.',
         });
-      if (userName.length > 32)
+      }
+      if (userName.length > 32) {
         tempErrs.push({
-          field: "userName",
-          message: "Username to long.",
+          field: 'userName',
+          message: 'Username to long.',
         });
+      }
       try {
-        await network.post("/api/v1/auth/userexist", {
+        await network.post('/api/v1/auth/userexist', {
           userName,
         });
       } catch (e) {
         if (e.response.status === 409) {
           tempErrs.push({
-            field: "userName",
-            message: "Username already exists.",
+            field: 'userName',
+            message: 'Username already exists.',
           });
         }
       }
-      if (email.length < 1)
-        tempErrs.push({ field: "email", message: "Email required." });
-      if (!validateEmailRegex.test(email))
-        tempErrs.push({ field: "email", message: "Email invalid." });
+      if (email.length < 1) tempErrs.push({ field: 'email', message: 'Email required.' });
+      if (!validateEmailRegex.test(email)) tempErrs.push({ field: 'email', message: 'Email invalid.' });
     } else if (step === 2) {
-      if (country.length < 1 || !onlyLettersAndSpacesRegex.test(country))
+      if (country.length < 1 || !onlyLettersAndSpacesRegex.test(country)) {
         tempErrs.push({
-          field: "country",
-          message: "Country must contain only letters",
+          field: 'country',
+          message: 'Country must contain only letters',
         });
-      if (city.length < 1 || !onlyLettersAndSpacesRegex.test(city))
+      }
+      if (city.length < 1 || !onlyLettersAndSpacesRegex.test(city)) {
         tempErrs.push({
-          field: "city",
-          message: "City must contain only letters",
+          field: 'city',
+          message: 'City must contain only letters',
         });
-      if (birthDate.length < 1)
+      }
+      if (birthDate.length < 1) {
         tempErrs.push({
-          field: "birthDate",
-          message: "Birth date required",
+          field: 'birthDate',
+          message: 'Birth date required',
         });
-      if (new Date(birthDate).valueOf() > new Date().valueOf())
+      }
+      if (new Date(birthDate).valueOf() > new Date().valueOf()) {
         tempErrs.push({
-          field: "birthDate",
-          message: "Birth date must be in the past.",
+          field: 'birthDate',
+          message: 'Birth date must be in the past.',
         });
-      if (phoneNumber.length < 1 || !phoneNumberRegex.test(phoneNumber))
+      }
+      if (phoneNumber.length < 1 || !phoneNumberRegex.test(phoneNumber)) {
         tempErrs.push({
-          field: "phoneNumber",
-          message: "Invalid phone number",
+          field: 'phoneNumber',
+          message: 'Invalid phone number',
         });
+      }
     } else if (step === 3) {
-      if (password.length < 8)
+      if (password.length < 8) {
         tempErrs.push({
-          field: "password",
-          message: "Password needs to be at least 8 characters.",
+          field: 'password',
+          message: 'Password needs to be at least 8 characters.',
         });
-      if (password !== confirmPassword)
+      }
+      if (password !== confirmPassword) {
         tempErrs.push({
-          field: "confirmPassword",
-          message: "Passwords must be identical.",
+          field: 'confirmPassword',
+          message: 'Passwords must be identical.',
         });
-      if (securityQuestion === "")
+      }
+      if (securityQuestion === '') {
         tempErrs.push({
-          field: "securityQuestion",
-          message: "Security question must be chosen.",
+          field: 'securityQuestion',
+          message: 'Security question must be chosen.',
         });
-      if (securityAnswer.length < 8)
+      }
+      if (securityAnswer.length < 8) {
         tempErrs.push({
-          field: "securityAnswer",
-          message: "Security answer should be at least 8 characters.",
+          field: 'securityAnswer',
+          message: 'Security answer should be at least 8 characters.',
         });
-      if (noSpecialLetters.test(securityAnswer))
+      }
+      if (noSpecialLetters.test(securityAnswer)) {
         tempErrs.push({
-          field: "securityAnswer",
-          message: "Security answer cant contain special characters.",
+          field: 'securityAnswer',
+          message: 'Security answer cant contain special characters.',
         });
+      }
     } else if (step === 4) {
-      if (signUpReason === "")
+      if (signUpReason === '') {
         tempErrs.push({
-          field: "signUpReason",
-          message: "Sign up reason must be chosen.",
+          field: 'signUpReason',
+          message: 'Sign up reason must be chosen.',
         });
-      if (gitHub.length < 1 || !githubAccountRegex.test(gitHub))
+      }
+      if (gitHub.length < 1 || !githubAccountRegex.test(gitHub)) {
         tempErrs.push({
-          field: "gitHub",
-          message: "GitHub account is invalid.",
+          field: 'gitHub',
+          message: 'GitHub account is invalid.',
         });
+      }
       if (tempErrs.length === 0) {
         setErrors([]);
         try {
           setLoading(true);
-          await network.post("/api/v1/auth/register", {
+          await network.post('/api/v1/auth/register', {
             firstName,
             lastName,
             userName,
@@ -176,13 +190,13 @@ function Register() {
           setLoading(false);
         } catch (err) {
           tempErrs.push({
-            field: "server",
+            field: 'server',
             message: err.message,
           });
         }
       }
     } else if (step === 5) {
-      history.push("/login");
+      history.push('/login');
       return;
     }
     if (tempErrs.length === 0) {
@@ -200,46 +214,46 @@ function Register() {
 
   const handleChange = (input) => (e) => {
     switch (input) {
-      case "firstName":
+      case 'firstName':
         setFirstName(e.target.value);
         break;
-      case "lastName":
+      case 'lastName':
         setLastName(e.target.value);
         break;
-      case "userName":
+      case 'userName':
         setUserName(e.target.value);
         break;
-      case "email":
+      case 'email':
         setEmail(e.target.value);
         break;
-      case "password":
+      case 'password':
         setPassword(e.target.value);
         break;
-      case "confirmPassword":
+      case 'confirmPassword':
         setConfirmPassword(e.target.value);
         break;
-      case "birthDate":
+      case 'birthDate':
         setBirthDate(e.target.value);
         break;
-      case "country":
+      case 'country':
         setCountry(e.target.value);
         break;
-      case "city":
+      case 'city':
         setCity(e.target.value);
         break;
-      case "phoneNumber":
+      case 'phoneNumber':
         setPhoneNumber(e.target.value);
         break;
-      case "signUpReason":
+      case 'signUpReason':
         setSignUpReason(e.target.value);
         break;
-      case "gitHub":
+      case 'gitHub':
         setGitHub(e.target.value);
         break;
-      case "securityQuestion":
+      case 'securityQuestion':
         setSecurityQuestion(e.target.value);
         break;
-      case "securityAnswer":
+      case 'securityAnswer':
         setSecurityAnswer(e.target.value);
         break;
       default:
@@ -309,65 +323,67 @@ function Register() {
         transition={{
           default: { duration: 0.2 },
         }}
-        className='registerGeneral'
+        className="registerGeneral"
       >
-        <div className='containerHeaderRegister'>
-          <div className='registerHeader'>
-            <div className='registerTitle'>
+        <div className="containerHeaderRegister">
+          <div className="registerHeader">
+            <div className="registerTitle">
               <b>Register</b>
             </div>
             <Stepper activeStep={step} />
           </div>
         </div>
-        <div className='registerBody'>
+        <div className="registerBody">
           {multiForm()}
           {errors.length !== 0 && (
-            <div className='containerErrorRegister'>
+            <div className="containerErrorRegister">
               <ErrorIcon
                 style={{
-                  color: "white",
-                  marginLeft: "4px",
+                  color: 'white',
+                  marginLeft: '4px',
                 }}
               />
-              <div className='errorInputRegister'>{errors[0].message}</div>
+              <div className="errorInputRegister">{errors[0].message}</div>
             </div>
           )}
           {loading && <CircularProgress />}
-          <div className='containerSecondPartRegister'>
+          <div className="containerSecondPartRegister">
             {step !== 5 ? (
               <>
-                <div className='containerButtonsRegister'>
+                <div className="containerButtonsRegister">
                   {step > 1 && <Button onClick={prevStep}>Back</Button>}
                   <Button
-                    id='nextButton'
+                    id="nextButton"
                     className={classes.nextButton}
-                    variant='contained'
+                    variant="contained"
                     onClick={nextStep}
                   >
-                    {step === 4 ? "Finish" : "Next"}
+                    {step === 4 ? 'Finish' : 'Next'}
                   </Button>
                 </div>
               </>
             ) : (
-                <div className='containerButtonsRegister'>
-                  {step > 1 && (
-                    <Button id='prevButton' onClick={prevStep}>
-                      Back
-                    </Button>
-                  )}
-                  <Button
-                    id='nextButton'
-                    className={classes.nextButton}
-                    variant='contained'
-                    onClick={nextStep}
-                  >
-                    Back To Login Page
+              <div className="containerButtonsRegister">
+                {step > 1 && (
+                  <Button id="prevButton" onClick={prevStep}>
+                    Back
+                  </Button>
+                )}
+                <Button
+                  id="nextButton"
+                  className={classes.nextButton}
+                  variant="contained"
+                  onClick={nextStep}
+                >
+                  Back To Login Page
                 </Button>
-                </div>
-              )}
+              </div>
+            )}
 
             <p>
-              Have an existing account? <Link to='/login'>Login Here</Link>
+              Have an existing account?
+              {' '}
+              <Link to="/login">Login Here</Link>
             </p>
           </div>
         </div>

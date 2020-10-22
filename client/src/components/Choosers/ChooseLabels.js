@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
-import network from "../../services/network";
-import Selector from "react-select";
-import "./ChooseLabel.css";
+import React, { useEffect } from 'react';
+import Selector from 'react-select';
+import network from '../../services/network';
+import './ChooseLabel.css';
+
 const ChooseLabels = ({
   labels,
   chooseLabels,
@@ -14,31 +15,32 @@ const ChooseLabels = ({
     () => {
       (async () => {
         try {
-          const { data } = await network.get(`/api/v1/labels`);
+          const { data } = await network.get('/api/v1/labels');
           const optionsForSelector = data.map((labelData) => ({
             value: labelData.id,
             label: labelData.name,
           }));
           setChooseLabels(optionsForSelector);
-        } catch { }
+        } catch (error) { console.error(error); }
       })();
-    }, [setChooseLabels]);
+    }, [setChooseLabels],
+  );
 
   const selectionChange = (choosens) => {
     submitFilter(choosens);
   };
 
   const customStyles = {
-    option: (provided, state) => ({
+    option: (provided) => ({
       ...provided,
-      borderBottom: "1px dotted black",
-      color: darkMode ? "white" : "blue",
-      backgroundColor: darkMode ? "rgb(51,51,51)" : "white",
-      height: "100%",
+      borderBottom: '1px dotted black',
+      color: darkMode ? 'white' : 'blue',
+      backgroundColor: darkMode ? 'rgb(51,51,51)' : 'white',
+      height: '100%',
     }),
     control: (provided) => ({
       ...provided,
-      backgroundColor: "neutral30",
+      backgroundColor: 'neutral30',
     }),
   };
   return (
