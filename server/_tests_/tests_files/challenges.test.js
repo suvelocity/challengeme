@@ -51,7 +51,7 @@ describe("testing challenges endpoints", () => {
     const response = await request(app)
       .get("/api/v1/types")
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
-    expect(response.body.length).toBe(7);
+    expect(response.body.length).toBe(8);
     expect(response.status).toBe(200);
     done();
   });
