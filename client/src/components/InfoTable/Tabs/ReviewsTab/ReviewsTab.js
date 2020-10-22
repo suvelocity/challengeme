@@ -1,7 +1,8 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import Review from "./Review";
-import network from "../../../../services/network";
+import React, { useEffect, useState } from 'react';
+
+import Review from './Review';
+import network from '../../../../services/network';
+
 function ReviewsTab({ challengeId }) {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,13 +10,13 @@ function ReviewsTab({ challengeId }) {
   useEffect(() => {
     const fetchReviews = async () => {
       const { data: reviewsArrayFromServer } = await network.get(
-        `/api/v1/reviews/byChallenge/${challengeId}`
+        `/api/v1/reviews/byChallenge/${challengeId}`,
       );
       const reviewsWithContent = reviewsArrayFromServer.filter(
-        (review) => review.title && review.content
+        (review) => review.title && review.content,
       );
       setReviews(reviewsWithContent);
-      setLoading(false)
+      setLoading(false);
     };
     fetchReviews();
     const liveReviews = setInterval(fetchReviews, 5000);
@@ -23,7 +24,7 @@ function ReviewsTab({ challengeId }) {
   }, [challengeId]);
 
   return reviews.length !== 0 ? (
-    reviews.map((review, index) => {
+    reviews.map((review) => {
       const {
         createdAt,
         title,
@@ -33,7 +34,7 @@ function ReviewsTab({ challengeId }) {
       } = review;
       return (
         <Review
-          key={index}
+          key={title + createdAt}
           author={userName}
           createdAt={createdAt}
           title={title}
@@ -43,10 +44,10 @@ function ReviewsTab({ challengeId }) {
       );
     })
   ) : (
-      <div>
-        {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
-      </div>
-    );
+    <div>
+      {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
+    </div>
+  );
 }
 
 export default ReviewsTab;

@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class LabelChallenge extends Model {
     /**
@@ -12,14 +12,16 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
 
     }
-  };
+  }
   LabelChallenge.init({
     labelId: {
       field: 'label_id',
-      type: DataTypes.INTEGER },
+      type: DataTypes.INTEGER,
+    },
     challengeId: {
       field: 'challenge_id',
-      type: DataTypes.INTEGER }
+      type: DataTypes.INTEGER,
+    },
   }, {
     sequelize,
     modelName: 'LabelChallenge',

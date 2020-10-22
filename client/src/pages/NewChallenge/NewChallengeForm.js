@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import ChooseLabels from "../../components/Choosers/ChooseLabels";
-import network from "../../services/network";
-import AddImg from "../../components/AddImg/AddImg";
-import Swal from "sweetalert2";
-import "./NewChallengeForm.css";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import {
   Typography,
   InputLabel,
@@ -15,14 +11,19 @@ import {
   TextField,
   TextareaAutosize,
   Button,
-} from "@material-ui/core";
-import { Alert, AlertTitle } from "@material-ui/lab";
-const textFieldStyle = { minWidth: "200px" };
+} from '@material-ui/core';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import ChooseLabels from '../../components/Choosers/ChooseLabels';
+import network from '../../services/network';
+import AddImg from '../../components/AddImg/AddImg';
+import './NewChallengeForm.css';
+
+const textFieldStyle = { minWidth: '200px' };
 
 /* function to generate alerts for bad or missing inputs */
 const generateAlert = (title, message) => (
   <>
-    <Alert severity='error'>
+    <Alert severity="error">
       <AlertTitle>{title}</AlertTitle>
       {message}
     </Alert>
@@ -32,61 +33,60 @@ const generateAlert = (title, message) => (
 
 export default function NewChallengeForm() {
   const [optionsArray, setOptionsArray] = useState([]);
-  const [repoName, setRepoName] = useState("");
-  const [repoLink, setRepoLink] = useState("");
-  const [repoBoiler, setRepoBoiler] = useState("");
-  const [repoDescription, setRepoDescription] = useState("");
-  const [repoType, setRepoType] = useState("");
+  const [repoName, setRepoName] = useState('');
+  const [repoLink, setRepoLink] = useState('');
+  const [repoBoiler, setRepoBoiler] = useState('');
+  const [repoDescription, setRepoDescription] = useState('');
+  const [repoType, setRepoType] = useState('');
   const [repoLabels, setRepoLabels] = useState([]);
   const [file, setFile] = useState({});
   const [badInput, setBadInput] = useState([]);
   const history = useHistory();
 
-  useEffect(() => {
-    openOptions();
-  }, []);
-
   /* pull challenge's type options from .github/workflows folder */
   const openOptions = async () => {
-    const { data: types } = await network.get("/api/v1/types");
+    const { data: types } = await network.get('/api/v1/types');
     setOptionsArray(
-      types.map((type, index) => (
-        <MenuItem key={index} value={type}>
+      types.map((type) => (
+        <MenuItem key={type} value={type}>
           {type}
         </MenuItem>
-      ))
+      )),
     );
   };
 
+  useEffect(() => {
+    openOptions();
+  }, []);
   /* validate data before poting */
   const spaces = new RegExp(/^(\s{1,})$/);
   const hebrew = new RegExp(/^.*([\u0590-\u05FF]{1,}).*$/);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let newBadInput = [];
+    const newBadInput = [];
     if (
-      repoName.length < 2 ||
-      repoName.match(spaces) ||
-      repoName.match(hebrew)
+      repoName.length < 2
+      || repoName.match(spaces)
+      || repoName.match(hebrew)
     ) {
       newBadInput.push(
         generateAlert(
           "Repository's name is too short",
-          "Minimum 2 characters. Don't use hebrew letters"
-        )
+          "Minimum 2 characters. Don't use hebrew letters",
+        ),
       );
     }
     if (repoLink === repoBoiler) {
-      newBadInput.push(generateAlert("Repository links must be diffrent", ""));
+      newBadInput.push(generateAlert('Repository links must be diffrent', ''));
     } else {
       try {
         if (
-          repoLink.length > 2 &&
-          !repoLink.match(spaces) &&
-          !repoLink.match(hebrew)
+          repoLink.length > 2
+          && !repoLink.match(spaces)
+          && !repoLink.match(hebrew)
         ) {
           await network.get(
-            `/api/v1/services/public_repo?repo_name=${repoLink}`
+            `/api/v1/services/public_repo?repo_name=${repoLink}`,
           );
         } else {
           throw new Error();
@@ -95,18 +95,18 @@ export default function NewChallengeForm() {
         newBadInput.push(
           generateAlert(
             "Repository's Link is not valid.\n Check the suggestions below:",
-            "- Type the Github repository in this format: owner/repo\n- Change your repository to public\n- Check for type errors.\nDon't use Hebrew letters"
-          )
+            "- Type the Github repository in this format: owner/repo\n- Change your repository to public\n- Check for type errors.\nDon't use Hebrew letters",
+          ),
         );
       }
       try {
         if (
-          repoBoiler.length > 2 &&
-          !repoBoiler.match(spaces) &&
-          !repoBoiler.match(hebrew)
+          repoBoiler.length > 2
+          && !repoBoiler.match(spaces)
+          && !repoBoiler.match(hebrew)
         ) {
           await network.get(
-            `/api/v1/services/public_repo?repo_name=${repoBoiler}`
+            `/api/v1/services/public_repo?repo_name=${repoBoiler}`,
           );
         } else {
           throw new Error();
@@ -115,41 +115,39 @@ export default function NewChallengeForm() {
         newBadInput.push(
           generateAlert(
             "Repository's Boilerplate Link is not valid.\n Check the suggestions below:",
-            "- Type the Github boilerplate repository in this format: owner/repo\n- Change your boilerplate repository to public\n- Check for type errors.\nDon't use Hebrew letters"
-          )
+            "- Type the Github boilerplate repository in this format: owner/repo\n- Change your boilerplate repository to public\n- Check for type errors.\nDon't use Hebrew letters",
+          ),
         );
       }
     }
     if (
-      repoDescription.length < 20 ||
-      !!repoDescription.match(spaces) ||
-      !!repoDescription.match(hebrew)
+      repoDescription.length < 20
+      || !!repoDescription.match(spaces)
+      || !!repoDescription.match(hebrew)
     ) {
       newBadInput.push(
         generateAlert(
           "Repository's Description is too short",
-          "Minimum 2 characters. Don't use hebrew letters"
-        )
+          "Minimum 2 characters. Don't use hebrew letters",
+        ),
       );
     } else if (repoDescription.length > 500 || repoDescription.match(hebrew)) {
       newBadInput.push(
         generateAlert(
           "Repository's Description is too long",
-          "Maximum 500 characters. Don't use hebrew letters"
-        )
+          "Maximum 500 characters. Don't use hebrew letters",
+        ),
       );
     }
     if (!repoType) {
-      newBadInput.push(generateAlert("Repository's type not selected", ""));
+      newBadInput.push(generateAlert("Repository's type not selected", ''));
     }
     if (Object.keys(file).length === 0 && file.constructor === Object) {
-      newBadInput.push(generateAlert("Repository's image not selected", ""));
+      newBadInput.push(generateAlert("Repository's image not selected", ''));
     }
     if (newBadInput.length > 0) {
       setBadInput(newBadInput);
-      setTimeout(() => {
-        return setBadInput([]);
-      }, 8000);
+      setTimeout(() => setBadInput([]), 8000);
     } else {
       const newRepo = {
         name: repoName,
@@ -162,38 +160,38 @@ export default function NewChallengeForm() {
       /* post newRepo to challenge table */
       try {
         const { data: postedRepo } = await network.post(
-          `/api/v1/challenges`,
-          newRepo
+          '/api/v1/challenges',
+          newRepo,
         );
-        await network.post("/api/v1/image", {
+        await network.post('/api/v1/image', {
           challengeId: postedRepo.id,
           img: file.result,
         });
         if (repoLabels.length > 0) {
-          await network.post("/api/v1/labels", {
+          await network.post('/api/v1/labels', {
             labels: repoLabels,
             challengeId: postedRepo.id,
           });
         }
         Swal.fire({
-          icon: "success",
-          title: "Your challenge was added successfuly!",
+          icon: 'success',
+          title: 'Your challenge was added successfuly!',
           showConfirmButton: false,
           timer: 3000,
         });
-        history.push("/");
+        history.push('/');
       } catch (error) {
         if (error.response.status === 500) {
           Swal.fire({
-            icon: "error",
+            icon: 'error',
             title: error.response.data,
             showConfirmButton: false,
             timer: 3000,
           });
         } else {
           Swal.fire({
-            icon: "error",
-            title: "An error has occurred. Please try again later",
+            icon: 'error',
+            title: 'An error has occurred. Please try again later',
             showConfirmButton: false,
             timer: 3000,
           });
@@ -205,17 +203,17 @@ export default function NewChallengeForm() {
   /* add image */
   const handleFile = (value) => {
     if (value.src) {
-      let i = new Image();
+      const i = new Image();
       i.src = value.src;
 
       i.onload = () => {
-        const width = i.width;
-        const height = i.height;
+        const { width } = i;
+        const { height } = i;
         if (width < 800) {
-          Swal.fire("invalid image width", "", "error");
+          Swal.fire('invalid image width', '', 'error');
           setFile({});
         } else if (height < 300) {
-          Swal.fire("invalid image height", "", "error");
+          Swal.fire('invalid image height', '', 'error');
           setFile({});
         } else {
           setFile(value);
@@ -228,10 +226,10 @@ export default function NewChallengeForm() {
 
   /* 'clear values' button */
   const handleReset = () => {
-    setRepoName("");
-    setRepoLink("");
-    setRepoDescription("");
-    setRepoType("");
+    setRepoName('');
+    setRepoLink('');
+    setRepoDescription('');
+    setRepoType('');
     setFile({});
     setBadInput([]);
     setRepoLabels([]);
@@ -251,65 +249,65 @@ export default function NewChallengeForm() {
   const classes = useStyles();
 
   return (
-    <div className={`newChallenge`}>
-      <form className='newChallengeForm'>
+    <div className="newChallenge">
+      <form className="newChallengeForm">
         <Typography
-          variant='h5'
+          variant="h5"
           gutterBottom
-          className='newChallengeFormheader'
+          className="newChallengeFormheader"
         >
           New Challenge
         </Typography>
         <TextField
-          id='name'
-          autoComplete='off'
-          className='newChallengeFormFeild'
-          label='Challenge name'
+          id="name"
+          autoComplete="off"
+          className="newChallengeFormFeild"
+          label="Challenge name"
           onChange={(event) => setRepoName(event.target.value)}
           style={textFieldStyle}
         />
         <br />
         <TextField
-          id='repo'
-          autoComplete='off'
-          className='newChallengeFormFeild'
-          label='Challenge link'
+          id="repo"
+          autoComplete="off"
+          className="newChallengeFormFeild"
+          label="Challenge link"
           onChange={(event) => setRepoLink(event.target.value)}
           style={textFieldStyle}
         />
         <br />
         <TextField
-          id='boiler'
-          autoComplete='off'
-          className='newChallengeFormFeild'
-          label='Challenge boilerplate'
+          id="boiler"
+          autoComplete="off"
+          className="newChallengeFormFeild"
+          label="Challenge boilerplate"
           onChange={(event) => setRepoBoiler(event.target.value)}
           style={textFieldStyle}
         />
         <br />
         <TextareaAutosize
-          className='descriptionTextArea'
-          autoComplete='off'
-          aria-label='Description'
+          className="descriptionTextArea"
+          autoComplete="off"
+          aria-label="Description"
           rowsMin={6}
-          placeholder='Challenge description...'
+          placeholder="Challenge description..."
           onChange={(event) => setRepoDescription(event.target.value)}
-          style={{ minWidth: 200, width: "40vw" }}
+          style={{ minWidth: 200, width: '40vw' }}
         />
         <br />
         <AddImg file={file} handleChange={handleFile} />
         <br />
-        <div className='newChallengeFormFeild'>
+        <div className="newChallengeFormFeild">
           <ChooseLabels submitFilter={setRepoLabels} />
         </div>
         <FormControl className={classes.formControl}>
-          <InputLabel id='Challenge type' style={textFieldStyle}>
+          <InputLabel id="Challenge type" style={textFieldStyle}>
             Challenge type
           </InputLabel>
           <Select
-            labelId='Challenge type'
-            id='types'
-            className='newChallengeFormFeild'
+            labelId="Challenge type"
+            id="types"
+            className="newChallengeFormFeild"
             value={repoType}
             onChange={(event) => setRepoType(event.target.value)}
           >
@@ -317,23 +315,23 @@ export default function NewChallengeForm() {
           </Select>
         </FormControl>
         <br />
-        <Typography color='error' className='newChallengeFormDisplayErrors'>
+        <Typography color="error" className="newChallengeFormDisplayErrors">
           {badInput}
         </Typography>
         <br />
-        <div className='newChallengeFormButtons'>
+        <div className="newChallengeFormButtons">
           <Button
-            variant='contained'
-            color='primary'
-            type='submit'
+            variant="contained"
+            color="primary"
+            type="submit"
             onClick={handleSubmit}
           >
             submit
           </Button>
           <Button
-            variant='contained'
-            color='secondary'
-            type='reset'
+            variant="contained"
+            color="secondary"
+            type="reset"
             onClick={handleReset}
           >
             clear values

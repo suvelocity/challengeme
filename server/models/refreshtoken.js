@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class RefreshToken extends Model {
     /**
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.User, {
-        foreignKey: "userName",
+        foreignKey: 'userName',
       });
     }
   }
@@ -22,9 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       paranoid: true,
-      modelName: "RefreshToken",
+      modelName: 'RefreshToken',
       tableName: 'refresh_tokens',
-    }
+    },
   );
   return RefreshToken;
 };

@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('reviews', {
@@ -6,43 +5,43 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       user_id: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       challenge_id: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       title: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       content: {
         type: Sequelize.TEXT,
-        allowNull: true
+        allowNull: true,
       },
       rating: {
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       created_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updated_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       deleted_at: {
         allowNull: true,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable('reviews');
-  }
+  },
 };

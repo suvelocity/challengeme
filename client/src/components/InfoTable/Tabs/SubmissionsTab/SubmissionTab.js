@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import network from "../../../../services/network";
-import Submission from "./Submission";
+import React, { useEffect, useState } from 'react';
+import network from '../../../../services/network';
+import Submission from './Submission';
 
 function SubmissionTab({ challengeId }) {
   const [submissions, setSubmissions] = useState([]);
 
   useEffect(() => {
     const fetchSubmissions = async () => {
-      const { data: submissions } = await network.get(
-        `/api/v1/challenges/${challengeId}/submissions`
+      const { data: submissionsFromDb } = await network.get(
+        `/api/v1/challenges/${challengeId}/submissions`,
       );
-      setSubmissions(submissions);
+      setSubmissions(submissionsFromDb);
     };
     fetchSubmissions();
     const liveSubmissions = setInterval(fetchSubmissions, 7000);
@@ -19,19 +19,19 @@ function SubmissionTab({ challengeId }) {
   return (
     <div>
       <Submission
-        className='headlines'
-        name={"Name"}
-        status={"Status"}
-        submittedAt={"Submitted at"}
-        bold={true}
+        className="headlines"
+        name="Name"
+        status="Status"
+        submittedAt="Submitted at"
+        bold
       />
-      {submissions.map((item, i) => (
+      {submissions.map((item) => (
         <Submission
-          className='submission'
-          key={i}
-          name={item.solutionRepository.split("/")[0]}
+          className="submission"
+          key={item.solutionRepository + item.updatedAt}
+          name={item.solutionRepository.split('/')[0]}
           status={item.state}
-          submittedAt={item.updatedAt.split("T").join(" ").split(".")[0]}
+          submittedAt={item.updatedAt.split('T').join(' ').split('.')[0]}
           solutionRepository={item.solutionRepository}
           bold={false}
         />

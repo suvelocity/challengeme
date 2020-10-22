@@ -1,10 +1,11 @@
-require("dotenv").config();
-const { Router } = require("express");
+require('dotenv').config();
+const { Router } = require('express');
+
 const usersRouter = Router();
-const { User, RefreshToken } = require("../../models");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const checkToken = require("../../middleware/checkToken");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const { User, RefreshToken } = require('../../models');
+const checkToken = require('../../middleware/checkToken');
 const {
   loginValidation,
   registerValidation,
@@ -12,22 +13,22 @@ const {
   pwdUpdateValidation,
   answerValidation,
   userValidation,
-} = require("../../helpers/validator");
-const mailer = require("../../helpers/communicator");
+} = require('../../helpers/validator');
+const mailer = require('../../helpers/communicator');
 
 // Register
-usersRouter.post("/register", async (req, res) => {
+usersRouter.post('/register', async (req, res) => {
   try {
-    //Joi validation
+    // Joi validation
     const { error } = registerValidation(req.body);
     if (error) {
-      console.error(error.message)
+      console.error(error.message);
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     // if user name already exist return error
     const checkUser = await userIsExist(req.body.userName);
 
-    if (checkUser) return res.status(409).send("user name already exists");
+    if (checkUser) return res.status(409).send('user name already exists');
 
     const hashPassword = await bcrypt.hashSync(req.body.password, 10);
     const hashsecurityAnswer = await bcrypt.hashSync(req.body.securityAnswer, 10);
@@ -75,11 +76,11 @@ usersRouter.post("/register", async (req, res) => {
 });
 
 // Create User
-usersRouter.post("/createuser", (req, res) => {
+usersRouter.post('/createuser', (req, res) => {
   try {
     const { error } = tokenValidation(req.body);
     if (error) {
-      console.error(error.message)
+      console.error(error.message);
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     jwt.verify(
@@ -87,67 +88,64 @@ usersRouter.post("/createuser", (req, res) => {
       process.env.EMAIL_TOKEN_SECRET,
       async (err, decoded) => {
         if (error) {
-          console.error(error.message)
-          return res.status(403).json({ message: "Invalid Token" });
+          console.error(error.message);
+          return res.status(403).json({ message: 'Invalid Token' });
         }
         delete decoded.iat;
         delete decoded.exp;
 
         const checkUser = await userIsExist(decoded.userName);
-        if (checkUser) return res.status(409).send("user name already exists");
+        if (checkUser) return res.status(409).send('user name already exists');
         await User.create(decoded);
-        res.status(201).json({ message: "Register Success" });
-      }
+        res.status(201).json({ message: 'Register Success' });
+      },
     );
   } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ message: "Cannot process request" });
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // Check if user exist
-usersRouter.post("/userexist", async (req, res) => {
+usersRouter.post('/userexist', async (req, res) => {
   try {
-    //User Validation
+    // User Validation
     const { error } = userValidation(req.body);
     if (error) {
-      console.error(error.message)
+      console.error(error.message);
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const currentUser = await userIsExist(req.body.userName);
-    if (currentUser)
-      return res.status(409).json({ message: "user name already exists" });
+    if (currentUser) return res.status(409).json({ message: 'user name already exists' });
     res.json({ notExist: true });
   } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ message: "Cannot process request" });
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // Validate Token
-usersRouter.get("/validateToken", checkToken, (req, res) => {
+usersRouter.get('/validateToken', checkToken, (req, res) => {
   res.json({ valid: true });
 });
 
 // Log In
-usersRouter.post("/login", async (req, res) => {
+usersRouter.post('/login', async (req, res) => {
   try {
-    //Joi Validation
+    // Joi Validation
     const { error } = loginValidation(req.body);
     if (error) {
-      console.error(error.message)
+      console.error(error.message);
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const currentUser = await userIsExist(req.body.userName);
-    if (!currentUser)
-      return res.status(403).json({ message: "User or Password are incorrect" });
+    if (!currentUser) return res.status(403).json({ message: 'User or Password are incorrect' });
     const validPass = await bcrypt.compareSync(
       req.body.password,
-      currentUser.password
+      currentUser.password,
     );
-    if (!validPass)
-      return res.status(403).json({ message: "User or Password incorrect" });
-    const expired = req.body.rememberMe ? "365 days" : "24h";
+    if (!validPass) return res.status(403).json({ message: 'User or Password incorrect' });
+    const expired = req.body.rememberMe ? '365 days' : '24h';
     const infoForCookie = {
       userId: currentUser.id,
       userName: currentUser.userName,
@@ -157,7 +155,7 @@ usersRouter.post("/login", async (req, res) => {
       process.env.REFRESH_TOKEN_SECRET,
       {
         expiresIn: expired,
-      }
+      },
     );
     const accessToken = generateToken(infoForCookie);
     const isTokenExist = await RefreshToken.findOne({
@@ -177,28 +175,28 @@ usersRouter.post("/login", async (req, res) => {
           where: {
             userName: currentUser.userName,
           },
-        }
+        },
       );
     }
 
-    res.cookie("name", currentUser.firstName);
-    res.cookie("userName", currentUser.userName);
-    res.cookie("accessToken", accessToken);
-    res.cookie("refreshToken", refreshToken);
+    res.cookie('name', currentUser.firstName);
+    res.cookie('userName', currentUser.userName);
+    res.cookie('accessToken', accessToken);
+    res.cookie('refreshToken', refreshToken);
     res.json({ userDetails: currentUser });
   } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ message: "Cannot process request" });
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
-//Get new access token
-usersRouter.post("/token", async (req, res) => {
+// Get new access token
+usersRouter.post('/token', async (req, res) => {
   try {
-    //Joi Validation
+    // Joi Validation
     const { error } = tokenValidation(req.body);
     if (error) {
-      console.error(error.message)
+      console.error(error.message);
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const refreshToken = req.body.token;
@@ -207,32 +205,31 @@ usersRouter.post("/token", async (req, res) => {
         token: refreshToken,
       },
     });
-    if (!validRefreshToken)
-      return res.status(403).json({ message: "Invalid Refresh Token" });
+    if (!validRefreshToken) return res.status(403).json({ message: 'Invalid Refresh Token' });
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
       if (error) {
-        console.error(error.message)
-        return res.status(403).json({ message: "Invalid Refresh Token" });
+        console.error(error.message);
+        return res.status(403).json({ message: 'Invalid Refresh Token' });
       }
       delete decoded.iat;
       delete decoded.exp;
       const accessToken = generateToken(decoded);
-      res.cookie("accessToken", accessToken);
-      res.json({ message: "token updated" });
+      res.cookie('accessToken', accessToken);
+      res.json({ message: 'token updated' });
     });
   } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ message: "Cannot process request" });
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // Logout request
-usersRouter.post("/logout", async (req, res) => {
+usersRouter.post('/logout', async (req, res) => {
   try {
-    //Joi Validation
+    // Joi Validation
     const { error } = tokenValidation(req.body);
     if (error) {
-      console.error(error.message)
+      console.error(error.message);
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const result = await RefreshToken.destroy({
@@ -240,77 +237,77 @@ usersRouter.post("/logout", async (req, res) => {
         token: req.body.token,
       },
     });
-    if (!result)
-      return res.status(400).json({ message: "Refresh Token is required" });
-    res.json({ message: "User Logged Out Successfully" });
+    if (!result) return res.status(400).json({ message: 'Refresh Token is required' });
+    res.json({ message: 'User Logged Out Successfully' });
   } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ message: "Cannot process request" });
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // Geting Sequrity Question
-usersRouter.post("/getquestion", async (req, res) => {
+usersRouter.post('/getquestion', async (req, res) => {
   try {
     const { error } = userValidation(req.body);
     if (error) {
-      console.error(error.message)
+      console.error(error.message);
       res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const currentUser = await userIsExist(req.body.userName);
-    if (!currentUser)
+    if (!currentUser) {
       return res.json({
         securityQuestion:
-          "What is the name, breed, and color of your favorite pet?",
+          'What is the name, breed, and color of your favorite pet?',
       });
+    }
     res.json({ securityQuestion: currentUser.securityQuestion });
   } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ message: "Cannot process request" });
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // Validate Answer
-usersRouter.post("/validateanswer", async (req, res) => {
+usersRouter.post('/validateanswer', async (req, res) => {
   try {
-    //Joi Validation
+    // Joi Validation
     const { error } = answerValidation(req.body);
     if (error) {
-      console.error(error.message)
+      console.error(error.message);
       res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const currentUser = await userIsExist(req.body.userName);
-    if (!currentUser) return res.status(403).json({ message: "Wrong Answer" });
+    if (!currentUser) return res.status(403).json({ message: 'Wrong Answer' });
     const validAnswer = await bcrypt.compareSync(
       req.body.securityAnswer,
-      currentUser.securityAnswer
+      currentUser.securityAnswer,
     );
-    if (!validAnswer) return res.status(403).json({ message: "Wrong Answer" });
+    if (!validAnswer) return res.status(403).json({ message: 'Wrong Answer' });
     const resetToken = jwt.sign(currentUser, process.env.RESET_PASSWORD_TOKEN, {
-      expiresIn: "300s",
+      expiresIn: '300s',
     });
     res.json({ resetToken });
   } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ message: "Cannot process request" });
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // Password Update
-usersRouter.patch("/passwordupdate", async (req, res) => {
+usersRouter.patch('/passwordupdate', async (req, res) => {
   try {
-    //Joi Valodation
+    // Joi Valodation
     const { error } = pwdUpdateValidation(req.body);
     if (error) {
-      console.error(error.message)
+      console.error(error.message);
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
-    const resetToken = req.body.resetToken;
+    const { resetToken } = req.body;
     jwt.verify(
       resetToken,
       process.env.RESET_PASSWORD_TOKEN,
       async (err, decoded) => {
-        if (err) return res.status(403).json({ message: "Invalid Token" });
+        if (err) return res.status(403).json({ message: 'Invalid Token' });
         const hashPassword = await bcrypt.hashSync(req.body.password, 10);
         await User.update(
           { password: hashPassword },
@@ -318,14 +315,14 @@ usersRouter.patch("/passwordupdate", async (req, res) => {
             where: {
               userName: decoded.userName,
             },
-          }
+          },
         );
-        res.json({ message: "Changed Password Sucsessfuly" });
-      }
+        res.json({ message: 'Changed Password Sucsessfuly' });
+      },
     );
   } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ message: "Cannot process request" });
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -333,22 +330,21 @@ async function userIsExist(userName) {
   try {
     const user = await User.findOne({
       where: {
-        userName: userName,
+        userName,
       },
     });
     if (user) {
       return user.dataValues;
-    } else {
-      return false;
     }
+    return false;
   } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ message: "Cannot process request" });
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 }
 
 function generateToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "900s" });
+  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '900s' });
 }
 
 module.exports = usersRouter;

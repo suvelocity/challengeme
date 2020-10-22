@@ -1,5 +1,5 @@
-"use strict";
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Label extends Model {
     /**
@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsToMany(models.Challenge, {
-        through: "LabelChallenge",
-        foreignKey: "labelId",
+        through: 'LabelChallenge',
+        foreignKey: 'labelId',
       });
     }
   }
@@ -22,9 +22,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       paranoid: true,
-      modelName: "Label",
-      tableName: "labels",
-    }
+      modelName: 'Label',
+      tableName: 'labels',
+    },
   );
   return Label;
 };
