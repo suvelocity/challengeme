@@ -33,6 +33,13 @@ jobs:
     - name: Install dependencies
       run: npm ci
       working-directory: ./client
+    - name: Build client
+      run: CI=false npm run build
+      working-directory: ./client
+    - name: Copy build
+      run: |-
+        gcloud compute scp --recurse --zone us-central1-a ./build root@instance-staging-2:../../var/www/client
+      working-directory: ./client
     - name: Deploy
       run: |-
         gcloud --quiet compute ssh --zone us-central1-a instance-staging-2 --command '
@@ -45,10 +52,3 @@ jobs:
           sudo npm ci &&
           sudo npx sequelize db:migrate &&
           sudo pm2 reload 0
-    - name: Build client
-      run: CI=false npm run build
-      working-directory: ./client
-    - name: Copy build
-      run: |-
-        gcloud compute scp --recurse --zone us-central1-a ./build root@instance-staging-2:../../var/www/client
-      working-directory: ./client
