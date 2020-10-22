@@ -52,3 +52,4 @@ jobs:
           sudo npm ci &&
           sudo npx sequelize db:migrate &&
           sudo pm2 reload 0
+        '
