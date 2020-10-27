@@ -276,9 +276,6 @@ router.post("/:challengeId/apply", async (req, res) => {
 router.get("/pending-challenges", checkAdmin, async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
-      where: {
-        state: "pending",
-      },
       include: [
         {
           model: User,
@@ -315,9 +312,12 @@ router.patch("/state-update/:challengeId", checkAdmin, async (req, res) => {
         },
       },
     );
-    console.log(updatedChallenge);
-    const status = updatedChallenge[0] ? "Success" : "Fail";
-    res.json(status);
+    if (updatedChallenge[0]) {
+      res.json({message: "Success"});
+    } else {
+      console.error('Failed to Update State');
+      res.status(400).json({ message: "Failed to Update State" });
+    }
   } catch (err) {
     console.error(error.message);
     res.status(400).json({ message: "Cannot process request" });
