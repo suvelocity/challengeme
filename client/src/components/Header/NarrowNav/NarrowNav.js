@@ -28,7 +28,7 @@ import { Logged } from "../../../context/LoggedInContext";
 import Search from "../Search/Search";
 import network from "../../../services/network";
 
-export default function NarrowNav({ darkMode, setDarkMode }) {
+export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
   const classes = useStyles();
   const filteredLabels = useContext(FilteredLabels);
   const [labels, setLabels] = useState([]);
@@ -118,7 +118,7 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
                 chooseLabels={chooseLabels}
                 setChooseLabels={setChooseLabels}
                 darkMode={darkMode}
-                submitFilter={setLabels}
+                setLabels={setLabels}
               />
             ) : null}
           </div>
@@ -167,7 +167,7 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
             </Tooltip>
             <div className={classes.heyName} style={letterColor}>
               <b>
-                Hey
+                Hey{" "}
                 {Cookies.get("name")}
               </b>
             </div>
@@ -197,6 +197,28 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
               <ListItemText primary="Info" />
             </ListItem>
           </Link>
+          <Divider style={dividerColor} />
+          <Link to="/my-proposed" className="link-rout">
+            <ListItem button onClick={handleDrawerClose} style={letterColor}>
+              <ListItemIcon>
+                <InfoIcon style={letterColor} />
+              </ListItemIcon>
+              <ListItemText primary="Add Challenge" />
+            </ListItem>
+          </Link>
+          {isAdmin &&
+          <>
+          <Divider style={dividerColor} />
+          <Link to="/challenge-approval" className="link-rout">
+            <ListItem button onClick={handleDrawerClose} style={letterColor}>
+              <ListItemIcon>
+                <InfoIcon style={letterColor} />
+              </ListItemIcon>
+              <ListItemText primary="Approve Challenges" />
+            </ListItem>
+          </Link>
+          </>
+          }
           <Divider style={dividerColor} />
           <ListItem className={classes.logOut} onClick={handleDrawerClose}>
             <DarkModeToggle

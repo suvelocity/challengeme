@@ -178,11 +178,11 @@ usersRouter.post('/login', async (req, res) => {
         },
       );
     }
-
     res.cookie('name', currentUser.firstName);
     res.cookie('userName', currentUser.userName);
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
+    res.cookie('isAdmin', currentUser.permission);
     res.json({ userDetails: currentUser });
   } catch (error) {
     console.error(error.message);

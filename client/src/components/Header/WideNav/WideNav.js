@@ -20,7 +20,7 @@ import network from "../../../services/network";
 import ChooseLabels from "../../Choosers/ChooseLabels";
 import useStyles from "./WideNavStyle";
 
-export default function WideNav({ darkMode, setDarkMode }) {
+export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
   const filteredLabels = useContext(FilteredLabels);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -106,7 +106,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
               chooseLabels={chooseLabels}
               setChooseLabels={setChooseLabels}
               darkMode={darkMode}
-              submitFilter={setLabels}
+              setLabels={setLabels}
             />
           ) : null}
         </div>
@@ -177,7 +177,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
               info
             </Button>
           </Link>
-          <Link to="/myproposed" className="link-rout">
+          <Link to="/my-proposed" className="link-rout">
             <Button
               onClick={() => setAnchorEl(null)}
               className={classes.infoButton}
@@ -188,6 +188,19 @@ export default function WideNav({ darkMode, setDarkMode }) {
               Add Challenge
             </Button>
           </Link>
+          {isAdmin &&
+          <Link to="/challenge-approval" className="link-rout">
+            <Button
+              onClick={() => setAnchorEl(null)}
+              className={classes.infoButton}
+              style={{ minWidth: 150 }}
+              variant="contained"
+              color="default"
+            >
+              Approve Challenges
+            </Button>
+          </Link>
+          }
           <Button
             className={classes.logOutButton}
             onClick={logOut}

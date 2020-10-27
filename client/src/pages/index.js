@@ -16,9 +16,12 @@ import ErrorBoundry from "../components/ErrorBoundry";
 import Loading from "../components/Loading/Loading";
 import "../index.css";
 import AddChallengeNavbar from "./AddChallenge/AddChallengeNavbar";
-import AllProposed from "./AddChallenge/AllProposed";
+// import AllProposed from "./AddChallenge/AllProposed";
 import ProposedChallenge from "./AddChallenge/ProposedChallenge";
-import MyProposed from "./AddChallenge/MyProposed";
+// import MyProposed from "./AddChallenge/MyProposed";
+import ChallengeApproval from "./ChallengeApproval/ChallengeApproval";
+import NewChallengeForm from "./NewChallenge/NewChallengeForm"
+
 
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Home = lazy(() => import("./Home/Home"));
@@ -28,13 +31,20 @@ const ChallengePage = lazy(() => import("./OneChallenge/ChallengePage"));
 export default function Router() {
   const [darkTheme, setDarkTheme] = useState(false);
   const [logged, setLogged] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
   const [challenges, setChallenges] = useState([]);
   const [filteredLabels, setFilteredLabels] = useState([]);
 
   useEffect(() => {
     if (logged) {
+
       const previousTheme = localStorage.getItem("darkMode"); //get previous selected theme
+      if(Cookies.get("isAdmin") === 'admin'){
+        console.log('I AM ADMIN NOW YAY')
+        setIsAdmin(true);
+      }
+
       if (previousTheme === "false") {
         setDarkTheme(false);
       } else if (previousTheme === "true") {
@@ -125,14 +135,21 @@ export default function Router() {
                         <Route exact path="/user_info">
                           <UserInfo darkMode={darkTheme} />
                         </Route>
-                        <Route exact path="/myproposed">
-                          <AddChallengeNavbar />
-                          <MyProposed />
+                        <Route exact path="/my-proposed">
+                          {/* <AddChallengeNavbar /> */}
+                          <NewChallengeForm/>
+                          {/* <MyProposed /> */}
                         </Route>
                         <Route exact path="/allproposed">
-                          <AddChallengeNavbar />
-                          <AllProposed />
+                          {/* <AddChallengeNavbar /> */}
+                          {/* <AllProposed /> */}
                         </Route>
+                        {isAdmin&&
+                          <Route exact path="/challenge-approval">
+                            {/* <h1 style={{marginTop:'300px'}}>here you will approve of pending challenge additions</h1> */}
+                            <ChallengeApproval/>
+                          </Route>
+                        }
                         <Route exact path="/proposedchallenge/:challengeId">
                           <AddChallengeNavbar />
                           <ProposedChallenge />

@@ -32,13 +32,14 @@ const generateAlert = (title, message) => (
 );
 
 export default function NewChallengeForm() {
-  const [optionsArray, setOptionsArray] = useState([]);
+  const [optionsTypes, setOptionstypes] = useState([]);
+  const [labels, setLabels] = useState([]);
   const [repoName, setRepoName] = useState('');
   const [repoLink, setRepoLink] = useState('');
   const [repoBoiler, setRepoBoiler] = useState('');
   const [repoDescription, setRepoDescription] = useState('');
   const [repoType, setRepoType] = useState('');
-  const [repoLabels, setRepoLabels] = useState([]);
+  const [chooseLabels, setChooseLabels] = useState([]);
   const [file, setFile] = useState({});
   const [badInput, setBadInput] = useState([]);
   const history = useHistory();
@@ -46,13 +47,16 @@ export default function NewChallengeForm() {
   /* pull challenge's type options from .github/workflows folder */
   const openOptions = async () => {
     const { data: types } = await network.get('/api/v1/types');
-    setOptionsArray(
+    setOptionstypes(
       types.map((type) => (
         <MenuItem key={type} value={type}>
           {type}
         </MenuItem>
       )),
     );
+    const { data: labels } = await network.get('/api/v1/labels');
+    // setOptionsLabels()
+    console.log(labels);
   };
 
   useEffect(() => {
@@ -167,9 +171,9 @@ export default function NewChallengeForm() {
           challengeId: postedRepo.id,
           img: file.result,
         });
-        if (repoLabels.length > 0) {
+        if (chooseLabels.length > 0) {
           await network.post('/api/v1/labels', {
-            labels: repoLabels,
+            labels: labels,
             challengeId: postedRepo.id,
           });
         }
@@ -232,7 +236,7 @@ export default function NewChallengeForm() {
     setRepoType('');
     setFile({});
     setBadInput([]);
-    setRepoLabels([]);
+    setChooseLabels([]);
   };
 
   /* material ui styling */
@@ -298,7 +302,11 @@ export default function NewChallengeForm() {
         <AddImg file={file} handleChange={handleFile} />
         <br />
         <div className="newChallengeFormFeild">
-          <ChooseLabels submitFilter={setRepoLabels} />
+          <ChooseLabels
+            labels={labels}
+            setLabels={setLabels}
+            setChooseLabels={setChooseLabels}
+            chooseLabels={chooseLabels} />
         </div>
         <FormControl className={classes.formControl}>
           <InputLabel id="Challenge type" style={textFieldStyle}>
@@ -311,7 +319,7 @@ export default function NewChallengeForm() {
             value={repoType}
             onChange={(event) => setRepoType(event.target.value)}
           >
-            {optionsArray}
+            {optionsTypes}
           </Select>
         </FormControl>
         <br />
