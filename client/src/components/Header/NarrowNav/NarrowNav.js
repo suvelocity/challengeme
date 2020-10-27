@@ -118,7 +118,7 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
                 chooseLabels={chooseLabels}
                 setChooseLabels={setChooseLabels}
                 darkMode={darkMode}
-                submitFilter={setLabels}
+                setLabels={setLabels}
               />
             ) : null}
           </div>

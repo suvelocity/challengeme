@@ -19,6 +19,7 @@ router.get("/", async (req, res) => {
         name: {
           [Op.like]: `%${name}%`,
         },
+        state: 'approved',
       },
       include: [
         {
@@ -168,7 +169,15 @@ router.post("/", async (req, res) => {
     if (repoExists) {
       return res.status(409).json({ message: "Repo is already in the system" });
     }
-    const newChallenge = await Challenge.create(req.body);
+    const newChallengeObj = {
+      name: req.body.name,
+      description: req.body.description,
+      type: req.body.type,
+      repositoryName: req.body.repositoryName,
+      boilerPlate: req.body.boilerPlate,
+      authorId: req.user.userId
+    }
+    const newChallenge = await Challenge.create(newChallengeObj);
     res.json(newChallenge);
   } catch (err) {
     console.error(error.message);
@@ -264,7 +273,7 @@ router.post("/:challengeId/apply", async (req, res) => {
 });
 
 //============================== Admin Routes ======================================
-router.get("/pending-challenges", async (req, res) => {
+router.get("/pending-challenges", checkAdmin, async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
       where: {
@@ -292,101 +301,22 @@ router.get("/pending-challenges", async (req, res) => {
   }
 });
 
-router.get('/all-pending-challenges', async (req, res) => {
-  try {
-    const name = req.query.name || "";
-    const labels = req.query.labels || [];
-
-    const allChallenges = await Challenge.findAll({
-      where: {
-        name: {
-          [Op.like]: `%${name}%`,
-        },
-        state: 'pending'
-      },
-      include: [
-        {
-          model: User,
-          as: "Author",
-          attributes: ["userName"],
-        },
-        {
-          model: Label,
-          attributes: ["name", "id"],
-          through: {
-            attributes: [],
-          },
-        },
-      ],
-    });
-
-    const allChallengesId = allChallenges.map((challenge) => challenge.id);
-
-    const challengeSubmittions = await Submission.findAll({
-      where: {
-        challengeId: allChallengesId,
-      },
-      attributes: [
-        [Sequelize.fn("COUNT", Sequelize.col("id")), "submissionsCount"],
-        "challengeId",
-      ],
-      group: ["challengeId"],
-    });
-
-    const reviewsAvg = await Review.findAll({
-      where: {
-        challengeId: allChallengesId,
-      },
-      attributes: [
-        [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRaiting"],
-        "challengeId",
-      ],
-      group: ["challengeId"],
-    });
-
-    const allChallengesWithReviews = allChallenges.map((challenge, index) => {
-      reviewsAvg.forEach((review) => {
-        if (review.dataValues.challengeId === challenge.dataValues.id) {
-          challenge.dataValues.averageRaiting =
-            review.dataValues.averageRaiting;
-        }
-      });
-
-      if (!challenge.dataValues.averageRaiting) {
-        challenge.dataValues.averageRaiting = null;
-      }
-
-      challengeSubmittions.forEach((countSubmissions) => {
-        if (
-          countSubmissions.dataValues.challengeId === challenge.dataValues.id
-        ) {
-          challenge.dataValues.submissionsCount =
-            countSubmissions.dataValues.submissionsCount;
-        }
-      });
-
-      if (!challenge.dataValues.submissionsCount) {
-        challenge.dataValues.submissionsCount = 0;
-      }
-      return challenge;
-    });
-
-    res.json(allChallengesWithReviews);
-  } catch (error) {
-    console.error(error.message);
-    res.status(400).json({ message: "can't get the challenges" });
-  }
-})
-
 router.patch("/state-update/:challengeId", checkAdmin, async (req, res) => {
   try {
-    const { id } = req.params;
-    const { state } = req.body;
-    const updatedChallenge = await Challenge.update(
-      { state: state },
-      { where: { id: id } }
+    const { challengeId } = req.params;
+    const state = req.body.state;
+    console.log(req.body);
+    const updatedChallenge = await Challenge.update({
+      state: state
+    },
+      {
+        where: {
+          id: challengeId
+        },
+      },
     );
-    const status = updatedChallenge ? "Success" : "Fail";
+    console.log(updatedChallenge);
+    const status = updatedChallenge[0] ? "Success" : "Fail";
     res.json(status);
   } catch (err) {
     console.error(error.message);
@@ -394,12 +324,11 @@ router.patch("/state-update/:challengeId", checkAdmin, async (req, res) => {
   }
 });
 
-
 //============================== ALLWAYS LAST ROUTE ! ======================================
 router.get("/:challengeId", async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
-      where: { id: req.params.challengeId },
+      where: { id: req.params.challengeId, state: 'approved', },
       include: [
         {
           model: Label,
@@ -448,6 +377,5 @@ router.get("/:challengeId", async (req, res) => {
   }
 });
 //============================== ALLWAYS LAST ROUTE ! ======================================
-
 
 module.exports = router;

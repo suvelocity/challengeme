@@ -1,11 +1,7 @@
 const { Router } = require("express");
 const checkToken = require("../../middleware/checkToken");
-const helmet = require("helmet");
 
 const router = Router();
-
-router.use(require("../../middleware/morgan"));
-router.use(helmet());
 
 router.use("/auth", require("./auth"));
 

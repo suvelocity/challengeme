@@ -7,7 +7,7 @@ const ChooseLabels = ({
   labels,
   chooseLabels,
   setChooseLabels,
-  submitFilter,
+  setLabels,
   darkMode,
 }) => {
   useEffect(
@@ -27,7 +27,7 @@ const ChooseLabels = ({
   );
 
   const selectionChange = (choosens) => {
-    submitFilter(choosens);
+    setLabels(choosens);
   };
 
   const customStyles = {
