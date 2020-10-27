@@ -1,6 +1,7 @@
 const { User } = require("../models");
 
 module.exports = function checkAdmin(req, res, next) {
+  console.error(req.user);
   User.findOne({
     where: { userName: req.user.userName },
   }).then((user) => {
