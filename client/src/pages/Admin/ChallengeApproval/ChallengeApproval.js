@@ -2,19 +2,29 @@ import React, { useEffect, useState } from 'react';
 import "./ChallengeApproval.css";
 import network from '../../../services/network';
 import { Link } from "react-router-dom";
+import Loading from "../../../components/Loading/Loading";
 
 const ChallengeApproval = () => {
     const [challenges, setChallenges] = useState();
+    const [challengesStates, setChallengesStates] = useState([]);
     const fetchSubmissions = async () => {
         const { data } = await network.get(`/api/v1/challenges/pending-challenges`);
         setChallenges(data);
+        setChallengesStates(data.map((challenge) => {
+            return challenge.state
+        }))
     }
     useEffect(() => {
         fetchSubmissions();
     }, [])
 
-    const changeChallengeState = async (event, challengeId) => {
+console.log(challengesStates);
+
+    const changeChallengeState = async (event, challengeId, index) => {
         const newState = event.target.innerText === 'Approve' ? 'approved' : 'denied';
+        const cloneStateArray = [...challengesStates]
+        cloneStateArray[index] = newState
+        setChallengesStates(cloneStateArray)
         const { data } = await network.patch(`
         /api/v1/challenges/state-update/${challengeId}
         `, { state: newState });
@@ -27,7 +37,7 @@ const ChallengeApproval = () => {
             <Link to='/admin' >
                 admin router
             </Link>
-            {challenges ? challenges.map((challenge) => {
+            {challenges ? challenges.map((challenge, index) => {
                 return (
                     <div key={challenge.name + challenge.id} >
                         <h1>Name: {challenge.name}</h1>
@@ -40,19 +50,19 @@ const ChallengeApproval = () => {
                         <div>Boiler Plate: {challenge.boilerPlate}</div>
                         <div>Repository Name: {challenge.repositoryName}</div>
                         <div>Description: {challenge.description}</div>
-                        <div>State: {challenge.state}</div>
+                        <div>State: {challengesStates[index]}</div>
                         <div>Type: {challenge.type}</div>
                         <div>Created At: {challenge.createdAt}</div>
                         <div>Updated At: {challenge.updatedAt}</div>
-                        <button onClick={(event) => changeChallengeState(event, challenge.id)} >
+                        <button onClick={(event) => changeChallengeState(event, challenge.id, index)} >
                             Approve
                         </button>
-                        <button onClick={(event) => changeChallengeState(event, challenge.id)}>
+                        <button onClick={(event) => changeChallengeState(event, challenge.id, index)}>
                             Denie
                         </button>
                     </div>
                 )
-            }) : <h1>Not Found</h1>}
+            }) : <Loading />}
         </div>
     );
 };
