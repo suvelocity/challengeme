@@ -15,7 +15,6 @@ import DarkModeToggle from "react-dark-mode-toggle";
 import Search from "../Search/Search";
 import { Logged } from "../../../context/LoggedInContext";
 import FilteredLabels from "../../../context/FilteredLabelsContext";
-
 import network from "../../../services/network";
 import ChooseLabels from "../../Choosers/ChooseLabels";
 import useStyles from "./WideNavStyle";
@@ -166,7 +165,7 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
           onClose={handleClose}
           className={classes.menu}
         >
-          <Link to="/user_info" className="link-rout">
+          <Link to="/profile" className="link-rout">
             <Button
               onClick={() => setAnchorEl(null)}
               className={classes.infoButton}
@@ -174,10 +173,10 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
               variant="contained"
               color="default"
             >
-              info
+              Profile
             </Button>
           </Link>
-          <Link to="/my-proposed" className="link-rout">
+          <Link to="/addnewchallenge" className="link-rout">
             <Button
               onClick={() => setAnchorEl(null)}
               className={classes.infoButton}
@@ -185,7 +184,7 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
               variant="contained"
               color="default"
             >
-              Add Challenge
+              Add New Challenge
             </Button>
           </Link>
           {isAdmin &&
@@ -197,7 +196,7 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
               variant="contained"
               color="default"
             >
-              Approve Challenges
+              Admin Area
             </Button>
           </Link>
           }

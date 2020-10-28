@@ -4,6 +4,9 @@ const axios = require("axios");
 const { Sequelize, Op } = require("sequelize");
 const jwt = require("jsonwebtoken");
 const checkAdmin = require("../../middleware/checkAdmin");
+const {
+  newChallengeValidation
+} = require('../../helpers/validator');
 
 const router = Router();
 
@@ -176,6 +179,11 @@ router.post("/", async (req, res) => {
       repositoryName: req.body.repositoryName,
       boilerPlate: req.body.boilerPlate,
       authorId: req.user.userId
+    }
+    const { error } = newChallengeValidation(newChallengeObj)
+    if (error) {
+      console.error(error.message);
+      return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const newChallenge = await Challenge.create(newChallengeObj);
     res.json(newChallenge);

@@ -188,21 +188,21 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
             </ListItem>
           </Link>
           <Divider style={dividerColor} />
-          <Link to="/user_info" className="link-rout">
+          <Link to="/profile" className="link-rout">
             <ListItem button onClick={handleDrawerClose} style={letterColor}>
               <ListItemIcon>
                 <InfoIcon style={letterColor} />
               </ListItemIcon>
-              <ListItemText primary="Info" />
+              <ListItemText primary="Profile" />
             </ListItem>
           </Link>
           <Divider style={dividerColor} />
-          <Link to="/my-proposed" className="link-rout">
+          <Link to="/addnewchallenge" className="link-rout">
             <ListItem button onClick={handleDrawerClose} style={letterColor}>
               <ListItemIcon>
                 <InfoIcon style={letterColor} />
               </ListItemIcon>
-              <ListItemText primary="Add Challenge" />
+              <ListItemText primary="Add New Challenge" />
             </ListItem>
           </Link>
           {isAdmin &&
@@ -213,7 +213,7 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
               <ListItemIcon>
                 <InfoIcon style={letterColor} />
               </ListItemIcon>
-              <ListItemText primary="Approve Challenges" />
+              <ListItemText primary="Admin Area" />
             </ListItem>
           </Link>
           </>
