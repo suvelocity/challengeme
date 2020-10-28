@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import network from '../../services/network';
+import network from '../../../services/network';
 import './UserInfo.css';
 
 const useStyles = makeStyles(() => ({

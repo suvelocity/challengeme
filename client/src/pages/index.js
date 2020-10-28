@@ -15,15 +15,13 @@ import Header from "../components/Header/Header";
 import ErrorBoundry from "../components/ErrorBoundry";
 import Loading from "../components/Loading/Loading";
 import "../index.css";
-import AddChallengeNavbar from "./AddChallenge/AddChallengeNavbar";
-import ProposedChallenge from "./AddChallenge/ProposedChallenge";
 import NewChallengeForm from "./NewChallenge/NewChallengeForm"
 import Admin from "./Admin";
 
 
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Home = lazy(() => import("./Home/Home"));
-const UserInfo = lazy(() => import("./UserInfo/UserInfo"));
+const UserInfo = lazy(() => import("./UserProfile/PersonalDetails/UserInfo"));
 const ChallengePage = lazy(() => import("./OneChallenge/ChallengePage"));
 
 export default function Router() {
@@ -143,10 +141,6 @@ export default function Router() {
                               <Admin />
                             </Route>
                           }
-                          <Route exact path="/proposedchallenge/:challengeId">
-                            <AddChallengeNavbar />
-                            <ProposedChallenge />
-                          </Route>
                           <Route exact path="/">
                             <Home />
                           </Route>

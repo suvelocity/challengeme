@@ -10,7 +10,16 @@ import SubmissionsByUsers from './UsersStatus/SubmissionsByUsers';
 import AdminLanding from './AdminLanding';
 const NotFound = lazy(() => import("../../pages/NotFound"));
 
-const index = () => {
+function Index() {
+
+    const checkAdminPerimsions = async () => {
+        alert('admin area')
+    }
+
+    useEffect(() => {
+        checkAdminPerimsions()
+    }, [])
+
     return (
         <div  >
             <Suspense fallback={<Loading />}>
@@ -38,4 +47,4 @@ const index = () => {
     );
 };
 
-export default index;
+export default Index;

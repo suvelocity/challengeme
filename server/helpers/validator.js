@@ -6,8 +6,7 @@ const registerValidation = (data) => {
   const schema = Joi.object({
     firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
     lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
-    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
-      .required(),
+    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
     email: Joi.string().min(6).email().required(),
     country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
     city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
@@ -30,6 +29,19 @@ const loginValidation = (data) => {
       .required(),
     password: Joi.string().min(8).required(),
     rememberMe: Joi.boolean().required(),
+  });
+
+  return schema.validate(data);
+};
+
+const newChallengeValidation = (data) => {
+  const schema = Joi.object({
+    name:  Joi.string().min(1).regex(/^(\s{1,})$/).regex(/^.*([\u0590-\u05FF]{1,}).*$/).required(),
+    description: Joi.string().min(1).max(120).regex(/^(\s{1,})$/).regex(/^.*([\u0590-\u05FF]{1,}).*$/).required(),
+    type: Joi.string().valid('client-only', 'fullstack-mysql','fullstack','server-mysql','server-only').required(),
+    repositoryName: req.body.repositoryName,
+    boilerPlate: req.body.boilerPlate,
+    authorId: req.user.userId
   });
 
   return schema.validate(data);
