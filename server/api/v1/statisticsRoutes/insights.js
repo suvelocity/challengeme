@@ -3,7 +3,7 @@ const sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
 const router = Router();
-const { Submission, Challenge, Review } = require('../../../models');
+const { Submission, Challenge, Review,User } = require('../../../models');
 
 // returns the 5 challenges with most submissions
 router.get('/top-challenges', async (req, res) => {
@@ -129,13 +129,24 @@ router.get('/challenges-sumbissions', async (req, res) => {
       },
       include: {
         model: Challenge,
-        attributes: ['name'],
+        attributes: ['id','name'],
       },
       group: ['challenge_id'],
       order: [[sequelize.fn('COUNT', sequelize.col('challenge_id')), 'DESC']],
     });
 
-    res.json(topChallenges);
+    const users = await Challenge.findAll({
+      include: {
+        model: Submission,
+        attributes: ['userId','createdAt','state'],
+        include:{
+          model: User,
+          attributes: ['userName'],
+        }
+      },
+    });
+
+    res.json([topChallenges , users]);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -143,23 +154,16 @@ router.get('/challenges-sumbissions', async (req, res) => {
 
 router.get('/users-submissions', async (req, res) => {
   try {
-    const topUsers = await Submission.findAll({
-      // attributes: {
-      //   include: [
-      //     [sequelize.fn('COUNT', sequelize.col('user_id')), 'countSub'],
-      //   ],
-      // },
+    const topUsers = await User.findAll({
       include: {
-        model: User,
-        attributes: ['userName'],
-      },
-      where: { state: 'SUCCESS' },
-      group: ['user_id'],
-      order: [[sequelize.fn('COUNT', sequelize.col('user_id')), 'DESC']],
-      // limit: 5,
+        model: Submission,
+        where: { state: 'SUCCESS' },
+        include:{model: Challenge}
+      }
     });
     res.json(topUsers);
   } catch (err) {
+    console.error(err)
     res.status(400).send(err);
   }
 });

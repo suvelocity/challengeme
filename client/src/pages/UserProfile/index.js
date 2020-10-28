@@ -15,7 +15,7 @@ function Index() {
             <Suspense fallback={<Loading />}>
                 <ErrorBoundry>
                     <Switch>
-                        <Route exact path="/profile/mychallenges">
+                        <Route exact path="/profile/MyChallenges">
                             <MyChallenges />
                         </Route>
                         <Route exact path="/profile/info">

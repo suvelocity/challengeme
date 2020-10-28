@@ -9,13 +9,17 @@ const AdminLanding = () => {
             <Link to='/admin/SubmissionsByChallenges' >
                 SubmissionsByChallenges
             </Link>
-            <br/>
+            <br />
             <Link to='/admin/SubmissionsByUsers' >
                 SubmissionsByUsers
             </Link>
-            <br/>
-            <Link to='/admin/proposedChallenges' >
+            <br />
+            <Link to='/admin/ProposedChallenges' >
                 proposedChallenges
+            </Link>
+            <br />
+            <Link to='/admin/UsersControl' >
+                UsersControl
             </Link>
         </div>
     );

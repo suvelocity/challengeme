@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const checkToken = require("../../middleware/checkToken");
+const checkAdmin = require("../../middleware/checkAdmin");
 
 const router = Router();
 
@@ -14,6 +15,9 @@ router.use("/statistics", checkToken, require("./statisticsRoutes"));
 router.use("/types", checkToken, require("./types"));
 router.use("/labels", checkToken, require("./labels"));
 router.use("/reviews", checkToken, require("./reviews"));
+
+// Admin Route Super Pprotected
+router.use("/admin", checkToken, checkAdmin, require("./admin"));
 
 const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: "unknown endpoint" });
