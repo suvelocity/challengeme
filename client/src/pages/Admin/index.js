@@ -1,16 +1,27 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
-import Cookies from "js-cookie";
-import network from "../../services/network";
+import React, { useEffect, lazy, Suspense } from "react";
+import { Switch, Route } from "react-router-dom";
+// import Cookies from "js-cookie";
+// import network from "../../services/network";
 import ErrorBoundry from "../../components/ErrorBoundry";
-import ProposedChallenge from "./ChallengeApproval/ChallengeApproval";
 import Loading from "../../components/Loading/Loading";
-import SubmissionsByChallenges from './UsersStatus/SubmissionsByChallenges';
-import SubmissionsByUsers from './UsersStatus/SubmissionsByUsers';
-import AdminLanding from './AdminLanding';
+
+const SubmissionsByUsers = lazy(() => import("./UsersStatus/SubmissionsByUsers"));
+const SubmissionsByChallenges = lazy(() => import("./UsersStatus/SubmissionsByChallenges"));
+const AdminLanding = lazy(() => import("./AdminLanding"));
+const ProposedChallenge = lazy(() => import("./ChallengeApproval/ChallengeApproval"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
 
-const index = () => {
+
+function Index() {
+
+    const checkAdminPerimsions = async () => {
+        alert('admin area')
+    }
+
+    useEffect(() => {
+        checkAdminPerimsions()
+    }, [])
+
     return (
         <div  >
             <Suspense fallback={<Loading />}>
@@ -38,4 +49,4 @@ const index = () => {
     );
 };
 
-export default index;
+export default Index;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy, Suspense } from "react";
+import React, {  useEffect } from "react";
 import { Link } from "react-router-dom";
 import network from "../../../services/network";
 

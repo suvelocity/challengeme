@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
+import { Link } from "react-router-dom";
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import network from '../../services/network';
+import network from '../../../services/network';
 import './UserInfo.css';
 
 const useStyles = makeStyles(() => ({
@@ -78,6 +79,9 @@ function UserInfo({ darkMode }) {
   }, []);
   return userInfo.firstName ? (
     <div className="user-page">
+      <Link to='/profile' >
+        myprofile
+            </Link>
       <div className="user-info-container">
         <h1>User Info</h1>
         <TextField
@@ -140,8 +144,8 @@ function UserInfo({ darkMode }) {
       </div>
     </div>
   ) : (
-    <div />
-  );
+      <div />
+    );
 }
 
 export default UserInfo;

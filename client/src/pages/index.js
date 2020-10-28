@@ -15,15 +15,13 @@ import Header from "../components/Header/Header";
 import ErrorBoundry from "../components/ErrorBoundry";
 import Loading from "../components/Loading/Loading";
 import "../index.css";
-import AddChallengeNavbar from "./AddChallenge/AddChallengeNavbar";
-import ProposedChallenge from "./AddChallenge/ProposedChallenge";
 import NewChallengeForm from "./NewChallenge/NewChallengeForm"
+import UserProfile from "./UserProfile";
 import Admin from "./Admin";
 
 
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Home = lazy(() => import("./Home/Home"));
-const UserInfo = lazy(() => import("./UserInfo/UserInfo"));
 const ChallengePage = lazy(() => import("./OneChallenge/ChallengePage"));
 
 export default function Router() {
@@ -130,23 +128,17 @@ export default function Router() {
                           <Route exact path="/challenges/:id">
                             <ChallengePage darkMode={darkTheme} />
                           </Route>
-                          <Route exact path="/user_info">
-                            <UserInfo darkMode={darkTheme} />
+                          <Route path="/profile">
+                            <UserProfile darkMode={darkTheme} />
                           </Route>
-                          <Route exact path="/my-proposed">
+                          <Route exact path="/addnewchallenge">
                             <NewChallengeForm />
-                          </Route>
-                          <Route exact path="/allproposed">
                           </Route>
                           {isAdmin &&
                             <Route path="/admin">
                               <Admin />
                             </Route>
                           }
-                          <Route exact path="/proposedchallenge/:challengeId">
-                            <AddChallengeNavbar />
-                            <ProposedChallenge />
-                          </Route>
                           <Route exact path="/">
                             <Home />
                           </Route>
