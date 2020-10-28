@@ -16,11 +16,9 @@ import ErrorBoundry from "../components/ErrorBoundry";
 import Loading from "../components/Loading/Loading";
 import "../index.css";
 import AddChallengeNavbar from "./AddChallenge/AddChallengeNavbar";
-// import AllProposed from "./AddChallenge/AllProposed";
 import ProposedChallenge from "./AddChallenge/ProposedChallenge";
-// import MyProposed from "./AddChallenge/MyProposed";
-import ChallengeApproval from "./ChallengeApproval/ChallengeApproval";
 import NewChallengeForm from "./NewChallenge/NewChallengeForm"
+import Admin from "./Admin";
 
 
 const NotFound = lazy(() => import("../pages/NotFound"));
@@ -40,7 +38,7 @@ export default function Router() {
     if (logged) {
 
       const previousTheme = localStorage.getItem("darkMode"); //get previous selected theme
-      if(Cookies.get("isAdmin") === 'admin'){
+      if (Cookies.get("isAdmin") === 'admin') {
         console.log('I AM ADMIN NOW YAY')
         setIsAdmin(true);
       }
@@ -63,7 +61,7 @@ export default function Router() {
         );
         typeof challengesFromServer === "object" &&
           setChallenges(challengesFromServer);
-      } catch {}
+      } catch { }
     })();
   }, [logged]);
 
@@ -119,58 +117,53 @@ export default function Router() {
             </AnimatePresence>
           </Logged.Provider>
         ) : (
-          <Logged.Provider value={{ logged, setLogged }}>
-            <AllChallenges.Provider value={{ challenges }}>
-              <FilteredLabels.Provider
-                value={{ filteredLabels, setFilteredLabels }}
-              >
-                <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
-                <div className={darkTheme ? "dark" : "light"}>
-                  <Suspense fallback={<Loading darkMode={darkTheme} />}>
-                    <ErrorBoundry>
-                      <Switch>
-                        <Route exact path="/challenges/:id">
-                          <ChallengePage darkMode={darkTheme} />
-                        </Route>
-                        <Route exact path="/user_info">
-                          <UserInfo darkMode={darkTheme} />
-                        </Route>
-                        <Route exact path="/my-proposed">
-                          {/* <AddChallengeNavbar /> */}
-                          <NewChallengeForm/>
-                          {/* <MyProposed /> */}
-                        </Route>
-                        <Route exact path="/allproposed">
-                          {/* <AddChallengeNavbar /> */}
-                          {/* <AllProposed /> */}
-                        </Route>
-                        {isAdmin&&
-                          <Route exact path="/challenge-approval">
-                            {/* <h1 style={{marginTop:'300px'}}>here you will approve of pending challenge additions</h1> */}
-                            <ChallengeApproval/>
+            <Logged.Provider value={{ logged, setLogged }}>
+              <AllChallenges.Provider value={{ challenges }}>
+                <FilteredLabels.Provider
+                  value={{ filteredLabels, setFilteredLabels }}
+                >
+                  <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
+                  <div className={darkTheme ? "dark" : "light"}>
+                    <Suspense fallback={<Loading darkMode={darkTheme} />}>
+                      <ErrorBoundry>
+                        <Switch>
+                          <Route exact path="/challenges/:id">
+                            <ChallengePage darkMode={darkTheme} />
                           </Route>
-                        }
-                        <Route exact path="/proposedchallenge/:challengeId">
-                          <AddChallengeNavbar />
-                          <ProposedChallenge />
-                        </Route>
-                        <Route exact path="/">
-                          <Home />
-                        </Route>
-                        <Route path="*">
-                          <NotFound />
-                        </Route>
-                      </Switch>
-                    </ErrorBoundry>
-                  </Suspense>
-                </div>
-              </FilteredLabels.Provider>
-            </AllChallenges.Provider>
-          </Logged.Provider>
-        )
+                          <Route exact path="/user_info">
+                            <UserInfo darkMode={darkTheme} />
+                          </Route>
+                          <Route exact path="/my-proposed">
+                            <NewChallengeForm />
+                          </Route>
+                          <Route exact path="/allproposed">
+                          </Route>
+                          {isAdmin &&
+                            <Route path="/admin">
+                              <Admin />
+                            </Route>
+                          }
+                          <Route exact path="/proposedchallenge/:challengeId">
+                            <AddChallengeNavbar />
+                            <ProposedChallenge />
+                          </Route>
+                          <Route exact path="/">
+                            <Home />
+                          </Route>
+                          <Route path="*">
+                            <NotFound />
+                          </Route>
+                        </Switch>
+                      </ErrorBoundry>
+                    </Suspense>
+                  </div>
+                </FilteredLabels.Provider>
+              </AllChallenges.Provider>
+            </Logged.Provider>
+          )
       ) : (
-        <Loading firstLoading={true} />
-      )}
+          <Loading firstLoading={true} />
+        )}
     </BrowserRouter>
   );
 }

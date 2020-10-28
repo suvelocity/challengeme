@@ -9,7 +9,6 @@ import Avatar from "@material-ui/core/Avatar";
 import HomeIcon from "@material-ui/icons/Home";
 import "../Header.css";
 import DarkModeToggle from "react-dark-mode-toggle";
-
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import Drawer from "@material-ui/core/Drawer";
@@ -209,7 +208,7 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
           {isAdmin &&
           <>
           <Divider style={dividerColor} />
-          <Link to="/challenge-approval" className="link-rout">
+          <Link to="/admin" className="link-rout">
             <ListItem button onClick={handleDrawerClose} style={letterColor}>
               <ListItemIcon>
                 <InfoIcon style={letterColor} />

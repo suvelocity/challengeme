@@ -189,7 +189,7 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
             </Button>
           </Link>
           {isAdmin &&
-          <Link to="/challenge-approval" className="link-rout">
+          <Link to="/admin" className="link-rout">
             <Button
               onClick={() => setAnchorEl(null)}
               className={classes.infoButton}
