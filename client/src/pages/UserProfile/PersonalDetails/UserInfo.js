@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
+import mixpanel from 'mixpanel-browser';
 import { Link } from "react-router-dom";
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
@@ -67,15 +68,16 @@ function UserInfo({ darkMode }) {
   const classes = useStyles();
 
   useEffect(() => {
-    (async () => {
-      try {
-        const username = Cookies.get('userName');
-        const { data: info } = await network.get(`/api/v1/user_info/${username}`);
-        setUserInfo(info[0]);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
+    const username = Cookies.get('userName')
+    mixpanel.track("User On Personal Details Page", { "User": `${username}` })
+      (async () => {
+        try {;
+          const { data: info } = await network.get(`/api/v1/user_info/${username}`);
+          setUserInfo(info[0]);
+        } catch (error) {
+          console.error(error);
+        }
+      })();
   }, []);
   return userInfo.firstName ? (
     <div className="user-page">
