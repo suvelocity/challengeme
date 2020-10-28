@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import mixpanel from 'mixpanel-browser';
+import Cookies from 'js-cookie';
 import network from "../../../services/network";
 import "./MyChallenges.css";
 import Button from "@material-ui/core/Button";
@@ -15,8 +17,10 @@ const UserProfileLanding = () => {
         setAllMyChallenges(allMyChallengesFromServer);
     };
     useEffect(() => {
-        getMyChallenges();
-    }, []);
+        const username = Cookies.get('userName')
+        mixpanel.track("User On My Challenges Page", { "User": `${username}` })
+        getMyChallenges()
+    }, [])
 
     return (
         <div className="user-profile-my-challenges">

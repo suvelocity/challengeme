@@ -1,6 +1,7 @@
 import React, {
   useState, useEffect, useCallback, useContext,
 } from 'react';
+import mixpanel from 'mixpanel-browser';
 import { Button } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import { makeStyles } from '@material-ui/core/styles';
@@ -68,6 +69,12 @@ function ChallengePage({ darkMode }) {
   const [loadingReq, setLoadingReq] = useState(false);
 
   const filteredLabels = useContext(FilteredLabels);
+
+  useEffect(() => {
+    const user = Cookies.get('userName')
+    mixpanel.track(`User On Challenge Page`, { "User": `${user}`, "ChallengeId": `${id}` })
+    // eslint-disable-next-line
+  }, [])
 
   const getUpdated = useCallback((dateToFactor) => {
     const dateNow = Date.now();
@@ -315,6 +322,11 @@ function ChallengePage({ darkMode }) {
             <Button
               variant="contained"
               className={classes.getStartedButton}
+              onClick={() => {
+                const user = Cookies.get('userName');
+                mixpanel.track(`User Started Challenge`,
+                  { "User": `${user}`, "ChallengeId": `${id}` })
+              }}
               href={`https://github.com/${challenge.boilerPlate}`}
               target="_blank"
             >
@@ -329,10 +341,10 @@ function ChallengePage({ darkMode }) {
               {getSubmissionButton()}
             </div>
           ) : (
-            <div style={{ textAlign: 'center' }}>
-              <CircularProgress style={{ margin: '30px' }} />
-            </div>
-          )}
+              <div style={{ textAlign: 'center' }}>
+                <CircularProgress style={{ margin: '30px' }} />
+              </div>
+            )}
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
@@ -346,8 +358,8 @@ function ChallengePage({ darkMode }) {
       </div>
     </div>
   ) : (
-    <Loading darkMode={darkMode} />
-  );
+      <Loading darkMode={darkMode} />
+    );
 }
 
 export default ChallengePage;
