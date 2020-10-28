@@ -160,6 +160,34 @@ router.get("/:challengeId/submissions", async (req, res) => {
     res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
+
+router.get("/userChallenges", async (req, res) => {
+  try {
+    const allChallenges = await Challenge.findAll({
+      where: {
+        authorId: req.user.userId,
+      },
+      include: [
+        {
+          model: User,
+          as: "Author",
+          attributes: ["userName"],
+        },
+        {
+          model: Label,
+          attributes: ["name", "id"],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
+    res.json(allChallenges);
+  } catch (err) {
+    console.error(error.message);
+    res.status(400).json({ message: "Cannot process request" });
+  }
+});
 // router Post - new challenge
 router.post("/", async (req, res) => {
   try {

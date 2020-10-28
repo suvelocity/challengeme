@@ -68,6 +68,8 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
       Cookies.remove("accessToken");
       Cookies.remove("name");
       Cookies.remove("userId");
+      Cookies.remove("isAdmin");
+      Cookies.remove("userName");
       value.setLogged(false);
       location.push("/login");
     } catch (error) {

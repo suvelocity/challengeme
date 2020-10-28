@@ -116,7 +116,7 @@ export default function Router() {
           </Logged.Provider>
         ) : (
             <Logged.Provider value={{ logged, setLogged }}>
-              <AllChallenges.Provider value={{ challenges }}>
+              <AllChallenges.Provider value={{ challenges, setChallenges }}>
                 <FilteredLabels.Provider
                   value={{ filteredLabels, setFilteredLabels }}
                 >

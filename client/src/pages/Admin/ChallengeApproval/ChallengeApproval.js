@@ -1,12 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import "./ChallengeApproval.css";
 import network from '../../../services/network';
 import { Link } from "react-router-dom";
 import Loading from "../../../components/Loading/Loading";
+import AllChallenges from '../../../context/AllChallengesContext';
 
 const ChallengeApproval = () => {
     const [challenges, setChallenges] = useState();
     const [challengesStates, setChallengesStates] = useState([]);
+    const value = useContext(AllChallenges);
+
     const fetchSubmissions = async () => {
         const { data } = await network.get(`/api/v1/challenges/pending-challenges`);
         setChallenges(data);
@@ -14,21 +17,26 @@ const ChallengeApproval = () => {
             return challenge.state
         }))
     }
+
+    const refreshChallenges = async () => {
+        const { data: challengesFromServer } = await network.get('/api/v1/challenges')
+        value.setChallenges(challengesFromServer);
+    }
+
     useEffect(() => {
         fetchSubmissions();
+        return () => refreshChallenges()
+        // eslint-disable-next-line
     }, [])
-
-console.log(challengesStates);
 
     const changeChallengeState = async (event, challengeId, index) => {
         const newState = event.target.innerText === 'Approve' ? 'approved' : 'denied';
         const cloneStateArray = [...challengesStates]
         cloneStateArray[index] = newState
         setChallengesStates(cloneStateArray)
-        const { data } = await network.patch(`
+        await network.patch(`
         /api/v1/challenges/state-update/${challengeId}
         `, { state: newState });
-        console.log(data);
     }
 
 

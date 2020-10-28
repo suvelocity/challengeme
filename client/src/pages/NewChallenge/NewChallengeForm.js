@@ -54,9 +54,6 @@ export default function NewChallengeForm() {
         </MenuItem>
       )),
     );
-    const { data: labels } = await network.get('/api/v1/labels');
-    // setOptionsLabels()
-    console.log(labels);
   };
 
   useEffect(() => {

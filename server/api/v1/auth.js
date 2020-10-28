@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { User, RefreshToken } = require('../../models');
 const checkToken = require('../../middleware/checkToken');
+const checkAdmin = require('../../middleware/checkAdmin');
 const {
   loginValidation,
   registerValidation,
@@ -324,6 +325,10 @@ usersRouter.patch('/passwordupdate', async (req, res) => {
     console.error(error.message);
     res.status(400).json({ message: 'Cannot process request' });
   }
+});
+
+usersRouter.get('/validateAdmin', checkToken, checkAdmin, (req, res) => {
+  res.json({ admin: true });
 });
 
 async function userIsExist(userName) {
