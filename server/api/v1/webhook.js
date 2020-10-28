@@ -11,6 +11,7 @@ router.patch('/submission/:id', async (req, res) => {
     await submission.update({ state: success ? 'SUCCESS' : 'FAIL' });
     res.json(submission);
   } catch (error) {
+    console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
   }
 });
