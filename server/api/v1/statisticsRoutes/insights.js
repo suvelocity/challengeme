@@ -118,4 +118,50 @@ router.get('/challenges-by-reviews', async (req, res) => {
   }
 });
 
+//=======================================Admin Routes===============================
+router.get('/challenges-sumbissions', async (req, res) => {
+  try {
+    const topChallenges = await Submission.findAll({
+      attributes: {
+        include: [
+          [sequelize.fn('COUNT', sequelize.col('challenge_id')), 'countSub'],
+        ],
+      },
+      include: {
+        model: Challenge,
+        attributes: ['name'],
+      },
+      group: ['challenge_id'],
+      order: [[sequelize.fn('COUNT', sequelize.col('challenge_id')), 'DESC']],
+    });
+
+    res.json(topChallenges);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+router.get('/users-submissions', async (req, res) => {
+  try {
+    const topUsers = await Submission.findAll({
+      // attributes: {
+      //   include: [
+      //     [sequelize.fn('COUNT', sequelize.col('user_id')), 'countSub'],
+      //   ],
+      // },
+      include: {
+        model: User,
+        attributes: ['userName'],
+      },
+      where: { state: 'SUCCESS' },
+      group: ['user_id'],
+      order: [[sequelize.fn('COUNT', sequelize.col('user_id')), 'DESC']],
+      // limit: 5,
+    });
+    res.json(topUsers);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
 module.exports = router;
