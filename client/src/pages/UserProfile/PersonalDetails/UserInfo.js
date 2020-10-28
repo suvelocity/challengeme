@@ -74,16 +74,16 @@ function UserInfo({ darkMode }) {
   const classes = useStyles();
 
   useEffect(() => {
-    const username = Cookies.get('userName')
-    mixpanel.track("User On Personal Details Page", { "User": `${username}` })
-      (async () => {
-        try {
-          const { data: info } = await network.get(`/api/v1/user_info/${username}`);
-          setUserInfo(info[0]);
-        } catch (error) {
-          console.error(error);
-        }
-      })();
+    (async () => {
+      try {
+        const username = Cookies.get('userName')
+        mixpanel.track("User On Personal Details Page", { "User": `${username}` })
+        const { data: info } = await network.get(`/api/v1/user_info/${username}`);
+        setUserInfo(info[0]);
+      } catch (error) {
+        console.error(error);
+      }
+    })();
   }, []);
   return userInfo.firstName ? (
     <div className="user-page">

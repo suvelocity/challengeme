@@ -6,14 +6,15 @@
     display:flex;
     justify-content:center;
     align-items:center;
+    margin-top: 50px;
 }
 
 .user-info-container{
     background-color:white;
     width:50vw;
     /* margin-bottom: 10vh; */
-    margin: 130px 0px 40px 0px ;
-    min-height: 70vh;
+    margin: 20% 0px 40px 0px ;
+    /* min-height: 70vh; */
     height:auto;
     border-radius:3px;
     box-shadow:
