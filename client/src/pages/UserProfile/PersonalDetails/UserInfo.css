@@ -11,8 +11,10 @@
 .user-info-container{
     background-color:white;
     width:50vw;
-    margin-top: 10vh;
-    height: 70vh;
+    /* margin-bottom: 10vh; */
+    margin: 130px 0px 40px 0px ;
+    min-height: 70vh;
+    height:auto;
     border-radius:3px;
     box-shadow:
     0 2.8px 2.2px rgba(0, 0, 0, 0.034),
@@ -31,5 +33,12 @@
 
 .dark .user-info-container{
     background: rgb(60, 62, 65); 
+    color: white;
+}
+
+.dark .user-info-container label{
+    color: rgb(202, 202, 202);
+}
+.dark .user-info-container input{
     color: white;
 }
