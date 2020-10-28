@@ -6,6 +6,7 @@ const router = Router();
 
 router.use("/auth", require("./auth"));
 
+
 router.use("/webhook", checkToken, require("./webhook"));
 router.use("/challenges", checkToken, require("./challenges"));
 router.use("/user_info", checkToken, require("./userInfo"));
@@ -18,6 +19,7 @@ router.use("/reviews", checkToken, require("./reviews"));
 
 // Admin Route Super Pprotected
 router.use("/admin", checkToken, checkAdmin, require("./admin"));
+router.use("/git", checkToken, checkAdmin,require("./gitTokens"));
 
 const unknownEndpoint = (req, res) => {
   res.status(404).send({ error: "unknown endpoint" });
