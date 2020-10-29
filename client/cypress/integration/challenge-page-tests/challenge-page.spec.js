@@ -1,5 +1,5 @@
 const mockChallenge = require('../../fixtures/challengeFixtures/challenge1.json');
-const submissions = require('../../fixtures/challengeFixtures/submissions.json')
+const submissions = require('../../fixtures/challengeFixtures/submissions.json');
 const reviews = require('../../fixtures/challengeFixtures/review1.json');
 const submitModal = {
     header: 'Submit Your Solution',
@@ -9,25 +9,28 @@ const submitModal = {
       title: 'Title',
       message: 'Message',
     }
-}
+};
 
-describe('challenge page - Test suite' , () => {
+describe('Single Challenge Page - Test suite' , () => {
   
   beforeEach(() => {
+
     cy.login();
 
     cy.server();
     cy.route(`/api/v1/challenges`, 'fixture:challengeFixtures/challenges.json');
     cy.route(`/api/v1/challenges/1`, mockChallenge);
-    cy.route(`POST`, `/api/v1/auth/token`, {'message': 'token updated'})
     cy.route(`/api/v1/reviews/byChallenge/1`, reviews);
+    cy.route(`POST`, `/api/v1/auth/token`, {'message': 'token updated'})
     cy.route('POST', `/api/v1/challenges/1/apply`, 'Success');
+    cy.route(`/api/v1/challenges/1/shaharEliyahu/submission`, '')
     
    
     cy.visit('http://localhost:3000/challenges/1');
   });
 
   it('The page includes all the mandatory data about the challenge', () => {
+
     cy.get('[cy-test="challenge-name"]').contains(mockChallenge.name);
     cy.get('[cy-test="challenge-description"]').contains(mockChallenge.description);
     cy.get('[cy-test="challenge-createdBy"]').contains(mockChallenge.Author.userName);
@@ -42,7 +45,8 @@ describe('challenge page - Test suite' , () => {
         cy.get(`[cy-test="challenge-label-${label.name}"]`).contains(label.name);
       });
 
-      cy.get(`[cy-test="challenge-boilerPlate"]`).click()
+      cy.get(`[cy-test="challenge-boilerPlate"]`).should('have.attr', 'target', '_blank');
+
     });
   
   it('There is a submmit button, that opens a modal', () => {
@@ -89,7 +93,7 @@ describe('challenge page - Test suite' , () => {
   
   it('Sends valid answer form', () => {
 
-    cy.route(`**/api/v1/challenges/1/shaharEliyahu/submission`, '');
+    cy.route(`/api/v1/challenges/1/shaharEliyahu/submission`, '');
     
     cy.get('[cy-test="submit-button"]').click()
 
@@ -109,7 +113,6 @@ describe('challenge page - Test suite' , () => {
     cy.get('[cy-test="submit-review-button"]').click();
     cy.get('[cy-test="submit-review-button"]').should('not.exist');
 
-
   });
 
   it('Submissions handler', () => {
@@ -127,7 +130,6 @@ describe('challenge page - Test suite' , () => {
       cy.get('[cy-test="fail-submission"]').contains(submissions[1].updatedAt.split('T')[0]);
       cy.get('[cy-test="submit-again-button"]').contains('Submit again');
     })
-    
     
     cy.route(`/api/v1/challenges/1/shaharEliyahu/submission`, submissions[2]).as('success');
 
@@ -150,6 +152,6 @@ describe('challenge page - Test suite' , () => {
       cy.get('[cy-test="review-rating"]')
     });
   });
-
+  
 });
 
