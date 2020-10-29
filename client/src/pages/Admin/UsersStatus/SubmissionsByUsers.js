@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import network from "../../../services/network";
-import Loading from "../../../components/Loading/Loading";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -17,137 +15,135 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Loading from '../../../components/Loading/Loading';
+import network from '../../../services/network';
 
 const StyledTableCell = withStyles((theme) => ({
-    head: {
-        backgroundColor: theme.palette.common.black,
-        color: theme.palette.common.white,
-    },
-    body: {
-        fontSize: 14,
-    },
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
-    root: {
-        '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.action.hover,
-        },
+  root: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
     },
+  },
 }))(TableRow);
 
-
 const useRowStyles = makeStyles({
-    root: {
-        '& > *': {
-            borderBottom: 'unset',
-        },
+  root: {
+    '& > *': {
+      borderBottom: 'unset',
     },
+  },
 });
 
 function Row(props) {
-    const { row } = props;
-    const [open, setOpen] = React.useState(false);
-    const classes = useRowStyles();
-    return (
-        <React.Fragment>
-            <StyledTableRow className={classes.root}>
-                <StyledTableCell>
-                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                    </IconButton>
-                </StyledTableCell>
-                <StyledTableCell component="th" scope="row">
-                    {row.userName}
-                </StyledTableCell>
-                <StyledTableCell align="left">{row.firstName}</StyledTableCell>
-                <StyledTableCell align="left">{row.lastName}</StyledTableCell>
-                <StyledTableCell align="left">{row.phoneNumber}</StyledTableCell>
-                <StyledTableCell align="left">{row.email}</StyledTableCell>
-            </StyledTableRow>
-            <StyledTableRow>
-                <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box margin={1}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                More Details
+  const { row } = props;
+  const [open, setOpen] = React.useState(false);
+  const classes = useRowStyles();
+  return (
+    <React.Fragment>
+      <StyledTableRow className={classes.root}>
+        <StyledTableCell>
+          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </StyledTableCell>
+        <StyledTableCell component="th" scope="row">
+          {row.userName}
+        </StyledTableCell>
+        <StyledTableCell align="left">{row.firstName}</StyledTableCell>
+        <StyledTableCell align="left">{row.lastName}</StyledTableCell>
+        <StyledTableCell align="left">{row.phoneNumber}</StyledTableCell>
+        <StyledTableCell align="left">{row.email}</StyledTableCell>
+      </StyledTableRow>
+      <StyledTableRow>
+        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box margin={1}>
+              <Typography variant="h6" gutterBottom component="div">
+                More Details
               </Typography>
-                            <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                    <TableRow>
-                                        <StyledTableCell >Challenge Name</StyledTableCell>
-                                        <StyledTableCell align="left">Status</StyledTableCell>
-                                        <StyledTableCell align="left">Created At</StyledTableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {row.Submissions && row.Submissions.map((submission) => {
-                                        return (
-                                            <StyledTableRow key={submission.Challenge.name}>
-                                                <StyledTableCell component="th" scope="row">{submission.Challenge.name}</StyledTableCell>
-                                                <StyledTableCell color='secondary' >
-                                                    <div style={submission.state === 'SUCCESS' ?
-                                                        { color: 'green' }
-                                                        :
-                                                        submission.state === 'FAIL' ? { color: 'red' }
-                                                            :
-                                                            { color: 'black' }}>
-                                                        {submission.state}
-                                                    </div>
-                                                </StyledTableCell>
-                                                <StyledTableCell align="left">{new Date(submission.createdAt).toString().substring(0, 24)}</StyledTableCell>
-                                            </StyledTableRow>
-                                        )
-                                    })}
-                                </TableBody>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </StyledTableCell>
-            </StyledTableRow>
-        </React.Fragment>
-    );
+              <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell>Challenge Name</StyledTableCell>
+                    <StyledTableCell align="left">Status</StyledTableCell>
+                    <StyledTableCell align="left">Created At</StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {row.Submissions && row.Submissions.map((submission) => (
+                    <StyledTableRow key={submission.Challenge.name}>
+                      <StyledTableCell component="th" scope="row">{submission.Challenge.name}</StyledTableCell>
+                      <StyledTableCell color="secondary">
+                        <div style={submission.state === 'SUCCESS'
+                          ? { color: 'green' }
+                          : submission.state === 'FAIL' ? { color: 'red' }
+                            : { color: 'black' }}
+                        >
+                          {submission.state}
+                        </div>
+                      </StyledTableCell>
+                      <StyledTableCell align="left">{new Date(submission.createdAt).toString().substring(0, 24)}</StyledTableCell>
+                    </StyledTableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
+          </Collapse>
+        </StyledTableCell>
+      </StyledTableRow>
+    </React.Fragment>
+  );
 }
 
 const SubmissionsByUsers = () => {
-    const [data, setData] = useState([])
+  const [allUsersSubmissions, setAllUsersSubmissions] = useState([]);
 
-    async function fetchData() {
-        const { data } = await network.get('/api/v1/statistics/insights/users-submissions')
-        setData(data)
-    }
+  async function getAllUsersSubmissions() {
+    const { data: allUsersSubmissionsFromServer } = await network.get('/api/v1/statistics/insights/users-submissions');
+    setAllUsersSubmissions(allUsersSubmissionsFromServer);
+  }
 
-    useEffect(() => {
-        fetchData()
-    }, [])
+  useEffect(() => {
+    getAllUsersSubmissions();
+  }, []);
 
-    return (
-        <div style={{ paddingTop: '50px', textAlign: 'center' }} >
-            <h1>This is All The Submissions By Users Page</h1>
-            <Button variant="contained" color="secondary">
-                <Link to='/admin' ><h2>Admin Router</h2></Link>
-            </Button>
-            <TableContainer component={Paper}>
-                <Table aria-label="collapsible table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell />
-                            <StyledTableCell color='secondary' >User Name</StyledTableCell>
-                            <StyledTableCell align="left">First Name</StyledTableCell>
-                            <StyledTableCell align="left">Last Name</StyledTableCell>
-                            <StyledTableCell align="left">Phone Number</StyledTableCell>
-                            <StyledTableCell align="left">Email</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data.length > 0 ? data.map((user) => (
-                            <Row key={user.userName} color='secondary' row={user} />
-                        )) : <Loading />}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </div>
-    );
+  return (
+    <div style={{ paddingTop: '50px', textAlign: 'center' }}>
+      <h1>This is All The Submissions By Users Page</h1>
+      <Button variant="contained" color="secondary">
+        <Link to="/admin"><h2>Admin Router</h2></Link>
+      </Button>
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell />
+              <StyledTableCell color="secondary">User Name</StyledTableCell>
+              <StyledTableCell align="left">First Name</StyledTableCell>
+              <StyledTableCell align="left">Last Name</StyledTableCell>
+              <StyledTableCell align="left">Phone Number</StyledTableCell>
+              <StyledTableCell align="left">Email</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {allUsersSubmissions.length > 0 ? allUsersSubmissions.map((user) => (
+              <Row key={user.userName} color="secondary" row={user} />
+            )) : <Loading />}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
 };
 
 export default SubmissionsByUsers;
