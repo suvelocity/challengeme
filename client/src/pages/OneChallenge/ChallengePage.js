@@ -1,6 +1,7 @@
 import React, {
   useState, useEffect, useCallback, useContext,
 } from 'react';
+import mixpanel from 'mixpanel-browser';
 import { Button } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,7 +10,7 @@ import { useParams, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import './ChallengePage.css';
 import ReviewsTab from '../../components/InfoTable/Tabs/ReviewsTab/ReviewsTab';
-import SubmitModal from '../../components/SubmitModal/SubmitModal';
+import SubmitModal from '../../components/Modals/SubmitModal';
 import network from '../../services/network';
 import Loading from '../../components/Loading/Loading';
 import FilteredLabels from '../../context/FilteredLabelsContext';
@@ -56,6 +57,7 @@ function generateTime(date) {
 }
 
 function ChallengePage({ darkMode }) {
+  const classes = useStyles();
   const [submissions, setSubmissions] = useState();
   const [challenge, setChallenge] = useState(null);
   const { id } = useParams();
@@ -64,10 +66,15 @@ function ChallengePage({ darkMode }) {
   const [rating, setRating] = useState(0);
   const [date, setDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const classes = useStyles();
   const [loadingReq, setLoadingReq] = useState(false);
 
   const filteredLabels = useContext(FilteredLabels);
+
+  useEffect(() => {
+    const user = Cookies.get('userName');
+    mixpanel.track('User On Challenge Page', { User: `${user}`, ChallengeId: `${id}` });
+    // eslint-disable-next-line
+  }, []);
 
   const getUpdated = useCallback((dateToFactor) => {
     const dateNow = Date.now();
@@ -99,32 +106,40 @@ function ChallengePage({ darkMode }) {
 
   useEffect(() => {
     (async () => {
-      const { data: submission } = await network.get(
-        `/api/v1/challenges/${id}/${Cookies.get('userName')}/submission`,
-      );
-      if (submission) {
-        setSubmissionStatus({
-          state: submission.state,
-          createdAt: submission.createdAt,
-        });
-      } else {
-        setSubmissionStatus(null);
+      try {
+        const { data: submission } = await network.get(
+          `/api/v1/challenges/${id}/${Cookies.get('userName')}/submission`,
+        );
+        if (submission) {
+          setSubmissionStatus({
+            state: submission.state,
+            createdAt: submission.createdAt,
+          });
+        } else {
+          setSubmissionStatus(null);
+        }
+        setLoadingReq(true);
+      } catch (error) {
+        console.error(error);
       }
-      setLoadingReq(true);
     })();
     const getSubmissionInterval = setInterval(async () => {
-      const { data: submission } = await network.get(
-        `/api/v1/challenges/${id}/${Cookies.get('userName')}/submission`,
-      );
-      if (submission) {
-        setSubmissionStatus({
-          state: submission.state,
-          createdAt: submission.createdAt,
-        });
-      } else {
-        setSubmissionStatus(null);
+      try {
+        const { data: submission } = await network.get(
+          `/api/v1/challenges/${id}/${Cookies.get('userName')}/submission`,
+        );
+        if (submission) {
+          setSubmissionStatus({
+            state: submission.state,
+            createdAt: submission.createdAt,
+          });
+        } else {
+          setSubmissionStatus(null);
+        }
+        setLoadingReq(true);
+      } catch (error) {
+        console.error(error);
       }
-      setLoadingReq(true);
     }, 5000);
     const setImg = async () => {
       try {
@@ -136,9 +151,7 @@ function ChallengePage({ darkMode }) {
     };
     const fetchChallenge = async () => {
       try {
-        const {
-          data: challengeFromServer,
-        } = await network.get(`/api/v1/challenges/${id}`);
+        const { data: challengeFromServer } = await network.get(`/api/v1/challenges/${id}`);
         setChallenge(challengeFromServer);
         setRating(
           challengeFromServer.averageRaiting
@@ -181,9 +194,11 @@ function ChallengePage({ darkMode }) {
           Submit
         </Button>
       );
-    } if (submissionStatus.state === 'PENDING') {
+    }
+    if (submissionStatus.state === 'PENDING') {
       return <CircularProgress style={{ marginBottom: '20px' }} />;
-    } if (submissionStatus.state === 'SUCCESS') {
+    }
+    if (submissionStatus.state === 'SUCCESS') {
       return (
         <Button
           className={classes.SubmitdButtonSuccess}
@@ -215,7 +230,8 @@ function ChallengePage({ darkMode }) {
           </p>
         </div>
       );
-    } if (submissionStatus.state === 'SUCCESS') {
+    }
+    if (submissionStatus.state === 'SUCCESS') {
       return (
         <div style={{ textAlign: 'center' }}>
           <p>
@@ -231,7 +247,8 @@ function ChallengePage({ darkMode }) {
           </p>
         </div>
       );
-    } if (submissionStatus.state === 'PENDING') {
+    }
+    if (submissionStatus.state === 'PENDING') {
       return (
         <div>
           <p>Your submission is being tested</p>
@@ -250,8 +267,7 @@ function ChallengePage({ darkMode }) {
           {' '}
           <br />
           {' '}
-          You can try to submit
-          again
+          You can try to submit again
         </p>
       </div>
     );
@@ -288,7 +304,6 @@ function ChallengePage({ darkMode }) {
             <div className="one-challenge-author-uploaded-updated">
               <div>
                 Submissions:
-                {' '}
                 {submissions}
               </div>
               <div className="one-challenge-author">
@@ -303,7 +318,6 @@ function ChallengePage({ darkMode }) {
               </div>
               <div className="one-challenge-updated-at">
                 Updated At:
-                {' '}
                 {date || ''}
               </div>
             </div>
@@ -315,6 +329,13 @@ function ChallengePage({ darkMode }) {
             <Button
               variant="contained"
               className={classes.getStartedButton}
+              onClick={() => {
+                const user = Cookies.get('userName');
+                mixpanel.track('User Started Challenge', {
+                  User: `${user}`,
+                  ChallengeId: `${id}`,
+                });
+              }}
               href={`https://github.com/${challenge.boilerPlate}`}
               target="_blank"
             >
@@ -329,10 +350,10 @@ function ChallengePage({ darkMode }) {
               {getSubmissionButton()}
             </div>
           ) : (
-            <div style={{ textAlign: 'center' }}>
-              <CircularProgress style={{ margin: '30px' }} />
-            </div>
-          )}
+              <div style={{ textAlign: 'center' }}>
+                <CircularProgress style={{ margin: '30px' }} />
+              </div>
+            )}
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
@@ -346,8 +367,8 @@ function ChallengePage({ darkMode }) {
       </div>
     </div>
   ) : (
-    <Loading darkMode={darkMode} />
-  );
+      <Loading darkMode={darkMode} />
+    );
 }
 
 export default ChallengePage;

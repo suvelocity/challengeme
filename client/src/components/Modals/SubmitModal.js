@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import mixpanel from 'mixpanel-browser';
 import { Modal, TextField, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Rating } from '@material-ui/lab';
 import { useForm } from 'react-hook-form';
 import network from '../../services/network';
 import { Alert, AlertTitle } from "@material-ui/lab";
+import Cookies from 'js-cookie';
 
 function getModalStyle() {
   return {
@@ -79,6 +81,14 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
           `/api/v1/challenges/${challengeParamId}/apply`,
           data
         );
+        const user = Cookies.get('userName')
+        mixpanel.track("User Submited Challenge",
+          {
+            "User": `${user}`,
+            "ChallengeId": `${challengeParamId}`,
+            "Solution Repository": `${data.repository}`,
+            "Rating": `${data.rating}`
+          })
       }
       catch (error) {
         console.error(error);

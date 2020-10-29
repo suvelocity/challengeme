@@ -17,12 +17,11 @@ import DarkModeToggle from 'react-dark-mode-toggle';
 import Search from '../Search/Search';
 import { Logged } from '../../../context/LoggedInContext';
 import FilteredLabels from '../../../context/FilteredLabelsContext';
-
 import network from '../../../services/network';
 import ChooseLabels from '../../Choosers/ChooseLabels';
 import useStyles from './WideNavStyle';
 
-export default function WideNav({ darkMode, setDarkMode }) {
+export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
   const filteredLabels = useContext(FilteredLabels);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -62,6 +61,8 @@ export default function WideNav({ darkMode, setDarkMode }) {
       Cookies.remove('accessToken');
       Cookies.remove('name');
       Cookies.remove('userId');
+      Cookies.remove('isAdmin');
+      Cookies.remove('userName');
       value.setLogged(false);
       location.push('/');
     } catch (error) {
@@ -107,7 +108,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
               chooseLabels={chooseLabels}
               setChooseLabels={setChooseLabels}
               darkMode={darkMode}
-              submitFilter={setLabels}
+              setLabels={setLabels}
             />
           ) : null}
         </div>
@@ -167,7 +168,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
           onClose={handleClose}
           className={classes.menu}
         >
-          <Link to="/user_info" className="link-rout">
+          <Link to="/profile" className="link-rout">
             <Button
               onClick={() => setAnchorEl(null)}
               className={classes.infoButton}
@@ -175,9 +176,34 @@ export default function WideNav({ darkMode, setDarkMode }) {
               variant="contained"
               color="default"
             >
-              info
+              Profile
             </Button>
           </Link>
+          <Link to="/addnewchallenge" className="link-rout">
+            <Button
+              onClick={() => setAnchorEl(null)}
+              className={classes.infoButton}
+              style={{ minWidth: 150 }}
+              variant="contained"
+              color="default"
+            >
+              Add New Challenge
+            </Button>
+          </Link>
+          {isAdmin
+          && (
+            <Link to="/admin" className="link-rout">
+              <Button
+                onClick={() => setAnchorEl(null)}
+                className={classes.infoButton}
+                style={{ minWidth: 150 }}
+                variant="contained"
+                color="default"
+              >
+                Admin Area
+              </Button>
+            </Link>
+          )}
           <Button
             className={classes.logOutButton}
             onClick={logOut}

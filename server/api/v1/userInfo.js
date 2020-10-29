@@ -20,7 +20,8 @@ router.get('/:userName', async (req, res) => {
       ],
     });
     res.json(user);
-  } catch {
+  } catch (error) {
+    console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
   }
 });

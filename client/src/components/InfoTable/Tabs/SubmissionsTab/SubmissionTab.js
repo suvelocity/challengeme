@@ -7,10 +7,14 @@ function SubmissionTab({ challengeId }) {
 
   useEffect(() => {
     const fetchSubmissions = async () => {
-      const { data: submissionsFromDb } = await network.get(
-        `/api/v1/challenges/${challengeId}/submissions`,
-      );
-      setSubmissions(submissionsFromDb);
+      try {
+        const { data: submissionsFromDb } = await network.get(
+          `/api/v1/challenges/${challengeId}/submissions`,
+        );
+        setSubmissions(submissionsFromDb);
+      } catch (error) {
+        console.error(error);
+      }
     };
     fetchSubmissions();
     const liveSubmissions = setInterval(fetchSubmissions, 7000);

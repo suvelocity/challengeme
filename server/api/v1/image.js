@@ -11,6 +11,7 @@ router.get('/', async (req, res) => {
     });
     res.json(image);
   } catch (error) {
+    console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
   }
 });
@@ -29,6 +30,7 @@ router.post('/', async (req, res) => {
       res.status(400).send('This challenge already have an image');
     }
   } catch (error) {
+    console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
   }
 });
