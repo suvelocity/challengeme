@@ -1,4 +1,3 @@
-const { reset } = require('nodemon');
 
 module.exports = [
 
