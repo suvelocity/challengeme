@@ -62,7 +62,7 @@ function Index() {
                         <Route exact path="/admin/SubmissionsByChallenges">
                             <SubmissionsByChallenges />
                         </Route>
-                        <Route exact path="/admin/ProposedChallenges">
+                        <Route exact path="/admin/ChallengesManagement">
                             <ProposedChallenge />
                         </Route>
                         <Route exact path="/admin/UsersControl">

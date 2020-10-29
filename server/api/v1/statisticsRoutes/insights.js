@@ -138,7 +138,7 @@ router.get('/challenges-sumbissions', async (req, res) => {
     const users = await Challenge.findAll({
       include: {
         model: Submission,
-        attributes: ['userId','createdAt','state'],
+        attributes: ['id', 'userId','createdAt','state'],
         include:{
           model: User,
           attributes: ['userName'],
@@ -155,9 +155,9 @@ router.get('/challenges-sumbissions', async (req, res) => {
 router.get('/users-submissions', async (req, res) => {
   try {
     const topUsers = await User.findAll({
+      attributes:['userName','phoneNumber','firstName','lastName','email'],
       include: {
         model: Submission,
-        where: { state: 'SUCCESS' },
         include:{model: Challenge}
       }
     });
