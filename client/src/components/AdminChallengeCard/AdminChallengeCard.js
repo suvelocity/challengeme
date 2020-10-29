@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Rating from '@material-ui/lab/Rating';
-import { Link } from 'react-router-dom';
 import network from '../../services/network';
 import './AdminChallengeCard.css';
-import Draggable from 'react-draggable';
 import Button from '@material-ui/core/Button';
 
 export default function AdminChallengeCard({

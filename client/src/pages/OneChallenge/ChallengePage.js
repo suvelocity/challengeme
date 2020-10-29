@@ -8,7 +8,7 @@ import { useParams, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import "./ChallengePage.css";
 import ReviewsTab from "../../components/InfoTable/Tabs/ReviewsTab/ReviewsTab";
-import SubmitModal from "../../components/SubmitModal/SubmitModal";
+import SubmitModal from "../../components/Modals/SubmitModal";
 import network from "../../services/network";
 import Loading from "../../components/Loading/Loading";
 import FilteredLabels from "../../context/FilteredLabelsContext";

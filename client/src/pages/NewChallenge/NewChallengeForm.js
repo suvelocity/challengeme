@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import {
@@ -222,18 +221,6 @@ export default function NewChallengeForm() {
         setChooseLabels([]);
     };
 
-    /* material ui styling */
-    const useStyles = makeStyles((theme) => ({
-        formControl: {
-            margin: theme.spacing(1),
-            minWidth: 120,
-        },
-        selectEmpty: {
-            marginTop: theme.spacing(2),
-        },
-    }));
-
-    const classes = useStyles();
 
     return (
         <div className="newChallenge">

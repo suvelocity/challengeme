@@ -118,7 +118,7 @@ const SubmissionsByChallenges = () => {
         getChallengesSumbissions()
     }, [])
 
-    const array = challengesSumbissions.length > 0 ? challengesSumbissions.map((challenge) => {
+    const combainChallengesSubmissionsVsUsers = challengesSumbissions.length > 0 ? challengesSumbissions.map((challenge) => {
         return {
             ChallengeName: challenge.Challenge.name,
             countSub: challenge.countSub,
@@ -140,11 +140,9 @@ const SubmissionsByChallenges = () => {
         }
     }) : [];
 
-    console.log(array);
-
     return (
         <div style={{ paddingTop: '50px', textAlign: 'center' }} >
-            <h1>This is SubmissionsByChallenges page</h1>
+            <h1>This is All The Challenges By Users Page</h1>
             <Button variant="contained" color="secondary">
                 <Link to='/admin' ><h2>Admin Router</h2></Link>
             </Button>
@@ -158,7 +156,7 @@ const SubmissionsByChallenges = () => {
                             <StyledTableCell align="left">Created At</StyledTableCell>
                         </TableRow>
                     </TableHead>
-                    {array.length > 0 ? array.map((challenge) => (
+                    {combainChallengesSubmissionsVsUsers.length > 0 ? combainChallengesSubmissionsVsUsers.map((challenge) => (
                         <Row key={challenge.ChallengeName + challenge.createdAt} row={challenge} />
                     )) : <Loading />}
                 </Table>

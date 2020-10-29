@@ -123,7 +123,7 @@ const SubmissionsByUsers = () => {
 
     return (
         <div style={{ paddingTop: '50px', textAlign: 'center' }} >
-            <h1>This is SubmissionsByUsers page</h1>
+            <h1>This is All The Submissions By Users Page</h1>
             <Button variant="contained" color="secondary">
                 <Link to='/admin' ><h2>Admin Router</h2></Link>
             </Button>

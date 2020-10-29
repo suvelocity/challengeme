@@ -17,7 +17,7 @@ const NotFound = lazy(() => import("../../pages/NotFound"));
 function Index() {
 
     const location = useHistory();
-    const value = useContext(Logged);
+    const loggedContext = useContext(Logged);
 
     const checkAdminPerimsions = async () => {
         if (Cookies.get("accessToken")) {
@@ -32,7 +32,7 @@ function Index() {
                 Cookies.remove("userId");
                 Cookies.remove("isAdmin");
                 Cookies.remove("userName");
-                value.setLogged(false);
+                loggedContext.setLogged(false);
                 location.push("/");
             }
         } else {
@@ -42,7 +42,7 @@ function Index() {
             Cookies.remove("userId");
             Cookies.remove("isAdmin");
             Cookies.remove("userName");
-            value.setLogged(false);
+            loggedContext.setLogged(false);
             location.push("/");
         }
     }

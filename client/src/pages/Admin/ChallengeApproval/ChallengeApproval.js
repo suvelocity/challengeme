@@ -10,12 +10,12 @@ import AdminChallengeCard from '../../../components/AdminChallengeCard/AdminChal
 const ChallengeApproval = () => {
     const [challenges, setChallenges] = useState();
     const [challengesStates, setChallengesStates] = useState([]);
-    const [pendingArray, setPendingArray] = useState([]);
-    const [approvedArray, setApprovedArray] = useState([]);
-    const [deniedArray, setDeniedArray] = useState([]);
-    const value = useContext(AllChallenges);
+    const [pendingChallenges, setPendingChallenges] = useState([]);
+    const [approvedChallenges, setApprovedChallenges] = useState([]);
+    const [deniedChallenges, setDeniedChallenges] = useState([]);
+    const allChallengesContext = useContext(AllChallenges);
 
-    const fetchSubmissions = async () => {
+    const getAllSubmissions = async () => {
         const { data } = await network.get(`/api/v1/challenges/pending-challenges`);
         setChallenges(data);
         setChallengesStates(data.map((challenge) => {
@@ -25,7 +25,7 @@ const ChallengeApproval = () => {
 
     const refreshChallenges = async () => {
         const { data: challengesFromServer } = await network.get('/api/v1/challenges')
-        value.setChallenges(challengesFromServer);
+        allChallengesContext.setChallenges(challengesFromServer);
     }
 
     const changeChallengeState = async (event, challengeId, index) => {
@@ -40,11 +40,11 @@ const ChallengeApproval = () => {
     }
 
     useEffect(() => {
-        let pending = []
-        let approved = []
-        let denied = []
+        let pendingList = []
+        let approvedList = []
+        let deniedList = []
         challenges && challenges.forEach((challenge, index) => {
-            let card = <AdminChallengeCard
+            let challengeCard = <AdminChallengeCard
                 key={challenge.id}
                 challengeId={challenge.id}
                 name={challenge.name}
@@ -60,26 +60,26 @@ const ChallengeApproval = () => {
 
             switch (challengesStates[index]) {
                 case 'pending':
-                    pending.push(card)
+                    pendingList.push(challengeCard)
                     break;
                 case 'approved':
-                    approved.push(card)
+                    approvedList.push(challengeCard)
                     break;
                 case 'denied':
-                    denied.push(card)
+                    deniedList.push(challengeCard)
                     break;
                 default:
                     break;
             }
         })
-        setPendingArray(pending)
-        setApprovedArray(approved)
-        setDeniedArray(denied)
+        setPendingChallenges(pendingList)
+        setApprovedChallenges(approvedList)
+        setDeniedChallenges(deniedList)
         // eslint-disable-next-line
     }, [challenges, challengesStates])
 
     useEffect(() => {
-        fetchSubmissions();
+        getAllSubmissions();
         return () => refreshChallenges()
         // eslint-disable-next-line
     }, [])
@@ -92,15 +92,15 @@ const ChallengeApproval = () => {
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <h2>Pending Challenges:</h2>
-                    {pendingArray ? pendingArray : <Loading />}
+                    {pendingChallenges ? pendingChallenges : <Loading />}
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <h2>Aprooved Challenges:</h2>
-                    {approvedArray ? approvedArray : <Loading />}
+                    {approvedChallenges ? approvedChallenges : <Loading />}
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <h2>Denied Challenges:</h2>
-                    {deniedArray ? deniedArray : <Loading />}
+                    {deniedChallenges ? deniedChallenges : <Loading />}
                 </div>
             </div>
         </div>

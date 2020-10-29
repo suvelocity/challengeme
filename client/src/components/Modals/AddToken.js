@@ -45,7 +45,7 @@ export default function AddToken({ open, setOpen, getAllTokens }) {
             actionsLimit: newTokenActionslimit
         }
         try {
-            const response = await network.post('/api/v1/git/', newTokenObj);
+            await network.post('/api/v1/git/', newTokenObj);
             getAllTokens()
             setOpen(false)
         } catch (error) {

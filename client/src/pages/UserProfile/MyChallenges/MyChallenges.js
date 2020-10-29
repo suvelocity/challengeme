@@ -65,8 +65,8 @@ const UserProfileLanding = () => {
                                             );
                                         })
                                     ) : (
-                                        <div>Labels Not Found</div>
-                                    )}
+                                            <div>Labels Not Found</div>
+                                        )}
                                 </div>
                                 <div className="user-profile-single-challenge-information-container">
                                     <div>
@@ -85,10 +85,11 @@ const UserProfileLanding = () => {
                                         <b>Type:</b> {challenge.type}
                                     </div>
                                     <div>
-                                        <b>Created At:</b> {challenge.createdAt}
+
+                                        <b>Created At:</b> {new Date(challenge.createdAt).toString().substring(0, 24)}
                                     </div>
                                     <div>
-                                        <b>Updated At:</b> {challenge.updatedAt}
+                                        <b>Updated At:</b> {new Date(challenge.updatedAt).toString().substring(0, 24)}
                                     </div>
                                 </div>
                                 <div

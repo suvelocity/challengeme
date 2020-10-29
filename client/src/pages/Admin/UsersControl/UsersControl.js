@@ -120,7 +120,7 @@ function UsersControl() {
 
     return (
         <div style={{ paddingTop: '50px', textAlign: 'center' }} >
-            <h1>This is Users Control page</h1>
+            <h1>This is Users Management Page</h1>
             <Button variant="contained" color="secondary">
                 <Link to='/admin' ><h2>Admin Router</h2></Link>
             </Button>

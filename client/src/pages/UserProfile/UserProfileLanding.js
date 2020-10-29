@@ -21,7 +21,7 @@ const UserProfileLanding = () => {
 
     return (
         <div className="user-profile-landing">
-            <h1>This is User Area</h1>
+            <h1>This is Your Profile Area</h1>
             <div className="buttons-user-profile-landing">
                 <Link to="/profile/MyChallenges">
                     <Button
@@ -40,7 +40,7 @@ const UserProfileLanding = () => {
                         variant="contained"
                         color="default"
                     >
-                        Info
+                       Profile Info
                     </Button>
                 </Link>
             </div>

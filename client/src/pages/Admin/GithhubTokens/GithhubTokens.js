@@ -16,7 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import AddToken from '../../../components/SubmitModal/AddToken';
+import AddToken from '../../../components/Modals/AddToken';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -132,7 +132,7 @@ function GithhubTokens() {
 
     return (
         <div className="admin" style={{ marginTop: '60px', textAlign: 'center' }}>
-            <h1>Githhub Tokens Handle Area</h1>
+            <h1>Githhub Tokens Management Area</h1>
             <AddToken open={open} setOpen={setOpen} getAllTokens={getAllTokens} />
             <Button variant="contained" color="secondary">
                 <Link to='/admin' ><h2>Admin Router</h2></Link>
