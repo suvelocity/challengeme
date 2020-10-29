@@ -341,7 +341,6 @@ router.patch("/state-update/:challengeId", checkAdmin, async (req, res) => {
   try {
     const { challengeId } = req.params;
     const state = req.body.state;
-    console.log(req.body);
     const updatedChallenge = await Challenge.update({
       state: state
     },

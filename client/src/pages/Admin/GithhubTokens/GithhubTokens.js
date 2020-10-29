@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import AddToken from '../../../components/SubmitModal/AddToken';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
@@ -44,8 +45,28 @@ const useRowStyles = makeStyles({
 });
 
 function Row(props) {
-    const { row } = props;
+    const { row, getAllTokens } = props;
     const [open, setOpen] = React.useState(false);
+
+    const deleteToken = async (token) => {
+        let isDeleteOk = prompt("What's your favorite cocktail drink?");
+        if (isDeleteOk != null) {
+            const response = await network.delete(`/api/v1/git/${token}`)
+            console.log(response);
+            getAllTokens()
+        }
+    }
+
+    const updateToken = async (token, status) => {
+        let isUpdateOk = prompt("Who's your favorite student?");
+        if (isUpdateOk != null) {
+            const newStatus = status === 'blocked' ? 'available' : 'blocked'
+            const { data: allTokensFromServer } = await network.patch('/api/v1/git/', { token, status: newStatus })
+            console.log(allTokensFromServer)
+            getAllTokens()
+        }
+    }
+
     const classes = useRowStyles();
     return (
         <React.Fragment>
@@ -67,41 +88,25 @@ function Row(props) {
             </StyledTableRow>
             <StyledTableRow>
                 <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    {/* <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1}>
                             <Typography variant="h6" gutterBottom component="div">
-                                More Details
+                                Edit Area
               </Typography>
                             <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                    <StyledTableRow>
-                                        <StyledTableCell >User Id</StyledTableCell>
-                                        <StyledTableCell align="left">Phone Number</StyledTableCell>
-                                        <StyledTableCell align="left">Country</StyledTableCell>
-                                        <StyledTableCell align="left">City</StyledTableCell>
-                                        <StyledTableCell align="left">Birth Date</StyledTableCell>
-                                        <StyledTableCell align="left">Security Question</StyledTableCell>
-                                        <StyledTableCell align="left">Reason Of Registration</StyledTableCell>
-                                        <StyledTableCell align="left">Created At</StyledTableCell>
-                                        <StyledTableCell align="left">Updated At</StyledTableCell>
-                                    </StyledTableRow>
-                                </TableHead>
                                 <TableBody>
                                     <StyledTableRow key={row.userName}>
-                                        <StyledTableCell component="th" scope="row">{row.id}</StyledTableCell>
-                                        <StyledTableCell> {row.phoneNumber} </StyledTableCell>
-                                        <StyledTableCell align="left">{row.country}</StyledTableCell>
-                                        <StyledTableCell align="left">{row.city}</StyledTableCell>
-                                        <StyledTableCell align="left">{new Date(row.birthDate).toDateString()}</StyledTableCell>
-                                        <StyledTableCell align="left">{row.securityQuestion}</StyledTableCell>
-                                        <StyledTableCell align="left"> {row.reasonOfRegistration}</StyledTableCell>
-                                        <StyledTableCell align="left">{new Date(row.createdAt).toString().substring(0, 24)}</StyledTableCell>
-                                        <StyledTableCell align="left">{new Date(row.updatedAt).toString().substring(0, 24)}</StyledTableCell>
+                                        <StyledTableCell component="th" scope="row">
+                                            <Button onClick={() => updateToken(row.token, row.status)} >Change Aviel</Button>
+                                        </StyledTableCell>
+                                        <StyledTableCell component="th" scope="row">
+                                            <Button onClick={() => deleteToken(row.token)} >Delete Aviel</Button>
+                                        </StyledTableCell>
                                     </StyledTableRow>
                                 </TableBody>
                             </Table>
                         </Box>
-                    </Collapse> */}
+                    </Collapse>
                 </StyledTableCell>
             </StyledTableRow>
         </React.Fragment>
@@ -110,26 +115,15 @@ function Row(props) {
 function GithhubTokens() {
 
     const [allTokens, setAllTokens] = useState([])
-    const [newToken, setNewToken] = useState()
-    const [newTokenGitAccount, setNewTokeGgitAccount] = useState()
-    const [newTokenActionslimit, setNewTokeActionslimit] = useState()
+    const [open, setOpen] = useState(false)
 
     async function getAllTokens() {
         const { data: allTokensFromServer } = await network.get('/api/v1/git/')
         setAllTokens(allTokensFromServer)
     }
 
-    const addNewToken = async () => {
-        const newTokenObj = {
-            token: newToken,
-            gitAccount: newTokenGitAccount,
-            actionsLimit: newTokenActionslimit
-        }
-        try {
-            const response = await network.post('/api/v1/git/', newTokenObj);
-        } catch (error) {
-            console.error(error);
-        }
+    const addNewToken = () => {
+        setOpen(true)
     }
 
     useEffect(() => {
@@ -139,15 +133,13 @@ function GithhubTokens() {
     return (
         <div className="admin" style={{ marginTop: '60px', textAlign: 'center' }}>
             <h1>Githhub Tokens Handle Area</h1>
+            <AddToken open={open} setOpen={setOpen} getAllTokens={getAllTokens} />
             <Button variant="contained" color="secondary">
                 <Link to='/admin' ><h2>Admin Router</h2></Link>
             </Button >
-            <input onChange={(event) => setNewToken(event.target.value)} placeholder='Insert Token...' />
-            <input onChange={(event) => setNewTokeGgitAccount(event.target.value)} placeholder='Insert Github Account...' />
-            <input onChange={(event) => setNewTokeActionslimit(event.target.value)} placeholder='Insert Action Limit...' />
             <Button
                 variant="contained"
-                color="secondary"
+                color="primary"
                 onClick={addNewToken}
             >
                 Add New Token
@@ -164,12 +156,12 @@ function GithhubTokens() {
                             <StyledTableCell align="left">Github Account</StyledTableCell>
                             <StyledTableCell align="left">Actions Limit</StyledTableCell>
                             <StyledTableCell align="left">Created At</StyledTableCell>
-                            <StyledTableCell align="left">Uppdated At</StyledTableCell>
+                            <StyledTableCell align="left">Updated At</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {allTokens[0] && allTokens[0].map(token => (
-                            <Row key={token.token} row={token} />
+                            <Row key={token.token} row={token} getAllTokens={getAllTokens} />
                         ))}
                     </TableBody>
                 </Table>

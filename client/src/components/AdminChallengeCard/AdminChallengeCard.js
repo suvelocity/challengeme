@@ -58,12 +58,23 @@ export default function AdminChallengeCard({
               `${createdAt.split('T')[0]} || by ${authorName}`
             }
           </div>
+          { description === 'denied'?
              <Button size="small" color="primary" onClick={(event) => changeChallengeState(event, challengeId, index)} >
                  Approve
-            </Button>
+            </Button>:
+            description === 'approved'?
             <Button size="small" color="primary" onClick={(event) => changeChallengeState(event, challengeId, index)}>
                 Deny
+            </Button>:
+            <>
+            <Button size="small" color="primary" onClick={(event) => changeChallengeState(event, challengeId, index)} >
+            Approve
             </Button>
+            <Button size="small" color="primary" onClick={(event) => changeChallengeState(event, challengeId, index)}>
+            Deny
+            </Button>
+        </>
+          }
         </div>
       </div>
     // </Link>

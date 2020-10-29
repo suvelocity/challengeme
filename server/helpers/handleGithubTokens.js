@@ -9,7 +9,7 @@ module.exports = async function handleGithubTokens(headers) {
     console.log('Actions Alredy Used - ', headers['x-ratelimit-used']);
     console.log('---------------------------------------------------------------------');
 
-    if (headers['x-ratelimit-remaining'] > 4500) {
+    if (headers['x-ratelimit-remaining'] > (headers['x-ratelimit-limit'] - 500)) {
         try {
             await GitToken.update({
                 status: 'blocked',
