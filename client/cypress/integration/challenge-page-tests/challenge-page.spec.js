@@ -1,5 +1,5 @@
 const mockChallenge = require('../../fixtures/challengeFixtures/challenge1.json');
-const submissions = require('../../fixtures/challengeFixtures/submittion.json')
+const submissions = require('../../fixtures/challengeFixtures/submissions.json')
 const reviews = require('../../fixtures/challengeFixtures/review1.json');
 const submitModal = {
     header: 'Submit Your Solution',
