@@ -16,25 +16,38 @@ const ChallengeApproval = () => {
   const allChallengesContext = useContext(AllChallenges);
 
   const getAllSubmissions = async () => {
-    const { data } = await network.get('/api/v1/challenges/pending-challenges');
-    setChallenges(data);
-    setChallengesStates(data.map((challenge) => challenge.state));
+    try {
+      const { data } = await network.get('/api/v1/challenges/pending-challenges');
+      setChallenges(data);
+      setChallengesStates(data.map((challenge) => challenge.state));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const refreshChallenges = async () => {
-    const { data: challengesFromServer } = await network.get('/api/v1/challenges');
-    allChallengesContext.setChallenges(challengesFromServer);
+    try {
+      const { data: challengesFromServer } = await network.get('/api/v1/challenges');
+      allChallengesContext.setChallenges(challengesFromServer);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const changeChallengeState = async (event, challengeId, index) => {
-    console.log(event.target.innerText);
-    const newState = event.target.innerText === 'APPROVE' ? 'approved' : 'denied';
-    const cloneStateArray = [...challengesStates];
-    cloneStateArray[index] = newState;
-    setChallengesStates(cloneStateArray);
-    await network.patch(`
-        /api/v1/challenges/state-update/${challengeId}
-        `, { state: newState });
+    try {
+
+      console.log(event.target.innerText);
+      const newState = event.target.innerText === 'APPROVE' ? 'approved' : 'denied';
+      const cloneStateArray = [...challengesStates];
+      cloneStateArray[index] = newState;
+      setChallengesStates(cloneStateArray);
+      await network.patch(`
+      /api/v1/challenges/state-update/${challengeId}
+      `, { state: newState });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -77,13 +90,13 @@ const ChallengeApproval = () => {
     setApprovedChallenges(approvedList);
     setDeniedChallenges(deniedList);
     // eslint-disable-next-line
-    }, [challenges, challengesStates])
+  }, [challenges, challengesStates])
 
   useEffect(() => {
     getAllSubmissions();
     return () => refreshChallenges();
     // eslint-disable-next-line
-    }, [])
+  }, [])
 
   return (
     <div className="admin" style={{ marginTop: '50px', textAlign: 'center' }}>

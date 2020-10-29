@@ -49,21 +49,29 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
 
   const deleteToken = async (token) => {
-    const isDeleteOk = prompt("What's your favorite cocktail drink?");
-    if (isDeleteOk != null) {
-      const response = await network.delete(`/api/v1/git/${token}`);
-      console.log(response);
-      getAllTokens();
+    try {
+      const isDeleteOk = prompt("What's your favorite cocktail drink?");
+      if (isDeleteOk != null) {
+        const response = await network.delete(`/api/v1/git/${token}`);
+        console.log(response);
+        getAllTokens();
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const updateToken = async (token, status) => {
-    const isUpdateOk = prompt("Who's your favorite student?");
-    if (isUpdateOk != null) {
-      const newStatus = status === 'blocked' ? 'available' : 'blocked';
-      const { data: allTokensFromServer } = await network.patch('/api/v1/git/', { token, status: newStatus });
-      console.log(allTokensFromServer);
-      getAllTokens();
+    try {
+      const isUpdateOk = prompt("Who's your favorite student?");
+      if (isUpdateOk != null) {
+        const newStatus = status === 'blocked' ? 'available' : 'blocked';
+        const { data: allTokensFromServer } = await network.patch('/api/v1/git/', { token, status: newStatus });
+        console.log(allTokensFromServer);
+        getAllTokens();
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -117,8 +125,12 @@ function GithhubTokens() {
   const [open, setOpen] = useState(false);
 
   async function getAllTokens() {
-    const { data: allTokensFromServer } = await network.get('/api/v1/git/');
-    setAllTokens(allTokensFromServer);
+    try {
+      const { data: allTokensFromServer } = await network.get('/api/v1/git/');
+      setAllTokens(allTokensFromServer);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const addNewToken = () => {

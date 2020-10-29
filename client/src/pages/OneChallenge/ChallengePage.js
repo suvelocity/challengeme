@@ -74,7 +74,7 @@ function ChallengePage({ darkMode }) {
     const user = Cookies.get('userName');
     mixpanel.track('User On Challenge Page', { User: `${user}`, ChallengeId: `${id}` });
     // eslint-disable-next-line
-    }, []);
+  }, []);
 
   const getUpdated = useCallback((dateToFactor) => {
     const dateNow = Date.now();
@@ -106,32 +106,40 @@ function ChallengePage({ darkMode }) {
 
   useEffect(() => {
     (async () => {
-      const { data: submission } = await network.get(
-        `/api/v1/challenges/${id}/${Cookies.get('userName')}/submission`,
-      );
-      if (submission) {
-        setSubmissionStatus({
-          state: submission.state,
-          createdAt: submission.createdAt,
-        });
-      } else {
-        setSubmissionStatus(null);
+      try {
+        const { data: submission } = await network.get(
+          `/api/v1/challenges/${id}/${Cookies.get('userName')}/submission`,
+        );
+        if (submission) {
+          setSubmissionStatus({
+            state: submission.state,
+            createdAt: submission.createdAt,
+          });
+        } else {
+          setSubmissionStatus(null);
+        }
+        setLoadingReq(true);
+      } catch (error) {
+        console.error(error);
       }
-      setLoadingReq(true);
     })();
     const getSubmissionInterval = setInterval(async () => {
-      const { data: submission } = await network.get(
-        `/api/v1/challenges/${id}/${Cookies.get('userName')}/submission`,
-      );
-      if (submission) {
-        setSubmissionStatus({
-          state: submission.state,
-          createdAt: submission.createdAt,
-        });
-      } else {
-        setSubmissionStatus(null);
+      try {
+        const { data: submission } = await network.get(
+          `/api/v1/challenges/${id}/${Cookies.get('userName')}/submission`,
+        );
+        if (submission) {
+          setSubmissionStatus({
+            state: submission.state,
+            createdAt: submission.createdAt,
+          });
+        } else {
+          setSubmissionStatus(null);
+        }
+        setLoadingReq(true);
+      } catch (error) {
+        console.error(error);
       }
-      setLoadingReq(true);
     }, 5000);
     const setImg = async () => {
       try {
@@ -169,7 +177,7 @@ function ChallengePage({ darkMode }) {
     fetchChallenge();
     return () => clearInterval(getSubmissionInterval);
     // eslint-disable-next-line
-    }, [id]);
+  }, [id]);
 
   function handleModalClose() {
     setIsModalOpen(false);
@@ -278,16 +286,16 @@ function ChallengePage({ darkMode }) {
               <b>Description:</b>
               <div className="challenge-label">
                 {challenge.Labels
-                                    && challenge.Labels.map((label) => (
-                                      <Link
-                                        className="link-rout"
-                                        key={label.id}
-                                        to="/"
-                                        onClick={() => filteredLabels.setFilteredLabels([label.id])}
-                                      >
-                                        <div className="one-challenge-labels">{label.name}</div>
-                                      </Link>
-                                    ))}
+                  && challenge.Labels.map((label) => (
+                    <Link
+                      className="link-rout"
+                      key={label.id}
+                      to="/"
+                      onClick={() => filteredLabels.setFilteredLabels([label.id])}
+                    >
+                      <div className="one-challenge-labels">{label.name}</div>
+                    </Link>
+                  ))}
               </div>
             </div>
             <div className="one-challenge-description-body">
@@ -342,10 +350,10 @@ function ChallengePage({ darkMode }) {
               {getSubmissionButton()}
             </div>
           ) : (
-            <div style={{ textAlign: 'center' }}>
-              <CircularProgress style={{ margin: '30px' }} />
-            </div>
-          )}
+              <div style={{ textAlign: 'center' }}>
+                <CircularProgress style={{ margin: '30px' }} />
+              </div>
+            )}
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
@@ -359,8 +367,8 @@ function ChallengePage({ darkMode }) {
       </div>
     </div>
   ) : (
-    <Loading darkMode={darkMode} />
-  );
+      <Loading darkMode={darkMode} />
+    );
 }
 
 export default ChallengePage;

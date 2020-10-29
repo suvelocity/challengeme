@@ -109,8 +109,12 @@ const SubmissionsByUsers = () => {
   const [allUsersSubmissions, setAllUsersSubmissions] = useState([]);
 
   async function getAllUsersSubmissions() {
-    const { data: allUsersSubmissionsFromServer } = await network.get('/api/v1/statistics/insights/users-submissions');
-    setAllUsersSubmissions(allUsersSubmissionsFromServer);
+    try {
+      const { data: allUsersSubmissionsFromServer } = await network.get('/api/v1/statistics/insights/users-submissions');
+      setAllUsersSubmissions(allUsersSubmissionsFromServer);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   useEffect(() => {

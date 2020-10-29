@@ -115,10 +115,14 @@ const SubmissionsByChallenges = () => {
   const [usersPerChallenge, setUsersPerChallenge] = useState([]);
 
   const getChallengesSumbissions = async () => {
-    const { data: challengesSumbissionsFromServer } = await network.get('/api/v1/statistics/insights/challenges-sumbissions');
-    console.log(challengesSumbissionsFromServer);
-    setChallengesSumbissions(challengesSumbissionsFromServer[0]);
-    setUsersPerChallenge(challengesSumbissionsFromServer[1]);
+    try {
+      const { data: challengesSumbissionsFromServer } = await network.get('/api/v1/statistics/insights/challenges-sumbissions');
+      console.log(challengesSumbissionsFromServer);
+      setChallengesSumbissions(challengesSumbissionsFromServer[0]);
+      setUsersPerChallenge(challengesSumbissionsFromServer[1]);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {

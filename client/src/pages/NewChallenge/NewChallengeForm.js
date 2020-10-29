@@ -45,14 +45,18 @@ export default function NewChallengeForm() {
 
   /* pull challenge's type options from .github/workflows folder */
   const openOptions = async () => {
-    const { data: types } = await network.get('/api/v1/types');
-    setOptionstypes(
-      types.map((type) => (
-        <MenuItem key={type} value={type}>
-          {type}
-        </MenuItem>
-      )),
-    );
+    try {
+      const { data: types } = await network.get('/api/v1/types');
+      setOptionstypes(
+        types.map((type) => (
+          <MenuItem key={type} value={type}>
+            {type}
+          </MenuItem>
+        )),
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -93,8 +97,8 @@ export default function NewChallengeForm() {
       try {
         if (
           repoBoiler.length > 2
-                    && !repoBoiler.match(spaces)
-                    && !repoBoiler.match(hebrew)
+          && !repoBoiler.match(spaces)
+          && !repoBoiler.match(hebrew)
         ) {
           await network.get(`/api/v1/services/public_repo?repo_name=${repoBoiler}`);
         } else {
@@ -111,8 +115,8 @@ export default function NewChallengeForm() {
     }
     if (
       repoDescription.length < 20
-            || !!repoDescription.match(spaces)
-            || !!repoDescription.match(hebrew)
+      || !!repoDescription.match(spaces)
+      || !!repoDescription.match(hebrew)
     ) {
       newBadInput.push(
         generateAlert(

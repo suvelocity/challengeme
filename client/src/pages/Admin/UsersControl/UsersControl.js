@@ -122,8 +122,12 @@ function UsersControl() {
   const [allUsers, setAllUsers] = useState([]);
 
   async function getAllUsers() {
-    const { data: allUsersFromServer } = await network.get('/api/v1/admin/allusers');
-    setAllUsers(allUsersFromServer);
+    try {
+      const { data: allUsersFromServer } = await network.get('/api/v1/admin/allusers');
+      setAllUsers(allUsersFromServer);
+    } catch (error) {
+      console.error(error);
+    }
   }
   useEffect(() => {
     getAllUsers();
