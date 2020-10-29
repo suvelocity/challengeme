@@ -1,12 +1,12 @@
 const express = require('express');
 const path = require('path');
-const helmet = require("helmet");
+// const helmet = require("helmet");
 
 
 const app = express();
-app.use(helmet());
+// app.use(helmet());
 app.use(express.json({ limit: '50mb' }));
-app.use(require("./middleware/morgan"));
+// app.use(require("./middleware/morgan"));
 
 // app.get("/", (req, res) => {
 //   res.json({ name: 'Jane' })
