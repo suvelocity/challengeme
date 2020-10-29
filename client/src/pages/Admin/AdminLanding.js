@@ -24,9 +24,14 @@ const AdminLanding = () => {
                     Challenges Management
             </Link></Button>
 
-                <Button variant="outlined" color="secondary">
+                <Button variant="contained" color="secondary">
                     <Link to='/admin/UsersControl' >
                         Users Control
+            </Link>
+                </Button>
+                <Button variant="contained" color="primary">
+                    <Link to='/admin/GithhubTokens' >
+                    Githhub Tokens
             </Link>
                 </Button>
             </ButtonGroup>

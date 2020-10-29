@@ -7,6 +7,7 @@ const checkAdmin = require("../../middleware/checkAdmin");
 const {
   newChallengeValidation
 } = require('../../helpers/validator');
+const handleGithubTokens = require('../../helpers/handleGithubTokens');
 
 const router = Router();
 
@@ -262,23 +263,23 @@ router.post("/:challengeId/apply", async (req, res) => {
     const pureToken =
       bearerToken.indexOf(" ") !== -1 ? bearerToken.split(" ")[1] : bearerToken;
     const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || "master"; // In case somehow the process env branches are not set.
-    console.log(
-      {
-        ref, // the branch that the actions are run on
-        inputs: {
-          testRepo: challenge.repositoryName, // Repository to run the tests on
-          solutionRepo: solutionRepository, // The repository that holds the submitted solution
-          webhookUrl: urltoSet, // the url to come back to when the action is finished
-          bearerToken: pureToken, // the access token to get back to our server ** currently not in use
-        },
-      },
-      {
-        "Content-Type": "application/json",
-        Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
-      },
-      challenge.type
-    );
-    const { status } = await axios
+    // console.log(
+    //   {
+    //     ref, // the branch that the actions are run on
+    //     inputs: {
+    //       testRepo: challenge.repositoryName, // Repository to run the tests on
+    //       solutionRepo: solutionRepository, // The repository that holds the submitted solution
+    //       webhookUrl: urltoSet, // the url to come back to when the action is finished
+    //       bearerToken: pureToken, // the access token to get back to our server ** currently not in use
+    //     },
+    //   },
+    //   {
+    //     "Content-Type": "application/json",
+    //     Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
+    //   },
+    //   challenge.type
+    // );
+    const response = await axios
       .post(
         `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
         {
@@ -298,12 +299,14 @@ router.post("/:challengeId/apply", async (req, res) => {
         }
       )
       .catch((error) => {
+        handleGithubTokens(error.response.headers);
         console.error(error.message);
       });
-
-    res.json({ status });
+    handleGithubTokens(response.headers);
+    res.json(response.status);
   } catch (error) {
     console.error(error.message);
+    handleGithubTokens(error.response.headers);
     res.status(400).json({ message: "Cannot process request" });
   }
 });
@@ -349,7 +352,7 @@ router.patch("/state-update/:challengeId", checkAdmin, async (req, res) => {
       },
     );
     if (updatedChallenge[0]) {
-      res.json({message: "Success"});
+      res.json({ message: "Success" });
     } else {
       console.error('Failed to Update State');
       res.status(400).json({ message: "Failed to Update State" });

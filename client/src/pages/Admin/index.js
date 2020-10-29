@@ -6,6 +6,7 @@ import Loading from "../../components/Loading/Loading";
 import network from "../../services/network";
 import Cookies from "js-cookie";
 
+const GithhubTokens = lazy(()=> import("./GithhubTokens/GithhubTokens"))
 const SubmissionsByUsers = lazy(() => import("./UsersStatus/SubmissionsByUsers"));
 const SubmissionsByChallenges = lazy(() => import("./UsersStatus/SubmissionsByChallenges"));
 const AdminLanding = lazy(() => import("./AdminLanding"));
@@ -67,6 +68,9 @@ function Index() {
                         </Route>
                         <Route exact path="/admin/UsersControl">
                             <UsersControl />
+                        </Route>
+                        <Route exact path="/admin/GithhubTokens">
+                            <GithhubTokens />
                         </Route>
                         <Route exact path="/admin">
                             <AdminLanding />
