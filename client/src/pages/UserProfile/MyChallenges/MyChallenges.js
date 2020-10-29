@@ -5,13 +5,8 @@ import Cookies from "js-cookie";
 import network from "../../../services/network";
 import "./MyChallenges.css";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(() => ({
-    userProfileBackToMyProfile: {},
-}));
 const UserProfileLanding = () => {
-    const classes = useStyles();
     const [allMyChallenges, setAllMyChallenges] = useState([]);
 
     const getMyChallenges = async () => {
@@ -36,7 +31,10 @@ const UserProfileLanding = () => {
                 background: "linear-gradient(270deg, rgba(193,36,36,1) 0%, rgba(214,95,95,1) 100%)",
             };
         } else {
-            return { backgroundColor: "gray" };
+            return {
+                background:
+                    "linear-gradient(270deg, rgba(198,198,198,1) 0%, rgba(116,116,116,1) 100%)",
+            };
         }
     };
     return (
@@ -106,7 +104,6 @@ const UserProfileLanding = () => {
             <div className="user-profile-my-challenges-button-container">
                 <Link to="/profile">
                     <Button
-                        className={classes.userProfileBackToMyProfile}
                         style={{ minWidth: 150 }}
                         variant="contained"
                         color="default"
