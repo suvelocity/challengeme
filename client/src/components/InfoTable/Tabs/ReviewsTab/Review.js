@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Rating from "@material-ui/lab/Rating";
-import "./Review.css";
+import React, { useEffect, useState } from 'react';
+import Rating from '@material-ui/lab/Rating';
+import './Review.css';
 
-function Review({ author, createdAt, title, content, rating }) {
-  const [date, setDate] = useState("");
+function Review({
+  author, createdAt, title, content, rating,
+}) {
+  const [date, setDate] = useState('');
 
   // TODO: POP: use moment instead
   useEffect(() => {
@@ -13,7 +15,7 @@ function Review({ author, createdAt, title, content, rating }) {
     if (diff < 24) {
       setDate(`${Math.floor(diff)} Hours ago`);
     } else {
-      diff = diff / 24;
+      diff /= 24;
       diff = Math.floor(diff);
       if (diff < 8) {
         setDate(`${Math.floor(diff)} Days ago`);
@@ -32,22 +34,24 @@ function Review({ author, createdAt, title, content, rating }) {
         }
       }
     }
-
   }, [createdAt]);
   return (
-    <div className='review'>
-      <div className='title'>{title}</div>
-      <div className='createdAt'>{date}</div>
-      <div className='content'>{content}</div>
-      <div className='rating'>
+    <div className="review">
+      <div className="title">{title}</div>
+      <div className="createdAt">{date}</div>
+      <div className="content">{content}</div>
+      <div className="rating">
         <Rating
-          name='half-rating-read'
+          name="half-rating-read"
           defaultValue={rating}
           precision={1}
           readOnly
         />
       </div>
-      <div className='author'>By: {author}</div>
+      <div className="author">
+        By:
+        {author}
+      </div>
     </div>
   );
 }

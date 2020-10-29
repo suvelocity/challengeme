@@ -11,11 +11,11 @@
 //
 // -- This is a parent command --
 // Cypress.Commands.add("login", (email, password) => { ... })
-Cypress.Commands.add("login", () => {
-  cy.setCookie("accessToken", "21323213213");
-  cy.setCookie("name", "shahar");
-  cy.server()
-  cy.route("GET", "**/api/v1/auth/validateToken", { valid: true });
+Cypress.Commands.add('login', () => {
+  cy.setCookie('accessToken', '21323213213');
+  cy.setCookie('name', 'shahar');
+  cy.server();
+  cy.route('GET', '**/api/v1/auth/validateToken', { valid: true });
 });
 //
 //
@@ -29,4 +29,3 @@ Cypress.Commands.add("login", () => {
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-

@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "cypress": "^5.3.0",
+    "eslint-config-airbnb": "^18.2.0",
     "nock": "^13.0.4",
     "nock-puppeteer": "^1.0.2",
     "puppeteer": "^5.3.1"
