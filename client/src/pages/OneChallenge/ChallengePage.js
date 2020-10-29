@@ -174,6 +174,7 @@ function ChallengePage({ darkMode }) {
     if (!submissionStatus) {
       return (
         <Button
+          cy-test="submit-button"
           className={classes.SubmitdButton}
           variant="contained"
           onClick={() => setIsModalOpen(true)}
@@ -186,6 +187,7 @@ function ChallengePage({ darkMode }) {
     } if (submissionStatus.state === 'SUCCESS') {
       return (
         <Button
+          cy-test="submit-again-button"
           className={classes.SubmitdButtonSuccess}
           variant="contained"
           onClick={() => setIsModalOpen(true)}
@@ -196,6 +198,7 @@ function ChallengePage({ darkMode }) {
     }
     return (
       <Button
+        cy-test="submit-again-button"
         className={classes.SubmitdButtonFail}
         variant="contained"
         onClick={() => setIsModalOpen(true)}
@@ -217,7 +220,7 @@ function ChallengePage({ darkMode }) {
       );
     } if (submissionStatus.state === 'SUCCESS') {
       return (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center' }} cy-test="success-submission">
           <p>
             <div style={{ fontSize: '25px', fontWeight: 'bold', marginBottom: '5px' }}>
               SUCCESS
@@ -233,13 +236,13 @@ function ChallengePage({ darkMode }) {
       );
     } if (submissionStatus.state === 'PENDING') {
       return (
-        <div>
+        <div cy-test="pending-submission">
           <p>Your submission is being tested</p>
         </div>
       );
     }
     return (
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center' }} cy-test="fail-submission">
         <p>
           <div style={{ fontSize: '25px', fontWeight: 'bold', marginBottom: '5px' }}>
             FAIL
@@ -261,17 +264,18 @@ function ChallengePage({ darkMode }) {
     <div style={{ overflowY: 'auto', height: '100vh', width: '100%' }}>
       <div className="one-challenge-container">
         <div className="one-challenge-challenge-container">
-          <h1 className="one-challenge-info-title">
+          <h1 className="one-challenge-info-title" cy-test="challenge-name">
             <b>{challenge.name}</b>
           </h1>
           <img className="one-challenge-info-image" src={image} alt="" />
           <div className="one-challenge-info-container">
-            <div className="one-challenge-description-title">
+            <div className="one-challenge-description-title" >
               <b>Description:</b>
               <div className="challenge-label">
                 {challenge.Labels
                   && challenge.Labels.map((label) => (
                     <Link
+                      cy-test={`challenge-label-${label.name}`}
                       className="link-rout"
                       key={label.id}
                       to="/"
@@ -282,26 +286,26 @@ function ChallengePage({ darkMode }) {
                   ))}
               </div>
             </div>
-            <div className="one-challenge-description-body">
+            <div className="one-challenge-description-body" cy-test="challenge-description">
               {challenge.description}
             </div>
             <div className="one-challenge-author-uploaded-updated">
-              <div>
+              <div cy-test="challenge-submissions">
                 Submissions:
                 {' '}
                 {submissions}
               </div>
-              <div className="one-challenge-author">
+              <div className="one-challenge-author" cy-test="challenge-createdBy">
                 Created by:
                 {' '}
                 {challenge.Author.userName}
               </div>
-              <div className="one-challenge-uploaded-at">
+              <div className="one-challenge-uploaded-at" cy-test="challenge-createdAt">
                 Created At:
                 {' '}
                 {`${generateTime(challenge.createdAt)} `}
               </div>
-              <div className="one-challenge-updated-at">
+              <div className="one-challenge-updated-at" cy-test="challenge-updatedAt">
                 Updated At:
                 {' '}
                 {date || ''}
@@ -313,6 +317,7 @@ function ChallengePage({ darkMode }) {
           </div>
           <div className={classes.getStartedButtonContainer}>
             <Button
+              cy-test="challenge-boilerPlate"
               variant="contained"
               className={classes.getStartedButton}
               href={`https://github.com/${challenge.boilerPlate}`}
@@ -339,9 +344,9 @@ function ChallengePage({ darkMode }) {
             challengeParamId={id}
           />
         </div>
-        <div className="one-challenge-reviews-container">
+        <div className="one-challenge-reviews-container" cy-test="challenge-reviews">
           <b className="one-challenge-reviews-title">Reviews :</b>
-          <ReviewsTab challengeId={challenge.id} />
+          <ReviewsTab challengeId={challenge.id}/>
         </div>
       </div>
     </div>

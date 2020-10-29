@@ -14,6 +14,7 @@
 Cypress.Commands.add('login', () => {
   cy.setCookie('accessToken', '21323213213');
   cy.setCookie('name', 'shahar');
+  cy.setCookie('userName', 'shaharEliyahu');
   cy.server();
   cy.route('GET', '**/api/v1/auth/validateToken', { valid: true });
 });

@@ -110,6 +110,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
         >
           <Typography variant='h5'>Submit Your Solution</Typography>
           <TextField
+            cy-test="submit-repo-input"
             label='Solution repository'
             type='text'
             id='repoInput'
@@ -154,6 +155,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
           >
             <Typography variant='subtitle1'>Rate this challenge</Typography>
             <Rating
+              cy-test="submit-rating-input"
               name='rating'
               onChange={(_, value) => setUserRating(value)}
             />
@@ -180,6 +182,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
             Please leave your review here
           </Typography>
           <TextField
+            cy-test="submit-title-input"
             label='Title'
             type='text'
             id='commentTitleInput'
@@ -197,6 +200,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
             </Typography>
           )}
           <TextField
+            cy-test="submit-content-input"
             id='reviewContentInput'
             label='Message'
             multiline
@@ -217,6 +221,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
           )}
 
           <Button
+            cy-test="submit-review-button"
             variant='contained'
             color='primary'
             type='submit'
