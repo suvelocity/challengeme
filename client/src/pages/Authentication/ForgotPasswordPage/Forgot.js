@@ -35,8 +35,8 @@ export default function Forgot() {
   const history = useHistory();
 
   useEffect(() => {
-    mixpanel.track("User On Forgot Password Page");
-  }, [])
+    mixpanel.track('User On Forgot Password Page');
+  }, []);
 
   const handleChange = (field) => (e) => {
     switch (field) {
@@ -154,7 +154,7 @@ export default function Forgot() {
       case 1:
         return <Identify data={{ userName }} handleChange={handleChange} />;
       case 2:
-        mixpanel.track("User On Forgot Password Page 2",{"User": `${userName}`, "Description": "user tried to get Security Question"});
+        mixpanel.track('User On Forgot Password Page 2', { User: `${userName}`, Description: 'user tried to get Security Question' });
         return (
           <Security
             data={{ secQuestion, secAnswer }}
@@ -162,7 +162,7 @@ export default function Forgot() {
           />
         );
       case 3:
-        mixpanel.track("User On Forgot Password Page 3",{"User": `${userName}`, "Description": "user tried to Submit Security Answer"})
+        mixpanel.track('User On Forgot Password Page 3', { User: `${userName}`, Description: 'user tried to Submit Security Answer' });
         return (
           <Change
             data={{ password, confirmPassword }}

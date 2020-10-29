@@ -1,25 +1,27 @@
-import React, { useContext, useState, useEffect } from "react";
-import Cookies from "js-cookie";
-import { Link, NavLink, useHistory, useLocation } from "react-router-dom";
-import clsx from "clsx";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import Tooltip from "@material-ui/core/Tooltip";
-import Menu from "@material-ui/core/Menu";
-import Avatar from "@material-ui/core/Avatar";
-import HomeIcon from "@material-ui/icons/Home";
-import "../Header.css";
-import DarkModeToggle from "react-dark-mode-toggle";
-import Search from "../Search/Search";
-import { Logged } from "../../../context/LoggedInContext";
-import FilteredLabels from "../../../context/FilteredLabelsContext";
-import network from "../../../services/network";
-import ChooseLabels from "../../Choosers/ChooseLabels";
-import useStyles from "./WideNavStyle";
+import React, { useContext, useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import {
+  Link, NavLink, useHistory, useLocation,
+} from 'react-router-dom';
+import clsx from 'clsx';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
+import Menu from '@material-ui/core/Menu';
+import Avatar from '@material-ui/core/Avatar';
+import HomeIcon from '@material-ui/icons/Home';
+import '../Header.css';
+import DarkModeToggle from 'react-dark-mode-toggle';
+import Search from '../Search/Search';
+import { Logged } from '../../../context/LoggedInContext';
+import FilteredLabels from '../../../context/FilteredLabelsContext';
+import network from '../../../services/network';
+import ChooseLabels from '../../Choosers/ChooseLabels';
+import useStyles from './WideNavStyle';
 
-export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
+export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
   const filteredLabels = useContext(FilteredLabels);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -31,13 +33,12 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
   const currentLocation = useLocation();
 
   useEffect(() => {
-    if (currentLocation.pathname !== "/") {
+    if (currentLocation.pathname !== '/') {
       setLabels([]);
     } else {
       const newFilter = chooseLabels.filter(
-        (label) =>
-          label.value ===
-          (filteredLabels ? filteredLabels.filteredLabels[0] : null)
+        (label) => label.value
+          === (filteredLabels ? filteredLabels.filteredLabels[0] : null),
       );
       setLabels(newFilter);
     }
@@ -53,27 +54,27 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
 
   const logOut = async () => {
     try {
-      await network.post("/api/v1/auth/logout", {
-        token: Cookies.get("refreshToken"),
+      await network.post('/api/v1/auth/logout', {
+        token: Cookies.get('refreshToken'),
       });
-      Cookies.remove("refreshToken");
-      Cookies.remove("accessToken");
-      Cookies.remove("name");
-      Cookies.remove("userId");
-      Cookies.remove("isAdmin");
-      Cookies.remove("userName");
+      Cookies.remove('refreshToken');
+      Cookies.remove('accessToken');
+      Cookies.remove('name');
+      Cookies.remove('userId');
+      Cookies.remove('isAdmin');
+      Cookies.remove('userName');
       value.setLogged(false);
-      location.push("/");
+      location.push('/');
     } catch (error) {
       console.error(error);
     }
   };
 
   const headerStyle = {
-    backgroundColor: darkMode ? "rgb(51,51,51)" : "white",
+    backgroundColor: darkMode ? 'rgb(51,51,51)' : 'white',
   };
   const letterColor = {
-    color: darkMode ? "white" : "black",
+    color: darkMode ? 'white' : 'black',
   };
   return (
     <AppBar
@@ -86,9 +87,9 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
           <NavLink to="/" exact className="link-rout">
             <div
               style={{
-                display: "flex",
-                alignItems: "center",
-                marginRight: "10px",
+                display: 'flex',
+                alignItems: 'center',
+                marginRight: '10px',
               }}
             >
               <HomeIcon style={letterColor} />
@@ -100,8 +101,8 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
           </NavLink>
         </Typography>
         <Search darkMode={darkMode} setDarkMode={setDarkMode} />
-        <div style={{ minWidth: "150px", width: "fit-content" }}>
-          {currentLocation.pathname === "/" ? (
+        <div style={{ minWidth: '150px', width: 'fit-content' }}>
+          {currentLocation.pathname === '/' ? (
             <ChooseLabels
               labels={labels}
               chooseLabels={chooseLabels}
@@ -111,11 +112,11 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
             />
           ) : null}
         </div>
-        {currentLocation.pathname === "/" ? (
+        {currentLocation.pathname === '/' ? (
           <Button
             onClick={() => {
               filteredLabels.setFilteredLabels(
-                labels ? labels.map((label) => label.value) : []
+                labels ? labels.map((label) => label.value) : [],
               );
             }}
             variant="contained"
@@ -131,12 +132,12 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
           className={classes.darkModeToggle}
           checked={darkMode}
           onChange={() => {
-            localStorage.setItem("darkMode", !darkMode);
+            localStorage.setItem('darkMode', !darkMode);
             setDarkMode((prev) => !prev);
           }}
           size={45}
         />
-        <Tooltip title={Cookies.get("name")}>
+        <Tooltip title={Cookies.get('name')}>
           <Avatar
             aria-label="account of current user"
             aria-controls="menu-appbar"
@@ -144,23 +145,23 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
             onClick={handleMenu}
             color="inherit"
             style={{
-              cursor: "pointer",
-              backgroundColor: darkMode ? "rgb(140,110,99)" : "#7BACB4",
+              cursor: 'pointer',
+              backgroundColor: darkMode ? 'rgb(140,110,99)' : '#7BACB4',
             }}
           >
-            {Cookies.get("name").slice(0, 2)}
+            {Cookies.get('name').slice(0, 2)}
           </Avatar>
         </Tooltip>
         <Menu
           id="menu-appbar"
           anchorEl={anchorEl}
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
+            vertical: 'bottom',
+            horizontal: 'center',
           }}
           transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
+            vertical: 'top',
+            horizontal: 'right',
           }}
           keepMounted
           open={open}
@@ -189,19 +190,20 @@ export default function WideNav({ darkMode, setDarkMode,isAdmin }) {
               Add New Challenge
             </Button>
           </Link>
-          {isAdmin &&
-          <Link to="/admin" className="link-rout">
-            <Button
-              onClick={() => setAnchorEl(null)}
-              className={classes.infoButton}
-              style={{ minWidth: 150 }}
-              variant="contained"
-              color="default"
-            >
-              Admin Area
-            </Button>
-          </Link>
-          }
+          {isAdmin
+          && (
+            <Link to="/admin" className="link-rout">
+              <Button
+                onClick={() => setAnchorEl(null)}
+                className={classes.infoButton}
+                style={{ minWidth: 150 }}
+                variant="contained"
+                color="default"
+              >
+                Admin Area
+              </Button>
+            </Link>
+          )}
           <Button
             className={classes.logOutButton}
             onClick={logOut}
