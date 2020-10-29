@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
+import network from '../../../services/network';
 import { Link } from "react-router-dom";
-import network from "../../../services/network";
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -47,7 +47,6 @@ function Row(props) {
     const { row } = props;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
-
     return (
         <React.Fragment>
             <StyledTableRow className={classes.root}>
@@ -57,16 +56,15 @@ function Row(props) {
                     </IconButton>
                 </StyledTableCell>
                 <StyledTableCell component="th" scope="row">
-                    {row.userName}
+                    {row.id}
                 </StyledTableCell>
-                <StyledTableCell align="left">{row.firstName}{' '}{row.lastName}</StyledTableCell>
-                <StyledTableCell align="left">{row.email}</StyledTableCell>
-                <StyledTableCell align="left">{row.githubAccount}</StyledTableCell>
-                <StyledTableCell align="left">{row.permission}</StyledTableCell>
+                <StyledTableCell align="left">{row.token}</StyledTableCell>
+                <StyledTableCell align="left">{new Date(row.updatedAt).toString().substring(0, 24)}</StyledTableCell>
+                <StyledTableCell align="left">{new Date(row.createdAt).toString().substring(0, 24)}</StyledTableCell>
             </StyledTableRow>
             <StyledTableRow>
                 <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
+                    {/* <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1}>
                             <Typography variant="h6" gutterBottom component="div">
                                 More Details
@@ -100,27 +98,27 @@ function Row(props) {
                                 </TableBody>
                             </Table>
                         </Box>
-                    </Collapse>
+                    </Collapse> */}
                 </StyledTableCell>
             </StyledTableRow>
         </React.Fragment>
     );
 }
+function GithhubTokens() {
 
-function UsersControl() {
-    const [allUsers, setAllUsers] = useState([])
+    const [allTokens, setAllTokens] = useState([])
 
-    async function getAllUsers() {
-        const { data: allUsersFromServer } = await network.get('/api/v1/admin/allusers')
-        setAllUsers(allUsersFromServer)
+    async function getAllTokens() {
+        const { data: allTokensFromServer } = await network.get('/api/v1/git/')
+        setAllTokens(allTokensFromServer)
     }
     useEffect(() => {
-        getAllUsers()
+        getAllTokens()
     }, [])
 
     return (
-        <div style={{ paddingTop: '50px', textAlign: 'center' }} >
-            <h1>This is Users Control page</h1>
+        <div className="admin" style={{ marginTop: '60px', textAlign: 'center' }}>
+            <h1>Githhub Tokens Handle Area</h1>
             <Button variant="contained" color="secondary">
                 <Link to='/admin' ><h2>Admin Router</h2></Link>
             </Button>
@@ -129,16 +127,15 @@ function UsersControl() {
                     <TableHead>
                         <TableRow>
                             <StyledTableCell />
-                            <StyledTableCell>User Name</StyledTableCell>
-                            <StyledTableCell align="left">Full Name</StyledTableCell>
-                            <StyledTableCell align="left">Email</StyledTableCell>
-                            <StyledTableCell align="left">Github Account</StyledTableCell>
-                            <StyledTableCell align="left">Permission</StyledTableCell>
+                            <StyledTableCell>Id</StyledTableCell>
+                            <StyledTableCell align="left">Token</StyledTableCell>
+                            <StyledTableCell align="left">Created At</StyledTableCell>
+                            <StyledTableCell align="left">Uppdated At</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {allUsers && allUsers.map(user => (
-                            <Row key={user.userName + user.id} row={user} />
+                        {allTokens[0] && allTokens[0].map(token => (
+                            <Row key={token.token} row={token} />
                         ))}
                     </TableBody>
                 </Table>
@@ -147,4 +144,4 @@ function UsersControl() {
     );
 };
 
-export default UsersControl;
+export default GithhubTokens;

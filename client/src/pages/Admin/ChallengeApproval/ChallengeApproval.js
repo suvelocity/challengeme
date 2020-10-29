@@ -2,12 +2,17 @@ import React, { useEffect, useState, useContext } from 'react';
 import "./ChallengeApproval.css";
 import network from '../../../services/network';
 import { Link } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 import Loading from "../../../components/Loading/Loading";
 import AllChallenges from '../../../context/AllChallengesContext';
+import AdminChallengeCard from '../../../components/AdminChallengeCard/AdminChallengeCard';
 
 const ChallengeApproval = () => {
     const [challenges, setChallenges] = useState();
     const [challengesStates, setChallengesStates] = useState([]);
+    const [pendingArray, setPendingArray] = useState([]);
+    const [approvedArray, setApprovedArray] = useState([]);
+    const [deniedArray, setDeniedArray] = useState([]);
     const value = useContext(AllChallenges);
 
     const fetchSubmissions = async () => {
@@ -23,14 +28,9 @@ const ChallengeApproval = () => {
         value.setChallenges(challengesFromServer);
     }
 
-    useEffect(() => {
-        fetchSubmissions();
-        return () => refreshChallenges()
-        // eslint-disable-next-line
-    }, [])
-
     const changeChallengeState = async (event, challengeId, index) => {
-        const newState = event.target.innerText === 'Approve' ? 'approved' : 'denied';
+        console.log(event.target.innerText)
+        const newState = event.target.innerText === 'APPROVE' ? 'approved' : 'denied';
         const cloneStateArray = [...challengesStates]
         cloneStateArray[index] = newState
         setChallengesStates(cloneStateArray)
@@ -39,38 +39,70 @@ const ChallengeApproval = () => {
         `, { state: newState });
     }
 
+    useEffect(() => {
+        let pending = []
+        let approved = []
+        let denied = []
+        challenges && challenges.forEach((challenge, index) => {
+            let card = <AdminChallengeCard
+                key={challenge.id}
+                challengeId={challenge.id}
+                name={challenge.name}
+                description={challengesStates[index]}
+                repositoryName={challenge.repositoryName}
+                labels={challenge.Labels}
+                rating={challenge.averageRaiting}
+                submissions={challenge.submissionsCount}
+                createdAt={challenge.createdAt}
+                authorName={challenge.Author.userName}
+                changeChallengeState={changeChallengeState}
+                index={index} />
+
+            switch (challengesStates[index]) {
+                case 'pending':
+                    pending.push(card)
+                    break;
+                case 'approved':
+                    approved.push(card)
+                    break;
+                case 'denied':
+                    denied.push(card)
+                    break;
+                default:
+                    break;
+            }
+        })
+        setPendingArray(pending)
+        setApprovedArray(approved)
+        setDeniedArray(denied)
+        // eslint-disable-next-line
+    }, [challenges, challengesStates])
+
+    useEffect(() => {
+        fetchSubmissions();
+        return () => refreshChallenges()
+        // eslint-disable-next-line
+    }, [])
 
     return (
-        <div className="admin" style={{ marginTop: '100px' }}>
-            <Link to='/admin' >
-                admin router
-            </Link>
-            {challenges ? challenges.map((challenge, index) => {
-                return (
-                    <div key={challenge.name + challenge.id} >
-                        <h1>Name: {challenge.name}</h1>
-                        <div>Id :{challenge.id}</div>
-                        <div>Author :{challenge.Author.userName}</div>
-                        <div>Author Id: {challenge.authorId}</div>
-                        <div>Labels: {challenge.Labels ? challenge.Labels.map((label) => {
-                            return <li key={label.name} >{label.name}</li>
-                        }) : <h2>Labels Not Found</h2>}</div>
-                        <div>Boiler Plate: {challenge.boilerPlate}</div>
-                        <div>Repository Name: {challenge.repositoryName}</div>
-                        <div>Description: {challenge.description}</div>
-                        <div>State: {challengesStates[index]}</div>
-                        <div>Type: {challenge.type}</div>
-                        <div>Created At: {challenge.createdAt}</div>
-                        <div>Updated At: {challenge.updatedAt}</div>
-                        <button onClick={(event) => changeChallengeState(event, challenge.id, index)} >
-                            Approve
-                        </button>
-                        <button onClick={(event) => changeChallengeState(event, challenge.id, index)}>
-                            Denie
-                        </button>
-                    </div>
-                )
-            }) : <Loading />}
+        <div className="admin" style={{ marginTop: '50px', textAlign: 'center' }}>
+            <Button variant="contained" color="secondary">
+                <Link to='/admin' ><h2>Admin Router</h2></Link>
+            </Button>
+            <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around' }}>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <h2>Pending Challenges:</h2>
+                    {pendingArray ? pendingArray : <Loading />}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <h2>Aprooved Challenges:</h2>
+                    {approvedArray ? approvedArray : <Loading />}
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <h2>Denied Challenges:</h2>
+                    {deniedArray ? deniedArray : <Loading />}
+                </div>
+            </div>
         </div>
     );
 };

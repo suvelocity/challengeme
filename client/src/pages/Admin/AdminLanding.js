@@ -1,26 +1,40 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { ButtonGroup } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 
 const AdminLanding = () => {
 
     return (
-        <div style={{ paddingTop: '200px' }} >
+        <div style={{ paddingTop: '50px', textAlign: 'center' }} >
             <h1>This is Admin page</h1>
-            <Link to='/admin/SubmissionsByChallenges' >
-                SubmissionsByChallenges
+            <ButtonGroup >
+
+                <Button variant="contained" color="primary">
+                    <Link to='/admin/SubmissionsByChallenges' >
+                        Submissions By Challenges
             </Link>
-            <br />
-            <Link to='/admin/SubmissionsByUsers' >
-                SubmissionsByUsers
+                </Button>
+                <Button variant="contained" color="secondary">
+                    <Link to='/admin/SubmissionsByUsers' >
+                        Submissions By Users
             </Link>
-            <br />
-            <Link to='/admin/ProposedChallenges' >
-                proposedChallenges
+                </Button>
+                <Button variant="contained">  <Link to='/admin/ChallengesManagement' >
+                    Challenges Management
+            </Link></Button>
+
+                <Button variant="contained" color="secondary">
+                    <Link to='/admin/UsersControl' >
+                        Users Control
             </Link>
-            <br />
-            <Link to='/admin/UsersControl' >
-                UsersControl
+                </Button>
+                <Button variant="contained" color="primary">
+                    <Link to='/admin/GithhubTokens' >
+                    Githhub Tokens
             </Link>
+                </Button>
+            </ButtonGroup>
         </div>
     );
 };

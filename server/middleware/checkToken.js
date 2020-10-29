@@ -7,7 +7,6 @@ module.exports = function checkToken(req, res, next) {
   token = token.split(' ')[1];
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, decoded) => {
     if (error) {
-     console.log(error); 
       return res.status(408).json({ message: 'Invalid Access Token' });
     }
       req.user = decoded;
