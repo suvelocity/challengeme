@@ -86,6 +86,7 @@ function UserInfo({ darkMode }) {
     })();
   }, []);
   return userInfo.firstName ? (
+    <div className="user-page-background">
     <div className="user-page">
       <div className="user-info-container">
         <h1>User Info</h1>
@@ -156,6 +157,7 @@ function UserInfo({ darkMode }) {
             back to My Profile
                     </Button>
         </Link>
+      </div>
       </div>
     </div>
   ) : (
