@@ -8,9 +8,9 @@ app.use(helmet());
 app.use(express.json({ limit: '50mb' }));
 app.use(require("./middleware/morgan"));
 
-app.get("/", (req, res) => {
-  res.json({ name: 'Jane' })
-})
+// app.get("/", (req, res) => {
+//   res.json({ name: 'Jane' })
+// })
 
 app.use('/api', require('./api')); // if auth works this can probably go
 
