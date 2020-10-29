@@ -37,8 +37,12 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const token = req.body.token;
-        const newToken = await GitToken.create({ token })
+        const destructuredToken = {
+            token: req.body.token,
+            gitAccount: req.body.gitAccount,
+            actionsLimit : req.body.actionsLimit
+        }
+        const newToken = await GitToken.create(destructuredToken)
         res.json(newToken)
     } catch (error) {
         console.error(error);

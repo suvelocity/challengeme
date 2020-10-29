@@ -59,6 +59,9 @@ function Row(props) {
                     {row.id}
                 </StyledTableCell>
                 <StyledTableCell align="left">{row.token}</StyledTableCell>
+                <StyledTableCell align="left">{row.status}</StyledTableCell>
+                <StyledTableCell align="left">{row.gitAccount}</StyledTableCell>
+                <StyledTableCell align="left">{row.actionsLimit}</StyledTableCell>
                 <StyledTableCell align="left">{new Date(row.updatedAt).toString().substring(0, 24)}</StyledTableCell>
                 <StyledTableCell align="left">{new Date(row.createdAt).toString().substring(0, 24)}</StyledTableCell>
             </StyledTableRow>
@@ -107,11 +110,28 @@ function Row(props) {
 function GithhubTokens() {
 
     const [allTokens, setAllTokens] = useState([])
+    const [newToken, setNewToken] = useState()
+    const [newTokenGitAccount, setNewTokeGgitAccount] = useState()
+    const [newTokenActionslimit, setNewTokeActionslimit] = useState()
 
     async function getAllTokens() {
         const { data: allTokensFromServer } = await network.get('/api/v1/git/')
         setAllTokens(allTokensFromServer)
     }
+
+    const addNewToken = async () => {
+        const newTokenObj = {
+            token: newToken,
+            gitAccount: newTokenGitAccount,
+            actionsLimit: newTokenActionslimit
+        }
+        try {
+            const response = await network.post('/api/v1/git/', newTokenObj);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     useEffect(() => {
         getAllTokens()
     }, [])
@@ -121,7 +141,18 @@ function GithhubTokens() {
             <h1>Githhub Tokens Handle Area</h1>
             <Button variant="contained" color="secondary">
                 <Link to='/admin' ><h2>Admin Router</h2></Link>
+            </Button >
+            <input onChange={(event) => setNewToken(event.target.value)} placeholder='Insert Token...' />
+            <input onChange={(event) => setNewTokeGgitAccount(event.target.value)} placeholder='Insert Github Account...' />
+            <input onChange={(event) => setNewTokeActionslimit(event.target.value)} placeholder='Insert Action Limit...' />
+            <Button
+                variant="contained"
+                color="secondary"
+                onClick={addNewToken}
+            >
+                Add New Token
             </Button>
+
             <TableContainer component={Paper}>
                 <Table aria-label="collapsible table">
                     <TableHead>
@@ -129,6 +160,9 @@ function GithhubTokens() {
                             <StyledTableCell />
                             <StyledTableCell>Id</StyledTableCell>
                             <StyledTableCell align="left">Token</StyledTableCell>
+                            <StyledTableCell align="left">Status</StyledTableCell>
+                            <StyledTableCell align="left">Github Account</StyledTableCell>
+                            <StyledTableCell align="left">Actions Limit</StyledTableCell>
                             <StyledTableCell align="left">Created At</StyledTableCell>
                             <StyledTableCell align="left">Uppdated At</StyledTableCell>
                         </TableRow>
