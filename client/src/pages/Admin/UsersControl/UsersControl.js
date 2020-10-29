@@ -40,10 +40,10 @@ function Row(props) {
                 <TableCell component="th" scope="row">
                     {row.userName}
                 </TableCell>
-                <TableCell align="right">{row.firstName}{' '}{row.lastName}</TableCell>
-                <TableCell align="right">{row.email}</TableCell>
-                <TableCell align="right">{row.githubAccount}</TableCell>
-                <TableCell align="right">{row.permission}</TableCell>
+                <TableCell align="left">{row.firstName}{' '}{row.lastName}</TableCell>
+                <TableCell align="left">{row.email}</TableCell>
+                <TableCell align="left">{row.githubAccount}</TableCell>
+                <TableCell align="left">{row.permission}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -56,27 +56,27 @@ function Row(props) {
                                 <TableHead>
                                     <TableRow>
                                         <TableCell >User Id</TableCell>
-                                        <TableCell align="right">Phone Number</TableCell>
-                                        <TableCell align="right">Country</TableCell>
-                                        <TableCell align="right">City</TableCell>
-                                        <TableCell align="right">Birth Date</TableCell>
-                                        <TableCell align="right">Security Question</TableCell>
-                                        <TableCell align="right">Reason Of Registration</TableCell>
-                                        <TableCell align="right">Created At</TableCell>
-                                        <TableCell align="right">Updated At</TableCell>
+                                        <TableCell align="left">Phone Number</TableCell>
+                                        <TableCell align="left">Country</TableCell>
+                                        <TableCell align="left">City</TableCell>
+                                        <TableCell align="left">Birth Date</TableCell>
+                                        <TableCell align="left">Security Question</TableCell>
+                                        <TableCell align="left">Reason Of Registration</TableCell>
+                                        <TableCell align="left">Created At</TableCell>
+                                        <TableCell align="left">Updated At</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     <TableRow key={row.userName}>
                                         <TableCell component="th" scope="row">{row.id}</TableCell>
                                         <TableCell> {row.phoneNumber} </TableCell>
-                                        <TableCell align="right">{row.country}</TableCell>
-                                        <TableCell align="right">{row.city}</TableCell>
-                                        <TableCell align="right">{new Date(row.birthDate).toDateString()}</TableCell>
-                                        <TableCell align="right">{row.securityQuestion}</TableCell>
-                                        <TableCell align="right"> {row.reasonOfRegistration}</TableCell>
-                                        <TableCell align="right">{new Date(row.createdAt).toString().substring(0, 24)}</TableCell>
-                                        <TableCell align="right">{new Date(row.updatedAt).toString().substring(0, 24)}</TableCell>
+                                        <TableCell align="left">{row.country}</TableCell>
+                                        <TableCell align="left">{row.city}</TableCell>
+                                        <TableCell align="left">{new Date(row.birthDate).toDateString()}</TableCell>
+                                        <TableCell align="left">{row.securityQuestion}</TableCell>
+                                        <TableCell align="left"> {row.reasonOfRegistration}</TableCell>
+                                        <TableCell align="left">{new Date(row.createdAt).toString().substring(0, 24)}</TableCell>
+                                        <TableCell align="left">{new Date(row.updatedAt).toString().substring(0, 24)}</TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
@@ -109,10 +109,10 @@ function UsersControl() {
                         <TableRow>
                             <TableCell />
                             <TableCell>User Name</TableCell>
-                            <TableCell align="right">Full Name</TableCell>
-                            <TableCell align="right">Email</TableCell>
-                            <TableCell align="right">Github Account</TableCell>
-                            <TableCell align="right">Permission</TableCell>
+                            <TableCell align="left">Full Name</TableCell>
+                            <TableCell align="left">Email</TableCell>
+                            <TableCell align="left">Github Account</TableCell>
+                            <TableCell align="left">Permission</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
