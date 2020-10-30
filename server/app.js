@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const helmet = require("helmet");
-app.use( helmet({ hsts: false, }) );
+// app.use( helmet({ hsts: false, }) );
 
 
 const app = express();
