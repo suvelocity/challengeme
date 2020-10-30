@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const helmet = require("helmet");
-app.use(helmet({ hsts: false, contentSecurityPolicy: false, referrerPolicy: false }));
+// app.use(helmet({ hsts: false, contentSecurityPolicy: false, referrerPolicy: false }));
 
 const app = express();
 app.use(express.json({ limit: '50mb' }));
