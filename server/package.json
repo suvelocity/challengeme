@@ -28,7 +28,7 @@
     ]
   },
   "dependencies": {
-    "cypress": "5.2.0",
+    "cypress": "5.5.0",
     "@hapi/joi": "^17.1.1",
     "axios": "^0.20.0",
     "bcryptjs": "^2.4.3",
