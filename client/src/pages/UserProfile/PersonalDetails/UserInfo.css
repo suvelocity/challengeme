@@ -41,3 +41,9 @@
 .dark .user-info-container input{
     color: white;
 }
+
+@media (max-width: 700px) {  
+.user-info-container{
+    width:95vw;
+}
+}
