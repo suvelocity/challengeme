@@ -38,8 +38,7 @@ describe('Single Challenge Page - Test suite' , () => {
     cy.get('[cy-test="challenge-createdAt"]').contains(
       mockChallenge.createdAt.split('T')[0]
       );
-      
-      cy.get('[cy-test="challenge-updatedAt"]')
+
       
       mockChallenge.Labels.forEach((label) => {
         cy.get(`[cy-test="challenge-label-${label.name}"]`).contains(label.name);
