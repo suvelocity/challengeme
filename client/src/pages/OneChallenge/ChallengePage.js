@@ -280,9 +280,17 @@ function ChallengePage({ darkMode }) {
               </div>
             </div>
             <div className="one-challenge-rating">
-              <p>Rating: {rating} / 5</p>
+              <p>
+                Rating:
+                {rating}
+                {' '}
+                / 5
+              </p>
               <Rating name="half-rating-read" value={rating} readOnly size="large" />
-              <div>Total Ratings : {ratingCount}</div>
+              <div>
+                Total Ratings :
+                {ratingCount}
+              </div>
             </div>
           </div>
           <div className={classes.getStartedButtonContainer}>
@@ -310,10 +318,10 @@ function ChallengePage({ darkMode }) {
               {getSubmissionButton()}
             </div>
           ) : (
-              <div style={{ textAlign: 'center' }}>
-                <CircularProgress style={{ margin: '30px' }} />
-              </div>
-            )}
+            <div style={{ textAlign: 'center' }}>
+              <CircularProgress style={{ margin: '30px' }} />
+            </div>
+          )}
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
@@ -327,8 +335,8 @@ function ChallengePage({ darkMode }) {
       </div>
     </div>
   ) : (
-      <Loading darkMode={darkMode} />
-    );
+    <Loading darkMode={darkMode} />
+  );
 }
 
 export default ChallengePage;

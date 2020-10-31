@@ -36,7 +36,6 @@ const ChallengeApproval = () => {
 
   const changeChallengeState = async (event, challengeId, index) => {
     try {
-
       console.log(event.target.innerText);
       const newState = event.target.innerText === 'APPROVE' ? 'approved' : 'denied';
       const cloneStateArray = [...challengesStates];
