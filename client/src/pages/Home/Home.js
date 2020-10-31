@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useContext } from 'react';
 import mixpanel from 'mixpanel-browser';
+import Cookies from 'js-cookie';
 import ChallengeCard from '../../components/ChallengeCard/ChallengeCard';
 import './Home.css';
 import AllChallenges from '../../context/AllChallengesContext';
 import FilteredLabels from '../../context/FilteredLabelsContext';
-import Cookies from 'js-cookie';
 
 export default function Home() {
   const allChallenges = useContext(AllChallenges).challenges;
   const filteredLabels = useContext(FilteredLabels);
   const [challengesFiltered, setChallengesFiltered] = useState(allChallenges);
-
 
   useEffect(() => {
     (async () => {
@@ -36,9 +35,9 @@ export default function Home() {
   }, [filteredLabels]);
 
   useEffect(() => {
-    const user = Cookies.get('userName')
-    mixpanel.track("User On Home Page", { "User": `${user}` })
-    return () => filteredLabels.setFilteredLabels([])
+    const user = Cookies.get('userName');
+    mixpanel.track('User On Home Page', { User: `${user}` });
+    return () => filteredLabels.setFilteredLabels([]);
     // eslint-disable-next-line
   }, [])
 

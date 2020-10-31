@@ -1,4 +1,5 @@
 const { Router } = require('express');
+
 const router = Router();
 const axios = require('axios');
 const handleGithubTokens = require('../../helpers/handleGithubTokens');
@@ -12,15 +13,15 @@ router.get('/public_repo', async (req, res) => {
         headers: { Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}` },
       },
     );
-    handleGithubTokens(response.headers)
+    handleGithubTokens(response.headers);
     if (!response.data.private) {
       res.json(response.data.repo);
     } else {
       res.status(401).send('Repo is private');
     }
   } catch (error) {
-    handleGithubTokens(error.response.headers)
-   res.status(400).send('Repo does not exist');
+    handleGithubTokens(error.response.headers);
+    res.status(400).send('Repo does not exist');
   }
 });
 

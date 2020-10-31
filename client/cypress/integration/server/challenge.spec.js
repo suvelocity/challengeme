@@ -88,7 +88,6 @@ describe('testing challenges endpoints', () => {
     const response = await request(app).get('/api/v1/challenges?challengeName=JWT - Node.js')
       .set('authorization', `bearer ${generateToken(usersMock[0])}`)
       .expect(200);
-    console.log('challenge:', response.body);
     expect(response.body.length).toBe(1);
     expect(response.body[0].name).toBe('JWT - Node.js');
     await request(app).post('/api/v1/challenges').send(challengesMock[0])

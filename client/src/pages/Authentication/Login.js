@@ -52,7 +52,7 @@ export default function Login() {
   const value = useContext(Logged);
 
   useEffect(() => {
-    mixpanel.track("User On Login Page");
+    mixpanel.track('User On Login Page');
     // Prevent special password eye bugs
     document.addEventListener('mouseup', () => {
       setShowPassword(false);
@@ -87,7 +87,7 @@ export default function Login() {
         rememberMe,
       });
       value.setLogged(true);
-      mixpanel.track("User Logged In", { "User": `${userName}`, "Remember Me": `${rememberMe}` })
+      mixpanel.track('User Logged In', { User: `${userName}`, 'Remember Me': `${rememberMe}` });
       location.push('/');
     } catch (error) {
       setError({ message: error.response.data.message });

@@ -9,14 +9,18 @@ function ReviewsTab({ challengeId }) {
 
   useEffect(() => {
     const fetchReviews = async () => {
-      const { data: reviewsArrayFromServer } = await network.get(
-        `/api/v1/reviews/byChallenge/${challengeId}`,
-      );
-      const reviewsWithContent = reviewsArrayFromServer.filter(
-        (review) => review.title && review.content,
-      );
-      setReviews(reviewsWithContent);
-      setLoading(false);
+      try {
+        const { data: reviewsArrayFromServer } = await network.get(
+          `/api/v1/reviews/byChallenge/${challengeId}`,
+        );
+        const reviewsWithContent = reviewsArrayFromServer.filter(
+          (review) => review.title && review.content,
+        );
+        setReviews(reviewsWithContent);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
     };
     fetchReviews();
     const liveReviews = setInterval(fetchReviews, 5000);
@@ -44,10 +48,10 @@ function ReviewsTab({ challengeId }) {
       );
     })
   ) : (
-    <div>
-      {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
-    </div>
-  );
+      <div>
+        {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
+      </div>
+    );
 }
 
 export default ReviewsTab;

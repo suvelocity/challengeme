@@ -3,7 +3,9 @@ const sequelize = require('sequelize');
 const { Op } = require('sequelize');
 
 const router = Router();
-const { Submission, Challenge, Review,User } = require('../../../models');
+const {
+  Submission, Challenge, Review, User,
+} = require('../../../models');
 
 // returns the 5 challenges with most submissions
 router.get('/top-challenges', async (req, res) => {
@@ -118,7 +120,7 @@ router.get('/challenges-by-reviews', async (req, res) => {
   }
 });
 
-//=======================================Admin Routes===============================
+//= ======================================Admin Routes===============================
 router.get('/challenges-sumbissions', async (req, res) => {
   try {
     const topChallenges = await Submission.findAll({
@@ -129,7 +131,7 @@ router.get('/challenges-sumbissions', async (req, res) => {
       },
       include: {
         model: Challenge,
-        attributes: ['id','name'],
+        attributes: ['id', 'name'],
       },
       group: ['challenge_id'],
       order: [[sequelize.fn('COUNT', sequelize.col('challenge_id')), 'DESC']],
@@ -138,15 +140,15 @@ router.get('/challenges-sumbissions', async (req, res) => {
     const users = await Challenge.findAll({
       include: {
         model: Submission,
-        attributes: ['id', 'userId','createdAt','state'],
-        include:{
+        attributes: ['id', 'userId', 'createdAt', 'state'],
+        include: {
           model: User,
           attributes: ['userName'],
-        }
+        },
       },
     });
 
-    res.json([topChallenges , users]);
+    res.json([topChallenges, users]);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -155,15 +157,15 @@ router.get('/challenges-sumbissions', async (req, res) => {
 router.get('/users-submissions', async (req, res) => {
   try {
     const topUsers = await User.findAll({
-      attributes:['userName','phoneNumber','firstName','lastName','email'],
+      attributes: ['userName', 'phoneNumber', 'firstName', 'lastName', 'email'],
       include: {
         model: Submission,
-        include:{model: Challenge}
-      }
+        include: { model: Challenge },
+      },
     });
     res.json(topUsers);
   } catch (err) {
-    console.error(err)
+    console.error(err);
     res.status(400).send(err);
   }
 });

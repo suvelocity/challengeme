@@ -11,6 +11,22 @@ module.exports = {
       token: {
         type: Sequelize.TEXT
       },
+      status: {
+        type: Sequelize.DataTypes.ENUM,
+        values: ["blocked", "available"],
+        defaultValue: "available",
+      },
+      resets_at: {
+        allowNull: false,
+        type: Sequelize.DATE,
+        defaultValue: new Date(),
+      },
+      git_account: {
+        type: Sequelize.STRING
+      },
+      actions_limit: {
+        type: Sequelize.INTEGER
+      },
       created_at: {
         allowNull: false,
         type: Sequelize.DATE

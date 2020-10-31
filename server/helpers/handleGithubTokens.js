@@ -1,4 +1,5 @@
 const { GitToken } = require("../models");
+const { Op } = require("sequelize");
 
 module.exports = async function handleGithubTokens(headers) {
     console.log('---------------------------------------------------------------------');
@@ -8,23 +9,49 @@ module.exports = async function handleGithubTokens(headers) {
     console.log('Actions Alredy Used - ', headers['x-ratelimit-used']);
     console.log('---------------------------------------------------------------------');
 
-    try {
-        const allTokens = await GitToken.findAll({})
-        const tokensArray = allTokens.map(token => token.dataValues.token)
+    if (headers['x-ratelimit-remaining'] > (headers['x-ratelimit-limit'] - 500)) {
+        try {
+            await GitToken.update({
+                status: 'blocked',
+                resetsAt: new Date(headers['x-ratelimit-reset'] * 1000)
+            },
+                {
+                    where: {
+                        token: process.env.GITHUB_ACCESS_TOKEN
+                    }
+                })
 
-        console.log('BEFORE WE DO AMAZING', process.env.GITHUB_ACCESS_TOKEN);
+            const allTokens = await GitToken.findAll({
+                where: {
+                    [Op.or]: [
+                        { status: 'available' },
+                        {
+                            [Op.and]: [
+                                { resetsAt: { [Op.lt]: new Date() } },
+                                { status: "blocked" }
+                            ],
+                        }
+                    ],
+                }
+            })
+            const tokensArray = allTokens.map(token => token.dataValues.token)
 
-        let location = tokensArray.indexOf(process.env.GITHUB_ACCESS_TOKEN)
-        if (tokensArray.length === location + 1) {
-            location = -1
+            await GitToken.update({
+                status: 'available'
+            },
+                {
+                    where: {
+                        token: tokensArray
+                    }
+                })
+
+            console.log('BEFORE WE DO AMAZING', process.env.GITHUB_ACCESS_TOKEN);
+
+            process.env.GITHUB_ACCESS_TOKEN = tokensArray[0];
+
+            console.log('AFTER SWITCH', process.env.GITHUB_ACCESS_TOKEN);
+        } catch (error) {
+            console.error(error);
         }
-        if (headers['x-ratelimit-remaining'] > 4500 ) {
-            process.env.GITHUB_ACCESS_TOKEN = tokensArray[location + 1];
-        }
-
-        console.log('AFTER SWITCH', process.env.GITHUB_ACCESS_TOKEN);
-
-    } catch (error) {
-        console.error(error);
     }
 };

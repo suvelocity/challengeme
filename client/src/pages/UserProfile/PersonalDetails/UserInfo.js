@@ -1,44 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
-import { Link } from "react-router-dom";
-import TextField from "@material-ui/core/TextField";
-import { makeStyles } from "@material-ui/core/styles";
-import network from "../../../services/network";
-import Button from "@material-ui/core/Button";
+import { Link } from 'react-router-dom';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import network from '../../../services/network';
 
-import "./UserInfo.css";
+import './UserInfo.css';
 
 const useStyles = makeStyles(() => ({
   info: {
-    width: "200px",
-    margin: "10px 0px",
+    width: '200px',
+    margin: '10px 0px',
   },
   infoDark: {
-    width: "200px",
-    "&>label": {
-      color: "rgba(255,255,255,0.7)",
+    width: '200px',
+    '&>label': {
+      color: 'rgba(255,255,255,0.7)',
     },
-    "&>div": {
-      color: "white",
+    '&>div': {
+      color: 'white',
     },
   },
   userProfileBackToMyProfile: {
-    margin: "20px 0px -20px 0px"
+    margin: '20px 0px -20px 0px',
   },
 }));
 
 function generateTime(date) {
   let today = new Date(date);
-  const dd = String(today.getDate()).padStart(2, "0");
-  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
   const yyyy = today.getFullYear();
   today = `${yyyy}-${mm}-${dd}`;
   return `${today}`;
 }
 
 const generateName = (name) => {
-  let changedName = "";
+  let changedName = '';
   for (let i = 0; i < name.length; i++) {
     i === 0 ? (changedName += name[i].toUpperCase()) : (changedName += name[i].toLowerCase());
   }
@@ -76,8 +76,8 @@ function UserInfo({ darkMode }) {
   useEffect(() => {
     (async () => {
       try {
-        const username = Cookies.get('userName')
-        mixpanel.track("User On Personal Details Page", { "User": `${username}` })
+        const username = Cookies.get('userName');
+        mixpanel.track('User On Personal Details Page', { User: `${username}` });
         const { data: info } = await network.get(`/api/v1/user_info/${username}`);
         setUserInfo(info[0]);
       } catch (error) {
@@ -86,81 +86,83 @@ function UserInfo({ darkMode }) {
     })();
   }, []);
   return userInfo.firstName ? (
-    <div className="user-page">
-      <div className="user-info-container">
-        <h1>User Info</h1>
-        <TextField
-          className={darkMode ? classes.infoDark : classes.info}
-          defaultValue={generateName(userInfo.firstName)}
-          label="First name"
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <TextField
-          className={darkMode ? classes.infoDark : classes.info}
-          label="Last name"
-          defaultValue={generateName(userInfo.lastName)}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <TextField
-          className={darkMode ? classes.infoDark : classes.info}
-          style={{ color: "white" }}
-          label="Birth Day"
-          defaultValue={generateTime(userInfo.birthDate)}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <TextField
-          className={darkMode ? classes.infoDark : classes.info}
-          label="Country"
-          defaultValue={userInfo.country}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <TextField
-          className={darkMode ? classes.infoDark : classes.info}
-          label="City"
-          defaultValue={userInfo.city}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <TextField
-          className={darkMode ? classes.infoDark : classes.info}
-          label="Github"
-          defaultValue={userInfo.githubAccount}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <TextField
-          className={darkMode ? classes.infoDark : classes.info}
-          label="Account Created"
-          defaultValue={getUpdated(userInfo.createdAt)}
-          InputProps={{
-            readOnly: true,
-          }}
-        />
-        <Link to="/profile">
-          <Button
-            className={classes.userProfileBackToMyProfile}
-            style={{ minWidth: 150 }}
-            variant="contained"
-            color="default"
-          >
-            back to My Profile
-                    </Button>
-        </Link>
+    <div className="user-page-background">
+      <div className="user-page">
+        <div className="user-info-container">
+          <h1>User Info</h1>
+          <TextField
+            className={darkMode ? classes.infoDark : classes.info}
+            defaultValue={generateName(userInfo.firstName)}
+            label="First name"
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <TextField
+            className={darkMode ? classes.infoDark : classes.info}
+            label="Last name"
+            defaultValue={generateName(userInfo.lastName)}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <TextField
+            className={darkMode ? classes.infoDark : classes.info}
+            style={{ color: 'white' }}
+            label="Birth Day"
+            defaultValue={generateTime(userInfo.birthDate)}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <TextField
+            className={darkMode ? classes.infoDark : classes.info}
+            label="Country"
+            defaultValue={userInfo.country}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <TextField
+            className={darkMode ? classes.infoDark : classes.info}
+            label="City"
+            defaultValue={userInfo.city}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <TextField
+            className={darkMode ? classes.infoDark : classes.info}
+            label="Github"
+            defaultValue={userInfo.githubAccount}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <TextField
+            className={darkMode ? classes.infoDark : classes.info}
+            label="Account Created"
+            defaultValue={getUpdated(userInfo.createdAt)}
+            InputProps={{
+              readOnly: true,
+            }}
+          />
+          <Link to="/profile">
+            <Button
+              className={classes.userProfileBackToMyProfile}
+              style={{ minWidth: 150 }}
+              variant="contained"
+              color="default"
+            >
+              back to My Profile
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   ) : (
-      <div />
-    );
+    <div />
+  );
 }
 
 export default UserInfo;

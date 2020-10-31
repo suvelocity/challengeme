@@ -95,7 +95,6 @@ async function getTeamUsersIds(userId) {
 router.get('/top-user', async (req, res) => {
   try {
     const loggedUser = req.user ? req.user.id : 1;
-    console.log(req.user);
 
     const teamUsersIds = await getTeamUsersIds(loggedUser);
 

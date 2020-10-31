@@ -1,21 +1,23 @@
-require("dotenv").config();
-const { Router } = require("express");
-const axios = require("axios");
-const { Sequelize, Op } = require("sequelize");
-const jwt = require("jsonwebtoken");
-const checkAdmin = require("../../middleware/checkAdmin");
+require('dotenv').config();
+const { Router } = require('express');
+const axios = require('axios');
+const { Sequelize, Op } = require('sequelize');
+const jwt = require('jsonwebtoken');
+const checkAdmin = require('../../middleware/checkAdmin');
 const {
-  newChallengeValidation
+  newChallengeValidation,
 } = require('../../helpers/validator');
 const handleGithubTokens = require('../../helpers/handleGithubTokens');
 
 const router = Router();
 
-const { Submission, User, Challenge, Label, Review } = require("../../models");
+const {
+  Submission, User, Challenge, Label, Review,
+} = require('../../models');
 
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const name = req.query.name || "";
+    const name = req.query.name || '';
     const labels = req.query.labels || [];
 
     const allChallenges = await Challenge.findAll({
@@ -28,12 +30,12 @@ router.get("/", async (req, res) => {
       include: [
         {
           model: User,
-          as: "Author",
-          attributes: ["userName"],
+          as: 'Author',
+          attributes: ['userName'],
         },
         {
           model: Label,
-          attributes: ["name", "id"],
+          attributes: ['name', 'id'],
           through: {
             attributes: [],
           },
@@ -48,10 +50,10 @@ router.get("/", async (req, res) => {
         challengeId: allChallengesId,
       },
       attributes: [
-        [Sequelize.fn("COUNT", Sequelize.col("id")), "submissionsCount"],
-        "challengeId",
+        [Sequelize.fn('COUNT', Sequelize.col('id')), 'submissionsCount'],
+        'challengeId',
       ],
-      group: ["challengeId"],
+      group: ['challengeId'],
     });
 
     const reviewsAvg = await Review.findAll({
@@ -59,17 +61,16 @@ router.get("/", async (req, res) => {
         challengeId: allChallengesId,
       },
       attributes: [
-        [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRaiting"],
-        "challengeId",
+        [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRaiting'],
+        'challengeId',
       ],
-      group: ["challengeId"],
+      group: ['challengeId'],
     });
 
     const allChallengesWithReviews = allChallenges.map((challenge, index) => {
       reviewsAvg.forEach((review) => {
         if (review.dataValues.challengeId === challenge.dataValues.id) {
-          challenge.dataValues.averageRaiting =
-            review.dataValues.averageRaiting;
+          challenge.dataValues.averageRaiting = review.dataValues.averageRaiting;
         }
       });
 
@@ -81,8 +82,7 @@ router.get("/", async (req, res) => {
         if (
           countSubmissions.dataValues.challengeId === challenge.dataValues.id
         ) {
-          challenge.dataValues.submissionsCount =
-            countSubmissions.dataValues.submissionsCount;
+          challenge.dataValues.submissionsCount = countSubmissions.dataValues.submissionsCount;
         }
       });
 
@@ -99,20 +99,20 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:challengeId/:userName/submission", async (req, res) => {
+router.get('/:challengeId/:userName/submission', async (req, res) => {
   try {
     const { challengeId } = req.params;
     const { userName } = req.params;
 
     const { id } = await User.findOne({
       where: { userName },
-      attributes: ["id"],
+      attributes: ['id'],
     });
     const testSubmission = await Submission.findAll({
       include: [
         {
           model: User,
-          attributes: ["userName"],
+          attributes: ['userName'],
         },
       ],
       where: {
@@ -122,15 +122,14 @@ router.get("/:challengeId/:userName/submission", async (req, res) => {
     });
     const timeNow = Date.now();
     if (testSubmission.length > 0) {
-      const recentSubmission =
-        testSubmission[testSubmission.length - 1].dataValues;
-      if (recentSubmission.state === "PENDING") {
+      const recentSubmission = testSubmission[testSubmission.length - 1].dataValues;
+      if (recentSubmission.state === 'PENDING') {
         if (timeNow - recentSubmission.createdAt.getTime() > 150000) {
           const submissionThatIsStuck = await Submission.findByPk(
-            recentSubmission.id
+            recentSubmission.id,
           );
-          await submissionThatIsStuck.update({ state: "FAIL" });
-          console.log("its because zach is crazy");
+          await submissionThatIsStuck.update({ state: 'FAIL' });
+          console.log('its because zach is crazy');
         }
       }
     }
@@ -141,14 +140,14 @@ router.get("/:challengeId/:userName/submission", async (req, res) => {
   }
 });
 
-router.get("/:challengeId/submissions", async (req, res) => {
+router.get('/:challengeId/submissions', async (req, res) => {
   try {
     const { challengeId } = req.params;
     const allSubmission = await Submission.findAll({
       include: [
         {
           model: User,
-          attributes: ["userName"],
+          attributes: ['userName'],
         },
       ],
       where: {
@@ -162,7 +161,7 @@ router.get("/:challengeId/submissions", async (req, res) => {
   }
 });
 
-router.get("/userChallenges", async (req, res) => {
+router.get('/userChallenges', async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
       where: {
@@ -171,12 +170,12 @@ router.get("/userChallenges", async (req, res) => {
       include: [
         {
           model: User,
-          as: "Author",
-          attributes: ["userName"],
+          as: 'Author',
+          attributes: ['userName'],
         },
         {
           model: Label,
-          attributes: ["name", "id"],
+          attributes: ['name', 'id'],
           through: {
             attributes: [],
           },
@@ -186,11 +185,11 @@ router.get("/userChallenges", async (req, res) => {
     res.json(allChallenges);
   } catch (err) {
     console.error(error.message);
-    res.status(400).json({ message: "Cannot process request" });
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 // router Post - new challenge
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { repositoryName: newRepo } = req.body;
     const repoExists = await Challenge.findOne({
@@ -199,7 +198,7 @@ router.post("/", async (req, res) => {
       },
     });
     if (repoExists) {
-      return res.status(409).json({ message: "Repo is already in the system" });
+      return res.status(409).json({ message: 'Repo is already in the system' });
     }
     const newChallengeObj = {
       name: req.body.name,
@@ -207,9 +206,9 @@ router.post("/", async (req, res) => {
       type: req.body.type,
       repositoryName: req.body.repositoryName,
       boilerPlate: req.body.boilerPlate,
-      authorId: req.user.userId
-    }
-    const { error } = newChallengeValidation(newChallengeObj)
+      authorId: req.user.userId,
+    };
+    const { error } = newChallengeValidation(newChallengeObj);
     if (error) {
       console.error(error.message);
       return res.status(400).json({ success: false, message: "Don't mess with me" });
@@ -218,11 +217,11 @@ router.post("/", async (req, res) => {
     res.json(newChallenge);
   } catch (err) {
     console.error(error.message);
-    res.status(400).json({ message: "Cannot process request" });
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
-router.post("/:challengeId/apply", async (req, res) => {
+router.post('/:challengeId/apply', async (req, res) => {
   try {
     const { challengeId } = req.params;
     const { commentContent, commentTitle, rating } = req.body;
@@ -239,30 +238,29 @@ router.post("/:challengeId/apply", async (req, res) => {
     const pendingSubmission = await Submission.findOne({
       where: {
         solutionRepository,
-        state: "PENDING",
+        state: 'PENDING',
       },
     });
     if (pendingSubmission) {
-      return res.status(400).json({ message: "already submitting" });
+      return res.status(400).json({ message: 'already submitting' });
     }
     submission = await Submission.create({
       challengeId,
       userId: req.user.userId,
-      state: "PENDING",
+      state: 'PENDING',
       solutionRepository,
     });
 
     const urltoSet = process.env.MY_URL.concat(
-      `/api/v1/webhook/submission/${submission.id}`
+      `/api/v1/webhook/submission/${submission.id}`,
     );
     const bearerToken = jwt.sign(
       { userId: req.user.userId, userName: req.user.userName },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: '1h' },
     );
-    const pureToken =
-      bearerToken.indexOf(" ") !== -1 ? bearerToken.split(" ")[1] : bearerToken;
-    const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || "master"; // In case somehow the process env branches are not set.
+    const pureToken = bearerToken.indexOf(' ') !== -1 ? bearerToken.split(' ')[1] : bearerToken;
+    const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || 'master'; // In case somehow the process env branches are not set.
     // console.log(
     //   {
     //     ref, // the branch that the actions are run on
@@ -293,10 +291,10 @@ router.post("/:challengeId/apply", async (req, res) => {
         },
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
             Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
           },
-        }
+        },
       )
       .catch((error) => {
         handleGithubTokens(error.response.headers);
@@ -307,23 +305,23 @@ router.post("/:challengeId/apply", async (req, res) => {
   } catch (error) {
     console.error(error.message);
     handleGithubTokens(error.response.headers);
-    res.status(400).json({ message: "Cannot process request" });
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
-//============================== Admin Routes ======================================
-router.get("/pending-challenges", checkAdmin, async (req, res) => {
+//= ============================= Admin Routes ======================================
+router.get('/pending-challenges', checkAdmin, async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
       include: [
         {
           model: User,
-          as: "Author",
-          attributes: ["userName"],
+          as: 'Author',
+          attributes: ['userName'],
         },
         {
           model: Label,
-          attributes: ["name", "id"],
+          attributes: ['name', 'id'],
           through: {
             attributes: [],
           },
@@ -333,53 +331,51 @@ router.get("/pending-challenges", checkAdmin, async (req, res) => {
     res.json(allChallenges);
   } catch (err) {
     console.error(error.message);
-    res.status(400).json({ message: "Cannot process request" });
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
-router.patch("/state-update/:challengeId", checkAdmin, async (req, res) => {
+router.patch('/state-update/:challengeId', checkAdmin, async (req, res) => {
   try {
     const { challengeId } = req.params;
-    const state = req.body.state;
-    console.log(req.body);
+    const { state } = req.body;
     const updatedChallenge = await Challenge.update({
-      state: state
+      state,
     },
-      {
-        where: {
-          id: challengeId
-        },
+    {
+      where: {
+        id: challengeId,
       },
-    );
+    });
     if (updatedChallenge[0]) {
-      res.json({ message: "Success" });
+      res.json({ message: 'Success' });
     } else {
       console.error('Failed to Update State');
-      res.status(400).json({ message: "Failed to Update State" });
+      res.status(400).json({ message: 'Failed to Update State' });
     }
   } catch (err) {
     console.error(error.message);
-    res.status(400).json({ message: "Cannot process request" });
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
-//============================== ALLWAYS LAST ROUTE ! ======================================
-router.get("/:challengeId", async (req, res) => {
+//= ============================= ALLWAYS LAST ROUTE ! ======================================
+router.get('/:challengeId', async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
-      where: { id: req.params.challengeId, state: 'approved', },
+      where: { id: req.params.challengeId, state: 'approved' },
       include: [
         {
           model: Label,
-          attributes: ["name", "id"],
+          attributes: ['name', 'id'],
           through: {
             attributes: [],
           },
         },
         {
           model: User,
-          as: "Author",
-          attributes: ["email", "userName"],
+          as: 'Author',
+          attributes: ['email', 'userName'],
         },
       ],
     });
@@ -387,19 +383,19 @@ router.get("/:challengeId", async (req, res) => {
     const challengeSubmittions = await Submission.findAll({
       where: { challengeId: req.params.challengeId },
       attributes: [
-        [Sequelize.fn("COUNT", Sequelize.col("id")), "submissionsCount"],
-        "challengeId",
+        [Sequelize.fn('COUNT', Sequelize.col('id')), 'submissionsCount'],
+        'challengeId',
       ],
-      group: ["challengeId"],
+      group: ['challengeId'],
     });
 
     const averageRaiting = await Review.findAll({
       where: { challengeId: req.params.challengeId },
       attributes: [
-        [Sequelize.fn("AVG", Sequelize.col("rating")), "averageRating"],
-        "challengeId",
+        [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRating'],
+        'challengeId',
       ],
-      group: ["challengeId"],
+      group: ['challengeId'],
     });
 
     challenge.dataValues.averageRaiting = averageRaiting[0]
@@ -412,9 +408,9 @@ router.get("/:challengeId", async (req, res) => {
     res.json(challenge);
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: "Cannot process request" });
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
-//============================== ALLWAYS LAST ROUTE ! ======================================
+//= ============================= ALLWAYS LAST ROUTE ! ======================================
 
 module.exports = router;

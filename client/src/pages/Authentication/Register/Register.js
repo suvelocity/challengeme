@@ -188,7 +188,7 @@ function Register() {
             securityQuestion,
             securityAnswer,
           });
-          mixpanel.track("User Finished Registertion");
+          mixpanel.track('User Finished Registertion');
           setLoading(false);
         } catch (err) {
           tempErrs.push({
@@ -283,7 +283,7 @@ function Register() {
   const multiForm = () => {
     switch (step) {
       case 1:
-        mixpanel.track("User On Register Page 1");
+        mixpanel.track('User On Register Page 1');
         return (
           <UserDetails
             nextStep={nextStep}
@@ -292,7 +292,7 @@ function Register() {
           />
         );
       case 2:
-        mixpanel.track("User On Register Page 2");
+        mixpanel.track('User On Register Page 2');
         return (
           <PersonalDetails
             nextStep={nextStep}
@@ -302,13 +302,13 @@ function Register() {
           />
         );
       case 3:
-        mixpanel.track("User On Register Page 3");
+        mixpanel.track('User On Register Page 3');
         return <Security handleChange={handleChange} values={values} />;
       case 4:
-        mixpanel.track("User On Register Page 4");
+        mixpanel.track('User On Register Page 4');
         return <Extras handleChange={handleChange} values={values} />;
       case 5:
-        mixpanel.track("User On Register Page 5");
+        mixpanel.track('User On Register Page 5');
         return <Confirm email={email} />;
       default:
         return (

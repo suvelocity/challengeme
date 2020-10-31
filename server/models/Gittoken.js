@@ -14,7 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   GitToken.init({
-    token: DataTypes.TEXT
+    token: DataTypes.TEXT,
+    status: DataTypes.ENUM("blocked", "available"),
+    resetsAt: DataTypes.DATE,
+    gitAccount: DataTypes.STRING,
+    actionsLimit: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'GitToken',
