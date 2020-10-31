@@ -66,8 +66,8 @@ const UserProfileLanding = () => {
                       </div>
                     ))
                   ) : (
-                      <div>Labels Not Found</div>
-                    )}
+                    <div>Labels Not Found</div>
+                  )}
                 </div>
                 <div className="user-profile-single-challenge-information-container">
                   <div>

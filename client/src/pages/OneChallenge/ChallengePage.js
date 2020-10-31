@@ -66,6 +66,7 @@ function ChallengePage({ darkMode }) {
   const [rating, setRating] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loadingReq, setLoadingReq] = useState(false);
+  const [ratingCount, setRatingCount] = useState('');
 
   const filteredLabels = useContext(FilteredLabels);
 
@@ -279,7 +280,17 @@ function ChallengePage({ darkMode }) {
               </div>
             </div>
             <div className="one-challenge-rating">
+              <p>
+                Rating:
+                {rating}
+                {' '}
+                / 5
+              </p>
               <Rating name="half-rating-read" value={rating} readOnly size="large" />
+              <div>
+                Total Ratings :
+                {ratingCount}
+              </div>
             </div>
           </div>
           <div className={classes.getStartedButtonContainer}>
@@ -307,10 +318,10 @@ function ChallengePage({ darkMode }) {
               {getSubmissionButton()}
             </div>
           ) : (
-              <div style={{ textAlign: 'center' }}>
-                <CircularProgress style={{ margin: '30px' }} />
-              </div>
-            )}
+            <div style={{ textAlign: 'center' }}>
+              <CircularProgress style={{ margin: '30px' }} />
+            </div>
+          )}
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
@@ -319,13 +330,13 @@ function ChallengePage({ darkMode }) {
         </div>
         <div className="one-challenge-reviews-container">
           <b className="one-challenge-reviews-title">Reviews :</b>
-          <ReviewsTab challengeId={challenge.id} />
+          <ReviewsTab challengeId={challenge.id} setRatingCount={setRatingCount} />
         </div>
       </div>
     </div>
   ) : (
-      <Loading darkMode={darkMode} />
-    );
+    <Loading darkMode={darkMode} />
+  );
 }
 
 export default ChallengePage;
