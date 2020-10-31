@@ -1,32 +1,21 @@
 require('dotenv').config();
 const { Router } = require('express');
-const sequelize = require('sequelize');
-const { Op } = require('sequelize');
-const { GitToken, Submission } = require('../../models');
+const { GitToken } = require('../../models');
 
 const router = Router();
 
 router.get('/', async (req, res) => {
   try {
     const allTokens = await GitToken.findAll({});
-    const month = 31 * 24 * 60 * 60 * 1000;
-    const submissionCount = await Submission.findAll({
-      attributes: [[sequelize.fn('COUNT', sequelize.col('id')), 'countSubmission']],
-      where: {
-        created_at: {
-          [Op.gte]: new Date(Date.now() - month),
-        },
-      },
-    });
-    const tokensArray = allTokens.map((token) => token.dataValues.token);
-    let location = tokensArray.indexOf(process.env.GITHUB_ACCESS_TOKEN);
-    if (tokensArray.length === location + 1) {
-      location = -1;
-    }
-    if (submissionCount[0].dataValues.countSubmission > 1000 * (location + 1)) {
-      process.env.GITHUB_ACCESS_TOKEN = tokensArray[location + 1];
-    }
-    res.json([allTokens, submissionCount]);
+    const allTokensForResponse = allTokens.map(token => {
+      if (token.dataValues.token === process.env.GITHUB_ACCESS_TOKEN) {
+        token.dataValues.active = true
+      } else {
+        token.dataValues.active = false
+      }
+      return token
+    })
+    res.json([allTokensForResponse]);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
