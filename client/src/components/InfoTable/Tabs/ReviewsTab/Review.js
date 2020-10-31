@@ -36,11 +36,11 @@ function Review({
     }
   }, [createdAt]);
   return (
-    <div className="review">
-      <div className="title">{title}</div>
-      <div className="createdAt">{date}</div>
-      <div className="content">{content}</div>
-      <div className="rating">
+    <div className="review" cy-test="challenge-single-review">
+      <div className="title" cy-test="review-title">{title}</div>
+      <div className="createdAt" cy-test="review-createdAt">{date}</div>
+      <div className="content" cy-test="review-content">{content}</div>
+      <div className="rating" cy-test="review-rating">
         <Rating
           name="half-rating-read"
           defaultValue={rating}
@@ -48,7 +48,7 @@ function Review({
           readOnly
         />
       </div>
-      <div className="author">
+      <div className="author" cy-test="review-author">
         By:
         {author}
       </div>

@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "userId": 1,
+        "challengeId": 1,
+        "title": "My First Review",
+        "content": "I liked this challenge alot!",
+        "rating": 5,
+        "createdAt": "2020-10-01T20:00:00.000Z",
+        "updatedAt": "2020-10-01T20:00:00.000Z",
+        "deletedAt": null,
+        "User": {
+            "userName": "suvelocity"
+        }
+    },
+    {
+        "id": 3,
+        "userId": 1,
+        "challengeId": 1,
+        "title": "A Bad Review",
+        "content": "Did not like the readMe file",
+        "rating": 2,
+        "createdAt": "2020-10-02T20:00:00.000Z",
+        "updatedAt": "2020-10-02T20:00:00.000Z",
+        "deletedAt": null,
+        "User": {
+            "userName": "suvelocity"
+        }
+    },
+    {
+        "id": 6,
+        "userId": 1,
+        "challengeId": 1,
+        "title": "Review",
+        "content": "content",
+        "rating": 5,
+        "createdAt": "2020-10-01T20:00:00.000Z",
+        "updatedAt": "2020-10-01T20:00:00.000Z",
+        "deletedAt": null,
+        "User": {
+            "userName": "suvelocity"
+        }
+    }
+]
