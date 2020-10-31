@@ -140,7 +140,7 @@ router.get('/challenges-sumbissions', async (req, res) => {
     const users = await Challenge.findAll({
       include: {
         model: Submission,
-        attributes: ['id', 'userId', 'createdAt', 'state'],
+        attributes: ['id', 'userId', 'createdAt', 'state','solutionRepository'],
         include: {
           model: User,
           attributes: ['userName'],

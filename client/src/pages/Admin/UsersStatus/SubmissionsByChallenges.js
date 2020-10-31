@@ -75,6 +75,7 @@ function Row(props) {
                   <TableRow>
                     <StyledTableCell>Submission Id</StyledTableCell>
                     <StyledTableCell align="left">User Name</StyledTableCell>
+                    <StyledTableCell align="left">Solution Repository</StyledTableCell>
                     <StyledTableCell align="left">Created At</StyledTableCell>
                     <StyledTableCell align="left">State</StyledTableCell>
                   </TableRow>
@@ -86,6 +87,11 @@ function Row(props) {
                       <StyledTableCell>
                         {' '}
                         {userBySubmission.userName}
+                        {' '}
+                      </StyledTableCell>
+                      <StyledTableCell>
+                        {' '}
+                        {userBySubmission.solutionRepository}
                         {' '}
                       </StyledTableCell>
                       <StyledTableCell align="left">{new Date(userBySubmission.createdAt).toString().substring(0, 24)}</StyledTableCell>
@@ -117,7 +123,6 @@ const SubmissionsByChallenges = () => {
   const getChallengesSumbissions = async () => {
     try {
       const { data: challengesSumbissionsFromServer } = await network.get('/api/v1/statistics/insights/challenges-sumbissions');
-      console.log(challengesSumbissionsFromServer);
       setChallengesSumbissions(challengesSumbissionsFromServer[0]);
       setUsersPerChallenge(challengesSumbissionsFromServer[1]);
     } catch (error) {
@@ -135,12 +140,15 @@ const SubmissionsByChallenges = () => {
     createdAt: challenge.createdAt,
     Submissions: usersPerChallenge.map((userChallenge) => {
       if (challenge.Challenge.id === userChallenge.id) {
-        return userChallenge.Submissions.map((userBySubmission) => ({
-          id: userBySubmission.id,
-          userName: userBySubmission.User.userName,
-          createdAt: userBySubmission.createdAt,
-          state: userBySubmission.state,
-        }));
+        return userChallenge.Submissions.map((userBySubmission) => {
+          return {
+            id: userBySubmission.id,
+            userName: userBySubmission.User.userName,
+            solutionRepository: userBySubmission.solutionRepository,
+            createdAt: userBySubmission.createdAt,
+            state: userBySubmission.state,
+          }
+        });
       }
       return null;
     }).filter((element) => !(!element))[0],

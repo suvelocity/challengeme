@@ -75,14 +75,16 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>Challenge Name</StyledTableCell>
+                    <StyledTableCell align="left">Solution Repository</StyledTableCell>
                     <StyledTableCell align="left">Status</StyledTableCell>
                     <StyledTableCell align="left">Created At</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.Submissions && row.Submissions.map((submission) => (
-                    <StyledTableRow key={submission.Challenge.name}>
+                  {row.Submissions && row.Submissions.map((submission) => {
+                    return <StyledTableRow key={submission.Challenge.name}>
                       <StyledTableCell component="th" scope="row">{submission.Challenge.name}</StyledTableCell>
+                      <StyledTableCell align="left">{submission.solutionRepository}</StyledTableCell>
                       <StyledTableCell color="secondary">
                         <div style={submission.state === 'SUCCESS'
                           ? { color: 'green' }
@@ -94,7 +96,7 @@ function Row(props) {
                       </StyledTableCell>
                       <StyledTableCell align="left">{new Date(submission.createdAt).toString().substring(0, 24)}</StyledTableCell>
                     </StyledTableRow>
-                  ))}
+                  })}
                 </TableBody>
               </Table>
             </Box>
