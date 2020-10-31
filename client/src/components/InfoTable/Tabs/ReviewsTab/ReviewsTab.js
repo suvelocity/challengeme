@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Review from './Review';
 import network from '../../../../services/network';
 
-function ReviewsTab({ challengeId }) {
+function ReviewsTab({ challengeId,setRatingCount }) {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,6 +13,7 @@ function ReviewsTab({ challengeId }) {
         const { data: reviewsArrayFromServer } = await network.get(
           `/api/v1/reviews/byChallenge/${challengeId}`,
         );
+        setRatingCount(reviewsArrayFromServer.length)
         const reviewsWithContent = reviewsArrayFromServer.filter(
           (review) => review.title && review.content,
         );
