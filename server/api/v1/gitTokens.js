@@ -10,6 +10,7 @@ router.get('/', async (req, res) => {
     const allTokensForResponse = allTokens.map(token => {
       if (token.dataValues.token === process.env.GITHUB_ACCESS_TOKEN) {
         token.dataValues.active = true
+        token.dataValues.remaining = process.env.REMAINING_ACTIONS_TOKEN_GITHUB;
       } else {
         token.dataValues.active = false
       }
