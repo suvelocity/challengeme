@@ -70,3 +70,14 @@
     background-position: 0;
   }
 }
+
+
+@media (max-width: 700px) {
+  .challengeMeTitleHomePage{
+    font-size:40px;
+  }
+  .challengeMeQuoteLanding{
+    font-size:25px;
+    text-align: center;
+  }
+}

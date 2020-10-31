@@ -76,3 +76,20 @@ a {
     margin-left: 5px;
     color: white;
 }
+@media (max-width: 700px) {
+    .containerHeaderLogin {
+        /* position:static; */
+        top:0;
+        margin:0px;
+        width: 100vw;
+    }
+    .loginBody {
+        height: calc(100vh - 160px);
+        width:100vw;
+        /* margin-top: 300px; */
+    }
+    .containerErrorLogin {
+        width:80vw;
+        height: 50px;
+    }
+}
