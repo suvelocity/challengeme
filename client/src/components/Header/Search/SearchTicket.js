@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SearchTicket({ ticket, closeSearch, darkMode }) {
-  console.log(ticket);
   const rating = ticket.averageRaiting;
   const classes = useStyles();
   const avatarName = ticket.repositoryName.substring(0, 2).toUpperCase();

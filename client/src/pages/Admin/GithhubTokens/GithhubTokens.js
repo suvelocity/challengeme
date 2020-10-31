@@ -89,6 +89,12 @@ function Row(props) {
         </StyledTableCell>
         <StyledTableCell align="left">{row.token}</StyledTableCell>
         <StyledTableCell align="left">{row.status}</StyledTableCell>
+        <StyledTableCell align="left"><div style={
+          row.active
+            ? { color: 'green' }
+            :
+            { color: 'red' }
+        }          >{`${row.active}`}</div></StyledTableCell>
         <StyledTableCell align="left">{row.gitAccount}</StyledTableCell>
         <StyledTableCell align="left">{row.actionsLimit}</StyledTableCell>
         <StyledTableCell align="left">{new Date(row.updatedAt).toString().substring(0, 24)}</StyledTableCell>
@@ -127,6 +133,7 @@ function GithhubTokens() {
   async function getAllTokens() {
     try {
       const { data: allTokensFromServer } = await network.get('/api/v1/git/');
+      console.log(allTokensFromServer);
       setAllTokens(allTokensFromServer);
     } catch (error) {
       console.error(error);
@@ -164,6 +171,7 @@ function GithhubTokens() {
               <StyledTableCell>Id</StyledTableCell>
               <StyledTableCell align="left">Token</StyledTableCell>
               <StyledTableCell align="left">Status</StyledTableCell>
+              <StyledTableCell align="left">Active</StyledTableCell>
               <StyledTableCell align="left">Github Account</StyledTableCell>
               <StyledTableCell align="left">Actions Limit</StyledTableCell>
               <StyledTableCell align="left">Created At</StyledTableCell>
