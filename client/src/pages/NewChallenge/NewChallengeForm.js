@@ -69,11 +69,11 @@ export default function NewChallengeForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newBadInput = [];
-    if (repoName.length < 2 || repoName.match(spaces) || repoName.match(hebrew)) {
+    if (repoName.length < 1 || repoName.match(spaces) || repoName.match(hebrew)) {
       newBadInput.push(
         generateAlert(
           "Repository's name is too short",
-          "Minimum 2 characters. Don't use hebrew letters",
+          "Minimum 1 character. Don't use hebrew letters",
         ),
       );
     }
@@ -171,7 +171,7 @@ export default function NewChallengeForm() {
         });
         history.push('/');
       } catch (error) {
-        if (error.response.status === 500) {
+        if (error.response.status === 400) {
           Swal.fire({
             icon: 'error',
             title: error.response.data,
