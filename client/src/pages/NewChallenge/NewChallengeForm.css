@@ -132,3 +132,9 @@
   }
   
 }
+@media (max-width: 700px) {  
+  .newChallengeForm{
+      width:95vw;
+  }
+  }
+  

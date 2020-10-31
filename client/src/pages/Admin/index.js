@@ -53,7 +53,7 @@ function Index() {
     }, [])
 
     return (
-        <div  >
+        <>
             <Suspense fallback={<Loading />}>
                 <ErrorBoundry>
                     <Switch>
@@ -81,7 +81,7 @@ function Index() {
                     </Switch>
                 </ErrorBoundry>
             </Suspense>
-        </div>
+        </>
     );
 };
 
