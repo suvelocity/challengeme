@@ -111,11 +111,14 @@ function Row(props) {
                 <TableBody>
                   <StyledTableRow key={row.userName}>
                     <StyledTableCell component="th" scope="row">
-                      <Button onClick={() => updateToken(row.token, row.status)}>Change Aviel</Button>
+                      <Button onClick={() => updateToken(row.token, row.status)}>Change Status</Button>
                     </StyledTableCell>
                     <StyledTableCell component="th" scope="row">
-                      <Button onClick={() => deleteToken(row.token)}>Delete Aviel</Button>
+                      <Button onClick={() => deleteToken(row.token)}>Delete Token</Button>
                     </StyledTableCell>
+                    <StyledTableCell component="th" scope="row">
+                      Remaining: {row.remaining ? row.remaining : 'Not Active'}
+                      </StyledTableCell>
                   </StyledTableRow>
                 </TableBody>
               </Table>

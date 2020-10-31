@@ -9,6 +9,8 @@ module.exports = async function handleGithubTokens(headers) {
     console.log('Actions Alredy Used - ', headers['x-ratelimit-used']);
     console.log('---------------------------------------------------------------------');
 
+    process.env.REMAINING_ACTIONS_TOKEN_GITHUB = headers['x-ratelimit-remaining'];
+
     if (headers['x-ratelimit-remaining'] < 500) {
         try {
             await GitToken.update({
