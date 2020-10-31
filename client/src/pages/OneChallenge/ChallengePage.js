@@ -1,5 +1,5 @@
 import React, {
-  useState, useEffect, useCallback, useContext,
+  useState, useEffect, useContext,
 } from 'react';
 import mixpanel from 'mixpanel-browser';
 import { Button } from '@material-ui/core';
@@ -64,9 +64,9 @@ function ChallengePage({ darkMode }) {
   const [image, setImage] = useState('');
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const [rating, setRating] = useState(0);
-  const [date, setDate] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loadingReq, setLoadingReq] = useState(false);
+  const [ratingCount, setRatingCount] = useState('');
 
   const filteredLabels = useContext(FilteredLabels);
 
@@ -74,34 +74,6 @@ function ChallengePage({ darkMode }) {
     const user = Cookies.get('userName');
     mixpanel.track('User On Challenge Page', { User: `${user}`, ChallengeId: `${id}` });
     // eslint-disable-next-line
-  }, []);
-
-  const getUpdated = useCallback((dateToFactor) => {
-    const dateNow = Date.now();
-    const updateRepoDate = new Date(dateToFactor);
-    let diff = (dateNow - updateRepoDate.getTime()) / 1000 / 60 / 60;
-    if (diff < 24) {
-      setDate(`${Math.floor(diff)} Hours ago`);
-    } else {
-      diff /= 24;
-      diff = Math.floor(diff);
-      if (diff < 8) {
-        setDate(`${Math.floor(diff)} Days ago`);
-      } else {
-        diff = Math.floor(diff / 7);
-        if (diff < 5) {
-          setDate(`${Math.floor(diff)} Weeks ago`);
-        } else {
-          diff = Math.floor(diff / 4);
-          if (diff < 13) {
-            setDate(`${Math.floor(diff)} Months ago`);
-          } else {
-            diff = Math.floor(diff / 12);
-            setDate(`${Math.floor(diff)} Years ago`);
-          }
-        }
-      }
-    }
   }, []);
 
   useEffect(() => {
@@ -159,16 +131,6 @@ function ChallengePage({ darkMode }) {
             : 0,
         );
         setSubmissions(challengeFromServer.submissionsCount);
-        try {
-          const { data: repo } = await network.get(
-            `/api/v1/services/public_repo?repo_name=${challengeFromServer.repositoryName}`,
-          );
-          const updateDate = repo.updated_at;
-          getUpdated(updateDate);
-        } catch (error) {
-          console.error(error);
-          setDate(generateTime(challenge.createdAt));
-        }
       } catch (error) {
         console.error(error);
       }
@@ -320,13 +282,19 @@ function ChallengePage({ darkMode }) {
                 {' '}
                 {`${generateTime(challenge.createdAt)} `}
               </div>
-              <div className="one-challenge-updated-at" cy-test="challenge-updatedAt">
-                Updated At:
-                {date || ''}
-              </div>
             </div>
             <div className="one-challenge-rating">
+              <p>
+                Rating:
+                {rating}
+                {' '}
+                / 5
+              </p>
               <Rating name="half-rating-read" value={rating} readOnly size="large" />
+              <div>
+                Total Ratings :
+                {ratingCount}
+              </div>
             </div>
           </div>
           <div className={classes.getStartedButtonContainer}>
@@ -355,10 +323,10 @@ function ChallengePage({ darkMode }) {
               {getSubmissionButton()}
             </div>
           ) : (
-              <div style={{ textAlign: 'center' }}>
-                <CircularProgress style={{ margin: '30px' }} />
-              </div>
-            )}
+            <div style={{ textAlign: 'center' }}>
+              <CircularProgress style={{ margin: '30px' }} />
+            </div>
+          )}
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
@@ -367,13 +335,13 @@ function ChallengePage({ darkMode }) {
         </div>
         <div className="one-challenge-reviews-container" cy-test="challenge-reviews">
           <b className="one-challenge-reviews-title">Reviews :</b>
-          <ReviewsTab challengeId={challenge.id}/>
+          <ReviewsTab challengeId={challenge.id} setRatingCount={setRatingCount} />
         </div>
       </div>
     </div>
   ) : (
-      <Loading darkMode={darkMode} />
-    );
+    <Loading darkMode={darkMode} />
+  );
 }
 
 export default ChallengePage;

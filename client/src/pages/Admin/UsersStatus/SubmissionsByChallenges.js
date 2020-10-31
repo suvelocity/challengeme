@@ -17,6 +17,7 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Loading from '../../../components/Loading/Loading';
 import network from '../../../services/network';
+import '../Admin.css';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -61,7 +62,9 @@ function Row(props) {
           {row.ChallengeName}
         </StyledTableCell>
         <StyledTableCell align="left">{row.countSub}</StyledTableCell>
-        <StyledTableCell align="left">{new Date(row.createdAt).toString().substring(0, 24)}</StyledTableCell>
+        <StyledTableCell align="left">
+          {new Date(row.createdAt).toString().substring(0, 24)}
+        </StyledTableCell>
       </StyledTableRow>
       <StyledTableRow>
         <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -74,32 +77,49 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>Submission Id</StyledTableCell>
+                    <StyledTableCell align="left">Solution Repository</StyledTableCell>
                     <StyledTableCell align="left">User Name</StyledTableCell>
                     <StyledTableCell align="left">Created At</StyledTableCell>
                     <StyledTableCell align="left">State</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.Submissions && row.Submissions.map((userBySubmission) => (
-                    <StyledTableRow key={userBySubmission.id}>
-                      <StyledTableCell component="th" scope="row">{userBySubmission.id}</StyledTableCell>
-                      <StyledTableCell>
-                        {' '}
-                        {userBySubmission.userName}
-                        {' '}
-                      </StyledTableCell>
-                      <StyledTableCell align="left">{new Date(userBySubmission.createdAt).toString().substring(0, 24)}</StyledTableCell>
-                      <StyledTableCell align="left">
-                        <div style={userBySubmission.state === 'SUCCESS'
-                          ? { color: 'green' }
-                          : userBySubmission.state === 'FAIL' ? { color: 'red' }
-                            : { color: 'black' }}
-                        >
-                          {userBySubmission.state}
-                        </div>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
+                  {row.Submissions
+                    && row.Submissions.map((userBySubmission) => (
+                      <StyledTableRow key={userBySubmission.id}>
+                        <StyledTableCell component="th" scope="row">
+                          {userBySubmission.id}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {' '}
+                          {userBySubmission.userName}
+                          {' '}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {' '}
+                          {userBySubmission.solutionRepository}
+                          {' '}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {new Date(userBySubmission.createdAt)
+                            .toString()
+                            .substring(0, 24)}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          <div
+                            style={
+                              userBySubmission.state === 'SUCCESS'
+                                ? { color: 'green' }
+                                : userBySubmission.state === 'FAIL'
+                                  ? { color: 'red' }
+                                  : { color: 'black' }
+                            }
+                          >
+                            {userBySubmission.state}
+                          </div>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    ))}
                 </TableBody>
               </Table>
             </Box>
@@ -115,58 +135,72 @@ const SubmissionsByChallenges = () => {
   const [usersPerChallenge, setUsersPerChallenge] = useState([]);
 
   const getChallengesSumbissions = async () => {
-    try {
-      const { data: challengesSumbissionsFromServer } = await network.get('/api/v1/statistics/insights/challenges-sumbissions');
-      console.log(challengesSumbissionsFromServer);
-      setChallengesSumbissions(challengesSumbissionsFromServer[0]);
-      setUsersPerChallenge(challengesSumbissionsFromServer[1]);
-    } catch (error) {
-      console.error(error);
-    }
+    const { data: challengesSumbissionsFromServer } = await network.get(
+      '/api/v1/statistics/insights/challenges-sumbissions',
+    );
+    console.log(challengesSumbissionsFromServer);
+    setChallengesSumbissions(challengesSumbissionsFromServer[0]);
+    setUsersPerChallenge(challengesSumbissionsFromServer[1]);
   };
 
   useEffect(() => {
     getChallengesSumbissions();
   }, []);
 
-  const combainChallengesSubmissionsVsUsers = challengesSumbissions.length > 0 ? challengesSumbissions.map((challenge) => ({
-    ChallengeName: challenge.Challenge.name,
-    countSub: challenge.countSub,
-    createdAt: challenge.createdAt,
-    Submissions: usersPerChallenge.map((userChallenge) => {
-      if (challenge.Challenge.id === userChallenge.id) {
-        return userChallenge.Submissions.map((userBySubmission) => ({
-          id: userBySubmission.id,
-          userName: userBySubmission.User.userName,
-          createdAt: userBySubmission.createdAt,
-          state: userBySubmission.state,
-        }));
-      }
-      return null;
-    }).filter((element) => !(!element))[0],
-  })) : [];
+  const combainChallengesSubmissionsVsUsers = challengesSumbissions.length > 0
+    ? challengesSumbissions.map((challenge) => ({
+      ChallengeName: challenge.Challenge.name,
+      countSub: challenge.countSub,
+      createdAt: challenge.createdAt,
+      Submissions: usersPerChallenge
+        .map((userChallenge) => {
+          if (challenge.Challenge.id === userChallenge.id) {
+            return userChallenge.Submissions.map((userBySubmission) => ({
+              id: userBySubmission.id,
+              solutionRepository: userBySubmission.solutionRepository,
+              userName: userBySubmission.User.userName,
+              createdAt: userBySubmission.createdAt,
+              state: userBySubmission.state,
+            }));
+          }
+          return null;
+        })
+        .filter((element) => !!element)[0],
+    }))
+    : [];
 
   return (
-    <div style={{ paddingTop: '50px', textAlign: 'center' }}>
-      <h1>This is All The Challenges By Users Page</h1>
-      <Button variant="contained" color="secondary">
-        <Link to="/admin"><h2>Admin Router</h2></Link>
-      </Button>
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell />
-              <StyledTableCell>Challenge Name</StyledTableCell>
-              <StyledTableCell align="left">Sumbissions Count</StyledTableCell>
-              <StyledTableCell align="left">Created At</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          {combainChallengesSubmissionsVsUsers.length > 0 ? combainChallengesSubmissionsVsUsers.map((challenge) => (
-            <Row key={challenge.ChallengeName + challenge.createdAt} row={challenge} />
-          )) : <Loading />}
-        </Table>
-      </TableContainer>
+    <div className="admin-page">
+      <div className="align-and-margin-top">
+        <h1>This is All The Challenges By Users Page</h1>
+        <Button variant="contained" color="secondary">
+          <Link to="/admin">
+            <h2>Admin Router</h2>
+          </Link>
+        </Button>
+        <TableContainer component={Paper}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell />
+                <StyledTableCell>Challenge Name</StyledTableCell>
+                <StyledTableCell align="left">Sumbissions Count</StyledTableCell>
+                <StyledTableCell align="left">Created At</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            {combainChallengesSubmissionsVsUsers.length > 0 ? (
+              combainChallengesSubmissionsVsUsers.map((challenge) => (
+                <Row
+                  key={challenge.ChallengeName + challenge.createdAt}
+                  row={challenge}
+                />
+              ))
+            ) : (
+              <Loading />
+            )}
+          </Table>
+        </TableContainer>
+      </div>
     </div>
   );
 };

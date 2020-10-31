@@ -16,6 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import network from '../../../services/network';
+import '../Admin.css';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -83,30 +84,46 @@ function Row(props) {
                     <StyledTableCell align="left">Country</StyledTableCell>
                     <StyledTableCell align="left">City</StyledTableCell>
                     <StyledTableCell align="left">Birth Date</StyledTableCell>
-                    <StyledTableCell align="left">Security Question</StyledTableCell>
-                    <StyledTableCell align="left">Reason Of Registration</StyledTableCell>
+                    <StyledTableCell align="left">
+                      Security Question
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      Reason Of Registration
+                    </StyledTableCell>
                     <StyledTableCell align="left">Created At</StyledTableCell>
                     <StyledTableCell align="left">Updated At</StyledTableCell>
                   </StyledTableRow>
                 </TableHead>
                 <TableBody>
                   <StyledTableRow key={row.userName}>
-                    <StyledTableCell component="th" scope="row">{row.id}</StyledTableCell>
+                    <StyledTableCell component="th" scope="row">
+                      {row.id}
+                    </StyledTableCell>
                     <StyledTableCell>
                       {' '}
                       {row.phoneNumber}
                       {' '}
                     </StyledTableCell>
-                    <StyledTableCell align="left">{row.country}</StyledTableCell>
+                    <StyledTableCell align="left">
+                      {row.country}
+                    </StyledTableCell>
                     <StyledTableCell align="left">{row.city}</StyledTableCell>
-                    <StyledTableCell align="left">{new Date(row.birthDate).toDateString()}</StyledTableCell>
-                    <StyledTableCell align="left">{row.securityQuestion}</StyledTableCell>
+                    <StyledTableCell align="left">
+                      {new Date(row.birthDate).toDateString()}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      {row.securityQuestion}
+                    </StyledTableCell>
                     <StyledTableCell align="left">
                       {' '}
                       {row.reasonOfRegistration}
                     </StyledTableCell>
-                    <StyledTableCell align="left">{new Date(row.createdAt).toString().substring(0, 24)}</StyledTableCell>
-                    <StyledTableCell align="left">{new Date(row.updatedAt).toString().substring(0, 24)}</StyledTableCell>
+                    <StyledTableCell align="left">
+                      {new Date(row.createdAt).toString().substring(0, 24)}
+                    </StyledTableCell>
+                    <StyledTableCell align="left">
+                      {new Date(row.updatedAt).toString().substring(0, 24)}
+                    </StyledTableCell>
                   </StyledTableRow>
                 </TableBody>
               </Table>
@@ -122,42 +139,43 @@ function UsersControl() {
   const [allUsers, setAllUsers] = useState([]);
 
   async function getAllUsers() {
-    try {
-      const { data: allUsersFromServer } = await network.get('/api/v1/admin/allusers');
-      setAllUsers(allUsersFromServer);
-    } catch (error) {
-      console.error(error);
-    }
+    const { data: allUsersFromServer } = await network.get('/api/v1/admin/allusers');
+    setAllUsers(allUsersFromServer);
   }
   useEffect(() => {
     getAllUsers();
   }, []);
 
   return (
-    <div style={{ paddingTop: '50px', textAlign: 'center' }}>
-      <h1>This is Users Management Page</h1>
-      <Button variant="contained" color="secondary">
-        <Link to="/admin"><h2>Admin Router</h2></Link>
-      </Button>
-      <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
-          <TableHead>
-            <TableRow>
-              <StyledTableCell />
-              <StyledTableCell>User Name</StyledTableCell>
-              <StyledTableCell align="left">Full Name</StyledTableCell>
-              <StyledTableCell align="left">Email</StyledTableCell>
-              <StyledTableCell align="left">Github Account</StyledTableCell>
-              <StyledTableCell align="left">Permission</StyledTableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {allUsers && allUsers.map((user) => (
-              <Row key={user.userName + user.id} row={user} />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+    <div className="admin-page">
+      <div className="align-and-margin-top">
+        <h1>This is Users Management Page</h1>
+        <Button variant="contained" color="secondary">
+          <Link to="/admin">
+            <h2>Admin Router</h2>
+          </Link>
+        </Button>
+        <TableContainer component={Paper}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell />
+                <StyledTableCell>User Name</StyledTableCell>
+                <StyledTableCell align="left">Full Name</StyledTableCell>
+                <StyledTableCell align="left">Email</StyledTableCell>
+                <StyledTableCell align="left">Github Account</StyledTableCell>
+                <StyledTableCell align="left">Permission</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {allUsers
+                                && allUsers.map((user) => (
+                                  <Row key={user.userName + user.id} row={user} />
+                                ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </div>
     </div>
   );
 }
