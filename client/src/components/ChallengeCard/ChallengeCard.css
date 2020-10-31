@@ -3,7 +3,8 @@
     background: white;
     display: flex;
     width: 80vw;
-    height: 200px;
+    min-height: 200px;
+    height:auto;
     margin-bottom: 30px;
     border-radius:3px;
     color: black;
@@ -40,8 +41,10 @@
 .chalenge-card-profile-pic {
     width: 533px;
     height: 100%;
+    min-height:200px;
 }
 .challenge-card-img-homepage{
+    min-height:200px;
     width: 100%;
     height:100%;
     border-radius: 3px 0px 0px 3px ;
@@ -63,8 +66,10 @@
     margin-left: 15px;
 }
 .first-row-container{
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    /* justify-content: flex-start; */
+    /* align-items: center; */
     width: 100%;
     margin-bottom: 10px;
 }
@@ -75,9 +80,12 @@
 .labels-container{
     padding-right: 10px;
     display: flex;
+    flex-wrap: wrap;
     overflow-wrap: break-word;
     margin-left: auto;
     margin-right: 5px;
+    justify-self: flex-end;
+    align-items: center;
 }
 .home-page-challenge-labels{
     font-size: 11px;
@@ -118,6 +126,8 @@
     }
 
     .first-row-container{
+        display:flex;
+        align-items: center;
      flex-direction: column;
     }
 
@@ -137,30 +147,3 @@
 }
 }
 
-
-/* @media only screen and (max-width: 350px) {
-    .challenge-card-data-homepage{
-        font-size: 13px;
-        padding-top: 3.5px;
-    }
-    .challenge-card{
-        margin: 0;
-        margin-top: 5px;
-        margin-bottom: 5px;
-        margin-right: 15px;
-        margin-left: 5px;
-    }
-
-  }
-
-  @media only screen and (max-width: 400px) {
-  
-    .avatar-and-repo-name{
-        padding-left: 5px;
-    }
-    .home-page-challenge-labels{
-        padding:4px
-    }
-
-
-  } */
