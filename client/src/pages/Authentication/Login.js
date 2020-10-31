@@ -27,6 +27,9 @@ const useStyles = makeStyles(() => ({
     marginTop: '110px',
     marginBottom: '20px',
     width: '320px',
+    "@media (max-width: 700px) ":{
+      marginTop: '220px',
+    }
   },
   passwordLoginINput: {
     marginBottom: '5px',
@@ -37,9 +40,6 @@ const useStyles = makeStyles(() => ({
     marginTop: '70px',
     background: 'linear-gradient(45deg, #447CC6 30%, #315CAB 90%)',
     color: 'white',
-    "@media (max-width: 700px) ":{
-      marginTop: 'auto',
-    }
   },
 }));
 
