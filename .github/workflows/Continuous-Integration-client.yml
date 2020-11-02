@@ -32,8 +32,8 @@ jobs:
       - name: Run web server
         run: npm start & npx wait-on http://localhost:3000
         working-directory: ./client
-      - name: Cypress run
-        run: npx cypress run
+      - name: Jest run
+        run: npm run test
         working-directory: ./client
       # DO NOT DELETE BELOW , we will need to add the secret to the repo and intialize the Cypress project
       # - name: Cypress run and record

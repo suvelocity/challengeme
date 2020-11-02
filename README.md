@@ -7,7 +7,15 @@
 - create new db for development - default name is `challenge` (can change by .env file)
 - run migration: `npm run migrate` (in server folder)
 - run seeds `npx sequelize db:seed:all`
-- change ENV_NAME in .env file
+- change .example.env file to .env
+- change GITHUB_ACCESS_TOKEN in .env file to your github token, you can read [here](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token)
+- change GITHUB_REPO in .env file to your github repository
+- change IP_ADDRESS in .env file to your client ip adress
+- change SUVELOCITY_MAIL in .env file to your email acount
+- change SUVELOCITY_PASSWORD in .env file to your appliction email password. you can read about it [here](https://support.google.com/mail/answer/185833?hl=en-GB)
+- change all tokens in .env file to some random characters
+- to start the server: cd server && npm run dev
+- to start the client: cd client && npm start
 
 Only once - init
 
