@@ -18,4 +18,19 @@ router.get('/allUsers', async (req, res) => {
   }
 });
 
+router.patch('/edit-user', async (req, res) => {
+  const { permission, userName } = req.body;
+  try {
+    const updatedUser = await User.update({ permission }, {
+      where: {
+        userName
+      },
+    });
+    res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
 module.exports = router;
