@@ -77,8 +77,8 @@ function Row(props) {
                 <TableHead>
                   <TableRow>
                     <StyledTableCell>Submission Id</StyledTableCell>
-                    <StyledTableCell align="left">Solution Repository</StyledTableCell>
                     <StyledTableCell align="left">User Name</StyledTableCell>
+                    <StyledTableCell align="left">Solution Repository</StyledTableCell>
                     <StyledTableCell align="left">Created At</StyledTableCell>
                     <StyledTableCell align="left">State</StyledTableCell>
                   </TableRow>
