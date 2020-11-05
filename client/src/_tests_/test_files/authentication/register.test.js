@@ -152,7 +152,7 @@ describe('Client Tests', () => {
         await page.click("#confirmPassword");
         await page.type("#confirmPassword", '78');
         await page.click("#nextButton");
-        await timeout(5000)
+        await timeout(6000)
         await page.waitForSelector(".errorInputRegister");
         linkTexts = await page.$$eval(".errorInputRegister",
             elements => elements.map(item => item.textContent))
@@ -162,7 +162,7 @@ describe('Client Tests', () => {
         await page.click("#securityAnswer");
         await page.type("#securityAnswer", '123456');
         await page.click("#nextButton");
-        await timeout(5000)
+        await timeout(6000)
         await page.waitForSelector(".errorInputRegister");
         linkTexts = await page.$$eval(".errorInputRegister",
             elements => elements.map(item => item.textContent))
@@ -170,11 +170,11 @@ describe('Client Tests', () => {
         await page.click("#securityAnswer");
         await page.type("#securityAnswer", '78');
         button.click();
-        await timeout(1000);
+        await timeout(6000);
         expect(page._target._targetInfo.url).toBe(baseUrl + '/register');
         await page.waitForSelector("#signUpReason");
         await page.click("#nextButton");
-        await timeout(5000)
+        await timeout(6000)
         await page.waitForSelector(".errorInputRegister");
         linkTexts = await page.$$eval(".errorInputRegister",
             elements => elements.map(item => item.textContent))
@@ -184,7 +184,7 @@ describe('Client Tests', () => {
         await page.click("#github");
         await page.type("#github", '%+121212');
         await page.click("#nextButton");
-        await timeout(5000)
+        await timeout(6000)
         await page.waitForSelector(".errorInputRegister");
         linkTexts = await page.$$eval(".errorInputRegister",
             elements => elements.map(item => item.textContent))
@@ -193,7 +193,7 @@ describe('Client Tests', () => {
         await page.evaluate(() => document.getElementById("github").value = "")
         await page.type("#github", 'daviddavid');
         await button.click();
-        await timeout(5000);
+        await timeout(6000);
         expect(userRegister.isDone()).toBe(true);
         expect(page._target._targetInfo.url).toBe(baseUrl + '/register');
         await page.waitForSelector(".confirmMessage");
