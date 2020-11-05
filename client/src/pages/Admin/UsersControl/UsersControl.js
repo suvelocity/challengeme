@@ -49,6 +49,21 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
+  const changePermissions = async () => {
+    try {
+      const isUpdateOk = prompt("Who's your favorite student?");
+      if (isUpdateOk != null) {
+        const newPermission = row.permission === 'user' ? 'admin' : 'user';
+        const { data: updatedUser } = await network.patch('/api/v1/admin/edit-user',
+          { permission: newPermission, userName: row.userName });
+        console.log(updatedUser);
+        props.getAllUsers()
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   return (
     <React.Fragment>
       <StyledTableRow className={classes.root}>
@@ -67,7 +82,16 @@ function Row(props) {
         </StyledTableCell>
         <StyledTableCell align="left">{row.email}</StyledTableCell>
         <StyledTableCell align="left">{row.githubAccount}</StyledTableCell>
-        <StyledTableCell align="left">{row.permission}</StyledTableCell>
+        <StyledTableCell align="left">
+          <div
+          style={
+            row.permission === 'user'
+              ? { color: 'green' }
+              :
+              { color: 'red', fontSize: '20px', fontWeight: 'bold' }
+          }
+          >{row.permission}</div>
+        </StyledTableCell>
       </StyledTableRow>
       <StyledTableRow>
         <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -76,6 +100,7 @@ function Row(props) {
               <Typography variant="h6" gutterBottom component="div">
                 More Details
               </Typography>
+              <Button onClick={changePermissions} >Change Permissions </Button>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <StyledTableRow>
@@ -169,9 +194,9 @@ function UsersControl() {
             </TableHead>
             <TableBody>
               {allUsers
-                                && allUsers.map((user) => (
-                                  <Row key={user.userName + user.id} row={user} />
-                                ))}
+                && allUsers.map((user) => (
+                  <Row key={user.userName + user.id} row={user} getAllUsers={getAllUsers} />
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
