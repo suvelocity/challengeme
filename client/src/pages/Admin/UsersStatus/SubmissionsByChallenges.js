@@ -46,7 +46,7 @@ const useRowStyles = makeStyles({
 });
 
 function Row(props) {
-  const { row } = props;
+  const { row, last } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
@@ -61,7 +61,7 @@ function Row(props) {
         <StyledTableCell component="th" scope="row">
           {row.ChallengeName}
         </StyledTableCell>
-        <StyledTableCell align="left">{row.countSub}</StyledTableCell>
+        <StyledTableCell align="left">{last ? row.Submissions.length : row.countSub}</StyledTableCell>
         <StyledTableCell align="left">
           {new Date(row.createdAt).toString().substring(0, 24)}
         </StyledTableCell>
@@ -248,6 +248,7 @@ const SubmissionsByChallenges = () => {
                 <Row
                   key={challenge.ChallengeName + challenge.createdAt}
                   row={challenge}
+                  last={last}
                 />
               ))
             ) : (
