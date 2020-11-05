@@ -34,10 +34,4 @@ jobs:
         working-directory: ./client
       - name: Jest run
         run: npm run test
-        working-directory: ./client
-      # DO NOT DELETE BELOW , we will need to add the secret to the repo and intialize the Cypress project
-      # - name: Cypress run and record
-      #   run: npx cypress run --record
-      #   working-directory: ./client
-      #   env:
-      #     CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}       
+        working-directory: ./client    
