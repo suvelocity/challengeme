@@ -1,6 +1,8 @@
 const puppeteer = require("puppeteer");
 const nock = require("nock");
 const useNock = require("nock-puppeteer");
+const url = 'http://localhost:3000';
+
 
 
 describe('Client Tests', () => {
