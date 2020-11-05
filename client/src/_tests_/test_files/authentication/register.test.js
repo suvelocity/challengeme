@@ -60,7 +60,7 @@ describe('Client Tests', () => {
         await page.click("#nextButton");
         await timeout(3000)
         await page.waitForSelector(".errorInputRegister");
-         linkTexts3 = await page.$$eval(".errorInputRegister",
+        linkTexts3 = await page.$$eval(".errorInputRegister",
             elements => elements.map(item => item.textContent))
         expect(linkTexts3[0]).toBe('Username must contain only letters and numbers.')
         await page.click("#userName");
@@ -88,7 +88,7 @@ describe('Client Tests', () => {
         await page.click("#nextButton");
         await timeout(1000)
         await page.waitForSelector(".errorInputRegister");
-         linkTexts = await page.$$eval(".errorInputRegister",
+        linkTexts = await page.$$eval(".errorInputRegister",
             elements => elements.map(item => item.textContent))
         expect(linkTexts[0]).toBe('Country must contain only letters')
         await page.click("#country");
@@ -152,7 +152,7 @@ describe('Client Tests', () => {
         await page.click("#confirmPassword");
         await page.type("#confirmPassword", '78');
         await page.click("#nextButton");
-        await timeout(1000)
+        await timeout(5000)
         await page.waitForSelector(".errorInputRegister");
         linkTexts = await page.$$eval(".errorInputRegister",
             elements => elements.map(item => item.textContent))
@@ -162,7 +162,7 @@ describe('Client Tests', () => {
         await page.click("#securityAnswer");
         await page.type("#securityAnswer", '123456');
         await page.click("#nextButton");
-        await timeout(3000)
+        await timeout(5000)
         await page.waitForSelector(".errorInputRegister");
         linkTexts = await page.$$eval(".errorInputRegister",
             elements => elements.map(item => item.textContent))
@@ -174,7 +174,7 @@ describe('Client Tests', () => {
         expect(page._target._targetInfo.url).toBe(baseUrl + '/register');
         await page.waitForSelector("#signUpReason");
         await page.click("#nextButton");
-        await timeout(1000)
+        await timeout(5000)
         await page.waitForSelector(".errorInputRegister");
         linkTexts = await page.$$eval(".errorInputRegister",
             elements => elements.map(item => item.textContent))
@@ -184,7 +184,7 @@ describe('Client Tests', () => {
         await page.click("#github");
         await page.type("#github", '%+121212');
         await page.click("#nextButton");
-        await timeout(3000)
+        await timeout(5000)
         await page.waitForSelector(".errorInputRegister");
         linkTexts = await page.$$eval(".errorInputRegister",
             elements => elements.map(item => item.textContent))
@@ -193,12 +193,12 @@ describe('Client Tests', () => {
         await page.evaluate(() => document.getElementById("github").value = "")
         await page.type("#github", 'daviddavid');
         await button.click();
-        await timeout(1000);
+        await timeout(5000);
         expect(userRegister.isDone()).toBe(true);
         expect(page._target._targetInfo.url).toBe(baseUrl + '/register');
         await page.waitForSelector(".confirmMessage");
-        await button.click();
-        await timeout(1000);
+        await page.click("#nextButton");
+        await timeout(3000);
         expect(page._target._targetInfo.url).toBe(baseUrl + '/login');
         await page.waitForSelector("#userNameField");
         done()
