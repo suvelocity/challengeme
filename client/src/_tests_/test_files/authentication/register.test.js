@@ -199,7 +199,7 @@ describe('Client Tests', () => {
         await page.click("#securityAnswer");
         await page.type("#securityAnswer", '123456');
         await page.click("#nextButton");
-        await timeout(1000)
+        await timeout(3000)
         await page.waitForSelector(".errorInputRegister");
         linkTexts = await page.$$eval(".errorInputRegister",
             elements => elements.map(item => item.textContent))
@@ -264,7 +264,7 @@ describe('Client Tests', () => {
         await page.click("#github");
         await page.type("#github", '%+121212');
         await page.click("#nextButton");
-        await timeout(1000)
+        await timeout(3000)
         await page.waitForSelector(".errorInputRegister");
         linkTexts = await page.$$eval(".errorInputRegister",
             elements => elements.map(item => item.textContent))
@@ -324,6 +324,7 @@ describe('Client Tests', () => {
         await page.click("#github");
         await page.type("#github", 'yosiyosi');
         await page.click("#nextButton");
+        await timeout(3000)
         await page.waitForSelector(".confirmMessage");
         const button = await page.$("#nextButton");
         await button.click();
