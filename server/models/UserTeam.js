@@ -16,6 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   UserTeam.init({
     teamId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
+    permission: {
+      defaultValue: 'student',
+      type: DataTypes.ENUM("teacher", "student"),
+    }
   }, {
     sequelize,
     modelName: 'UserTeam',

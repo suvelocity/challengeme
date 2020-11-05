@@ -7,7 +7,7 @@ module.exports = function checkAdmin(req, res, next) {
     if (user.permission === "admin") {
       next();
     } else {
-      res.status(403).json({ message: "UnAuthorized" });
+      res.sendStatus(401);
     }
   });
 };

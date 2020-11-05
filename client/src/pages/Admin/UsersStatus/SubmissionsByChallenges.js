@@ -221,7 +221,7 @@ const SubmissionsByChallenges = () => {
   return (
     <div className="admin-page">
       <div className="align-and-margin-top">
-        <h1>This is All The Challenges By Users Page</h1>
+        <h1>This is All The Submissions By Challenges Page</h1>
         <Button variant="contained" color="secondary">
           <Link to="/admin">
             <h2>Admin Router</h2>
