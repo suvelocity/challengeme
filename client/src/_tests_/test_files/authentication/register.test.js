@@ -331,7 +331,7 @@ describe('Client Tests', () => {
         expect(page._target._targetInfo.url).toBe(baseUrl + '/login');
         await page.waitForSelector("#userNameField");
         done()
-    }, 30000)
+    }, 50000)
 
 }, 200000)
 
