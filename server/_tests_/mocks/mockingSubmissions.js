@@ -5,10 +5,7 @@ const challengeArr = [
       description: "https://github.com/suvelocity/PromiseBoilerplate",
       type: "server-only",
       repositoryName: "suvelocity/PromiseChallenge",
-      cover: "https://storage.googleapis.com/challenges-cover/promise.jpeg",
-      created_at: "2020-10-04T14:30:00.000Z",
-      updated_at: "2020-10-04T14:30:00.000Z",
-      deleted_at: null
+      cover: "https://storage.googleapis.com/challenges-cover/promise.jpeg",   
       },
       {
       id: 2,
@@ -17,9 +14,6 @@ const challengeArr = [
       type: "client-only",
       repositoryName: "suvelocity/calculator-challange-tests",
       cover: "https://storage.googleapis.com/challenges-cover/calc.jpg",
-      created_at: "2020-10-01",
-      updated_at: "2020-10-01",
-      deleted_at: null
       },
       {
       id: 3,
@@ -28,9 +22,6 @@ const challengeArr = [
       type: "fullstack",
       repositoryName: "suvelocity/Chat_App-Challange",
       cover: "https://storage.googleapis.com/challenges-cover/chat_f.png",
-      created_at: "2020-10-01",
-      updated_at: "2020-10-01",
-      deleted_at: null
       },
       {
       id: 4,
@@ -39,9 +30,6 @@ const challengeArr = [
       type: "server-mysql",
       repositoryName: "suvelocity/challenge-sequelize",
       cover: "https://storage.googleapis.com/challenges-cover/orm.jpeg",
-      created_at: "2020-10-01",
-      updated_at: "2020-10-01",
-      deleted_at: null
       },
       {
           id: 5,
@@ -49,10 +37,7 @@ const challengeArr = [
           description: "https://github.com/suvelocity/Authentication-Challenge-TEMPLATE",
           type: "server-only",
           repositoryName: "suvelocity/Authentication-Challenge",
-          cover: "https://storage.googleapis.com/challenges-cover/jwt.png",
-          createdAt: "2020-10-04T13:40:00.000Z",
-          updatedAt: "2020-10-04T13:40:00.000Z",
-          deletedAt: null
+          cover: "https://storage.googleapis.com/challenges-cover/jwt.png",   
       }
   ];
   

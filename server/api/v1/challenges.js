@@ -183,7 +183,7 @@ router.get('/userChallenges', async (req, res) => {
       ],
     });
     res.json(allChallenges);
-  } catch (err) {
+  } catch (error) {
     console.error(error.message);
     res.status(400).json({ message: 'Cannot process request' });
   }
@@ -214,8 +214,8 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const newChallenge = await Challenge.create(newChallengeObj);
-    res.json(newChallenge);
-  } catch (err) {
+    res.status(201).json(newChallenge);
+  } catch (error) {
     console.error(error.message);
     res.status(400).json({ message: 'Cannot process request' });
   }
@@ -329,7 +329,7 @@ router.get('/pending-challenges', checkAdmin, async (req, res) => {
       ],
     });
     res.json(allChallenges);
-  } catch (err) {
+  } catch (error) {
     console.error(error.message);
     res.status(400).json({ message: 'Cannot process request' });
   }
@@ -353,7 +353,7 @@ router.patch('/state-update/:challengeId', checkAdmin, async (req, res) => {
       console.error('Failed to Update State');
       res.status(400).json({ message: 'Failed to Update State' });
     }
-  } catch (err) {
+  } catch (error) {
     console.error(error.message);
     res.status(400).json({ message: 'Cannot process request' });
   }

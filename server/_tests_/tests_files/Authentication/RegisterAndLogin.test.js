@@ -6,8 +6,8 @@ const bcrypt = require("bcryptjs");
 const { User, RefreshToken } = require("../../../models");
 const mockUser = require("../../mocks/users");
 const mockLogins = require("../../mocks/usersLogin")
-//login logout and register tests
 
+//login logout and register tests
 describe("Register & Login Tests", () => {
   beforeAll(async () => {
     await User.destroy({ truncate: true, force: true });
@@ -17,7 +17,7 @@ describe("Register & Login Tests", () => {
 
   })
   afterAll(async () => {
-    // await User.destroy({ truncate: true, force: true });
+    await User.destroy({ truncate: true, force: true });
     await server.close();
   });
 
@@ -31,10 +31,15 @@ describe("Register & Login Tests", () => {
       .send({ token: regToken });
     expect(createUserResponse.status).toBe(201);
 
+    const allreadyExistUser = await request(server)
+      .post("/api/v1/auth/createuser")
+      .send({ token: regToken });
+    expect(allreadyExistUser.status).toBe(409);
+
     const invalidRegisterResponse = await request(server)
-      .post("/api/v1/auth/register")
-      .send(mockUser[1]);
-    expect(invalidRegisterResponse.status).toBe(409);
+      .post("/api/v1/auth/createuser")
+      .send({ token: 'Invalid Token' });
+    expect(invalidRegisterResponse.status).toBe(403);
 
     done();
   });

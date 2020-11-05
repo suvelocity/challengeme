@@ -87,7 +87,7 @@ usersRouter.post('/createuser', (req, res) => {
     jwt.verify(
       req.body.token,
       process.env.EMAIL_TOKEN_SECRET,
-      async (err, decoded) => {
+      async (error, decoded) => {
         if (error) {
           console.error(error.message);
           return res.status(403).json({ message: 'Invalid Token' });
@@ -207,7 +207,7 @@ usersRouter.post('/token', async (req, res) => {
       },
     });
     if (!validRefreshToken) return res.status(403).json({ message: 'Invalid Refresh Token' });
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, decoded) => {
       if (error) {
         console.error(error.message);
         return res.status(403).json({ message: 'Invalid Refresh Token' });
@@ -307,8 +307,8 @@ usersRouter.patch('/passwordupdate', async (req, res) => {
     jwt.verify(
       resetToken,
       process.env.RESET_PASSWORD_TOKEN,
-      async (err, decoded) => {
-        if (err) return res.status(403).json({ message: 'Invalid Token' });
+      async (error, decoded) => {
+        if (error) return res.status(403).json({ message: 'Invalid Token' });
         const hashPassword = await bcrypt.hashSync(req.body.password, 10);
         await User.update(
           { password: hashPassword },

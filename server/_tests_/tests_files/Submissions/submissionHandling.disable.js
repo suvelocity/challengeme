@@ -1,12 +1,12 @@
 
 const request = require('supertest');
-const app = require('../../app');
+const app = require('../../../app');
 const ngrok = require('ngrok');
 const port = process.env.TEST_PORT || 4040;
-const {Submission, Challenge, User, Review} = require('../../models');
-const {challengeArr, solutionRepos, failRepos} = require('../mocks/mockingSubmissions');
+const {Submission, Challenge, User, Review} = require('../../../models');
+const {challengeArr, solutionRepos, failRepos} = require('../../mocks/mockingSubmissions');
 process.env.MY_URL = 'testingAddress';
-const getCurrentBranch = require('../../helpers/getCurrentBranch')
+const getCurrentBranch = require('../../../helpers/getCurrentBranch')
 let server;
 let accessToken;
 const review = { commentContent : 'why you do this', commentTitle: 'annoying', rating: 3, userId: 1 }

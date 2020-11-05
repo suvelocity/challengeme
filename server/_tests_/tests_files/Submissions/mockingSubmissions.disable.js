@@ -2,13 +2,13 @@
  * @jest-environment node
  */
 const request = require('supertest');
-const app = require('../../app');
-const {Submission, Challenge, User, Review} = require('../../models');
+const app = require('../../../app');
+const {Submission, Challenge, User, Review} = require('../../../models');
 const jwt = require("jsonwebtoken");
-const {challengeArr, solutionRepos, failRepos} = require('../mocks/mockingSubmissions');
+const {challengeArr, solutionRepos, failRepos} = require('../../mocks/mockingSubmissions');
 const review = { commentContent : 'why you do this', commentTitle: 'annoying', rating: 3, userId: 1 }
 const nock = require('nock');
-const getCurrentBranch = require('../../helpers/getCurrentBranch')
+const getCurrentBranch = require('../../../helpers/getCurrentBranch')
 let ref;
 process.env.MY_URL = 'testingAddress';
 let accessToken;

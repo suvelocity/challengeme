@@ -4,9 +4,7 @@ module.exports = [
     challengeId: 1,
     title: "My First Review",
     content: "dsfdsfI liked this challenge alot!",
-    rating: 1,
-    createdAt: "2020-10-01 20:00:00",
-    updatedAt: "2020-10-01 20:00:00",
+    rating: 1, 
   },
   {
     userId: 1,
@@ -14,8 +12,6 @@ module.exports = [
     title: "My Second Review",
     content: "Very hard challenge, but good practice...",
     rating: 2,
-    createdAt: "2020-10-02 20:00:00",
-    updatedAt: "2020-10-02 20:00:00",
   },
   {
     userId: 1,
@@ -23,8 +19,6 @@ module.exports = [
     title: "My Second Review",
     content: "Very hard challenge, but good practice...",
     rating: 3,
-    createdAt: "2020-10-02 20:00:00",
-    updatedAt: "2020-10-02 20:00:00",
   },
   {
     userId: 1,
@@ -32,8 +26,6 @@ module.exports = [
     title: "My Second Review",
     content: "Very hard challenge, but good practice...",
     rating: 1,
-    createdAt: "2020-10-02 20:00:00",
-    updatedAt: "2020-10-02 20:00:00",
   },
   {
     userId: 1,
@@ -41,8 +33,6 @@ module.exports = [
     title: "My Second Review",
     content: "Very hard challenge, but good practice...",
     rating: 4,
-    createdAt: "2020-10-02 20:00:00",
-    updatedAt: "2020-10-02 20:00:00",
   },
   {
     userId: 2,
@@ -50,8 +40,6 @@ module.exports = [
     title: "A Bad Review",
     content: "Did not like the readMe file",
     rating: 2,
-    createdAt: "2020-10-02 20:00:00",
-    updatedAt: "2020-10-02 20:00:00",
   },
   {
     userId: 3,
@@ -59,8 +47,6 @@ module.exports = [
     title: "Review for React challenge",
     content: "it was really hard",
     rating: 3,
-    createdAt: "2020-10-03 20:00:00",
-    updatedAt: "2020-10-03 20:00:00",
   },
   {
     userId: 3,
@@ -68,8 +54,6 @@ module.exports = [
     title: "Review",
     content: "content",
     rating: 2,
-    createdAt: "2020-10-01 20:00:00",
-    updatedAt: "2020-10-01 20:00:00",
   },
   {
     userId: 2,
@@ -77,8 +61,6 @@ module.exports = [
     title: "Review",
     content: "content",
     rating: 5,
-    createdAt: "2020-10-01 20:00:00",
-    updatedAt: "2020-10-01 20:00:00",
   },
   {
     userId: 2,
@@ -86,7 +68,5 @@ module.exports = [
     title: "Review",
     content: "content",
     rating: 1,
-    createdAt: "2020-10-01 20:00:00",
-    updatedAt: "2020-10-01 20:00:00",
   },
 ];
