@@ -133,6 +133,11 @@ function Row(props) {
 const SubmissionsByChallenges = () => {
   const [challengesSumbissions, setChallengesSumbissions] = useState([]);
   const [usersPerChallenge, setUsersPerChallenge] = useState([]);
+  const [combainChallengesSubmissionsVsUsersData, setCombainChallengesSubmissionsVsUsersData] = useState([]);
+  const [combainChallengesSubmissionsVsUsersDataLast, setCombainChallengesSubmissionsVsUsersDataLast] = useState([]);
+  const [dataPresent, setDataPresent] = useState([]);
+  const [last, setLast] = useState(false);
+
 
   const getChallengesSumbissions = async () => {
     const { data: challengesSumbissionsFromServer } = await network.get(
@@ -141,33 +146,77 @@ const SubmissionsByChallenges = () => {
     console.log(challengesSumbissionsFromServer);
     setChallengesSumbissions(challengesSumbissionsFromServer[0]);
     setUsersPerChallenge(challengesSumbissionsFromServer[1]);
+    const combainChallengesSubmissionsVsUsers = challengesSumbissionsFromServer[0].length > 0
+      ? challengesSumbissionsFromServer[0].map((challenge) => ({
+        ChallengeName: challenge.Challenge.name,
+        countSub: challenge.countSub,
+        createdAt: challenge.createdAt,
+        Submissions: challengesSumbissionsFromServer[1]
+          .map((userChallenge) => {
+            if (challenge.Challenge.id === userChallenge.id) {
+              return userChallenge.Submissions.map((userBySubmission) => ({
+                id: userBySubmission.id,
+                solutionRepository: userBySubmission.solutionRepository,
+                userName: userBySubmission.User.userName,
+                createdAt: userBySubmission.createdAt,
+                state: userBySubmission.state,
+              })).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+            }
+            return null;
+          })
+          .filter((element) => !!element)[0],
+      }))
+      : [];
+    setCombainChallengesSubmissionsVsUsersData(combainChallengesSubmissionsVsUsers)
+    setDataPresent(combainChallengesSubmissionsVsUsers)
+    const combainChallengesSubmissionsVsUsersLast = challengesSumbissionsFromServer[0].length > 0
+      ? challengesSumbissionsFromServer[0].map((challenge) => ({
+        ChallengeName: challenge.Challenge.name,
+        countSub: challenge.countSub,
+        createdAt: challenge.createdAt,
+        Submissions: challengesSumbissionsFromServer[1]
+          .map((userChallenge) => {
+            if (challenge.Challenge.id === userChallenge.id) {
+              const myFilteredArray = []
+              const myFilteredArrayUsers = []
+              const array = userChallenge.Submissions.map((userBySubmission) => ({
+                id: userBySubmission.id,
+                solutionRepository: userBySubmission.solutionRepository,
+                userName: userBySubmission.User.userName,
+                createdAt: userBySubmission.createdAt,
+                state: userBySubmission.state,
+              })).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).forEach((user) => {
+                if (myFilteredArrayUsers.includes(user.userName)) {
+                  return
+                } else {
+                  myFilteredArrayUsers.push(user.userName)
+                  myFilteredArray.push(user)
+                }
+              })
+              return myFilteredArray
+            }
+            return null;
+          })
+          .filter((element) => !!element)[0],
+      }))
+      : [];
+    setCombainChallengesSubmissionsVsUsersDataLast(combainChallengesSubmissionsVsUsersLast)
   };
 
   useEffect(() => {
     getChallengesSumbissions();
   }, []);
 
-  const combainChallengesSubmissionsVsUsers = challengesSumbissions.length > 0
-    ? challengesSumbissions.map((challenge) => ({
-      ChallengeName: challenge.Challenge.name,
-      countSub: challenge.countSub,
-      createdAt: challenge.createdAt,
-      Submissions: usersPerChallenge
-        .map((userChallenge) => {
-          if (challenge.Challenge.id === userChallenge.id) {
-            return userChallenge.Submissions.map((userBySubmission) => ({
-              id: userBySubmission.id,
-              solutionRepository: userBySubmission.solutionRepository,
-              userName: userBySubmission.User.userName,
-              createdAt: userBySubmission.createdAt,
-              state: userBySubmission.state,
-            }));
-          }
-          return null;
-        })
-        .filter((element) => !!element)[0],
-    }))
-    : [];
+
+  const filteredLast = () => {
+    if (last) {
+      setDataPresent(combainChallengesSubmissionsVsUsersData)
+    } else {
+      setDataPresent(combainChallengesSubmissionsVsUsersDataLast)
+    }
+    setLast(prev => !prev)
+  }
+
 
   return (
     <div className="admin-page">
@@ -178,6 +227,12 @@ const SubmissionsByChallenges = () => {
             <h2>Admin Router</h2>
           </Link>
         </Button>
+        <Button
+          onClick={filteredLast}
+        >
+          {last ? 'Show All' : 'Show Only Last'}
+        </Button>
+
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">
             <TableHead>
@@ -188,16 +243,16 @@ const SubmissionsByChallenges = () => {
                 <StyledTableCell align="left">Created At</StyledTableCell>
               </TableRow>
             </TableHead>
-            {combainChallengesSubmissionsVsUsers.length > 0 ? (
-              combainChallengesSubmissionsVsUsers.map((challenge) => (
+            {dataPresent.length > 0 ? (
+              dataPresent.map((challenge) => (
                 <Row
                   key={challenge.ChallengeName + challenge.createdAt}
                   row={challenge}
                 />
               ))
             ) : (
-              <Loading />
-            )}
+                <Loading />
+              )}
           </Table>
         </TableContainer>
       </div>
