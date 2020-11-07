@@ -133,7 +133,7 @@ export default function Router() {
                         <Route exact path="/addnewchallenge">
                           <NewChallengeForm />
                         </Route>
-                        <Route path="/team">
+                        <Route path="/teams">
                           <Team />
                         </Route>
                         {isAdmin && (

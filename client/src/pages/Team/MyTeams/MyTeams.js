@@ -46,7 +46,9 @@ function TeamCard({ team }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">Go To Team Page</Button>
+        <Link to={`/teams/team/${team.id}`}  >
+          <Button size="small">Go To Team Page</Button>
+        </Link>
       </CardActions>
     </Card>
   );
@@ -81,7 +83,7 @@ function MyTeams() {
           })}
       </div>
       <div className="my-teams-button-container">
-        <Link to="/team">
+        <Link to="/teams">
           <Button style={{ minWidth: 150 }} variant="contained" color="default">
             back to Teams Page
           </Button>

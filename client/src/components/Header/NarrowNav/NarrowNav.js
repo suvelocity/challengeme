@@ -205,7 +205,7 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
             </ListItem>
           </Link>
           <Divider style={dividerColor} />
-          <Link to="/team" className="link-rout">
+          <Link to="/teams" className="link-rout">
             <ListItem button onClick={handleDrawerClose} style={letterColor}>
               <ListItemIcon>
                 <InfoIcon style={letterColor} />

@@ -189,7 +189,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
               Add New Challenge
             </Button>
           </Link>
-          <Link to="/team" className="link-rout">
+          <Link to="/teams" className="link-rout">
             <Button
               onClick={() => setAnchorEl(null)}
               className={classes.infoButton}

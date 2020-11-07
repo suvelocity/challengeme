@@ -1,6 +1,7 @@
 import React, { lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
 import ErrorBoundry from "../../components/ErrorBoundry";
+import OneTeamPage from './OneTeam'
 import Loading from "../../components/Loading/Loading";
 
 const NotFound = lazy(() => import("../../pages/NotFound"));
@@ -13,10 +14,13 @@ function Index() {
       <Suspense fallback={<Loading />}>
         <ErrorBoundry>
           <Switch>
-            <Route exact path="/team/myteams">
+            <Route exact path="/teams/myteams">
               <MyTeams />
             </Route>
-            <Route exact path="/team">
+            <Route exact path="/teams/team/:id">
+              <OneTeamPage />
+            </Route>
+            <Route exact path="/teams">
               <TeamLandingPage />
             </Route>
             <Route path="*">
