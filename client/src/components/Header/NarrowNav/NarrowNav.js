@@ -1,31 +1,31 @@
-import React, { useContext, useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
-import { Link, useHistory, useLocation } from 'react-router-dom';
-import clsx from 'clsx';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import Avatar from '@material-ui/core/Avatar';
-import HomeIcon from '@material-ui/icons/Home';
-import '../Header.css';
-import DarkModeToggle from 'react-dark-mode-toggle';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Drawer from '@material-ui/core/Drawer';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import Button from '@material-ui/core/Button';
-import InfoIcon from '@material-ui/icons/Info';
-import ChooseLabels from '../../Choosers/ChooseLabels';
-import FilteredLabels from '../../../context/FilteredLabelsContext';
-import useStyles from './NarrowNavStyled';
-import { Logged } from '../../../context/LoggedInContext';
-import Search from '../Search/Search';
-import network from '../../../services/network';
+import React, { useContext, useState, useEffect } from "react";
+import Cookies from "js-cookie";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import clsx from "clsx";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Tooltip from "@material-ui/core/Tooltip";
+import Avatar from "@material-ui/core/Avatar";
+import HomeIcon from "@material-ui/icons/Home";
+import "../Header.css";
+import DarkModeToggle from "react-dark-mode-toggle";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import Drawer from "@material-ui/core/Drawer";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Button from "@material-ui/core/Button";
+import InfoIcon from "@material-ui/icons/Info";
+import ChooseLabels from "../../Choosers/ChooseLabels";
+import FilteredLabels from "../../../context/FilteredLabelsContext";
+import useStyles from "./NarrowNavStyled";
+import { Logged } from "../../../context/LoggedInContext";
+import Search from "../Search/Search";
+import network from "../../../services/network";
 
 export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
   const classes = useStyles();
@@ -38,12 +38,13 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
   const currentLocation = useLocation();
 
   useEffect(() => {
-    if (currentLocation.pathname !== '/') {
+    if (currentLocation.pathname !== "/") {
       setLabels([]);
     } else {
       const newFilter = chooseLabels.filter(
-        (label) => label.value
-          === (filteredLabels ? filteredLabels.filteredLabels[0] : null),
+        (label) =>
+          label.value ===
+          (filteredLabels ? filteredLabels.filteredLabels[0] : null)
       );
       setLabels(newFilter);
     }
@@ -60,32 +61,32 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
 
   const logOut = async () => {
     try {
-      await network.post('/api/v1/auth/logout', {
-        token: Cookies.get('refreshToken'),
+      await network.post("/api/v1/auth/logout", {
+        token: Cookies.get("refreshToken"),
       });
-      Cookies.remove('refreshToken');
-      Cookies.remove('accessToken');
-      Cookies.remove('name');
-      Cookies.remove('userId');
-      Cookies.remove('isAdmin');
-      Cookies.remove('userName');
+      Cookies.remove("refreshToken");
+      Cookies.remove("accessToken");
+      Cookies.remove("name");
+      Cookies.remove("userId");
+      Cookies.remove("isAdmin");
+      Cookies.remove("userName");
       value.setLogged(false);
-      location.push('/login');
+      location.push("/login");
     } catch (error) {
       console.error(error);
     }
   };
 
   const headerStyle = {
-    backgroundColor: darkMode ? 'rgb(51,51,51)' : 'white',
+    backgroundColor: darkMode ? "rgb(51,51,51)" : "white",
   };
   const letterColor = {
-    color: darkMode ? 'white' : 'black',
+    color: darkMode ? "white" : "black",
   };
   const dividerColor = darkMode
     ? {
-      backgroundColor: 'rgba(255,255,255,0.3)',
-    }
+        backgroundColor: "rgba(255,255,255,0.3)",
+      }
     : {};
   return (
     <>
@@ -107,12 +108,12 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
           <Search darkMode={darkMode} setDarkMode={setDarkMode} />
           <div
             style={{
-              minWidth: '150px',
-              width: 'fit-content',
-              marginLeft: '10px',
+              minWidth: "150px",
+              width: "fit-content",
+              marginLeft: "10px",
             }}
           >
-            {currentLocation.pathname === '/' ? (
+            {currentLocation.pathname === "/" ? (
               <ChooseLabels
                 labels={labels}
                 chooseLabels={chooseLabels}
@@ -122,11 +123,11 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
               />
             ) : null}
           </div>
-          {currentLocation.pathname === '/' ? (
+          {currentLocation.pathname === "/" ? (
             <Button
               onClick={() => {
                 filteredLabels.setFilteredLabels(
-                  labels ? labels.map((label) => label.value) : [],
+                  labels ? labels.map((label) => label.value) : []
                 );
               }}
               variant="contained"
@@ -151,26 +152,22 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
       >
         <div className={classes.generalDrawerHeader}>
           <div className={classes.avatarUserInfo}>
-            <Tooltip title={Cookies.get('name')}>
+            <Tooltip title={Cookies.get("name")}>
               <Avatar
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
                 aria-haspopup="true"
                 color="inherit"
                 style={{
-                  cursor: 'pointer',
-                  backgroundColor: darkMode ? 'rgb(140,110,99)' : '#7BACB4',
+                  cursor: "pointer",
+                  backgroundColor: darkMode ? "rgb(140,110,99)" : "#7BACB4",
                 }}
               >
-                {Cookies.get('name').slice(0, 2)}
+                {Cookies.get("name").slice(0, 2)}
               </Avatar>
             </Tooltip>
             <div className={classes.heyName} style={letterColor}>
-              <b>
-                Hey
-                {' '}
-                {Cookies.get('name')}
-              </b>
+              <b>Hey {Cookies.get("name")}</b>
             </div>
           </div>
           <div className={classes.drawerHeader}>
@@ -207,12 +204,24 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
               <ListItemText primary="Add New Challenge" />
             </ListItem>
           </Link>
-          {isAdmin
-          && (
+          <Divider style={dividerColor} />
+          <Link to="/team" className="link-rout">
+            <ListItem button onClick={handleDrawerClose} style={letterColor}>
+              <ListItemIcon>
+                <InfoIcon style={letterColor} />
+              </ListItemIcon>
+              <ListItemText primary="Teams Area" />
+            </ListItem>
+          </Link>
+          {isAdmin && (
             <>
               <Divider style={dividerColor} />
               <Link to="/admin" className="link-rout">
-                <ListItem button onClick={handleDrawerClose} style={letterColor}>
+                <ListItem
+                  button
+                  onClick={handleDrawerClose}
+                  style={letterColor}
+                >
                   <ListItemIcon>
                     <InfoIcon style={letterColor} />
                   </ListItemIcon>
@@ -227,7 +236,7 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
               className={classes.darkModeToggle}
               checked={darkMode}
               onChange={() => {
-                localStorage.setItem('darkMode', !darkMode);
+                localStorage.setItem("darkMode", !darkMode);
                 setDarkMode((prev) => !prev);
               }}
               size={45}
