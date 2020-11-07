@@ -1,4 +1,5 @@
 const reviewsRouter = require('express').Router();
+const checkAdmin = require('../../middleware/checkAdmin');
 const { Challenge, Review, User } = require('../../models');
 
 reviewsRouter.get('/byChallenge/:challengeId', async (req, res) => {
@@ -48,6 +49,23 @@ reviewsRouter.post('/:challengeId', async (req, res) => {
   try {
     await Review.create(query);
     res.json({ message: 'Uploaded new review!' });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+//= ============================= Admin Routes ======================================
+
+reviewsRouter.delete('/:reviewId', checkAdmin, async (req, res) => {
+  const { reviewId } = req.params
+  try {
+    await Review.destroy({
+      where: {
+        id: reviewId
+      }
+    });
+    res.sendStatus(204)
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
