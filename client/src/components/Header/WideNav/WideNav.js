@@ -27,7 +27,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const location = useHistory();
-  const value = useContext(Logged);
+  const loggedContext = useContext(Logged);
   const [labels, setLabels] = useState([]);
   const [chooseLabels, setChooseLabels] = useState([]);
   const currentLocation = useLocation();
@@ -57,14 +57,14 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
       await network.post('/api/v1/auth/logout', {
         token: Cookies.get('refreshToken'),
       });
-      Cookies.remove('refreshToken');
-      Cookies.remove('accessToken');
-      Cookies.remove('name');
-      Cookies.remove('userId');
-      Cookies.remove('isAdmin');
-      Cookies.remove('userName');
-      value.setLogged(false);
-      location.push('/');
+      Cookies.remove("refreshToken");
+      Cookies.remove("accessToken");
+      Cookies.remove("name");
+      Cookies.remove("userId");
+      Cookies.remove("isAdmin");
+      Cookies.remove("userName");
+      loggedContext.setLogged(false);
+      location.push("/");
     } catch (error) {
       console.error(error);
     }

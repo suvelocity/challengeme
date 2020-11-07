@@ -32,6 +32,7 @@ function ReviewsTab({ challengeId, setRatingCount }) {
   return reviews.length !== 0 ? (
     reviews.map((review) => {
       const {
+        id,
         createdAt,
         title,
         content,
@@ -41,6 +42,7 @@ function ReviewsTab({ challengeId, setRatingCount }) {
       return (
         <Review
           key={title + createdAt}
+          reviewId={id}
           author={userName}
           createdAt={createdAt}
           title={title}
@@ -50,10 +52,10 @@ function ReviewsTab({ challengeId, setRatingCount }) {
       );
     })
   ) : (
-    <div>
-      {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
-    </div>
-  );
+      <div>
+        {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
+      </div>
+    );
 }
 
 export default ReviewsTab;
