@@ -1,14 +1,45 @@
 const { Router } = require('express');
 const checkAdmin = require('../../middleware/checkAdmin');
-const checkTeamPermission = require('../../middleware/checkTeamPermission');
+const { checkTeamPermission, checkTeacherPermission } = require('../../middleware/checkTeamPermission');
 const { Op } = require("sequelize");
 const { User, Team, UserTeam } = require('../../models');
 
 const router = Router();
 
 // check if user is a part of a team
-router.get('/check-user-teams-permission/:teamId', checkTeamPermission, async (req, res) => {
-  res.send('hello')
+router.get('/team-page/:teamId', checkTeamPermission, async (req, res) => {
+  const { teamId } = req.params;
+  const { userId } = req.user
+  try {
+    const userPermission = await UserTeam.findOne({
+      attributes: ['permission'],
+      where: {
+        userId: userId,
+        teamId: teamId
+      }
+    })
+    const teamUsers = await Team.findOne({
+      where: {
+        id: teamId
+      },
+      attributes: [
+        'id', 'name', 'createdAt', 'updatedAt'
+      ],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'userName'],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
+    res.json([teamUsers,userPermission])
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
+  }
 });
 
 // get all teams for the user that logged in with all members
@@ -27,15 +58,6 @@ router.get('/all-teams-by-user', async (req, res) => {
           through: {
             attributes: [],
           },
-          include: [
-            {
-              model: User,
-              attributes: ['userName'],
-              through: {
-                attributes: ['permission'],
-              },
-            },
-          ],
         },
       ],
 
@@ -115,6 +137,35 @@ router.delete('/remove-user', async (req, res) => {
     res.sendStatus(204)
   }
   catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+//= ============================= Teacher Routes ======================================
+
+router.get('/teacher-area/:teamId', checkTeamPermission,checkTeacherPermission, async (req, res) => {
+  const { teamId } = req.params;
+  const { userId } = req.user
+  try {
+    const teamUsers = await Team.findOne({
+      where: {
+        id: teamId
+      },
+      attributes: [
+        'id', 'name', 'createdAt', 'updatedAt'
+      ],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'userName'],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
+    res.json([teamUsers,userPermission])
+  } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
   }

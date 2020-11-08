@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const sequelize = require('sequelize');
 const { Op } = require('sequelize');
-
+const { checkTeamPermission, checkTeacherPermission } = require('../../../middleware/checkTeamPermission');
 const router = Router();
 
 const {
@@ -91,10 +91,10 @@ async function getTeamUsersIds(userId) {
   return [usersId, userTeam.name];
 }
 
-// returns the 5 users with most successfull submissions in the team
-router.get('/top-user', async (req, res) => {
+// returns the  users with most successfull submissions in the team
+router.get('/top-user/:teamId',checkTeamPermission,checkTeacherPermission, async (req, res) => {
   try {
-    const loggedUser = req.user ? req.user.id : 1;
+    const loggedUser =  req.user.userId 
 
     const teamUsersIds = await getTeamUsersIds(loggedUser);
 
@@ -123,7 +123,7 @@ router.get('/top-user', async (req, res) => {
       order: [[sequelize.fn('COUNT', sequelize.col('user_id')), 'DESC']],
     });
 
-    res.send([teamUsersTopSuccess.slice(0, 5), teamUsersIds[1]]);
+    res.send([teamUsersTopSuccess, teamUsersIds[1]]);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -199,7 +199,7 @@ router.get('/team-submissions', async (req, res) => {
   }
 });
 
-// returns the top 5 challenges, with the most successful submissions in the team
+// returns the top  challenges, with the most successful submissions in the team
 router.get('/success-challenge', async (req, res) => {
   try {
     const loggedUser = req.user ? req.user.id : 1;
@@ -224,7 +224,6 @@ router.get('/success-challenge', async (req, res) => {
         },
       ],
       order: [[sequelize.fn('COUNT', 'challengeId'), 'DESC']],
-      limit: 5,
     });
 
     res.send(successfulTeamChallenges);
