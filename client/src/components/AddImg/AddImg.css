@@ -3,7 +3,6 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
 }
 .upload-img-secondary-container{
     display: flex;
@@ -12,5 +11,13 @@
     align-items: center;
     width: 65vw;
     min-width: 200px;
+
   }
 
+.dark .dropzone{
+    background-color:rgb(149, 149, 149) !important;
+}
+
+.dark .dropzone div{
+    color:white !important;
+}

@@ -9,18 +9,22 @@ function ValidatingMail() {
   const query = new URLSearchParams(url.search);
   const token = query.get('token');
   useEffect(() => {
-    network
-      .post('/api/v1/auth/createuser', { token })
-      .then(() => history.push('/login'))
-      .catch(() => {
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Email Confirmation Failed !',
-        }).then(() => {
-          history.push('/login');
+    try {
+      network
+        .post('/api/v1/auth/createuser', { token })
+        .then(() => history.push('/login'))
+        .catch(() => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Email Confirmation Failed !',
+          }).then(() => {
+            history.push('/login');
+          });
         });
-      });
+    } catch (error) {
+      console.error(error);
+    }
   }, [history, token]);
 
   return <div />;

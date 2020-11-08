@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
+import mixpanel from 'mixpanel-browser';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Error';
@@ -32,6 +33,10 @@ export default function Forgot() {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const history = useHistory();
+
+  useEffect(() => {
+    mixpanel.track('User On Forgot Password Page');
+  }, []);
 
   const handleChange = (field) => (e) => {
     switch (field) {
@@ -149,6 +154,7 @@ export default function Forgot() {
       case 1:
         return <Identify data={{ userName }} handleChange={handleChange} />;
       case 2:
+        mixpanel.track('User On Forgot Password Page 2', { User: `${userName}`, Description: 'user tried to get Security Question' });
         return (
           <Security
             data={{ secQuestion, secAnswer }}
@@ -156,6 +162,7 @@ export default function Forgot() {
           />
         );
       case 3:
+        mixpanel.track('User On Forgot Password Page 3', { User: `${userName}`, Description: 'user tried to Submit Security Answer' });
         return (
           <Change
             data={{ password, confirmPassword }}

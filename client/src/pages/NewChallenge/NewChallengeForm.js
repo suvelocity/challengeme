@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import {
@@ -32,47 +31,49 @@ const generateAlert = (title, message) => (
 );
 
 export default function NewChallengeForm() {
-  const [optionsArray, setOptionsArray] = useState([]);
+  const [optionsTypes, setOptionstypes] = useState([]);
+  const [labels, setLabels] = useState([]);
   const [repoName, setRepoName] = useState('');
   const [repoLink, setRepoLink] = useState('');
   const [repoBoiler, setRepoBoiler] = useState('');
   const [repoDescription, setRepoDescription] = useState('');
   const [repoType, setRepoType] = useState('');
-  const [repoLabels, setRepoLabels] = useState([]);
+  const [chooseLabels, setChooseLabels] = useState([]);
   const [file, setFile] = useState({});
   const [badInput, setBadInput] = useState([]);
   const history = useHistory();
 
   /* pull challenge's type options from .github/workflows folder */
   const openOptions = async () => {
-    const { data: types } = await network.get('/api/v1/types');
-    setOptionsArray(
-      types.map((type) => (
-        <MenuItem key={type} value={type}>
-          {type}
-        </MenuItem>
-      )),
-    );
+    try {
+      const { data: types } = await network.get('/api/v1/types');
+      setOptionstypes(
+        types.map((type) => (
+          <MenuItem key={type} value={type}>
+            {type}
+          </MenuItem>
+        )),
+      );
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
     openOptions();
   }, []);
+
   /* validate data before poting */
   const spaces = new RegExp(/^(\s{1,})$/);
   const hebrew = new RegExp(/^.*([\u0590-\u05FF]{1,}).*$/);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newBadInput = [];
-    if (
-      repoName.length < 2
-      || repoName.match(spaces)
-      || repoName.match(hebrew)
-    ) {
+    if (repoName.length < 1 || repoName.match(spaces) || repoName.match(hebrew)) {
       newBadInput.push(
         generateAlert(
           "Repository's name is too short",
-          "Minimum 2 characters. Don't use hebrew letters",
+          "Minimum 1 character. Don't use hebrew letters",
         ),
       );
     }
@@ -80,14 +81,8 @@ export default function NewChallengeForm() {
       newBadInput.push(generateAlert('Repository links must be diffrent', ''));
     } else {
       try {
-        if (
-          repoLink.length > 2
-          && !repoLink.match(spaces)
-          && !repoLink.match(hebrew)
-        ) {
-          await network.get(
-            `/api/v1/services/public_repo?repo_name=${repoLink}`,
-          );
+        if (repoLink.length > 2 && !repoLink.match(spaces) && !repoLink.match(hebrew)) {
+          await network.get(`/api/v1/services/public_repo?repo_name=${repoLink}`);
         } else {
           throw new Error();
         }
@@ -105,9 +100,7 @@ export default function NewChallengeForm() {
           && !repoBoiler.match(spaces)
           && !repoBoiler.match(hebrew)
         ) {
-          await network.get(
-            `/api/v1/services/public_repo?repo_name=${repoBoiler}`,
-          );
+          await network.get(`/api/v1/services/public_repo?repo_name=${repoBoiler}`);
         } else {
           throw new Error();
         }
@@ -159,17 +152,14 @@ export default function NewChallengeForm() {
       };
       /* post newRepo to challenge table */
       try {
-        const { data: postedRepo } = await network.post(
-          '/api/v1/challenges',
-          newRepo,
-        );
+        const { data: postedRepo } = await network.post('/api/v1/challenges', newRepo);
         await network.post('/api/v1/image', {
           challengeId: postedRepo.id,
           img: file.result,
         });
-        if (repoLabels.length > 0) {
+        if (chooseLabels.length > 0) {
           await network.post('/api/v1/labels', {
-            labels: repoLabels,
+            labels,
             challengeId: postedRepo.id,
           });
         }
@@ -181,7 +171,7 @@ export default function NewChallengeForm() {
         });
         history.push('/');
       } catch (error) {
-        if (error.response.status === 500) {
+        if (error.response.status === 400) {
           Swal.fire({
             icon: 'error',
             title: error.response.data,
@@ -232,30 +222,13 @@ export default function NewChallengeForm() {
     setRepoType('');
     setFile({});
     setBadInput([]);
-    setRepoLabels([]);
+    setChooseLabels([]);
   };
-
-  /* material ui styling */
-  const useStyles = makeStyles((theme) => ({
-    formControl: {
-      margin: theme.spacing(1),
-      minWidth: 120,
-    },
-    selectEmpty: {
-      marginTop: theme.spacing(2),
-    },
-  }));
-
-  const classes = useStyles();
 
   return (
     <div className="newChallenge">
       <form className="newChallengeForm">
-        <Typography
-          variant="h5"
-          gutterBottom
-          className="newChallengeFormheader"
-        >
+        <Typography variant="h5" gutterBottom className="newChallengeFormheader">
           New Challenge
         </Typography>
         <TextField
@@ -297,10 +270,17 @@ export default function NewChallengeForm() {
         <br />
         <AddImg file={file} handleChange={handleFile} />
         <br />
-        <div className="newChallengeFormFeild">
-          <ChooseLabels submitFilter={setRepoLabels} />
+        <div
+          style={{ minWidth: '150px', width: 'fit-content' }}
+        >
+          <ChooseLabels
+            labels={labels}
+            setLabels={setLabels}
+            setChooseLabels={setChooseLabels}
+            chooseLabels={chooseLabels}
+          />
         </div>
-        <FormControl className={classes.formControl}>
+        <FormControl className="newChallengeFormFeild">
           <InputLabel id="Challenge type" style={textFieldStyle}>
             Challenge type
           </InputLabel>
@@ -311,7 +291,7 @@ export default function NewChallengeForm() {
             value={repoType}
             onChange={(event) => setRepoType(event.target.value)}
           >
-            {optionsArray}
+            {optionsTypes}
           </Select>
         </FormControl>
         <br />

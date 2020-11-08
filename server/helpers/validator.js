@@ -1,4 +1,5 @@
 const Joi = require('@hapi/joi');
+const axios = require('axios');
 
 // Register Validation
 const registerValidation = (data) => {
@@ -6,8 +7,7 @@ const registerValidation = (data) => {
   const schema = Joi.object({
     firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
     lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
-    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
-      .required(),
+    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
     email: Joi.string().min(6).email().required(),
     country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
     city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
@@ -30,6 +30,31 @@ const loginValidation = (data) => {
       .required(),
     password: Joi.string().min(8).required(),
     rememberMe: Joi.boolean().required(),
+  });
+
+  return schema.validate(data);
+};
+
+const method = async (value, helpers) => {
+ try {
+  await axios.get(
+    `/api/v1/services/public_repo?repo_name=${value}`,
+  );
+  } catch (err) {
+    return helpers.error('any.invalid');
+  }
+  return value;
+};
+
+
+const newChallengeValidation = (data) => {
+  const schema = Joi.object({
+    name:  Joi.string().min(1).max(100).required(),
+    description: Joi.string().min(1).max(500).required(),
+    type: Joi.string().valid('client-only', 'fullstack-mysql','fullstack','server-mysql','server-only').required(),
+    repositoryName: Joi.string().custom(method,'custom1').required(),
+    boilerPlate: Joi.string().custom(method ,'custom2').required(),
+    authorId: Joi.number().required()
   });
 
   return schema.validate(data);
@@ -81,3 +106,4 @@ module.exports.userValidation = userValidation;
 module.exports.tokenValidation = tokenValidation;
 module.exports.pwdUpdateValidation = pwdUpdateValidation;
 module.exports.answerValidation = answerValidation;
+module.exports.newChallengeValidation = newChallengeValidation;

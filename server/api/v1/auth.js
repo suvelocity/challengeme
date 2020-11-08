@@ -6,6 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { User, RefreshToken } = require('../../models');
 const checkToken = require('../../middleware/checkToken');
+const checkAdmin = require('../../middleware/checkAdmin');
 const {
   loginValidation,
   registerValidation,
@@ -50,7 +51,7 @@ usersRouter.post('/register', async (req, res) => {
     const mailedToken = jwt.sign(newUser, process.env.EMAIL_TOKEN_SECRET);
     mailer.sendHTMLMail(
       req.body.email,
-      "Validate your E-mail",
+      'Validate your E-mail',
       `<p>
   Conregulation Challenger, and welcome! You are now offically a part of challenge me
   community! To start challenging your friends and undertake challenges
@@ -62,16 +63,16 @@ usersRouter.post('/register', async (req, res) => {
 </form>`,
       (err, info) => {
         if (error) {
-          console.error(error.message)
-          res.status(400).json({ message: "Email Invalid" });
+          console.error(error.message);
+          res.status(400).json({ message: 'Email Invalid' });
         } else {
-          res.json({ message: "Waiting For Mail Validation" });
+          res.json({ message: 'Waiting For Mail Validation' });
         }
-      }
+      },
     );
   } catch (error) {
-    console.error(error.message)
-    res.status(400).json({ message: "Cannot process request" });
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -86,7 +87,7 @@ usersRouter.post('/createuser', (req, res) => {
     jwt.verify(
       req.body.token,
       process.env.EMAIL_TOKEN_SECRET,
-      async (err, decoded) => {
+      async (error, decoded) => {
         if (error) {
           console.error(error.message);
           return res.status(403).json({ message: 'Invalid Token' });
@@ -178,11 +179,11 @@ usersRouter.post('/login', async (req, res) => {
         },
       );
     }
-
     res.cookie('name', currentUser.firstName);
     res.cookie('userName', currentUser.userName);
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
+    res.cookie('isAdmin', currentUser.permission);
     res.json({ userDetails: currentUser });
   } catch (error) {
     console.error(error.message);
@@ -206,7 +207,7 @@ usersRouter.post('/token', async (req, res) => {
       },
     });
     if (!validRefreshToken) return res.status(403).json({ message: 'Invalid Refresh Token' });
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, decoded) => {
       if (error) {
         console.error(error.message);
         return res.status(403).json({ message: 'Invalid Refresh Token' });
@@ -306,8 +307,8 @@ usersRouter.patch('/passwordupdate', async (req, res) => {
     jwt.verify(
       resetToken,
       process.env.RESET_PASSWORD_TOKEN,
-      async (err, decoded) => {
-        if (err) return res.status(403).json({ message: 'Invalid Token' });
+      async (error, decoded) => {
+        if (error) return res.status(403).json({ message: 'Invalid Token' });
         const hashPassword = await bcrypt.hashSync(req.body.password, 10);
         await User.update(
           { password: hashPassword },
@@ -324,6 +325,10 @@ usersRouter.patch('/passwordupdate', async (req, res) => {
     console.error(error.message);
     res.status(400).json({ message: 'Cannot process request' });
   }
+});
+
+usersRouter.get('/validateAdmin', checkToken, checkAdmin, (req, res) => {
+  res.json({ admin: true });
 });
 
 async function userIsExist(userName) {

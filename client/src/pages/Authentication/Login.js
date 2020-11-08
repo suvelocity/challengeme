@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useHistory, Link } from 'react-router-dom';
-
+import mixpanel from 'mixpanel-browser';
 import IconButton from '@material-ui/core/IconButton';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,6 +27,9 @@ const useStyles = makeStyles(() => ({
     marginTop: '110px',
     marginBottom: '20px',
     width: '320px',
+    '@media (max-width: 700px) ': {
+      marginTop: '220px',
+    },
   },
   passwordLoginINput: {
     marginBottom: '5px',
@@ -52,6 +55,7 @@ export default function Login() {
   const value = useContext(Logged);
 
   useEffect(() => {
+    mixpanel.track('User On Login Page');
     // Prevent special password eye bugs
     document.addEventListener('mouseup', () => {
       setShowPassword(false);
@@ -86,6 +90,7 @@ export default function Login() {
         rememberMe,
       });
       value.setLogged(true);
+      mixpanel.track('User Logged In', { User: `${userName}`, 'Remember Me': `${rememberMe}` });
       location.push('/');
     } catch (error) {
       setError({ message: error.response.data.message });

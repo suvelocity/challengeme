@@ -3,6 +3,11 @@ const { Router } = require('express');
 const axios = require('axios');
 const { Sequelize, Op } = require('sequelize');
 const jwt = require('jsonwebtoken');
+const checkAdmin = require('../../middleware/checkAdmin');
+const {
+  newChallengeValidation,
+} = require('../../helpers/validator');
+const handleGithubTokens = require('../../helpers/handleGithubTokens');
 
 const router = Router();
 
@@ -20,6 +25,7 @@ router.get('/', async (req, res) => {
         name: {
           [Op.like]: `%${name}%`,
         },
+        state: 'approved',
       },
       include: [
         {
@@ -44,7 +50,8 @@ router.get('/', async (req, res) => {
         challengeId: allChallengesId,
       },
       attributes: [
-        [Sequelize.fn('COUNT', Sequelize.col('id')), 'submissionsCount'], 'challengeId',
+        [Sequelize.fn('COUNT', Sequelize.col('id')), 'submissionsCount'],
+        'challengeId',
       ],
       group: ['challengeId'],
     });
@@ -54,7 +61,8 @@ router.get('/', async (req, res) => {
         challengeId: allChallengesId,
       },
       attributes: [
-        [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRaiting'], 'challengeId',
+        [Sequelize.fn('AVG', Sequelize.col('rating')), 'averageRaiting'],
+        'challengeId',
       ],
       group: ['challengeId'],
     });
@@ -71,7 +79,9 @@ router.get('/', async (req, res) => {
       }
 
       challengeSubmittions.forEach((countSubmissions) => {
-        if (countSubmissions.dataValues.challengeId === challenge.dataValues.id) {
+        if (
+          countSubmissions.dataValues.challengeId === challenge.dataValues.id
+        ) {
           challenge.dataValues.submissionsCount = countSubmissions.dataValues.submissionsCount;
         }
       });
@@ -114,8 +124,10 @@ router.get('/:challengeId/:userName/submission', async (req, res) => {
     if (testSubmission.length > 0) {
       const recentSubmission = testSubmission[testSubmission.length - 1].dataValues;
       if (recentSubmission.state === 'PENDING') {
-        if ((timeNow - recentSubmission.createdAt.getTime()) > 150000) {
-          const submissionThatIsStuck = await Submission.findByPk(recentSubmission.id);
+        if (timeNow - recentSubmission.createdAt.getTime() > 150000) {
+          const submissionThatIsStuck = await Submission.findByPk(
+            recentSubmission.id,
+          );
           await submissionThatIsStuck.update({ state: 'FAIL' });
           console.log('its because zach is crazy');
         }
@@ -148,6 +160,34 @@ router.get('/:challengeId/submissions', async (req, res) => {
     res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
+
+router.get('/userChallenges', async (req, res) => {
+  try {
+    const allChallenges = await Challenge.findAll({
+      where: {
+        authorId: req.user.userId,
+      },
+      include: [
+        {
+          model: User,
+          as: 'Author',
+          attributes: ['userName'],
+        },
+        {
+          model: Label,
+          attributes: ['name', 'id'],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
+    res.json(allChallenges);
+  } catch (error) {
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
+  }
+});
 // router Post - new challenge
 router.post('/', async (req, res) => {
   try {
@@ -160,9 +200,22 @@ router.post('/', async (req, res) => {
     if (repoExists) {
       return res.status(409).json({ message: 'Repo is already in the system' });
     }
-    const newChallenge = await Challenge.create(req.body);
-    res.json(newChallenge);
-  } catch (err) {
+    const newChallengeObj = {
+      name: req.body.name,
+      description: req.body.description,
+      type: req.body.type,
+      repositoryName: req.body.repositoryName,
+      boilerPlate: req.body.boilerPlate,
+      authorId: req.user.userId,
+    };
+    const { error } = newChallengeValidation(newChallengeObj);
+    if (error) {
+      console.error(error.message);
+      return res.status(400).json({ success: false, message: "Don't mess with me" });
+    }
+    const newChallenge = await Challenge.create(newChallengeObj);
+    res.status(201).json(newChallenge);
+  } catch (error) {
     console.error(error.message);
     res.status(400).json({ message: 'Cannot process request' });
   }
@@ -201,54 +254,116 @@ router.post('/:challengeId/apply', async (req, res) => {
     const urltoSet = process.env.MY_URL.concat(
       `/api/v1/webhook/submission/${submission.id}`,
     );
-    const bearerToken = jwt.sign({ userId: req.user.userId, userName: req.user.userName }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' });
+    const bearerToken = jwt.sign(
+      { userId: req.user.userId, userName: req.user.userName },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: '1h' },
+    );
     const pureToken = bearerToken.indexOf(' ') !== -1 ? bearerToken.split(' ')[1] : bearerToken;
     const ref = process.env.MY_BRANCH || process.env.DEFAULT_BRANCH || 'master'; // In case somehow the process env branches are not set.
-    console.log({
-      ref, // the branch that the actions are run on
-      inputs: {
-        testRepo: challenge.repositoryName, // Repository to run the tests on
-        solutionRepo: solutionRepository, // The repository that holds the submitted solution
-        webhookUrl: urltoSet, // the url to come back to when the action is finished
-        bearerToken: pureToken, // the access token to get back to our server ** currently not in use
-      },
-    },
-    {
-      'Content-Type': 'application/json',
-      Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
-    }, challenge.type);
-    const { status } = await axios.post(
-      `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
-      {
-        ref, // the branch that the actions are run on
-        inputs: {
-          testRepo: challenge.repositoryName, // Repository to run the tests on
-          solutionRepo: solutionRepository, // The repository that holds the submitted solution
-          webhookUrl: urltoSet, // the url to come back to when the action is finished
-          bearerToken: pureToken, // the access token to get back to our server ** currently not in use
+    // console.log(
+    //   {
+    //     ref, // the branch that the actions are run on
+    //     inputs: {
+    //       testRepo: challenge.repositoryName, // Repository to run the tests on
+    //       solutionRepo: solutionRepository, // The repository that holds the submitted solution
+    //       webhookUrl: urltoSet, // the url to come back to when the action is finished
+    //       bearerToken: pureToken, // the access token to get back to our server ** currently not in use
+    //     },
+    //   },
+    //   {
+    //     "Content-Type": "application/json",
+    //     Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
+    //   },
+    //   challenge.type
+    // );
+    const response = await axios
+      .post(
+        `https://api.github.com/repos/${process.env.GITHUB_REPO}/actions/workflows/${challenge.type}.yml/dispatches`,
+        {
+          ref, // the branch that the actions are run on
+          inputs: {
+            testRepo: challenge.repositoryName, // Repository to run the tests on
+            solutionRepo: solutionRepository, // The repository that holds the submitted solution
+            webhookUrl: urltoSet, // the url to come back to when the action is finished
+            bearerToken: pureToken, // the access token to get back to our server ** currently not in use
+          },
         },
-      },
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${process.env.GITHUB_ACCESS_TOKEN}`,
+          },
         },
-      },
-    ).catch((error) => {
-      console.error(error.message);
-    });
+      )
+      .catch((error) => {
+        handleGithubTokens(error.response.headers);
+        console.error(error.message);
+      });
+    handleGithubTokens(response.headers);
+    res.json(response.status);
+  } catch (error) {
+    console.error(error.message);
+    handleGithubTokens(error.response.headers);
+    res.status(400).json({ message: 'Cannot process request' });
+  }
+});
 
-    res.json({ status });
+//= ============================= Admin Routes ======================================
+router.get('/pending-challenges', checkAdmin, async (req, res) => {
+  try {
+    const allChallenges = await Challenge.findAll({
+      include: [
+        {
+          model: User,
+          as: 'Author',
+          attributes: ['userName'],
+        },
+        {
+          model: Label,
+          attributes: ['name', 'id'],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
+    res.json(allChallenges);
   } catch (error) {
     console.error(error.message);
     res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
+router.patch('/state-update/:challengeId', checkAdmin, async (req, res) => {
+  try {
+    const { challengeId } = req.params;
+    const { state } = req.body;
+    const updatedChallenge = await Challenge.update({
+      state,
+    },
+    {
+      where: {
+        id: challengeId,
+      },
+    });
+    if (updatedChallenge[0]) {
+      res.json({ message: 'Success' });
+    } else {
+      console.error('Failed to Update State');
+      res.status(400).json({ message: 'Failed to Update State' });
+    }
+  } catch (error) {
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+//= ============================= ALLWAYS LAST ROUTE ! ======================================
 router.get('/:challengeId', async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
-      where: { id: req.params.challengeId },
+      where: { id: req.params.challengeId, state: 'approved' },
       include: [
         {
           model: Label,
@@ -268,7 +383,8 @@ router.get('/:challengeId', async (req, res) => {
     const challengeSubmittions = await Submission.findAll({
       where: { challengeId: req.params.challengeId },
       attributes: [
-        [Sequelize.fn('COUNT', Sequelize.col('id')), 'submissionsCount'], 'challengeId',
+        [Sequelize.fn('COUNT', Sequelize.col('id')), 'submissionsCount'],
+        'challengeId',
       ],
       group: ['challengeId'],
     });
@@ -282,8 +398,12 @@ router.get('/:challengeId', async (req, res) => {
       group: ['challengeId'],
     });
 
-    challenge.dataValues.averageRaiting = averageRaiting[0] ? averageRaiting[0].dataValues.averageRating : null;
-    challenge.dataValues.submissionsCount = challengeSubmittions[0] ? challengeSubmittions[0].dataValues.submissionsCount : 0;
+    challenge.dataValues.averageRaiting = averageRaiting[0]
+      ? averageRaiting[0].dataValues.averageRating
+      : null;
+    challenge.dataValues.submissionsCount = challengeSubmittions[0]
+      ? challengeSubmittions[0].dataValues.submissionsCount
+      : 0;
 
     res.json(challenge);
   } catch (error) {
@@ -291,4 +411,6 @@ router.get('/:challengeId', async (req, res) => {
     res.status(400).json({ message: 'Cannot process request' });
   }
 });
+//= ============================= ALLWAYS LAST ROUTE ! ======================================
+
 module.exports = router;

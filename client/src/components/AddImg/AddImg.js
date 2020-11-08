@@ -10,6 +10,7 @@ function AddImg({ file, handleChange }) {
       <div className="upload-img-container">
         <div className="upload-img-secondary-container">
           <DropNCrop
+            className="dropNCrop"
             maxFileSize={3145728} // max image size
             cropperOptions={
               {

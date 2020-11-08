@@ -3,29 +3,36 @@ import React, { useEffect, useState } from 'react';
 import Review from './Review';
 import network from '../../../../services/network';
 
-function ReviewsTab({ challengeId }) {
+function ReviewsTab({ challengeId, setRatingCount }) {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchReviews = async () => {
-      const { data: reviewsArrayFromServer } = await network.get(
-        `/api/v1/reviews/byChallenge/${challengeId}`,
-      );
-      const reviewsWithContent = reviewsArrayFromServer.filter(
-        (review) => review.title && review.content,
-      );
-      setReviews(reviewsWithContent);
-      setLoading(false);
+      try {
+        const { data: reviewsArrayFromServer } = await network.get(
+          `/api/v1/reviews/byChallenge/${challengeId}`,
+        );
+        setRatingCount(reviewsArrayFromServer.length);
+        const reviewsWithContent = reviewsArrayFromServer.filter(
+          (review) => review.title && review.content,
+        );
+        setReviews(reviewsWithContent);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+      }
     };
     fetchReviews();
     const liveReviews = setInterval(fetchReviews, 5000);
     return () => clearInterval(liveReviews);
+    // eslint-disable-next-line
   }, [challengeId]);
 
   return reviews.length !== 0 ? (
     reviews.map((review) => {
       const {
+        id,
         createdAt,
         title,
         content,
@@ -35,6 +42,7 @@ function ReviewsTab({ challengeId }) {
       return (
         <Review
           key={title + createdAt}
+          reviewId={id}
           author={userName}
           createdAt={createdAt}
           title={title}
@@ -44,10 +52,10 @@ function ReviewsTab({ challengeId }) {
       );
     })
   ) : (
-    <div>
-      {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
-    </div>
-  );
+      <div>
+        {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
+      </div>
+    );
 }
 
 export default ReviewsTab;

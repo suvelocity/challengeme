@@ -91,10 +91,18 @@ span.MuiStepConnector-line.MuiStepConnector-lineHorizontal {
     letter-spacing: 2px; 
     text-align: center;
 }
-/* 
-.MuiPaper-root.MuiMenu-paper.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded{
-    width:500px;
-    left: auto !important;
-    margin-left: auto ;
-    margin-right: auto ;
-} */
+@media (max-width: 700px) {
+    .registerHeader,.containerHeaderRegister {
+        /* position:static; */
+        top:0;
+        margin:0px;
+        width: 100vw;
+    }
+    .registerBody {
+    position: absolute;
+    top:130px;
+    width:100vw;
+    z-index: -1;
+        /* margin-top: 300px; */
+    }
+}

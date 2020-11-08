@@ -7,8 +7,10 @@
     "test": "jest --detectOpenHandles --forceExit --runInBand",
     "initDB": "node_modules/.bin/sequelize db:create",
     "migrate": "node_modules/.bin/sequelize db:migrate",
+    "seed": "node_modules/.bin/sequelize db:seed:all",
     "dev": "nodemon index.js",
-    "devTest": "NODE_ENV=test nodemon index.js"
+    "devTest": "NODE_ENV=test nodemon index.js",
+    "cyTest": "npm run devTest & cypress run"
   },
   "repository": {
     "type": "git",
@@ -31,6 +33,7 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "helmet": "^4.1.1",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "mysql2": "^2.2.5",
@@ -46,6 +49,7 @@
     "ngrok": "^3.3.0",
     "nock": "^13.0.4",
     "sequelize-cli": "^6.2.0",
+    "start-server-and-test": "^1.11.5",
     "supertest": "^4.0.2"
   }
 }

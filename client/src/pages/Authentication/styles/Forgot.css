@@ -66,3 +66,20 @@
     margin-left: 5px;
     color: white;
 }
+
+@media (max-width: 700px) {
+    .containerHeaderForgotPass,.forgotPassHeader {
+        /* position:static; */
+        top:0;
+        margin:0px;
+        width: 100vw;
+    }
+    .ForgotPassBody {
+        height: calc(100vh - 160px);
+        width:100vw;
+    }
+    .containerErrorForgotPass {
+        width:80vw;
+        height: 50px;
+    }
+}
