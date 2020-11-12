@@ -188,7 +188,7 @@ function GithhubTokens() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allTokens[0] && allTokens[0].map((token) => (
+            {allTokens && allTokens.map((token) => (
               <Row key={token.token} row={token} getAllTokens={getAllTokens} />
             ))}
           </TableBody>

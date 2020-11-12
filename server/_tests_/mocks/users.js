@@ -14,11 +14,12 @@ module.exports = [
         reasonOfRegistration: "'Challenge Myself'",
         securityQuestion: 'Who was your childhood hero?',
         securityAnswer: 'superman',
-        permission: 'user',
         created_at: new Date(),
         updated_at: new Date(),
+        permission: 'user'
     },
     {
+        id: 2,
         firstName: "david",
         lastName: "boostrap",
         userName: "boosty123",
@@ -32,21 +33,23 @@ module.exports = [
         reasonOfRegistration: "'Challenge Myself'",
         securityQuestion: 'Who was your childhood hero?',
         securityAnswer: 'superman',
+        permission: 'user'
     },
     {
-        firstName: 'cyber4S',
-        lastName: 'suvelocity',
-        userName: 'suvelocity',
+        id: 3,
+        firstName: 'roy',
+        lastName: 'king',
+        userName: 'royTheKing',
         password: '12345678',
-        email: 'suvelocity@gmail.com',
-        birthDate: new Date('1997/06/17'),
+        email: 'royTheKing@gmail.com',
+        birthDate: new Date('1996/02/17'),
         country: 'Israel',
         city: 'Tel Aviv',
-        phoneNumber: '0508864599',
+        phoneNumber: '050812399',
         githubAccount: 'suvelocity',
         reasonOfRegistration: "'Challenge Myself'",
         securityQuestion: 'Who was your childhood hero?',
         securityAnswer: 'superman',
-        permission: 'admin',
+        permission: 'admin'
     }
 ]

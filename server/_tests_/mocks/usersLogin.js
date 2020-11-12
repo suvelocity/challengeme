@@ -13,5 +13,9 @@ module.exports = [
         userName: 'suvelocity',
         password: '12345678',
         rememberMe: false
+    }, {
+        userName: 'royTheKing',
+        password: '12345678',
+        rememberMe: false
     }
 ]

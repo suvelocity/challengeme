@@ -7,7 +7,7 @@ const {
   Submission, User, Challenge, Review,
 } = require('../../models');
 
-// get challenge submissions by username
+// get challenge last submission by username
 submissionRouter.get('/by-user/:challengeId', async (req, res) => {
   try {
     const { challengeId } = req.params;
@@ -17,16 +17,16 @@ submissionRouter.get('/by-user/:challengeId', async (req, res) => {
       attributes: ['id'],
     });
     const testSubmission = await Submission.findAll({
+      where: {
+        challengeId,
+        userId: id,
+      },
       include: [
         {
           model: User,
           attributes: ['userName'],
         },
       ],
-      where: {
-        challengeId,
-        userId: id,
-      },
     });
     const timeNow = Date.now();
     if (testSubmission.length > 0) {
