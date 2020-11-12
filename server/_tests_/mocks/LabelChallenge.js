@@ -1,69 +1,59 @@
 module.exports = [
-  {
-    challenge_id: 1,
-    label_id: 1,
-    created_at: '2020-10-01 20:00:00',
-    updated_at: '2020-10-01 20:00:00',
-  },
-  {
-    challenge_id: 1,
-    label_id: 2,
-    created_at: '2020-10-01 20:00:00',
-    updated_at: '2020-10-01 20:00:00',
-  },
-  {
-    challenge_id: 1,
-    label_id: 3,
-    created_at: '2020-10-01 20:00:00',
-    updated_at: '2020-10-01 20:00:00',
-  },
-  {
-    challenge_id: 2,
-    label_id: 1,
-    created_at: '2020-10-01 20:00:00',
-    updated_at: '2020-10-01 20:00:00',
+    {
+        challengeId: 1,
+        labelId: 1,
+        
+    },
+    {
+        challengeId: 1,
+        labelId: 2,
+        
+    },
+    {
+        challengeId: 1,
+        labelId: 3,
+        
+    },
+    {
+        challengeId: 2,
+        labelId: 1,
+        
 
-  },
-  {
-    challenge_id: 2,
-    label_id: 4,
-    created_at: '2020-10-01 20:00:00',
-    updated_at: '2020-10-01 20:00:00',
+    },
+    {
+        challengeId: 2,
+        labelId: 4,
+        
 
-  },
-  {
-    challenge_id: 2,
-    label_id: 5,
-    created_at: '2020-10-01 20:00:00',
-    updated_at: '2020-10-01 20:00:00',
+    },
+    {
+        challengeId: 2,
+        labelId: 5,
+        
 
-  },
-  {
-    challenge_id: 3,
-    label_id: 5,
-    created_at: '2020-10-01 20:00:00',
-    updated_at: '2020-10-01 20:00:00',
+    },
+    {
+        challengeId: 3,
+        labelId: 5,
+        
+        
+    },
+    {
+        challengeId: 3,
+        labelId: 6,
+        
 
-  },
-  {
-    challenge_id: 3,
-    label_id: 6,
-    created_at: '2020-10-01 20:00:00',
-    updated_at: '2020-10-01 20:00:00',
+    },
+    {
+        challengeId: 3,
+        labelId: 7,
+        
 
-  },
-  {
-    challenge_id: 3,
-    label_id: 7,
-    created_at: '2020-10-01 20:00:00',
-    updated_at: '2020-10-01 20:00:00',
+    },
+    {
+        challengeId: 3,
+        labelId: 8,
+        
 
-  },
-  {
-    challenge_id: 3,
-    label_id: 8,
-    created_at: '2020-10-01 20:00:00',
-    updated_at: '2020-10-01 20:00:00',
-
-  },
-];
+    }
+  ]

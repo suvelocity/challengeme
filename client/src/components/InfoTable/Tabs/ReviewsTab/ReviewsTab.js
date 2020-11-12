@@ -11,7 +11,7 @@ function ReviewsTab({ challengeId, setRatingCount }) {
     const fetchReviews = async () => {
       try {
         const { data: reviewsArrayFromServer } = await network.get(
-          `/api/v1/reviews/byChallenge/${challengeId}`,
+          `/api/v1/reviews/${challengeId}`,
         );
         setRatingCount(reviewsArrayFromServer.length);
         const reviewsWithContent = reviewsArrayFromServer.filter(
@@ -32,6 +32,7 @@ function ReviewsTab({ challengeId, setRatingCount }) {
   return reviews.length !== 0 ? (
     reviews.map((review) => {
       const {
+        id,
         createdAt,
         title,
         content,
@@ -41,6 +42,7 @@ function ReviewsTab({ challengeId, setRatingCount }) {
       return (
         <Review
           key={title + createdAt}
+          reviewId={id}
           author={userName}
           createdAt={createdAt}
           title={title}

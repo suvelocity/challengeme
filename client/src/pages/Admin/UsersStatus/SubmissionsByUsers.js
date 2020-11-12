@@ -123,7 +123,7 @@ const SubmissionsByUsers = () => {
   const [data, setData] = useState([]);
 
   async function fetchData() {
-    const { data } = await network.get('/api/v1/statistics/insights/users-submissions');
+    const { data } = await network.get('/api/v1/insights/submissions/users-submissions');
     setData(data);
   }
 

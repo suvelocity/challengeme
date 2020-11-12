@@ -12,10 +12,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.20.0",
-    "chart.js": "^2.9.3",
     "clsx": "^1.1.1",
-    "cypress": "^5.3.0",
-    "cypress-file-upload": "^4.1.1",
     "framer-motion": "^2.9.4",
     "jest": "^24.9.0",
     "js-cookie": "^2.2.1",
@@ -54,7 +51,6 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^5.3.0",
     "eslint-config-airbnb": "^18.2.0",
     "nock": "^13.0.4",
     "nock-puppeteer": "^1.0.2",

@@ -89,12 +89,16 @@ function Row(props) {
         </StyledTableCell>
         <StyledTableCell align="left">{row.token}</StyledTableCell>
         <StyledTableCell align="left">{row.status}</StyledTableCell>
-        <StyledTableCell align="left"><div style={
-          row.active
-            ? { color: 'green' }
-            :
-            { color: 'red' }
-        }          >{`${row.active}`}</div></StyledTableCell>
+        <StyledTableCell align="left">
+          <div style={
+            row.active
+              ? { color: 'green' }
+              : { color: 'red' }
+          }
+          >
+            {`${row.active}`}
+          </div>
+        </StyledTableCell>
         <StyledTableCell align="left">{row.gitAccount}</StyledTableCell>
         <StyledTableCell align="left">{row.actionsLimit}</StyledTableCell>
         <StyledTableCell align="left">{new Date(row.updatedAt).toString().substring(0, 24)}</StyledTableCell>
@@ -117,8 +121,10 @@ function Row(props) {
                       <Button onClick={() => deleteToken(row.token)}>Delete Token</Button>
                     </StyledTableCell>
                     <StyledTableCell component="th" scope="row">
-                      Remaining: {row.remaining ? row.remaining : 'Not Active'}
-                      </StyledTableCell>
+                      Remaining:
+                      {' '}
+                      {row.remaining ? row.remaining : 'Not Active'}
+                    </StyledTableCell>
                   </StyledTableRow>
                 </TableBody>
               </Table>

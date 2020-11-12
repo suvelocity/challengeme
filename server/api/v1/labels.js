@@ -1,8 +1,9 @@
 const { Router } = require('express');
-const { LabelChallenge, Label } = require('../../models');
 
 const router = Router();
+const { LabelChallenge, Label } = require('../../models');
 
+// add labels to challenge
 router.post('/', async (req, res) => {
   const { challengeId } = req.body;
   const { labels: labelsArray } = req.body;
@@ -24,6 +25,7 @@ router.post('/', async (req, res) => {
   }
 });
 
+// get all labels option
 router.get('/', async (req, res) => {
   try {
     const allLabels = await Label.findAll({ attributes: ['id', 'name'] });

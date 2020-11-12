@@ -59,7 +59,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
         !data.repository.match(hebrew)
       ) {
         await network.get(
-          `/api/v1/services/public_repo?repo_name=${data.repository}`
+          `/api/v1/services/public-repo?repo_name=${data.repository}`
         );
       } else {
         throw new Error();
@@ -78,7 +78,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
     } else {
       try {
         await network.post(
-          `/api/v1/challenges/${challengeParamId}/apply`,
+          `/api/v1/submissions/apply/${challengeParamId}`,
           data
         );
         const user = Cookies.get('userName')
@@ -120,6 +120,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
         >
           <Typography variant='h5'>Submit Your Solution</Typography>
           <TextField
+            cy-test="submit-repo-input"
             label='Solution repository'
             type='text'
             id='repoInput'
@@ -164,6 +165,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
           >
             <Typography variant='subtitle1'>Rate this challenge</Typography>
             <Rating
+              cy-test="submit-rating-input"
               name='rating'
               onChange={(_, value) => setUserRating(value)}
             />
@@ -190,6 +192,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
             Please leave your review here
           </Typography>
           <TextField
+            cy-test="submit-title-input"
             label='Title'
             type='text'
             id='commentTitleInput'
@@ -207,6 +210,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
             </Typography>
           )}
           <TextField
+            cy-test="submit-content-input"
             id='reviewContentInput'
             label='Message'
             multiline
@@ -227,6 +231,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
           )}
 
           <Button
+            cy-test="submit-review-button"
             variant='contained'
             color='primary'
             type='submit'

@@ -1,11 +1,12 @@
 const reviewsRouter = require('express').Router();
+const checkAdmin = require('../../middleware/checkAdmin');
 const { Challenge, Review, User } = require('../../models');
 
-reviewsRouter.get('/byChallenge/:challengeId', async (req, res) => {
+// get reviews by challenge with params
+reviewsRouter.get('/:challengeId', async (req, res) => {
   try {
-    const { challengeId } = req.params;
     const reviews = await Review.findAll({
-      where: { challengeId },
+      where: { challengeId: req.params.challengeId },
       include: {
         model: User,
         attributes: ['userName'],
@@ -18,23 +19,7 @@ reviewsRouter.get('/byChallenge/:challengeId', async (req, res) => {
   }
 });
 
-reviewsRouter.get('/byUser/:challengeId/:userId', async (req, res) => {
-  try {
-    const { userId, challengeId } = req.params;
-    const reviews = await Review.findAll({
-      where: { userId, challengeId },
-      include: {
-        model: Challenge,
-        attributes: ['name', 'id'],
-      },
-    });
-    res.json(reviews);
-  } catch (error) {
-    console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
-  }
-});
-
+// add review to challenge
 reviewsRouter.post('/:challengeId', async (req, res) => {
   const { title, content, rating } = req.body;
   const { userId } = req.user;
@@ -48,6 +33,24 @@ reviewsRouter.post('/:challengeId', async (req, res) => {
   try {
     await Review.create(query);
     res.json({ message: 'Uploaded new review!' });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+//= ============================= Admin Routes ======================================
+
+// delete review from challenge
+reviewsRouter.delete('/:reviewId', checkAdmin, async (req, res) => {
+  const { reviewId } = req.params;
+  try {
+    await Review.destroy({
+      where: {
+        id: reviewId,
+      },
+    });
+    res.sendStatus(204);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
