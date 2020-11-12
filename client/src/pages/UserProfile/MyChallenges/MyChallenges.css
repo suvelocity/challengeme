@@ -4,13 +4,13 @@
     overflow-y: auto;
 
 }
-.user-profil-my-challenges-title{
+.user-profile-my-challenges-title{
     margin:100px 0px 50px 0px ;
     text-align: center;
     font-size: 50px;
 }
 
-.dark .user-profil-my-challenges-title{
+.dark .user-profile-my-challenges-title{
     color:white;
 }
 .user-profile-my-challenges-container{

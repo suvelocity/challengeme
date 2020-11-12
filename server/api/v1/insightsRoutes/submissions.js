@@ -1,14 +1,13 @@
-const { Router } = require('express');
-const sequelize = require('sequelize');
+const insightSubmissionRouter = require('express').Router();
 const { Op } = require('sequelize');
-
-const router = Router();
+const sequelize = require('sequelize');
+const checkAdmin = require('../../../middleware/checkAdmin');
 const {
   Submission, Challenge, Review, User,
 } = require('../../../models');
 
 // returns the 5 challenges with most submissions
-router.get('/top-challenges', async (req, res) => {
+insightSubmissionRouter.get('/top-challenges', async (req, res) => {
   try {
     const topChallenges = await Submission.findAll({
       attributes: {
@@ -32,7 +31,7 @@ router.get('/top-challenges', async (req, res) => {
 });
 
 // returns the 5 challenges with most successful submissions
-router.get('/top-success', async (req, res) => {
+insightSubmissionRouter.get('/top-success', async (req, res) => {
   try {
     const mostSuccessful = await Submission.findAll({
       attributes: {
@@ -56,7 +55,7 @@ router.get('/top-success', async (req, res) => {
 });
 
 // returns the count of challenges from same type('type name' + 'count')
-router.get('/challenges-type', async (req, res) => {
+insightSubmissionRouter.get('/challenges-type', async (req, res) => {
   try {
     const challengesByType = await Challenge.findAll({
       attributes: [
@@ -74,7 +73,7 @@ router.get('/challenges-type', async (req, res) => {
 });
 
 // returns the count of submissions submitted per day from the last 5 days
-router.get('/sub-by-date', async (req, res) => {
+insightSubmissionRouter.get('/sub-by-date', async (req, res) => {
   try {
     const fiveDays = 5 * 24 * 60 * 60 * 1000;
     const submissionsByDate = await Submission.findAll({
@@ -96,7 +95,7 @@ router.get('/sub-by-date', async (req, res) => {
 });
 
 // returns top 5 challenges ordered by rating average (from reviews)
-router.get('/challenges-by-reviews', async (req, res) => {
+insightSubmissionRouter.get('/challenges-by-reviews', async (req, res) => {
   try {
     const challengesByRating = await Review.findAll({
       attributes: [[sequelize.fn('AVG', sequelize.col('rating')), 'ratingAVG']],
@@ -121,7 +120,7 @@ router.get('/challenges-by-reviews', async (req, res) => {
 });
 
 //= ======================================Admin Routes===============================
-router.get('/challenges-sumbissions', async (req, res) => {
+insightSubmissionRouter.get('/challenges-submissions', checkAdmin, async (req, res) => {
   try {
     const topChallenges = await Submission.findAll({
       attributes: {
@@ -140,7 +139,7 @@ router.get('/challenges-sumbissions', async (req, res) => {
     const users = await Challenge.findAll({
       include: {
         model: Submission,
-        attributes: ['id', 'userId', 'createdAt', 'state','solutionRepository'],
+        attributes: ['id', 'userId', 'createdAt', 'state', 'solutionRepository'],
         include: {
           model: User,
           attributes: ['userName'],
@@ -154,7 +153,7 @@ router.get('/challenges-sumbissions', async (req, res) => {
   }
 });
 
-router.get('/users-submissions', async (req, res) => {
+insightSubmissionRouter.get('/users-submissions', checkAdmin, async (req, res) => {
   try {
     const topUsers = await User.findAll({
       attributes: ['userName', 'phoneNumber', 'firstName', 'lastName', 'email'],
@@ -170,4 +169,4 @@ router.get('/users-submissions', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = insightSubmissionRouter;

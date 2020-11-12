@@ -36,6 +36,10 @@ const AdminLanding = () => {
         <Button className={classes.adminButton} variant="contained" color="primary">
           <Link to="/admin/GithhubTokens">Githhub Tokens</Link>
         </Button>
+        <Button className={classes.adminButton} variant="contained">
+          {' '}
+          <Link to="/admin/TeamsControl">Teams Control</Link>
+        </Button>
       </div>
     </div>
   );

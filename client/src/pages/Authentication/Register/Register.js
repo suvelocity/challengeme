@@ -81,7 +81,7 @@ function Register() {
         });
       }
       try {
-        await network.post('/api/v1/auth/userexist', {
+        await network.post('/api/v1/auth/user-exist', {
           userName,
         });
       } catch (e) {

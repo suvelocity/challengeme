@@ -78,7 +78,7 @@ function UserInfo({ darkMode }) {
       try {
         const username = Cookies.get('userName');
         mixpanel.track('User On Personal Details Page', { User: `${username}` });
-        const { data: info } = await network.get(`/api/v1/user_info/${username}`);
+        const { data: info } = await network.get(`/api/v1/users/info/${username}`);
         setUserInfo(info[0]);
       } catch (error) {
         console.error(error);

@@ -12,7 +12,7 @@ const UserProfileLanding = () => {
   const getMyChallenges = async () => {
     try {
       const { data: allMyChallengesFromServer } = await network.get(
-        '/api/v1/challenges/userChallenges',
+        '/api/v1/challenges/user-challenges',
       );
       setAllMyChallenges(allMyChallengesFromServer);
     } catch (error) {
@@ -30,9 +30,11 @@ const UserProfileLanding = () => {
         background:
           'linear-gradient(270deg, rgba(36,193,67,1) 0%, rgba(130,214,95,1) 100%)',
       };
-    } if (status === 'denied') {
+    }
+    if (status === 'denied') {
       return {
-        background: 'linear-gradient(270deg, rgba(193,36,36,1) 0%, rgba(214,95,95,1) 100%)',
+        background:
+          'linear-gradient(270deg, rgba(193,36,36,1) 0%, rgba(214,95,95,1) 100%)',
       };
     }
     return {
@@ -42,7 +44,9 @@ const UserProfileLanding = () => {
   };
   return (
     <div className="user-profile-my-challenges">
-      <h1 className="user-profil-my-challenges-title">This is challenges page</h1>
+      <h1 className="user-profile-my-challenges-title">
+        This is challenges page
+      </h1>
       <div className="user-profile-my-challenges-container">
         {allMyChallenges
           && allMyChallenges.map((challenge) => {
@@ -96,7 +100,6 @@ const UserProfileLanding = () => {
                     {challenge.type}
                   </div>
                   <div>
-
                     <b>Created At:</b>
                     {' '}
                     {new Date(challenge.createdAt).toString().substring(0, 24)}
@@ -119,11 +122,7 @@ const UserProfileLanding = () => {
       </div>
       <div className="user-profile-my-challenges-button-container">
         <Link to="/profile">
-          <Button
-            style={{ minWidth: 150 }}
-            variant="contained"
-            color="default"
-          >
+          <Button style={{ minWidth: 150 }} variant="contained" color="default">
             back to My Profile
           </Button>
         </Link>

@@ -55,15 +55,15 @@ describe('Submission process', () => {
         done();
       });
     test('Posting submisson and status change to PENDING', async (done) => {
-        await request(app).post(`/api/v1/challenges/${solutionRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
+        await request(app).post(`/api/v1/submissions/apply/${solutionRepos[0].challengeId}`).set('authorization',`bearer ${accessToken}`)
         .send({repository:solutionRepos[0].repo, ...review});
-        await request(app).post(`/api/v1/challenges/${solutionRepos[1].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
+        await request(app).post(`/api/v1/submissions/apply/${solutionRepos[1].challengeId}`).set('authorization',`bearer ${accessToken}`)
         .send({repository:solutionRepos[1].repo, ...review});
-        await request(app).post(`/api/v1/challenges/${solutionRepos[2].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
+        await request(app).post(`/api/v1/submissions/apply/${solutionRepos[2].challengeId}`).set('authorization',`bearer ${accessToken}`)
         .send({repository:solutionRepos[2].repo, ...review});
-        await request(app).post(`/api/v1/challenges/${solutionRepos[3].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
+        await request(app).post(`/api/v1/submissions/apply/${solutionRepos[3].challengeId}`).set('authorization',`bearer ${accessToken}`)
         .send({repository:solutionRepos[3].repo, ...review});
-        await request(app).post(`/api/v1/challenges/${failRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
+        await request(app).post(`/api/v1/submissions/apply/${failRepos[0].challengeId}`).set('authorization',`bearer ${accessToken}`)
         .send({repository:failRepos[0].repo, ...review});
         let submissions = await Submission.findAll();
         expect(submissions.length).toBe(5);

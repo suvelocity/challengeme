@@ -59,7 +59,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
         !data.repository.match(hebrew)
       ) {
         await network.get(
-          `/api/v1/services/public_repo?repo_name=${data.repository}`
+          `/api/v1/services/public-repo?repo_name=${data.repository}`
         );
       } else {
         throw new Error();
@@ -78,7 +78,7 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
     } else {
       try {
         await network.post(
-          `/api/v1/challenges/${challengeParamId}/apply`,
+          `/api/v1/submissions/apply/${challengeParamId}`,
           data
         );
         const user = Cookies.get('userName')
