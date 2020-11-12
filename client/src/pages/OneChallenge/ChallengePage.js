@@ -60,7 +60,7 @@ function ChallengePage({ darkMode }) {
   const classes = useStyles();
   const [submissions, setSubmissions] = useState();
   const [challenge, setChallenge] = useState(null);
-  const { id } = useParams();
+  const { id: challengeId } = useParams();
   const [image, setImage] = useState('');
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const [rating, setRating] = useState(0);
@@ -72,7 +72,7 @@ function ChallengePage({ darkMode }) {
 
   useEffect(() => {
     const user = Cookies.get('userName');
-    mixpanel.track('User On Challenge Page', { User: `${user}`, ChallengeId: `${id}` });
+    mixpanel.track('User On Challenge Page', { User: `${user}`, ChallengeId: `${challengeId}` });
     // eslint-disable-next-line
   }, []);
 
@@ -80,7 +80,7 @@ function ChallengePage({ darkMode }) {
     (async () => {
       try {
         const { data: submission } = await network.get(
-          `/api/v1/challenges/${id}/${Cookies.get('userName')}/submission`,
+          `/api/v1/submissions/by-user/${challengeId}`,
         );
         if (submission) {
           setSubmissionStatus({
@@ -98,7 +98,7 @@ function ChallengePage({ darkMode }) {
     const getSubmissionInterval = setInterval(async () => {
       try {
         const { data: submission } = await network.get(
-          `/api/v1/challenges/${id}/${Cookies.get('userName')}/submission`,
+          `/api/v1/submissions/by-user/${challengeId}`,
         );
         if (submission) {
           setSubmissionStatus({
@@ -115,7 +115,7 @@ function ChallengePage({ darkMode }) {
     }, 5000);
     const setImg = async () => {
       try {
-        const { data } = await network.get(`/api/v1/image?id=${id}`);
+        const { data } = await network.get(`/api/v1/image?id=${challengeId}`);
         setImage(data.img);
       } catch (error) {
         console.error(error);
@@ -123,7 +123,7 @@ function ChallengePage({ darkMode }) {
     };
     const fetchChallenge = async () => {
       try {
-        const { data: challengeFromServer } = await network.get(`/api/v1/challenges/${id}`);
+        const { data: challengeFromServer } = await network.get(`/api/v1/challenges/info/${challengeId}`);
         setChallenge(challengeFromServer);
         setRating(
           challengeFromServer.averageRaiting
@@ -139,7 +139,7 @@ function ChallengePage({ darkMode }) {
     fetchChallenge();
     return () => clearInterval(getSubmissionInterval);
     // eslint-disable-next-line
-  }, [id]);
+  }, [challengeId]);
 
   function handleModalClose() {
     setIsModalOpen(false);
@@ -149,6 +149,7 @@ function ChallengePage({ darkMode }) {
     if (!submissionStatus) {
       return (
         <Button
+          cy-test="submit-button"
           className={classes.SubmitdButton}
           variant="contained"
           onClick={() => setIsModalOpen(true)}
@@ -163,6 +164,7 @@ function ChallengePage({ darkMode }) {
     if (submissionStatus.state === 'SUCCESS') {
       return (
         <Button
+          cy-test="submit-again-button"
           className={classes.SubmitdButtonSuccess}
           variant="contained"
           onClick={() => setIsModalOpen(true)}
@@ -173,6 +175,7 @@ function ChallengePage({ darkMode }) {
     }
     return (
       <Button
+        cy-test="submit-again-button"
         className={classes.SubmitdButtonFail}
         variant="contained"
         onClick={() => setIsModalOpen(true)}
@@ -195,7 +198,7 @@ function ChallengePage({ darkMode }) {
     }
     if (submissionStatus.state === 'SUCCESS') {
       return (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center' }} cy-test="success-submission">
           <p>
             <div style={{ fontSize: '25px', fontWeight: 'bold', marginBottom: '5px' }}>
               SUCCESS
@@ -212,13 +215,13 @@ function ChallengePage({ darkMode }) {
     }
     if (submissionStatus.state === 'PENDING') {
       return (
-        <div>
+        <div cy-test="pending-submission">
           <p>Your submission is being tested</p>
         </div>
       );
     }
     return (
-      <div style={{ textAlign: 'center' }}>
+      <div style={{ textAlign: 'center' }} cy-test="fail-submission">
         <p>
           <div style={{ fontSize: '25px', fontWeight: 'bold', marginBottom: '5px' }}>
             FAIL
@@ -239,7 +242,7 @@ function ChallengePage({ darkMode }) {
     <div style={{ overflowY: 'auto', height: '100vh', width: '100%' }}>
       <div className="one-challenge-container">
         <div className="one-challenge-challenge-container">
-          <h1 className="one-challenge-info-title">
+          <h1 className="one-challenge-info-title" cy-test="challenge-name">
             <b>{challenge.name}</b>
           </h1>
           <img className="one-challenge-info-image" src={image} alt="" />
@@ -250,6 +253,7 @@ function ChallengePage({ darkMode }) {
                 {challenge.Labels
                   && challenge.Labels.map((label) => (
                     <Link
+                      cy-test={`challenge-label-${label.name}`}
                       className="link-rout"
                       key={label.id}
                       to="/"
@@ -260,20 +264,20 @@ function ChallengePage({ darkMode }) {
                   ))}
               </div>
             </div>
-            <div className="one-challenge-description-body">
+            <div className="one-challenge-description-body" cy-test="challenge-description">
               {challenge.description}
             </div>
             <div className="one-challenge-author-uploaded-updated">
-              <div>
+              <div cy-test="challenge-submissions">
                 Submissions:
                 {submissions}
               </div>
-              <div className="one-challenge-author">
+              <div className="one-challenge-author" cy-test="challenge-createdBy">
                 Created by:
                 {' '}
                 {challenge.Author.userName}
               </div>
-              <div className="one-challenge-uploaded-at">
+              <div className="one-challenge-uploaded-at" cy-test="challenge-createdAt">
                 Created At:
                 {' '}
                 {`${generateTime(challenge.createdAt)} `}
@@ -295,13 +299,14 @@ function ChallengePage({ darkMode }) {
           </div>
           <div className={classes.getStartedButtonContainer}>
             <Button
+              cy-test="challenge-boilerPlate"
               variant="contained"
               className={classes.getStartedButton}
               onClick={() => {
                 const user = Cookies.get('userName');
                 mixpanel.track('User Started Challenge', {
                   User: `${user}`,
-                  ChallengeId: `${id}`,
+                  ChallengeId: `${challengeId}`,
                 });
               }}
               href={`https://github.com/${challenge.boilerPlate}`}
@@ -325,10 +330,10 @@ function ChallengePage({ darkMode }) {
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
-            challengeParamId={id}
+            challengeParamId={challengeId}
           />
         </div>
-        <div className="one-challenge-reviews-container">
+        <div className="one-challenge-reviews-container" cy-test="challenge-reviews">
           <b className="one-challenge-reviews-title">Reviews :</b>
           <ReviewsTab challengeId={challenge.id} setRatingCount={setRatingCount} />
         </div>

@@ -64,7 +64,7 @@ export default function Forgot() {
     }
     try {
       const { data: response } = await network.post(
-        '/api/v1/auth/getquestion',
+        '/api/v1/auth/get-question',
         {
           userName: userNameForQuestion,
         },
@@ -91,7 +91,7 @@ export default function Forgot() {
     }
     try {
       const { data: response } = await network.post(
-        '/api/v1/auth/validateanswer',
+        '/api/v1/auth/validate-answer',
         {
           userName: userNameForValidateAnswer,
           securityAnswer,
@@ -115,7 +115,7 @@ export default function Forgot() {
     }
     try {
       const { data: response } = await network.patch(
-        '/api/v1/auth/passwordupdate',
+        '/api/v1/auth/password-update',
         {
           password: passwordForReset,
           resetToken: resetTokenForReset,

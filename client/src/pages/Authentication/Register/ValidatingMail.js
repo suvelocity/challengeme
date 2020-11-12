@@ -11,7 +11,7 @@ function ValidatingMail() {
   useEffect(() => {
     try {
       network
-        .post('/api/v1/auth/createuser', { token })
+        .post('/api/v1/auth/create-user', { token })
         .then(() => history.push('/login'))
         .catch(() => {
           Swal.fire({

@@ -1,7 +1,5 @@
 require('dotenv').config();
-const { Router } = require('express');
-
-const usersRouter = Router();
+const authRouter = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { User, RefreshToken } = require('../../models');
@@ -18,7 +16,7 @@ const {
 const mailer = require('../../helpers/communicator');
 
 // Register
-usersRouter.post('/register', async (req, res) => {
+authRouter.post('/register', async (req, res) => {
   try {
     // Joi validation
     const { error } = registerValidation(req.body);
@@ -61,11 +59,12 @@ usersRouter.post('/register', async (req, res) => {
 <input name="token" value="${mailedToken}" type="hidden">
   <button style="width: 200px; background-color: purple; color: white;">Get Schwifty</button>
 </form>`,
-      (err, info) => {
+      (error, info) => {
         if (error) {
           console.error(error.message);
           res.status(400).json({ message: 'Email Invalid' });
         } else {
+          console.log(info);
           res.json({ message: 'Waiting For Mail Validation' });
         }
       },
@@ -77,7 +76,7 @@ usersRouter.post('/register', async (req, res) => {
 });
 
 // Create User
-usersRouter.post('/createuser', (req, res) => {
+authRouter.post('/create-user', (req, res) => {
   try {
     const { error } = tokenValidation(req.body);
     if (error) {
@@ -87,7 +86,7 @@ usersRouter.post('/createuser', (req, res) => {
     jwt.verify(
       req.body.token,
       process.env.EMAIL_TOKEN_SECRET,
-      async (err, decoded) => {
+      async (error, decoded) => {
         if (error) {
           console.error(error.message);
           return res.status(403).json({ message: 'Invalid Token' });
@@ -108,7 +107,7 @@ usersRouter.post('/createuser', (req, res) => {
 });
 
 // Check if user exist
-usersRouter.post('/userexist', async (req, res) => {
+authRouter.post('/user-exist', async (req, res) => {
   try {
     // User Validation
     const { error } = userValidation(req.body);
@@ -126,12 +125,12 @@ usersRouter.post('/userexist', async (req, res) => {
 });
 
 // Validate Token
-usersRouter.get('/validateToken', checkToken, (req, res) => {
+authRouter.get('/validate-token', checkToken, (req, res) => {
   res.json({ valid: true });
 });
 
 // Log In
-usersRouter.post('/login', async (req, res) => {
+authRouter.post('/login', async (req, res) => {
   try {
     // Joi Validation
     const { error } = loginValidation(req.body);
@@ -192,7 +191,7 @@ usersRouter.post('/login', async (req, res) => {
 });
 
 // Get new access token
-usersRouter.post('/token', async (req, res) => {
+authRouter.post('/token', async (req, res) => {
   try {
     // Joi Validation
     const { error } = tokenValidation(req.body);
@@ -207,7 +206,7 @@ usersRouter.post('/token', async (req, res) => {
       },
     });
     if (!validRefreshToken) return res.status(403).json({ message: 'Invalid Refresh Token' });
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, decoded) => {
       if (error) {
         console.error(error.message);
         return res.status(403).json({ message: 'Invalid Refresh Token' });
@@ -225,7 +224,7 @@ usersRouter.post('/token', async (req, res) => {
 });
 
 // Logout request
-usersRouter.post('/logout', async (req, res) => {
+authRouter.post('/logout', async (req, res) => {
   try {
     // Joi Validation
     const { error } = tokenValidation(req.body);
@@ -247,7 +246,7 @@ usersRouter.post('/logout', async (req, res) => {
 });
 
 // Geting Sequrity Question
-usersRouter.post('/getquestion', async (req, res) => {
+authRouter.post('/get-question', async (req, res) => {
   try {
     const { error } = userValidation(req.body);
     if (error) {
@@ -269,7 +268,7 @@ usersRouter.post('/getquestion', async (req, res) => {
 });
 
 // Validate Answer
-usersRouter.post('/validateanswer', async (req, res) => {
+authRouter.post('/validate-answer', async (req, res) => {
   try {
     // Joi Validation
     const { error } = answerValidation(req.body);
@@ -295,7 +294,7 @@ usersRouter.post('/validateanswer', async (req, res) => {
 });
 
 // Password Update
-usersRouter.patch('/passwordupdate', async (req, res) => {
+authRouter.patch('/password-update', async (req, res) => {
   try {
     // Joi Valodation
     const { error } = pwdUpdateValidation(req.body);
@@ -307,8 +306,8 @@ usersRouter.patch('/passwordupdate', async (req, res) => {
     jwt.verify(
       resetToken,
       process.env.RESET_PASSWORD_TOKEN,
-      async (err, decoded) => {
-        if (err) return res.status(403).json({ message: 'Invalid Token' });
+      async (error, decoded) => {
+        if (error) return res.status(403).json({ message: 'Invalid Token' });
         const hashPassword = await bcrypt.hashSync(req.body.password, 10);
         await User.update(
           { password: hashPassword },
@@ -327,10 +326,12 @@ usersRouter.patch('/passwordupdate', async (req, res) => {
   }
 });
 
-usersRouter.get('/validateAdmin', checkToken, checkAdmin, (req, res) => {
+// validate if user has admin permission
+authRouter.get('/validate-admin', checkToken, checkAdmin, (req, res) => {
   res.json({ admin: true });
 });
 
+// check in the DateBase if user is in the system
 async function userIsExist(userName) {
   try {
     const user = await User.findOne({
@@ -344,12 +345,12 @@ async function userIsExist(userName) {
     return false;
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
   }
 }
 
+// create an access token
 function generateToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '900s' });
 }
 
-module.exports = usersRouter;
+module.exports = authRouter;

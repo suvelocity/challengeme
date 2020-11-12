@@ -168,7 +168,6 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
             <div className={classes.heyName} style={letterColor}>
               <b>
                 Hey
-                {' '}
                 {Cookies.get('name')}
               </b>
             </div>
@@ -207,12 +206,24 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
               <ListItemText primary="Add New Challenge" />
             </ListItem>
           </Link>
-          {isAdmin
-          && (
+          <Divider style={dividerColor} />
+          <Link to="/teams" className="link-rout">
+            <ListItem button onClick={handleDrawerClose} style={letterColor}>
+              <ListItemIcon>
+                <InfoIcon style={letterColor} />
+              </ListItemIcon>
+              <ListItemText primary="Teams Area" />
+            </ListItem>
+          </Link>
+          {isAdmin && (
             <>
               <Divider style={dividerColor} />
               <Link to="/admin" className="link-rout">
-                <ListItem button onClick={handleDrawerClose} style={letterColor}>
+                <ListItem
+                  button
+                  onClick={handleDrawerClose}
+                  style={letterColor}
+                >
                   <ListItemIcon>
                     <InfoIcon style={letterColor} />
                   </ListItemIcon>

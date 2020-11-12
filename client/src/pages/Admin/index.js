@@ -13,6 +13,7 @@ const AdminLanding = lazy(() => import("./AdminLanding"));
 const ProposedChallenge = lazy(() => import("./ChallengeApproval/ChallengeApproval"));
 const UsersControl = lazy(() => import('./UsersControl/UsersControl'));
 const NotFound = lazy(() => import("../../pages/NotFound"));
+const TeamsControl = lazy(() => import('./TeamsControl'))
 
 function Index() {
 
@@ -22,7 +23,7 @@ function Index() {
     const checkAdminPerimsions = async () => {
         if (Cookies.get("accessToken")) {
             try {
-                const { data } = await network.get("/api/v1/auth/validateAdmin");
+                const { data } = await network.get("/api/v1/auth/validate-admin");
                 console.log(data);
             } catch (error) {
                 console.error(error);
@@ -71,6 +72,9 @@ function Index() {
                         </Route>
                         <Route exact path="/admin/GithhubTokens">
                             <GithhubTokens />
+                        </Route>
+                        <Route exact path="/admin/TeamsControl">
+                            <TeamsControl />
                         </Route>
                         <Route exact path="/admin">
                             <AdminLanding />

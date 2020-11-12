@@ -6,9 +6,10 @@ name: CI-Client
 # events but only for the main branch
 on:
   pull_request:
-    branches: [master] # if github changes the 'master' to 'main'
+    branches: [master,staging] # if github changes the 'master' to 'main'
   push:
-    branches: [master] # we will change that name to 'main'
+    branches: [master,staging]
+    # we will change that name to 'main'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -32,12 +33,6 @@ jobs:
       - name: Run web server
         run: npm start & npx wait-on http://localhost:3000
         working-directory: ./client
-      - name: Cypress run
-        run: npx cypress run
-        working-directory: ./client
-      # DO NOT DELETE BELOW , we will need to add the secret to the repo and intialize the Cypress project
-      # - name: Cypress run and record
-      #   run: npx cypress run --record
-      #   working-directory: ./client
-      #   env:
-      #     CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}       
+      - name: Jest run
+        run: npm run test
+        working-directory: ./client    

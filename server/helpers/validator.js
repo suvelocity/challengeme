@@ -38,7 +38,7 @@ const loginValidation = (data) => {
 const method = async (value, helpers) => {
  try {
   await axios.get(
-    `/api/v1/services/public_repo?repo_name=${value}`,
+    `/api/v1/services/public-repo?repo_name=${value}`,
   );
   } catch (err) {
     return helpers.error('any.invalid');

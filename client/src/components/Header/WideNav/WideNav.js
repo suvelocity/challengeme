@@ -27,7 +27,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const location = useHistory();
-  const value = useContext(Logged);
+  const loggedContext = useContext(Logged);
   const [labels, setLabels] = useState([]);
   const [chooseLabels, setChooseLabels] = useState([]);
   const currentLocation = useLocation();
@@ -63,7 +63,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
       Cookies.remove('userId');
       Cookies.remove('isAdmin');
       Cookies.remove('userName');
-      value.setLogged(false);
+      loggedContext.setLogged(false);
       location.push('/');
     } catch (error) {
       console.error(error);
@@ -190,8 +190,18 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
               Add New Challenge
             </Button>
           </Link>
-          {isAdmin
-          && (
+          <Link to="/teams" className="link-rout">
+            <Button
+              onClick={() => setAnchorEl(null)}
+              className={classes.infoButton}
+              style={{ minWidth: 150 }}
+              variant="contained"
+              color="default"
+            >
+              Teams Area
+            </Button>
+          </Link>
+          {isAdmin && (
             <Link to="/admin" className="link-rout">
               <Button
                 onClick={() => setAnchorEl(null)}
