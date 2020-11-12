@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useContext } from 'react';
-import Cookies from "js-cookie";
-import { useHistory } from "react-router-dom";
-import { Logged } from "../../../../context/LoggedInContext";
-import network from '../../../../services/network';
+import Cookies from 'js-cookie';
+import { useHistory } from 'react-router-dom';
 import Rating from '@material-ui/lab/Rating';
 import { Button } from '@material-ui/core';
+import { Logged } from '../../../../context/LoggedInContext';
+import network from '../../../../services/network';
 import './Review.css';
 
 function Review({
-  author, createdAt, title, content, rating, reviewId
+  author, createdAt, title, content, rating, reviewId,
 }) {
   const [date, setDate] = useState('');
   // TODO: POP: use moment instead
@@ -46,19 +46,19 @@ function Review({
     try {
       const isDeleteOk = prompt("Who's your favorite student?");
       if (isDeleteOk != null) {
-        await network.delete(`/api/v1/reviews/${reviewId}`)
+        await network.delete(`/api/v1/reviews/${reviewId}`);
       }
     } catch (error) {
-      Cookies.remove("refreshToken");
-      Cookies.remove("accessToken");
-      Cookies.remove("name");
-      Cookies.remove("userId");
-      Cookies.remove("isAdmin");
-      Cookies.remove("userName");
+      Cookies.remove('refreshToken');
+      Cookies.remove('accessToken');
+      Cookies.remove('name');
+      Cookies.remove('userId');
+      Cookies.remove('isAdmin');
+      Cookies.remove('userName');
       loggedContext.setLogged(false);
-      location.push("/");
+      location.push('/');
     }
-  }
+  };
 
   return (
     <div className="review" cy-test="challenge-single-review">
@@ -77,10 +77,16 @@ function Review({
         By:
         {author}
       </div>
-      {Cookies.get('isAdmin') === 'admin' &&
-        <Button variant="contained" color="secondary"
-          onClick={deleteReview}
-        >Delete</Button>}
+      {Cookies.get('isAdmin') === 'admin'
+        && (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={deleteReview}
+          >
+            Delete
+          </Button>
+        )}
     </div>
   );
 }

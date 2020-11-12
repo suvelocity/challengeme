@@ -11,7 +11,7 @@ function ReviewsTab({ challengeId, setRatingCount }) {
     const fetchReviews = async () => {
       try {
         const { data: reviewsArrayFromServer } = await network.get(
-          `/api/v1/reviews/byChallenge/${challengeId}`,
+          `/api/v1/reviews/${challengeId}`,
         );
         setRatingCount(reviewsArrayFromServer.length);
         const reviewsWithContent = reviewsArrayFromServer.filter(
@@ -52,10 +52,10 @@ function ReviewsTab({ challengeId, setRatingCount }) {
       );
     })
   ) : (
-      <div>
-        {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
-      </div>
-    );
+    <div>
+      {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
+    </div>
+  );
 }
 
 export default ReviewsTab;

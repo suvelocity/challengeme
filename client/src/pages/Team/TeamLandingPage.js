@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import "./TeamLandingPage.css";
-import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-import mixpanel from "mixpanel-browser";
-import Cookies from "js-cookie";
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import './TeamLandingPage.css';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import mixpanel from 'mixpanel-browser';
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles(() => ({
   teamLandingButton: {
-    margin: "15px",
+    margin: '15px',
   },
 }));
 const TeamLandingPage = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    const user = Cookies.get("userName");
-    mixpanel.track("User On Team Area", { User: `${user}` });
+    const user = Cookies.get('userName');
+    mixpanel.track('User On Team Area', { User: `${user}` });
   }, []);
 
   return (

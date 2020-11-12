@@ -21,7 +21,7 @@ describe("Reset Password", () => {
   test("User Can Reset Password", async (done) => {
 
     const questionResponse = await request(server)
-      .post("/api/v1/auth/getquestion")
+      .post("/api/v1/auth/get-question")
       .send({ userName: mockUser[2].userName });
     expect(questionResponse.status).toBe(200);
     expect(questionResponse.body.securityQuestion).toBe(mockUser[2].securityQuestion);
@@ -32,7 +32,7 @@ describe("Reset Password", () => {
     }
 
     const answerResponse = await request(server)
-      .post("/api/v1/auth/validateanswer")
+      .post("/api/v1/auth/validate-answer")
       .send(answerRequest);
     expect(answerResponse.status).toBe(200);
     expect(answerResponse.body.resetToken.length > 0);
@@ -43,7 +43,7 @@ describe("Reset Password", () => {
     }
 
     const newPasswordResponse = await request(server)
-      .patch("/api/v1/auth/passwordupdate")
+      .patch("/api/v1/auth/password-update")
       .send(newPasswordRequest);
     expect(newPasswordResponse.status).toBe(200);
 

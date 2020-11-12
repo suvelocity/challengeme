@@ -54,15 +54,15 @@ function Row(props) {
       const isUpdateOk = prompt("Who's your favorite student?");
       if (isUpdateOk != null) {
         const newPermission = row.permission === 'user' ? 'admin' : 'user';
-        const { data: updatedUser } = await network.patch('/api/v1/admin/edit-user',
+        const { data: updatedUser } = await network.patch('/api/v1/users/permission',
           { permission: newPermission, userName: row.userName });
         console.log(updatedUser);
-        props.getAllUsers()
+        props.getAllUsers();
       }
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return (
     <React.Fragment>
@@ -84,13 +84,14 @@ function Row(props) {
         <StyledTableCell align="left">{row.githubAccount}</StyledTableCell>
         <StyledTableCell align="left">
           <div
-          style={
-            row.permission === 'user'
-              ? { color: 'green' }
-              :
-              { color: 'red', fontSize: '20px', fontWeight: 'bold' }
-          }
-          >{row.permission}</div>
+            style={
+              row.permission === 'user'
+                ? { color: 'green' }
+                : { color: 'red', fontSize: '20px', fontWeight: 'bold' }
+            }
+          >
+            {row.permission}
+          </div>
         </StyledTableCell>
       </StyledTableRow>
       <StyledTableRow>
@@ -100,7 +101,7 @@ function Row(props) {
               <Typography variant="h6" gutterBottom component="div">
                 More Details
               </Typography>
-              <Button onClick={changePermissions} >Change Permissions </Button>
+              <Button onClick={changePermissions}>Change Permissions </Button>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <StyledTableRow>
@@ -164,7 +165,7 @@ function UsersControl() {
   const [allUsers, setAllUsers] = useState([]);
 
   async function getAllUsers() {
-    const { data: allUsersFromServer } = await network.get('/api/v1/admin/allusers');
+    const { data: allUsersFromServer } = await network.get('/api/v1/users/all');
     setAllUsers(allUsersFromServer);
   }
   useEffect(() => {

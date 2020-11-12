@@ -1,15 +1,13 @@
-const { Router } = require('express');
+const insightsTeamsRouter = require('express').Router();
 const sequelize = require('sequelize');
 const { Op } = require('sequelize');
 const { checkTeamPermission, checkTeacherPermission } = require('../../../middleware/checkTeamPermission');
-const router = Router();
-
 const {
   Submission, Team, User, Challenge,
 } = require('../../../models');
 
 // returns the 5 teams with the most successfull submissions
-router.get('/top', async (req, res) => {
+insightsTeamsRouter.get('/top', async (req, res) => {
   try {
     const topTeams = await Team.findAll({
       group: ['id'],
@@ -92,9 +90,9 @@ async function getTeamUsersIds(userId) {
 }
 
 // returns the  users with most successfull submissions in the team
-router.get('/top-user/:teamId',checkTeamPermission,checkTeacherPermission, async (req, res) => {
+insightsTeamsRouter.get('/top-user/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
   try {
-    const loggedUser =  req.user.userId 
+    const loggedUser = req.user.userId;
 
     const teamUsersIds = await getTeamUsersIds(loggedUser);
 
@@ -130,7 +128,7 @@ router.get('/top-user/:teamId',checkTeamPermission,checkTeacherPermission, async
 });
 
 // returns last week submissions  for the logged in user team
-router.get('/last-week-submissions', async (req, res) => {
+insightsTeamsRouter.get('/last-week-submissions', async (req, res) => {
   try {
     const loggedUser = req.user ? req.user.id : 1;
 
@@ -165,7 +163,7 @@ router.get('/last-week-submissions', async (req, res) => {
 });
 
 // returns the teams submissions status(total amount, pending, success, fail)
-router.get('/team-submissions', async (req, res) => {
+insightsTeamsRouter.get('/team-submissions', async (req, res) => {
   try {
     const loggedUser = req.user ? req.user.id : 1;
 
@@ -183,9 +181,9 @@ router.get('/team-submissions', async (req, res) => {
       group: ['state'],
     });
 
-    success = submissionsStatus.find((element) => element.state === 'SUCCESS');
-    fail = submissionsStatus.find((element) => element.state === 'FAIL');
-    pending = submissionsStatus.find((element) => element.state === 'PENDING');
+    const success = submissionsStatus.find((element) => element.state === 'SUCCESS');
+    const fail = submissionsStatus.find((element) => element.state === 'FAIL');
+    const pending = submissionsStatus.find((element) => element.state === 'PENDING');
 
     const teamSubmissionsStatus = {
       all: submissionsStatus.reduce((count, element) => count + element.dataValues.teamSubmissions, 0),
@@ -200,7 +198,7 @@ router.get('/team-submissions', async (req, res) => {
 });
 
 // returns the top  challenges, with the most successful submissions in the team
-router.get('/success-challenge', async (req, res) => {
+insightsTeamsRouter.get('/success-challenge', async (req, res) => {
   try {
     const loggedUser = req.user ? req.user.id : 1;
 
@@ -232,4 +230,4 @@ router.get('/success-challenge', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = insightsTeamsRouter;

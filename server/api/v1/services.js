@@ -1,11 +1,9 @@
-const { Router } = require('express');
-
-const router = Router();
+const serviceRouter = require('express').Router();
 const axios = require('axios');
 const handleGithubTokens = require('../../helpers/handleGithubTokens');
 
 // get repo details if its public
-router.get('/public_repo', async (req, res) => {
+serviceRouter.get('/public-repo', async (req, res) => {
   try {
     const response = await axios.get(
       `https://api.github.com/repos/${req.query.repo_name}`,
@@ -25,4 +23,4 @@ router.get('/public_repo', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = serviceRouter;

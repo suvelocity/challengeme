@@ -60,7 +60,7 @@ function ChallengePage({ darkMode }) {
   const classes = useStyles();
   const [submissions, setSubmissions] = useState();
   const [challenge, setChallenge] = useState(null);
-  const { id } = useParams();
+  const { id: challengeId } = useParams();
   const [image, setImage] = useState('');
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const [rating, setRating] = useState(0);
@@ -72,7 +72,7 @@ function ChallengePage({ darkMode }) {
 
   useEffect(() => {
     const user = Cookies.get('userName');
-    mixpanel.track('User On Challenge Page', { User: `${user}`, ChallengeId: `${id}` });
+    mixpanel.track('User On Challenge Page', { User: `${user}`, ChallengeId: `${challengeId}` });
     // eslint-disable-next-line
   }, []);
 
@@ -80,7 +80,7 @@ function ChallengePage({ darkMode }) {
     (async () => {
       try {
         const { data: submission } = await network.get(
-          `/api/v1/challenges/${id}/${Cookies.get('userName')}/submission`,
+          `/api/v1/submissions/by-user/${challengeId}`,
         );
         if (submission) {
           setSubmissionStatus({
@@ -98,7 +98,7 @@ function ChallengePage({ darkMode }) {
     const getSubmissionInterval = setInterval(async () => {
       try {
         const { data: submission } = await network.get(
-          `/api/v1/challenges/${id}/${Cookies.get('userName')}/submission`,
+          `/api/v1/submissions/by-user/${challengeId}`,
         );
         if (submission) {
           setSubmissionStatus({
@@ -115,7 +115,7 @@ function ChallengePage({ darkMode }) {
     }, 5000);
     const setImg = async () => {
       try {
-        const { data } = await network.get(`/api/v1/image?id=${id}`);
+        const { data } = await network.get(`/api/v1/image?id=${challengeId}`);
         setImage(data.img);
       } catch (error) {
         console.error(error);
@@ -123,7 +123,7 @@ function ChallengePage({ darkMode }) {
     };
     const fetchChallenge = async () => {
       try {
-        const { data: challengeFromServer } = await network.get(`/api/v1/challenges/${id}`);
+        const { data: challengeFromServer } = await network.get(`/api/v1/challenges/info/${challengeId}`);
         setChallenge(challengeFromServer);
         setRating(
           challengeFromServer.averageRaiting
@@ -139,7 +139,7 @@ function ChallengePage({ darkMode }) {
     fetchChallenge();
     return () => clearInterval(getSubmissionInterval);
     // eslint-disable-next-line
-  }, [id]);
+  }, [challengeId]);
 
   function handleModalClose() {
     setIsModalOpen(false);
@@ -247,7 +247,7 @@ function ChallengePage({ darkMode }) {
           </h1>
           <img className="one-challenge-info-image" src={image} alt="" />
           <div className="one-challenge-info-container">
-            <div className="one-challenge-description-title" >
+            <div className="one-challenge-description-title">
               <b>Description:</b>
               <div className="challenge-label">
                 {challenge.Labels
@@ -306,7 +306,7 @@ function ChallengePage({ darkMode }) {
                 const user = Cookies.get('userName');
                 mixpanel.track('User Started Challenge', {
                   User: `${user}`,
-                  ChallengeId: `${id}`,
+                  ChallengeId: `${challengeId}`,
                 });
               }}
               href={`https://github.com/${challenge.boilerPlate}`}
@@ -330,7 +330,7 @@ function ChallengePage({ darkMode }) {
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
-            challengeParamId={id}
+            challengeParamId={challengeId}
           />
         </div>
         <div className="one-challenge-reviews-container" cy-test="challenge-reviews">

@@ -1,5 +1,13 @@
-const { User, Team,UserTeam } = require("../models");
+const { User, Team, UserTeam } = require("../models");
 
+async function checkIfUserIsAdmin(user) {
+    return await User.findOne({
+        where: {
+            userName: user,
+            permission: 'admin'
+        },
+    })
+}
 
 async function checkTeamPermission(req, res, next) {
     const { teamId } = req.params;
@@ -26,6 +34,8 @@ async function checkTeamPermission(req, res, next) {
 
         if (userTeam) {
             next();
+        } else if (await checkIfUserIsAdmin(req.user.userName)) {
+            next()
         } else {
             res.sendStatus(401)
         }
@@ -37,7 +47,7 @@ async function checkTeamPermission(req, res, next) {
 
 async function checkTeacherPermission(req, res, next) {
     const { teamId } = req.params;
-    const { userId } = req.user
+    const { userId } = req.user;
     try {
         const userTeam = await User.findOne({
             attributes: ['id'],
@@ -57,10 +67,17 @@ async function checkTeacherPermission(req, res, next) {
                 },
             ],
         });
-        // console.log(userTeam.dataValues.Teams[0].dataValues.UserTeam)
 
-        if (userTeam.dataValues.Teams[0].dataValues.UserTeam.dataValues.permission === 'teacher') {
-            next();
+        if (userTeam) {
+            if (userTeam.dataValues.Teams[0].dataValues.UserTeam.dataValues.permission === 'teacher') {
+                next();
+            } else if (await checkIfUserIsAdmin(req.user.userName)) {
+                next()
+            } else {
+                res.sendStatus(401)
+            }
+        } else if (await checkIfUserIsAdmin(req.user.userName)) {
+            next()
         } else {
             res.sendStatus(401)
         }
@@ -70,6 +87,6 @@ async function checkTeacherPermission(req, res, next) {
     }
 };
 
-module.exports  = {
+module.exports = {
     checkTeacherPermission, checkTeamPermission
 }

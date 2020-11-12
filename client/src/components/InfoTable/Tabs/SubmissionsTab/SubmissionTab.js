@@ -9,7 +9,7 @@ function SubmissionTab({ challengeId }) {
     const fetchSubmissions = async () => {
       try {
         const { data: submissionsFromDb } = await network.get(
-          `/api/v1/challenges/${challengeId}/submissions`,
+          `/api/v1/submissions/${challengeId}`,
         );
         setSubmissions(submissionsFromDb);
       } catch (error) {

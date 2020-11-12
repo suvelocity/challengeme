@@ -27,17 +27,17 @@ describe("Register & Login Tests", () => {
     const regToken = jwt.sign(mockUser[1], process.env.EMAIL_TOKEN_SECRET);
 
     const createUserResponse = await request(server)
-      .post("/api/v1/auth/createuser")
+      .post("/api/v1/auth/create-user")
       .send({ token: regToken });
     expect(createUserResponse.status).toBe(201);
 
     const allreadyExistUser = await request(server)
-      .post("/api/v1/auth/createuser")
+      .post("/api/v1/auth/create-user")
       .send({ token: regToken });
     expect(allreadyExistUser.status).toBe(409);
 
     const invalidRegisterResponse = await request(server)
-      .post("/api/v1/auth/createuser")
+      .post("/api/v1/auth/create-user")
       .send({ token: 'Invalid Token' });
     expect(invalidRegisterResponse.status).toBe(403);
 
@@ -86,12 +86,12 @@ describe("Register & Login Tests", () => {
     const accessToken = loginResponse.headers['set-cookie'][2].split('=')[1].split(';')[0];
 
     const validateToken = await request(server)
-      .get("/api/v1/auth/validateToken")
+      .get("/api/v1/auth/validate-token")
       .set('authorization', `Bearer ${accessToken}`)
     expect(validateToken.status).toBe(200);
 
     const notValidateToken = await request(server)
-      .get("/api/v1/auth/validateToken")
+      .get("/api/v1/auth/validate-token")
       .set('authorization', 'hkdfhaskjfhdsakjfhkdshfkds')
     expect(notValidateToken.status).toBe(408);
 
@@ -107,12 +107,12 @@ describe("Register & Login Tests", () => {
   test("User exists", async (done) => {
 
     const userExist = await request(server)
-      .post("/api/v1/auth/userexist")
+      .post("/api/v1/auth/user-exist")
       .send({ userName: mockUser[1].userName });
     expect(userExist.status).toBe(409);
 
     const userNotExist = await request(server)
-      .post("/api/v1/auth/userexist")
+      .post("/api/v1/auth/user-exist")
       .send({ userName: "Alibaba" });
     expect(userNotExist.status).toBe(200);
 

@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import network from "../../../services/network";
-import "./MyTeams.css";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import network from '../../../services/network';
+import './MyTeams.css';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
     maxWidth: 375,
   },
   bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
+    display: 'inline-block',
+    margin: '0 2px',
+    transform: 'scale(0.8)',
   },
   title: {
     fontSize: 14,
@@ -46,7 +47,7 @@ function TeamCard({ team }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Link to={`/teams/team/${team.id}`}  >
+        <Link to={`/teams/team/${team.id}`}>
           <Button size="small">Go To Team Page</Button>
         </Link>
       </CardActions>
@@ -60,7 +61,7 @@ function MyTeams() {
   const fetchUserTeam = async () => {
     try {
       const { data: userTeam } = await network.get(
-        "/api/v1/teams/all-teams-by-user"
+        '/api/v1/teams/all-teams-by-user',
       );
       console.log(userTeam.Teams);
       setTeamData(userTeam.Teams);
@@ -77,10 +78,8 @@ function MyTeams() {
     <div className="my-teams">
       <h1 className="my-teams-title">This is My Teams</h1>
       <div className="my-teams-container">
-        {teamData &&
-          teamData.map((team) => {
-            return <TeamCard team={team} />;
-          })}
+        {teamData
+          && teamData.map((team) => <TeamCard team={team} />)}
       </div>
       <div className="my-teams-button-container">
         <Link to="/teams">

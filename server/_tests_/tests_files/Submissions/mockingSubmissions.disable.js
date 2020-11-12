@@ -126,11 +126,11 @@ describe('Submission process', () => {
         })
         .reply(200)
     
-        await request(app).post(`/api/v1/challenges/${solutionRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
+        await request(app).post(`/api/v1/submissions/apply/${solutionRepos[0].challengeId}`).set('authorization',`bearer ${accessToken}`)
         .send({repository:solutionRepos[0].repo , ...review});
-        await request(app).post(`/api/v1/challenges/${failRepos[0].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
+        await request(app).post(`/api/v1/submissions/apply/${failRepos[0].challengeId}`).set('authorization',`bearer ${accessToken}`)
         .send({repository:failRepos[0].repo, ...review});
-        await request(app).post(`/api/v1/challenges/${solutionRepos[1].challengeId}/apply`).set('authorization',`bearer ${accessToken}`)
+        await request(app).post(`/api/v1/submissions/apply/${solutionRepos[1].challengeId}`).set('authorization',`bearer ${accessToken}`)
         .send({repository:solutionRepos[1].repo, ...review});
         expect(githubPostmock1.isDone()).toEqual(true);
         expect(githubPostmock2.isDone()).toEqual(true);

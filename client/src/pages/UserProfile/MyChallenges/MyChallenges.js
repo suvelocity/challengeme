@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import mixpanel from "mixpanel-browser";
-import Cookies from "js-cookie";
-import Button from "@material-ui/core/Button";
-import network from "../../../services/network";
-import "./MyChallenges.css";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import mixpanel from 'mixpanel-browser';
+import Cookies from 'js-cookie';
+import Button from '@material-ui/core/Button';
+import network from '../../../services/network';
+import './MyChallenges.css';
 
 const UserProfileLanding = () => {
   const [allMyChallenges, setAllMyChallenges] = useState([]);
@@ -12,7 +12,7 @@ const UserProfileLanding = () => {
   const getMyChallenges = async () => {
     try {
       const { data: allMyChallengesFromServer } = await network.get(
-        "/api/v1/challenges/userChallenges"
+        '/api/v1/challenges/user-challenges',
       );
       setAllMyChallenges(allMyChallengesFromServer);
     } catch (error) {
@@ -20,26 +20,26 @@ const UserProfileLanding = () => {
     }
   };
   useEffect(() => {
-    const username = Cookies.get("userName");
-    mixpanel.track("User On My Challenges Page", { User: `${username}` });
+    const username = Cookies.get('userName');
+    mixpanel.track('User On My Challenges Page', { User: `${username}` });
     getMyChallenges();
   }, []);
   const statusColor = (status) => {
-    if (status === "approved") {
+    if (status === 'approved') {
       return {
         background:
-          "linear-gradient(270deg, rgba(36,193,67,1) 0%, rgba(130,214,95,1) 100%)",
+          'linear-gradient(270deg, rgba(36,193,67,1) 0%, rgba(130,214,95,1) 100%)',
       };
     }
-    if (status === "denied") {
+    if (status === 'denied') {
       return {
         background:
-          "linear-gradient(270deg, rgba(193,36,36,1) 0%, rgba(214,95,95,1) 100%)",
+          'linear-gradient(270deg, rgba(193,36,36,1) 0%, rgba(214,95,95,1) 100%)',
       };
     }
     return {
       background:
-        "linear-gradient(270deg, rgba(198,198,198,1) 0%, rgba(116,116,116,1) 100%)",
+        'linear-gradient(270deg, rgba(198,198,198,1) 0%, rgba(116,116,116,1) 100%)',
     };
   };
   return (
@@ -48,8 +48,8 @@ const UserProfileLanding = () => {
         This is challenges page
       </h1>
       <div className="user-profile-my-challenges-container">
-        {allMyChallenges &&
-          allMyChallenges.map((challenge) => {
+        {allMyChallenges
+          && allMyChallenges.map((challenge) => {
             console.log(challenge);
             return (
               <div
@@ -75,26 +75,38 @@ const UserProfileLanding = () => {
                 </div>
                 <div className="user-profile-single-challenge-information-container">
                   <div>
-                    <b>Id Challenge:</b> {challenge.id}
+                    <b>Id Challenge:</b>
+                    {' '}
+                    {challenge.id}
                   </div>
                   <div>
-                    <b>Boiler Plate:</b> {challenge.boilerPlate}
+                    <b>Boiler Plate:</b>
+                    {' '}
+                    {challenge.boilerPlate}
                   </div>
                   <div>
-                    <b>Repository Name:</b> {challenge.repositoryName}
+                    <b>Repository Name:</b>
+                    {' '}
+                    {challenge.repositoryName}
                   </div>
                   <div>
-                    <b>Description:</b> {challenge.description}
+                    <b>Description:</b>
+                    {' '}
+                    {challenge.description}
                   </div>
                   <div>
-                    <b>Type:</b> {challenge.type}
+                    <b>Type:</b>
+                    {' '}
+                    {challenge.type}
                   </div>
                   <div>
-                    <b>Created At:</b>{" "}
+                    <b>Created At:</b>
+                    {' '}
                     {new Date(challenge.createdAt).toString().substring(0, 24)}
                   </div>
                   <div>
-                    <b>Updated At:</b>{" "}
+                    <b>Updated At:</b>
+                    {' '}
                     {new Date(challenge.updatedAt).toString().substring(0, 24)}
                   </div>
                 </div>

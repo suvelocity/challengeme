@@ -23,7 +23,7 @@ function Index() {
     const checkAdminPerimsions = async () => {
         if (Cookies.get("accessToken")) {
             try {
-                const { data } = await network.get("/api/v1/auth/validateAdmin");
+                const { data } = await network.get("/api/v1/auth/validate-admin");
                 console.log(data);
             } catch (error) {
                 console.error(error);

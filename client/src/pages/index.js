@@ -67,7 +67,7 @@ export default function Router() {
     (async () => {
       if (Cookies.get("accessToken")) {
         try {
-          const { data } = await network.get("/api/v1/auth/validateToken");
+          const { data } = await network.get("/api/v1/auth/validate-token");
           setLogged(data);
           setLoading(false);
         } catch (e) {
