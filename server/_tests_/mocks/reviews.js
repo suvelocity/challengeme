@@ -1,12 +1,14 @@
 module.exports = [
   {
+    id: 1,
     userId: 1,
     challengeId: 1,
     title: "My First Review",
     content: "dsfdsfI liked this challenge alot!",
-    rating: 1, 
+    rating: 1,
   },
   {
+    id: 2,
     userId: 1,
     challengeId: 2,
     title: "My Second Review",
@@ -14,6 +16,7 @@ module.exports = [
     rating: 2,
   },
   {
+    id: 3,
     userId: 1,
     challengeId: 2,
     title: "My Second Review",
@@ -21,6 +24,7 @@ module.exports = [
     rating: 3,
   },
   {
+    id: 4,
     userId: 1,
     challengeId: 2,
     title: "My Second Review",
@@ -28,6 +32,7 @@ module.exports = [
     rating: 1,
   },
   {
+    id: 5,
     userId: 1,
     challengeId: 2,
     title: "My Second Review",
@@ -35,6 +40,7 @@ module.exports = [
     rating: 4,
   },
   {
+    id: 6,
     userId: 2,
     challengeId: 1,
     title: "A Bad Review",
@@ -42,6 +48,7 @@ module.exports = [
     rating: 2,
   },
   {
+    id: 7,
     userId: 3,
     challengeId: 2,
     title: "Review for React challenge",
@@ -49,6 +56,7 @@ module.exports = [
     rating: 3,
   },
   {
+    id: 8,
     userId: 3,
     challengeId: 3,
     title: "Review",
@@ -56,6 +64,7 @@ module.exports = [
     rating: 2,
   },
   {
+    id: 9,
     userId: 2,
     challengeId: 1,
     title: "Review",
@@ -63,6 +72,7 @@ module.exports = [
     rating: 5,
   },
   {
+    id: 10,
     userId: 2,
     challengeId: 2,
     title: "Review",

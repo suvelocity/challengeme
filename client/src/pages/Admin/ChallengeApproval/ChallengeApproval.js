@@ -17,7 +17,7 @@ const ChallengeApproval = () => {
 
   const getAllSubmissions = async () => {
     try {
-      const { data } = await network.get('/api/v1/challenges/pending-challenges');
+      const { data } = await network.get('/api/v1/challenges/no-matter-the-state');
       setChallenges(data);
       setChallengesStates(data.map((challenge) => challenge.state));
     } catch (error) {

@@ -208,8 +208,8 @@ challengeRouter.post('/', async (req, res) => {
 
 //= ============================= Admin Routes ======================================//
 
-// get all challenges on pending state
-challengeRouter.get('/pending-challenges', checkAdmin, async (req, res) => {
+// get all challenges no matter the state
+challengeRouter.get('/no-matter-the-state', checkAdmin, async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
       include: [
@@ -242,11 +242,11 @@ challengeRouter.patch('/state-update/:challengeId', checkAdmin, async (req, res)
     const updatedChallenge = await Challenge.update({
       state,
     },
-    {
-      where: {
-        id: challengeId,
-      },
-    });
+      {
+        where: {
+          id: challengeId,
+        },
+      });
     if (updatedChallenge[0]) {
       res.json({ message: 'Success' });
     } else {
