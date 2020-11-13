@@ -6,13 +6,13 @@ module.exports = [
         ['x-ratelimit-used']: 4499
     },
     {
-        ['x-ratelimit-reset']: Date.now().valueOf() / 1000 + 1,
+        ['x-ratelimit-reset']: Date.now().valueOf() / 1000 + 3,
         ['x-ratelimit-limit']: 5000,
         ['x-ratelimit-remaining']: 499,
         ['x-ratelimit-used']: 4501
     },
     {
-        ['x-ratelimit-reset']: Date.now().valueOf() / 1000 + 4,
+        ['x-ratelimit-reset']: Date.now().valueOf() / 1000 + 100,
         ['x-ratelimit-limit']: 5000,
         ['x-ratelimit-remaining']: 499,
         ['x-ratelimit-used']: 4501

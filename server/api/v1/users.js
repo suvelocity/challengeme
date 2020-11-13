@@ -3,11 +3,11 @@ const checkAdmin = require('../../middleware/checkAdmin');
 const { User } = require('../../models');
 
 // get information about user
-userRouter.get('/info/:userName', async (req, res) => {
+userRouter.get('/info', async (req, res) => {
   try {
-    const user = await User.findAll({
+    const user = await User.findOne({
       where: {
-        userName: req.params.userName,
+        userName: req.user.userName,
       },
       attributes: [
         'firstName',

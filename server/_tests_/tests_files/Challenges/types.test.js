@@ -1,7 +1,7 @@
 const request = require("supertest");
 const jwt = require("jsonwebtoken");
 const app = require("../../../app");
-
+const { User, } = require("../../../models");
 const mockUser = require("../../mocks/users");
 
 function generateToken(currentUser) {
@@ -15,8 +15,12 @@ function generateToken(currentUser) {
 }
 
 describe("testing types endpoints", () => {
+    beforeEach(async () => {
+        await User.destroy({ truncate: true, force: true });
+    });
 
     test("Can get all github types", async (done) => {
+        await User.bulkCreate(mockUser);
         const response = await request(app)
             .get("/api/v1/types")
             .set("authorization", `bearer ${generateToken(mockUser[0])}`);
