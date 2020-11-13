@@ -77,11 +77,10 @@ describe("testing challenges endpoints", () => {
     expect(challenges.body.type).toBe(challengesMock[0].type);
     expect(challenges.body.boilerPlate).toBe(challengesMock[0].boilerPlate);
     expect(challenges.body.repositoryName).toBe(challengesMock[0].repositoryName);
-    expect(typeof challenges.body.Labels).toBe(typeof []);
-    expect(typeof challenges.body.Author).toBe(typeof {});
-    expect(typeof challenges.body.averageRaiting).toBe(typeof 'string');
-    expect(typeof challenges.body.submissionsCount).toBe(typeof 1);
-
+    expect(challenges.body.hasOwnProperty('Labels')).toBe(true);
+    expect(challenges.body.hasOwnProperty('Author')).toBe(true);
+    expect(challenges.body.hasOwnProperty('averageRaiting')).toBe(true);
+    expect(challenges.body.hasOwnProperty('submissionsCount')).toBe(true);
     done();
   });
 
