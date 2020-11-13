@@ -163,7 +163,7 @@ describe("testing challenges endpoints", () => {
         done();
     });
 
-    test("If token replace when reach action limt", async (done) => {
+    test("If token replace when reach action limit", async (done) => {
         await User.bulkCreate(mockUser);
         await GitToken.bulkCreate(githubTokensMock);
 
@@ -188,7 +188,7 @@ describe("testing challenges endpoints", () => {
         expect(getAllToken1.body[0].status).toBe('blocked')
         expect(process.env.GITHUB_ACCESS_TOKEN).toBe(githubTokensMock[1].token)
 
-        await timeout(2000)
+        await timeout(3500)
 
         await handleGithubTokens(githubHeadersMock[2])
 
@@ -200,7 +200,7 @@ describe("testing challenges endpoints", () => {
         expect(getAllToken2.body[0].status).toBe('available')
         expect(getAllToken2.body[1].status).toBe('blocked')
         done();
-    });
+    }, 10000);
 });
 
 function timeout(ms) {
