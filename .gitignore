@@ -9,3 +9,4 @@ Grequests/tempIgnored/t.js
 Grequests/getUserSucces.rest
 *.log
 client/debug.log
+server/api/v1/signUpWithGithub.js
