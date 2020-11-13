@@ -57,7 +57,7 @@ describe("Testing teams routes", () => {
         done();
     });
 
-    test.only("Can user get all teams information he belongs to", async (done) => {
+    test("Can user get all teams information he belongs to", async (done) => {
 
         await User.bulkCreate(userMock);
         await UserTeam.bulkCreate(userTeamMock);
@@ -68,9 +68,7 @@ describe("Testing teams routes", () => {
             .set("authorization", `bearer ${generateToken(userMock[0])}`);
 
         expect(teamsInformation.status).toBe(200);
-        expect(teamsInformation.body[0].id).toBe(teamMock[0].id);
-        expect(teamsInformation.body[1].permission).toBe(userTeamMock.filter(connection =>
-            connection.userId === userMock[0].id && connection.teamId === teamMock[0].id)[0].permission);
+        expect(teamsInformation.body.Teams.length).toBe(2);
 
         done();
     });
