@@ -1,6 +1,6 @@
 const reviewsRouter = require('express').Router();
 const checkAdmin = require('../../middleware/checkAdmin');
-const { Challenge, Review, User } = require('../../models');
+const { Review, User } = require('../../models');
 
 // get reviews by challenge with params
 reviewsRouter.get('/:challengeId', async (req, res) => {
@@ -32,7 +32,7 @@ reviewsRouter.post('/:challengeId', async (req, res) => {
   };
   try {
     await Review.create(query);
-    res.json({ message: 'Uploaded new review!' });
+    res.status(201).json({ message: 'Uploaded new review!' });
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });

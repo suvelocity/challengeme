@@ -14,7 +14,7 @@ import {
 import { Alert, AlertTitle } from '@material-ui/lab';
 import ChooseLabels from '../../components/Choosers/ChooseLabels';
 import network from '../../services/network';
-import AddImg from '../../components/AddImg/AddImg';
+import AddImg from '../../components/AddImg';
 import './NewChallengeForm.css';
 
 const textFieldStyle = { minWidth: '200px' };
@@ -158,10 +158,7 @@ export default function NewChallengeForm() {
           img: file.result,
         });
         if (chooseLabels.length > 0) {
-          await network.post('/api/v1/labels', {
-            labels,
-            challengeId: postedRepo.id,
-          });
+          await network.post(`/api/v1/labels/${postedRepo.id}`, { labels });
         }
         Swal.fire({
           icon: 'success',

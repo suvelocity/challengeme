@@ -2,7 +2,7 @@ module.exports = [
   {
     challengeId: 1,
     userId: 1,
-    state: "SUCCESS",
+    state: "FAIL",
     solutionRepository: "Moran1324/Authentication-Challenge-SOLUTION",
   },
   {
@@ -35,4 +35,11 @@ module.exports = [
     state: "FAIL",
     solutionRepository: "Moran1324/Authentication-Challenge-SOLUTION",
   },
+  {
+    id:7,
+    challengeId: 1,
+    userId: 1,
+    state: "SUCCESS",
+    solutionRepository: "Moran1324/Authentication-Challenge-SOLUTION",
+  }
 ]

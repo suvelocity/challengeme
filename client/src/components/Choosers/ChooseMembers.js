@@ -11,29 +11,28 @@ const ChooseMembers = ({
   setMembersOptions,
   darkMode,
 }) => {
-  useEffect(
-    // gets existing labels
-    () => {
-      (async () => {
-        try {
-          const { data: teamAlreadyMembers } = await await network.get(`/api/v1/teams/single-team/${teamId}`);
-          const { data: allUsersFromServer } = await network.get('/api/v1/users/all');
-          setMembersOptions(allUsersFromServer.map((user) => {
-            let userForOptions;
-            if (teamAlreadyMembers[0].Users.some((memberUser) => memberUser.id === user.id)) {
-              return;
-            }
-            userForOptions = {
-              value: user.id,
-              label: user.userName,
-            };
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data: teamAlreadyMembers } = await await network.get(`/api/v1/teams/single-team/${teamId}`);
+        const { data: allUsersFromServer } = await network.get('/api/v1/users/all');
+        setMembersOptions(allUsersFromServer.map((user) => {
+          let userForOptions;
+          if (teamAlreadyMembers[0].Users.some((memberUser) => memberUser.id === user.id)) {
+            return null;
+          }
+          userForOptions = {
+            value: user.id,
+            label: user.userName,
+          };
 
-            return userForOptions;
-          }).filter((option) => !(!option)));
-        } catch (error) { console.error(error); }
-      })();
-    }, [setMembersOptions],
-  );
+          return userForOptions;
+        }).filter((option) => !(!option)));
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [setMembersOptions, teamId]);
 
   const selectionChange = (choosens) => {
     setChooseMembers(choosens);

@@ -29,7 +29,7 @@ module.exports = async function handleGithubTokens(headers) {
                         { status: 'available' },
                         {
                             [Op.and]: [
-                                { resetsAt: { [Op.lt]: new Date() } },
+                                { resetsAt: { [Op.lt]: Date.now()} },
                                 { status: "blocked" }
                             ],
                         }

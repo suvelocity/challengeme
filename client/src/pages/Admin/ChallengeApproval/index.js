@@ -3,9 +3,9 @@ import './ChallengeApproval.css';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import network from '../../../services/network';
-import Loading from '../../../components/Loading/Loading';
+import Loading from '../../../components/Loading';
 import AllChallenges from '../../../context/AllChallengesContext';
-import AdminChallengeCard from '../../../components/AdminChallengeCard/AdminChallengeCard';
+import AdminChallengeCard from '../../../components/AdminChallengeCard';
 
 const ChallengeApproval = () => {
   const [challenges, setChallenges] = useState();
@@ -17,7 +17,7 @@ const ChallengeApproval = () => {
 
   const getAllSubmissions = async () => {
     try {
-      const { data } = await network.get('/api/v1/challenges/pending-challenges');
+      const { data } = await network.get('/api/v1/challenges/no-matter-the-state');
       setChallenges(data);
       setChallengesStates(data.map((challenge) => challenge.state));
     } catch (error) {
@@ -36,7 +36,6 @@ const ChallengeApproval = () => {
 
   const changeChallengeState = async (event, challengeId, index) => {
     try {
-      console.log(event.target.innerText);
       const newState = event.target.innerText === 'APPROVE' ? 'approved' : 'denied';
       const cloneStateArray = [...challengesStates];
       cloneStateArray[index] = newState;

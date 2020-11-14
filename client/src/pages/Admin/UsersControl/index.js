@@ -54,9 +54,8 @@ function Row(props) {
       const isUpdateOk = prompt("Who's your favorite student?");
       if (isUpdateOk != null) {
         const newPermission = row.permission === 'user' ? 'admin' : 'user';
-        const { data: updatedUser } = await network.patch('/api/v1/users/permission',
+        await network.patch('/api/v1/users/permission',
           { permission: newPermission, userName: row.userName });
-        console.log(updatedUser);
         props.getAllUsers();
       }
     } catch (error) {

@@ -52,8 +52,7 @@ function Row(props) {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
-        const response = await network.delete(`/api/v1/git/${token}`);
-        console.log(response);
+        await network.delete(`/api/v1/git/${token}`);
         getAllTokens();
       }
     } catch (error) {
@@ -66,8 +65,7 @@ function Row(props) {
       const isUpdateOk = prompt("Who's your favorite student?");
       if (isUpdateOk != null) {
         const newStatus = status === 'blocked' ? 'available' : 'blocked';
-        const { data: allTokensFromServer } = await network.patch('/api/v1/git/', { token, status: newStatus });
-        console.log(allTokensFromServer);
+        await network.patch('/api/v1/git/', { token, status: newStatus });
         getAllTokens();
       }
     } catch (error) {
@@ -135,14 +133,13 @@ function Row(props) {
     </React.Fragment>
   );
 }
-function GithhubTokens() {
+function GithubTokens() {
   const [allTokens, setAllTokens] = useState([]);
   const [open, setOpen] = useState(false);
 
   async function getAllTokens() {
     try {
       const { data: allTokensFromServer } = await network.get('/api/v1/git/');
-      console.log(allTokensFromServer);
       setAllTokens(allTokensFromServer);
     } catch (error) {
       console.error(error);
@@ -188,7 +185,7 @@ function GithhubTokens() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allTokens[0] && allTokens[0].map((token) => (
+            {allTokens && allTokens.map((token) => (
               <Row key={token.token} row={token} getAllTokens={getAllTokens} />
             ))}
           </TableBody>
@@ -198,4 +195,4 @@ function GithhubTokens() {
   );
 }
 
-export default GithhubTokens;
+export default GithubTokens;

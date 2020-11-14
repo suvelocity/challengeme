@@ -7,21 +7,28 @@ const { User, RefreshToken } = require("../../../models");
 const mockUser = require("../../mocks/users");
 const mockLogins = require("../../mocks/usersLogin")
 
-//login logout and register tests
+function generateToken(currentUser) {
+  const infoForCookie = {
+    userId: currentUser.id,
+    userName: currentUser.userName,
+  };
+  return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "900s",
+  });
+}
+
 describe("Register & Login Tests", () => {
   beforeAll(async () => {
     await User.destroy({ truncate: true, force: true });
     mockUser[0].password = await bcrypt.hashSync(mockUser[0].password, 10);
     mockUser[0].securityAnswer = await bcrypt.hashSync(mockUser[0].securityAnswer, 10);
     await User.create(mockUser[0]);
-
   })
   afterAll(async () => {
-    await User.destroy({ truncate: true, force: true });
+    // await User.destroy({ truncate: true, force: true });
     await server.close();
   });
 
-  // user register
   test("User Can Register if the userName Unique", async (done) => {
 
     const regToken = jwt.sign(mockUser[1], process.env.EMAIL_TOKEN_SECRET);
@@ -44,7 +51,6 @@ describe("Register & Login Tests", () => {
     done();
   });
 
-  // user login
   test("User Can Login With Correct Details", async (done) => {
 
     const invalidLoginResponse = await request(server)
@@ -59,7 +65,6 @@ describe("Register & Login Tests", () => {
     expect(loginResponse.status).toBe(200);
     expect(loginResponse.headers['set-cookie'][2].slice(0, 11)).toBe('accessToken');
     expect(loginResponse.headers['set-cookie'][3].slice(0, 12)).toBe('refreshToken');
-
 
     const refreshTokenInDB = loginResponse.headers['set-cookie'][3].split('=')[1].split(';')[0];
     const validRefreshTokenInDB = await RefreshToken.findOne({
@@ -119,7 +124,27 @@ describe("Register & Login Tests", () => {
     done();
   });
 
-  // user logout
+  test("User is admin", async (done) => {
+
+    const userNotAdmin = await request(server)
+      .get("/api/v1/auth/validate-admin")
+      .set("authorization", `bearer ${generateToken(mockUser[1])}`);
+    expect(userNotAdmin.status).toBe(401);
+
+    mockUser[2].password = await bcrypt.hashSync(mockUser[2].password, 10);
+    await User.create(mockUser[2]);
+    
+    const userIsAdmin = await request(server)
+      .get("/api/v1/auth/validate-admin")
+      .set("authorization", `bearer ${generateToken(mockLogins[3])}`);
+
+    expect(userIsAdmin.status).toBe(200);
+    expect(userIsAdmin.body.admin).toBe(true);
+
+    done();
+  });
+
+
   test("User Can Logout", async (done) => {
 
     const loginResponse = await request(server)

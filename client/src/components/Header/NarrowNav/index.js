@@ -24,7 +24,7 @@ import ChooseLabels from '../../Choosers/ChooseLabels';
 import FilteredLabels from '../../../context/FilteredLabelsContext';
 import useStyles from './NarrowNavStyled';
 import { Logged } from '../../../context/LoggedInContext';
-import Search from '../Search/Search';
+import Search from '../Search';
 import network from '../../../services/network';
 
 export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {

@@ -1,8 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import './Header.css';
 import Cookies from 'js-cookie';
-import NarrowNav from './NarrowNav/NarrowNav';
-import WideNav from './WideNav/WideNav';
+import NarrowNav from './NarrowNav';
+import WideNav from './WideNav';
 
 function Header({ darkMode, setDarkMode }) {
   const [navOrMenu, setNavOrMenu] = useState(window.innerWidth < 700);
@@ -17,7 +17,6 @@ function Header({ darkMode, setDarkMode }) {
   };
   useEffect(() => {
     if (Cookies.get('isAdmin') === 'admin') {
-      console.log('I AM ADMIN NOW YAY');
       setIsAdmin(true);
     }
   }, []);

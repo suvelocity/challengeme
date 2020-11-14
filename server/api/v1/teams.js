@@ -146,9 +146,9 @@ teamRouter.get('/all-teams', checkAdmin, async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['id', 'userName', 'permission'],
+          attributes: ['id', 'userName'],
           through: {
-            attributes: [],
+            attributes: ['permission'],
           },
         },
       ],
@@ -192,6 +192,24 @@ teamRouter.post('/create-team', checkAdmin, async (req, res) => {
   try {
     await Team.create({ name: req.body.name });
     res.status(201).json({ message: `Team ${req.body.name} Created` });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+// change permission
+teamRouter.patch('/permission/:teamId', checkAdmin, async (req, res) => {
+  const { permission, userId } = req.body;
+  const { teamId } = req.params;
+  try {
+    const updatedUser = await UserTeam.update({ permission }, {
+      where: {
+        teamId,
+        userId,
+      },
+    });
+    res.json(updatedUser);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
