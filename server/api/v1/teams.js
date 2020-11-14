@@ -201,9 +201,11 @@ teamRouter.post('/create-team', checkAdmin, async (req, res) => {
 // change permission
 teamRouter.patch('/permission/:teamId', checkAdmin, async (req, res) => {
   const { permission, userId } = req.body;
+  const { teamId } = req.params;
   try {
     const updatedUser = await UserTeam.update({ permission }, {
       where: {
+        teamId,
         userId,
       },
     });
