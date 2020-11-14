@@ -1,10 +1,12 @@
-const request = require("supertest");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const app = require("../../../app");
-const { Challenge, Label, LabelChallenge, Submission, User, } = require("../../../models");
-const challengesMock = require("../../mocks/challenges");
-const mockUser = require("../../mocks/users");
+const request = require('supertest');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const app = require('../../../app');
+const {
+  Challenge, Label, LabelChallenge, Submission, User,
+} = require('../../../models');
+const challengesMock = require('../../mocks/challenges');
+const mockUser = require('../../mocks/users');
 
 function generateToken(currentUser) {
   const infoForCookie = {
@@ -12,11 +14,11 @@ function generateToken(currentUser) {
     userName: currentUser.userName,
   };
   return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "900s",
+    expiresIn: '900s',
   });
 }
 
-describe("testing challenges endpoints", () => {
+describe('testing challenges endpoints', () => {
   beforeEach(async () => {
     await Challenge.destroy({ truncate: true, force: true });
     await Label.destroy({ truncate: true, force: true });
@@ -25,11 +27,11 @@ describe("testing challenges endpoints", () => {
     await User.destroy({ truncate: true, force: true });
   });
 
-  test("Can get all challenges approved", async (done) => {
+  test('Can get all challenges approved', async (done) => {
     await Challenge.bulkCreate(challengesMock);
     const allChallenges = await request(app)
-      .get("/api/v1/challenges")
-      .set("authorization", `bearer ${generateToken(mockUser[0])}`);
+      .get('/api/v1/challenges')
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(allChallenges.status).toBe(200);
     expect(allChallenges.body.length).toBe(challengesMock.length);
@@ -37,12 +39,12 @@ describe("testing challenges endpoints", () => {
     done();
   });
 
-  test("Can get challenge by name", async (done) => {
+  test('Can get challenge by name', async (done) => {
     await Challenge.bulkCreate(challengesMock);
 
     const filteredChallenges = await request(app)
       .get(`/api/v1/challenges?name=${challengesMock[0].name}`)
-      .set("authorization", `bearer ${generateToken(mockUser[0])}`);
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(filteredChallenges.status).toBe(200);
     expect(filteredChallenges.body[0].name).toBe(challengesMock[0].name);
@@ -50,25 +52,25 @@ describe("testing challenges endpoints", () => {
     done();
   });
 
-  test("Can get challenges bu user", async (done) => {
+  test('Can get challenges bu user', async (done) => {
     await Challenge.bulkCreate(challengesMock);
 
     const filteredChallenges = await request(app)
-      .get(`/api/v1/challenges/user-challenges`)
-      .set("authorization", `bearer ${generateToken(mockUser[1])}`);
+      .get('/api/v1/challenges/user-challenges')
+      .set('authorization', `bearer ${generateToken(mockUser[1])}`);
 
     expect(filteredChallenges.status).toBe(200);
-    expect(filteredChallenges.body.length).toBe(challengesMock.filter(challenge => challenge.authorId === mockUser[1].id).length);
+    expect(filteredChallenges.body.length).toBe(challengesMock.filter((challenge) => challenge.authorId === mockUser[1].id).length);
 
     done();
   });
 
-  test("Can get challenge information", async (done) => {
+  test('Can get challenge information', async (done) => {
     await Challenge.bulkCreate(challengesMock);
 
     const challenges = await request(app)
       .get(`/api/v1/challenges/info/${challengesMock[0].id}`)
-      .set("authorization", `bearer ${generateToken(mockUser[0])}`);
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(challenges.status).toBe(200);
     expect(challenges.body.id).toBe(challengesMock[0].id);
@@ -85,90 +87,87 @@ describe("testing challenges endpoints", () => {
   });
 
   test("Can post new challenge - send error if challenge's repo is already exists", async (done) => {
-
     const postNewChallenge = await request(app)
       .post('/api/v1/challenges')
       .send(challengesMock[0])
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`)
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(postNewChallenge.status).toBe(201);
 
     // because not approved yet
     const response = await request(app)
       .get(`/api/v1/challenges?${challengesMock[0].id}`)
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`)
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(response.status).toBe(200);
     expect(response.body.length).toBe(0);
 
     const newChallengeFromDB = await Challenge.findOne({
       where: {
-        name: challengesMock[0].name
-      }
-    })
+        name: challengesMock[0].name,
+      },
+    });
 
     expect(newChallengeFromDB.dataValues.name).toBe(challengesMock[0].name);
 
     const postNewChallengeAgain = await request(app)
       .post('/api/v1/challenges')
       .send(challengesMock[0])
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`)
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(postNewChallengeAgain.status).toBe(409);
-    done()
-  })
+    done();
+  });
 
-  test("Can get pending challenges", async (done) => {
-
+  test('Can get pending challenges', async (done) => {
     mockUser[2].password = await bcrypt.hashSync(mockUser[2].password, 10);
     await User.create(mockUser[2]);
 
     const postNewChallenge = await request(app)
       .post('/api/v1/challenges')
       .send(challengesMock[0])
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`)
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(postNewChallenge.status).toBe(201);
 
     const postNewChallenge1 = await request(app)
       .post('/api/v1/challenges')
       .send(challengesMock[1])
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`)
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(postNewChallenge1.status).toBe(201);
 
-    await Challenge.create(challengesMock[2])
+    await Challenge.create(challengesMock[2]);
 
     const pendingChallenges = await request(app)
       .get('/api/v1/challenges/no-matter-the-state')
       .send(challengesMock[0])
-      .set('authorization', `bearer ${generateToken(mockUser[2])}`)
+      .set('authorization', `bearer ${generateToken(mockUser[2])}`);
 
     expect(pendingChallenges.status).toBe(200);
 
-    const allChallenges = await Challenge.findAll({})
+    const allChallenges = await Challenge.findAll({});
 
     expect(pendingChallenges.body.length).toBe(allChallenges.length);
 
-    done()
-  })
+    done();
+  });
 
-  test("Can change the state of a challenge", async (done) => {
-
+  test('Can change the state of a challenge', async (done) => {
     mockUser[2].password = await bcrypt.hashSync(mockUser[2].password, 10);
     await User.create(mockUser[2]);
 
     const postNewChallenge = await request(app)
       .post('/api/v1/challenges')
       .send(challengesMock[0])
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`)
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(postNewChallenge.status).toBe(201);
 
     // because not approved yet
     const challengesBeforeApproved = await request(app)
       .get(`/api/v1/challenges?${challengesMock[0].id}`)
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`)
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(challengesBeforeApproved.status).toBe(200);
     expect(challengesBeforeApproved.body.length).toBe(0);
@@ -176,18 +175,17 @@ describe("testing challenges endpoints", () => {
     const changeStateChallenge = await request(app)
       .patch(`/api/v1/challenges/state-update/${challengesMock[0].id}`)
       .send({ state: 'approved' })
-      .set('authorization', `bearer ${generateToken(mockUser[2])}`)
+      .set('authorization', `bearer ${generateToken(mockUser[2])}`);
 
     expect(changeStateChallenge.status).toBe(200);
 
     const challengesAfterApproved = await request(app)
       .get(`/api/v1/challenges?${challengesMock[0].id}`)
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`)
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(challengesAfterApproved.status).toBe(200);
     expect(challengesAfterApproved.body[0].name).toBe(challengesMock[0].name);
 
-    done()
-  })
-
+    done();
+  });
 });
