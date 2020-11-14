@@ -2,7 +2,7 @@ const teamRouter = require('express').Router();
 const { Op } = require('sequelize');
 const checkAdmin = require('../../middleware/checkAdmin');
 const { checkTeamPermission, checkTeacherPermission } = require('../../middleware/checkTeamPermission');
-const { User, Team, UserTeam } = require('../../models');
+const { User, Team, UserTeam, Submission } = require('../../models');
 
 // check if user is a part of a team
 teamRouter.get('/team-page/:teamId', checkTeamPermission, async (req, res) => {
@@ -83,9 +83,9 @@ teamRouter.get('/teacher-area/:teamId', checkTeamPermission, checkTeacherPermiss
       include: [
         {
           model: User,
-          attributes: ['id', 'userName'],
+          attributes: ['id', 'firstName', 'lastName', 'userName', 'phoneNumber'],
           through: {
-            attributes: [],
+            attributes: ['permission'],
           },
         },
       ],

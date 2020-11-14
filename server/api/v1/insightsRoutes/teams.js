@@ -6,7 +6,7 @@ const {
   Submission, Team, User, Challenge,
 } = require('../../../models');
 
-// returns the 5 teams with the most successfull submissions
+// returns the 5 teams with the most successful submissions
 insightsTeamsRouter.get('/top', async (req, res) => {
   try {
     const topTeams = await Team.findAll({
@@ -38,7 +38,7 @@ insightsTeamsRouter.get('/top', async (req, res) => {
 
     const topFiveTeams = topTeams.slice(0, 5);
 
-    res.send(topFiveTeams);
+    res.json(topFiveTeams);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -89,17 +89,20 @@ async function getTeamUsersIds(userId) {
   return [usersId, userTeam.name];
 }
 
-// returns the  users with most successfull submissions in the team
+// returns the  users with most successful submissions in the team
 insightsTeamsRouter.get('/top-user/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
   try {
     const loggedUser = req.user.userId;
 
     const teamUsersIds = await getTeamUsersIds(loggedUser);
-
-    // returns top 5 users and thier successfull submissions
+ 
+    // returns top 5 users and their successful submissions
     const teamUsersTopSuccess = await User.findAll({
-
       group: ['id'],
+      where: {
+        id: teamUsersIds[0],
+      },
+      attributes: ['id', 'userName'],
       include: [
         {
           model: Submission,
@@ -114,14 +117,9 @@ insightsTeamsRouter.get('/top-user/:teamId', checkTeamPermission, checkTeacherPe
           },
         },
       ],
-      where: {
-        id: teamUsersIds[0],
-      },
-      attributes: ['id', 'userName'],
       order: [[sequelize.fn('COUNT', sequelize.col('user_id')), 'DESC']],
     });
-
-    res.send([teamUsersTopSuccess, teamUsersIds[1]]);
+    res.json([teamUsersTopSuccess, teamUsersIds[1]]);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -156,7 +154,7 @@ insightsTeamsRouter.get('/last-week-submissions', async (req, res) => {
         [sequelize.fn('DAY', sequelize.col('Submission.created_at')), 'desc'],
       ],
     });
-    res.send(lastWeekTeamSubmissions);
+    res.json(lastWeekTeamSubmissions);
   } catch (err) {
     res.status(400).send(err);
   }
@@ -224,7 +222,7 @@ insightsTeamsRouter.get('/success-challenge', async (req, res) => {
       order: [[sequelize.fn('COUNT', 'challengeId'), 'DESC']],
     });
 
-    res.send(successfulTeamChallenges);
+    res.json(successfulTeamChallenges);
   } catch (err) {
     res.status(400).send(err);
   }
