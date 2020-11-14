@@ -17,7 +17,6 @@ function Header({ darkMode, setDarkMode }) {
   };
   useEffect(() => {
     if (Cookies.get('isAdmin') === 'admin') {
-      console.log('I AM ADMIN NOW YAY');
       setIsAdmin(true);
     }
   }, []);

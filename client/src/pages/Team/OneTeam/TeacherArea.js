@@ -6,7 +6,7 @@ import network from '../../../services/network';
 
 const TeacherArea = ({ teamId }) => {
   const [loading, setLoading] = useState(true);
-  const [, set] = useState();
+
 
   useEffect(() => {
     (async () => {
@@ -18,7 +18,7 @@ const TeacherArea = ({ teamId }) => {
       }
     })();
     const user = Cookies.get('userName');
-    mixpanel.track('User On Techer Area', { User: `${user}` });
+    mixpanel.track('User On Teacher Area', { User: `${user}` });
     setLoading(false);
   }, []);
 

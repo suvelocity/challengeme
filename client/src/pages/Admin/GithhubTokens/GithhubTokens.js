@@ -53,7 +53,6 @@ function Row(props) {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
         const response = await network.delete(`/api/v1/git/${token}`);
-        console.log(response);
         getAllTokens();
       }
     } catch (error) {
@@ -67,7 +66,6 @@ function Row(props) {
       if (isUpdateOk != null) {
         const newStatus = status === 'blocked' ? 'available' : 'blocked';
         const { data: allTokensFromServer } = await network.patch('/api/v1/git/', { token, status: newStatus });
-        console.log(allTokensFromServer);
         getAllTokens();
       }
     } catch (error) {
@@ -142,7 +140,6 @@ function GithhubTokens() {
   async function getAllTokens() {
     try {
       const { data: allTokensFromServer } = await network.get('/api/v1/git/');
-      console.log(allTokensFromServer);
       setAllTokens(allTokensFromServer);
     } catch (error) {
       console.error(error);

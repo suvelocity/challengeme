@@ -24,7 +24,6 @@ function OneTeamPage({ darkMode }) {
     (async () => {
       try {
         const { data: members } = await network.get(`/api/v1/teams/team-page/${id}`);
-        console.log(members);
         setTeamMembers(members[0]);
         setPermission(members[1].permission);
         setLoading(false);
@@ -49,15 +48,15 @@ function OneTeamPage({ darkMode }) {
           Page
         </h1>
         {permission === 'teacher'
-                    && (
-                      <Button
-                        variant="contained"
-                        color="default"
-                        onClick={() => setShowTeacherPage((prev) => !prev)}
-                      >
-                        {!showTeacherPage ? 'Teacher Area' : 'User Area'}
-                      </Button>
-                    )}
+          && (
+            <Button
+              variant="contained"
+              color="default"
+              onClick={() => setShowTeacherPage((prev) => !prev)}
+            >
+              {!showTeacherPage ? 'Teacher Area' : 'User Area'}
+            </Button>
+          )}
         {showTeacherPage ? <TeacherArea teamId={id} />
 
           : (
@@ -77,8 +76,8 @@ function OneTeamPage({ darkMode }) {
         </Link>
       </div>
     ) : (
-      <NotFound />
-    ) : <Loading darkMode={darkMode} />;
+        <NotFound />
+      ) : <Loading darkMode={darkMode} />;
 }
 
 export default OneTeamPage;

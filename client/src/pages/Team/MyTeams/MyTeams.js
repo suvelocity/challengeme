@@ -63,7 +63,6 @@ function MyTeams() {
       const { data: userTeam } = await network.get(
         '/api/v1/teams/all-teams-by-user',
       );
-      console.log(userTeam.Teams);
       setTeamData(userTeam.Teams);
     } catch (error) {
       console.error(error);

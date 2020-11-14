@@ -56,7 +56,6 @@ function Row(props) {
         const newPermission = row.permission === 'user' ? 'admin' : 'user';
         const { data: updatedUser } = await network.patch('/api/v1/users/permission',
           { permission: newPermission, userName: row.userName });
-        console.log(updatedUser);
         props.getAllUsers();
       }
     } catch (error) {

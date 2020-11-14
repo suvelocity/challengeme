@@ -50,7 +50,6 @@ const UserProfileLanding = () => {
       <div className="user-profile-my-challenges-container">
         {allMyChallenges
           && allMyChallenges.map((challenge) => {
-            console.log(challenge);
             return (
               <div
                 key={challenge.name + challenge.id}

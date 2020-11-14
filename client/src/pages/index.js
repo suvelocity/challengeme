@@ -36,7 +36,6 @@ export default function Router() {
     if (logged) {
       const previousTheme = localStorage.getItem("darkMode"); //get previous selected theme
       if (Cookies.get("isAdmin") === "admin") {
-        console.log("I AM ADMIN NOW YAY");
         setIsAdmin(true);
       }
 

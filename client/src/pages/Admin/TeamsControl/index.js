@@ -54,7 +54,6 @@ function Row(props) {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
         const response = await network.delete(`/api/v1/teams/remove-user/${row.id}?userId=${user}`);
-        console.log(response);
         getAllTeams();
       }
     } catch (error) {
@@ -67,7 +66,6 @@ function Row(props) {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
         const response = await network.delete(`/api/v1/teams/remove-team/${team}`);
-        console.log(response);
         getAllTeams();
       }
     } catch (error) {

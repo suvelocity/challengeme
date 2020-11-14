@@ -37,7 +37,6 @@ submissionRouter.get('/by-user/:challengeId', async (req, res) => {
             recentSubmission.id,
           );
           await submissionThatIsStuck.update({ state: 'FAIL' });
-          console.log('its because zach is crazy');
         }
       }
     }

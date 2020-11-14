@@ -24,7 +24,6 @@ function Index() {
         if (Cookies.get("accessToken")) {
             try {
                 const { data } = await network.get("/api/v1/auth/validate-admin");
-                console.log(data);
             } catch (error) {
                 console.error(error);
                 Cookies.remove("refreshToken");
