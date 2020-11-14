@@ -98,6 +98,41 @@ describe("Testing teams routes", () => {
         done();
     });
 
+    test("Can admin change user permission on team", async (done) => {
+
+        await User.bulkCreate(userMock);
+        await UserTeam.bulkCreate(userTeamMock);
+        await Team.bulkCreate(teamMock);
+
+        const studentUnauthorized = await request(app)
+            .get(`/api/v1/teams/teacher-area/${teamMock[0].id}`)
+            .set("authorization", `bearer ${generateToken(userMock[1])}`);
+
+        expect(studentUnauthorized.status).toBe(401);
+
+        const changeUserPermission = await request(app)
+            .patch(`/api/v1/teams/permission/${teamMock[0].id}`)
+            .send({ userId: userMock[1].id, permission: 'teacher' })
+            .set("authorization", `bearer ${generateToken(userMock[2])}`);
+
+        expect(changeUserPermission.status).toBe(200);
+
+        const studentBecomeTeacher = await request(app)
+            .get(`/api/v1/teams/teacher-area/${teamMock[0].id}`)
+            .set("authorization", `bearer ${generateToken(userMock[1])}`);
+
+        expect(studentBecomeTeacher.status).toBe(200);
+
+        const unauthorized = await request(app)
+            .patch(`/api/v1/teams/permission/${teamMock[0].id}`)
+            .send({ userId: userMock[1].id, permission: 'teacher' })
+            .set("authorization", `bearer ${generateToken(userMock[0])}`);
+
+        expect(unauthorized.status).toBe(401);
+
+        done();
+    });
+
     test("Can admin delete team", async (done) => {
 
         await User.bulkCreate(userMock);

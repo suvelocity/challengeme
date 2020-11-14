@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Loading from '../../../components/Loading/Loading';
+import Loading from '../../../components/Loading';
 import network from '../../../services/network';
 import '../Admin.css';
 

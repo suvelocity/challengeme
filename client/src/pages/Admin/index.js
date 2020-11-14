@@ -1,17 +1,17 @@
 import React, { useEffect, useContext, lazy, Suspense } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
 import { Logged } from "../../context/LoggedInContext";
-import ErrorBoundry from "../../components/ErrorBoundry";
-import Loading from "../../components/Loading/Loading";
+import ErrorBoundary from "../../components/ErrorBoundary";
+import Loading from "../../components/Loading";
 import network from "../../services/network";
 import Cookies from "js-cookie";
 
-const GithhubTokens = lazy(() => import("./GithhubTokens/GithhubTokens"))
+const GithubTokens = lazy(() => import("./GithhubTokens"))
 const SubmissionsByUsers = lazy(() => import("./UsersStatus/SubmissionsByUsers"));
 const SubmissionsByChallenges = lazy(() => import("./UsersStatus/SubmissionsByChallenges"));
 const AdminLanding = lazy(() => import("./AdminLanding"));
-const ProposedChallenge = lazy(() => import("./ChallengeApproval/ChallengeApproval"));
-const UsersControl = lazy(() => import('./UsersControl/UsersControl'));
+const ProposedChallenge = lazy(() => import("./ChallengeApproval"));
+const UsersControl = lazy(() => import('./UsersControl'));
 const NotFound = lazy(() => import("../../pages/NotFound"));
 const TeamsControl = lazy(() => import('./TeamsControl'))
 
@@ -20,11 +20,10 @@ function Index() {
     const location = useHistory();
     const loggedContext = useContext(Logged);
 
-    const checkAdminPerimsions = async () => {
+    const checkAdminPermissions = async () => {
         if (Cookies.get("accessToken")) {
             try {
-                const { data } = await network.get("/api/v1/auth/validate-admin");
-                console.log(data);
+                await network.get("/api/v1/auth/validate-admin");
             } catch (error) {
                 console.error(error);
                 Cookies.remove("refreshToken");
@@ -49,14 +48,14 @@ function Index() {
     }
 
     useEffect(() => {
-        checkAdminPerimsions()
+        checkAdminPermissions()
         // eslint-disable-next-line
     }, [])
 
     return (
         <>
             <Suspense fallback={<Loading />}>
-                <ErrorBoundry>
+                <ErrorBoundary>
                     <Switch>
                         <Route exact path="/admin/SubmissionsByUsers">
                             <SubmissionsByUsers />
@@ -71,7 +70,7 @@ function Index() {
                             <UsersControl />
                         </Route>
                         <Route exact path="/admin/GithhubTokens">
-                            <GithhubTokens />
+                            <GithubTokens />
                         </Route>
                         <Route exact path="/admin/TeamsControl">
                             <TeamsControl />
@@ -83,7 +82,7 @@ function Index() {
                             <NotFound />
                         </Route>
                     </Switch>
-                </ErrorBoundry>
+                </ErrorBoundary>
             </Suspense>
         </>
     );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import mixpanel from 'mixpanel-browser';
 import Cookies from 'js-cookie';
-import ChallengeCard from '../../components/ChallengeCard/ChallengeCard';
+import ChallengeCard from '../../components/ChallengeCard';
 import './Home.css';
 import AllChallenges from '../../context/AllChallengesContext';
 import FilteredLabels from '../../context/FilteredLabelsContext';
