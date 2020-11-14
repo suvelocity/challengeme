@@ -242,11 +242,11 @@ challengeRouter.patch('/state-update/:challengeId', checkAdmin, async (req, res)
     const updatedChallenge = await Challenge.update({
       state,
     },
-      {
-        where: {
-          id: challengeId,
-        },
-      });
+    {
+      where: {
+        id: challengeId,
+      },
+    });
     if (updatedChallenge[0]) {
       res.json({ message: 'Success' });
     } else {

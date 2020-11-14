@@ -95,7 +95,7 @@ insightsTeamsRouter.get('/top-user/:teamId', checkTeamPermission, checkTeacherPe
     const loggedUser = req.user.userId;
 
     const teamUsersIds = await getTeamUsersIds(loggedUser);
- 
+
     // returns top 5 users and their successful submissions
     const teamUsersTopSuccess = await User.findAll({
       group: ['id'],

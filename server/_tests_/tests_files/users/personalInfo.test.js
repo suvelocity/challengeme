@@ -1,83 +1,78 @@
-const request = require("supertest");
-const jwt = require("jsonwebtoken");
-const app = require("../../../app");
-const { User, } = require("../../../models");
-const mockUser = require("../../mocks/users");
+const request = require('supertest');
+const jwt = require('jsonwebtoken');
+const app = require('../../../app');
+const { User } = require('../../../models');
+const mockUser = require('../../mocks/users');
 
 function generateToken(currentUser) {
-    const infoForCookie = {
-        userId: currentUser.id,
-        userName: currentUser.userName,
-    };
-    return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
-        expiresIn: "900s",
-    });
+  const infoForCookie = {
+    userId: currentUser.id,
+    userName: currentUser.userName,
+  };
+  return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: '900s',
+  });
 }
 
-describe("Testing users routes", () => {
+describe('Testing users routes', () => {
+  beforeEach(async () => {
+    await User.destroy({ truncate: true, force: true });
+  });
 
-    beforeEach(async () => {
-        await User.destroy({ truncate: true, force: true });
-    });
+  test('Can user get info about himself', async (done) => {
+    await User.bulkCreate(mockUser);
 
-    test("Can user get info about himself", async (done) => {
+    const userInformation = await request(app)
+      .get('/api/v1/users/info')
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
-        await User.bulkCreate(mockUser);
+    expect(userInformation.status).toBe(200);
+    expect(userInformation.body.githubAccount).toBe(mockUser[0].githubAccount);
+    done();
+  });
 
-        const userInformation = await request(app)
-            .get("/api/v1/users/info")
-            .set("authorization", `bearer ${generateToken(mockUser[0])}`);
+  test('Can admin get info about all users', async (done) => {
+    await User.bulkCreate(mockUser);
 
-        expect(userInformation.status).toBe(200);
-        expect(userInformation.body.githubAccount).toBe(mockUser[0].githubAccount);
-        done();
-    });
+    const userInformation = await request(app)
+      .get('/api/v1/users/all')
+      .set('authorization', `bearer ${generateToken(mockUser[2])}`);
 
-    test("Can admin get info about all users", async (done) => {
+    expect(userInformation.status).toBe(200);
+    expect(userInformation.body.length).toBe(mockUser.length);
 
-        await User.bulkCreate(mockUser);
+    const unauthorized = await request(app)
+      .get('/api/v1/users/all')
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
-        const userInformation = await request(app)
-            .get("/api/v1/users/all")
-            .set("authorization", `bearer ${generateToken(mockUser[2])}`);
+    expect(unauthorized.status).toBe(401);
 
-        expect(userInformation.status).toBe(200);
-        expect(userInformation.body.length).toBe(mockUser.length);
+    done();
+  });
 
-        const unauthorized = await request(app)
-            .get("/api/v1/users/all")
-            .set("authorization", `bearer ${generateToken(mockUser[0])}`);
+  test('Can admin change user permission', async (done) => {
+    await User.bulkCreate(mockUser);
 
-        expect(unauthorized.status).toBe(401);
+    const beforePermission = await request(app)
+      .patch('/api/v1/users/permission')
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
-        done();
-    });
+    expect(beforePermission.status).toBe(401);
 
-    test("Can admin change user permission", async (done) => {
+    const changePermission = await request(app)
+      .patch('/api/v1/users/permission')
+      .send({ permission: 'admin', userName: mockUser[0].userName })
+      .set('authorization', `bearer ${generateToken(mockUser[2])}`);
 
-        await User.bulkCreate(mockUser);
+    expect(changePermission.status).toBe(200);
 
-        const beforePermission = await request(app)
-            .patch("/api/v1/users/permission")
-            .set("authorization", `bearer ${generateToken(mockUser[0])}`);
+    const allUsersWithPermission = await request(app)
+      .get('/api/v1/users/all')
+      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
-        expect(beforePermission.status).toBe(401);
+    expect(allUsersWithPermission.status).toBe(200);
+    expect(allUsersWithPermission.body.length).toBe(mockUser.length);
 
-        const changePermission = await request(app)
-            .patch("/api/v1/users/permission")
-            .send({ permission: 'admin', userName: mockUser[0].userName })
-            .set("authorization", `bearer ${generateToken(mockUser[2])}`);
-
-        expect(changePermission.status).toBe(200);
-
-        const allUsersWithPermission = await request(app)
-            .get("/api/v1/users/all")
-            .set("authorization", `bearer ${generateToken(mockUser[0])}`);
-
-        expect(allUsersWithPermission.status).toBe(200);
-        expect(allUsersWithPermission.body.length).toBe(mockUser.length);
-
-        done();
-    });
-
+    done();
+  });
 });

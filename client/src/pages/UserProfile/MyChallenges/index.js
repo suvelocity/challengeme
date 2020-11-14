@@ -49,75 +49,73 @@ const UserProfileLanding = () => {
       </h1>
       <div className="user-profile-my-challenges-container">
         {allMyChallenges
-          && allMyChallenges.map((challenge) => {
-            return (
-              <div
-                key={challenge.name + challenge.id}
-                className="user-profile-single-challenge-container"
-              >
-                <div className="user-profile-single-challenge-title">
-                  {challenge.name}
+          && allMyChallenges.map((challenge) => (
+            <div
+              key={challenge.name + challenge.id}
+              className="user-profile-single-challenge-container"
+            >
+              <div className="user-profile-single-challenge-title">
+                {challenge.name}
+              </div>
+              <div className="user-profile-single-challenge-labels-container">
+                {challenge.Labels ? (
+                  challenge.Labels.map((label) => (
+                    <div
+                      className="user-profile-single-challenge-single-label"
+                      key={label.name}
+                    >
+                      {label.name}
+                    </div>
+                  ))
+                ) : (
+                  <div>Labels Not Found</div>
+                )}
+              </div>
+              <div className="user-profile-single-challenge-information-container">
+                <div>
+                  <b>Id Challenge:</b>
+                  {' '}
+                  {challenge.id}
                 </div>
-                <div className="user-profile-single-challenge-labels-container">
-                  {challenge.Labels ? (
-                    challenge.Labels.map((label) => (
-                      <div
-                        className="user-profile-single-challenge-single-label"
-                        key={label.name}
-                      >
-                        {label.name}
-                      </div>
-                    ))
-                  ) : (
-                    <div>Labels Not Found</div>
-                  )}
+                <div>
+                  <b>Boiler Plate:</b>
+                  {' '}
+                  {challenge.boilerPlate}
                 </div>
-                <div className="user-profile-single-challenge-information-container">
-                  <div>
-                    <b>Id Challenge:</b>
-                    {' '}
-                    {challenge.id}
-                  </div>
-                  <div>
-                    <b>Boiler Plate:</b>
-                    {' '}
-                    {challenge.boilerPlate}
-                  </div>
-                  <div>
-                    <b>Repository Name:</b>
-                    {' '}
-                    {challenge.repositoryName}
-                  </div>
-                  <div>
-                    <b>Description:</b>
-                    {' '}
-                    {challenge.description}
-                  </div>
-                  <div>
-                    <b>Type:</b>
-                    {' '}
-                    {challenge.type}
-                  </div>
-                  <div>
-                    <b>Created At:</b>
-                    {' '}
-                    {new Date(challenge.createdAt).toString().substring(0, 24)}
-                  </div>
-                  <div>
-                    <b>Updated At:</b>
-                    {' '}
-                    {new Date(challenge.updatedAt).toString().substring(0, 24)}
-                  </div>
+                <div>
+                  <b>Repository Name:</b>
+                  {' '}
+                  {challenge.repositoryName}
                 </div>
-                <div
-                  className="user-profile-single-challenge-status"
-                  style={statusColor(challenge.state)}
-                >
-                  {challenge.state}
+                <div>
+                  <b>Description:</b>
+                  {' '}
+                  {challenge.description}
+                </div>
+                <div>
+                  <b>Type:</b>
+                  {' '}
+                  {challenge.type}
+                </div>
+                <div>
+                  <b>Created At:</b>
+                  {' '}
+                  {new Date(challenge.createdAt).toString().substring(0, 24)}
+                </div>
+                <div>
+                  <b>Updated At:</b>
+                  {' '}
+                  {new Date(challenge.updatedAt).toString().substring(0, 24)}
                 </div>
               </div>
-            );
-          })}
+              <div
+                className="user-profile-single-challenge-status"
+                style={statusColor(challenge.state)}
+              >
+                {challenge.state}
+              </div>
+            </div>
+          ))}
       </div>
       <div className="user-profile-my-challenges-button-container">
         <Link to="/profile">

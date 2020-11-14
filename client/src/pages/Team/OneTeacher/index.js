@@ -39,16 +39,8 @@ function OneTeamPage({ darkMode }) {
     return !loading
         ? teamMembers ? (
             <div style={{ overflowY: 'auto', height: '100vh', width: '100%' }}>
-                <br />
-                <br />
-                <br />
-                <br />
-                <h1>
-                    This Teacher Area For Team
-          {id}
-                    {' '}
-          Page
-        </h1>
+                <br /><br /><br /><br />
+                <h1>This Teacher Area For Team{' '}{id}{' '}Page</h1>
                 <Link to="/teams">
                     <Button
                         className={classes.teamLandingButton}
@@ -67,9 +59,6 @@ function OneTeamPage({ darkMode }) {
                         Team Area
               </Button>
                 </Link>
-                <ul>
-                    {teamMembers.map((user) => <li>{user.userName}</li>)}
-                </ul>
                 <TeamControl teamId={id} />
                 <SuccessSubmissions members={teamMembers} />
             </div>
