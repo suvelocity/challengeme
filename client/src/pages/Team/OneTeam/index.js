@@ -57,7 +57,7 @@ function OneTeamPage({ darkMode }) {
         </Link>
         {permission === 'teacher'
           && (
-            <Link to={`/teams/teacher/${id}`} >
+            <Link to={`/teams/teacher/${id}`}>
               <Button
                 variant="contained"
                 color="default"
@@ -73,8 +73,8 @@ function OneTeamPage({ darkMode }) {
 
       </div>
     ) : (
-        <NotFound />
-      ) : <Loading darkMode={darkMode} />;
+      <NotFound />
+    ) : <Loading darkMode={darkMode} />;
 }
 
 export default OneTeamPage;

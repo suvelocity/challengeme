@@ -83,9 +83,9 @@ teamRouter.get('/teacher-area/:teamId', checkTeamPermission, checkTeacherPermiss
       include: [
         {
           model: User,
-          attributes: ['id', 'userName'],
+          attributes: ['id', 'firstName', 'lastName', 'userName', 'phoneNumber'],
           through: {
-            attributes: [],
+            attributes: ['permission'],
           },
         },
       ],
