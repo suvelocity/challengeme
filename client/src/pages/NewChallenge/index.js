@@ -14,7 +14,7 @@ import {
 import { Alert, AlertTitle } from '@material-ui/lab';
 import ChooseLabels from '../../components/Choosers/ChooseLabels';
 import network from '../../services/network';
-import AddImg from '../../components/AddImg/AddImg';
+import AddImg from '../../components/AddImg';
 import './NewChallengeForm.css';
 
 const textFieldStyle = { minWidth: '200px' };

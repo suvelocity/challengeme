@@ -1,11 +1,12 @@
 import React, { lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
 import ErrorBoundary from "../../components/ErrorBoundary.js";
-import OneTeamPage from './OneTeam'
-import Loading from "../../components/Loading/Loading";
+import Loading from "../../components/Loading";
 
+const OneTeamPage = lazy(() => import("./OneTeam"));
+const OneTeacherPage = lazy(() => import("./OneTeacher"));
+const MyTeams = lazy(() => import("./MyTeams"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
-const MyTeams = lazy(() => import("./MyTeams/MyTeams"));
 
 function Index() {
   return (
@@ -15,6 +16,9 @@ function Index() {
           <Switch>
             <Route exact path="/teams/:id">
               <OneTeamPage />
+            </Route>
+            <Route exact path="/teams/teacher/:id">
+              <OneTeacherPage />
             </Route>
             <Route exact path="/teams">
               <MyTeams />

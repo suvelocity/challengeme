@@ -3,26 +3,26 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { Logged } from "../context/LoggedInContext";
 import AllChallenges from "../context/AllChallengesContext";
 import FilteredLabels from "../context/FilteredLabelsContext";
-import Register from "./Authentication/Register/Register";
+import Register from "./Authentication/Register";
 import Login from "./Authentication/Login";
 import Cookies from "js-cookie";
-import Forgot from "./Authentication/ForgotPasswordPage/Forgot";
+import Forgot from "./Authentication/ForgotPasswordPage";
 import ValidatingMail from "./Authentication/Register/ValidatingMail";
 import network from "../services/network";
-import Landing from "./Authentication/Landing";
+import Landing from "./Authentication";
 import { AnimatePresence } from "framer-motion";
-import Header from "../components/Header/Header";
+import Header from "../components/Header";
 import ErrorBoundary from "../components/ErrorBoundary";
-import Loading from "../components/Loading/Loading";
+import Loading from "../components/Loading";
 import "../index.css";
-import NewChallengeForm from "./NewChallenge/NewChallengeForm";
+import NewChallengeForm from "./NewChallenge";
 import UserProfile from "./UserProfile";
 import Admin from "./Admin";
 import Team from "./Team";
 
 const NotFound = lazy(() => import("../pages/NotFound"));
-const Home = lazy(() => import("./Home/Home"));
-const ChallengePage = lazy(() => import("./OneChallenge/ChallengePage"));
+const Home = lazy(() => import("./Home"));
+const ChallengePage = lazy(() => import("./OneChallenge"));
 
 export default function Router() {
   const [darkTheme, setDarkTheme] = useState(false);

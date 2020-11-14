@@ -53,7 +53,7 @@ function Row(props) {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
-        const response = await network.delete(`/api/v1/teams/remove-user/${row.id}?userId=${user}`);
+        await network.delete(`/api/v1/teams/remove-user/${row.id}?userId=${user}`);
         getAllTeams();
       }
     } catch (error) {
@@ -66,7 +66,7 @@ function Row(props) {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
         const newPermission = permission === 'student' ? 'teacher' : 'student';
-        const response = await network.patch(`/api/v1/teams/permission/${row.id}`, { userId: user, permission: newPermission });
+        await network.patch(`/api/v1/teams/permission/${row.id}`, { userId: user, permission: newPermission });
         getAllTeams();
       }
     } catch (error) {
@@ -78,7 +78,7 @@ function Row(props) {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
-        const response = await network.delete(`/api/v1/teams/remove-team/${team}`);
+        await network.delete(`/api/v1/teams/remove-team/${team}`);
         getAllTeams();
       }
     } catch (error) {

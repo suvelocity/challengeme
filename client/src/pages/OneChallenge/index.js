@@ -9,10 +9,10 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { useParams, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import './ChallengePage.css';
-import ReviewsTab from '../../components/InfoTable/Tabs/ReviewsTab/ReviewsTab';
+import ReviewsTab from '../../components/InfoTable/Tabs/ReviewsTab';
 import SubmitModal from '../../components/Modals/SubmitModal';
 import network from '../../services/network';
-import Loading from '../../components/Loading/Loading';
+import Loading from '../../components/Loading';
 import FilteredLabels from '../../context/FilteredLabelsContext';
 
 const useStyles = makeStyles(() => ({
