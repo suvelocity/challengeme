@@ -6,7 +6,6 @@ import Loading from "../../components/Loading/Loading";
 
 const NotFound = lazy(() => import("../../pages/NotFound"));
 const MyTeams = lazy(() => import("./MyTeams/MyTeams"));
-const TeamLandingPage = lazy(() => import("./TeamLandingPage"));
 
 function Index() {
   return (
