@@ -47,7 +47,7 @@ function TeamCard({ team }) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Link to={`/teams/team/${team.id}`}>
+        <Link to={`/teams/${team.id}`}>
           <Button size="small">Go To Team Page</Button>
         </Link>
       </CardActions>
@@ -79,13 +79,6 @@ function MyTeams() {
       <div className="my-teams-container">
         {teamData
           && teamData.map((team) => <TeamCard team={team} />)}
-      </div>
-      <div className="my-teams-button-container">
-        <Link to="/teams">
-          <Button style={{ minWidth: 150 }} variant="contained" color="default">
-            back to Teams Page
-          </Button>
-        </Link>
       </div>
     </div>
   );

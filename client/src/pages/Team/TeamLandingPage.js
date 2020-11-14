@@ -23,7 +23,7 @@ const TeamLandingPage = () => {
     <div className="team-landing-page">
       <h1>This is Your Team Area</h1>
       <div className="buttons-team-landing-page">
-        <Link to="/teams/myTeams">
+        <Link to="/teams">
           <Button
             className={classes.teamLandingButton}
             style={{ minWidth: 150 }}

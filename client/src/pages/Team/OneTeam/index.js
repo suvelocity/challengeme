@@ -47,7 +47,7 @@ function OneTeamPage({ darkMode }) {
           {' '}
           Page
         </h1>
-        <Link to="/teams/myTeams">
+        <Link to="/teams">
           <Button
             className={classes.teamLandingButton}
             style={{ minWidth: 150 }}
