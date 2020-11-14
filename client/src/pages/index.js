@@ -12,7 +12,7 @@ import network from "../services/network";
 import Landing from "./Authentication/Landing";
 import { AnimatePresence } from "framer-motion";
 import Header from "../components/Header/Header";
-import ErrorBoundry from "../components/ErrorBoundry";
+import ErrorBoundary from "../components/ErrorBoundary";
 import Loading from "../components/Loading/Loading";
 import "../index.css";
 import NewChallengeForm from "./NewChallenge/NewChallengeForm";
@@ -84,7 +84,7 @@ export default function Router() {
         !logged ? (
           <Logged.Provider value={{ logged, setLogged }}>
             <AnimatePresence>
-              <ErrorBoundry>
+              <ErrorBoundary>
                 <Route
                   render={({ location }) => (
                     <Switch location={location} key={location.pathname}>
@@ -109,7 +109,7 @@ export default function Router() {
                     </Switch>
                   )}
                 />
-              </ErrorBoundry>
+              </ErrorBoundary>
             </AnimatePresence>
           </Logged.Provider>
         ) : (
@@ -121,7 +121,7 @@ export default function Router() {
                 <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
                 <div className={darkTheme ? "dark" : "light"}>
                   <Suspense fallback={<Loading darkMode={darkTheme} />}>
-                    <ErrorBoundry>
+                    <ErrorBoundary>
                       <Switch>
                         <Route exact path="/challenges/:id">
                           <ChallengePage darkMode={darkTheme} />
@@ -147,7 +147,7 @@ export default function Router() {
                           <NotFound />
                         </Route>
                       </Switch>
-                    </ErrorBoundry>
+                    </ErrorBoundary>
                   </Suspense>
                 </div>
               </FilteredLabels.Provider>

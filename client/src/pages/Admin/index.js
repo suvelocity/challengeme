@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, lazy, Suspense } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
 import { Logged } from "../../context/LoggedInContext";
-import ErrorBoundry from "../../components/ErrorBoundry";
+import ErrorBoundary from "../../components/ErrorBoundary";
 import Loading from "../../components/Loading/Loading";
 import network from "../../services/network";
 import Cookies from "js-cookie";
@@ -55,7 +55,7 @@ function Index() {
     return (
         <>
             <Suspense fallback={<Loading />}>
-                <ErrorBoundry>
+                <ErrorBoundary>
                     <Switch>
                         <Route exact path="/admin/SubmissionsByUsers">
                             <SubmissionsByUsers />
@@ -82,7 +82,7 @@ function Index() {
                             <NotFound />
                         </Route>
                     </Switch>
-                </ErrorBoundry>
+                </ErrorBoundary>
             </Suspense>
         </>
     );

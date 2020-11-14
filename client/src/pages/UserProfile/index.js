@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
-import ErrorBoundry from "../../components/ErrorBoundry";
+import ErrorBoundary from "../../components/ErrorBoundary";
 import Loading from "../../components/Loading/Loading";
 
 const UserProfileLanding = lazy(() => import("./UserProfileLanding"));
@@ -13,7 +13,7 @@ function Index() {
     return (
         <div  >
             <Suspense fallback={<Loading />}>
-                <ErrorBoundry>
+                <ErrorBoundary>
                     <Switch>
                         <Route exact path="/profile/MyChallenges">
                             <MyChallenges />
@@ -28,7 +28,7 @@ function Index() {
                             <NotFound />
                         </Route>
                     </Switch>
-                </ErrorBoundry>
+                </ErrorBoundary>
             </Suspense>
         </div>
     );

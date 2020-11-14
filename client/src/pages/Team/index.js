@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
-import ErrorBoundary from "../../components/ErrorBoundary";
+import ErrorBoundary from "../../components/ErrorBoundary.js";
 import OneTeamPage from './OneTeam'
 import Loading from "../../components/Loading/Loading";
 
