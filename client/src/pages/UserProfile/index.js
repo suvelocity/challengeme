@@ -1,11 +1,11 @@
 import React, { lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
-import ErrorBoundry from "../../components/ErrorBoundry";
-import Loading from "../../components/Loading/Loading";
+import ErrorBoundary from "../../components/ErrorBoundary";
+import Loading from "../../components/Loading";
 
 const UserProfileLanding = lazy(() => import("./UserProfileLanding"));
-const UserInfo = lazy(() => import("./PersonalDetails/UserInfo"));
-const MyChallenges = lazy(() => import("./MyChallenges/MyChallenges"));
+const UserInfo = lazy(() => import("./PersonalDetails"));
+const MyChallenges = lazy(() => import("./MyChallenges"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
 
 function Index() {
@@ -13,7 +13,7 @@ function Index() {
     return (
         <div  >
             <Suspense fallback={<Loading />}>
-                <ErrorBoundry>
+                <ErrorBoundary>
                     <Switch>
                         <Route exact path="/profile/MyChallenges">
                             <MyChallenges />
@@ -28,7 +28,7 @@ function Index() {
                             <NotFound />
                         </Route>
                     </Switch>
-                </ErrorBoundry>
+                </ErrorBoundary>
             </Suspense>
         </div>
     );

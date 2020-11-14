@@ -14,7 +14,7 @@ import Avatar from '@material-ui/core/Avatar';
 import HomeIcon from '@material-ui/icons/Home';
 import '../Header.css';
 import DarkModeToggle from 'react-dark-mode-toggle';
-import Search from '../Search/Search';
+import Search from '../Search';
 import { Logged } from '../../../context/LoggedInContext';
 import FilteredLabels from '../../../context/FilteredLabelsContext';
 import network from '../../../services/network';

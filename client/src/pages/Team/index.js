@@ -1,33 +1,33 @@
 import React, { lazy, Suspense } from "react";
 import { Switch, Route } from "react-router-dom";
-import ErrorBoundry from "../../components/ErrorBoundry";
-import OneTeamPage from './OneTeam'
-import Loading from "../../components/Loading/Loading";
+import ErrorBoundary from "../../components/ErrorBoundary.js";
+import Loading from "../../components/Loading";
 
+const OneTeamPage = lazy(() => import("./OneTeam"));
+const OneTeacherPage = lazy(() => import("./OneTeacher"));
+const MyTeams = lazy(() => import("./MyTeams"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
-const MyTeams = lazy(() => import("./MyTeams/MyTeams"));
-const TeamLandingPage = lazy(() => import("./TeamLandingPage"));
 
 function Index() {
   return (
     <div>
       <Suspense fallback={<Loading />}>
-        <ErrorBoundry>
+        <ErrorBoundary>
           <Switch>
-            <Route exact path="/teams/myteams">
-              <MyTeams />
-            </Route>
-            <Route exact path="/teams/team/:id">
+            <Route exact path="/teams/:id">
               <OneTeamPage />
             </Route>
+            <Route exact path="/teams/teacher/:id">
+              <OneTeacherPage />
+            </Route>
             <Route exact path="/teams">
-              <TeamLandingPage />
+              <MyTeams />
             </Route>
             <Route path="*">
               <NotFound />
             </Route>
           </Switch>
-        </ErrorBoundry>
+        </ErrorBoundary>
       </Suspense>
     </div>
   );
