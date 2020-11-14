@@ -47,6 +47,16 @@ function OneTeamPage({ darkMode }) {
           {' '}
           Page
         </h1>
+        <Link to="/teams/myTeams">
+          <Button
+            className={classes.teamLandingButton}
+            style={{ minWidth: 150 }}
+            variant="contained"
+            color="default"
+          >
+            My Teams
+          </Button>
+        </Link>
         {permission === 'teacher'
           && (
             <Button
@@ -64,16 +74,7 @@ function OneTeamPage({ darkMode }) {
               {teamMembers.Users.map((user) => <li>{user.userName}</li>)}
             </ul>
           )}
-        <Link to="/teams/myTeams">
-          <Button
-            className={classes.teamLandingButton}
-            style={{ minWidth: 150 }}
-            variant="contained"
-            color="default"
-          >
-            My Teams
-          </Button>
-        </Link>
+
       </div>
     ) : (
         <NotFound />

@@ -61,6 +61,19 @@ function Row(props) {
     }
   };
 
+  const changeUserPermissionOnTeam = async (user, permission) => {
+    try {
+      const isDeleteOk = prompt("What's your favorite cocktail drink?");
+      if (isDeleteOk != null) {
+        const newPermission = permission === 'student' ? 'teacher' : 'student';
+        const response = await network.patch(`/api/v1/teams/permission/${row.id}`, { userId: user, permission: newPermission });
+        getAllTeams();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const deleteTeam = async (team) => {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
@@ -124,25 +137,32 @@ function Row(props) {
                     <StyledTableCell align="left">User Name</StyledTableCell>
                     <StyledTableCell align="left">Permission</StyledTableCell>
                     <StyledTableCell align="left" />
+                    <StyledTableCell align="left" />
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.Users.map((user) => (
-                    <StyledTableRow key={user.userName}>
-                      <StyledTableCell component="th" scope="row">
-                        {user.id}
-                      </StyledTableCell>
-                      <StyledTableCell component="th" scope="row">
-                        {user.userName}
-                      </StyledTableCell>
-                      <StyledTableCell component="th" scope="row">
-                        {user.permission}
-                      </StyledTableCell>
-                      <StyledTableCell component="th" scope="row">
-                        <Button onClick={() => removeUserFromTeam(user.id)}>Remove User From team</Button>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
+                  {row.Users.map((user) => {
+                    return (
+                      <StyledTableRow key={user.userName}>
+                        <StyledTableCell component="th" scope="row">
+                          {user.id}
+                        </StyledTableCell>
+                        <StyledTableCell component="th" scope="row">
+                          {user.userName}
+                        </StyledTableCell>
+                        <StyledTableCell component="th" scope="row">
+                          {user.UserTeam.permission}
+                        </StyledTableCell>
+                        <StyledTableCell component="th" scope="row">
+                          <Button onClick={() => changeUserPermissionOnTeam(user.id, user.UserTeam.permission)}>Change User Permission On Team</Button>
+                        </StyledTableCell>
+                        <StyledTableCell component="th" scope="row">
+                          <Button onClick={() => removeUserFromTeam(user.id)}>Remove User From team</Button>
+                        </StyledTableCell>
+                      </StyledTableRow>
+                    )
+                  }
+                  )}
                 </TableBody>
               </Table>
             </Box>
