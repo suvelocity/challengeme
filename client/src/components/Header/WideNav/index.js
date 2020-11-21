@@ -161,7 +161,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
             )}
           </IconButton>
           <Tooltip title={Cookies.get("name")}>
-            <Link to="/profile" className="link-rout">
+            <Link to="/profile/info" className="link-rout">
               <Avatar
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
@@ -201,7 +201,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
             </ListItem>
           </Link>
           <Divider style={dividerColor} />
-          <Link to="/profile" className="link-rout">
+          <Link to="/profile/info" className="link-rout">
             <ListItem button onClick={handleDrawerClose} style={drawerColor}>
               <ListItemIcon>
                 <AccountCircleIcon style={drawerColor} />
@@ -222,7 +222,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
           {isAdmin && (
             <>
               <Divider style={dividerColor} />
-              <Link to="/admin" className="link-rout">
+              <Link to="/admin/SubmissionsByChallenges" className="link-rout">
                 <ListItem button onClick={handleDrawerClose} style={drawerColor}>
                   <ListItemIcon>
                     <LockIcon style={drawerColor} />

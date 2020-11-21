@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Loading from '../../../components/Loading';
-import network from '../../../services/network';
-import '../Admin.css';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import Loading from "../../../components/Loading";
+import network from "../../../services/network";
+import "../Admin.css";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -31,7 +31,7 @@ const StyledTableCell = withStyles((theme) => ({
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
-    '&:nth-of-type(odd)': {
+    "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
   },
@@ -39,8 +39,8 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useRowStyles = makeStyles({
   root: {
-    '& > *': {
-      borderBottom: 'unset',
+    "& > *": {
+      borderBottom: "unset",
     },
   },
 });
@@ -61,7 +61,9 @@ function Row(props) {
         <StyledTableCell component="th" scope="row">
           {row.ChallengeName}
         </StyledTableCell>
-        <StyledTableCell align="left">{last ? row.Submissions.length : row.countSub}</StyledTableCell>
+        <StyledTableCell align="left">
+          {last ? row.Submissions.length : row.countSub}
+        </StyledTableCell>
         <StyledTableCell align="left">
           {new Date(row.createdAt).toString().substring(0, 24)}
         </StyledTableCell>
@@ -84,35 +86,25 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.Submissions
-                    && row.Submissions.map((userBySubmission) => (
+                  {row.Submissions &&
+                    row.Submissions.map((userBySubmission) => (
                       <StyledTableRow key={userBySubmission.id}>
                         <StyledTableCell component="th" scope="row">
                           {userBySubmission.id}
                         </StyledTableCell>
-                        <StyledTableCell>
-                          {' '}
-                          {userBySubmission.userName}
-                          {' '}
-                        </StyledTableCell>
-                        <StyledTableCell>
-                          {' '}
-                          {userBySubmission.solutionRepository}
-                          {' '}
-                        </StyledTableCell>
+                        <StyledTableCell> {userBySubmission.userName} </StyledTableCell>
+                        <StyledTableCell> {userBySubmission.solutionRepository} </StyledTableCell>
                         <StyledTableCell align="left">
-                          {new Date(userBySubmission.createdAt)
-                            .toString()
-                            .substring(0, 24)}
+                          {new Date(userBySubmission.createdAt).toString().substring(0, 24)}
                         </StyledTableCell>
                         <StyledTableCell align="left">
                           <div
                             style={
-                              userBySubmission.state === 'SUCCESS'
-                                ? { color: 'green' }
-                                : userBySubmission.state === 'FAIL'
-                                  ? { color: 'red' }
-                                  : { color: 'black' }
+                              userBySubmission.state === "SUCCESS"
+                                ? { color: "green" }
+                                : userBySubmission.state === "FAIL"
+                                ? { color: "red" }
+                                : { color: "black" }
                             }
                           >
                             {userBySubmission.state}
@@ -131,69 +123,82 @@ function Row(props) {
 }
 
 const SubmissionsByChallenges = () => {
-  const [combainChallengesSubmissionsVsUsersData, setCombainChallengesSubmissionsVsUsersData] = useState([]);
-  const [combainChallengesSubmissionsVsUsersDataLast, setCombainChallengesSubmissionsVsUsersDataLast] = useState([]);
+  const [
+    combainChallengesSubmissionsVsUsersData,
+    setCombainChallengesSubmissionsVsUsersData,
+  ] = useState([]);
+  const [
+    combainChallengesSubmissionsVsUsersDataLast,
+    setCombainChallengesSubmissionsVsUsersDataLast,
+  ] = useState([]);
   const [dataPresent, setDataPresent] = useState([]);
   const [last, setLast] = useState(false);
 
   const getChallengesSubmissions = async () => {
     const { data: challengesSubmissionsFromServer } = await network.get(
-      '/api/v1/insights/submissions/challenges-submissions',
+      "/api/v1/insights/submissions/challenges-submissions"
     );
-    const combainChallengesSubmissionsVsUsers = challengesSubmissionsFromServer[0].length > 0
-      ? challengesSubmissionsFromServer[0].map((challenge) => ({
-        ChallengeName: challenge.Challenge.name,
-        countSub: challenge.countSub,
-        createdAt: challenge.createdAt,
-        Submissions: challengesSubmissionsFromServer[1]
-          .map((userChallenge) => {
-            if (challenge.Challenge.id === userChallenge.id) {
-              return userChallenge.Submissions.map((userBySubmission) => ({
-                id: userBySubmission.id,
-                solutionRepository: userBySubmission.solutionRepository,
-                userName: userBySubmission.User.userName,
-                createdAt: userBySubmission.createdAt,
-                state: userBySubmission.state,
-              })).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-            }
-            return null;
-          })
-          .filter((element) => !!element)[0],
-      }))
-      : [];
+    const combainChallengesSubmissionsVsUsers =
+      challengesSubmissionsFromServer[0].length > 0
+        ? challengesSubmissionsFromServer[0].map((challenge) => ({
+            ChallengeName: challenge.Challenge.name,
+            countSub: challenge.countSub,
+            createdAt: challenge.createdAt,
+            Submissions: challengesSubmissionsFromServer[1]
+              .map((userChallenge) => {
+                if (challenge.Challenge.id === userChallenge.id) {
+                  return userChallenge.Submissions.map((userBySubmission) => ({
+                    id: userBySubmission.id,
+                    solutionRepository: userBySubmission.solutionRepository,
+                    userName: userBySubmission.User.userName,
+                    createdAt: userBySubmission.createdAt,
+                    state: userBySubmission.state,
+                  })).sort(
+                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                  );
+                }
+                return null;
+              })
+              .filter((element) => !!element)[0],
+          }))
+        : [];
     setCombainChallengesSubmissionsVsUsersData(combainChallengesSubmissionsVsUsers);
     setDataPresent(combainChallengesSubmissionsVsUsers);
-    const combainChallengesSubmissionsVsUsersLast = challengesSubmissionsFromServer[0].length > 0
-      ? challengesSubmissionsFromServer[0].map((challenge) => ({
-        ChallengeName: challenge.Challenge.name,
-        countSub: challenge.countSub,
-        createdAt: challenge.createdAt,
-        Submissions: challengesSubmissionsFromServer[1]
-          .map((userChallenge) => {
-            if (challenge.Challenge.id === userChallenge.id) {
-              const myFilteredArray = [];
-              const myFilteredArrayUsers = [];
-              userChallenge.Submissions.map((userBySubmission) => ({
-                id: userBySubmission.id,
-                solutionRepository: userBySubmission.solutionRepository,
-                userName: userBySubmission.User.userName,
-                createdAt: userBySubmission.createdAt,
-                state: userBySubmission.state,
-              })).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).forEach((user) => {
-                if (myFilteredArrayUsers.includes(user.userName)) {
-
-                } else {
-                  myFilteredArrayUsers.push(user.userName);
-                  myFilteredArray.push(user);
+    const combainChallengesSubmissionsVsUsersLast =
+      challengesSubmissionsFromServer[0].length > 0
+        ? challengesSubmissionsFromServer[0].map((challenge) => ({
+            ChallengeName: challenge.Challenge.name,
+            countSub: challenge.countSub,
+            createdAt: challenge.createdAt,
+            Submissions: challengesSubmissionsFromServer[1]
+              .map((userChallenge) => {
+                if (challenge.Challenge.id === userChallenge.id) {
+                  const myFilteredArray = [];
+                  const myFilteredArrayUsers = [];
+                  userChallenge.Submissions.map((userBySubmission) => ({
+                    id: userBySubmission.id,
+                    solutionRepository: userBySubmission.solutionRepository,
+                    userName: userBySubmission.User.userName,
+                    createdAt: userBySubmission.createdAt,
+                    state: userBySubmission.state,
+                  }))
+                    .sort(
+                      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                    )
+                    .forEach((user) => {
+                      if (myFilteredArrayUsers.includes(user.userName)) {
+                      } else {
+                        myFilteredArrayUsers.push(user.userName);
+                        myFilteredArray.push(user);
+                      }
+                    });
+                  return myFilteredArray;
                 }
-              });
-              return myFilteredArray;
-            }
-            return null;
-          })
-          .filter((element) => !!element)[0],
-      }))
-      : [];
+                return null;
+              })
+              .filter((element) => !!element)[0],
+          }))
+        : [];
     setCombainChallengesSubmissionsVsUsersDataLast(combainChallengesSubmissionsVsUsersLast);
   };
 
@@ -211,19 +216,11 @@ const SubmissionsByChallenges = () => {
   };
 
   return (
-    <div className="admin-page">
-      <div className="align-and-margin-top">
+    <div className="generic-page">
+      <div className="align">
         <h1>This is All The Submissions By Challenges Page</h1>
-        <Button variant="contained" color="secondary">
-          <Link to="/admin">
-            <h2>Admin Router</h2>
-          </Link>
-        </Button>
-        <Button
-          onClick={filteredLast}
-        >
-          {last ? 'Show All' : 'Show Only Last'}
-        </Button>
+
+        <Button onClick={filteredLast}>{last ? "Show All" : "Show Only Last"}</Button>
 
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">

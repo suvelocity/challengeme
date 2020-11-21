@@ -128,11 +128,11 @@ export default function Router() {
                           <NewChallengeForm />
                         </Route>
                         <Route path="/teams">
-                          <Team />
+                          <Team darkMode={darkTheme} />
                         </Route>
                         {isAdmin && (
                           <Route path="/admin">
-                            <Admin />
+                            <Admin darkMode={darkTheme} />
                           </Route>
                         )}
                         <Route exact path="/">

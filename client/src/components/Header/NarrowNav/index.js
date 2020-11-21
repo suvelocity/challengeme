@@ -79,7 +79,7 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
   };
 
   const headerStyle = {
-    backgroundColor: darkMode ? "rgb(51,51,51)" : "white",
+    backgroundColor: darkMode ? "rgb(51,51,51)" : "rgb(44, 44, 119)",
   };
   const letterColor = {
     color: darkMode ? "white" : "black",
@@ -179,7 +179,7 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
             </ListItem>
           </Link>
           <Divider style={dividerColor} />
-          <Link to="/profile" className="link-rout">
+          <Link to="/profile/info" className="link-rout">
             <ListItem button onClick={handleDrawerClose} style={letterColor}>
               <ListItemIcon>
                 <AccountCircleIcon style={letterColor} />
@@ -208,7 +208,7 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
           {isAdmin && (
             <>
               <Divider style={dividerColor} />
-              <Link to="/admin" className="link-rout">
+              <Link to="/admin/SubmissionsByChallenges" className="link-rout">
                 <ListItem button onClick={handleDrawerClose} style={letterColor}>
                   <ListItemIcon>
                     <LockIcon style={letterColor} />

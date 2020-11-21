@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import network from '../../../services/network';
-import AddToken from '../../../components/Modals/AddToken';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import network from "../../../services/network";
+import AddToken from "../../../components/Modals/AddToken";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -30,7 +30,7 @@ const StyledTableCell = withStyles((theme) => ({
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
-    '&:nth-of-type(odd)': {
+    "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
   },
@@ -38,8 +38,8 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useRowStyles = makeStyles({
   root: {
-    '& > *': {
-      borderBottom: 'unset',
+    "& > *": {
+      borderBottom: "unset",
     },
   },
 });
@@ -64,8 +64,8 @@ function Row(props) {
     try {
       const isUpdateOk = prompt("Who's your favorite student?");
       if (isUpdateOk != null) {
-        const newStatus = status === 'blocked' ? 'available' : 'blocked';
-        await network.patch('/api/v1/git/', { token, status: newStatus });
+        const newStatus = status === "blocked" ? "available" : "blocked";
+        await network.patch("/api/v1/git/", { token, status: newStatus });
         getAllTokens();
       }
     } catch (error) {
@@ -88,19 +88,16 @@ function Row(props) {
         <StyledTableCell align="left">{row.token}</StyledTableCell>
         <StyledTableCell align="left">{row.status}</StyledTableCell>
         <StyledTableCell align="left">
-          <div style={
-            row.active
-              ? { color: 'green' }
-              : { color: 'red' }
-          }
-          >
-            {`${row.active}`}
-          </div>
+          <div style={row.active ? { color: "green" } : { color: "red" }}>{`${row.active}`}</div>
         </StyledTableCell>
         <StyledTableCell align="left">{row.gitAccount}</StyledTableCell>
         <StyledTableCell align="left">{row.actionsLimit}</StyledTableCell>
-        <StyledTableCell align="left">{new Date(row.updatedAt).toString().substring(0, 24)}</StyledTableCell>
-        <StyledTableCell align="left">{new Date(row.createdAt).toString().substring(0, 24)}</StyledTableCell>
+        <StyledTableCell align="left">
+          {new Date(row.updatedAt).toString().substring(0, 24)}
+        </StyledTableCell>
+        <StyledTableCell align="left">
+          {new Date(row.createdAt).toString().substring(0, 24)}
+        </StyledTableCell>
       </StyledTableRow>
       <StyledTableRow>
         <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -113,15 +110,15 @@ function Row(props) {
                 <TableBody>
                   <StyledTableRow key={row.userName}>
                     <StyledTableCell component="th" scope="row">
-                      <Button onClick={() => updateToken(row.token, row.status)}>Change Status</Button>
+                      <Button onClick={() => updateToken(row.token, row.status)}>
+                        Change Status
+                      </Button>
                     </StyledTableCell>
                     <StyledTableCell component="th" scope="row">
                       <Button onClick={() => deleteToken(row.token)}>Delete Token</Button>
                     </StyledTableCell>
                     <StyledTableCell component="th" scope="row">
-                      Remaining:
-                      {' '}
-                      {row.remaining ? row.remaining : 'Not Active'}
+                      Remaining: {row.remaining ? row.remaining : "Not Active"}
                     </StyledTableCell>
                   </StyledTableRow>
                 </TableBody>
@@ -139,7 +136,7 @@ function GithubTokens() {
 
   async function getAllTokens() {
     try {
-      const { data: allTokensFromServer } = await network.get('/api/v1/git/');
+      const { data: allTokensFromServer } = await network.get("/api/v1/git/");
       setAllTokens(allTokensFromServer);
     } catch (error) {
       console.error(error);
@@ -155,17 +152,10 @@ function GithubTokens() {
   }, []);
 
   return (
-    <div className="admin" style={{ marginTop: '60px', textAlign: 'center' }}>
+    <div className="generic-page" style={{ textAlign: "center" }}>
       <h1>Githhub Tokens Management Area</h1>
       <AddToken open={open} setOpen={setOpen} getAllTokens={getAllTokens} />
-      <Button variant="contained" color="secondary">
-        <Link to="/admin"><h2>Admin Router</h2></Link>
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={addNewToken}
-      >
+      <Button variant="contained" color="primary" onClick={addNewToken}>
         Add New Token
       </Button>
 
@@ -185,9 +175,10 @@ function GithubTokens() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allTokens && allTokens.map((token) => (
-              <Row key={token.token} row={token} getAllTokens={getAllTokens} />
-            ))}
+            {allTokens &&
+              allTokens.map((token) => (
+                <Row key={token.token} row={token} getAllTokens={getAllTokens} />
+              ))}
           </TableBody>
         </Table>
       </TableContainer>
