@@ -135,7 +135,7 @@ const SubmissionsByChallenges = () => {
 
   const getChallengesSubmissions = async () => {
     const { data: challengesSubmissionsFromServer } = await network.get(
-      "/api/v1/insights/submissions/challenges-submissions"
+      "/api/v1/insights/admin/challenges-submissions"
     );
     const combainChallengesSubmissionsVsUsers =
       challengesSubmissionsFromServer[0].length > 0

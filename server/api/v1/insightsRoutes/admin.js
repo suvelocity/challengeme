@@ -2,7 +2,7 @@ const insightSubmissionRouter = require('express').Router();
 const { Op } = require('sequelize');
 const sequelize = require('sequelize');
 const checkAdmin = require('../../../middleware/checkAdmin');
-const {checkTeacherPermission} = require('../../../middleware/checkTeamPermission');
+const { checkTeacherPermission } = require('../../../middleware/checkTeamPermission');
 const {
   Submission, Challenge, Review, User, Team
 } = require('../../../models');
@@ -32,24 +32,27 @@ insightSubmissionRouter.get('/top-challenges', async (req, res) => {
 });
 
 // returns the 5 challenges with most successful submissions
-insightSubmissionRouter.get('/top-success', async (req, res) => {
+insightSubmissionRouter.get('/success-challenge', async (req, res) => {
   try {
-    const mostSuccessful = await Submission.findAll({
-      attributes: {
-        include: [
-          [sequelize.fn('COUNT', sequelize.col('challenge_id')), 'countSub'],
-        ],
+    const successfulTeamChallenges = await Submission.findAll({
+      group: ['challengeId'],
+      attributes: [
+        [sequelize.fn('COUNT', 'challengeId'), 'challengeSuccesses'],
+        'challengeId',
+      ],
+      where: {
+        state: 'SUCCESS',
       },
-      include: {
-        model: Challenge,
-        attributes: ['name'],
-      },
-      where: { state: 'SUCCESS' },
-      group: ['challenge_id'],
-      order: [[sequelize.fn('COUNT', sequelize.col('challenge_id')), 'DESC']],
-      limit: 5,
+      include: [
+        {
+          model: Challenge,
+          attributes: ['name'],
+        },
+      ],
+      order: [[sequelize.fn('COUNT', 'challengeId'), 'DESC']],
     });
-    res.json(mostSuccessful);
+
+    res.json(successfulTeamChallenges.slice(0, 5));
   } catch (err) {
     res.status(400).send(err);
   }
@@ -76,22 +79,25 @@ insightSubmissionRouter.get('/challenges-type', async (req, res) => {
 // returns the count of submissions submitted per day from the last 5 days
 insightSubmissionRouter.get('/sub-by-date', async (req, res) => {
   try {
-    const fiveDays = 5 * 24 * 60 * 60 * 1000;
-    const submissionsByDate = await Submission.findAll({
-      group: [sequelize.fn('DAY', sequelize.col('createdAt'))],
+    const week = 7 * 24 * 60 * 60 * 1000;
+    const subByDate = await Submission.findAll({
+      raw: true,
+      group: [sequelize.fn('DAY', sequelize.col('Submission.created_at'))],
       attributes: [
-        [sequelize.fn('COUNT', sequelize.col('id')), 'countByDay'],
+        [sequelize.fn('COUNT', 'id'), 'dateSubmissions'],
         'createdAt',
       ],
       where: {
         created_at: {
-          [Op.gte]: new Date(Date.now() - fiveDays),
+          [Op.gte]: new Date(Date.now() - week),
         },
       },
     });
-    res.json(submissionsByDate);
-  } catch (err) {
-    res.status(400).send(err);
+
+    res.json(subByDate);
+  } catch (error) {
+    console.error(error);
+    res.status(400).send(error);
   }
 });
 
@@ -121,31 +127,31 @@ insightSubmissionRouter.get('/challenges-by-reviews', async (req, res) => {
 });
 //= ======================================Teacher Routes===============================
 
-const getUsersId = async (teamId) =>{
-   const currentTeamUsers = await Team.findOne({
-  where: {
-    id: teamId,
-  },
-  attributes: ['name'],
-  include: [
-    {
-      model: User,
-      attributes: ['id'],
-      through: {
-        attributes: [],
-      },
+const getUsersId = async (teamId) => {
+  const currentTeamUsers = await Team.findOne({
+    where: {
+      id: teamId,
     },
-  ],
-});
-// returns array with users ids
-const usersId = currentTeamUsers.Users.map((value) => value.id);
-return usersId
+    attributes: ['name'],
+    include: [
+      {
+        model: User,
+        attributes: ['id'],
+        through: {
+          attributes: [],
+        },
+      },
+    ],
+  });
+  // returns array with users ids
+  const usersId = currentTeamUsers.Users.map((value) => value.id);
+  return usersId
 }
 
 
-insightSubmissionRouter.get('/challenges-submissions/teacher/:teamId',checkTeacherPermission, checkAdmin, async (req, res) => {
+insightSubmissionRouter.get('/challenges-submissions/teacher/:teamId', checkTeacherPermission, checkAdmin, async (req, res) => {
   try {
-    const {teamId} = req.params
+    const { teamId } = req.params
     const usersId = await getUsersId(teamId)
     const topChallenges = await Submission.findAll({
       attributes: {
@@ -167,7 +173,7 @@ insightSubmissionRouter.get('/challenges-submissions/teacher/:teamId',checkTeach
         attributes: ['id', 'userId', 'createdAt', 'state', 'solutionRepository'],
         include: {
           model: User,
-          where:{
+          where: {
             id: usersId
           },
           attributes: ['userName'],
@@ -181,15 +187,15 @@ insightSubmissionRouter.get('/challenges-submissions/teacher/:teamId',checkTeach
   }
 });
 
-insightSubmissionRouter.get('/users-submissions/teacher/:teamId',checkTeacherPermission, checkAdmin, async (req, res) => {
+insightSubmissionRouter.get('/users-submissions/teacher/:teamId', checkTeacherPermission, checkAdmin, async (req, res) => {
   try {
-    const {teamId} = req.params
+    const { teamId } = req.params
     const usersId = await getUsersId(teamId)
     console.log(usersId)
     const topUsers = await User.findAll({
       attributes: ['userName', 'phoneNumber', 'firstName', 'lastName', 'email'],
       where: {
-        id:usersId
+        id: usersId
       },
       include: {
         model: Submission,
@@ -244,6 +250,25 @@ insightSubmissionRouter.get('/users-submissions', checkAdmin, async (req, res) =
         model: Submission,
         include: { model: Challenge },
       },
+    });
+    res.json(topUsers);
+  } catch (err) {
+    console.error(err);
+    res.status(400).send(err);
+  }
+});
+
+insightSubmissionRouter.get('/top-user', checkAdmin, async (req, res) => {
+  try {
+    const topUsers = await User.findAll({
+      attributes: ['id', 'userName'],
+      include: {
+        model: Submission,
+        where: {
+          state: ['SUCCESS', 'FAIL']
+        }
+      },
+      order: [[Submission, 'createdAt', 'DESC']]
     });
     res.json(topUsers);
   } catch (err) {

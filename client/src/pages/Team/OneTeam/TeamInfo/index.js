@@ -60,7 +60,7 @@ function OneTeamPage({ darkMode }) {
               </Button>
             </Link>
           )}
-
+        <h2>My Team Friends:</h2>
         <ul>
           {teamMembers.Users.map((user) => <li>{user.userName}</li>)}
         </ul>

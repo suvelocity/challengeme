@@ -14,6 +14,7 @@ const ProposedChallenge = lazy(() => import("./ChallengeApproval"));
 const UsersControl = lazy(() => import("./UsersControl"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
 const TeamsControl = lazy(() => import("./TeamsControl"));
+const DashBoard = lazy(() => import("./DashBoard"));
 
 function Index({ darkMode }) {
   const location = useHistory();
@@ -52,6 +53,7 @@ function Index({ darkMode }) {
   }, []);
 
   const paths = [
+    { name: "DashBoard", URL: "/admin/DashBoard" },
     { name: "Submissions By Challenges", URL: "/admin/SubmissionsByChallenges" },
     { name: "Submissions By Users", URL: "/admin/SubmissionsByUsers" },
     { name: "Challenges Management", URL: "/admin/ChallengesManagement" },
@@ -65,6 +67,9 @@ function Index({ darkMode }) {
       <Suspense fallback={<Loading />}>
         <ErrorBoundary>
           <Switch>
+          <Route exact path="/admin/DashBoard">
+              <DashBoard />
+            </Route>
             <Route exact path="/admin/SubmissionsByUsers">
               <SubmissionsByUsers />
             </Route>

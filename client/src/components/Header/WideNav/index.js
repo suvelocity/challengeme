@@ -222,7 +222,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
           {isAdmin && (
             <>
               <Divider style={dividerColor} />
-              <Link to="/admin/SubmissionsByChallenges" className="link-rout">
+              <Link to="/admin/DashBoard" className="link-rout">
                 <ListItem button onClick={handleDrawerClose} style={drawerColor}>
                   <ListItemIcon>
                     <LockIcon style={drawerColor} />

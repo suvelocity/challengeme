@@ -208,7 +208,7 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
           {isAdmin && (
             <>
               <Divider style={dividerColor} />
-              <Link to="/admin/SubmissionsByChallenges" className="link-rout">
+              <Link to="/admin/DashBoard" className="link-rout">
                 <ListItem button onClick={handleDrawerClose} style={letterColor}>
                   <ListItemIcon>
                     <LockIcon style={letterColor} />
