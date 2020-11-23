@@ -123,7 +123,7 @@ const SubmissionsByUsers = () => {
   const { id } = useParams();
 
   async function fetchData() {
-    const { data } = await network.get(`/api/v1/insights/submissions/users-submissions/teacher/${id}`);
+    const { data } = await network.get(`/api/v1/insights/admin/users-submissions/teacher/${id}`);
     setData(data);
   }
 
