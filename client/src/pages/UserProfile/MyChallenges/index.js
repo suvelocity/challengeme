@@ -43,7 +43,7 @@ const UserProfileLanding = () => {
     };
   };
   return (
-    <div className="user-profile-my-challenges">
+    <div className="generic-page">
       <h1 className="user-profile-my-challenges-title">
         This is challenges page
       </h1>
@@ -118,11 +118,7 @@ const UserProfileLanding = () => {
           ))}
       </div>
       <div className="user-profile-my-challenges-button-container">
-        <Link to="/profile">
-          <Button style={{ minWidth: 150 }} variant="contained" color="default">
-            back to My Profile
-          </Button>
-        </Link>
+
       </div>
     </div>
   );

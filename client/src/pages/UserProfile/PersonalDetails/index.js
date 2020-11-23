@@ -86,7 +86,7 @@ function UserInfo({ darkMode }) {
     })();
   }, []);
   return userInfo.firstName ? (
-    <div className="user-page-background">
+    <div className="generic-page">
       <div className="user-page">
         <div className="user-info-container">
           <h1>User Info</h1>
@@ -147,16 +147,7 @@ function UserInfo({ darkMode }) {
               readOnly: true,
             }}
           />
-          <Link to="/profile">
-            <Button
-              className={classes.userProfileBackToMyProfile}
-              style={{ minWidth: 150 }}
-              variant="contained"
-              color="default"
-            >
-              back to My Profile
-            </Button>
-          </Link>
+
         </div>
       </div>
     </div>
