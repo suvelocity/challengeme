@@ -16,6 +16,8 @@ v1Router.use('/labels', checkToken, require('./labels'));
 v1Router.use('/reviews', checkToken, require('./reviews'));
 v1Router.use('/insights', checkToken, require('./insightsRoutes'));
 v1Router.use('/teams', checkToken, require('./teams'));
+v1Router.use('/assignments', checkToken, require('./assignments'));
+
 
 // Admin Route Super Protected
 v1Router.use('/git', checkToken, checkAdmin, require('./gitTokens'));

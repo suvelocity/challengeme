@@ -1,23 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import TableCell from '@material-ui/core/TableCell';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import Loading from '../../../components/Loading';
-import network from '../../../services/network';
-import '../Admin.css';
+import React, { useEffect, useState } from "react";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import Collapse from "@material-ui/core/Collapse";
+import IconButton from "@material-ui/core/IconButton";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import Loading from "../../../components/Loading";
+import network from "../../../services/network";
+import "../Admin.css";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -31,7 +29,7 @@ const StyledTableCell = withStyles((theme) => ({
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
-    '&:nth-of-type(odd)': {
+    "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.action.hover,
     },
   },
@@ -39,8 +37,8 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useRowStyles = makeStyles({
   root: {
-    '& > *': {
-      borderBottom: 'unset',
+    "& > *": {
+      borderBottom: "unset",
     },
   },
 });
@@ -82,30 +80,30 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.Submissions
-                    && row.Submissions.map((submission) => (
+                  {row.Submissions &&
+                    row.Submissions.map((submission) => (
                       <StyledTableRow key={submission.Challenge.name}>
                         <StyledTableCell component="th" scope="row">
                           {submission.Challenge.name}
                         </StyledTableCell>
-                        <StyledTableCell align="left">{submission.solutionRepository}</StyledTableCell>
+                        <StyledTableCell align="left">
+                          {submission.solutionRepository}
+                        </StyledTableCell>
                         <StyledTableCell color="secondary">
                           <div
                             style={
-                              submission.state === 'SUCCESS'
-                                ? { color: 'green' }
-                                : submission.state === 'FAIL'
-                                  ? { color: 'red' }
-                                  : { color: 'black' }
+                              submission.state === "SUCCESS"
+                                ? { color: "green" }
+                                : submission.state === "FAIL"
+                                ? { color: "red" }
+                                : { color: "black" }
                             }
                           >
                             {submission.state}
                           </div>
                         </StyledTableCell>
                         <StyledTableCell align="left">
-                          {new Date(submission.createdAt)
-                            .toString()
-                            .substring(0, 24)}
+                          {new Date(submission.createdAt).toString().substring(0, 24)}
                         </StyledTableCell>
                       </StyledTableRow>
                     ))}
@@ -123,7 +121,7 @@ const SubmissionsByUsers = () => {
   const [data, setData] = useState([]);
 
   async function fetchData() {
-    const { data } = await network.get('/api/v1/insights/submissions/users-submissions');
+    const { data } = await network.get("/api/v1/insights/admin/users-submissions");
     setData(data);
   }
 
@@ -132,14 +130,10 @@ const SubmissionsByUsers = () => {
   }, []);
 
   return (
-    <div className="admin-page">
-      <div className="align-and-margin-top">
+    <div className="generic-page">
+      <div className="align">
         <h1>This is All The Submissions By Users Page</h1>
-        <Button variant="contained" color="secondary">
-          <Link to="/admin">
-            <h2>Admin Router</h2>
-          </Link>
-        </Button>
+
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">
             <TableHead>
@@ -154,9 +148,7 @@ const SubmissionsByUsers = () => {
             </TableHead>
             <TableBody>
               {data.length > 0 ? (
-                data.map((user) => (
-                  <Row key={user.userName} color="secondary" row={user} />
-                ))
+                data.map((user) => <Row key={user.userName} color="secondary" row={user} />)
               ) : (
                 <Loading />
               )}
