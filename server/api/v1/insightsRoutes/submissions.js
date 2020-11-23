@@ -2,8 +2,9 @@ const insightSubmissionRouter = require('express').Router();
 const { Op } = require('sequelize');
 const sequelize = require('sequelize');
 const checkAdmin = require('../../../middleware/checkAdmin');
+const {checkTeacherPermission} = require('../../../middleware/checkTeamPermission');
 const {
-  Submission, Challenge, Review, User,
+  Submission, Challenge, Review, User, Team
 } = require('../../../models');
 
 // returns the 5 challenges with most submissions
@@ -118,7 +119,89 @@ insightSubmissionRouter.get('/challenges-by-reviews', async (req, res) => {
     res.status(400).send(err);
   }
 });
+//= ======================================Teacher Routes===============================
 
+const getUsersId = async (teamId) =>{
+   const currentTeamUsers = await Team.findOne({
+  where: {
+    id: teamId,
+  },
+  attributes: ['name'],
+  include: [
+    {
+      model: User,
+      attributes: ['id'],
+      through: {
+        attributes: [],
+      },
+    },
+  ],
+});
+// returns array with users ids
+const usersId = currentTeamUsers.Users.map((value) => value.id);
+return usersId
+}
+
+
+insightSubmissionRouter.get('/challenges-submissions/teacher/:teamId',checkTeacherPermission, checkAdmin, async (req, res) => {
+  try {
+    const {teamId} = req.params
+    const usersId = await getUsersId(teamId)
+    const topChallenges = await Submission.findAll({
+      attributes: {
+        include: [
+          [sequelize.fn('COUNT', sequelize.col('challenge_id')), 'countSub'],
+        ],
+      },
+      include: {
+        model: Challenge,
+        attributes: ['id', 'name'],
+      },
+      group: ['challenge_id'],
+      order: [[sequelize.fn('COUNT', sequelize.col('challenge_id')), 'DESC']],
+    });
+
+    const users = await Challenge.findAll({
+      include: {
+        model: Submission,
+        attributes: ['id', 'userId', 'createdAt', 'state', 'solutionRepository'],
+        include: {
+          model: User,
+          where:{
+            id: usersId
+          },
+          attributes: ['userName'],
+        },
+      },
+    });
+
+    res.json([topChallenges, users]);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+});
+
+insightSubmissionRouter.get('/users-submissions/teacher/:teamId',checkTeacherPermission, checkAdmin, async (req, res) => {
+  try {
+    const {teamId} = req.params
+    const usersId = await getUsersId(teamId)
+    console.log(usersId)
+    const topUsers = await User.findAll({
+      attributes: ['userName', 'phoneNumber', 'firstName', 'lastName', 'email'],
+      where: {
+        id:usersId
+      },
+      include: {
+        model: Submission,
+        include: { model: Challenge },
+      },
+    });
+    res.json(topUsers);
+  } catch (err) {
+    console.error(err);
+    res.status(400).send(err);
+  }
+});
 //= ======================================Admin Routes===============================
 insightSubmissionRouter.get('/challenges-submissions', checkAdmin, async (req, res) => {
   try {

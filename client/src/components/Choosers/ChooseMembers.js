@@ -57,7 +57,7 @@ const ChooseMembers = ({
         value={chooseMembers}
         className="selectLabels"
         maxMenuHeight={300}
-        placeholder="select labels"
+        placeholder="select members"
         isMulti
         name="labels"
         onChange={selectionChange}

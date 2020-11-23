@@ -46,30 +46,12 @@ insightsTeamsRouter.get('/top', async (req, res) => {
 
 // for the team related to the logged in user
 
-async function getTeamUsersIds(userId) {
-  // returns the logged user team
-  const userTeam = await Team.findOne({
-    attributes: [
-      'id', 'name',
-    ],
-    include: [
-      {
-        model: User,
-        attributes: [],
-        through: {
-          attributes: [],
-        },
-        where: {
-          id: userId,
-        },
-      },
-    ],
-  });
+async function getTeamUsersIds(userId,teamId) {
 
   // get team users
   const currentTeamUsers = await Team.findOne({
     where: {
-      id: userTeam.id,
+      id:teamId,
     },
     attributes: ['name'],
     include: [
@@ -86,19 +68,18 @@ async function getTeamUsersIds(userId) {
   // returns array with users ids
   const usersId = currentTeamUsers.Users.map((value) => value.id);
 
-  return [usersId, userTeam.name];
+  return [usersId];
 }
 
 // returns the  users with most successful submissions in the team
 insightsTeamsRouter.get('/top-user/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
   try {
     const loggedUser = req.user.userId;
-
-    const teamUsersIds = await getTeamUsersIds(loggedUser);
+    const {teamId} = req.params
+    const teamUsersIds = await getTeamUsersIds(loggedUser,teamId);
 
     // returns top 5 users and their successful submissions
     const teamUsersTopSuccess = await User.findAll({
-      group: ['id'],
       where: {
         id: teamUsersIds[0],
       },
@@ -106,31 +87,25 @@ insightsTeamsRouter.get('/top-user/:teamId', checkTeamPermission, checkTeacherPe
       include: [
         {
           model: Submission,
-          attributes: [
-            [
-              sequelize.fn('COUNT', sequelize.col('user_id')),
-              'userSuccessSubmission',
-            ],
-          ],
           where: {
-            state: 'success',
-          },
+            state:['SUCCESS','FAIL']
+          }
         },
       ],
-      order: [[sequelize.fn('COUNT', sequelize.col('user_id')), 'DESC']],
+      order:[[Submission,'createdAt','DESC']]
     });
-    res.json([teamUsersTopSuccess, teamUsersIds[1]]);
+    res.json(teamUsersTopSuccess);
   } catch (err) {
     res.status(400).send(err);
   }
 });
 
 // returns last week submissions  for the logged in user team
-insightsTeamsRouter.get('/last-week-submissions', async (req, res) => {
+insightsTeamsRouter.get('/last-week-submissions/:teamId',checkTeamPermission,checkTeacherPermission ,async (req, res) => {
   try {
-    const loggedUser = req.user ? req.user.id : 1;
-
-    const teamUsersIds = await getTeamUsersIds(loggedUser);
+    const loggedUser = req.user.userId
+    const {teamId} = req.params
+    const teamUsersIds = await getTeamUsersIds(loggedUser,teamId);
 
     // return the teams successful submissions from the last week by day
 
@@ -144,7 +119,6 @@ insightsTeamsRouter.get('/last-week-submissions', async (req, res) => {
         'createdAt',
       ],
       where: {
-        state: 'SUCCESS',
         created_at: {
           [Op.gte]: new Date(Date.now() - sevenDays),
         },
@@ -196,11 +170,11 @@ insightsTeamsRouter.get('/team-submissions', async (req, res) => {
 });
 
 // returns the top  challenges, with the most successful submissions in the team
-insightsTeamsRouter.get('/success-challenge', async (req, res) => {
+insightsTeamsRouter.get('/success-challenge/:teamId',checkTeamPermission,checkTeacherPermission, async (req, res) => {
   try {
-    const loggedUser = req.user ? req.user.id : 1;
-
-    const teamUsersIds = await getTeamUsersIds(loggedUser);
+    const loggedUser = req.user.userId
+    const {teamId} = req.params
+    const teamUsersIds = await getTeamUsersIds(loggedUser,teamId);
 
     // returns the count of all the successes per challenge for the team
     const successfulTeamChallenges = await Submission.findAll({
@@ -222,7 +196,7 @@ insightsTeamsRouter.get('/success-challenge', async (req, res) => {
       order: [[sequelize.fn('COUNT', 'challengeId'), 'DESC']],
     });
 
-    res.json(successfulTeamChallenges);
+    res.json(successfulTeamChallenges.slice(0,5));
   } catch (err) {
     res.status(400).send(err);
   }

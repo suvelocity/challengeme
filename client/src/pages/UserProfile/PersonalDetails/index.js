@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
-import { Link } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import network from '../../../services/network';
 
 import './UserInfo.css';

@@ -1,70 +1,52 @@
-import React, { useState, useEffect, lazy } from 'react';
-import { Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { useParams, Link } from 'react-router-dom';
-import Loading from '../../../components/Loading';
-import NotFound from '../../NotFound';
-import network from '../../../services/network';
+import React, { lazy, Suspense } from "react";
+import { Switch, Route, useParams } from "react-router-dom";
+import ErrorBoundary from "../../../components/ErrorBoundary.js";
+import Loading from "../../../components/Loading";
+import SecondHeader from '../../../components/Header/SecondHeader';
 
-const TeamControl = lazy(() => import("./TeamControl"));
-const SuccessSubmissions = lazy(() => import("./Charts/SuccessSubmissions"));
+const NotFound = lazy(() => import("../../NotFound"));
+const DashBoard = lazy(() => import("./DashBoard"));
+const TeamControl = lazy(() => import("./TeamControl/index"));
+const StudentInfo = lazy(() => import("./StudentsInfo"));
+const Assignments = lazy(() => import("./Assignments"));
 
+function Index({ darkMode }) {
 
-const useStyles = makeStyles(() => ({
-
-}));
-
-function OneTeamPage({ darkMode }) {
-    const classes = useStyles();
     const { id } = useParams();
-    const [teamMembers, setTeamMembers] = useState();
-    const [loading, setLoading] = useState(true);
 
-    const getDataOnTeam = async () => {
-        try {
-            const { data: members } = await network.get(`/api/v1/insights/teams/top-user/${id}`);
-            console.log(members);
-            setTeamMembers(members[0])
-            setLoading(false);
-        } catch (error) {
-            setLoading(false);
-            console.error(error);
-        }
-    }
+    const paths = [
+        { name: "DashBoard", URL: `/teams/teacher/${id}` },
+        { name: "Team Control", URL: `/teams/teacher/${id}/TeamControl` },
+        { name: "Students Information", URL: `/teams/teacher/${id}/StudentsInfo` },
+        { name: "Assignments", URL: `/teams/teacher/${id}/Assignments` },
+    ];
 
-    useEffect(() => {
-        getDataOnTeam()
-    }, [id]);
-
-    return !loading
-        ? teamMembers ? (
-            <div style={{ overflowY: 'auto', height: '100vh', width: '100%' }}>
-                <br /><br /><br /><br />
-                <h1>This Teacher Area For Team{' '}{id}{' '}Page</h1>
-                <Link to="/teams">
-                    <Button
-                        className={classes.teamLandingButton}
-                        style={{ minWidth: 150 }}
-                        variant="contained"
-                        color="default"
-                    >
-                        My Teams
-          </Button>
-                </Link>
-                <Link to={`/teams/${id}`} >
-                    <Button
-                        variant="contained"
-                        color="default"
-                    >
-                        Team Area
-              </Button>
-                </Link>
-                <TeamControl teamId={id} />
-                <SuccessSubmissions members={teamMembers} />
-            </div>
-        ) : (
-                <NotFound />
-            ) : <Loading darkMode={darkMode} />;
+    return (
+        <div>
+            <SecondHeader paths={paths} darkMode={darkMode} />
+            <Suspense fallback={<Loading />}>
+                <ErrorBoundary>
+                    <Switch>
+                        <Route exact path="/teams/teacher/:id/TeamControl">
+                            <TeamControl darkMode={darkMode} teamId={id} />
+                        </Route>
+                        <Route exact path="/teams/teacher/:id/StudentsInfo">
+                            <StudentInfo darkMode={darkMode} />
+                        </Route>
+                        <Route exact path="/teams/teacher/:id/Assignments">
+                            <Assignments darkMode={darkMode} />
+                        </Route>
+                        <Route exact path="/teams/teacher/:id">
+                            <DashBoard darkMode={darkMode} />
+                        </Route>
+                        <Route path="*">
+                            <NotFound darkMode={darkMode} />
+                        </Route>
+                    </Switch>
+                </ErrorBoundary>
+            </Suspense>
+        </div>
+    );
 }
 
-export default OneTeamPage;
+export default Index;

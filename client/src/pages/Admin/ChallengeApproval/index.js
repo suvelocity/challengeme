@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
 import "./ChallengeApproval.css";
-import { Link } from "react-router-dom";
-import Button from "@material-ui/core/Button";
 import network from "../../../services/network";
 import Loading from "../../../components/Loading";
 import AllChallenges from "../../../context/AllChallengesContext";

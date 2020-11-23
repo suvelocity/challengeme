@@ -96,11 +96,11 @@ export default makeStyles((theme) => ({
   addChanllengeButton: {
     margin: "10px",
   },
-  drawerPaper: {
-    width: drawerWidth,
-    backgroundColor: 'white',
-    boxShadow: '10px 0px 35px 0px rgba(51,51,51,0.7)',
-  },
+  // drawerPaper: {
+  //   width: drawerWidth,
+  //   backgroundColor: 'white',
+  //   boxShadow: '10px 0px 35px 0px rgba(51,51,51,0.7)',
+  // },
   drawerPaperDark: {
     width: drawerWidth,
     backgroundColor: 'rgb(51,51,51)',

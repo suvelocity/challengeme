@@ -67,7 +67,7 @@ teamRouter.get('/all-teams-by-user', async (req, res) => {
   }
 });
 
-//= ============================= Teacher Routes ======================================
+//============================== Teacher Routes ======================================
 
 // get all the users of the teachers team
 teamRouter.get('/teacher-area/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {

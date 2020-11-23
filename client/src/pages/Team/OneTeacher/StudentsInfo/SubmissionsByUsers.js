@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
@@ -13,9 +14,9 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import Loading from "../../../components/Loading";
-import network from "../../../services/network";
-import "../Admin.css";
+import Loading from "../../../../components/Loading";
+import network from "../../../../services/network";
+import "../../../Admin/Admin.css";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -95,8 +96,8 @@ function Row(props) {
                               submission.state === "SUCCESS"
                                 ? { color: "green" }
                                 : submission.state === "FAIL"
-                                ? { color: "red" }
-                                : { color: "black" }
+                                  ? { color: "red" }
+                                  : { color: "black" }
                             }
                           >
                             {submission.state}
@@ -119,14 +120,16 @@ function Row(props) {
 
 const SubmissionsByUsers = () => {
   const [data, setData] = useState([]);
+  const { id } = useParams();
 
   async function fetchData() {
-    const { data } = await network.get("/api/v1/insights/submissions/users-submissions");
+    const { data } = await network.get(`/api/v1/insights/submissions/users-submissions/teacher/${id}`);
     setData(data);
   }
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -150,8 +153,8 @@ const SubmissionsByUsers = () => {
               {data.length > 0 ? (
                 data.map((user) => <Row key={user.userName} color="secondary" row={user} />)
               ) : (
-                <Loading />
-              )}
+                  <Loading />
+                )}
             </TableBody>
           </Table>
         </TableContainer>
