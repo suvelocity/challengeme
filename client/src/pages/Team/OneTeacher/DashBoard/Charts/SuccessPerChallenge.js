@@ -13,7 +13,7 @@ function SuccessPerChallenge({ darkMode }) {
 
     const getChallengesByMostSuccess = async () => {
         try {
-            const { data: challengesMostSuccess } = await network.get(`/api/v1/insights/teams/success-challenge/${id}`);
+            const { data: challengesMostSuccess } = await network.get(`/api/v1/insights/teacher/success-challenge/${id}`);
             const formattedChallengesMostSuccess = challengesMostSuccess.map((challenge) => {
                 return ({
                     name: challenge.Challenge.name,

@@ -12,7 +12,7 @@ function LastWeekSubmissions({ darkMode }) {
 
     const getLastWeekSubmissions = async () => {
         try {
-            const { data: submissions } = await network.get(`/api/v1/insights/admin/sub-by-date`);
+            const { data: submissions } = await network.get(`/api/v1/insights/admin/last-week-submissions`);
             const formattedSubmissions = submissions.map((submission) => {
                 submission.createdAt = moment(submission.createdAt).fromNow()
                 submission.createdAt = submission.createdAt.includes('hour') ? 'today' : submission.createdAt.includes('minutes') ? 'today' : submission.createdAt.includes('seconds') ? 'today' : submission.createdAt

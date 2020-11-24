@@ -13,7 +13,7 @@ function SuccessSubmissions({ darkMode }) {
 
   const getDataOnTeam = async () => {
     try {
-      const { data: members } = await network.get(`/api/v1/insights/teams/top-user/${id}`);
+      const { data: members } = await network.get(`/api/v1/insights/teacher/top-user/${id}`);
       const fromattedMembers = members.map((member) => {
         const filteredSubmissions = []
         let success = 0
