@@ -2,7 +2,7 @@ const insightTeacherRouter = require('express').Router();
 const { Op } = require('sequelize');
 const sequelize = require('sequelize');
 const { checkTeacherPermission, checkTeamPermission } = require('../../../middleware/checkTeamPermission');
-const { Submission, Challenge, User, Team } = require('../../../models');
+const { Submission, Challenge, User, Team, Assignment } = require('../../../models');
 
 
 async function getTeamUsersIds(teamId) {
@@ -18,6 +18,9 @@ async function getTeamUsersIds(teamId) {
                 model: User,
                 attributes: ['id'],
                 through: {
+                    where: {
+                        permission: 'student'
+                    },
                     attributes: [],
                 },
             },
@@ -27,55 +30,77 @@ async function getTeamUsersIds(teamId) {
     // returns array with users ids
     const usersId = currentTeamUsers.Users.map((value) => value.id);
 
-    return [usersId];
+    return usersId;
 }
-//===================Not in use=========================================//
 
-// returns the teams submissions status(total amount, pending, success, fail)
+const filterLastSubmissionPerChallenge = (submissionsOrderedByDate) => {
+    const filteredAlready = [];
+    let success = 0;
+    let fail = 0;
+    submissionsOrderedByDate.forEach((submission) => {
+        if (filteredAlready.some(filteredSubmission =>
+            filteredSubmission.userId === submission.userId &&
+            filteredSubmission.challengeId === submission.challengeId)) {
+        } else {
+            filteredAlready.push({ userId: submission.userId, challengeId: submission.challengeId });
+            if (submission.state === 'SUCCESS') {
+                success++
+            } else {
+                fail++
+            }
+        }
+    })
+    return { success, fail }
+}
+
+// returns the teams submissions status(total amount, success, fail, not submitted)
 insightTeacherRouter.get('/team-submissions/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
     try {
-        const loggedUser = req.user ? req.user.id : 1;
+        const { teamId } = req.params;
+        const { challenge } = req.query;
+        let idForQuery;
+        let totalSubmissionsShouldBe = 1;
+        if (challenge === 'assignments') {
+            const challengesId = await Assignment.findAll({
+                where: {
+                    teamId
+                },
+            })
+            totalSubmissionsShouldBe = challengesId.length;
+            idForQuery = challengesId.map(challenge => challenge.challengeId)
+        } else if (!isNaN(challenge)) {
+            idForQuery = Number(challenge);
+        } else {
+            return res.status(400).json({ message: 'Cannot process request' });
+        }
 
-        const teamUsersId = await getTeamUsersIds(loggedUser);
+        const teamUsersId = await getTeamUsersIds(teamId);
 
         // returns submissions count for each state
-        const submissionsStatus = await Submission.findAll({
-            attributes: [
-                'state',
-                [sequelize.fn('COUNT', sequelize.col('id')), 'teamSubmissions'],
-            ],
+        const totalSubmissionsOrderedByDate = await Submission.findAll({
             where: {
-                userId: teamUsersId[0],
+                userId: teamUsersId,
+                challengeId: idForQuery
             },
-            group: ['state'],
+            order: [['createdAt', 'DESC']]
         });
 
-        const success = submissionsStatus.find((element) => element.state === 'SUCCESS');
-        const fail = submissionsStatus.find((element) => element.state === 'FAIL');
-        const pending = submissionsStatus.find((element) => element.state === 'PENDING');
+        const filteredSubmissions = filterLastSubmissionPerChallenge(totalSubmissionsOrderedByDate)
+        const notYetSubmitted = (teamUsersId.length * totalSubmissionsShouldBe) - (filteredSubmissions.success + filteredSubmissions.fail);
+        filteredSubmissions.notYet = notYetSubmitted ? notYetSubmitted : 0;
 
-        const teamSubmissionsStatus = {
-            all: submissionsStatus.reduce((count, element) => count + element.dataValues.teamSubmissions, 0),
-            fail: fail ? fail.dataValues.teamSubmissions : 0,
-            success: success ? success.dataValues.teamSubmissions : 0,
-            pending: pending ? pending.dataValues.teamSubmissions : 0,
-        };
-        res.json(teamSubmissionsStatus);
+        res.json(filteredSubmissions);
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: 'Cannot process request' });
     }
 });
 
-//=======================================================================//
-
-
 // returns the top challenges, with the most successful submissions in the team
 insightTeacherRouter.get('/success-challenge/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
     try {
-        const loggedUser = req.user.userId
         const { teamId } = req.params
-        const teamUsersIds = await getTeamUsersIds(loggedUser, teamId);
+        const teamUsersIds = await getTeamUsersIds(teamId);
 
         // returns the count of all the successes per challenge for the team
         const successfulTeamChallenges = await Submission.findAll({
@@ -86,7 +111,7 @@ insightTeacherRouter.get('/success-challenge/:teamId', checkTeamPermission, chec
             ],
             where: {
                 state: 'SUCCESS',
-                userId: teamUsersIds[0],
+                userId: teamUsersIds,
             },
             include: [
                 {
@@ -107,9 +132,8 @@ insightTeacherRouter.get('/success-challenge/:teamId', checkTeamPermission, chec
 // returns last week team submissions count
 insightTeacherRouter.get('/last-week-submissions/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
     try {
-        const loggedUser = req.user.userId
         const { teamId } = req.params
-        const teamUsersIds = await getTeamUsersIds(loggedUser, teamId);
+        const teamUsersIds = await getTeamUsersIds(teamId);
 
         // return the teams successful submissions from the last week by day
 
@@ -126,7 +150,7 @@ insightTeacherRouter.get('/last-week-submissions/:teamId', checkTeamPermission, 
                 created_at: {
                     [Op.gte]: new Date(Date.now() - sevenDays),
                 },
-                userId: teamUsersIds[0],
+                userId: teamUsersIds,
             },
             order: [
                 [sequelize.fn('DAY', sequelize.col('Submission.created_at')), 'desc'],
@@ -204,14 +228,13 @@ insightTeacherRouter.get('/users-submissions/:teamId', checkTeamPermission, chec
 // returns all the users in the team with ordered submissions by date
 insightTeacherRouter.get('/top-user/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
     try {
-        const loggedUser = req.user.userId;
         const { teamId } = req.params
-        const teamUsersIds = await getTeamUsersIds(loggedUser, teamId);
+        const teamUsersIds = await getTeamUsersIds(teamId);
 
         // returns top 5 users and their successful submissions
         const teamUsersTopSuccess = await User.findAll({
             where: {
-                id: teamUsersIds[0],
+                id: teamUsersIds,
             },
             attributes: ['id', 'userName'],
             include: [

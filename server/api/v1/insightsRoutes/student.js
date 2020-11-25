@@ -1,32 +1,104 @@
 const insightStudentRouter = require('express').Router();
+const checkAdmin = require('../../../middleware/checkAdmin');
+const { checkTeamPermission } = require('../../../middleware/checkTeamPermission');
 const sequelize = require('sequelize');
 const { Op } = require('sequelize');
-const { Submission, Challenge, User } = require('../../../models');
+const { Submission, Challenge, User, Team } = require('../../../models');
+
+async function getTeamUsersIds(teamId) {
+
+  // get team users
+  const currentTeamUsers = await Team.findOne({
+    where: {
+      id: teamId,
+    },
+    attributes: ['name'],
+    include: [
+      {
+        model: User,
+        attributes: ['id'],
+        through: {
+          where: {
+            permission: 'student'
+          },
+          attributes: [],
+        },
+      },
+    ],
+  });
+
+  // returns array with users ids
+  const usersId = currentTeamUsers.Users.map((value) => value.id);
+
+  return usersId;
+}
+
+const filterLastSubmissionPerChallenge = (submissionsOrderedByDate) => {
+  const filteredAlready = [];
+  let success = 0;
+  let fail = 0;
+  submissionsOrderedByDate.forEach((submission) => {
+    if (filteredAlready.some(filteredSubmission =>
+      filteredSubmission.userId === submission.userId &&
+      filteredSubmission.challengeId === submission.challengeId)) {
+    } else {
+      filteredAlready.push({ userId: submission.userId, challengeId: submission.challengeId });
+      if (submission.state === 'SUCCESS') {
+        success++
+      } else {
+        fail++
+      }
+    }
+  })
+  return { success, fail }
+}
 
 // returns the 5 users with the most successful submissions
-insightStudentRouter.get('/top-users', async (req, res) => {
+insightStudentRouter.get('/top-user/:teamId', checkTeamPermission, async (req, res) => {
   try {
-    const topUsers = await Submission.findAll({
-      attributes: {
-        include: [
-          [sequelize.fn('COUNT', sequelize.col('user_id')), 'countSub'],
-        ],
+    const { teamId } = req.params
+    const teamUsersIds = await getTeamUsersIds(teamId);
+
+    // returns top 5 users and their successful submissions
+    const teamUsersTopSuccess = await User.findAll({
+      where: {
+        id: teamUsersIds,
       },
-      include: {
-        model: User,
-        attributes: ['userName'],
-      },
-      where: { state: 'SUCCESS' },
-      group: ['user_id'],
-      order: [[sequelize.fn('COUNT', sequelize.col('user_id')), 'DESC']],
-      limit: 5,
+      attributes: ['id', 'userName'],
+      include: [
+        {
+          model: Submission,
+          where: {
+            state: ['SUCCESS']
+          }
+        },
+      ],
+      order: [[Submission, 'createdAt', 'DESC']]
+
     });
-    res.json(topUsers);
+
+    let formattedMembers = teamUsersTopSuccess.map((member) => {
+      const { success } = filterLastSubmissionPerChallenge(member.Submissions);
+      const { userName } = member;
+      return ({ success, userName })
+    })
+
+    formattedMember = formattedMembers.sort((a, b) => {
+      return b.success - a.success
+    })
+
+    res.json(formattedMember.splice(0, 5));
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
   }
 });
+
+insightStudentRouter.use(checkAdmin, (req, res, next) => {
+  next()
+})
+
+//===========Not in use==========================================//
 
 // returns the amount of successful and failed submissions from all submissions
 insightStudentRouter.get('/user-success', async (req, res) => {
@@ -144,5 +216,7 @@ insightStudentRouter.get('/unsolved-challenges', async (req, res) => {
     res.status(400).json({ message: 'Cannot process request' });
   }
 });
+
+//===============================================================//
 
 module.exports = insightStudentRouter;

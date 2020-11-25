@@ -3,7 +3,7 @@ import Loading from '../../../../../components/Loading';
 import network from '../../../../../services/network';
 import { useParams } from 'react-router-dom';
 import {
-  Tooltip, Legend,Brush, BarChart, Bar, CartesianGrid, XAxis, YAxis,
+  Tooltip, Legend, BarChart, Bar, CartesianGrid, XAxis, YAxis,
 } from 'recharts';
 
 function SuccessSubmissions({ darkMode }) {
@@ -13,29 +13,8 @@ function SuccessSubmissions({ darkMode }) {
 
   const getDataOnTeam = async () => {
     try {
-      const { data: members } = await network.get(`/api/v1/insights/teacher/top-user/${id}`);
-      const fromattedMembers = members.map((member) => {
-        const filteredSubmissions = []
-        let success = 0
-        let fail = 0
-        member.Submissions.forEach((submission) => {
-          if (filteredSubmissions.includes(submission.challengeId)) {
-          } else {
-            filteredSubmissions.push(submission.challengeId);
-            if (submission.state === 'SUCCESS') {
-              success++
-            } else {
-              fail++
-            }
-          }
-        })
-        return ({
-          success,
-          fail,
-          userName: member.userName
-        })
-      })
-      setTeamMembers(fromattedMembers)
+      const { data: mostSuccessChallenges } = await network.get(`/api/v1/insights/student/top-user/${id}`);
+      setTeamMembers(mostSuccessChallenges)
     } catch (error) {
       console.error(error);
     }
@@ -61,8 +40,6 @@ function SuccessSubmissions({ darkMode }) {
           <Tooltip />
           <Legend />
           <Bar dataKey="success" fill="#29bf12" />
-          <Bar dataKey="fail" fill="#bf0603" />
-          <Brush dataKey='userName' height={30} endIndex={4}  stroke="#8884d8"/>
         </BarChart>
       </div>
       ) : <Loading darkMode={darkMode} />

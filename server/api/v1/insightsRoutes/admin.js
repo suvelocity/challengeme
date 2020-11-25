@@ -117,6 +117,66 @@ insightAdminRouter.get('/top', async (req, res) => {
 //=======================================================================//
 
 
+const filterLastSubmissionPerChallenge = (submissionsOrderedByDate) => {
+  const filteredAlready = [];
+  let success = 0;
+  let fail = 0;
+  submissionsOrderedByDate.forEach((submission) => {
+    if (filteredAlready.some(filteredSubmission =>
+      filteredSubmission.userId === submission.userId &&
+      filteredSubmission.challengeId === submission.challengeId)) {
+    } else {
+      filteredAlready.push({ userId: submission.userId, challengeId: submission.challengeId });
+      if (submission.state === 'SUCCESS') {
+        success++
+      } else {
+        fail++
+      }
+    }
+  })
+  return { success, fail }
+}
+
+// returns the submissions status(total amount, success, fail, not submitted)
+insightAdminRouter.get('/all-submissions/:teamId', async (req, res) => {
+  try {
+    const { challenge } = req.query;
+    let idForQuery;
+    let totalSubmissionsShouldBe = 1;
+    if (challenge === 'all') {
+      const challengesId = await Challenge.findAll({
+        where: {
+          state: 'approved'
+        }
+      })
+      totalSubmissionsShouldBe = challengesId.length;
+      idForQuery = challengesId.map(challenge => challenge.id)
+    } else if (!isNaN(challenge)) {
+      idForQuery = Number(challenge);
+    } else {
+      return res.status(400).json({ message: 'Cannot process request' });
+    }
+
+    const users = await User.findAll()
+
+    // returns submissions count for each state
+    const totalSubmissionsOrderedByDate = await Submission.findAll({
+      where: {
+        challengeId: idForQuery
+      },
+      order: [['createdAt', 'DESC']]
+    });
+
+    const filteredSubmissions = filterLastSubmissionPerChallenge(totalSubmissionsOrderedByDate)
+    const notYetSubmitted = (users.length * totalSubmissionsShouldBe) - (filteredSubmissions.success + filteredSubmissions.fail);
+    filteredSubmissions.notYet = notYetSubmitted ? notYetSubmitted : 0;
+
+    res.json(filteredSubmissions);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
+  }
+});
 
 // returns the top challenges, with the most successful submissions
 insightAdminRouter.get('/success-challenge', async (req, res) => {
