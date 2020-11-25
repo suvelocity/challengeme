@@ -152,7 +152,13 @@ function TeamsControl({ teamName }) {
   return (
     <div className="team-control" style={{ marginTop: '60px', textAlign: 'center' }}>
       <h1>Team {teamName} Management</h1>
-      <AddTeamMembers open={openAddMemberModal} setOpen={setOpenAddMemberModal} getAllTeams={getAllTeamMembers} teamNameForMember={teamNameForMember} />
+      <AddTeamMembers
+        open={openAddMemberModal}
+        setOpen={setOpenAddMemberModal}
+        getAllTeams={getAllTeamMembers}
+        teamNameForMember={teamNameForMember}
+        isTeacher={true}
+      />
       <Button onClick={() => handleAddMemberModal(id)}>Add Team Members</Button>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">

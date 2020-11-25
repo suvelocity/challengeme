@@ -7,15 +7,21 @@ import { PieChart, Pie, Tooltip, Cell, Legend } from 'recharts';
 function TeamTotalSubmission({ darkMode }) {
 
     const { id } = useParams();
-    const [teamSubmissions, setTeamSubmissions] = useState({});
+    const [teamSubmissions, setTeamSubmissions] = useState([]);
     const [challengesOption, setChallengesOption] = useState();
     const [chosenChallenges, setChosenChallenges] = useState('all');
 
 
     const getDataOnTeam = async () => {
         try {
-            const { data: submissions } = await network.get(`/api/v1/insights/admin/all-submissions/${id}?challenge=${chosenChallenges}`);
-            setTeamSubmissions(submissions)
+            const { data: submissions } = await network.get(`/api/v1/insights/admin/all-submissions?challenge=${chosenChallenges}`);
+            const data = [
+                { name: 'success', value: submissions.success },
+                { name: 'fail', value: submissions.fail },
+                { name: 'not yet', value: submissions.notYet },
+            ];
+
+            setTeamSubmissions(data)
         } catch (error) {
             console.error(error);
         }
@@ -40,16 +46,12 @@ function TeamTotalSubmission({ darkMode }) {
         // eslint-disable-next-line
     }, [chosenChallenges, id]);
 
+
     useEffect(() => {
         getAllChallengesForOption();
         // eslint-disable-next-line
     }, [id]);
 
-    const data = [
-        { name: 'success', value: teamSubmissions.success },
-        { name: 'fail', value: teamSubmissions.fail },
-        { name: 'not yet', value: teamSubmissions.notYet },
-    ];
 
 
 
@@ -84,7 +86,7 @@ function TeamTotalSubmission({ darkMode }) {
                 <br />
                 <PieChart width={400} height={400}>
                     <Pie
-                        data={data}
+                        data={teamSubmissions}
                         cx={200}
                         cy={200}
                         labelLine={false}
@@ -93,8 +95,10 @@ function TeamTotalSubmission({ darkMode }) {
                         fill="#8884d8"
                         dataKey="value"
                     >
-                        {
-                            data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                        {teamSubmissions.map((entry, index) =>
+                            <Cell
+                                key={`cell-${index}`}
+                                fill={COLORS[index % COLORS.length]} />)
                         }
 
                     </Pie>

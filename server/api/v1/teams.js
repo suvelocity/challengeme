@@ -65,7 +65,7 @@ teamRouter.get('/all-teams-by-user', async (req, res) => {
           model: Team,
           attributes: ['id', 'name'],
           through: {
-            attributes: [],
+            attributes: ['permission'],
           },
         },
       ],
@@ -97,6 +97,11 @@ teamRouter.get('/teacher-area/:teamId', checkTeamPermission, checkTeacherPermiss
           attributes: ['id', 'firstName', 'lastName', 'userName', 'phoneNumber'],
           through: {
             attributes: ['permission'],
+            where: {
+              [Op.not]: [
+                { userId: req.user.userId }
+              ]
+            },
           },
         },
       ],

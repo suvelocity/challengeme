@@ -46,7 +46,7 @@ function Assignments({ darkMode, teamName }) {
             <Button onClick={() => setOpenNewAssignmentModal(true)} >
                 Add New Assignment
             </Button>
-            {allAssignments ? (
+            {allAssignments && allAssignments[0].Challenge ? (
                 allAssignments.map((challenge) => (
                     <div style={{ display: 'flex' }}>
                         <ChallengeCard

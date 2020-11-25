@@ -82,7 +82,7 @@ function TeamTotalSubmission({ darkMode }) {
                     </select>
                 }
                 <br />
-                <PieChart width={400} height={400}>
+                {data[0].value ? <PieChart width={400} height={400}>
                     <Pie
                         data={data}
                         cx={200}
@@ -101,6 +101,9 @@ function TeamTotalSubmission({ darkMode }) {
                     <Tooltip />
                     <Legend />
                 </PieChart>
+                    :
+                <h2>You haven't Assign Any Assignments Yet</h2>    
+            }
 
             </div>
             ) : <Loading darkMode={darkMode} />

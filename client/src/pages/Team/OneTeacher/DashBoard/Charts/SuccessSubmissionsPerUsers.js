@@ -62,7 +62,7 @@ function SuccessSubmissions({ darkMode }) {
           <Legend />
           <Bar dataKey="success" fill="#29bf12" />
           <Bar dataKey="fail" fill="#bf0603" />
-          <Brush dataKey='userName' height={30} endIndex={4}  stroke="#8884d8"/>
+          <Brush dataKey='userName' height={30} endIndex={teamMembers.length>=5?4:teamMembers.length-1}  stroke="#8884d8"/>
         </BarChart>
       </div>
       ) : <Loading darkMode={darkMode} />

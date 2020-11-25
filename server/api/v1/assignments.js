@@ -27,7 +27,9 @@ assignmentsRouter.get('/:teamId', checkTeamPermission, async (req, res) => {
                     id: teamId
                 }
             })
-            assignments = [{ Team: { name: teamName.name } }]
+            assignments = [{
+                Team: { name: teamName.name }
+            }]
         }
         res.json(assignments);
     } catch (error) {

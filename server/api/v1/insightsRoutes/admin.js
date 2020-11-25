@@ -138,7 +138,7 @@ const filterLastSubmissionPerChallenge = (submissionsOrderedByDate) => {
 }
 
 // returns the submissions status(total amount, success, fail, not submitted)
-insightAdminRouter.get('/all-submissions/:teamId', async (req, res) => {
+insightAdminRouter.get('/all-submissions/', async (req, res) => {
   try {
     const { challenge } = req.query;
     let idForQuery;
