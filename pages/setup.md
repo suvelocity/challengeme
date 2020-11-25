@@ -3,6 +3,8 @@
 ChallengeMe is a n open source project and we encourage you to add from your skill and knowledge for the better of all.  
 We are happy to see issues brought up in github by our users and are honoured to accept your contributions into are site.
 
+You can see the WIP version of the site here on the [Staging Build](http://35.239.15.221:8080/)
+
 ## Table of Contents
 - [Setup](#setup) 
   - [Server setup](#Server-setup)
