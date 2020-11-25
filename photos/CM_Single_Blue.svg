@@ -25,9 +25,9 @@
      inkscape:window-maximized="1"
      inkscape:window-y="-11"
      inkscape:window-x="-11"
-     inkscape:cy="227.27563"
-     inkscape:cx="312.11016"
-     inkscape:zoom="1.311704"
+     inkscape:cy="166.9969"
+     inkscape:cx="293.36409"
+     inkscape:zoom="1.8550297"
      showgrid="false"
      id="namedview54"
      inkscape:window-height="1046"
@@ -226,11 +226,11 @@
        d="m 120.11453,116.62895 c 2.0133,-0.0669 5.29706,0.34666 6.87928,-0.0463 2.29343,-0.56953 2.44145,-0.0374 2.72542,-0.37818 0,0 -3.03267,-4.90481 -5.44372,-4.1206 -1.48809,-0.0497 -5.68797,1.49328 -4.16098,4.54504 z"
        id="path1463" />
     <path
-       style="display:inline;fill:url(#linearGradient405);fill-opacity:1;stroke:none;stroke-width:0.132447px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="display:inline;fill:#5d536c;fill-opacity:1;stroke:none;stroke-width:0.132447px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 84.20617,112.78589 c 0,0 -3.46355,0.3668 -4.3223,3.9537 l 7.04363,-0.3648 1.25772,-3.4371 c 0,0 -1.56801,-0.93606 -3.97905,-0.15185 z"
        id="path289" />
     <path
-       style="display:inline;fill:url(#linearGradient403);fill-opacity:1;stroke:none;stroke-width:0.132447px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       style="display:inline;fill:#5d536c;fill-opacity:1;stroke:none;stroke-width:0.132447px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 121.08257,116.78886 2.31961,-0.76636 c 0,0 -1.70593,-2.89137 -3.00786,-2.85471 -1.30194,0.0367 -6.35221,-0.7186 -6.35221,-0.7186 l 2.12185,4.24153 z"
        id="path291" />
     <path
@@ -259,7 +259,7 @@
        id="path303" />
     <path
        id="path305"
-       style="fill:url(#linearGradient395);fill-opacity:1;stroke:none;stroke-width:0.36345;stroke-linecap:round;stroke-linejoin:round"
+       style="fill:#5d536c;fill-opacity:1;stroke:none;stroke-width:0.36345;stroke-linecap:round;stroke-linejoin:round"
        d="m 105.05069,78.704109 c -0.0552,-9.52e-4 -0.10612,5.03e-4 -0.15211,0.005 -2.71719,0.24898 -5.69853,0.62831 -8.18432,1.24636 -0.28803,1.01165 -0.43582,2.08689 -0.43589,3.17149 -5e-5,4.8593 3.07579,7.69503 6.48062,8.79844 3.42134,-1.05075 6.48041,-3.93927 6.48035,-8.79844 -2e-5,-1.09877 -0.15163,-2.18783 -0.447,-3.21082 -1.56282,-0.75376 -3.0271,-1.19892 -3.74165,-1.21195 z" />
     <path
        id="path307"
