@@ -5,7 +5,7 @@ import network from '../../../../services/network';
 import ChallengeCard from '../../../../components/ChallengeCard';
 import AddAssignment from '../../../../components/Modals/AddAssignment';
 
-function Assignments({ darkMode }) {
+function Assignments({ darkMode, teamName }) {
     const { id } = useParams();
 
     const [allAssignments, setAllAssignments] = useState()
@@ -36,18 +36,17 @@ function Assignments({ darkMode }) {
 
     return (
         <div >
-            <br /><br /><br /><br />
             <AddAssignment
                 open={openNewAssignmentModal}
                 setOpen={setOpenNewAssignmentModal}
                 getAllAssignments={getAllAssignments}
                 teamId={id}
             />
-            <h1>This Assignments Teacher For Team{' '}{id}{' '}Page</h1>
+            <h1>This Assignments Teacher For Team{' '}{teamName}{' '}Page</h1>
             <Button onClick={() => setOpenNewAssignmentModal(true)} >
                 Add New Assignment
             </Button>
-            {allAssignments ? (
+            {allAssignments && allAssignments[0].Challenge ? (
                 allAssignments.map((challenge) => (
                     <div style={{ display: 'flex' }}>
                         <ChallengeCard

@@ -3,12 +3,12 @@ import Button from "@material-ui/core/Button";
 import SubmissionsByChallenges from './SubmissionsByChallenges';
 import SubmissionsByUsers from './SubmissionsByUsers';
 
-export default function Index() {
+export default function Index({ teamName }) {
 
     const [state, setState] = useState(true);
     return (
         <div>
-            <h1>Students Info</h1>
+            <h1>{teamName} Students Info</h1>
             <Button onClick={() => setState(prev => !prev)}>
                 change State
             </Button>

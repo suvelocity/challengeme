@@ -1,20 +1,36 @@
 const assignmentsRouter = require('express').Router();
 const { checkTeacherPermission, checkTeamPermission } = require('../../middleware/checkTeamPermission')
-const { Assignment, Challenge, Label } = require('../../models');
+const { Assignment, Challenge, Label, Team } = require('../../models');
 
 // get assignments with challenge per team
 assignmentsRouter.get('/:teamId', checkTeamPermission, async (req, res) => {
+    const { teamId } = req.params
     try {
-        const assignments = await Assignment.findAll({
-            where: { teamId: req.params.teamId },
+        let assignments = await Assignment.findAll({
+            where: { teamId },
             attributes: [],
-            include: {
-                model: Challenge,
-                include: {
-                    model: Label
+            include: [
+                {
+                    model: Challenge,
+                    include: {
+                        model: Label
+                    },
                 },
-            },
+                {
+                    model: Team,
+                    attributes: ['name']
+                }]
         });
+        if (assignments.length === 0) {
+            teamName = await Team.findOne({
+                where: {
+                    id: teamId
+                }
+            })
+            assignments = [{
+                Team: { name: teamName.name }
+            }]
+        }
         res.json(assignments);
     } catch (error) {
         console.error(error);

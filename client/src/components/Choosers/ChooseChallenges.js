@@ -14,12 +14,14 @@ const ChooseChallenges = ({
     useEffect(() => {
         (async () => {
             try {
-                const { data: challengesAlreadyAssign } = await await network.get(`/api/v1/assignments/${teamId}`);
+                const { data: challengesAlreadyAssign } = await network.get(`/api/v1/assignments/${teamId}`);
                 const { data: allChallengesFromServer } = await network.get('/api/v1/challenges/');
                 setChallengesOptions(allChallengesFromServer.map((challenge) => {
                     let challengesForOptions;
-                    if (challengesAlreadyAssign.some((alreadyChallenge) => alreadyChallenge.Challenge.id === challenge.id)) {
-                        return null;
+                    if (challengesAlreadyAssign[0].Challenge) {
+                        if (challengesAlreadyAssign.some((alreadyChallenge) => alreadyChallenge.Challenge.id === challenge.id)) {
+                            return null;
+                        }
                     }
                     challengesForOptions = {
                         value: challenge.id,

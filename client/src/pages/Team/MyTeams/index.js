@@ -50,6 +50,9 @@ function TeamCard({ team }) {
         <Link to={`/teams/${team.id}`}>
           <Button size="small">Go To Team Page</Button>
         </Link>
+        {team.UserTeam.permission === 'teacher' ? <Link to={`/teams/teacher/${team.id}`}>
+          <Button size="small">Go To Teacher Page</Button>
+        </Link>:<></>}
       </CardActions>
     </Card>
   );

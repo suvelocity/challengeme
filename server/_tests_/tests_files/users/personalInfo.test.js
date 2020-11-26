@@ -35,14 +35,14 @@ describe('Testing users routes', () => {
     await User.bulkCreate(mockUser);
 
     const userInformation = await request(app)
-      .get('/api/v1/users/all')
+      .get('/api/v1/users/admin')
       .set('authorization', `bearer ${generateToken(mockUser[2])}`);
 
     expect(userInformation.status).toBe(200);
     expect(userInformation.body.length).toBe(mockUser.length);
 
     const unauthorized = await request(app)
-      .get('/api/v1/users/all')
+      .get('/api/v1/users/admin')
       .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(unauthorized.status).toBe(401);
@@ -67,7 +67,7 @@ describe('Testing users routes', () => {
     expect(changePermission.status).toBe(200);
 
     const allUsersWithPermission = await request(app)
-      .get('/api/v1/users/all')
+      .get('/api/v1/users/admin')
       .set('authorization', `bearer ${generateToken(mockUser[0])}`);
 
     expect(allUsersWithPermission.status).toBe(200);

@@ -43,12 +43,13 @@ function TeamTasks({ darkMode }) {
                 <br />
                 <h1>
                     This Team
-          {id}
+                    {' '}
+          {allAssignments[0].Team.name}
                     {' '}
           Page
                   Tasks
         </h1>
-                {allAssignments ? (
+                {allAssignments[0].Challenge ? (
                     allAssignments.map((challenge) => (
                         <div style={{ display: 'flex' }}>
                             <ChallengeCard

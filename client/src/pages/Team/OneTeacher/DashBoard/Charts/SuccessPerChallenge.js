@@ -13,14 +13,8 @@ function SuccessPerChallenge({ darkMode }) {
 
     const getChallengesByMostSuccess = async () => {
         try {
-            const { data: challengesMostSuccess } = await network.get(`/api/v1/insights/teams/success-challenge/${id}`);
-            const formattedChallengesMostSuccess = challengesMostSuccess.map((challenge) => {
-                return ({
-                    name: challenge.Challenge.name,
-                    challengeSuccesses: challenge.challengeSuccesses
-                })
-            })
-            setChallenges(formattedChallengesMostSuccess)
+            const { data: challengesMostSuccess } = await network.get(`/api/v1/insights/teacher/success-challenge/${id}`);
+            setChallenges(challengesMostSuccess)
         } catch (error) {
             console.error(error);
         }
@@ -28,7 +22,7 @@ function SuccessPerChallenge({ darkMode }) {
 
     useEffect(() => {
         getChallengesByMostSuccess();
-            // eslint-disable-next-line
+        // eslint-disable-next-line
     }, [])
 
     return (
@@ -55,4 +49,5 @@ function SuccessPerChallenge({ darkMode }) {
             ) : <Loading darkMode={darkMode} />
     );
 }
+
 export default SuccessPerChallenge;
