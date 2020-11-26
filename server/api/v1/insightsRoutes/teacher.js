@@ -3,11 +3,9 @@ const { Op } = require('sequelize');
 const sequelize = require('sequelize');
 const { checkTeacherPermission, checkTeamPermission } = require('../../../middleware/checkTeamPermission');
 const { Submission, Challenge, User, Team, Assignment } = require('../../../models');
-
+const moment = require('moment');
 
 async function getTeamUsersIds(teamId) {
-
-    // get team users
     const currentTeamUsers = await Team.findOne({
         where: {
             id: teamId,
@@ -26,10 +24,8 @@ async function getTeamUsersIds(teamId) {
             },
         ],
     });
-
     // returns array with users ids
     const usersId = currentTeamUsers.Users.map((value) => value.id);
-
     return usersId;
 }
 
@@ -53,7 +49,7 @@ const filterLastSubmissionPerChallenge = (submissionsOrderedByDate) => {
     return { success, fail }
 }
 
-// returns the teams submissions status(total amount, success, fail, not submitted)
+// returns the last teams submissions status(success, fail, not submitted)
 insightTeacherRouter.get('/team-submissions/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
     try {
         const { teamId } = req.params;
@@ -121,13 +117,21 @@ insightTeacherRouter.get('/success-challenge/:teamId', checkTeamPermission, chec
             ],
             order: [[sequelize.fn('COUNT', 'challengeId'), 'DESC']],
         });
-
-        res.json(successfulTeamChallenges.slice(0, 5));
+        const slicedChallenges = successfulTeamChallenges.slice(0, 5)
+        const formattedChallengesMostSuccess = slicedChallenges.map((challenge) => {
+            return ({
+                name: challenge.dataValues.Challenge.dataValues.name,
+                challengeSuccesses: challenge.dataValues.challengeSuccesses
+            })
+        })
+        res.json(formattedChallengesMostSuccess);
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: 'Cannot process request' });
     }
 });
+
+// =================Not Tested Yet========================//
 
 // returns last week team submissions count
 insightTeacherRouter.get('/last-week-submissions/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
@@ -137,7 +141,7 @@ insightTeacherRouter.get('/last-week-submissions/:teamId', checkTeamPermission, 
 
         // return the teams successful submissions from the last week by day
 
-        const sevenDays = 7 * 24 * 60 * 60 * 1000;
+        const OneWeek = 7 * 24 * 60 * 60 * 1000;
 
         const lastWeekTeamSubmissions = await Submission.findAll({
             raw: true,
@@ -148,7 +152,7 @@ insightTeacherRouter.get('/last-week-submissions/:teamId', checkTeamPermission, 
             ],
             where: {
                 created_at: {
-                    [Op.gte]: new Date(Date.now() - sevenDays),
+                    [Op.gte]: new Date(Date.now() - OneWeek),
                 },
                 userId: teamUsersIds,
             },
@@ -156,7 +160,13 @@ insightTeacherRouter.get('/last-week-submissions/:teamId', checkTeamPermission, 
                 [sequelize.fn('DAY', sequelize.col('Submission.created_at')), 'desc'],
             ],
         });
-        res.json(lastWeekTeamSubmissions);
+
+        const formattedSubmissions = lastWeekTeamSubmissions.map((submission) => {
+            submission.createdAt = moment(submission.createdAt).fromNow()
+            submission.createdAt = submission.createdAt.includes('hour') ? 'today' : submission.createdAt.includes('minutes') ? 'today' : submission.createdAt.includes('seconds') ? 'today' : submission.createdAt
+            return submission
+        })
+        res.json(formattedSubmissions);
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: 'Cannot process request' });
@@ -247,11 +257,35 @@ insightTeacherRouter.get('/top-user/:teamId', checkTeamPermission, checkTeacherP
             ],
             order: [[Submission, 'createdAt', 'DESC']]
         });
-        res.json(teamUsersTopSuccess);
+
+        const fromattedMembers = teamUsersTopSuccess.map((member) => {
+            const filteredSubmissions = []
+            let success = 0
+            let fail = 0
+            member.Submissions.forEach((submission) => {
+                if (filteredSubmissions.includes(submission.challengeId)) {
+                } else {
+                    filteredSubmissions.push(submission.challengeId);
+                    if (submission.state === 'SUCCESS') {
+                        success++
+                    } else {
+                        fail++
+                    }
+                }
+            })
+            return ({
+                success,
+                fail,
+                userName: member.userName
+            })
+        })
+        res.json(fromattedMembers);
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: 'Cannot process request' });
     }
 });
+
+// =================Not Tested Yet========================//
 
 module.exports = insightTeacherRouter;

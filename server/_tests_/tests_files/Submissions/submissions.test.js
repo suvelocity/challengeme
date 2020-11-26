@@ -1,9 +1,7 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const app = require('../../../app');
-const {
-  Challenge, Label, LabelChallenge, Submission, User,
-} = require('../../../models');
+const { Challenge, Label, LabelChallenge, Submission, User, } = require('../../../models');
 const challengesMock = require('../../mocks/challenges');
 const mockUser = require('../../mocks/users');
 const submissionsMock = require('../../mocks/submissions');

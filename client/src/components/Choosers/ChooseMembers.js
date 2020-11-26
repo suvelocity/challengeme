@@ -34,7 +34,7 @@ const ChooseMembers = ({
         console.error(error);
       }
     })();
-  }, [setMembersOptions, teamId]);
+  }, [setMembersOptions, teamId, isTeacher]);
 
   const selectionChange = (choosens) => {
     setChooseMembers(choosens);

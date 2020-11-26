@@ -46,11 +46,6 @@ describe('Submission process', () => {
     await Review.destroy({ truncate: true, force: true });
     await User.create({ ...userToAdd });
     await Challenge.bulkCreate(challengeArr);
-    await Submission.create({
-      challengeId: solutionRepos[0].challengeId,
-      state: 'FAIL',
-      solutionRepository: solutionRepos[0].repo,
-    });
     console.log(solutionRepos);
     console.log(process.env.MY_URL);
     const password = '12345678';

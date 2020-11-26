@@ -11,7 +11,6 @@ function TeamTotalSubmission({ darkMode }) {
     const [challengesOption, setChallengesOption] = useState();
     const [chosenChallenges, setChosenChallenges] = useState('assignments');
 
-
     const getDataOnTeam = async () => {
         try {
             const { data: submissions } = await network.get(`/api/v1/insights/teacher/team-submissions/${id}?challenge=${chosenChallenges}`);
@@ -34,11 +33,10 @@ function TeamTotalSubmission({ darkMode }) {
         setChallengesOption(challengesOptions);
     }
 
-
     useEffect(() => {
         getDataOnTeam();
         // eslint-disable-next-line
-    }, [chosenChallenges,id]);
+    }, [chosenChallenges, id]);
 
     useEffect(() => {
         getAllChallengesForOption();
@@ -51,10 +49,7 @@ function TeamTotalSubmission({ darkMode }) {
         { name: 'not yet', value: teamSubmissions.notYet },
     ];
 
-
-
     const COLORS = ['#00C49F', '#FF8042', '#0088FE'];
-
     const RADIAN = Math.PI / 180;
     const renderCustomizedLabel = ({
         cx, cy, midAngle, innerRadius, outerRadius, percent, index,
@@ -69,8 +64,6 @@ function TeamTotalSubmission({ darkMode }) {
             </text>
         );
     };
-
-
 
     return (
         teamSubmissions ?
@@ -96,15 +89,13 @@ function TeamTotalSubmission({ darkMode }) {
                         {
                             data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
                         }
-
                     </Pie>
                     <Tooltip />
                     <Legend />
                 </PieChart>
                     :
-                <h2>You haven't Assign Any Assignments Yet</h2>    
-            }
-
+                    <h2>You haven't Assign Any Assignments Yet</h2>
+                }
             </div>
             ) : <Loading darkMode={darkMode} />
     );
