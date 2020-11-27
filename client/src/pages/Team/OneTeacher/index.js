@@ -41,15 +41,6 @@ function Index({ darkMode }) {
     return (
         <div>
             <SecondHeader paths={paths} darkMode={darkMode} />
-            <br />
-            <Link to={`/teams/${id}`}>
-                <Button
-                    variant="contained"
-                    color="default"
-                >
-                    Team Area
-              </Button>
-            </Link>
             <Suspense fallback={<Loading />}>
                 <ErrorBoundary>
                     <Switch>

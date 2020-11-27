@@ -37,18 +37,7 @@ function TeamTasks({ darkMode }) {
         ? allAssignments ? (
             <div style={{ overflowY: 'auto', height: '100vh', width: '100%' }}>
                 <SecondHeader paths={paths} darkMode={darkMode} />
-                <br />
-                <br />
-                <br />
-                <br />
-                <h1>
-                    This Team
-                    {' '}
-          {allAssignments[0].Team.name}
-                    {' '}
-          Page
-                  Tasks
-        </h1>
+                <h1>This Team{' '}{allAssignments[0].Team.name}{' '}Page Tasks</h1>
                 {allAssignments[0].Challenge ? (
                     allAssignments.map((challenge) => (
                         <div style={{ display: 'flex' }}>

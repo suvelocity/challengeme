@@ -4,6 +4,8 @@ const SuccessSubmissionsPerUsers = lazy(() => import("./Charts/SuccessSubmission
 const LastWeekSubmissions = lazy(() => import("./Charts/LastWeekSubmissions"));
 const SuccessPerChallenge = lazy(() => import("./Charts/SuccessPerChallenge"));
 const TeamTotalSubmission = lazy(() => import("./Charts/TeamTotalSubmission"));
+const TopSuccessUsers = lazy(() => import("./Charts/TopSuccessUsers"));
+
 
 function DashBoard({ darkMode, teamName }) {
 
@@ -14,6 +16,7 @@ function DashBoard({ darkMode, teamName }) {
             <SuccessPerChallenge darkMode={darkMode} />
             <SuccessSubmissionsPerUsers darkMode={darkMode} />
             <LastWeekSubmissions darkMode={darkMode} />
+            <TopSuccessUsers darkMode={darkMode} />
         </div>
     )
 }
