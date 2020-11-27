@@ -1,20 +1,10 @@
 const request = require('supertest');
-const jwt = require('jsonwebtoken');
+const { generateToken } = require('../../Functions');
 const app = require('../../../app');
 const { Challenge, Label, LabelChallenge, Submission, User, } = require('../../../models');
 const challengesMock = require('../../mocks/challenges');
 const mockUser = require('../../mocks/users');
 const submissionsMock = require('../../mocks/submissions');
-
-function generateToken(currentUser) {
-  const infoForCookie = {
-    userId: currentUser.id,
-    userName: currentUser.userName,
-  };
-  return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '900s',
-  });
-}
 
 describe('testing challenges endpoints', () => {
   beforeEach(async () => {
@@ -28,9 +18,8 @@ describe('testing challenges endpoints', () => {
   test('Can get submission per certain challenge for logged user ', async (done) => {
     await Challenge.bulkCreate(challengesMock);
     await User.bulkCreate(mockUser);
-    const lastSubmissionMock = submissionsMock.splice(submissionsMock.length - 1, submissionsMock.length);
     await Submission.bulkCreate(submissionsMock);
-    await Submission.create(lastSubmissionMock[0]);
+
 
     const lastSubmission = await request(app)
       .get(`/api/v1/submissions/by-user/${challengesMock[0].id}`)
@@ -38,7 +27,17 @@ describe('testing challenges endpoints', () => {
 
     expect(lastSubmission.status).toBe(200);
     expect(lastSubmission.body.userId).toBe(mockUser[0].id);
-    expect(lastSubmission.body.state).toBe(lastSubmissionMock[0].state);
+
+    let lastSubmissionMockObj = { createdAt: new Date('12/12/2000') };
+    submissionsMock.forEach(submission => {
+      if (submission.userId === mockUser[0].id && submission.challengeId === challengesMock[0].id) {
+        if (lastSubmissionMockObj.createdAt < submission.createdAt) {
+          lastSubmissionMockObj = submission;
+        }
+      }
+    })
+
+    expect(lastSubmission.body.state).toBe(lastSubmissionMockObj.state);
     expect(Array.isArray(lastSubmission.body)).toBe(false);
     done();
   });
@@ -57,3 +56,7 @@ describe('testing challenges endpoints', () => {
     done();
   });
 });
+
+function timeout(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

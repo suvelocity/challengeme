@@ -1,6 +1,15 @@
 const request = require('supertest');
-const jwt = require('jsonwebtoken');
 const app = require('../../../app');
+const moment = require('moment');
+const {
+  generateToken,
+  countSuccessAndFailSubmissionsPerChallenge,
+  countSuccessSubmissionsPerChallenge,
+  filterUsersByTeam,
+  filterSubmissionsByTeam,
+  countGroupArray,
+  filterLastSubmissionsForTeacherRoute
+} = require('../../Functions');
 const { User, UserTeam, Team, Submission, Challenge, Assignment } = require('../../../models');
 const userMock = require('../../mocks/users');
 const userTeamMock = require('../../mocks/usersTeams');
@@ -8,69 +17,6 @@ const teamMock = require('../../mocks/teams');
 const submissionsMock = require('../../mocks/submissions');
 const challengesMock = require('../../mocks/challenges');
 const assignmentMock = require('../../mocks/assignments');
-
-function generateToken(currentUser) {
-  const infoForCookie = {
-    userId: currentUser.id,
-    userName: currentUser.userName,
-  };
-  return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '900s',
-  });
-}
-
-const filterLastSubmissionPerChallenge = (submissionsOrderedByDate) => {
-  const filteredAlready = [];
-  let success = 0;
-  let fail = 0;
-  submissionsOrderedByDate.forEach((submission) => {
-    if (filteredAlready.some(filteredSubmission =>
-      filteredSubmission.userId === submission.userId &&
-      filteredSubmission.challengeId === submission.challengeId)) {
-    } else {
-      filteredAlready.push({ userId: submission.userId, challengeId: submission.challengeId });
-      if (submission.state === 'SUCCESS') {
-        success++
-      } else {
-        fail++
-      }
-    }
-  })
-  return { success, fail }
-}
-
-function filterUsersByTeam(team) {
-  return userTeamMock.map(userTeam => {
-    if (userTeam.teamId === team.id && userTeam.permission === 'student') {
-      return userTeam.userId;
-    }
-  }).filter(a => !(!a));
-}
-
-function filterSuccessSubmissionsByTeam(teamIdArray) {
-  return submissionsMock.map(submission => {
-    if (submission.state === 'SUCCESS' && teamIdArray.includes(submission.userId)) {
-      return submission;
-    }
-  }).filter(a => !(!a));
-}
-
-
-function filterLastSubmissionsForTeacherRoute(team, challengeIdArray) {
-  const teamUsersId = filterUsersByTeam(team)
-  const totalSubmissionsShouldBe = teamUsersId.length * challengeIdArray.length;
-
-  const totalSubmissionsOrderedByDate = submissionsMock.map((submission) => {
-    if (teamUsersId.includes(submission.userId) && challengeIdArray.includes(submission.challengeId)) {
-      return submission;
-    }
-  }).filter(a => !(!a)).sort((a, b) => b.createdAt - a.createdAt);
-
-  const filteredSubmissions = filterLastSubmissionPerChallenge(totalSubmissionsOrderedByDate);
-  const notYetSubmitted = (teamUsersId.length * totalSubmissionsShouldBe) - (filteredSubmissions.success + filteredSubmissions.fail);
-  filteredSubmissions.notYet = notYetSubmitted ? notYetSubmitted : 0;
-  return filteredSubmissions;
-}
 
 describe('Testing teacher insights routes', () => {
   beforeEach(async () => {
@@ -95,7 +41,7 @@ describe('Testing teacher insights routes', () => {
       .query({ challenge: challengesMock[0].id })
       .set('authorization', `bearer ${generateToken(userMock[0])}`);
 
-    const filteredSubmissions = filterLastSubmissionsForTeacherRoute(teamMock[0], [challengesMock[0].id]);
+    const filteredSubmissions = filterLastSubmissionsForTeacherRoute(teamMock[0], [challengesMock[0].id], submissionsMock, userTeamMock);
 
     expect(teamSubmissionsInsightsOneChallenge.status).toBe(200);
     expect(teamSubmissionsInsightsOneChallenge.body.hasOwnProperty('success')).toBe(true);
@@ -116,7 +62,7 @@ describe('Testing teacher insights routes', () => {
       }
     }).filter(a => !(!a));
 
-    const filteredAssignments = filterLastSubmissionsForTeacherRoute(teamMock[0], teamAssignments);
+    const filteredAssignments = filterLastSubmissionsForTeacherRoute(teamMock[0], teamAssignments, submissionsMock, userTeamMock);
 
     expect(teamSubmissionsInsightsAssignments.status).toBe(200);
     expect(teamSubmissionsInsightsAssignments.body.hasOwnProperty('success')).toBe(true);
@@ -143,7 +89,7 @@ describe('Testing teacher insights routes', () => {
     done();
   });
 
-  test.only('Teacher can get the most success submitted challenges of his team', async (done) => {
+  test('Teacher can get the most success submitted challenges of his team', async (done) => {
     await User.bulkCreate(userMock);
     await UserTeam.bulkCreate(userTeamMock);
     await Team.bulkCreate(teamMock);
@@ -162,22 +108,20 @@ describe('Testing teacher insights routes', () => {
       expect(challenge.hasOwnProperty('name')).toBe(true)
     })
 
-    const userChallengeArr = [];
-    
-    
-    const teamUsersId = filterUsersByTeam(teamMock[0]);
-    const teamSubmissions = filterSuccessSubmissionsByTeam(teamUsersId);
-  
-    console.log(teamSubmissions)
-
-    /*
-        [
-          { name: 'Promise Implementation', challengeSuccesses: 2 },
-          { name: 'React - 4 In A Row', challengeSuccesses: 1 },
-          { name: 'React - Tv shows', challengeSuccesses: 1 },
-          { name: 'React - Chat app', challengeSuccesses: 1 }
-        ]
-    */
+    const teamUsersId = filterUsersByTeam(teamMock[0], userTeamMock);
+    const conditions = [
+      {
+        paramter: 'state',
+        equal: 'SUCCESS'
+      }]
+    const teamSubmissions = filterSubmissionsByTeam(teamUsersId, conditions)
+    const filteredChallenges = countSuccessSubmissionsPerChallenge(teamSubmissions, challengesMock)
+    const groupedChallenges = countGroupArray(filteredChallenges, 'challengeSuccesses', 'name')
+    const filteredOrderedGrouped = groupedChallenges.sort((a, b) => b.challengeSuccesses - a.challengeSuccesses).splice(0, 5);
+    filteredOrderedGrouped.forEach((element, index) => {
+      expect(teamSubmissionsInsightsOneChallenge.body[index].name).toBe(element.name);
+      expect(teamSubmissionsInsightsOneChallenge.body[index].challengeSuccesses).toBe(element.challengeSuccesses);
+    })
 
     const unauthorized = await request(app)
       .get(`/api/v1/insights/teacher/success-challenge/${teamMock[0].id}`)
@@ -194,7 +138,7 @@ describe('Testing teacher insights routes', () => {
     done();
   });
 
-  test.skip('Teacher can get the last week submissions of his team', async (done) => {
+  test('Teacher can get the last week submissions of his team', async (done) => {
     await User.bulkCreate(userMock);
     await UserTeam.bulkCreate(userTeamMock);
     await Team.bulkCreate(teamMock);
@@ -202,19 +146,23 @@ describe('Testing teacher insights routes', () => {
     await Challenge.bulkCreate(challengesMock);
     await Assignment.bulkCreate(assignmentMock);
 
-    const teamSubmissionsInsightsOneChallenge = await request(app)
+    const teamLastWeekSubmissions = await request(app)
       .get(`/api/v1/insights/teacher/last-week-submissions/${teamMock[0].id}`)
       .set('authorization', `bearer ${generateToken(userMock[0])}`);
 
-    expect(teamSubmissionsInsightsOneChallenge.status).toBe(200);
-    console.log(teamSubmissionsInsightsOneChallenge.body);
-    // expect(teamSubmissionsInsightsOneChallenge.body.length <= 5).toBe(true);
-    // teamSubmissionsInsightsOneChallenge.body.forEach(challenge => {
-    //   expect(challenge.hasOwnProperty('challengeSuccesses')).toBe(true)
-    //   expect(challenge.hasOwnProperty('challengeId')).toBe(true)
-    //   expect(challenge.hasOwnProperty('Challenge')).toBe(true)
-    //   expect(challenge.Challenge.hasOwnProperty('name')).toBe(true)
-    // })
+    expect(teamLastWeekSubmissions.status).toBe(200);
+    const teamUsersId = filterUsersByTeam(teamMock[0], userTeamMock);
+    const teamSubmissions = filterSubmissionsByTeam(teamUsersId);
+    const formattedSubmissions = teamSubmissions.map((submission) => {
+      submission.createdAt = moment(submission.createdAt).fromNow()
+      submission.createdAt = submission.createdAt.includes('hour') ? 'today' : submission.createdAt.includes('minutes') ? 'today' : submission.createdAt.includes('seconds') ? 'today' : submission.createdAt
+      return { dateSubmissions: 1, createdAt: submission.createdAt }
+    })
+    const groupSubmissions = countGroupArray(formattedSubmissions, 'dateSubmissions', 'createdAt')
+    groupSubmissions.forEach((element, index) => {
+      expect(teamLastWeekSubmissions.body[index].dateSubmissions).toBe(element.dateSubmissions);
+      expect(teamLastWeekSubmissions.body[index].createdAt).toBe(element.createdAt);
+    })
 
     const unauthorized = await request(app)
       .get(`/api/v1/insights/teacher/last-week-submissions/${teamMock[0].id}`)
@@ -231,6 +179,115 @@ describe('Testing teacher insights routes', () => {
     done();
   });
 
+  test('Teacher can get the challenges submissions per challenges of his team', async (done) => {
+    await User.bulkCreate(userMock);
+    await UserTeam.bulkCreate(userTeamMock);
+    await Team.bulkCreate(teamMock);
+    await Submission.bulkCreate(submissionsMock);
+    await Challenge.bulkCreate(challengesMock);
+    await Assignment.bulkCreate(assignmentMock);
+
+    const teamSubmissionsPerChallenges = await request(app)
+      .get(`/api/v1/insights/teacher/challenges-submissions/${teamMock[0].id}?onlyLast=false`)
+      .set('authorization', `bearer ${generateToken(userMock[0])}`);
+
+    const teamUsersId = filterUsersByTeam(teamMock[0], userTeamMock);
+    const filteredSubmissionsByTeam = submissionsMock.filter(submission => teamUsersId.includes(submission.userId)).sort((a, b) => b.createdAt - a.createdAt)
+    const challengesWithCount = challengesMock.map(challenge => {
+      challenge.Submissions = []
+      filteredSubmissionsByTeam.forEach(submission => {
+        if (challenge.id === submission.challengeId) {
+          challenge.Submissions.push(submission)
+        }
+      })
+      return challenge
+    }).filter(challenge => challenge.count > 0).sort((a, b) => b.count - a.count)
+    expect(teamSubmissionsPerChallenges.status).toBe(200);
+
+    challengesWithCount.forEach((element, index) => {
+      expect(teamSubmissionsPerChallenges.body[index].name).toBe(element.name);
+      expect(teamSubmissionsPerChallenges.body[index].Submissions.length).toBe(element.Submissions.length);
+      expect(teamSubmissionsPerChallenges.body[index].Submissions[0].id).toBe(element.Submissions[0].id);
+    })
+
+    const teamSubmissionsPerChallenges2 = await request(app)
+      .get(`/api/v1/insights/teacher/challenges-submissions/${teamMock[0].id}?onlyLast=true`)
+      .set('authorization', `bearer ${generateToken(userMock[0])}`);
+
+    expect(teamSubmissionsPerChallenges.status).toBe(200);
+
+    const unauthorized = await request(app)
+      .get(`/api/v1/insights/teacher/challenges-submissions/${teamMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(userMock[1])}`);
+
+    expect(unauthorized.status).toBe(401);
+
+    const adminNotInTeam = await request(app)
+      .get(`/api/v1/insights/teacher/challenges-submissions/${teamMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(userMock[2])}`);
+
+    expect(adminNotInTeam.status).toBe(200);
+
+    done();
+  });
+
+  test('Teacher can get the challenges submissions per users of his team', async (done) => {
+    await User.bulkCreate(userMock);
+    await UserTeam.bulkCreate(userTeamMock);
+    await Team.bulkCreate(teamMock);
+    await Submission.bulkCreate(submissionsMock);
+    await Challenge.bulkCreate(challengesMock);
+    await Assignment.bulkCreate(assignmentMock);
+
+    const teamSubmissionsPerUsers = await request(app)
+      .get(`/api/v1/insights/teacher/users-submissions/${teamMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(userMock[0])}`);
+
+    expect(teamSubmissionsPerUsers.status).toBe(200);
+
+    const unauthorized = await request(app)
+      .get(`/api/v1/insights/teacher/users-submissions/${teamMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(userMock[1])}`);
+
+    expect(unauthorized.status).toBe(401);
+
+    const adminNotInTeam = await request(app)
+      .get(`/api/v1/insights/teacher/users-submissions/${teamMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(userMock[2])}`);
+
+    expect(adminNotInTeam.status).toBe(200);
+
+    done();
+  });
+
+  test('Teacher can get the top users per success challenges of his team', async (done) => {
+    await User.bulkCreate(userMock);
+    await UserTeam.bulkCreate(userTeamMock);
+    await Team.bulkCreate(teamMock);
+    await Submission.bulkCreate(submissionsMock);
+    await Challenge.bulkCreate(challengesMock);
+    await Assignment.bulkCreate(assignmentMock);
+
+    const teamSubmissionsPerUsers = await request(app)
+      .get(`/api/v1/insights/teacher/top-user/${teamMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(userMock[0])}`);
+
+    expect(teamSubmissionsPerUsers.status).toBe(200);
+
+    const unauthorized = await request(app)
+      .get(`/api/v1/insights/teacher/top-user/${teamMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(userMock[1])}`);
+
+    expect(unauthorized.status).toBe(401);
+
+    const adminNotInTeam = await request(app)
+      .get(`/api/v1/insights/teacher/top-user/${teamMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(userMock[2])}`);
+
+    expect(adminNotInTeam.status).toBe(200);
+
+    done();
+  });
 });
 
 
