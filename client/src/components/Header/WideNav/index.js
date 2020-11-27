@@ -75,7 +75,6 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
       loggedContext.setLogged(false);
       location.push("/");
     } catch (error) {
-      console.error(error);
     }
   };
 

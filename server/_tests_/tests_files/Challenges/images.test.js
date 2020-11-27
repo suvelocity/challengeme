@@ -1,19 +1,9 @@
 const request = require('supertest');
-const jwt = require('jsonwebtoken');
+const { generateToken } = require('../../Functions');
 const app = require('../../../app');
 const { Image } = require('../../../models');
 const imageMock = require('../../mocks/images');
 const usersMock = require('../../mocks/users');
-
-function generateToken(currentUser) {
-  const infoForCookie = {
-    userId: currentUser.id,
-    userName: currentUser.userName,
-  };
-  return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '900s',
-  });
-}
 
 describe('testing challenges endpoints', () => {
   beforeEach(async () => {

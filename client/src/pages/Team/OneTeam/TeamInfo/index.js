@@ -23,8 +23,7 @@ function OneTeamPage({ darkMode }) {
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        console.error(error);
-      }
+        }
     })();
   }, [id]);
 

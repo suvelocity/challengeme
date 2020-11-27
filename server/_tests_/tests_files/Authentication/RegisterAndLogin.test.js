@@ -1,21 +1,12 @@
 require('dotenv').config();
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
+const { generateToken } = require('../../Functions');
 const bcrypt = require('bcryptjs');
 const server = require('../../../app');
 const { User, RefreshToken } = require('../../../models');
 const mockUser = require('../../mocks/users');
 const mockLogins = require('../../mocks/usersLogin');
-
-function generateToken(currentUser) {
-  const infoForCookie = {
-    userId: currentUser.id,
-    userName: currentUser.userName,
-  };
-  return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '900s',
-  });
-}
 
 describe('Register & Login Tests', () => {
   beforeAll(async () => {

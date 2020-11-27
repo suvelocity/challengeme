@@ -1,22 +1,12 @@
+require('dotenv').config();
 const request = require('supertest');
-const jwt = require('jsonwebtoken');
 const app = require('../../../app');
+const { generateToken } = require('../../Functions');
 const { User, GitToken } = require('../../../models');
 const githubTokensMock = require('../../mocks/githubTokens');
 const mockUser = require('../../mocks/users');
 const githubHeadersMock = require('../../mocks/githubHeaders');
-const handleGithubTokens = require('../../../helpers/handleGithubTokens');
-require('dotenv').config();
-
-function generateToken(currentUser) {
-  const infoForCookie = {
-    userId: currentUser.id,
-    userName: currentUser.userName,
-  };
-  return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '900s',
-  });
-}
+const { handleGithubTokens } = require('../../../helpers');
 
 describe('testing challenges endpoints', () => {
   beforeEach(async () => {

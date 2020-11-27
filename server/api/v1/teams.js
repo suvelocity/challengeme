@@ -81,7 +81,7 @@ teamRouter.get('/all-teams-by-user', async (req, res) => {
 //============================== Teacher Routes ======================================
 
 // get all the users of the teachers team
-teamRouter.get('/teacher-area/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
+teamRouter.get('/teacher-area/:teamId', checkTeacherPermission, async (req, res) => {
   const { teamId } = req.params;
   try {
     const teamUsers = await Team.findOne({
@@ -114,7 +114,7 @@ teamRouter.get('/teacher-area/:teamId', checkTeamPermission, checkTeacherPermiss
 });
 
 // add users to team
-teamRouter.post('/add-users/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
+teamRouter.post('/add-users/:teamId', checkTeacherPermission, async (req, res) => {
   try {
     const { newUsers } = req.body;
     await UserTeam.bulkCreate(
@@ -131,7 +131,7 @@ teamRouter.post('/add-users/:teamId', checkTeamPermission, checkTeacherPermissio
 });
 
 // delete user from team
-teamRouter.delete('/remove-user/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
+teamRouter.delete('/remove-user/:teamId', checkTeacherPermission, async (req, res) => {
   const { userId } = req.query;
   const { teamId } = req.params;
   try {

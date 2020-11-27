@@ -14,8 +14,7 @@ function LastWeekSubmissions({ darkMode }) {
             const { data: submissions } = await network.get(`/api/v1/insights/teacher/last-week-submissions/${id}`);
             setLastWeekSubmissions(submissions.reverse())
         } catch (error) {
-            console.error(error);
-        }
+            }
     }
 
     const CustomizedLabel = ({ x, y, stroke, value, }) => {

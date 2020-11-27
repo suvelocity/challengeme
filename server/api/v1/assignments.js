@@ -41,7 +41,7 @@ assignmentsRouter.get('/:teamId', checkTeamPermission, async (req, res) => {
 //============================== Teacher Routes ======================================
 
 // add assignments to team
-assignmentsRouter.post('/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
+assignmentsRouter.post('/:teamId', checkTeacherPermission, async (req, res) => {
     const { teamId } = req.params;
     const { challenges } = req.body;
     try {
@@ -58,7 +58,7 @@ assignmentsRouter.post('/:teamId', checkTeamPermission, checkTeacherPermission, 
 
 
 // delete assignments to team
-assignmentsRouter.delete('/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
+assignmentsRouter.delete('/:teamId', checkTeacherPermission, async (req, res) => {
     const { teamId } = req.params;
     const { challengeId } = req.query;
     try {

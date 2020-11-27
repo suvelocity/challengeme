@@ -16,8 +16,7 @@ function Assignments({ darkMode, teamName }) {
             const { data: assignments } = await network.get(`/api/v1/assignments/${id}`)
             setAllAssignments(assignments)
         } catch (error) {
-            console.error(error);
-        }
+            }
     }
 
     const removeAssignment = async (challengeId) => {
@@ -25,8 +24,7 @@ function Assignments({ darkMode, teamName }) {
             await network.delete(`/api/v1/assignments/${id}?challengeId=${challengeId}`)
             getAllAssignments()
         } catch (error) {
-            console.error(error);
-        }
+            }
     }
 
     useEffect(() => {

@@ -56,8 +56,7 @@ function Row(props) {
         getAllTeams();
       }
     } catch (error) {
-      console.error(error);
-    }
+      }
   };
 
   const changeUserPermissionOnTeam = async (user, permission) => {
@@ -69,8 +68,7 @@ function Row(props) {
         getAllTeams();
       }
     } catch (error) {
-      console.error(error);
-    }
+      }
   };
 
   const classes = useRowStyles();
@@ -135,8 +133,7 @@ function TeamsControl({ teamName }) {
       const { data: allTeamsFromServer } = await network.get(`/api/v1/teams/teacher-area/${id}`);
       setAllMembers(allTeamsFromServer.Users);
     } catch (error) {
-      console.error(error);
-    }
+      }
   }
 
   const handleAddMemberModal = (team) => {

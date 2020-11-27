@@ -67,8 +67,7 @@ function MyTeams() {
       );
       setTeamData(userTeam.Teams);
     } catch (error) {
-      console.error(error);
-    }
+      }
   };
 
   useEffect(() => {

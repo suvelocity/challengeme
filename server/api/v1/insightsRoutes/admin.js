@@ -1,5 +1,6 @@
 const insightAdminRouter = require('express').Router();
 const { Op } = require('sequelize');
+const { Filters } = require('../../../helpers/Filters');
 const sequelize = require('sequelize');
 const { Submission, Challenge, Review, User, Team } = require('../../../models');
 
@@ -116,27 +117,6 @@ insightAdminRouter.get('/top', async (req, res) => {
 
 //=======================================================================//
 
-
-const filterLastSubmissionPerChallenge = (submissionsOrderedByDate) => {
-  const filteredAlready = [];
-  let success = 0;
-  let fail = 0;
-  submissionsOrderedByDate.forEach((submission) => {
-    if (filteredAlready.some(filteredSubmission =>
-      filteredSubmission.userId === submission.userId &&
-      filteredSubmission.challengeId === submission.challengeId)) {
-    } else {
-      filteredAlready.push({ userId: submission.userId, challengeId: submission.challengeId });
-      if (submission.state === 'SUCCESS') {
-        success++
-      } else {
-        fail++
-      }
-    }
-  })
-  return { success, fail }
-}
-
 // returns the submissions status(total amount, success, fail, not submitted)
 insightAdminRouter.get('/all-submissions/', async (req, res) => {
   try {
@@ -167,7 +147,7 @@ insightAdminRouter.get('/all-submissions/', async (req, res) => {
       order: [['createdAt', 'DESC']]
     });
 
-    const filteredSubmissions = filterLastSubmissionPerChallenge(totalSubmissionsOrderedByDate)
+    const filteredSubmissions = Filters.filterLastSubmissionPerChallenge(totalSubmissionsOrderedByDate)
     const notYetSubmitted = (users.length * totalSubmissionsShouldBe) - (filteredSubmissions.success + filteredSubmissions.fail);
     filteredSubmissions.notYet = notYetSubmitted ? notYetSubmitted : 0;
 
@@ -234,21 +214,8 @@ insightAdminRouter.get('/last-week-submissions', async (req, res) => {
 // returns all the submissions per challenge
 insightAdminRouter.get('/challenges-submissions', async (req, res) => {
   try {
-    const topChallenges = await Submission.findAll({
-      attributes: {
-        include: [
-          [sequelize.fn('COUNT', sequelize.col('challenge_id')), 'countSub'],
-        ],
-      },
-      include: {
-        model: Challenge,
-        attributes: ['id', 'name'],
-      },
-      group: ['challenge_id'],
-      order: [[sequelize.fn('COUNT', sequelize.col('challenge_id')), 'DESC']],
-    });
-
-    const users = await Challenge.findAll({
+    const { onlyLast } = req.query
+    const challenges = await Challenge.findAll({
       include: {
         model: Submission,
         attributes: ['id', 'userId', 'createdAt', 'state', 'solutionRepository'],
@@ -257,9 +224,26 @@ insightAdminRouter.get('/challenges-submissions', async (req, res) => {
           attributes: ['userName'],
         },
       },
+      order: [[Submission, 'createdAt', 'DESC']]
     });
 
-    res.json([topChallenges, users]);
+    if (onlyLast === 'true') {
+      challenges.forEach(challenge => {
+        const myFilteredArray = [];
+        const myFilteredArrayUsers = []
+        challenge.Submissions.forEach(submission => {
+          if (myFilteredArrayUsers.includes(submission.dataValues.userId)) {
+          } else {
+            myFilteredArrayUsers.push(submission.dataValues.userId);
+            myFilteredArray.push(submission);
+          }
+        });
+        challenge.dataValues.Submissions = myFilteredArray;
+      })
+    }
+    challenges.sort((a, b) => b.dataValues.Submissions.length - a.dataValues.Submissions.length)
+
+    res.json(challenges);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
@@ -269,6 +253,7 @@ insightAdminRouter.get('/challenges-submissions', async (req, res) => {
 // returns all the submissions per user
 insightAdminRouter.get('/users-submissions', async (req, res) => {
   try {
+    const { onlyLast } = req.query;
     const topUsers = await User.findAll({
       attributes: ['userName', 'phoneNumber', 'firstName', 'lastName', 'email'],
       include: {
@@ -276,6 +261,25 @@ insightAdminRouter.get('/users-submissions', async (req, res) => {
         include: { model: Challenge },
       },
     });
+
+
+    if (onlyLast === 'true') {
+      topUsers.forEach(user => {
+        const myFilteredArray = [];
+        const myFilteredArrayUsers = []
+        user.Submissions.forEach(submission => {
+          if (myFilteredArrayUsers.includes(submission.challengeId)) {
+          } else {
+            myFilteredArrayUsers.push(submission.challengeId);
+            myFilteredArray.push(submission);
+          }
+        });
+        console.log('myFilteredArrayUsers', myFilteredArrayUsers);
+        console.log('myFilteredArray', myFilteredArray);
+        user.dataValues.Submissions = myFilteredArray;
+      })
+    }
+
     res.json(topUsers);
   } catch (error) {
     console.error(error);

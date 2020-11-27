@@ -60,8 +60,7 @@ function Row(props) {
         props.getAllUsers();
       }
     } catch (error) {
-      console.error(error);
-    }
+      }
   };
 
   return (

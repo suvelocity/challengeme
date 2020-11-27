@@ -1,63 +1,16 @@
 const insightStudentRouter = require('express').Router();
 const checkAdmin = require('../../../middleware/checkAdmin');
 const { checkTeamPermission } = require('../../../middleware/checkTeamPermission');
+const { Filters } = require('../../../helpers');
 const sequelize = require('sequelize');
 const { Op } = require('sequelize');
 const { Submission, Challenge, User, Team } = require('../../../models');
-
-async function getTeamUsersIds(teamId) {
-
-  // get team users
-  const currentTeamUsers = await Team.findOne({
-    where: {
-      id: teamId,
-    },
-    attributes: ['name'],
-    include: [
-      {
-        model: User,
-        attributes: ['id'],
-        through: {
-          where: {
-            permission: 'student'
-          },
-          attributes: [],
-        },
-      },
-    ],
-  });
-
-  // returns array with users ids
-  const usersId = currentTeamUsers.Users.map((value) => value.id);
-
-  return usersId;
-}
-
-const filterLastSubmissionPerChallenge = (submissionsOrderedByDate) => {
-  const filteredAlready = [];
-  let success = 0;
-  let fail = 0;
-  submissionsOrderedByDate.forEach((submission) => {
-    if (filteredAlready.some(filteredSubmission =>
-      filteredSubmission.userId === submission.userId &&
-      filteredSubmission.challengeId === submission.challengeId)) {
-    } else {
-      filteredAlready.push({ userId: submission.userId, challengeId: submission.challengeId });
-      if (submission.state === 'SUCCESS') {
-        success++
-      } else {
-        fail++
-      }
-    }
-  })
-  return { success, fail }
-}
 
 // returns the 5 users with the most successful submissions
 insightStudentRouter.get('/top-user/:teamId', checkTeamPermission, async (req, res) => {
   try {
     const { teamId } = req.params
-    const teamUsersIds = await getTeamUsersIds(teamId);
+    const teamUsersIds = await Filters.getTeamUsersIds(teamId);
 
     // returns top 5 users and their successful submissions
     const teamUsersTopSuccess = await User.findAll({
@@ -78,7 +31,7 @@ insightStudentRouter.get('/top-user/:teamId', checkTeamPermission, async (req, r
     });
 
     let formattedMembers = teamUsersTopSuccess.map((member) => {
-      const { success } = filterLastSubmissionPerChallenge(member.Submissions);
+      const { success } = Filters.filterLastSubmissionPerChallenge(member.Submissions);
       const { userName } = member;
       return ({ success, userName })
     })

@@ -47,7 +47,6 @@ export default function AddTeamMembers({
       setOpen(false);
       setNewTeamMembers([]);
     } catch (error) {
-      console.error(error);
     }
   };
 

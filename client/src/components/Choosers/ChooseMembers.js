@@ -31,7 +31,6 @@ const ChooseMembers = ({
           return userForOptions;
         }).filter((option) => !(!option)));
       } catch (error) {
-        console.error(error);
       }
     })();
   }, [setMembersOptions, teamId, isTeacher]);

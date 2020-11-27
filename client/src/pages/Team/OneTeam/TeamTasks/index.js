@@ -18,7 +18,6 @@ function TeamTasks({ darkMode }) {
             setAllAssignments(assignments)
             setLoading(false)
         } catch (error) {
-            console.error(error);
             setLoading(false)
         }
     }
