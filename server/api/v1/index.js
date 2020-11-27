@@ -1,8 +1,7 @@
 const v1Router = require('express').Router();
 const checkToken = require('../../middleware/checkToken');
 const checkAdmin = require('../../middleware/checkAdmin');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+
 
 //= =======================Public Routes================================//
 v1Router.use('/challenges', require('./challenges')); // remove boiler plate
@@ -12,7 +11,6 @@ v1Router.use('/reviews', require('./reviews'));
 
 //= =======================Authentication================================//
 v1Router.use('/auth', require('./auth'));
-v1Router.use('/challenges-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //= =======================Webhooks================================//
 v1Router.use('/webhooks', require('./webhooks'));
