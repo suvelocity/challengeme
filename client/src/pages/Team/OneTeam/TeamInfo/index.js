@@ -45,17 +45,6 @@ function OneTeamPage({ darkMode }) {
           {' '}
           Page
         </h1>
-        {permission === 'teacher'
-          && (
-            <Link to={`/teams/teacher/${id}`}>
-              <Button
-                variant="contained"
-                color="default"
-              >
-                Teacher Area
-              </Button>
-            </Link>
-          )}
         <h2>My Team Friends:</h2>
         <ul>
           {teamMembers.Users.map((user) => <li>{user.userName}</li>)}
