@@ -38,7 +38,7 @@ function SuccessSubmissions({ darkMode }) {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="success" fill="#29bf12" />
+          <Bar dataKey="success" fill="#005FAC" />
         </BarChart>
       </div>
       ) : <Loading darkMode={darkMode} />

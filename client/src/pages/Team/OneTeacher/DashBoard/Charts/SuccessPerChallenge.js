@@ -42,7 +42,7 @@ function SuccessPerChallenge({ darkMode }) {
                     <YAxis dataKey="name" type="category" />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="challengeSuccesses" barSize={20} fill="#413ea0" />
+                    <Bar dataKey="challengeSuccesses" barSize={20} fill="#005FAC" />
                 </ComposedChart>
             </div>
             ) : <Loading darkMode={darkMode} />

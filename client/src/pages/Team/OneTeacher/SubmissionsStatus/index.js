@@ -22,7 +22,7 @@ export default function Index({ teamName, darkMode }) {
                     {showByChallengeOrUser ? 'Show By User' : 'Show By Challenge'}
                 </Button>
             </div>
-            {showByChallengeOrUser ? <SubmissionsByChallenges darkMode={darkMode} /> : <SubmissionsByUsers />}
+            {showByChallengeOrUser ? <SubmissionsByChallenges darkMode={darkMode} /> : <SubmissionsByUsers darkMode={darkMode} />}
             <div style={{ height: "50px" }}></div>
         </div>
     );

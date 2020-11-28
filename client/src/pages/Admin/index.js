@@ -65,22 +65,22 @@ function Index({ darkMode }) {
         <ErrorBoundary>
           <Switch>
             <Route exact path="/admin/DashBoard">
-              <DashBoard />
+              <DashBoard darkMode={darkMode} />
             </Route>
             <Route exact path="/admin/SubmissionsStatus">
-              <SubmissionsByUsers />
+              <SubmissionsByUsers darkMode={darkMode} />
             </Route>
             <Route exact path="/admin/ChallengesManagement">
-              <ProposedChallenge />
+              <ProposedChallenge darkMode={darkMode} />
             </Route>
             <Route exact path="/admin/UsersControl">
-              <UsersControl />
+              <UsersControl darkMode={darkMode} />
             </Route>
             <Route exact path="/admin/GithhubTokens">
-              <GithubTokens />
+              <GithubTokens darkMode={darkMode} />
             </Route>
             <Route exact path="/admin/TeamsControl">
-              <TeamsControl />
+              <TeamsControl darkMode={darkMode} />
             </Route>
             {/* <Route exact path="/admin">
               <AdminLanding />

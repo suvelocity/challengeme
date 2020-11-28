@@ -16,7 +16,7 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import network from "../../../services/network";
 import "../Admin.css";
-
+import "./style.css";
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -59,8 +59,7 @@ function Row(props) {
         });
         props.getAllUsers();
       }
-    } catch (error) {
-      }
+    } catch (error) {}
   };
 
   return (
@@ -157,7 +156,7 @@ function UsersControl() {
   return (
     <div className="generic-page">
       <div className="align">
-        <h1>This is Users Management Page</h1>
+        <h1 className="user-control-title">This is Users Management Page</h1>
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">
             <TableHead>
