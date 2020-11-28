@@ -1,6 +1,5 @@
 import React, { useState, useEffect, lazy } from "react";
-import { Button } from "@material-ui/core";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Loading from "../../../../components/Loading";
 import NotFound from "../../../NotFound";
 import network from "../../../../services/network";
