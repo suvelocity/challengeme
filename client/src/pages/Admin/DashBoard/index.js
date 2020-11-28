@@ -8,7 +8,7 @@ const TeamTotalSubmission = lazy(() => import("./Charts/TeamTotalSubmission"));
 function DashBoard({ darkMode }) {
 
     return (
-        <div >
+        <div className="generic-page">
             <h1>This DashBoard Admin Page</h1>
             <TeamTotalSubmission darkMode={darkMode} />
             <SuccessPerChallenge darkMode={darkMode} />

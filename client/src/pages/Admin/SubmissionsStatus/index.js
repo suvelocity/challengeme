@@ -8,7 +8,7 @@ export default function Index({ teamName }) {
     const [showByChallengeOrUser, setShowByChallengeOrUser] = useState(true);
 
     return (
-        <div>
+        <div className="generic-page">
             <h1>{teamName} Submissions Status</h1>
             <Button onClick={() => setShowByChallengeOrUser(prev => !prev)}>
                 {showByChallengeOrUser ? 'Show By User' : 'Show By Challenge'}
