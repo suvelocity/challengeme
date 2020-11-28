@@ -1,6 +1,6 @@
 const insightAdminRouter = require('express').Router();
 const { Op } = require('sequelize');
-const { Filters } = require('../../../helpers/Filters');
+const { Filters } = require('../../../helpers');
 const sequelize = require('sequelize');
 const { Submission, Challenge, Review, User, Team } = require('../../../models');
 
