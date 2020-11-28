@@ -75,6 +75,7 @@ export default function AddTeamMembers({
         variant="contained"
         color="primary"
         onClick={handleSubmitNewTeam}
+        
       >
         Add
       </Button>

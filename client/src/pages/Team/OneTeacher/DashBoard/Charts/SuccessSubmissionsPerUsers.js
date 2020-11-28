@@ -27,7 +27,7 @@ function SuccessSubmissions({ darkMode }) {
   return (
     teamSubmissions ?
       (<div className="success-chart">
-        <h2>Teams Success Submissions</h2>
+        <h2 className="dashboard-title-chart">Teams Success Submissions</h2>
         <BarChart
           width={730}
           height={250}

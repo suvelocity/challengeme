@@ -27,7 +27,7 @@ function SuccessPerChallenge({ darkMode }) {
     return (
         challenges ?
             (<div className="last-week-submissions-chart">
-                <h2>Challenges Most Success Submissions</h2>
+                <h2 className="dashboard-title-chart">Challenges Most Success Submissions</h2>
                 <ComposedChart
                     layout="vertical"
                     width={600}

@@ -1,19 +1,38 @@
-import React, { useState, useEffect, lazy } from 'react';
-import { Button } from '@material-ui/core';
-import { useParams, Link } from 'react-router-dom';
-import Loading from '../../../../components/Loading';
-import NotFound from '../../../NotFound';
-import network from '../../../../services/network';
-import SecondHeader from '../../../../components/Header/SecondHeader';
+import React, { useState, useEffect, lazy } from "react";
+import { Button } from "@material-ui/core";
+import { useParams, Link } from "react-router-dom";
+import Loading from "../../../../components/Loading";
+import NotFound from "../../../NotFound";
+import network from "../../../../services/network";
+import SecondHeader from "../../../../components/Header/SecondHeader";
 
+import { makeStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import "./style.css";
 const SuccessSubmissionsPerUsers = lazy(() => import("./Charts/SuccessSubmissionsPerUsers"));
-
+const tableWidth = 40;
+const useStyles = makeStyles({
+  table: {
+    minWidth: 650,
+  },
+  container: {
+    margin: `${tableWidth}px`,
+    width: `calc(100vw - ${tableWidth * 2}px)`,
+  },
+});
 function OneTeamPage({ darkMode }) {
+  const classes = useStyles();
   const { id } = useParams();
   const [teamMembers, setTeamMembers] = useState();
   const [loading, setLoading] = useState(true);
   const [permission, setPermission] = useState();
-
+  console.log(teamMembers);
   useEffect(() => {
     (async () => {
       try {
@@ -29,31 +48,55 @@ function OneTeamPage({ darkMode }) {
 
   const paths = [
     { name: "Team Information", URL: `/teams/${id}` },
-    { name: "Team Tasks", URL: `/teams/tasks/${id}` }
+    { name: "Team Tasks", URL: `/teams/tasks/${id}` },
   ];
 
-  return !loading
-    ? teamMembers ? (
-      <div style={{ overflowY: 'auto', height: '100vh', width: '100%' }}>
+  return !loading ? (
+    teamMembers ? (
+      <>
         <SecondHeader paths={paths} darkMode={darkMode} />
 
-        <h1>
-          This Team
-          {' '}
-          {teamMembers.name}
-          {' '}
-          Page
-        </h1>
-        <h2>My Team Friends:</h2>
-        <ul>
-          {teamMembers.Users.map((user) => <li>{user.userName}</li>)}
-        </ul>
-        <SuccessSubmissionsPerUsers darkMode={darkMode} />
-
-      </div>
+        <div className="generic-page">
+        <h1 className="team-info-title-page">
+        {" "}
+        Team: <span className="team-info-title-page-name">{teamMembers.name}</span>{" "}
+      </h1>
+          <div className="team-info-paper-chart">
+            <SuccessSubmissionsPerUsers darkMode={darkMode} />
+          </div>
+          <h2 style={{marginLeft:tableWidth}} className="team-info-title-table">My Team Friends:</h2>
+          <TableContainer component={Paper} className={classes.container}>
+            <Table className={classes.table} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell align="center">name</TableCell>
+                  <TableCell align="center">Phone Number</TableCell>
+                  <TableCell align="center">Email</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {teamMembers.Users.map((user) => (
+                  <TableRow key={user.id}>
+                    <TableCell component="th" scope="row">
+                      {user.id}
+                    </TableCell>
+                    <TableCell align="center"> {user.userName}</TableCell>
+                    <TableCell align="center">{user.userName}</TableCell>
+                    <TableCell align="center">{user.userName}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      </>
     ) : (
-        <NotFound />
-      ) : <Loading darkMode={darkMode} />;
+      <NotFound />
+    )
+  ) : (
+    <Loading darkMode={darkMode} />
+  );
 }
 
 export default OneTeamPage;

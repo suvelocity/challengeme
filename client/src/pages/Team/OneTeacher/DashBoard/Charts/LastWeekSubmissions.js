@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
-
+import "../style.css"
 function LastWeekSubmissions({ darkMode }) {
     const { id } = useParams();
     const [lastWeekSubmissions, setLastWeekSubmissions] = useState()
@@ -37,7 +37,7 @@ function LastWeekSubmissions({ darkMode }) {
     return (
         lastWeekSubmissions ?
             (<div className="last-week-submissions-chart">
-                <h2>Last Week Submissions</h2>
+                <h2 className="dashboard-title-chart">Last Week Submissions</h2>
                 <LineChart
                     width={500}
                     height={300}
