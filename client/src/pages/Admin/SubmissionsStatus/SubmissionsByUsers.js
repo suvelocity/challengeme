@@ -124,7 +124,6 @@ const SubmissionsByUsers = () => {
 
   async function fetchData() {
     const { data } = await network.get(`/api/v1/insights/admin/users-submissions?onlyLast=${last}`);
-    console.log(data);
     setData(data);
   }
 
