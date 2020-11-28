@@ -48,7 +48,7 @@ function TeamTotalSubmission({ darkMode }) {
         { name: 'not yet', value: teamSubmissions.notYet },
     ];
 
-    const COLORS = ['#00C49F', '#FF8042', '#0088FE'];
+    const COLORS = ['#00C49F', '#FF8042', '#005FAC'];
     const RADIAN = Math.PI / 180;
     const renderCustomizedLabel = ({
         cx, cy, midAngle, innerRadius, outerRadius, percent, index,
