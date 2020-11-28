@@ -11,10 +11,6 @@ function TeamTasks({ darkMode }) {
   const [loading, setLoading] = useState(true);
   const [allAssignments, setAllAssignments] = useState();
 
-  const { id } = useParams();
-  const [loading, setLoading] = useState(true);
-  const [allAssignments, setAllAssignments] = useState()
-
   const getAllAssignments = async () => {
     try {
       const { data: assignments } = await network.get(`/api/v1/assignments/${id}`)
