@@ -49,8 +49,8 @@ function SuccessSubmissions({ darkMode }) {
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="success" fill="#29bf12" />
-        <Bar dataKey="fail" fill="#bf0603" />
+        <Bar dataKey="success" fill="#FF8042" />
+        <Bar dataKey="fail" fill="#005FAC" />
       </BarChart>
     </div>
   ) : (

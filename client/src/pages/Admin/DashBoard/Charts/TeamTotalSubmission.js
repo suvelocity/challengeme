@@ -54,7 +54,7 @@ function TeamTotalSubmission({ darkMode }) {
 
 
 
-    const COLORS = ['#00C49F', '#FF8042', '#0088FE'];
+    const COLORS = ['#00C49F', '#FF8042', '#005FAC'];
 
     const RADIAN = Math.PI / 180;
     const renderCustomizedLabel = ({
