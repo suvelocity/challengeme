@@ -27,7 +27,6 @@ function MyTeams() {
     try {
       const { data: userTeam } = await network.get("/api/v1/teams/all-teams-by-user");
       setTeamData(userTeam.Teams);
-      console.log(userTeam.Teams);
       if (userTeam.Teams.length === 1) {
         Location.push(`/teams/${userTeam.Teams[0].id}`);
       }
