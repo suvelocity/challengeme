@@ -13,14 +13,10 @@ const {
 } = require('../../Functions');
 const { usersMock, teamsMock, usersTeamsMock, submissionsMock, challengesMock, assignmentsMock } = require('../../mocks');
 
-function filterLastSubmissionsForAdminRoute(challengeIdArray, submissionsArray, userTeamArray) {
+function filterLastSubmissionsForAdminRoute(challengeIdArray, submissionsArray) {
   const totalSubmissionsShouldBe = usersMock.length * challengeIdArray.length;
 
-  const totalSubmissionsOrderedByDate = submissionsArray.map((submission) => {
-    if (challengeIdArray.includes(submission.challengeId)) {
-      return submission;
-    }
-  }).filter(a => !(!a)).sort((a, b) => b.createdAt - a.createdAt);
+  const totalSubmissionsOrderedByDate = submissionsArray.sort((a, b) => b.createdAt - a.createdAt);
 
   const filteredSubmissions = countSuccessAndFailSubmissionsPerChallenge(totalSubmissionsOrderedByDate);
   const notYetSubmitted = (challengeIdArray.length * totalSubmissionsShouldBe) - (filteredSubmissions.success + filteredSubmissions.fail);
@@ -28,6 +24,25 @@ function filterLastSubmissionsForAdminRoute(challengeIdArray, submissionsArray, 
   return filteredSubmissions;
 }
 
+function countSuccessAndFailSubmissionsPerChallenge(submissionsOrderedByDate) {
+  const filteredAlready = [];
+  let success = 0;
+  let fail = 0;
+  submissionsOrderedByDate.forEach((submission) => {
+    if (filteredAlready.some(filteredSubmission =>
+      filteredSubmission.userId === submission.userId &&
+      filteredSubmission.challengeId === submission.challengeId)) {
+    } else {
+      filteredAlready.push({ userId: submission.userId, challengeId: submission.challengeId });
+      if (submission.state === 'SUCCESS') {
+        success++
+      } else {
+        fail++
+      }
+    }
+  })
+  return { success, fail }
+}
 
 
 describe('Testing admin insights routes', () => {
@@ -53,7 +68,7 @@ describe('Testing admin insights routes', () => {
       .query({ challenge: challengesMock[0].id })
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
-    const filteredSubmissions = filterLastSubmissionsForAdminRoute([challengesMock[0].id], submissionsMock, usersTeamsMock);
+    const filteredSubmissions = filterLastSubmissionsForAdminRoute([challengesMock[0].id], submissionsMock);
 
     expect(teamSubmissionsInsightsOneChallenge.status).toBe(200);
     expect(teamSubmissionsInsightsOneChallenge.body.hasOwnProperty('success')).toBe(true);
@@ -68,13 +83,9 @@ describe('Testing admin insights routes', () => {
       .query({ challenge: 'all' })
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
-    const teamAssignments = assignmentsMock.map(assignment => {
-      if (assignment.teamId === teamsMock[0].id) {
-        return assignment.challengeId
-      }
-    }).filter(a => !(!a));
+    const challengesId = challengesMock.map(challenge => challenge.id)
 
-    const filteredAssignments = filterLastSubmissionsForAdminRoute(teamAssignments, submissionsMock, usersTeamsMock);
+    const filteredAssignments = filterLastSubmissionsForAdminRoute(challengesId, submissionsMock);
 
     expect(teamSubmissionsInsightsAssignments.status).toBe(200);
     expect(teamSubmissionsInsightsAssignments.body.hasOwnProperty('success')).toBe(true);
