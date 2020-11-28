@@ -44,7 +44,7 @@ function Assignments({ darkMode, teamName }) {
       />
       <div className="assignments-title-and-button">
         <h1>This Assignments Teacher For Team {teamName} Page</h1>
-        <Button variant="outlined" onClick={() => setOpenNewAssignmentModal(true)}>
+        <Button variant={darkMode ? "contained" : "outlined"} onClick={() => setOpenNewAssignmentModal(true)}>
           Add New Assignment
         </Button>
       </div>
@@ -70,7 +70,7 @@ function Assignments({ darkMode, teamName }) {
           ))}
         </div>
       ) : (
-        <h1>Not Found</h1>
+        <h1 className="not-found">Not Found</h1>
       )}
     </div>
   );

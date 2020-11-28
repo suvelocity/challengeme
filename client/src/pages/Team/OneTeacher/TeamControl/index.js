@@ -129,7 +129,7 @@ function Row(props) {
     </React.Fragment>
   );
 }
-function TeamsControl({ teamName }) {
+function TeamsControl({ teamName, darkMode }) {
   const { id } = useParams();
 
   const [allMembers, setAllMembers] = useState([]);
@@ -166,7 +166,12 @@ function TeamsControl({ teamName }) {
         isTeacher={true}
       />
       <div className="team-control-add-members">
-        <Button  variant="outlined" onClick={() => handleAddMemberModal(id)}>Add Team Members</Button>
+        <Button
+          variant={darkMode ? "contained" : "outlined"}
+          onClick={() => handleAddMemberModal(id)}
+        >
+          Add Team Members
+        </Button>
       </div>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">

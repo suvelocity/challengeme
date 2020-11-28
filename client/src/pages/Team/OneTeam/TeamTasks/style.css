@@ -13,3 +13,7 @@
 .team-task-title-page-name {
   text-decoration: underline;
 }
+
+.dark .team-task-title-page {
+  color: white;
+}

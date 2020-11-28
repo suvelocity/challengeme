@@ -16,3 +16,7 @@
 .team-info-title-page-name {
   text-decoration: underline;
 }
+
+.dark .team-info-title-page ,.team-info-title-table{
+  color: white;
+}

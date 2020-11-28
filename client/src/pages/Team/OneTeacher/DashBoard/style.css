@@ -8,6 +8,9 @@
   margin-bottom: 40px;
 }
 
+.dark .dashboard-title-page {
+  color: white;
+}
 .dashboard-title-chart {
   text-align: center;
 }

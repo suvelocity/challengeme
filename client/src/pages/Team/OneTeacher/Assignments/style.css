@@ -16,3 +16,7 @@
   display: flex;
   flex-direction: column;
 }
+
+.dark .assignments-title-and-button {
+  color: white;
+}

@@ -59,7 +59,7 @@ function TeamTasks({ darkMode }) {
                 />
               ))
             ) : (
-              <h1>Not Found</h1>
+              <h1 className="not-found">Not Found</h1>
             )}
           </div>
         </div>

@@ -65,7 +65,7 @@ function OneTeamPage({ darkMode }) {
           <div className="team-info-paper-chart">
             <SuccessSubmissionsPerUsers darkMode={darkMode} />
           </div>
-          <h2 style={{marginLeft:tableWidth}}>My Team Friends:</h2>
+          <h2 style={{marginLeft:tableWidth}} className="team-info-title-table">My Team Friends:</h2>
           <TableContainer component={Paper} className={classes.container}>
             <Table className={classes.table} aria-label="simple table">
               <TableHead>
