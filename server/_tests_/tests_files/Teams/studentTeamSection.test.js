@@ -23,8 +23,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(userMock[0])}`);
 
     expect(teamInformation.status).toBe(200);
-    expect(teamInformation.body[0].id).toBe(teamMock[0].id);
-    expect(teamInformation.body[1].permission).toBe(userTeamMock.filter((connection) => connection.userId === userMock[0].id && connection.teamId === teamMock[0].id)[0].permission);
+    expect(teamInformation.body.id).toBe(teamMock[0].id);
 
     done();
   });

@@ -122,7 +122,7 @@ function Row(props) {
   );
 }
 
-const SubmissionsByChallenges = () => {
+const SubmissionsByChallenges = ({darkMode}) => {
   const [dataPresent, setDataPresent] = useState([]);
   const [last, setLast] = useState(false);
   const { id } = useParams();
@@ -145,35 +145,35 @@ const SubmissionsByChallenges = () => {
   };
 
   return (
-    <div className="generic-page">
-      <div className="align">
-        <h1>This is All The Submissions By Challenges Page</h1>
-
-        <Button onClick={filteredLast}>{last ? "Show All" : "Show Only Last"}</Button>
-
-        <TableContainer component={Paper}>
-          <Table aria-label="collapsible table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell />
-                <StyledTableCell>Challenge Name</StyledTableCell>
-                <StyledTableCell align="left">Submissions Count</StyledTableCell>
-                <StyledTableCell align="left">Created At</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            {dataPresent.length > 0 ? (
-              dataPresent.map((challenge) => (
-                <Row
-                  key={challenge.ChallengeName + challenge.createdAt}
-                  row={challenge}
-                />
-              ))
-            ) : (
-                <Loading />
-              )}
-          </Table>
-        </TableContainer>
+    <div>
+      <div className="title-and-button">
+        <h2>This is All The Submissions By Challenges Page</h2>
+        <Button variant={darkMode ? "contained" : "outlined"} onClick={filteredLast}>
+          {last ? "Show All" : "Show Only Last"}
+        </Button>
       </div>
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell />
+              <StyledTableCell>Challenge Name</StyledTableCell>
+              <StyledTableCell align="left">Submissions Count</StyledTableCell>
+              <StyledTableCell align="left">Created At</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          {dataPresent.length > 0 ? (
+            dataPresent.map((challenge) => (
+              <Row
+                key={challenge.ChallengeName + challenge.createdAt}
+                row={challenge}
+              />
+            ))
+          ) : (
+              <Loading />
+            )}
+        </Table>
+      </TableContainer>
     </div>
   );
 };

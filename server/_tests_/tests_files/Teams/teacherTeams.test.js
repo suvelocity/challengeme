@@ -50,7 +50,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(userMock[0])}`);
 
     expect(teamInformation.status).toBe(200);
-    expect(teamInformation.body[0].Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length);
+    expect(teamInformation.body.Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length);
 
     const addUser = await request(app)
       .post(`/api/v1/teams/add-users/${teamMock[0].id}`)
@@ -64,7 +64,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(userMock[0])}`);
 
     expect(teamInformationAfterAdded.status).toBe(200);
-    expect(teamInformationAfterAdded.body[0].Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length + 1);
+    expect(teamInformationAfterAdded.body.Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length + 1);
 
     const unauthorized = await request(app)
       .post(`/api/v1/teams/add-users/${teamMock[0].id}`)
@@ -93,7 +93,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(userMock[0])}`);
 
     expect(teamInformation.status).toBe(200);
-    expect(teamInformation.body[0].Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length);
+    expect(teamInformation.body.Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length);
 
     const addUser = await request(app)
       .delete(`/api/v1/teams/remove-user/${teamMock[0].id}`)
@@ -107,7 +107,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(userMock[0])}`);
 
     expect(teamInformationAfterRemoved.status).toBe(200);
-    expect(teamInformationAfterRemoved.body[0].Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length - 1);
+    expect(teamInformationAfterRemoved.body.Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length - 1);
 
     const unauthorized = await request(app)
       .delete(`/api/v1/teams/remove-user/${teamMock[0].id}`)

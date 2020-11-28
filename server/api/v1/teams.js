@@ -18,15 +18,7 @@ teamRouter.get('/team-name/:teamId', checkTeamPermission, async (req, res) => {
 // check if user is a part of a team
 teamRouter.get('/team-page/:teamId', checkTeamPermission, async (req, res) => {
   const { teamId } = req.params;
-  const { userId } = req.user;
   try {
-    const userPermission = await UserTeam.findOne({
-      attributes: ['permission'],
-      where: {
-        userId,
-        teamId,
-      },
-    });
     const teamUsers = await Team.findOne({
       where: {
         id: teamId,
@@ -37,14 +29,14 @@ teamRouter.get('/team-page/:teamId', checkTeamPermission, async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['id', 'userName'],
+          attributes: ['id', 'userName', 'phoneNumber', 'email'],
           through: {
             attributes: [],
           },
         },
       ],
     });
-    res.json([teamUsers, userPermission]);
+    res.json(teamUsers);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });

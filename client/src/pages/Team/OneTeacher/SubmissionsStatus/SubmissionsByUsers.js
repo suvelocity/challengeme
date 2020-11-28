@@ -84,7 +84,7 @@ function Row(props) {
                 <TableBody>
                   {row.Submissions &&
                     row.Submissions.map((submission) => (
-                      <StyledTableRow key={submission.Challenge.name}>
+                      <StyledTableRow key={submission.id}>
                         <StyledTableCell component="th" scope="row">
                           {submission.Challenge.name}
                         </StyledTableCell>
@@ -97,8 +97,8 @@ function Row(props) {
                               submission.state === "SUCCESS"
                                 ? { color: "green" }
                                 : submission.state === "FAIL"
-                                ? { color: "red" }
-                                : { color: "black" }
+                                  ? { color: "red" }
+                                  : { color: "black" }
                             }
                           >
                             {submission.state}
@@ -119,7 +119,7 @@ function Row(props) {
   );
 }
 
-const SubmissionsByUsers = () => {
+const SubmissionsByUsers = ({darkMode}) => {
   const [data, setData] = useState([]);
   const [last, setLast] = useState(false);
   const { id } = useParams();
@@ -140,9 +140,12 @@ const SubmissionsByUsers = () => {
 
 
   return (
-    <div className="generic-page">
+    <div >
       <div className="title-and-button">
         <h2>This is All The Submissions By Users Page</h2>
+        <Button variant={darkMode ? "contained" : "outlined"} onClick={filteredLast}>
+          {last ? "Show All" : "Show Only Last"}
+        </Button>
       </div>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
@@ -160,8 +163,8 @@ const SubmissionsByUsers = () => {
             {data.length > 0 ? (
               data.map((user) => <Row key={user.userName} color="secondary" row={user} />)
             ) : (
-              <Loading />
-            )}
+                <Loading />
+              )}
           </TableBody>
         </Table>
       </TableContainer>
