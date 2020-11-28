@@ -96,8 +96,8 @@ function Row(props) {
                               submission.state === "SUCCESS"
                                 ? { color: "green" }
                                 : submission.state === "FAIL"
-                                  ? { color: "red" }
-                                  : { color: "black" }
+                                ? { color: "red" }
+                                : { color: "black" }
                             }
                           >
                             {submission.state}
@@ -134,31 +134,30 @@ const SubmissionsByUsers = () => {
 
   return (
     <div className="generic-page">
-      <div className="align">
-        <h1>This is All The Submissions By Users Page</h1>
-
-        <TableContainer component={Paper}>
-          <Table aria-label="collapsible table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell />
-                <StyledTableCell color="secondary">User Name</StyledTableCell>
-                <StyledTableCell align="left">First Name</StyledTableCell>
-                <StyledTableCell align="left">Last Name</StyledTableCell>
-                <StyledTableCell align="left">Phone Number</StyledTableCell>
-                <StyledTableCell align="left">Email</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.length > 0 ? (
-                data.map((user) => <Row key={user.userName} color="secondary" row={user} />)
-              ) : (
-                  <Loading />
-                )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+      <div className="title-and-button">
+        <h2>This is All The Submissions By Users Page</h2>
       </div>
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell />
+              <StyledTableCell color="secondary">User Name</StyledTableCell>
+              <StyledTableCell align="left">First Name</StyledTableCell>
+              <StyledTableCell align="left">Last Name</StyledTableCell>
+              <StyledTableCell align="left">Phone Number</StyledTableCell>
+              <StyledTableCell align="left">Email</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.length > 0 ? (
+              data.map((user) => <Row key={user.userName} color="secondary" row={user} />)
+            ) : (
+              <Loading />
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

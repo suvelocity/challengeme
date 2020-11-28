@@ -1,18 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
-import SubmissionsByChallenges from './SubmissionsByChallenges';
-import SubmissionsByUsers from './SubmissionsByUsers';
-
+import SubmissionsByChallenges from "./SubmissionsByChallenges";
+import SubmissionsByUsers from "./SubmissionsByUsers";
+import "./style.css";
 export default function Index({ teamName }) {
-
-    const [state, setState] = useState(true);
-    return (
-        <div>
-            <h1>{teamName} Students Info</h1>
-            <Button onClick={() => setState(prev => !prev)}>
-                change State
-            </Button>
-            {state ? <SubmissionsByChallenges /> : <SubmissionsByUsers />}
-        </div>
-    )
+  const [state, setState] = useState(true);
+  return (
+    <div className="generic-page">
+      <div className="student-info-control-panel">
+        <h1 className="student-info-title-page">
+          {" "}
+          Team: <span className="student-info-title-page-name">{teamName}</span>{" "}
+        </h1>
+        <Button
+          variant="outlined"
+          style={{ marginBottom: "20px" }}
+          onClick={() => setState((prev) => !prev)}
+        >
+          change State
+        </Button>
+      </div>
+      {state ? <SubmissionsByChallenges /> : <SubmissionsByUsers />}
+      <div style={{ height: "50px" }}></div>
+    </div>
+  );
 }

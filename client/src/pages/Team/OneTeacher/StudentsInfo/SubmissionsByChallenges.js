@@ -103,8 +103,8 @@ function Row(props) {
                               userBySubmission.state === "SUCCESS"
                                 ? { color: "green" }
                                 : userBySubmission.state === "FAIL"
-                                  ? { color: "red" }
-                                  : { color: "black" }
+                                ? { color: "red" }
+                                : { color: "black" }
                             }
                           >
                             {userBySubmission.state}
@@ -135,7 +135,6 @@ const SubmissionsByChallenges = () => {
   const [last, setLast] = useState(false);
   const { id } = useParams();
 
-
   const getChallengesSubmissions = async () => {
     const { data: challengesSubmissionsFromServer } = await network.get(
       `/api/v1/insights/teacher/challenges-submissions/${id}`
@@ -143,63 +142,63 @@ const SubmissionsByChallenges = () => {
     const combainChallengesSubmissionsVsUsers =
       challengesSubmissionsFromServer[0].length > 0
         ? challengesSubmissionsFromServer[0].map((challenge) => ({
-          ChallengeName: challenge.Challenge.name,
-          countSub: challenge.countSub,
-          createdAt: challenge.createdAt,
-          Submissions: challengesSubmissionsFromServer[1]
-            .map((userChallenge) => {
-              if (challenge.Challenge.id === userChallenge.id) {
-                return userChallenge.Submissions.map((userBySubmission) => ({
-                  id: userBySubmission.id,
-                  solutionRepository: userBySubmission.solutionRepository,
-                  userName: userBySubmission.User.userName,
-                  createdAt: userBySubmission.createdAt,
-                  state: userBySubmission.state,
-                })).sort(
-                  (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-                );
-              }
-              return null;
-            })
-            .filter((element) => !!element)[0],
-        }))
+            ChallengeName: challenge.Challenge.name,
+            countSub: challenge.countSub,
+            createdAt: challenge.createdAt,
+            Submissions: challengesSubmissionsFromServer[1]
+              .map((userChallenge) => {
+                if (challenge.Challenge.id === userChallenge.id) {
+                  return userChallenge.Submissions.map((userBySubmission) => ({
+                    id: userBySubmission.id,
+                    solutionRepository: userBySubmission.solutionRepository,
+                    userName: userBySubmission.User.userName,
+                    createdAt: userBySubmission.createdAt,
+                    state: userBySubmission.state,
+                  })).sort(
+                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                  );
+                }
+                return null;
+              })
+              .filter((element) => !!element)[0],
+          }))
         : [];
     setCombainChallengesSubmissionsVsUsersData(combainChallengesSubmissionsVsUsers);
     setDataPresent(combainChallengesSubmissionsVsUsers);
     const combainChallengesSubmissionsVsUsersLast =
       challengesSubmissionsFromServer[0].length > 0
         ? challengesSubmissionsFromServer[0].map((challenge) => ({
-          ChallengeName: challenge.Challenge.name,
-          countSub: challenge.countSub,
-          createdAt: challenge.createdAt,
-          Submissions: challengesSubmissionsFromServer[1]
-            .map((userChallenge) => {
-              if (challenge.Challenge.id === userChallenge.id) {
-                const myFilteredArray = [];
-                const myFilteredArrayUsers = [];
-                userChallenge.Submissions.map((userBySubmission) => ({
-                  id: userBySubmission.id,
-                  solutionRepository: userBySubmission.solutionRepository,
-                  userName: userBySubmission.User.userName,
-                  createdAt: userBySubmission.createdAt,
-                  state: userBySubmission.state,
-                }))
-                  .sort(
-                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-                  )
-                  .forEach((user) => {
-                    if (myFilteredArrayUsers.includes(user.userName)) {
-                    } else {
-                      myFilteredArrayUsers.push(user.userName);
-                      myFilteredArray.push(user);
-                    }
-                  });
-                return myFilteredArray;
-              }
-              return null;
-            })
-            .filter((element) => !!element)[0],
-        }))
+            ChallengeName: challenge.Challenge.name,
+            countSub: challenge.countSub,
+            createdAt: challenge.createdAt,
+            Submissions: challengesSubmissionsFromServer[1]
+              .map((userChallenge) => {
+                if (challenge.Challenge.id === userChallenge.id) {
+                  const myFilteredArray = [];
+                  const myFilteredArrayUsers = [];
+                  userChallenge.Submissions.map((userBySubmission) => ({
+                    id: userBySubmission.id,
+                    solutionRepository: userBySubmission.solutionRepository,
+                    userName: userBySubmission.User.userName,
+                    createdAt: userBySubmission.createdAt,
+                    state: userBySubmission.state,
+                  }))
+                    .sort(
+                      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                    )
+                    .forEach((user) => {
+                      if (myFilteredArrayUsers.includes(user.userName)) {
+                      } else {
+                        myFilteredArrayUsers.push(user.userName);
+                        myFilteredArray.push(user);
+                      }
+                    });
+                  return myFilteredArray;
+                }
+                return null;
+              })
+              .filter((element) => !!element)[0],
+          }))
         : [];
     setCombainChallengesSubmissionsVsUsersDataLast(combainChallengesSubmissionsVsUsersLast);
   };
@@ -219,36 +218,36 @@ const SubmissionsByChallenges = () => {
   };
 
   return (
-    <div className="generic-page">
-      <div className="align">
-        <h1>This is All The Submissions By Challenges Page</h1>
-
-        <Button onClick={filteredLast}>{last ? "Show All" : "Show Only Last"}</Button>
-
-        <TableContainer component={Paper}>
-          <Table aria-label="collapsible table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell />
-                <StyledTableCell>Challenge Name</StyledTableCell>
-                <StyledTableCell align="left">Submissions Count</StyledTableCell>
-                <StyledTableCell align="left">Created At</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            {dataPresent.length > 0 ? (
-              dataPresent.map((challenge) => (
-                <Row
-                  key={challenge.ChallengeName + challenge.createdAt}
-                  row={challenge}
-                  last={last}
-                />
-              ))
-            ) : (
-                <Loading />
-              )}
-          </Table>
-        </TableContainer>
+    <div>
+      <div className="title-and-button">
+        <h2>This is All The Submissions By Challenges Page</h2>
+        <Button variant="outlined" onClick={filteredLast}>
+          {last ? "Show All" : "Show Only Last"}
+        </Button>
       </div>
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell />
+              <StyledTableCell>Challenge Name</StyledTableCell>
+              <StyledTableCell align="left">Submissions Count</StyledTableCell>
+              <StyledTableCell align="left">Created At</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          {dataPresent.length > 0 ? (
+            dataPresent.map((challenge) => (
+              <Row
+                key={challenge.ChallengeName + challenge.createdAt}
+                row={challenge}
+                last={last}
+              />
+            ))
+          ) : (
+            <Loading />
+          )}
+        </Table>
+      </TableContainer>
     </div>
   );
 };

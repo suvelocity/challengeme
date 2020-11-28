@@ -68,7 +68,7 @@ function TeamTotalSubmission({ darkMode }) {
     return (
         teamSubmissions ?
             (<div className="success-chart">
-                <h2>Teams Total Submissions</h2>
+                <h2 className="dashboard-title-chart">Teams Total Submissions</h2>
                 {challengesOption &&
                     <select onClick={chooseChallenge} >
                         {challengesOption}
