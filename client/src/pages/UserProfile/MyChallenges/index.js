@@ -14,8 +14,7 @@ const UserProfileLanding = () => {
       );
       setAllMyChallenges(allMyChallengesFromServer);
     } catch (error) {
-      console.error(error);
-    }
+      }
   };
   useEffect(() => {
     const username = Cookies.get('userName');

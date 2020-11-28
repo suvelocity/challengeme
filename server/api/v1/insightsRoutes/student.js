@@ -1,38 +1,69 @@
-const { Router } = require('express');
-
-const router = Router();
+const insightStudentRouter = require('express').Router();
+const checkAdmin = require('../../../middleware/checkAdmin');
+const { checkTeamPermission } = require('../../../middleware/checkTeamPermission');
+const { Filters } = require('../../../helpers');
 const sequelize = require('sequelize');
 const { Op } = require('sequelize');
-const { Submission, Challenge, User } = require('../../../models');
+const { Submission, Challenge, User, Team, UserTeam } = require('../../../models');
 
 // returns the 5 users with the most successful submissions
-router.get('/top-users', async (req, res) => {
+insightStudentRouter.get('/top-user/:teamId', checkTeamPermission, async (req, res) => {
   try {
-    const topUsers = await Submission.findAll({
-      attributes: {
-        include: [
-          [sequelize.fn('COUNT', sequelize.col('user_id')), 'countSub'],
-        ],
+    const { teamId } = req.params
+  
+    // returns top 5 users and their successful submissions
+    const teamUsersTopSuccess1 = await Team.findOne({
+      where: {
+        id: teamId,
       },
-      include: {
-        model: User,
-        attributes: ['userName'],
-      },
-      where: { state: 'SUCCESS' },
-      group: ['user_id'],
-      order: [[sequelize.fn('COUNT', sequelize.col('user_id')), 'DESC']],
-      limit: 5,
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'userName'],
+          through: {
+            where: {
+              permission: 'student'
+            },
+            attributes: [],
+          },
+          include: [
+            {
+              model: Submission,
+              where: {
+                state: ['SUCCESS']
+              }
+            },
+          ],
+          order: [[Submission, 'createdAt', 'DESC']]
+        }
+      ],
     });
-    res.json(topUsers);
-  } catch (err) {
-    res.status(400).send(err);
+
+    let formattedMembers = teamUsersTopSuccess1.Users.map((member) => {
+      const { success } = Filters.filterLastSubmissionPerChallenge(member.Submissions);
+      const { userName } = member;
+      return ({ success, userName })
+    })
+
+    formattedMember = formattedMembers.sort((a, b) => {
+      return b.success - a.success
+    })
+
+    res.json(formattedMember.splice(0, 5));
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
-// only for the logged in user
+insightStudentRouter.use(checkAdmin, (req, res, next) => {
+  next()
+})
+
+//===========Not in use==========================================//
 
 // returns the amount of successful and failed submissions from all submissions
-router.get('/user-success', async (req, res) => {
+insightStudentRouter.get('/user-success', async (req, res) => {
   try {
     const loggedUser = req.user ? req.user.id : 1;
     const subBySuccess = await Submission.findAll({
@@ -57,13 +88,14 @@ router.get('/user-success', async (req, res) => {
       },
     });
     res.json([subBySuccess, req.user.userName]);
-  } catch (err) {
-    res.status(400).send(err);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // returns the submissions per day from the last 5 days
-router.get('/sub-by-date', async (req, res) => {
+insightStudentRouter.get('/sub-by-date', async (req, res) => {
   try {
     const loggedUser = req.user ? req.user.id : 1;
     const fiveDays = 5 * 24 * 60 * 60 * 1000;
@@ -82,13 +114,14 @@ router.get('/sub-by-date', async (req, res) => {
     });
 
     res.json(subByDate);
-  } catch (err) {
-    res.status(400).send(err);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // returns the count of submissions with the same challenge type
-router.get('/sub-by-type', async (req, res) => {
+insightStudentRouter.get('/sub-by-type', async (req, res) => {
   try {
     const loggedUser = req.user ? req.user.id : 1;
     const subByType = await Submission.findAll({
@@ -109,13 +142,14 @@ router.get('/sub-by-type', async (req, res) => {
       },
     });
     res.json(subByType);
-  } catch (err) {
-    res.status(400).send(err);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // returns the count of unsolved challenges
-router.get('/unsolved-challenges', async (req, res) => {
+insightStudentRouter.get('/unsolved-challenges', async (req, res) => {
   try {
     const loggedUser = req.user ? req.user.id : 3;
     // gets user submissions grouped by challenge id
@@ -139,9 +173,12 @@ router.get('/unsolved-challenges', async (req, res) => {
     });
 
     res.json(unsolvedChallenges);
-  } catch (err) {
-    res.status(400).send(err);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
-module.exports = router;
+//===============================================================//
+
+module.exports = insightStudentRouter;

@@ -36,7 +36,7 @@ export default function SecondHeader({ paths, darkMode }) {
       <AppBar position="static" className={classes.root} style={headerStyle}>
         {/* <Toolbar> */}
         {paths.map((path, i) => (
-          <Link to={path.URL} className={classes.link}>
+          <Link to={path.URL} key={path.URL} className={classes.link}>
             <ListItem
               button
               className={classes.item}

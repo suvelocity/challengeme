@@ -35,7 +35,6 @@ const Search = ({ darkMode }) => {
       }
       setResults(filteredChallenges);
     } catch (error) {
-      console.error(error);
     }
   };
 

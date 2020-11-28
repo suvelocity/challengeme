@@ -18,18 +18,14 @@ const ChallengeApproval = () => {
       const { data } = await network.get("/api/v1/challenges/no-matter-the-state");
       setChallenges(data);
       setChallengesStates(data.map((challenge) => challenge.state));
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const refreshChallenges = async () => {
     try {
       const { data: challengesFromServer } = await network.get("/api/v1/challenges");
       allChallengesContext.setChallenges(challengesFromServer);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const changeChallengeState = async (event, challengeId, index) => {
@@ -44,9 +40,7 @@ const ChallengeApproval = () => {
       `,
         { state: newState }
       );
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -102,15 +96,15 @@ const ChallengeApproval = () => {
     <div className="generic-page" style={{ textAlign: "center" }}>
       <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around" }}>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <h2>Pending Challenges:</h2>
+          <h2 className="challenge-approval-title">Pending Challenges:</h2>
           {pendingChallenges || <Loading />}
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <h2>Aprooved Challenges:</h2>
+          <h2 className="challenge-approval-title">Aprooved Challenges:</h2>
           {approvedChallenges || <Loading />}
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <h2>Denied Challenges:</h2>
+          <h2 className="challenge-approval-title">Denied Challenges:</h2>
           {deniedChallenges || <Loading />}
         </div>
       </div>

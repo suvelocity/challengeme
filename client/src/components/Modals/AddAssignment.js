@@ -47,7 +47,6 @@ export default function AddAssignment({
             setOpen(false);
             setNewAssignmentsChosen([]);
         } catch (error) {
-            console.error(error);
         }
     };
 

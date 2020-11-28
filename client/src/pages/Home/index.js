@@ -28,8 +28,7 @@ export default function Home() {
           setChallengesFiltered(allChallenges);
         }
       } catch (error) {
-        console.error(error);
-      }
+        }
     })();
     // eslint-disable-next-line
   }, [filteredLabels]);

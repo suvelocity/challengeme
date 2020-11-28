@@ -1,29 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import Loading from '../../../../../components/Loading';
 import network from '../../../../../services/network';
-import moment from 'moment';
 import { useParams } from 'react-router-dom';
 import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
-
+import "../style.css"
 function LastWeekSubmissions({ darkMode }) {
     const { id } = useParams();
-
     const [lastWeekSubmissions, setLastWeekSubmissions] = useState()
-
     const getLastWeekSubmissions = async () => {
         try {
-            const { data: submissions } = await network.get(`/api/v1/insights/teams/last-week-submissions/${id}`);
-            const formattedSubmissions = submissions.map((submission) => {
-                submission.createdAt = moment(submission.createdAt).fromNow()
-                submission.createdAt = submission.createdAt.includes('hour') ? 'today' : submission.createdAt.includes('minutes') ? 'today' : submission.createdAt.includes('seconds') ? 'today' : submission.createdAt
-                return submission
-            })
-            setLastWeekSubmissions(formattedSubmissions.reverse())
+            const { data: submissions } = await network.get(`/api/v1/insights/teacher/last-week-submissions/${id}`);
+            setLastWeekSubmissions(submissions.reverse())
         } catch (error) {
-            console.error(error);
-        }
+            }
     }
 
     const CustomizedLabel = ({ x, y, stroke, value, }) => {
@@ -46,7 +37,7 @@ function LastWeekSubmissions({ darkMode }) {
     return (
         lastWeekSubmissions ?
             (<div className="last-week-submissions-chart">
-                <h2>Last Week Submissions</h2>
+                <h2 className="dashboard-title-chart">Last Week Submissions</h2>
                 <LineChart
                     width={500}
                     height={300}
@@ -67,4 +58,4 @@ function LastWeekSubmissions({ darkMode }) {
     );
 }
 
-export default LastWeekSubmissions
+export default LastWeekSubmissions;

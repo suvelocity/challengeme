@@ -13,28 +13,21 @@ function SuccessPerChallenge({ darkMode }) {
 
     const getChallengesByMostSuccess = async () => {
         try {
-            const { data: challengesMostSuccess } = await network.get(`/api/v1/insights/teams/success-challenge/${id}`);
-            const formattedChallengesMostSuccess = challengesMostSuccess.map((challenge) => {
-                return ({
-                    name: challenge.Challenge.name,
-                    challengeSuccesses: challenge.challengeSuccesses
-                })
-            })
-            setChallenges(formattedChallengesMostSuccess)
+            const { data: challengesMostSuccess } = await network.get(`/api/v1/insights/teacher/success-challenge/${id}`);
+            setChallenges(challengesMostSuccess)
         } catch (error) {
-            console.error(error);
-        }
+            }
     }
 
     useEffect(() => {
         getChallengesByMostSuccess();
-            // eslint-disable-next-line
+        // eslint-disable-next-line
     }, [])
 
     return (
         challenges ?
             (<div className="last-week-submissions-chart">
-                <h2>Challenges Most Success Submissions</h2>
+                <h2 className="dashboard-title-chart">Challenges Most Success Submissions</h2>
                 <ComposedChart
                     layout="vertical"
                     width={600}
@@ -49,10 +42,11 @@ function SuccessPerChallenge({ darkMode }) {
                     <YAxis dataKey="name" type="category" />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="challengeSuccesses" barSize={20} fill="#413ea0" />
+                    <Bar dataKey="challengeSuccesses" barSize={20} fill="#005FAC" />
                 </ComposedChart>
             </div>
             ) : <Loading darkMode={darkMode} />
     );
 }
+
 export default SuccessPerChallenge;
