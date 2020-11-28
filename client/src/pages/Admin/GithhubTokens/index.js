@@ -16,7 +16,7 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import network from "../../../services/network";
 import AddToken from "../../../components/Modals/AddToken";
-
+import "./style.css";
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -54,8 +54,7 @@ function Row(props) {
         await network.delete(`/api/v1/git/${token}`);
         getAllTokens();
       }
-    } catch (error) {
-      }
+    } catch (error) {}
   };
 
   const updateToken = async (token, status) => {
@@ -66,8 +65,7 @@ function Row(props) {
         await network.patch("/api/v1/git/", { token, status: newStatus });
         getAllTokens();
       }
-    } catch (error) {
-      }
+    } catch (error) {}
   };
 
   const classes = useRowStyles();
@@ -127,7 +125,7 @@ function Row(props) {
     </React.Fragment>
   );
 }
-function GithubTokens() {
+function GithubTokens({ darkMode }) {
   const [allTokens, setAllTokens] = useState([]);
   const [open, setOpen] = useState(false);
 
@@ -135,8 +133,7 @@ function GithubTokens() {
     try {
       const { data: allTokensFromServer } = await network.get("/api/v1/git/");
       setAllTokens(allTokensFromServer);
-    } catch (error) {
-      }
+    } catch (error) {}
   }
 
   const addNewToken = () => {
@@ -149,9 +146,13 @@ function GithubTokens() {
 
   return (
     <div className="generic-page" style={{ textAlign: "center" }}>
-      <h1>Githhub Tokens Management Area</h1>
+      <h1 className="github-token-title">Githhub Tokens Management Area</h1>
       <AddToken open={open} setOpen={setOpen} getAllTokens={getAllTokens} />
-      <Button variant="contained" color="primary" onClick={addNewToken}>
+      <Button
+        variant={darkMode ? "contained" : "outlined"}
+        style={{ marginBottom: "20px" }}
+        onClick={addNewToken}
+      >
         Add New Token
       </Button>
 

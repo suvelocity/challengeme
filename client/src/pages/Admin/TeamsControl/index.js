@@ -17,7 +17,7 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import network from "../../../services/network";
 import AddTeam from "../../../components/Modals/AddTeam";
 import AddTeamMembers from "../../../components/Modals/AddTeamMembers";
-
+import "./style.css";
 const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
@@ -55,8 +55,7 @@ function Row(props) {
         await network.delete(`/api/v1/teams/remove-user/${row.id}?userId=${user}`);
         getAllTeams();
       }
-    } catch (error) {
-      }
+    } catch (error) {}
   };
 
   const changeUserPermissionOnTeam = async (user, permission) => {
@@ -70,8 +69,7 @@ function Row(props) {
         });
         getAllTeams();
       }
-    } catch (error) {
-      }
+    } catch (error) {}
   };
 
   const deleteTeam = async (team) => {
@@ -81,8 +79,7 @@ function Row(props) {
         await network.delete(`/api/v1/teams/remove-team/${team}`);
         getAllTeams();
       }
-    } catch (error) {
-      }
+    } catch (error) {}
   };
 
   const classes = useRowStyles();
@@ -166,7 +163,7 @@ function Row(props) {
     </React.Fragment>
   );
 }
-function TeamsControl() {
+function TeamsControl({ darkMode }) {
   const [allTeams, setAllTeams] = useState([]);
   const [openNewTeamModal, setOpenNewTeamModal] = useState(false);
   const [teamNameForMember, setTeamNameForMember] = useState(false);
@@ -176,8 +173,7 @@ function TeamsControl() {
     try {
       const { data: allTeamsFromServer } = await network.get("/api/v1/teams/all-teams");
       setAllTeams(allTeamsFromServer);
-    } catch (error) {
-      }
+    } catch (error) {}
   }
 
   const addNewTeam = () => {
@@ -195,7 +191,7 @@ function TeamsControl() {
 
   return (
     <div className="generic-page" style={{ textAlign: "center" }}>
-      <h1>Teams Management Area</h1>
+      <h1 className="team-control-title">Teams Management Area</h1>
       <AddTeam open={openNewTeamModal} setOpen={setOpenNewTeamModal} getAllTeams={getAllTeams} />
       <AddTeamMembers
         open={openAddMemberModal}
@@ -204,7 +200,11 @@ function TeamsControl() {
         teamNameForMember={teamNameForMember}
       />
 
-      <Button variant="contained" color="primary" onClick={addNewTeam}>
+      <Button
+        variant={darkMode ? "contained" : "outlined"}
+        style={{ marginBottom: "20px" }}
+        onClick={addNewTeam}
+      >
         Add New Team
       </Button>
 

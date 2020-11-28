@@ -118,7 +118,7 @@ function Row(props) {
   );
 }
 
-const SubmissionsByUsers = () => {
+const SubmissionsByUsers = ({ darkMode }) => {
   const [data, setData] = useState([]);
   const [last, setLast] = useState(false);
 
@@ -137,34 +137,33 @@ const SubmissionsByUsers = () => {
 
   return (
     <div className="generic-page">
-      <div className="align">
+      <div className="title-and-button">
         <h1>This is All The Submissions By Users Page</h1>
-
-        <Button onClick={filteredLast}>{last ? "Show All" : "Show Only Last"}</Button>
-        
-        <TableContainer component={Paper}>
-          <Table aria-label="collapsible table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell />
-                <StyledTableCell color="secondary">User Name</StyledTableCell>
-                <StyledTableCell align="left">First Name</StyledTableCell>
-                <StyledTableCell align="left">Last Name</StyledTableCell>
-                <StyledTableCell align="left">Phone Number</StyledTableCell>
-                <StyledTableCell align="left">Email</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.length > 0 ? (
-                data.map((user) =>
-                  <Row key={user.userName} color="secondary" row={user}/>)
-              ) : (
-                <Loading />
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Button variant={darkMode ? "contained" : "outlined"} onClick={filteredLast}>
+          {last ? "Show All" : "Show Only Last"}
+        </Button>
       </div>
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell />
+              <StyledTableCell color="secondary">User Name</StyledTableCell>
+              <StyledTableCell align="left">First Name</StyledTableCell>
+              <StyledTableCell align="left">Last Name</StyledTableCell>
+              <StyledTableCell align="left">Phone Number</StyledTableCell>
+              <StyledTableCell align="left">Email</StyledTableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data.length > 0 ? (
+              data.map((user) => <Row key={user.userName} color="secondary" row={user} />)
+            ) : (
+              <Loading />
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };
