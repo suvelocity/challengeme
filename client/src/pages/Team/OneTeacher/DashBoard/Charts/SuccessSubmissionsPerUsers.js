@@ -38,8 +38,8 @@ function SuccessSubmissions({ darkMode }) {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Bar dataKey="success" fill="#29bf12" />
-          <Bar dataKey="fail" fill="#bf0603" />
+          <Bar dataKey="success" fill="#FF8042" />
+          <Bar dataKey="fail" fill="#005FAC" />
           <Brush dataKey='userName' height={30} endIndex={teamSubmissions.length >= 5 ? 4 : teamSubmissions.length - 1} stroke="#8884d8" />
         </BarChart>
       </div>
