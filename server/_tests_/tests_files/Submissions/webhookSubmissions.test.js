@@ -2,15 +2,12 @@
  * @jest-environment node
  */
 const request = require('supertest');
+const nock = require('nock');
 const jwt = require('jsonwebtoken');
 const app = require('../../../app');
-const nock = require('nock');
-const getCurrentBranch = require('../../../helpers/getCurrentBranch');
+const { getCurrentBranch } = require('../../../helpers');
 const { Submission, Challenge, User, Review, } = require('../../../models');
-const challengesMock = require('../../mocks/challenges');
-const mockUser = require('../../mocks/users');
-const submissionsMock = require('../../mocks/submissions');
-const reviewsMock = require('../../mocks/reviews');
+const { usersMock, reviewsMock, submissionsMock, challengesMock } = require('../../mocks');
 
 function generateToken(currentUser) {
   const infoForCookie = {
@@ -36,7 +33,7 @@ describe('Submission process', () => {
     process.env.MY_BRANCH = ref;
     process.env.MY_URL = 'testingAddress';
     await Challenge.bulkCreate(challengesMock);
-    await User.bulkCreate(mockUser);
+    await User.bulkCreate(usersMock);
 
     const challengeInfo = await Challenge.findOne({
       where: {
@@ -57,17 +54,17 @@ describe('Submission process', () => {
             testRepo: challengeInfo.repositoryName,
             solutionRepo: submissionsMock[0].solutionRepository,
             webhookUrl: `testingAddress/api/v1/webhook/submission/${1}`,
-            bearerToken: generateToken(mockUser[0]),
+            bearerToken: generateToken(usersMock[0]),
           },
         })
       .reply(200);
 
     const submissionReview = reviewsMock.find((review) =>
-      review.userId === mockUser[0].id && review.challengeId === submissionsMock[0].challengeId)
+      review.userId === usersMock[0].id && review.challengeId === submissionsMock[0].challengeId)
 
     await request(app)
       .post(`/api/v1/submissions/apply/${submissionsMock[0].challengeId}`)
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`)
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`)
       .send({ repository: submissionsMock[0].solutionRepository, ...submissionReview });
 
     expect(githubPostMock1.isDone()).toEqual(true);
@@ -102,12 +99,12 @@ describe('Submission process', () => {
 
     await request(app)
       .patch(`/api/v1/webhook/submission/${1}`)
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`)
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`)
       .send({ success: true });
 
     await request(app)
       .patch(`/api/v1/webhook/submission/${2}`)
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`)
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`)
       .send({ success: false });
 
     const expectedSuccess = await Submission.findByPk(1);

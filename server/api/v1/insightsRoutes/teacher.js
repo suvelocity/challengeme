@@ -127,8 +127,6 @@ insightTeacherRouter.get('/last-week-submissions/:teamId', checkTeacherPermissio
     }
 });
 
-// =================Not Tested Insights Yet========================//
-
 // returns all the team submissions per challenge
 insightTeacherRouter.get('/challenges-submissions/:teamId', checkTeacherPermission, async (req, res) => {
     try {
@@ -175,6 +173,7 @@ insightTeacherRouter.get('/challenges-submissions/:teamId', checkTeacherPermissi
     }
 });
 
+
 // returns all the team submissions per user
 insightTeacherRouter.get('/users-submissions/:teamId', checkTeacherPermission, async (req, res) => {
     try {
@@ -214,6 +213,8 @@ insightTeacherRouter.get('/users-submissions/:teamId', checkTeacherPermission, a
         res.status(400).json({ message: 'Cannot process request' });
     }
 });
+
+// =================Not Tested Insights Yet========================//
 
 // returns all the users in the team with ordered submissions by date
 insightTeacherRouter.get('/top-user/:teamId', checkTeacherPermission, async (req, res) => {

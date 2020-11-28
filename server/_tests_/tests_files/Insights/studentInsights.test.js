@@ -1,11 +1,8 @@
 const request = require('supertest');
-const { generateToken } = require('../../Functions');
 const app = require('../../../app');
 const { User, UserTeam, Team, Submission } = require('../../../models');
-const userMock = require('../../mocks/users');
-const userTeamMock = require('../../mocks/usersTeams');
-const teamMock = require('../../mocks/teams');
-const submissionsMock = require('../../mocks/submissions');
+const { generateToken } = require('../../Functions');
+const {usersMock, teamsMock, usersTeamsMock, submissionsMock} = require('../../mocks');
 
 describe('Testing student insights routes', () => {
   beforeEach(async () => {
@@ -16,27 +13,27 @@ describe('Testing student insights routes', () => {
   });
 
   test('Student can get insights about his team', async (done) => {
-    await User.bulkCreate(userMock);
-    await UserTeam.bulkCreate(userTeamMock);
-    await Team.bulkCreate(teamMock);
+    await User.bulkCreate(usersMock);
+    await UserTeam.bulkCreate(usersTeamsMock);
+    await Team.bulkCreate(teamsMock);
     await Submission.bulkCreate(submissionsMock);
 
     const insightsInformation = await request(app)
-      .get(`/api/v1/insights/student/top-user/${teamMock[0].id}`)
-      .set('authorization', `bearer ${generateToken(userMock[0])}`);
+      .get(`/api/v1/insights/student/top-user/${teamsMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(insightsInformation.status).toBe(200);
     expect(insightsInformation.body.length <= 5).toBe(true);
 
     const unauthorized = await request(app)
-      .get(`/api/v1/insights/student/top-user/${teamMock[1].id}`)
-      .set('authorization', `bearer ${generateToken(userMock[1])}`);
+      .get(`/api/v1/insights/student/top-user/${teamsMock[1].id}`)
+      .set('authorization', `bearer ${generateToken(usersMock[1])}`);
 
     expect(unauthorized.status).toBe(401);
 
     const adminNotInTeam = await request(app)
-      .get(`/api/v1/insights/student/top-user/${teamMock[0].id}`)
-      .set('authorization', `bearer ${generateToken(userMock[2])}`);
+      .get(`/api/v1/insights/student/top-user/${teamsMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(adminNotInTeam.status).toBe(200);
 

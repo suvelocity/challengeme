@@ -1,8 +1,8 @@
 const request = require('supertest');
-const { generateToken } = require('../../Functions');
 const app = require('../../../app');
 const { User } = require('../../../models');
-const mockUser = require('../../mocks/users');
+const { generateToken } = require('../../Functions');
+const {usersMock} = require('../../mocks');
 
 describe('Testing users routes', () => {
   beforeEach(async () => {
@@ -10,30 +10,30 @@ describe('Testing users routes', () => {
   });
 
   test('Can user get info about himself', async (done) => {
-    await User.bulkCreate(mockUser);
+    await User.bulkCreate(usersMock);
 
     const userInformation = await request(app)
       .get('/api/v1/users/info')
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(userInformation.status).toBe(200);
-    expect(userInformation.body.githubAccount).toBe(mockUser[0].githubAccount);
+    expect(userInformation.body.githubAccount).toBe(usersMock[0].githubAccount);
     done();
   });
 
   test('Can admin get info about all users', async (done) => {
-    await User.bulkCreate(mockUser);
+    await User.bulkCreate(usersMock);
 
     const userInformation = await request(app)
       .get('/api/v1/users/admin')
-      .set('authorization', `bearer ${generateToken(mockUser[2])}`);
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(userInformation.status).toBe(200);
-    expect(userInformation.body.length).toBe(mockUser.length);
+    expect(userInformation.body.length).toBe(usersMock.length);
 
     const unauthorized = await request(app)
       .get('/api/v1/users/admin')
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(unauthorized.status).toBe(401);
 
@@ -41,27 +41,27 @@ describe('Testing users routes', () => {
   });
 
   test('Can admin change user permission', async (done) => {
-    await User.bulkCreate(mockUser);
+    await User.bulkCreate(usersMock);
 
     const beforePermission = await request(app)
       .patch('/api/v1/users/permission')
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(beforePermission.status).toBe(401);
 
     const changePermission = await request(app)
       .patch('/api/v1/users/permission')
-      .send({ permission: 'admin', userName: mockUser[0].userName })
-      .set('authorization', `bearer ${generateToken(mockUser[2])}`);
+      .send({ permission: 'admin', userName: usersMock[0].userName })
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(changePermission.status).toBe(200);
 
     const allUsersWithPermission = await request(app)
       .get('/api/v1/users/admin')
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(allUsersWithPermission.status).toBe(200);
-    expect(allUsersWithPermission.body.length).toBe(mockUser.length);
+    expect(allUsersWithPermission.body.length).toBe(usersMock.length);
 
     done();
   });

@@ -4,33 +4,42 @@ const { checkTeamPermission } = require('../../../middleware/checkTeamPermission
 const { Filters } = require('../../../helpers');
 const sequelize = require('sequelize');
 const { Op } = require('sequelize');
-const { Submission, Challenge, User, Team } = require('../../../models');
+const { Submission, Challenge, User, Team, UserTeam } = require('../../../models');
 
 // returns the 5 users with the most successful submissions
 insightStudentRouter.get('/top-user/:teamId', checkTeamPermission, async (req, res) => {
   try {
     const { teamId } = req.params
-    const teamUsersIds = await Filters.getTeamUsersIds(teamId);
-
+  
     // returns top 5 users and their successful submissions
-    const teamUsersTopSuccess = await User.findAll({
+    const teamUsersTopSuccess1 = await Team.findOne({
       where: {
-        id: teamUsersIds,
+        id: teamId,
       },
-      attributes: ['id', 'userName'],
       include: [
         {
-          model: Submission,
-          where: {
-            state: ['SUCCESS']
-          }
-        },
+          model: User,
+          attributes: ['id', 'userName'],
+          through: {
+            where: {
+              permission: 'student'
+            },
+            attributes: [],
+          },
+          include: [
+            {
+              model: Submission,
+              where: {
+                state: ['SUCCESS']
+              }
+            },
+          ],
+          order: [[Submission, 'createdAt', 'DESC']]
+        }
       ],
-      order: [[Submission, 'createdAt', 'DESC']]
-
     });
 
-    let formattedMembers = teamUsersTopSuccess.map((member) => {
+    let formattedMembers = teamUsersTopSuccess1.Users.map((member) => {
       const { success } = Filters.filterLastSubmissionPerChallenge(member.Submissions);
       const { userName } = member;
       return ({ success, userName })

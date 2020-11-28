@@ -1,29 +1,29 @@
-const assignmentMock = require('./assignments');
+const assignmentsMock = require('./assignments');
 const challengesMock = require('./challenges');
 const githubHeadersMock = require('./githubHeaders');
 const githubTokensMock = require('./githubTokens')
 const imagesMock = require('./images');
-const labelChallengeMock = require('./LabelChallenge');
+const labelsChallengesMock = require('./LabelChallenge');
 const labelsMock = require('./labels');
 const reviewsMock = require('./reviews');
 const submissionsMock = require('./submissions');
-const teamMock = require('./teams');
-const userMock = require('./users');
+const teamsMock = require('./teams');
+const usersMock = require('./users');
 const usersLoginMock = require('./usersLogin')
-const userTeamMock = require('./usersTeams');
+const usersTeamsMock = require('./usersTeams');
 
 module.exports = {
-    userMock,
-    userTeamMock,
-    teamMock,
-    submissionsMock,
+    assignmentsMock,
     challengesMock,
-    assignmentMock,
-    reviewsMock,
-    labelChallengeMock,
     githubHeadersMock,
     githubTokensMock,
     imagesMock,
+    labelsChallengesMock,
     labelsMock,
-    usersLoginMock
+    reviewsMock,
+    submissionsMock,
+    usersMock,
+    teamsMock,
+    usersLoginMock,
+    usersTeamsMock
 }

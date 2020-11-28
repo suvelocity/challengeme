@@ -1,10 +1,8 @@
 const request = require('supertest');
-const { generateToken } = require('../../Functions');
 const app = require('../../../app');
+const { generateToken } = require('../../Functions');
 const { Challenge, Label, LabelChallenge, Submission, User, } = require('../../../models');
-const challengesMock = require('../../mocks/challenges');
-const mockUser = require('../../mocks/users');
-const submissionsMock = require('../../mocks/submissions');
+const { usersMock, submissionsMock, challengesMock } = require('../../mocks');
 
 describe('testing challenges endpoints', () => {
   beforeEach(async () => {
@@ -17,20 +15,20 @@ describe('testing challenges endpoints', () => {
 
   test('Can get submission per certain challenge for logged user ', async (done) => {
     await Challenge.bulkCreate(challengesMock);
-    await User.bulkCreate(mockUser);
+    await User.bulkCreate(usersMock);
     await Submission.bulkCreate(submissionsMock);
 
 
     const lastSubmission = await request(app)
       .get(`/api/v1/submissions/by-user/${challengesMock[0].id}`)
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(lastSubmission.status).toBe(200);
-    expect(lastSubmission.body.userId).toBe(mockUser[0].id);
+    expect(lastSubmission.body.userId).toBe(usersMock[0].id);
 
     let lastSubmissionMockObj = { createdAt: new Date('12/12/2000') };
     submissionsMock.forEach(submission => {
-      if (submission.userId === mockUser[0].id && submission.challengeId === challengesMock[0].id) {
+      if (submission.userId === usersMock[0].id && submission.challengeId === challengesMock[0].id) {
         if (lastSubmissionMockObj.createdAt < submission.createdAt) {
           lastSubmissionMockObj = submission;
         }
@@ -44,12 +42,12 @@ describe('testing challenges endpoints', () => {
 
   test('Can get all submissions per challenge', async (done) => {
     await Challenge.bulkCreate(challengesMock);
-    await User.bulkCreate(mockUser);
+    await User.bulkCreate(usersMock);
     await Submission.bulkCreate(submissionsMock);
 
     const allSubmissionsChallenge = await request(app)
       .get(`/api/v1/submissions/${challengesMock[0].id}`)
-      .set('authorization', `bearer ${generateToken(mockUser[0])}`);
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(allSubmissionsChallenge.status).toBe(200);
     expect(allSubmissionsChallenge.body.length).toBe(submissionsMock.filter((submission) => submission.challengeId === challengesMock[0].id).length);

@@ -165,7 +165,7 @@ const SubmissionsByChallenges = ({darkMode}) => {
           {dataPresent.length > 0 ? (
             dataPresent.map((challenge) => (
               <Row
-                key={challenge.ChallengeName + challenge.createdAt}
+                key={challenge.name + challenge.createdAt}
                 row={challenge}
               />
             ))
