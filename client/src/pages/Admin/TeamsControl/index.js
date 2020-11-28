@@ -56,8 +56,7 @@ function Row(props) {
         getAllTeams();
       }
     } catch (error) {
-      console.error(error);
-    }
+      }
   };
 
   const changeUserPermissionOnTeam = async (user, permission) => {
@@ -72,8 +71,7 @@ function Row(props) {
         getAllTeams();
       }
     } catch (error) {
-      console.error(error);
-    }
+      }
   };
 
   const deleteTeam = async (team) => {
@@ -84,23 +82,8 @@ function Row(props) {
         getAllTeams();
       }
     } catch (error) {
-      console.error(error);
-    }
+      }
   };
-
-  // const updateTeam = async (token, status) => {
-  //     try {
-  //         const isUpdateOk = prompt("Who's your favorite student?");
-  //         if (isUpdateOk != null) {
-  //             const newStatus = status === 'blocked' ? 'available' : 'blocked';
-  //             const { data: allTokensFromServer } = await network.patch('/api/v1/git/', { token, status: newStatus });
-  //             console.log(allTokensFromServer);
-  //             getAllTeams();
-  //         }
-  //     } catch (error) {
-  //         console.error(error);
-  //     }
-  // };
 
   const classes = useRowStyles();
   return (
@@ -194,8 +177,7 @@ function TeamsControl() {
       const { data: allTeamsFromServer } = await network.get("/api/v1/teams/all-teams");
       setAllTeams(allTeamsFromServer);
     } catch (error) {
-      console.error(error);
-    }
+      }
   }
 
   const addNewTeam = () => {

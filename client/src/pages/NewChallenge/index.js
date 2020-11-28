@@ -55,8 +55,7 @@ export default function NewChallengeForm() {
         )),
       );
     } catch (error) {
-      console.error(error);
-    }
+      }
   };
 
   useEffect(() => {

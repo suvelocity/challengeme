@@ -55,8 +55,7 @@ function Row(props) {
         getAllTokens();
       }
     } catch (error) {
-      console.error(error);
-    }
+      }
   };
 
   const updateToken = async (token, status) => {
@@ -68,8 +67,7 @@ function Row(props) {
         getAllTokens();
       }
     } catch (error) {
-      console.error(error);
-    }
+      }
   };
 
   const classes = useRowStyles();
@@ -138,8 +136,7 @@ function GithubTokens() {
       const { data: allTokensFromServer } = await network.get("/api/v1/git/");
       setAllTokens(allTokensFromServer);
     } catch (error) {
-      console.error(error);
-    }
+      }
   }
 
   const addNewToken = () => {

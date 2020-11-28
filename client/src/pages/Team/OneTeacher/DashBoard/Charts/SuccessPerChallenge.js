@@ -16,8 +16,7 @@ function SuccessPerChallenge({ darkMode }) {
             const { data: challengesMostSuccess } = await network.get(`/api/v1/insights/teacher/success-challenge/${id}`);
             setChallenges(challengesMostSuccess)
         } catch (error) {
-            console.error(error);
-        }
+            }
     }
 
     useEffect(() => {

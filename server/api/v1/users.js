@@ -1,6 +1,6 @@
 const userRouter = require('express').Router();
 const checkAdmin = require('../../middleware/checkAdmin');
-const { checkTeamPermission, checkTeacherPermission } = require('../../middleware/checkTeamPermission');
+const { checkTeacherPermission } = require('../../middleware/checkTeamPermission');
 const { User, Team } = require('../../models');
 
 // get information about user
@@ -29,7 +29,7 @@ userRouter.get('/info', async (req, res) => {
 
 //============================== Teacher Routes ======================================
 
-userRouter.get('/teacher/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
+userRouter.get('/teacher/:teamId', checkTeacherPermission, async (req, res) => {
   try {
     const { teamId } = req.params
     const allUsers = await Team.findOne({

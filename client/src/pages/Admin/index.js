@@ -8,8 +8,7 @@ import Cookies from "js-cookie";
 import SecondHeader from "../../components/Header/SecondHeader";
 
 const GithubTokens = lazy(() => import("./GithhubTokens"));
-const SubmissionsByUsers = lazy(() => import("./UsersStatus/SubmissionsByUsers"));
-const SubmissionsByChallenges = lazy(() => import("./UsersStatus/SubmissionsByChallenges"));
+const SubmissionsByUsers = lazy(() => import("./SubmissionsStatus"));
 const ProposedChallenge = lazy(() => import("./ChallengeApproval"));
 const UsersControl = lazy(() => import("./UsersControl"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
@@ -25,7 +24,6 @@ function Index({ darkMode }) {
       try {
         await network.get("/api/v1/auth/validate-admin");
       } catch (error) {
-        console.error(error);
         Cookies.remove("refreshToken");
         Cookies.remove("accessToken");
         Cookies.remove("name");
@@ -54,8 +52,7 @@ function Index({ darkMode }) {
 
   const paths = [
     { name: "DashBoard", URL: "/admin/DashBoard" },
-    { name: "Submissions By Challenges", URL: "/admin/SubmissionsByChallenges" },
-    { name: "Submissions By Users", URL: "/admin/SubmissionsByUsers" },
+    { name: "Submissions Status", URL: `/admin/SubmissionsStatus` },
     { name: "Challenges Management", URL: "/admin/ChallengesManagement" },
     { name: "Users Control", URL: "/admin/UsersControl" },
     { name: "Githhub Tokens", URL: "/admin/GithhubTokens" },
@@ -67,14 +64,11 @@ function Index({ darkMode }) {
       <Suspense fallback={<Loading />}>
         <ErrorBoundary>
           <Switch>
-          <Route exact path="/admin/DashBoard">
+            <Route exact path="/admin/DashBoard">
               <DashBoard />
             </Route>
-            <Route exact path="/admin/SubmissionsByUsers">
+            <Route exact path="/admin/SubmissionsStatus">
               <SubmissionsByUsers />
-            </Route>
-            <Route exact path="/admin/SubmissionsByChallenges">
-              <SubmissionsByChallenges />
             </Route>
             <Route exact path="/admin/ChallengesManagement">
               <ProposedChallenge />

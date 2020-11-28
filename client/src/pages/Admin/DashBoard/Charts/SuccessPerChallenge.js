@@ -20,8 +20,7 @@ function SuccessPerChallenge({ darkMode }) {
             })
             setChallenges(formattedChallengesMostSuccess)
         } catch (error) {
-            console.error(error);
-        }
+            }
     }
 
     useEffect(() => {

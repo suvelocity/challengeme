@@ -16,7 +16,6 @@ const ChooseLabels = ({ labels, chooseLabels, setChooseLabels, setLabels, darkMo
           }));
           setChooseLabels(optionsForSelector);
         } catch (error) {
-          console.error(error);
         }
       })();
     },

@@ -1,11 +1,8 @@
 const request = require('supertest');
 const ngrok = require('ngrok');
 const app = require('../../../app');
-
 const port = process.env.TEST_PORT || 4040;
-const {
-  Submission, Challenge, User, Review,
-} = require('../../../models');
+const { Submission, Challenge, User, Review, } = require('../../../models');
 const { challengeArr, solutionRepos, failRepos } = require('../../mocks/mockingSubmissions');
 
 process.env.MY_URL = 'testingAddress';

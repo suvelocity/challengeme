@@ -13,19 +13,17 @@ function Assignments({ darkMode, teamName }) {
 
   const getAllAssignments = async () => {
     try {
-      const { data: assignments } = await network.get(`/api/v1/assignments/${id}`);
-      setAllAssignments(assignments);
+      const { data: assignments } = await network.get(`/api/v1/assignments/${id}`)
+      setAllAssignments(assignments)
     } catch (error) {
-      console.error(error);
     }
   };
 
   const removeAssignment = async (challengeId) => {
     try {
-      await network.delete(`/api/v1/assignments/${id}?challengeId=${challengeId}`);
-      getAllAssignments();
+      await network.delete(`/api/v1/assignments/${id}?challengeId=${challengeId}`)
+      getAllAssignments()
     } catch (error) {
-      console.error(error);
     }
   };
 
@@ -63,15 +61,15 @@ function Assignments({ darkMode, teamName }) {
                 submissions={challenge.Challenge.submissionsCount}
                 createdAt={challenge.Challenge.createdAt}
               />
-              <Button variant="contained" style={{marginBottom:"50px"}} onClick={() => removeAssignment(challenge.Challenge.id)}>
+              <Button variant="contained" style={{ marginBottom: "50px" }} onClick={() => removeAssignment(challenge.Challenge.id)}>
                 Remove Assignment
               </Button>
             </div>
           ))}
         </div>
       ) : (
-        <h1 className="not-found">Not Found</h1>
-      )}
+          <h1 className="not-found">Not Found</h1>
+        )}
     </div>
   );
 }

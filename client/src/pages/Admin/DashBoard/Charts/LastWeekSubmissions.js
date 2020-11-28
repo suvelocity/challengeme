@@ -20,8 +20,7 @@ function LastWeekSubmissions({ darkMode }) {
             })
             setLastWeekSubmissions(formattedSubmissions.reverse())
         } catch (error) {
-            console.error(error);
-        }
+            }
     }
 
     const CustomizedLabel = ({ x, y, stroke, value, }) => {

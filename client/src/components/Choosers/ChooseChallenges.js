@@ -31,8 +31,7 @@ const ChooseChallenges = ({
                     return challengesForOptions;
                 }).filter((option) => !(!option)));
             } catch (error) {
-                console.error(error);
-            }
+      }
         })();
     }, [setChallengesOptions, teamId]);
 

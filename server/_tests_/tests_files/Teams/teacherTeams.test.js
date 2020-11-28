@@ -1,22 +1,11 @@
 const request = require('supertest');
-const jwt = require('jsonwebtoken');
+const { generateToken } = require('../../Functions');
 const app = require('../../../app');
 const { User, UserTeam, Team } = require('../../../models');
 const userMock = require('../../mocks/users');
 const userTeamMock = require('../../mocks/usersTeams');
 const teamMock = require('../../mocks/teams');
 const {  Op } = require('sequelize');
-
-
-function generateToken(currentUser) {
-  const infoForCookie = {
-    userId: currentUser.id,
-    userName: currentUser.userName,
-  };
-  return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '900s',
-  });
-}
 
 describe('Testing teams routes', () => {
   beforeEach(async () => {
@@ -61,7 +50,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(userMock[0])}`);
 
     expect(teamInformation.status).toBe(200);
-    expect(teamInformation.body[0].Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length);
+    expect(teamInformation.body.Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length);
 
     const addUser = await request(app)
       .post(`/api/v1/teams/add-users/${teamMock[0].id}`)
@@ -75,7 +64,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(userMock[0])}`);
 
     expect(teamInformationAfterAdded.status).toBe(200);
-    expect(teamInformationAfterAdded.body[0].Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length + 1);
+    expect(teamInformationAfterAdded.body.Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length + 1);
 
     const unauthorized = await request(app)
       .post(`/api/v1/teams/add-users/${teamMock[0].id}`)
@@ -104,7 +93,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(userMock[0])}`);
 
     expect(teamInformation.status).toBe(200);
-    expect(teamInformation.body[0].Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length);
+    expect(teamInformation.body.Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length);
 
     const addUser = await request(app)
       .delete(`/api/v1/teams/remove-user/${teamMock[0].id}`)
@@ -118,7 +107,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(userMock[0])}`);
 
     expect(teamInformationAfterRemoved.status).toBe(200);
-    expect(teamInformationAfterRemoved.body[0].Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length - 1);
+    expect(teamInformationAfterRemoved.body.Users.length).toBe(userTeamMock.filter((connection) => connection.teamId === teamMock[0].id).length - 1);
 
     const unauthorized = await request(app)
       .delete(`/api/v1/teams/remove-user/${teamMock[0].id}`)

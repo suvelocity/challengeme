@@ -79,8 +79,7 @@ function UserInfo({ darkMode }) {
         const { data: info } = await network.get('/api/v1/users/info');
         setUserInfo(info);
       } catch (error) {
-        console.error(error);
-      }
+        }
     })();
   }, []);
   return userInfo.firstName ? (

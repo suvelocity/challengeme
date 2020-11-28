@@ -1,20 +1,10 @@
 const request = require('supertest');
-const jwt = require('jsonwebtoken');
+const { generateToken } = require('../../Functions');
 const app = require('../../../app');
 const { User, UserTeam, Team } = require('../../../models');
 const userMock = require('../../mocks/users');
 const userTeamMock = require('../../mocks/usersTeams');
 const teamMock = require('../../mocks/teams');
-
-function generateToken(currentUser) {
-  const infoForCookie = {
-    userId: currentUser.id,
-    userName: currentUser.userName,
-  };
-  return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '900s',
-  });
-}
 
 describe('Testing teams routes', () => {
   beforeEach(async () => {
@@ -33,8 +23,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(userMock[0])}`);
 
     expect(teamInformation.status).toBe(200);
-    expect(teamInformation.body[0].id).toBe(teamMock[0].id);
-    expect(teamInformation.body[1].permission).toBe(userTeamMock.filter((connection) => connection.userId === userMock[0].id && connection.teamId === teamMock[0].id)[0].permission);
+    expect(teamInformation.body.id).toBe(teamMock[0].id);
 
     done();
   });

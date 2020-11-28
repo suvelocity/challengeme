@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Rating from '@material-ui/lab/Rating';
 import { Link } from 'react-router-dom';
 import network from '../../services/network';
-import './ChallengeCard.css';
+import './ChallengeCardSmallerVersion.css';
 
 export default function ChallengeCard({
   name,
@@ -23,8 +23,7 @@ export default function ChallengeCard({
         const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`);
         setCoverImg(coverImage ? coverImage.img : '');
         setLoading(false);
-      } catch (err) {
-        console.error(err.message);
+      } catch (error) {
       }
     })();
     // eslint-disable-next-line
@@ -32,24 +31,24 @@ export default function ChallengeCard({
 
   return (
     <Link to={`/challenges/${challengeId}`} style={{ textDecoration: 'none' }}>
-      <div className="challenge-card">
-        <div className="chalenge-card-profile-pic">
+      <div className="challenge-card-smaller-version">
+        <div className="chalenge-card-smaller-version-profile-pic">
           {!loading ? (
             coverImg.length > 0 && (
-              <img className="challenge-card-img-homepage" src={coverImg} alt=" " />
+              <img className="challenge-card-smaller-version-img-homepage" src={coverImg} alt=" " />
             )
           ) : (
-            <div className="challenge-card-img-homepage-loading" />
+            <div className="challenge-card-smaller-version-img-homepage-loading" />
           )}
         </div>
-        <div className="challenge-card-info">
-          <div className="first-row-container">
-            <span className="challenge-card-title">{name}</span>
-            <div className="labels-container">
+        <div className="challenge-card-smaller-version-info">
+          <div className="first-row-container-smaller-version">
+            <span className="challenge-card-smaller-version-title">{name}</span>
+            <div className="labels-container-smaller-version">
               {
                 // getting the first 2 lables
                 labels.map((label) => (
-                  <span className="home-page-challenge-labels" key={label.id}>
+                  <span className="home-page-challenge-labels-smaller-version" key={label.id}>
                     {label.name}
                   </span>
                 ))
@@ -57,20 +56,20 @@ export default function ChallengeCard({
             </div>
           </div>
 
-          <div className="second-row-container">
+          <div className="second-row-container-smaller-version">
             <Rating
               readOnly
               name="disabled"
               value={rating ? Math.round(rating) : 0}
             />
-            <div className="number-of-submissions">
+            <div className="number-of-submissions-smaller-version">
               {submissions}
               {' '}
               Submission
             </div>
           </div>
 
-          <div className="challenge-card-description-homepage">
+          <div className="challenge-card-smaller-version-description-homepage">
             {
               // slicing the description to 100 letters and adding 3 dots if sliced
               description.length < 100
@@ -79,7 +78,7 @@ export default function ChallengeCard({
                 }...`
             }
           </div>
-          <div className="challenge-card-description-homepage">
+          <div className="challenge-card-smaller-version-description-homepage">
             {
               `${createdAt.split('T')[0]} || by ${authorName}`
             }

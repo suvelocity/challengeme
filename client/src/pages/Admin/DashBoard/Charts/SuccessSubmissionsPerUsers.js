@@ -35,8 +35,7 @@ function SuccessSubmissions({ darkMode }) {
       })
       setTeamMembers(fromattedMembers)
     } catch (error) {
-      console.error(error);
-    }
+      }
   }
 
   useEffect(() => {

@@ -16,8 +16,7 @@ function SuccessSubmissions({ darkMode }) {
       const { data: mostSuccessChallenges } = await network.get(`/api/v1/insights/student/top-user/${id}`);
       setTeamMembers(mostSuccessChallenges)
     } catch (error) {
-      console.error(error);
-    }
+      }
   }
 
   useEffect(() => {

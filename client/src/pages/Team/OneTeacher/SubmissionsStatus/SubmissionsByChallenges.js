@@ -46,7 +46,7 @@ const useRowStyles = makeStyles({
 });
 
 function Row(props) {
-  const { row, last } = props;
+  const { row } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
@@ -59,10 +59,10 @@ function Row(props) {
           </IconButton>
         </>
         <StyledTableCell component="th" scope="row">
-          {row.ChallengeName}
+          {row.name}
         </StyledTableCell>
         <StyledTableCell align="left">
-          {last ? row.Submissions.length : row.countSub}
+          {row.Submissions.length}
         </StyledTableCell>
         <StyledTableCell align="left">
           {new Date(row.createdAt).toString().substring(0, 24)}
@@ -92,7 +92,7 @@ function Row(props) {
                         <StyledTableCell component="th" scope="row">
                           {userBySubmission.id}
                         </StyledTableCell>
-                        <StyledTableCell> {userBySubmission.userName} </StyledTableCell>
+                        <StyledTableCell> {userBySubmission.User.userName} </StyledTableCell>
                         <StyledTableCell> {userBySubmission.solutionRepository} </StyledTableCell>
                         <StyledTableCell align="left">
                           {new Date(userBySubmission.createdAt).toString().substring(0, 24)}
@@ -103,8 +103,8 @@ function Row(props) {
                               userBySubmission.state === "SUCCESS"
                                 ? { color: "green" }
                                 : userBySubmission.state === "FAIL"
-                                ? { color: "red" }
-                                : { color: "black" }
+                                  ? { color: "red" }
+                                  : { color: "black" }
                             }
                           >
                             {userBySubmission.state}
@@ -122,98 +122,25 @@ function Row(props) {
   );
 }
 
-const SubmissionsByChallenges = ({ darkMode }) => {
-  const [
-    combainChallengesSubmissionsVsUsersData,
-    setCombainChallengesSubmissionsVsUsersData,
-  ] = useState([]);
-  const [
-    combainChallengesSubmissionsVsUsersDataLast,
-    setCombainChallengesSubmissionsVsUsersDataLast,
-  ] = useState([]);
+const SubmissionsByChallenges = ({darkMode}) => {
   const [dataPresent, setDataPresent] = useState([]);
   const [last, setLast] = useState(false);
   const { id } = useParams();
 
+
   const getChallengesSubmissions = async () => {
     const { data: challengesSubmissionsFromServer } = await network.get(
-      `/api/v1/insights/teacher/challenges-submissions/${id}`
+      `/api/v1/insights/teacher/challenges-submissions/${id}?onlyLast=${last}`
     );
-    const combainChallengesSubmissionsVsUsers =
-      challengesSubmissionsFromServer[0].length > 0
-        ? challengesSubmissionsFromServer[0].map((challenge) => ({
-            ChallengeName: challenge.Challenge.name,
-            countSub: challenge.countSub,
-            createdAt: challenge.createdAt,
-            Submissions: challengesSubmissionsFromServer[1]
-              .map((userChallenge) => {
-                if (challenge.Challenge.id === userChallenge.id) {
-                  return userChallenge.Submissions.map((userBySubmission) => ({
-                    id: userBySubmission.id,
-                    solutionRepository: userBySubmission.solutionRepository,
-                    userName: userBySubmission.User.userName,
-                    createdAt: userBySubmission.createdAt,
-                    state: userBySubmission.state,
-                  })).sort(
-                    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-                  );
-                }
-                return null;
-              })
-              .filter((element) => !!element)[0],
-          }))
-        : [];
-    setCombainChallengesSubmissionsVsUsersData(combainChallengesSubmissionsVsUsers);
-    setDataPresent(combainChallengesSubmissionsVsUsers);
-    const combainChallengesSubmissionsVsUsersLast =
-      challengesSubmissionsFromServer[0].length > 0
-        ? challengesSubmissionsFromServer[0].map((challenge) => ({
-            ChallengeName: challenge.Challenge.name,
-            countSub: challenge.countSub,
-            createdAt: challenge.createdAt,
-            Submissions: challengesSubmissionsFromServer[1]
-              .map((userChallenge) => {
-                if (challenge.Challenge.id === userChallenge.id) {
-                  const myFilteredArray = [];
-                  const myFilteredArrayUsers = [];
-                  userChallenge.Submissions.map((userBySubmission) => ({
-                    id: userBySubmission.id,
-                    solutionRepository: userBySubmission.solutionRepository,
-                    userName: userBySubmission.User.userName,
-                    createdAt: userBySubmission.createdAt,
-                    state: userBySubmission.state,
-                  }))
-                    .sort(
-                      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-                    )
-                    .forEach((user) => {
-                      if (myFilteredArrayUsers.includes(user.userName)) {
-                      } else {
-                        myFilteredArrayUsers.push(user.userName);
-                        myFilteredArray.push(user);
-                      }
-                    });
-                  return myFilteredArray;
-                }
-                return null;
-              })
-              .filter((element) => !!element)[0],
-          }))
-        : [];
-    setCombainChallengesSubmissionsVsUsersDataLast(combainChallengesSubmissionsVsUsersLast);
+    setDataPresent(challengesSubmissionsFromServer);
   };
 
   useEffect(() => {
     getChallengesSubmissions();
     // eslint-disable-next-line
-  }, []);
+  }, [last]);
 
   const filteredLast = () => {
-    if (last) {
-      setDataPresent(combainChallengesSubmissionsVsUsersData);
-    } else {
-      setDataPresent(combainChallengesSubmissionsVsUsersDataLast);
-    }
     setLast((prev) => !prev);
   };
 
@@ -240,12 +167,11 @@ const SubmissionsByChallenges = ({ darkMode }) => {
               <Row
                 key={challenge.ChallengeName + challenge.createdAt}
                 row={challenge}
-                last={last}
               />
             ))
           ) : (
-            <Loading />
-          )}
+              <Loading />
+            )}
         </Table>
       </TableContainer>
     </div>

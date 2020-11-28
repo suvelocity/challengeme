@@ -19,7 +19,6 @@ const ChallengeApproval = () => {
       setChallenges(data);
       setChallengesStates(data.map((challenge) => challenge.state));
     } catch (error) {
-      console.error(error);
     }
   };
 
@@ -28,7 +27,6 @@ const ChallengeApproval = () => {
       const { data: challengesFromServer } = await network.get("/api/v1/challenges");
       allChallengesContext.setChallenges(challengesFromServer);
     } catch (error) {
-      console.error(error);
     }
   };
 
@@ -45,8 +43,7 @@ const ChallengeApproval = () => {
         { state: newState }
       );
     } catch (error) {
-      console.error(error);
-    }
+      }
   };
 
   useEffect(() => {

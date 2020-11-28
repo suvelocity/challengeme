@@ -74,7 +74,6 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
       value.setLogged(false);
       location.push("/login");
     } catch (error) {
-      console.error(error);
     }
   };
 

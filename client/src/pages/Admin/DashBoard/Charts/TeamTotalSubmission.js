@@ -23,8 +23,7 @@ function TeamTotalSubmission({ darkMode }) {
 
             setTeamSubmissions(data)
         } catch (error) {
-            console.error(error);
-        }
+            }
     }
 
     const chooseChallenge = (event) => {

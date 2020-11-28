@@ -13,12 +13,11 @@ function TeamTasks({ darkMode }) {
 
   const getAllAssignments = async () => {
     try {
-      const { data: assignments } = await network.get(`/api/v1/assignments/${id}`);
-      setAllAssignments(assignments);
-      setLoading(false);
+      const { data: assignments } = await network.get(`/api/v1/assignments/${id}`)
+      setAllAssignments(assignments)
+      setLoading(false)
     } catch (error) {
-      console.error(error);
-      setLoading(false);
+      setLoading(false)
     }
   };
 
@@ -59,17 +58,17 @@ function TeamTasks({ darkMode }) {
                 />
               ))
             ) : (
-              <h1 className="not-found">Not Found</h1>
-            )}
+                <h1 className="not-found">Not Found</h1>
+              )}
           </div>
         </div>
       </>
     ) : (
-      <NotFound />
-    )
+        <NotFound />
+      )
   ) : (
-    <Loading darkMode={darkMode} />
-  );
+      <Loading darkMode={darkMode} />
+    );
 }
 
 export default TeamTasks;

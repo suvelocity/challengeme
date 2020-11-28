@@ -16,8 +16,7 @@ function SuccessSubmissions({ darkMode }) {
       const { data: submissions } = await network.get(`/api/v1/insights/teacher/top-user/${id}`);
       setTeamSubmissions(submissions)
     } catch (error) {
-      console.error(error);
-    }
+      }
   }
 
   useEffect(() => {

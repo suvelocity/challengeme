@@ -1,56 +1,13 @@
 const insightTeacherRouter = require('express').Router();
 const { Op } = require('sequelize');
 const sequelize = require('sequelize');
-const { checkTeacherPermission, checkTeamPermission } = require('../../../middleware/checkTeamPermission');
+const { Filters } = require('../../../helpers');
+const { checkTeacherPermission } = require('../../../middleware/checkTeamPermission');
 const { Submission, Challenge, User, Team, Assignment } = require('../../../models');
 const moment = require('moment');
 
-async function getTeamUsersIds(teamId) {
-    const currentTeamUsers = await Team.findOne({
-        where: {
-            id: teamId,
-        },
-        attributes: ['name'],
-        include: [
-            {
-                model: User,
-                attributes: ['id'],
-                through: {
-                    where: {
-                        permission: 'student'
-                    },
-                    attributes: [],
-                },
-            },
-        ],
-    });
-    // returns array with users ids
-    const usersId = currentTeamUsers.Users.map((value) => value.id);
-    return usersId;
-}
-
-const filterLastSubmissionPerChallenge = (submissionsOrderedByDate) => {
-    const filteredAlready = [];
-    let success = 0;
-    let fail = 0;
-    submissionsOrderedByDate.forEach((submission) => {
-        if (filteredAlready.some(filteredSubmission =>
-            filteredSubmission.userId === submission.userId &&
-            filteredSubmission.challengeId === submission.challengeId)) {
-        } else {
-            filteredAlready.push({ userId: submission.userId, challengeId: submission.challengeId });
-            if (submission.state === 'SUCCESS') {
-                success++
-            } else {
-                fail++
-            }
-        }
-    })
-    return { success, fail }
-}
-
 // returns the last teams submissions status(success, fail, not submitted)
-insightTeacherRouter.get('/team-submissions/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
+insightTeacherRouter.get('/team-submissions/:teamId', checkTeacherPermission, async (req, res) => {
     try {
         const { teamId } = req.params;
         const { challenge } = req.query;
@@ -70,7 +27,7 @@ insightTeacherRouter.get('/team-submissions/:teamId', checkTeamPermission, check
             return res.status(400).json({ message: 'Cannot process request' });
         }
 
-        const teamUsersId = await getTeamUsersIds(teamId);
+        const teamUsersId = await Filters.getTeamUsersIds(teamId);
 
         // returns submissions count for each state
         const totalSubmissionsOrderedByDate = await Submission.findAll({
@@ -81,7 +38,7 @@ insightTeacherRouter.get('/team-submissions/:teamId', checkTeamPermission, check
             order: [['createdAt', 'DESC']]
         });
 
-        const filteredSubmissions = filterLastSubmissionPerChallenge(totalSubmissionsOrderedByDate)
+        const filteredSubmissions = Filters.filterLastSubmissionPerChallenge(totalSubmissionsOrderedByDate)
         const notYetSubmitted = (teamUsersId.length * totalSubmissionsShouldBe) - (filteredSubmissions.success + filteredSubmissions.fail);
         filteredSubmissions.notYet = notYetSubmitted ? notYetSubmitted : 0;
 
@@ -93,10 +50,10 @@ insightTeacherRouter.get('/team-submissions/:teamId', checkTeamPermission, check
 });
 
 // returns the top challenges, with the most successful submissions in the team
-insightTeacherRouter.get('/success-challenge/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
+insightTeacherRouter.get('/success-challenge/:teamId', checkTeacherPermission, async (req, res) => {
     try {
         const { teamId } = req.params
-        const teamUsersIds = await getTeamUsersIds(teamId);
+        const teamUsersIds = await Filters.getTeamUsersIds(teamId);
 
         // returns the count of all the successes per challenge for the team
         const successfulTeamChallenges = await Submission.findAll({
@@ -131,16 +88,13 @@ insightTeacherRouter.get('/success-challenge/:teamId', checkTeamPermission, chec
     }
 });
 
-// =================Not Tested Yet========================//
-
 // returns last week team submissions count
-insightTeacherRouter.get('/last-week-submissions/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
+insightTeacherRouter.get('/last-week-submissions/:teamId', checkTeacherPermission, async (req, res) => {
     try {
         const { teamId } = req.params
-        const teamUsersIds = await getTeamUsersIds(teamId);
+        const teamUsersIds = await Filters.getTeamUsersIds(teamId);
 
         // return the teams successful submissions from the last week by day
-
         const OneWeek = 7 * 24 * 60 * 60 * 1000;
 
         const lastWeekTeamSubmissions = await Submission.findAll({
@@ -173,40 +127,48 @@ insightTeacherRouter.get('/last-week-submissions/:teamId', checkTeamPermission, 
     }
 });
 
+// =================Not Tested Insights Yet========================//
+
 // returns all the team submissions per challenge
-insightTeacherRouter.get('/challenges-submissions/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
+insightTeacherRouter.get('/challenges-submissions/:teamId', checkTeacherPermission, async (req, res) => {
     try {
         const { teamId } = req.params
-        const usersId = await getTeamUsersIds(teamId)
-        const topChallenges = await Submission.findAll({
-            attributes: {
-                include: [
-                    [sequelize.fn('COUNT', sequelize.col('challenge_id')), 'countSub'],
-                ],
-            },
-            include: {
-                model: Challenge,
-                attributes: ['id', 'name'],
-            },
-            group: ['challenge_id'],
-            order: [[sequelize.fn('COUNT', sequelize.col('challenge_id')), 'DESC']],
-        });
+        const { onlyLast } = req.query
+        const usersIds = await Filters.getTeamUsersIds(teamId)
 
-        const users = await Challenge.findAll({
+        const challenges = await Challenge.findAll({
             include: {
                 model: Submission,
+                where: {
+                    userId: usersIds
+                },
                 attributes: ['id', 'userId', 'createdAt', 'state', 'solutionRepository'],
                 include: {
                     model: User,
-                    where: {
-                        id: usersId
-                    },
                     attributes: ['userName'],
                 },
             },
+            order: [[Submission, 'createdAt', 'DESC']]
         });
 
-        res.json([topChallenges, users]);
+        if (onlyLast === 'true') {
+            challenges.forEach(challenge => {
+                const myFilteredArray = [];
+                const myFilteredArrayUsers = []
+                challenge.Submissions.forEach(submission => {
+                    if (myFilteredArrayUsers.includes(submission.dataValues.userId)) {
+                    } else {
+                        myFilteredArrayUsers.push(submission.dataValues.userId);
+                        myFilteredArray.push(submission);
+                    }
+                });
+                challenge.dataValues.Submissions = myFilteredArray;
+            })
+        }
+
+        challenges.sort((a, b) => b.dataValues.Submissions.length - a.dataValues.Submissions.length)
+
+        res.json(challenges)
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: 'Cannot process request' });
@@ -214,10 +176,11 @@ insightTeacherRouter.get('/challenges-submissions/:teamId', checkTeamPermission,
 });
 
 // returns all the team submissions per user
-insightTeacherRouter.get('/users-submissions/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
+insightTeacherRouter.get('/users-submissions/:teamId', checkTeacherPermission, async (req, res) => {
     try {
-        const { teamId } = req.params
-        const usersId = await getTeamUsersIds(teamId)
+        const { teamId } = req.params;
+        const { onlyLast } = req.query;
+        const usersId = await Filters.getTeamUsersIds(teamId)
         const topUsers = await User.findAll({
             attributes: ['userName', 'phoneNumber', 'firstName', 'lastName', 'email'],
             where: {
@@ -227,7 +190,24 @@ insightTeacherRouter.get('/users-submissions/:teamId', checkTeamPermission, chec
                 model: Submission,
                 include: { model: Challenge },
             },
+            order: [[Submission, 'createdAt', 'DESC']]
         });
+
+        if (onlyLast === 'true') {
+            topUsers.forEach(user => {
+                const myFilteredArray = [];
+                const myFilteredArrayUsers = []
+                user.Submissions.forEach(submission => {
+                    if (myFilteredArrayUsers.includes(submission.dataValues.challengeId)) {
+                    } else {
+                        myFilteredArrayUsers.push(submission.dataValues.challengeId);
+                        myFilteredArray.push(submission);
+                    }
+                });
+                user.dataValues.Submissions = myFilteredArray;
+            })
+        }
+
         res.json(topUsers);
     } catch (error) {
         console.error(error);
@@ -236,10 +216,10 @@ insightTeacherRouter.get('/users-submissions/:teamId', checkTeamPermission, chec
 });
 
 // returns all the users in the team with ordered submissions by date
-insightTeacherRouter.get('/top-user/:teamId', checkTeamPermission, checkTeacherPermission, async (req, res) => {
+insightTeacherRouter.get('/top-user/:teamId', checkTeacherPermission, async (req, res) => {
     try {
         const { teamId } = req.params
-        const teamUsersIds = await getTeamUsersIds(teamId);
+        const teamUsersIds = await Filters.getTeamUsersIds(teamId);
 
         // returns top 5 users and their successful submissions
         const teamUsersTopSuccess = await User.findAll({
@@ -286,6 +266,6 @@ insightTeacherRouter.get('/top-user/:teamId', checkTeamPermission, checkTeacherP
     }
 });
 
-// =================Not Tested Yet========================//
+// =================Not Tested Insights Yet========================//
 
 module.exports = insightTeacherRouter;

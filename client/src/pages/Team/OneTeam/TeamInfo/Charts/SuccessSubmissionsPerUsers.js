@@ -15,9 +15,8 @@ function SuccessSubmissions({ darkMode }) {
       );
       setTeamMembers(mostSuccessChallenges);
     } catch (error) {
-      console.error(error);
-    }
-  };
+      }
+  }
 
   useEffect(() => {
     getDataOnTeam();

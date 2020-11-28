@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import Table from "@material-ui/core/Table";
@@ -83,7 +84,7 @@ function Row(props) {
                 <TableBody>
                   {row.Submissions &&
                     row.Submissions.map((submission) => (
-                      <StyledTableRow key={submission.Challenge.name}>
+                      <StyledTableRow key={submission.id}>
                         <StyledTableCell component="th" scope="row">
                           {submission.Challenge.name}
                         </StyledTableCell>
@@ -96,8 +97,8 @@ function Row(props) {
                               submission.state === "SUCCESS"
                                 ? { color: "green" }
                                 : submission.state === "FAIL"
-                                ? { color: "red" }
-                                : { color: "black" }
+                                  ? { color: "red" }
+                                  : { color: "black" }
                             }
                           >
                             {submission.state}
@@ -118,24 +119,33 @@ function Row(props) {
   );
 }
 
-const SubmissionsByUsers = () => {
+const SubmissionsByUsers = ({darkMode}) => {
   const [data, setData] = useState([]);
+  const [last, setLast] = useState(false);
   const { id } = useParams();
 
   async function fetchData() {
-    const { data } = await network.get(`/api/v1/insights/teacher/users-submissions/${id}`);
+    const { data } = await network.get(`/api/v1/insights/teacher/users-submissions/${id}?onlyLast=${last}`);
     setData(data);
   }
+
+  const filteredLast = () => {
+    setLast((prev) => !prev);
+  };
 
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line
-  }, []);
+  }, [last]);
+
 
   return (
-    <div className="generic-page">
+    <div >
       <div className="title-and-button">
         <h2>This is All The Submissions By Users Page</h2>
+        <Button variant={darkMode ? "contained" : "outlined"} onClick={filteredLast}>
+          {last ? "Show All" : "Show Only Last"}
+        </Button>
       </div>
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
@@ -153,8 +163,8 @@ const SubmissionsByUsers = () => {
             {data.length > 0 ? (
               data.map((user) => <Row key={user.userName} color="secondary" row={user} />)
             ) : (
-              <Loading />
-            )}
+                <Loading />
+              )}
           </TableBody>
         </Table>
       </TableContainer>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
 import IconButton from "@material-ui/core/IconButton";
 import Table from "@material-ui/core/Table";
@@ -82,7 +83,7 @@ function Row(props) {
                 <TableBody>
                   {row.Submissions &&
                     row.Submissions.map((submission) => (
-                      <StyledTableRow key={submission.Challenge.name}>
+                      <StyledTableRow key={submission.id}>
                         <StyledTableCell component="th" scope="row">
                           {submission.Challenge.name}
                         </StyledTableCell>
@@ -119,21 +120,28 @@ function Row(props) {
 
 const SubmissionsByUsers = () => {
   const [data, setData] = useState([]);
+  const [last, setLast] = useState(false);
 
   async function fetchData() {
-    const { data } = await network.get("/api/v1/insights/admin/users-submissions");
+    const { data } = await network.get(`/api/v1/insights/admin/users-submissions?onlyLast=${last}`);
     setData(data);
   }
 
+  const filteredLast = () => {
+    setLast((prev) => !prev);
+  };
+
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [last]);
 
   return (
     <div className="generic-page">
       <div className="align">
         <h1>This is All The Submissions By Users Page</h1>
 
+        <Button onClick={filteredLast}>{last ? "Show All" : "Show Only Last"}</Button>
+        
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">
             <TableHead>
@@ -148,7 +156,8 @@ const SubmissionsByUsers = () => {
             </TableHead>
             <TableBody>
               {data.length > 0 ? (
-                data.map((user) => <Row key={user.userName} color="secondary" row={user} />)
+                data.map((user) =>
+                  <Row key={user.userName} color="secondary" row={user}/>)
               ) : (
                 <Loading />
               )}

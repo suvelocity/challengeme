@@ -31,18 +31,15 @@ function OneTeamPage({ darkMode }) {
   const { id } = useParams();
   const [teamMembers, setTeamMembers] = useState();
   const [loading, setLoading] = useState(true);
-  const [permission, setPermission] = useState();
-  console.log(teamMembers);
+
   useEffect(() => {
     (async () => {
       try {
         const { data: members } = await network.get(`/api/v1/teams/team-page/${id}`);
-        setTeamMembers(members[0]);
-        setPermission(members[1].permission);
+        setTeamMembers(members);
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        console.error(error);
       }
     })();
   }, [id]);
@@ -58,20 +55,19 @@ function OneTeamPage({ darkMode }) {
         <SecondHeader paths={paths} darkMode={darkMode} />
 
         <div className="generic-page">
-        <h1 className="team-info-title-page">
-        {" "}
+          <h1 className="team-info-title-page">
+            {" "}
         Team: <span className="team-info-title-page-name">{teamMembers.name}</span>{" "}
-      </h1>
+          </h1>
           <div className="team-info-paper-chart">
             <SuccessSubmissionsPerUsers darkMode={darkMode} />
           </div>
-          <h2 style={{marginLeft:tableWidth}} className="team-info-title-table">My Team Friends:</h2>
+          <h2 style={{ marginLeft: tableWidth }} className="team-info-title-table">My Team Friends:</h2>
           <TableContainer component={Paper} className={classes.container}>
             <Table className={classes.table} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell>ID</TableCell>
-                  <TableCell align="center">name</TableCell>
+                  <TableCell >name</TableCell>
                   <TableCell align="center">Phone Number</TableCell>
                   <TableCell align="center">Email</TableCell>
                 </TableRow>
@@ -80,11 +76,10 @@ function OneTeamPage({ darkMode }) {
                 {teamMembers.Users.map((user) => (
                   <TableRow key={user.id}>
                     <TableCell component="th" scope="row">
-                      {user.id}
+                      {user.userName}
                     </TableCell>
-                    <TableCell align="center"> {user.userName}</TableCell>
-                    <TableCell align="center">{user.userName}</TableCell>
-                    <TableCell align="center">{user.userName}</TableCell>
+                    <TableCell align="center">{user.phoneNumber}</TableCell>
+                    <TableCell align="center">{user.email}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -93,11 +88,11 @@ function OneTeamPage({ darkMode }) {
         </div>
       </>
     ) : (
-      <NotFound />
-    )
+        <NotFound />
+      )
   ) : (
-    <Loading darkMode={darkMode} />
-  );
+      <Loading darkMode={darkMode} />
+    );
 }
 
 export default OneTeamPage;

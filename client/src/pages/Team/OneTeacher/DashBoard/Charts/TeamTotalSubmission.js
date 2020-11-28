@@ -16,8 +16,7 @@ function TeamTotalSubmission({ darkMode }) {
             const { data: submissions } = await network.get(`/api/v1/insights/teacher/team-submissions/${id}?challenge=${chosenChallenges}`);
             setTeamSubmissions(submissions)
         } catch (error) {
-            console.error(error);
-        }
+            }
     }
 
     const chooseChallenge = (event) => {
