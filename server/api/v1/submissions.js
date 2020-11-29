@@ -16,7 +16,7 @@ submissionRouter.get('/by-user/:challengeId', async (req, res) => {
     const testSubmission = await Submission.findAll({
       where: {
         challengeId,
-        userId: userId,
+        userId,
       },
       include: [
         {
@@ -24,7 +24,7 @@ submissionRouter.get('/by-user/:challengeId', async (req, res) => {
           attributes: ['userName'],
         },
       ],
-      order: [['createdAt', 'ASC']]
+      order: [['createdAt', 'ASC']],
     });
     const timeNow = Date.now();
     if (testSubmission.length > 0) {

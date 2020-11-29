@@ -10,7 +10,7 @@ const ChooseMembers = ({
   membersOptions,
   setMembersOptions,
   darkMode,
-  isTeacher
+  isTeacher,
 }) => {
   useEffect(() => {
     (async () => {

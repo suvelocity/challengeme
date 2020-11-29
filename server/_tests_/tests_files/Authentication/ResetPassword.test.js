@@ -2,7 +2,7 @@ const request = require('supertest');
 const bcrypt = require('bcryptjs');
 const server = require('../../../app');
 const { User } = require('../../../models');
-const {usersMock, usersLoginMock} = require('../../mocks');
+const { usersMock, usersLoginMock } = require('../../mocks');
 
 const originalAnswer = usersMock[2].securityAnswer;
 

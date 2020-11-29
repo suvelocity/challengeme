@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../../../app');
 const { User } = require('../../../models');
 const { generateToken } = require('../../Functions');
-const {usersMock} = require('../../mocks');
+const { usersMock } = require('../../mocks');
 
 describe('Testing users routes', () => {
   beforeEach(async () => {

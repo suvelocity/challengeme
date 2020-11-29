@@ -4,5 +4,5 @@ const handleGithubTokens = require('./handleGithubTokens');
 const getCurrentBranch = require('./getCurrentBranch');
 
 module.exports = {
-    mailer: Communicator, handleGithubTokens, getCurrentBranch, Filters
-}
+  mailer: Communicator, handleGithubTokens, getCurrentBranch, Filters,
+};

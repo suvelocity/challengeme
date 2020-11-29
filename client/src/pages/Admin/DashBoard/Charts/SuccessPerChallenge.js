@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Loading from "../../../../components/Loading";
-import network from "../../../../services/network";
-import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-import "../style.css";
+import React, { useState, useEffect } from 'react';
+import {
+  ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+} from 'recharts';
+import Loading from '../../../../components/Loading';
+import network from '../../../../services/network';
+import '../style.css';
 
 function SuccessPerChallenge({ darkMode }) {
   const [challenges, setChallenges] = useState();
@@ -10,16 +12,10 @@ function SuccessPerChallenge({ darkMode }) {
   const getChallengesByMostSuccess = async () => {
     try {
       const { data: challengesMostSuccess } = await network.get(
-        `/api/v1/insights/admin/success-challenge/`
+        '/api/v1/insights/admin/success-challenge/',
       );
-      const formattedChallengesMostSuccess = challengesMostSuccess.map((challenge) => {
-        return {
-          name: challenge.Challenge.name,
-          challengeSuccesses: challenge.challengeSuccesses,
-        };
-      });
-      setChallenges(formattedChallengesMostSuccess);
-    } catch (error) {}
+      setChallenges(challengesMostSuccess);
+    } catch (error) { }
   };
 
   useEffect(() => {

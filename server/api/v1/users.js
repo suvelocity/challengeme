@@ -27,21 +27,21 @@ userRouter.get('/info', async (req, res) => {
   }
 });
 
-//============================== Teacher Routes ======================================
+//= ============================= Teacher Routes ======================================
 
 userRouter.get('/teacher/:teamId', checkTeacherPermission, async (req, res) => {
   try {
-    const { teamId } = req.params
+    const { teamId } = req.params;
     const allUsers = await Team.findOne({
       where: {
-        id: teamId
+        id: teamId,
       },
       include: {
         model: User,
         through: {
           paranoid: false,
-        }
-      }
+        },
+      },
     });
     const flitteredUsersSensitiveData = allUsers.Users.map((user) => {
       delete user.dataValues.password;
@@ -55,7 +55,7 @@ userRouter.get('/teacher/:teamId', checkTeacherPermission, async (req, res) => {
   }
 });
 
-//============================== Admin Routes ======================================//
+//= ============================= Admin Routes ======================================//
 
 // get information about all the users
 userRouter.get('/admin', checkAdmin, async (req, res) => {
