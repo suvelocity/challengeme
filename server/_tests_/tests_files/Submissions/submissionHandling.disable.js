@@ -1,11 +1,8 @@
 const request = require('supertest');
 const ngrok = require('ngrok');
 const app = require('../../../app');
-
 const port = process.env.TEST_PORT || 4040;
-const {
-  Submission, Challenge, User, Review,
-} = require('../../../models');
+const { Submission, Challenge, User, Review, } = require('../../../models');
 const { challengeArr, solutionRepos, failRepos } = require('../../mocks/mockingSubmissions');
 
 process.env.MY_URL = 'testingAddress';
@@ -46,11 +43,6 @@ describe('Submission process', () => {
     await Review.destroy({ truncate: true, force: true });
     await User.create({ ...userToAdd });
     await Challenge.bulkCreate(challengeArr);
-    await Submission.create({
-      challengeId: solutionRepos[0].challengeId,
-      state: 'FAIL',
-      solutionRepository: solutionRepos[0].repo,
-    });
     console.log(solutionRepos);
     console.log(process.env.MY_URL);
     const password = '12345678';
