@@ -36,8 +36,8 @@ export default function AdminChallengeCard({
             <img className="admin-challenge-card-img-homepage" src={coverImg} alt=" " />
           )
         ) : (
-            <div className="admin-challenge-card-img-homepage-loading" />
-          )}
+          <div className="admin-challenge-card-img-homepage-loading" />
+        )}
       </div>
       <div className="admin-challenge-card-info">
         <div className="first-row-container">

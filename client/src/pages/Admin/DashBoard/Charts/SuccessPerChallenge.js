@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Loading from "../../../../components/Loading";
-import network from "../../../../services/network";
-import { ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-import "../style.css";
+import React, { useState, useEffect } from 'react';
+import {
+  ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+} from 'recharts';
+import Loading from '../../../../components/Loading';
+import network from '../../../../services/network';
+import '../style.css';
 
 function SuccessPerChallenge({ darkMode }) {
   const [challenges, setChallenges] = useState();
@@ -10,7 +12,7 @@ function SuccessPerChallenge({ darkMode }) {
   const getChallengesByMostSuccess = async () => {
     try {
       const { data: challengesMostSuccess } = await network.get(
-        `/api/v1/insights/admin/success-challenge/`
+        '/api/v1/insights/admin/success-challenge/',
       );
       setChallenges(challengesMostSuccess);
     } catch (error) { }
@@ -45,7 +47,7 @@ function SuccessPerChallenge({ darkMode }) {
       </ComposedChart>
     </div>
   ) : (
-      <Loading darkMode={darkMode} />
-    );
+    <Loading darkMode={darkMode} />
+  );
 }
 export default SuccessPerChallenge;

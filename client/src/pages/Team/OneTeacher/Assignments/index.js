@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import network from "../../../../services/network";
-import ChallengeCard from "../../../../components/ChallengeCardSmallVersion";
-import AddAssignment from "../../../../components/Modals/AddAssignment";
-import "./style.css";
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import network from '../../../../services/network';
+import ChallengeCard from '../../../../components/ChallengeCardSmallVersion';
+import AddAssignment from '../../../../components/Modals/AddAssignment';
+import './style.css';
+
 function TeacherAssignments({ darkMode, teamName }) {
   const { id } = useParams();
 
@@ -13,16 +14,16 @@ function TeacherAssignments({ darkMode, teamName }) {
 
   const getAllAssignments = async () => {
     try {
-      const { data: assignments } = await network.get(`/api/v1/assignments/${id}`)
-      setAllAssignments(assignments)
+      const { data: assignments } = await network.get(`/api/v1/assignments/${id}`);
+      setAllAssignments(assignments);
     } catch (error) {
     }
   };
 
   const removeAssignment = async (challengeId) => {
     try {
-      await network.delete(`/api/v1/assignments/${id}?challengeId=${challengeId}`)
-      getAllAssignments()
+      await network.delete(`/api/v1/assignments/${id}?challengeId=${challengeId}`);
+      getAllAssignments();
     } catch (error) {
     }
   };
@@ -41,8 +42,13 @@ function TeacherAssignments({ darkMode, teamName }) {
         teamId={id}
       />
       <div className="assignments-title-and-button">
-        <h1>This Assignments Teacher For Team {teamName} Page</h1>
-        <Button variant={darkMode ? "contained" : "outlined"} onClick={() => setOpenNewAssignmentModal(true)}>
+        <h1>
+          This Assignments Teacher For Team
+          {teamName}
+          {' '}
+          Page
+        </h1>
+        <Button variant={darkMode ? 'contained' : 'outlined'} onClick={() => setOpenNewAssignmentModal(true)}>
           Add New Assignment
         </Button>
       </div>
@@ -61,15 +67,15 @@ function TeacherAssignments({ darkMode, teamName }) {
                 submissions={challenge.Challenge.submissionsCount}
                 createdAt={challenge.Challenge.createdAt}
               />
-              <Button variant="contained" style={{ marginBottom: "50px" }} onClick={() => removeAssignment(challenge.Challenge.id)}>
+              <Button variant="contained" style={{ marginBottom: '50px' }} onClick={() => removeAssignment(challenge.Challenge.id)}>
                 Remove Assignment
               </Button>
             </div>
           ))}
         </div>
       ) : (
-          <h1 className="not-found">Not Found</h1>
-        )}
+        <h1 className="not-found">Not Found</h1>
+      )}
     </div>
   );
 }

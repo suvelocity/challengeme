@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
-import Loading from "../../../../components/Loading";
-import network from "../../../../services/network";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-import "../style.css";
+import React, { useState, useEffect } from 'react';
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+} from 'recharts';
+import Loading from '../../../../components/Loading';
+import network from '../../../../services/network';
+import '../style.css';
 
 function LastWeekSubmissions({ darkMode }) {
   const [lastWeekSubmissions, setLastWeekSubmissions] = useState();
@@ -10,29 +12,29 @@ function LastWeekSubmissions({ darkMode }) {
   const getLastWeekSubmissions = async () => {
     try {
       const { data: submissions } = await network.get(
-        `/api/v1/insights/admin/last-week-submissions`
+        '/api/v1/insights/admin/last-week-submissions',
       );
       setLastWeekSubmissions(submissions.reverse());
     } catch (error) { }
   };
 
-  const CustomizedLabel = ({ x, y, stroke, value }) => {
-    return (
-      <text x={x} y={y} dy={-4} fill={stroke} fontSize={10} textAnchor="middle">
-        {value}
-      </text>
-    );
-  };
+  const CustomizedLabel = ({
+    x, y, stroke, value,
+  }) => (
+    <text x={x} y={y} dy={-4} fill={stroke} fontSize={10} textAnchor="middle">
+      {value}
+    </text>
+  );
 
-  const CustomizedAxisTick = ({ x, y, stroke, payload }) => {
-    return (
-      <g transform={`translate(${x},${y})`}>
-        <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
-          {payload.value}
-        </text>
-      </g>
-    );
-  };
+  const CustomizedAxisTick = ({
+    x, y, stroke, payload,
+  }) => (
+    <g transform={`translate(${x},${y})`}>
+      <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
+        {payload.value}
+      </text>
+    </g>
+  );
 
   useEffect(() => {
     getLastWeekSubmissions();
@@ -67,8 +69,8 @@ function LastWeekSubmissions({ darkMode }) {
       </LineChart>
     </div>
   ) : (
-      <Loading darkMode={darkMode} />
-    );
+    <Loading darkMode={darkMode} />
+  );
 }
 
 export default LastWeekSubmissions;

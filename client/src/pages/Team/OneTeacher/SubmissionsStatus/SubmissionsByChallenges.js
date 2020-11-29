@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import Collapse from "@material-ui/core/Collapse";
-import IconButton from "@material-ui/core/IconButton";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import Loading from "../../../../components/Loading";
-import network from "../../../../services/network";
-import "../../../Admin/Admin.css";
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Loading from '../../../../components/Loading';
+import network from '../../../../services/network';
+import '../../../Admin/Admin.css';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -31,7 +31,7 @@ const StyledTableCell = withStyles((theme) => ({
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
-    "&:nth-of-type(odd)": {
+    '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },
   },
@@ -39,8 +39,8 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useRowStyles = makeStyles({
   root: {
-    "& > *": {
-      borderBottom: "unset",
+    '& > *': {
+      borderBottom: 'unset',
     },
   },
 });
@@ -86,25 +86,33 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.Submissions &&
-                    row.Submissions.map((userBySubmission) => (
+                  {row.Submissions
+                    && row.Submissions.map((userBySubmission) => (
                       <StyledTableRow key={userBySubmission.id}>
                         <StyledTableCell component="th" scope="row">
                           {userBySubmission.id}
                         </StyledTableCell>
-                        <StyledTableCell> {userBySubmission.User.userName} </StyledTableCell>
-                        <StyledTableCell> {userBySubmission.solutionRepository} </StyledTableCell>
+                        <StyledTableCell>
+                          {' '}
+                          {userBySubmission.User.userName}
+                          {' '}
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {' '}
+                          {userBySubmission.solutionRepository}
+                          {' '}
+                        </StyledTableCell>
                         <StyledTableCell align="left">
                           {new Date(userBySubmission.createdAt).toString().substring(0, 24)}
                         </StyledTableCell>
                         <StyledTableCell align="left">
                           <div
                             style={
-                              userBySubmission.state === "SUCCESS"
-                                ? { color: "green" }
-                                : userBySubmission.state === "FAIL"
-                                  ? { color: "red" }
-                                  : { color: "black" }
+                              userBySubmission.state === 'SUCCESS'
+                                ? { color: 'green' }
+                                : userBySubmission.state === 'FAIL'
+                                  ? { color: 'red' }
+                                  : { color: 'black' }
                             }
                           >
                             {userBySubmission.state}
@@ -122,15 +130,14 @@ function Row(props) {
   );
 }
 
-const SubmissionsByChallenges = ({darkMode}) => {
+const SubmissionsByChallenges = ({ darkMode }) => {
   const [dataPresent, setDataPresent] = useState([]);
   const [last, setLast] = useState(false);
   const { id } = useParams();
 
-
   const getChallengesSubmissions = async () => {
     const { data: challengesSubmissionsFromServer } = await network.get(
-      `/api/v1/insights/teacher/challenges-submissions/${id}?onlyLast=${last}`
+      `/api/v1/insights/teacher/challenges-submissions/${id}?onlyLast=${last}`,
     );
     setDataPresent(challengesSubmissionsFromServer);
   };
@@ -148,8 +155,8 @@ const SubmissionsByChallenges = ({darkMode}) => {
     <div>
       <div className="title-and-button">
         <h2>This is All The Submissions By Challenges Page</h2>
-        <Button variant={darkMode ? "contained" : "outlined"} onClick={filteredLast}>
-          {last ? "Show All" : "Show Only Last"}
+        <Button variant={darkMode ? 'contained' : 'outlined'} onClick={filteredLast}>
+          {last ? 'Show All' : 'Show Only Last'}
         </Button>
       </div>
       <TableContainer component={Paper}>
@@ -170,8 +177,8 @@ const SubmissionsByChallenges = ({darkMode}) => {
               />
             ))
           ) : (
-              <Loading />
-            )}
+            <Loading />
+          )}
         </Table>
       </TableContainer>
     </div>

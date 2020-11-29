@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import network from "../../../services/network";
-import "./MyTeams.css";
+import React, { useEffect, useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import network from '../../../services/network';
+import './MyTeams.css';
 
 function TeamCard({ team }) {
-  const linkPath =
-    team.UserTeam.permission === "teacher" ? `/teams/teacher/${team.id}` : `/teams/${team.id}`;
+  const linkPath = team.UserTeam.permission === 'teacher' ? `/teams/teacher/${team.id}` : `/teams/${team.id}`;
 
   return (
     <Link to={linkPath} className="my-team-link">
       <div className="my-team-card">
         <div className="my-team-name">{team.name}</div>
         <div className="my-team-description">description</div>
-        {team.UserTeam.permission === "teacher" && (
+        {team.UserTeam.permission === 'teacher' && (
           <div className="my-team-teacher">As Teacher</div>
         )}
       </div>
@@ -25,7 +24,7 @@ function MyTeams() {
   const Location = useHistory();
   const fetchUserTeam = async () => {
     try {
-      const { data: userTeam } = await network.get("/api/v1/teams/all-teams-by-user");
+      const { data: userTeam } = await network.get('/api/v1/teams/all-teams-by-user');
       setTeamData(userTeam.Teams);
       if (userTeam.Teams.length === 1) {
         Location.push(`/teams/${userTeam.Teams[0].id}`);
@@ -42,10 +41,12 @@ function MyTeams() {
     <div className="my-teams">
       <h1 className="my-teams-title">Teams Area</h1>
       <div className="my-teams-container">
-        {teamData && teamData.map((team) =>
+        {teamData && teamData.map((team) => (
           <TeamCard
             key={team.id}
-            team={team} />)}
+            team={team}
+          />
+        ))}
       </div>
     </div>
   );

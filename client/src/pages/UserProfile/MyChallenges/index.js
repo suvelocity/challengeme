@@ -14,7 +14,7 @@ const UserProfileLanding = () => {
       );
       setAllMyChallenges(allMyChallengesFromServer);
     } catch (error) {
-      }
+    }
   };
   useEffect(() => {
     const username = Cookies.get('userName');
@@ -114,9 +114,7 @@ const UserProfileLanding = () => {
             </div>
           ))}
       </div>
-      <div className="user-profile-my-challenges-button-container">
-
-      </div>
+      <div className="user-profile-my-challenges-button-container" />
     </div>
   );
 };
