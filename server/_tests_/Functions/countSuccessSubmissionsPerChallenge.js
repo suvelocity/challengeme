@@ -6,14 +6,15 @@ module.exports = function countSuccessSubmissionsPerChallenge(submissionsOrdered
         submissionsOrderedByDate.forEach((submission) => {
             if (challenge.id === submission.challengeId) {
                 if (filteredAlready.some(filteredSubmission =>
-                    filteredSubmission.challengeId === submission.challengeId)) {
+                    filteredSubmission.userId === submission.userId)) {
                 } else {
-                    filteredAlready.push({ challengeId: submission.challengeId });
+                    filteredAlready.push({ challengeId: submission.challengeId, userId: submission.userId });
                     challengeSuccesses++
                 }
-                filteredChallenges.push({ challengeSuccesses, name: challenge.name })
             }
         })
+        filteredChallenges.push({ challengeSuccesses, name: challenge.name });
     })
+
     return filteredChallenges;
 }

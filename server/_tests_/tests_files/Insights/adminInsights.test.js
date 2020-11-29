@@ -88,7 +88,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test.only('Admin can get the most success submitted challenges of all users', async (done) => {
+  test('Admin can get the most success submitted challenges of all users', async (done) => {
     await User.bulkCreate(usersMock);
     await UserTeam.bulkCreate(usersTeamsMock);
     await Team.bulkCreate(teamsMock);
@@ -96,31 +96,27 @@ describe('Testing admin insights routes', () => {
     await Challenge.bulkCreate(challengesMock);
     await Assignment.bulkCreate(assignmentsMock);
 
-    const teamSubmissionsInsightsOneChallenge = await request(app)
+    const adminSubmissionsInsightsOneChallenge = await request(app)
       .get(`/api/v1/insights/admin/success-challenge`)
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
-    expect(teamSubmissionsInsightsOneChallenge.status).toBe(200);
-    console.log(teamSubmissionsInsightsOneChallenge.body)
-    expect(teamSubmissionsInsightsOneChallenge.body.length <= 5).toBe(true);
-    teamSubmissionsInsightsOneChallenge.body.forEach(challenge => {
+    expect(adminSubmissionsInsightsOneChallenge.status).toBe(200);
+    expect(adminSubmissionsInsightsOneChallenge.body.length <= 5).toBe(true);
+    adminSubmissionsInsightsOneChallenge.body.forEach(challenge => {
       expect(challenge.hasOwnProperty('challengeSuccesses')).toBe(true)
       expect(challenge.hasOwnProperty('name')).toBe(true)
     })
 
-    const teamUsersId = filterUsersByTeam(teamsMock[0], usersTeamsMock);
-    const conditions = [
-      {
-        paramter: 'state',
-        equal: 'SUCCESS'
-      }]
-    const teamSubmissions = filterSubmissionsByTeam(teamUsersId, conditions)
-    const filteredChallenges = countSuccessSubmissionsPerChallenge(teamSubmissions, challengesMock)
-    const groupedChallenges = countGroupArray(filteredChallenges, 'challengeSuccesses', 'name')
-    const filteredOrderedGrouped = groupedChallenges.sort((a, b) => b.challengeSuccesses - a.challengeSuccesses).splice(0, 5);
-    filteredOrderedGrouped.forEach((element, index) => {
-      expect(teamSubmissionsInsightsOneChallenge.body[index].name).toBe(element.name);
-      expect(teamSubmissionsInsightsOneChallenge.body[index].challengeSuccesses).toBe(element.challengeSuccesses);
+    const allUsersSubmissionsOrdered = submissionsMock
+      .filter(submission => submission.state === 'SUCCESS')
+      .sort((a, b) => b.createdAt - a.createdAt);
+
+    const filteredChallenges = countSuccessSubmissionsPerChallenge(allUsersSubmissionsOrdered, challengesMock)
+      .sort((a, b) => b.challengeSuccesses - a.challengeSuccesses)
+      .slice(0, 5)
+
+    filteredChallenges.forEach((element, index) => {
+      expect(adminSubmissionsInsightsOneChallenge.body[index].challengeSuccesses).toBe(element.challengeSuccesses);
     })
 
     const unauthorized = await request(app)
@@ -132,7 +128,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test('Admin can get the last week submissions of all users', async (done) => {
+  test.skip('Admin can get the last week submissions of all users', async (done) => {
     await User.bulkCreate(usersMock);
     await UserTeam.bulkCreate(usersTeamsMock);
     await Team.bulkCreate(teamsMock);
@@ -142,20 +138,27 @@ describe('Testing admin insights routes', () => {
 
     const teamLastWeekSubmissions = await request(app)
       .get(`/api/v1/insights/admin/last-week-submissions`)
-      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
+
+    console.log(teamLastWeekSubmissions.body);
 
     expect(teamLastWeekSubmissions.status).toBe(200);
-    const teamUsersId = filterUsersByTeam(teamsMock[0], usersTeamsMock);
-    const teamSubmissions = filterSubmissionsByTeam(teamUsersId);
-    const formattedSubmissions = teamSubmissions.map((submission) => {
+
+    const allUsersSubmissionsOrdered = submissionsMock
+      .sort((a, b) => b.createdAt - a.createdAt);
+
+    const formattedSubmissions = allUsersSubmissionsOrdered.map((submission) => {
       submission.createdAt = moment(submission.createdAt).fromNow()
       submission.createdAt = submission.createdAt.includes('hour') ? 'today' : submission.createdAt.includes('minutes') ? 'today' : submission.createdAt.includes('seconds') ? 'today' : submission.createdAt
       return { dateSubmissions: 1, createdAt: submission.createdAt }
     })
     const groupSubmissions = countGroupArray(formattedSubmissions, 'dateSubmissions', 'createdAt')
-    groupSubmissions.forEach((element, index) => {
-      expect(teamLastWeekSubmissions.body[index].dateSubmissions).toBe(element.dateSubmissions);
-      expect(teamLastWeekSubmissions.body[index].createdAt).toBe(element.createdAt);
+      .sort((a, b) => b.dateSubmissions - a.dateSubmissions)
+
+    console.log(groupSubmissions);
+    teamLastWeekSubmissions.body.forEach((element, index) => {
+      expect(groupSubmissions[index].dateSubmissions).toBe(element.dateSubmissions);
+      expect(groupSubmissions[index].createdAt).toBe(element.createdAt);
     })
 
     const unauthorized = await request(app)
@@ -173,7 +176,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test('Admin can get the challenges submissions per challenges of all users', async (done) => {
+  test.skip('Admin can get the challenges submissions per challenges of all users', async (done) => {
     await User.bulkCreate(usersMock);
     await UserTeam.bulkCreate(usersTeamsMock);
     await Team.bulkCreate(teamsMock);
@@ -252,7 +255,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test('Admin can get the challenges submissions per users of all users', async (done) => {
+  test.skip('Admin can get the challenges submissions per users of all users', async (done) => {
     await User.bulkCreate(usersMock);
     await UserTeam.bulkCreate(usersTeamsMock);
     await Team.bulkCreate(teamsMock);
@@ -331,7 +334,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test('Admin can get the top users per success challenges of all users', async (done) => {
+  test.skip('Admin can get the top users per success challenges of all users', async (done) => {
     await User.bulkCreate(usersMock);
     await UserTeam.bulkCreate(usersTeamsMock);
     await Team.bulkCreate(teamsMock);
