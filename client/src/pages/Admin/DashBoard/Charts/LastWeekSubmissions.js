@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Loading from "../../../../components/Loading";
 import network from "../../../../services/network";
-import moment from "moment";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import "../style.css";
 
@@ -13,19 +12,8 @@ function LastWeekSubmissions({ darkMode }) {
       const { data: submissions } = await network.get(
         `/api/v1/insights/admin/last-week-submissions`
       );
-      const formattedSubmissions = submissions.map((submission) => {
-        submission.createdAt = moment(submission.createdAt).fromNow();
-        submission.createdAt = submission.createdAt.includes("hour")
-          ? "today"
-          : submission.createdAt.includes("minutes")
-          ? "today"
-          : submission.createdAt.includes("seconds")
-          ? "today"
-          : submission.createdAt;
-        return submission;
-      });
-      setLastWeekSubmissions(formattedSubmissions.reverse());
-    } catch (error) {}
+      setLastWeekSubmissions(submissions.reverse());
+    } catch (error) { }
   };
 
   const CustomizedLabel = ({ x, y, stroke, value }) => {
@@ -79,8 +67,8 @@ function LastWeekSubmissions({ darkMode }) {
       </LineChart>
     </div>
   ) : (
-    <Loading darkMode={darkMode} />
-  );
+      <Loading darkMode={darkMode} />
+    );
 }
 
 export default LastWeekSubmissions;

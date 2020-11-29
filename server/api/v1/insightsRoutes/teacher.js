@@ -1,10 +1,10 @@
 const insightTeacherRouter = require('express').Router();
+const moment = require('moment');
 const { Op } = require('sequelize');
 const sequelize = require('sequelize');
 const { Filters } = require('../../../helpers');
 const { checkTeacherPermission } = require('../../../middleware/checkTeamPermission');
 const { Submission, Challenge, User, Team, Assignment } = require('../../../models');
-const moment = require('moment');
 
 // returns the last teams submissions status(success, fail, not submitted)
 insightTeacherRouter.get('/team-submissions/:teamId', checkTeacherPermission, async (req, res) => {
@@ -56,32 +56,31 @@ insightTeacherRouter.get('/success-challenge/:teamId', checkTeacherPermission, a
         const teamUsersIds = await Filters.getTeamUsersIds(teamId);
 
         // returns the count of all the successes per challenge for the team
-        const successfulTeamChallenges = await Submission.findAll({
-            group: ['challengeId'],
-            attributes: [
-                [sequelize.fn('COUNT', 'challengeId'), 'challengeSuccesses'],
-                'challengeId',
-            ],
-            where: {
-                state: 'SUCCESS',
-                userId: teamUsersIds,
-            },
+        const successfulTeamChallenges = await Challenge.findAll({
+            attributes: ['name'],
             include: [
                 {
-                    model: Challenge,
-                    attributes: ['name'],
+                    model: Submission,
+                    attributes: ['userId', 'state'],
+                    where: {
+                        state: 'SUCCESS',
+                        userId: teamUsersIds,
+                    },
                 },
             ],
-            order: [[sequelize.fn('COUNT', 'challengeId'), 'DESC']],
+            order: [[Submission, 'createdAt', 'DESC']]
         });
-        const slicedChallenges = successfulTeamChallenges.slice(0, 5)
-        const formattedChallengesMostSuccess = slicedChallenges.map((challenge) => {
-            return ({
-                name: challenge.dataValues.Challenge.dataValues.name,
-                challengeSuccesses: challenge.dataValues.challengeSuccesses
+
+        const onlyLast = [];
+        successfulTeamChallenges.forEach(challenge => {
+            onlyLast.push({
+                challengeSuccesses: Filters.filterLastSubmissionPerChallenge(challenge.Submissions).success,
+                name: challenge.name,
+                challengeId: challenge.id
             })
         })
-        res.json(formattedChallengesMostSuccess);
+
+        res.json(onlyLast.sort((a, b) => b.challengeSuccesses - a.challengeSuccesses).slice(0, 5));
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: 'Cannot process request' });
@@ -239,7 +238,7 @@ insightTeacherRouter.get('/top-user/:teamId', checkTeacherPermission, async (req
             order: [[Submission, 'createdAt', 'DESC']]
         });
 
-        const fromattedMembers = teamUsersTopSuccess.map((member) => {
+        const formattedMembers = teamUsersTopSuccess.map((member) => {
             const filteredSubmissions = []
             let success = 0
             let fail = 0
@@ -260,7 +259,7 @@ insightTeacherRouter.get('/top-user/:teamId', checkTeacherPermission, async (req
                 userName: member.userName
             })
         })
-        res.json(fromattedMembers);
+        res.json(formattedMembers);
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: 'Cannot process request' });

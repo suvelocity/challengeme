@@ -12,14 +12,8 @@ function SuccessPerChallenge({ darkMode }) {
       const { data: challengesMostSuccess } = await network.get(
         `/api/v1/insights/admin/success-challenge/`
       );
-      const formattedChallengesMostSuccess = challengesMostSuccess.map((challenge) => {
-        return {
-          name: challenge.Challenge.name,
-          challengeSuccesses: challenge.challengeSuccesses,
-        };
-      });
-      setChallenges(formattedChallengesMostSuccess);
-    } catch (error) {}
+      setChallenges(challengesMostSuccess);
+    } catch (error) { }
   };
 
   useEffect(() => {
@@ -51,7 +45,7 @@ function SuccessPerChallenge({ darkMode }) {
       </ComposedChart>
     </div>
   ) : (
-    <Loading darkMode={darkMode} />
-  );
+      <Loading darkMode={darkMode} />
+    );
 }
 export default SuccessPerChallenge;

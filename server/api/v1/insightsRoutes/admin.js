@@ -1,4 +1,5 @@
 const insightAdminRouter = require('express').Router();
+const moment = require('moment');
 const { Op } = require('sequelize');
 const { Filters } = require('../../../helpers');
 const sequelize = require('sequelize');
@@ -161,25 +162,30 @@ insightAdminRouter.get('/all-submissions/', async (req, res) => {
 // returns the top challenges, with the most successful submissions
 insightAdminRouter.get('/success-challenge', async (req, res) => {
   try {
-    const successfulTeamChallenges = await Submission.findAll({
-      group: ['challengeId'],
-      attributes: [
-        [sequelize.fn('COUNT', 'challengeId'), 'challengeSuccesses'],
-        'challengeId',
-      ],
-      where: {
-        state: 'SUCCESS',
-      },
+    const challengesWithSuccessSubmissions = await Challenge.findAll({
+      attributes: ['name'],
       include: [
         {
-          model: Challenge,
-          attributes: ['name'],
+          model: Submission,
+          attributes: ['userId', 'state'],
+          where: {
+            state: 'SUCCESS',
+          },
         },
       ],
-      order: [[sequelize.fn('COUNT', 'challengeId'), 'DESC']],
+      order: [[Submission, 'createdAt', 'DESC']]
     });
 
-    res.json(successfulTeamChallenges.slice(0, 5));
+    const onlyLast = [];
+    challengesWithSuccessSubmissions.forEach(challenge => {
+      onlyLast.unshift({
+        challengeSuccesses: Filters.filterLastSubmissionPerChallenge(challenge.Submissions).success,
+        name: challenge.name,
+        challengeId: challenge.id
+      })
+    })
+
+    res.json(onlyLast.sort((a, b) => b.challengeSuccesses - a.challengeSuccesses).slice(0, 5));
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
@@ -189,8 +195,8 @@ insightAdminRouter.get('/success-challenge', async (req, res) => {
 // returns last week submissions count
 insightAdminRouter.get('/last-week-submissions', async (req, res) => {
   try {
-    const week = 7 * 24 * 60 * 60 * 1000;
-    const subByDate = await Submission.findAll({
+    const OneWeek = 7 * 24 * 60 * 60 * 1000;
+    const lastWeekAllUsersSubmissions = await Submission.findAll({
       raw: true,
       group: [sequelize.fn('DAY', sequelize.col('Submission.created_at'))],
       attributes: [
@@ -199,12 +205,21 @@ insightAdminRouter.get('/last-week-submissions', async (req, res) => {
       ],
       where: {
         created_at: {
-          [Op.gte]: new Date(Date.now() - week),
+          [Op.gte]: new Date(Date.now() - OneWeek),
         },
       },
+      order: [
+        [sequelize.fn('DAY', sequelize.col('Submission.created_at')), 'desc'],
+      ],
     });
 
-    res.json(subByDate);
+    const formattedSubmissions = lastWeekAllUsersSubmissions.map((submission) => {
+      submission.createdAt = moment(submission.createdAt).fromNow()
+      submission.createdAt = submission.createdAt.includes('hour') ? 'today' : submission.createdAt.includes('minutes') ? 'today' : submission.createdAt.includes('seconds') ? 'today' : submission.createdAt
+      return submission
+    })
+
+    res.json(formattedSubmissions);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
@@ -260,6 +275,7 @@ insightAdminRouter.get('/users-submissions', async (req, res) => {
         model: Submission,
         include: { model: Challenge },
       },
+      order: [[Submission, 'createdAt', 'DESC']]
     });
 
 
