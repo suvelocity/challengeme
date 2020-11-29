@@ -1,6 +1,5 @@
-const express = require('express');
-const api = express.Router();
-const helmet = require("helmet");
+const api = require('express').Router();
+const helmet = require('helmet');
 
 api.use(helmet());
 

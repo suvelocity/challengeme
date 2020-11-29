@@ -1,9 +1,8 @@
-const { Router } = require('express');
+const imagRouter = require('express').Router();
 const { Image } = require('../../models');
 
-const router = Router();
-
-router.get('/', async (req, res) => {
+// get image per challenge by query
+imagRouter.get('/', async (req, res) => {
   const challengeId = req.query.id;
   try {
     const image = await Image.findOne({
@@ -16,7 +15,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+// add image for challenge
+imagRouter.post('/', async (req, res) => {
   const image = req.body;
   try {
     const checkIfExists = await Image.findOne({
@@ -35,4 +35,4 @@ router.post('/', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = imagRouter;

@@ -3,26 +3,26 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { Logged } from "../context/LoggedInContext";
 import AllChallenges from "../context/AllChallengesContext";
 import FilteredLabels from "../context/FilteredLabelsContext";
-import Register from "./Authentication/Register/Register";
+import Register from "./Authentication/Register";
 import Login from "./Authentication/Login";
 import Cookies from "js-cookie";
-import Forgot from "./Authentication/ForgotPasswordPage/Forgot";
+import Forgot from "./Authentication/ForgotPasswordPage";
 import ValidatingMail from "./Authentication/Register/ValidatingMail";
 import network from "../services/network";
-import Landing from "./Authentication/Landing";
+import Landing from "./Authentication";
 import { AnimatePresence } from "framer-motion";
-import Header from "../components/Header/Header";
-import ErrorBoundry from "../components/ErrorBoundry";
-import Loading from "../components/Loading/Loading";
+import Header from "../components/Header";
+import ErrorBoundary from "../components/ErrorBoundary";
+import Loading from "../components/Loading";
 import "../index.css";
-import NewChallengeForm from "./NewChallenge/NewChallengeForm"
+import NewChallengeForm from "./NewChallenge";
 import UserProfile from "./UserProfile";
 import Admin from "./Admin";
-
+import Team from "./Team";
 
 const NotFound = lazy(() => import("../pages/NotFound"));
-const Home = lazy(() => import("./Home/Home"));
-const ChallengePage = lazy(() => import("./OneChallenge/ChallengePage"));
+const Home = lazy(() => import("./Home"));
+const ChallengePage = lazy(() => import("./OneChallenge"));
 
 export default function Router() {
   const [darkTheme, setDarkTheme] = useState(false);
@@ -34,10 +34,8 @@ export default function Router() {
 
   useEffect(() => {
     if (logged) {
-
       const previousTheme = localStorage.getItem("darkMode"); //get previous selected theme
-      if (Cookies.get("isAdmin") === 'admin') {
-        console.log('I AM ADMIN NOW YAY')
+      if (Cookies.get("isAdmin") === "admin") {
         setIsAdmin(true);
       }
 
@@ -54,12 +52,9 @@ export default function Router() {
     }
     (async () => {
       try {
-        const { data: challengesFromServer } = await network.get(
-          "/api/v1/challenges"
-        );
-        typeof challengesFromServer === "object" &&
-          setChallenges(challengesFromServer);
-      } catch { }
+        const { data: challengesFromServer } = await network.get("/api/v1/challenges");
+        typeof challengesFromServer === "object" && setChallenges(challengesFromServer);
+      } catch {}
     })();
   }, [logged]);
 
@@ -68,7 +63,7 @@ export default function Router() {
     (async () => {
       if (Cookies.get("accessToken")) {
         try {
-          const { data } = await network.get("/api/v1/auth/validateToken");
+          const { data } = await network.get("/api/v1/auth/validate-token");
           setLogged(data);
           setLoading(false);
         } catch (e) {
@@ -86,7 +81,7 @@ export default function Router() {
         !logged ? (
           <Logged.Provider value={{ logged, setLogged }}>
             <AnimatePresence>
-              <ErrorBoundry>
+              <ErrorBoundary>
                 <Route
                   render={({ location }) => (
                     <Switch location={location} key={location.pathname}>
@@ -111,51 +106,52 @@ export default function Router() {
                     </Switch>
                   )}
                 />
-              </ErrorBoundry>
+              </ErrorBoundary>
             </AnimatePresence>
           </Logged.Provider>
         ) : (
-            <Logged.Provider value={{ logged, setLogged }}>
-              <AllChallenges.Provider value={{ challenges, setChallenges }}>
-                <FilteredLabels.Provider
-                  value={{ filteredLabels, setFilteredLabels }}
-                >
-                  <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
-                  <div className={darkTheme ? "dark" : "light"}>
-                    <Suspense fallback={<Loading darkMode={darkTheme} />}>
-                      <ErrorBoundry>
-                        <Switch>
-                          <Route exact path="/challenges/:id">
-                            <ChallengePage darkMode={darkTheme} />
+          <Logged.Provider value={{ logged, setLogged }}>
+            <AllChallenges.Provider value={{ challenges, setChallenges }}>
+              <FilteredLabels.Provider value={{ filteredLabels, setFilteredLabels }}>
+                <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
+                <div className={darkTheme ? "dark" : "light"}>
+                  <Suspense fallback={<Loading darkMode={darkTheme} />}>
+                    <ErrorBoundary>
+                      <Switch>
+                        <Route exact path="/challenges/:id">
+                          <ChallengePage darkMode={darkTheme} />
+                        </Route>
+                        <Route path="/profile">
+                          <UserProfile darkMode={darkTheme} />
+                        </Route>
+                        <Route exact path="/addnewchallenge">
+                          <NewChallengeForm />
+                        </Route>
+                        <Route path="/teams">
+                          <Team darkMode={darkTheme} />
+                        </Route>
+                        {isAdmin && (
+                          <Route path="/admin">
+                            <Admin darkMode={darkTheme} />
                           </Route>
-                          <Route path="/profile">
-                            <UserProfile darkMode={darkTheme} />
-                          </Route>
-                          <Route exact path="/addnewchallenge">
-                            <NewChallengeForm />
-                          </Route>
-                          {isAdmin &&
-                            <Route path="/admin">
-                              <Admin />
-                            </Route>
-                          }
-                          <Route exact path="/">
-                            <Home />
-                          </Route>
-                          <Route path="*">
-                            <NotFound />
-                          </Route>
-                        </Switch>
-                      </ErrorBoundry>
-                    </Suspense>
-                  </div>
-                </FilteredLabels.Provider>
-              </AllChallenges.Provider>
-            </Logged.Provider>
-          )
+                        )}
+                        <Route exact path="/">
+                          <Home />
+                        </Route>
+                        <Route path="*">
+                          <NotFound />
+                        </Route>
+                      </Switch>
+                    </ErrorBoundary>
+                  </Suspense>
+                </div>
+              </FilteredLabels.Provider>
+            </AllChallenges.Provider>
+          </Logged.Provider>
+        )
       ) : (
-          <Loading firstLoading={true} />
-        )}
+        <Loading firstLoading={true} />
+      )}
     </BrowserRouter>
   );
 }

@@ -1,12 +1,10 @@
-const { Router } = require('express');
+const webhookRouter = require('express').Router();
 const { Submission } = require('../../models');
 
-const router = Router();
-
-router.patch('/submission/:id', async (req, res) => {
+// github api for update status about submission
+webhookRouter.patch('/submission/:id', async (req, res) => {
   try {
     const { success } = req.body;
-    const { headers } = req;
     const submission = await Submission.findByPk(req.params.id);
     await submission.update({ state: success ? 'SUCCESS' : 'FAIL' });
     res.json(submission);
@@ -16,4 +14,4 @@ router.patch('/submission/:id', async (req, res) => {
   }
 });
 
-module.exports = router;
+module.exports = webhookRouter;

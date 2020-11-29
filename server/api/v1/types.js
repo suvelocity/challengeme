@@ -1,10 +1,8 @@
-const { Router } = require('express');
-
-const router = Router();
+const typeRouter = require('express').Router();
 const fs = require('fs');
 
 // router Get - github/workflows
-router.get('/', async (req, res) => {
+typeRouter.get('/', async (req, res) => {
   try {
     const files = fs.readdirSync('../.github/workflows');
     let types = files.map((file) => (!file.includes('deploy')
@@ -15,11 +13,11 @@ router.get('/', async (req, res) => {
       ? file
       : null));
     types = types.filter((type) => type !== null);
-    res.send(types);
+    res.json(types);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
-module.exports = router;
+module.exports = typeRouter;

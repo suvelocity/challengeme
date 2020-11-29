@@ -86,7 +86,7 @@ module.exports = [
     type: 'server-only',
     repositoryName: 'suvelocity/PromiseChallenge',
     boilerPlate: 'suvelocity/PromiseBoilerplate',
-    authorId: 1,
+    authorId: 2,
     state: 'approved',
   },
   {
@@ -96,7 +96,7 @@ module.exports = [
     type: 'server-mysql',
     repositoryName: 'suvelocity/corona-manager-chalenge',
     boilerPlate: 'suvelocity/corona-pandemic-manager',
-    authorId: 1,
+    authorId: 2,
     state: 'approved',
   },
 ];
