@@ -8,40 +8,23 @@ const {
   countSuccessSubmissionsPerChallenge,
   filterUsersByTeam,
   filterSubmissionsByTeam,
-  countGroupArray,
-  filterLastSubmissionsForTeacherRoute
+  countGroupArray
 } = require('../../Functions');
 const { usersMock, teamsMock, usersTeamsMock, submissionsMock, challengesMock, assignmentsMock } = require('../../mocks');
 
 function filterLastSubmissionsForAdminRoute(challengeIdArray, submissionsArray) {
   const totalSubmissionsShouldBe = usersMock.length * challengeIdArray.length;
 
-  const totalSubmissionsOrderedByDate = submissionsArray.sort((a, b) => b.createdAt - a.createdAt);
+  const totalSubmissionsOrderedByDate = submissionsArray.map((submission) => {
+    if (challengeIdArray.includes(submission.challengeId)) {
+      return submission;
+    }
+  }).filter(a => !(!a)).sort((a, b) => b.createdAt - a.createdAt);
 
   const filteredSubmissions = countSuccessAndFailSubmissionsPerChallenge(totalSubmissionsOrderedByDate);
-  const notYetSubmitted = (challengeIdArray.length * totalSubmissionsShouldBe) - (filteredSubmissions.success + filteredSubmissions.fail);
+  const notYetSubmitted = totalSubmissionsShouldBe - (filteredSubmissions.success + filteredSubmissions.fail);
   filteredSubmissions.notYet = notYetSubmitted ? notYetSubmitted : 0;
   return filteredSubmissions;
-}
-
-function countSuccessAndFailSubmissionsPerChallenge(submissionsOrderedByDate) {
-  const filteredAlready = [];
-  let success = 0;
-  let fail = 0;
-  submissionsOrderedByDate.forEach((submission) => {
-    if (filteredAlready.some(filteredSubmission =>
-      filteredSubmission.userId === submission.userId &&
-      filteredSubmission.challengeId === submission.challengeId)) {
-    } else {
-      filteredAlready.push({ userId: submission.userId, challengeId: submission.challengeId });
-      if (submission.state === 'SUCCESS') {
-        success++
-      } else {
-        fail++
-      }
-    }
-  })
-  return { success, fail }
 }
 
 
@@ -55,7 +38,7 @@ describe('Testing admin insights routes', () => {
     await Assignment.destroy({ truncate: true, force: true });
   });
 
-  test.only('admin can get last submissions insights about his team', async (done) => {
+  test('Admin can get last submissions insights about all users', async (done) => {
     await User.bulkCreate(usersMock);
     await UserTeam.bulkCreate(usersTeamsMock);
     await Team.bulkCreate(teamsMock);
@@ -105,7 +88,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test('admin can get the most success submitted challenges of his team', async (done) => {
+  test.only('Admin can get the most success submitted challenges of all users', async (done) => {
     await User.bulkCreate(usersMock);
     await UserTeam.bulkCreate(usersTeamsMock);
     await Team.bulkCreate(teamsMock);
@@ -115,9 +98,10 @@ describe('Testing admin insights routes', () => {
 
     const teamSubmissionsInsightsOneChallenge = await request(app)
       .get(`/api/v1/insights/admin/success-challenge`)
-      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(teamSubmissionsInsightsOneChallenge.status).toBe(200);
+    console.log(teamSubmissionsInsightsOneChallenge.body)
     expect(teamSubmissionsInsightsOneChallenge.body.length <= 5).toBe(true);
     teamSubmissionsInsightsOneChallenge.body.forEach(challenge => {
       expect(challenge.hasOwnProperty('challengeSuccesses')).toBe(true)
@@ -145,16 +129,10 @@ describe('Testing admin insights routes', () => {
 
     expect(unauthorized.status).toBe(401);
 
-    const adminNotInTeam = await request(app)
-      .get(`/api/v1/insights/admin/success-challenge`)
-      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
-
-    expect(adminNotInTeam.status).toBe(200);
-
     done();
   });
 
-  test('Admin can get the last week submissions of his team', async (done) => {
+  test('Admin can get the last week submissions of all users', async (done) => {
     await User.bulkCreate(usersMock);
     await UserTeam.bulkCreate(usersTeamsMock);
     await Team.bulkCreate(teamsMock);
@@ -195,7 +173,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test('Admin can get the challenges submissions per challenges of his team', async (done) => {
+  test('Admin can get the challenges submissions per challenges of all users', async (done) => {
     await User.bulkCreate(usersMock);
     await UserTeam.bulkCreate(usersTeamsMock);
     await Team.bulkCreate(teamsMock);
@@ -274,7 +252,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test('Admin can get the challenges submissions per users of his team', async (done) => {
+  test('Admin can get the challenges submissions per users of all users', async (done) => {
     await User.bulkCreate(usersMock);
     await UserTeam.bulkCreate(usersTeamsMock);
     await Team.bulkCreate(teamsMock);
@@ -353,7 +331,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test('Admin can get the top users per success challenges of his team', async (done) => {
+  test('Admin can get the top users per success challenges of all users', async (done) => {
     await User.bulkCreate(usersMock);
     await UserTeam.bulkCreate(usersTeamsMock);
     await Team.bulkCreate(teamsMock);
