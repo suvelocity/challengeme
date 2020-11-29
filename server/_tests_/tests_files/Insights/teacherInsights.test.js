@@ -133,7 +133,7 @@ describe('Testing teacher insights routes', () => {
     done();
   });
 
-  test('Teacher can get the last week submissions of his team', async (done) => {
+  test.skip('Teacher can get the last week submissions of his team', async (done) => {
     await User.bulkCreate(usersMock);
     await UserTeam.bulkCreate(usersTeamsMock);
     await Team.bulkCreate(teamsMock);
