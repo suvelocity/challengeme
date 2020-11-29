@@ -9,11 +9,11 @@ teamRouter.get('/team-name/:teamId', checkTeamPermission, async (req, res) => {
   const { teamId } = req.params;
   const teamName = await Team.findOne({
     where: {
-      id: teamId
-    }
-  })
+      id: teamId,
+    },
+  });
   res.json({ name: teamName.name });
-})
+});
 
 // check if user is a part of a team
 teamRouter.get('/team-page/:teamId', checkTeamPermission, async (req, res) => {
@@ -70,7 +70,7 @@ teamRouter.get('/all-teams-by-user', async (req, res) => {
   }
 });
 
-//============================== Teacher Routes ======================================
+//= ============================= Teacher Routes ======================================
 
 // get all the users of the teachers team
 teamRouter.get('/teacher-area/:teamId', checkTeacherPermission, async (req, res) => {
@@ -91,8 +91,8 @@ teamRouter.get('/teacher-area/:teamId', checkTeacherPermission, async (req, res)
             attributes: ['permission'],
             where: {
               [Op.not]: [
-                { userId: req.user.userId }
-              ]
+                { userId: req.user.userId },
+              ],
             },
           },
         },

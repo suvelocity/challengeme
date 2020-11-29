@@ -2,8 +2,10 @@ const request = require('supertest');
 const bcrypt = require('bcryptjs');
 const app = require('../../../app');
 const { generateToken } = require('../../Functions');
-const { Challenge, Label, LabelChallenge, Submission, User } = require('../../../models');
-const { usersMock , labelsMock, challengesMock} = require('../../mocks');
+const {
+  Challenge, Label, LabelChallenge, Submission, User,
+} = require('../../../models');
+const { usersMock, labelsMock, challengesMock } = require('../../mocks');
 
 describe('testing labels endpoints', () => {
   beforeEach(async () => {

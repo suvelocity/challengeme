@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../../../app');
 const { Challenge, Review, User } = require('../../../models');
 const { generateToken } = require('../../Functions');
-const {challengesMock, usersMock, reviewsMock} = require('../../mocks');
+const { challengesMock, usersMock, reviewsMock } = require('../../mocks');
 
 describe('testing challenges endpoints', () => {
   beforeEach(async () => {

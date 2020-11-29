@@ -6,8 +6,12 @@ const nock = require('nock');
 const jwt = require('jsonwebtoken');
 const app = require('../../../app');
 const { getCurrentBranch } = require('../../../helpers');
-const { Submission, Challenge, User, Review, } = require('../../../models');
-const { usersMock, reviewsMock, submissionsMock, challengesMock } = require('../../mocks');
+const {
+  Submission, Challenge, User, Review,
+} = require('../../../models');
+const {
+  usersMock, reviewsMock, submissionsMock, challengesMock,
+} = require('../../mocks');
 
 function generateToken(currentUser) {
   const infoForCookie = {
@@ -18,7 +22,6 @@ function generateToken(currentUser) {
     expiresIn: '1h',
   });
 }
-
 
 describe('Submission process', () => {
   beforeEach(async () => {
@@ -37,8 +40,8 @@ describe('Submission process', () => {
 
     const challengeInfo = await Challenge.findOne({
       where: {
-        id: submissionsMock[0].challengeId
-      }
+        id: submissionsMock[0].challengeId,
+      },
     });
 
     const githubPostMock1 = nock('https://api.github.com', {
@@ -59,8 +62,7 @@ describe('Submission process', () => {
         })
       .reply(200);
 
-    const submissionReview = reviewsMock.find((review) =>
-      review.userId === usersMock[0].id && review.challengeId === submissionsMock[0].challengeId)
+    const submissionReview = reviewsMock.find((review) => review.userId === usersMock[0].id && review.challengeId === submissionsMock[0].challengeId);
 
     await request(app)
       .post(`/api/v1/submissions/apply/${submissionsMock[0].challengeId}`)
@@ -72,7 +74,6 @@ describe('Submission process', () => {
     const submissions = await Submission.findAll();
     expect(submissions.length).toBe(1);
     submissions.forEach((submission) => expect(submission.state).toBe('PENDING'));
-
   }, 10000);
 
   test('webhook simulation, state change from PENDING to SUCCESS or FAIL', async () => {
@@ -82,8 +83,8 @@ describe('Submission process', () => {
         id: 1,
         challengeId: 1,
         userId: 1,
-        state: "PENDING",
-        solutionRepository: "Moran1324/Authentication-Challenge-SOLUTION",
+        state: 'PENDING',
+        solutionRepository: 'Moran1324/Authentication-Challenge-SOLUTION',
         createdAt: new Date(Date.now().valueOf() - (1 * 24 * 60 * 60 * 1000)),
         updatedAt: new Date(Date.now().valueOf() - (1 * 24 * 60 * 60 * 1000)),
       },
@@ -91,11 +92,11 @@ describe('Submission process', () => {
         id: 2,
         challengeId: 2,
         userId: 1,
-        state: "PENDING",
-        solutionRepository: "OfirSimhi1612/Auth-Challenge",
+        state: 'PENDING',
+        solutionRepository: 'OfirSimhi1612/Auth-Challenge',
         createdAt: new Date(Date.now().valueOf() - (1 * 24 * 60 * 59 * 1000)),
         updatedAt: new Date(Date.now().valueOf() - (1 * 24 * 60 * 59 * 1000)),
-      },]);
+      }]);
 
     await request(app)
       .patch(`/api/v1/webhook/submission/${1}`)

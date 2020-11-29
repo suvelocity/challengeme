@@ -1,8 +1,12 @@
 const request = require('supertest');
 const app = require('../../../app');
-const { User, UserTeam, Team, Submission } = require('../../../models');
+const {
+  User, UserTeam, Team, Submission,
+} = require('../../../models');
 const { generateToken } = require('../../Functions');
-const {usersMock, teamsMock, usersTeamsMock, submissionsMock} = require('../../mocks');
+const {
+  usersMock, teamsMock, usersTeamsMock, submissionsMock,
+} = require('../../mocks');
 
 describe('Testing student insights routes', () => {
   beforeEach(async () => {
@@ -39,5 +43,4 @@ describe('Testing student insights routes', () => {
 
     done();
   });
-
 });

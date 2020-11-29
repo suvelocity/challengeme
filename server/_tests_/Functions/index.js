@@ -7,11 +7,11 @@ const countGroupArray = require('./countGroupArray');
 const filterLastSubmissionsForTeacherRoute = require('./filterLastSubmissionsForTeacherRoute');
 
 module.exports = {
-    generateToken,
-    countSuccessAndFailSubmissionsPerChallenge,
-    countSuccessSubmissionsPerChallenge,
-    filterUsersByTeam,
-    filterSubmissionsByTeam,
-    countGroupArray,
-    filterLastSubmissionsForTeacherRoute
-}
+  generateToken,
+  countSuccessAndFailSubmissionsPerChallenge,
+  countSuccessSubmissionsPerChallenge,
+  filterUsersByTeam,
+  filterSubmissionsByTeam,
+  countGroupArray,
+  filterLastSubmissionsForTeacherRoute,
+};
