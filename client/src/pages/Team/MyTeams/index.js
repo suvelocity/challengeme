@@ -30,18 +30,22 @@ function MyTeams() {
       if (userTeam.Teams.length === 1) {
         Location.push(`/teams/${userTeam.Teams[0].id}`);
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   useEffect(() => {
     fetchUserTeam();
+    // eslint-disable-next-line
   }, []);
 
   return (
     <div className="my-teams">
       <h1 className="my-teams-title">Teams Area</h1>
       <div className="my-teams-container">
-        {teamData && teamData.map((team) => <TeamCard team={team} />)}
+        {teamData && teamData.map((team) =>
+          <TeamCard
+            key={team.id}
+            team={team} />)}
       </div>
     </div>
   );

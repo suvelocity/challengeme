@@ -6,7 +6,7 @@ import NotFound from "../../../NotFound";
 import SecondHeader from "../../../../components/Header/SecondHeader";
 import ChallengeCard from "../../../../components/ChallengeCard";
 import "./style.css";
-function TeamTasks({ darkMode }) {
+function TeamAssignments({ darkMode }) {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [allAssignments, setAllAssignments] = useState();
@@ -71,4 +71,4 @@ function TeamTasks({ darkMode }) {
     );
 }
 
-export default TeamTasks;
+export default TeamAssignments;

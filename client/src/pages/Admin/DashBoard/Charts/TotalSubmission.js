@@ -4,7 +4,7 @@ import network from '../../../../services/network';
 import { useParams } from 'react-router-dom';
 import { PieChart, Pie, Tooltip, Cell, Legend } from 'recharts';
 import "../style.css"
-function TeamTotalSubmission({ darkMode }) {
+function TotalSubmission({ darkMode }) {
 
     const { id } = useParams();
     const [teamSubmissions, setTeamSubmissions] = useState([]);
@@ -96,7 +96,7 @@ function TeamTotalSubmission({ darkMode }) {
                     >
                         {teamSubmissions.map((entry, index) =>
                             <Cell
-                                key={`cell-${index}`}
+                                key={`cell-${index + entry}`}
                                 fill={COLORS[index % COLORS.length]} />)
                         }
 
@@ -110,4 +110,4 @@ function TeamTotalSubmission({ darkMode }) {
     );
 }
 
-export default TeamTotalSubmission;
+export default TotalSubmission;

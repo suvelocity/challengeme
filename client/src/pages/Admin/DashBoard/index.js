@@ -3,7 +3,7 @@ import "./style.css";
 const SuccessSubmissionsPerUsers = lazy(() => import("./Charts/SuccessSubmissionsPerUsers"));
 const LastWeekSubmissions = lazy(() => import("./Charts/LastWeekSubmissions"));
 const SuccessPerChallenge = lazy(() => import("./Charts/SuccessPerChallenge"));
-const TeamTotalSubmission = lazy(() => import("./Charts/TeamTotalSubmission"));
+const TotalSubmission = lazy(() => import("./Charts/TotalSubmission"));
 
 function DashBoard({ darkMode }) {
   return (
@@ -11,7 +11,7 @@ function DashBoard({ darkMode }) {
       <h1 className="dashboard-title-page">This DashBoard Admin Page</h1>
       <div className="dashboard-flexbox">
         <div className="paper-dashboard-chart">
-          <TeamTotalSubmission darkMode={darkMode} />
+          <TotalSubmission darkMode={darkMode} />
         </div>
         <div className="paper-dashboard-chart">
           <SuccessPerChallenge darkMode={darkMode} />

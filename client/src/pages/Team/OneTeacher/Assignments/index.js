@@ -5,7 +5,7 @@ import network from "../../../../services/network";
 import ChallengeCard from "../../../../components/ChallengeCardSmallVersion";
 import AddAssignment from "../../../../components/Modals/AddAssignment";
 import "./style.css";
-function Assignments({ darkMode, teamName }) {
+function TeacherAssignments({ darkMode, teamName }) {
   const { id } = useParams();
 
   const [allAssignments, setAllAssignments] = useState();
@@ -49,7 +49,7 @@ function Assignments({ darkMode, teamName }) {
       {allAssignments && allAssignments[0].Challenge ? (
         <div className="assignments-flexbox">
           {allAssignments.map((challenge) => (
-            <div className="assignments-card-and-button">
+            <div className="assignments-card-and-button" key={challenge.Challenge.id + challenge.Challenge.name}>
               <ChallengeCard
                 key={challenge.Challenge.id}
                 challengeId={challenge.Challenge.id}
@@ -74,4 +74,4 @@ function Assignments({ darkMode, teamName }) {
   );
 }
 
-export default Assignments;
+export default TeacherAssignments;

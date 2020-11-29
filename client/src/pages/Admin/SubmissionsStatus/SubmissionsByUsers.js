@@ -96,8 +96,8 @@ function Row(props) {
                               submission.state === "SUCCESS"
                                 ? { color: "green" }
                                 : submission.state === "FAIL"
-                                ? { color: "red" }
-                                : { color: "black" }
+                                  ? { color: "red" }
+                                  : { color: "black" }
                             }
                           >
                             {submission.state}
@@ -133,6 +133,7 @@ const SubmissionsByUsers = ({ darkMode }) => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line
   }, [last]);
 
   return (
@@ -159,8 +160,8 @@ const SubmissionsByUsers = ({ darkMode }) => {
             {data.length > 0 ? (
               data.map((user) => <Row key={user.userName} color="secondary" row={user} />)
             ) : (
-              <Loading />
-            )}
+                <Loading />
+              )}
           </TableBody>
         </Table>
       </TableContainer>

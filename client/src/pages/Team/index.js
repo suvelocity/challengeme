@@ -7,7 +7,7 @@ const OneTeamPage = lazy(() => import("./OneTeam/TeamInfo"));
 const OneTeacherPage = lazy(() => import("./OneTeacher"));
 const MyTeams = lazy(() => import("./MyTeams"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
-const TeamTasks = lazy(() => import("./OneTeam/TeamTasks"));
+const TeamAssignments = lazy(() => import("./OneTeam/TeamAssignments"));
 
 function Index({ darkMode }) {
 
@@ -20,7 +20,7 @@ function Index({ darkMode }) {
               <OneTeamPage darkMode={darkMode} />
             </Route>
             <Route exact path="/teams/tasks/:id">
-              <TeamTasks darkMode={darkMode} />
+              <TeamAssignments darkMode={darkMode} />
             </Route>
             <Route path="/teams/teacher/:id">
               <OneTeacherPage darkMode={darkMode} />

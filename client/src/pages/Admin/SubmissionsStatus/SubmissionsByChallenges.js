@@ -45,7 +45,7 @@ const useRowStyles = makeStyles({
 });
 
 function Row(props) {
-  const { row, last } = props;
+  const { row } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
@@ -102,8 +102,8 @@ function Row(props) {
                               userBySubmission.state === "SUCCESS"
                                 ? { color: "green" }
                                 : userBySubmission.state === "FAIL"
-                                ? { color: "red" }
-                                : { color: "black" }
+                                  ? { color: "red" }
+                                  : { color: "black" }
                             }
                           >
                             {userBySubmission.state}
@@ -122,14 +122,7 @@ function Row(props) {
 }
 
 const SubmissionsByChallenges = ({ darkMode }) => {
-  const [
-    combainChallengesSubmissionsVsUsersData,
-    setCombainChallengesSubmissionsVsUsersData,
-  ] = useState([]);
-  const [
-    combainChallengesSubmissionsVsUsersDataLast,
-    setCombainChallengesSubmissionsVsUsersDataLast,
-  ] = useState([]);
+
   const [dataPresent, setDataPresent] = useState([]);
   const [last, setLast] = useState(false);
 
@@ -142,6 +135,7 @@ const SubmissionsByChallenges = ({ darkMode }) => {
 
   useEffect(() => {
     getChallengesSubmissions();
+    // eslint-disable-next-line
   }, [last]);
 
   const filteredLast = () => {
@@ -169,14 +163,14 @@ const SubmissionsByChallenges = ({ darkMode }) => {
           {dataPresent.length > 0 ? (
             dataPresent.map((challenge) => (
               <Row
-                key={challenge.ChallengeName + challenge.createdAt}
+                key={challenge.name + challenge.createdAt}
                 row={challenge}
                 last={last}
               />
             ))
           ) : (
-            <Loading />
-          )}
+              <Loading />
+            )}
         </Table>
       </TableContainer>
     </div>
