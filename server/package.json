@@ -46,7 +46,8 @@
     "nodemon": "^2.0.4",
     "sequelize": "^6.3.5",
     "sequelize-cli": "^6.2.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "swagger-ui-express": "^4.1.5"
   },
   "devDependencies": {
     "eslint": "^7.11.0",
@@ -55,6 +56,7 @@
     "jest": "^26.6.0",
     "ngrok": "^3.3.0",
     "nock": "^13.0.4",
+
     "start-server-and-test": "^1.11.5",
     "supertest": "^4.0.2"
   }
