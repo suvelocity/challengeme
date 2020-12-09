@@ -132,7 +132,7 @@ insightTeacherRouter.get("/last-week-submissions/:teamId", checkTeacherPermissio
         [sequelize.fn("DAY", sequelize.col("Submission.created_at")), "desc"],
       ],
     });
-    const formattedSubmissions1 = lastWeekTeamSubmissions.map(
+    const formattedSubmissions1 = lastWeekTeamSubmissions.sort((a,b)=> b.createdAt - a.createdAt).map(
       (submission) => {
         submission.createdAt = moment(submission.createdAt).fromNow();
         submission.createdAt = submission.createdAt.includes("hour")
