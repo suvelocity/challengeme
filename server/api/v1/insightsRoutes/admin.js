@@ -200,9 +200,9 @@ insightAdminRouter.get('/last-week-submissions', async (req, res) => {
     const OneWeek = 7 * 24 * 60 * 60 * 1000;
     const lastWeekAllUsersSubmissions = await Submission.findAll({
       raw: true,
-      group: [sequelize.fn('DAY', sequelize.col('Submission.created_at'))],
+      // group: [sequelize.fn('DAY', sequelize.col('Submission.created_at'))],
       attributes: [
-        [sequelize.fn('COUNT', 'id'), 'dateSubmissions'],
+        // [sequelize.fn('COUNT', 'id'), 'dateSubmissions'],
         'createdAt',
       ],
       where: {
@@ -215,11 +215,25 @@ insightAdminRouter.get('/last-week-submissions', async (req, res) => {
       ],
     });
 
-    const formattedSubmissions = lastWeekAllUsersSubmissions.map((submission) => {
-      submission.createdAt = moment(submission.createdAt).fromNow();
-      submission.createdAt = submission.createdAt.includes('hour') ? 'today' : submission.createdAt.includes('minutes') ? 'today' : submission.createdAt.includes('seconds') ? 'today' : submission.createdAt;
-      return submission;
-    });
+    const formattedSubmissions1 = lastWeekAllUsersSubmissions.map(
+      (submission) => {
+        submission.createdAt = moment(submission.createdAt).fromNow();
+        submission.createdAt = submission.createdAt.includes("hour")
+          ? "today"
+          : submission.createdAt.includes("minutes")
+            ? "today"
+            : submission.createdAt.includes("seconds")
+              ? "today"
+              : submission.createdAt;
+        return submission;
+      }
+    );
+
+    const formattedSubmissions = Filters.countGroupArray(
+      formattedSubmissions1,
+      "dateSubmissions",
+      "createdAt"
+    );
 
     res.json(formattedSubmissions);
   } catch (error) {
