@@ -215,7 +215,7 @@ insightAdminRouter.get('/last-week-submissions', async (req, res) => {
       ],
     });
 
-    const formattedSubmissions1 = lastWeekAllUsersSubmissions.map(
+    const formattedSubmissions1 = lastWeekAllUsersSubmissions.sort((a,b)=> b.createdAt - a.createdAt).map(
       (submission) => {
         submission.createdAt = moment(submission.createdAt).fromNow();
         submission.createdAt = submission.createdAt.includes("hour")
