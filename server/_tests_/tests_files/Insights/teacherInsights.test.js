@@ -18,7 +18,7 @@ const {
   filterLastSubmissionsForTeacherRoute,
   combineSubmissionToChallenge,
   combineSubmissionToUserWithChallenge,
-  filteredArrayByIds
+  filteredArrayByIds,
 } = require("../../Functions");
 const {
   usersMock,
@@ -44,11 +44,9 @@ describe("Testing teacher insights routes", () => {
     await Assignment.bulkCreate(assignmentsMock);
     await Submission.bulkCreate(submissionsMock);
     await UserTeam.bulkCreate(usersTeamsMock);
-
   });
 
   test("Teacher can get last submissions insights about his team", async (done) => {
-
     const teamSubmissionsInsightsOneChallenge = await request(app)
       .get(`/api/v1/insights/teacher/team-submissions/${teamsMock[0].id}`)
       .query({ challenge: challengesMock[0].id })
@@ -62,12 +60,24 @@ describe("Testing teacher insights routes", () => {
     );
 
     expect(teamSubmissionsInsightsOneChallenge.status).toBe(200);
-    expect(teamSubmissionsInsightsOneChallenge.body.hasOwnProperty("success")).toBe(true);
-    expect(teamSubmissionsInsightsOneChallenge.body.hasOwnProperty("fail")).toBe(true);
-    expect(teamSubmissionsInsightsOneChallenge.body.hasOwnProperty("notYet")).toBe(true);
-    expect(teamSubmissionsInsightsOneChallenge.body.success).toBe(filteredSubmissions.success);
-    expect(teamSubmissionsInsightsOneChallenge.body.fail).toBe(filteredSubmissions.fail);
-    expect(teamSubmissionsInsightsOneChallenge.body.notYet).toBe(filteredSubmissions.notYet);
+    expect(
+      teamSubmissionsInsightsOneChallenge.body.hasOwnProperty("success")
+    ).toBe(true);
+    expect(
+      teamSubmissionsInsightsOneChallenge.body.hasOwnProperty("fail")
+    ).toBe(true);
+    expect(
+      teamSubmissionsInsightsOneChallenge.body.hasOwnProperty("notYet")
+    ).toBe(true);
+    expect(teamSubmissionsInsightsOneChallenge.body.success).toBe(
+      filteredSubmissions.success
+    );
+    expect(teamSubmissionsInsightsOneChallenge.body.fail).toBe(
+      filteredSubmissions.fail
+    );
+    expect(teamSubmissionsInsightsOneChallenge.body.notYet).toBe(
+      filteredSubmissions.notYet
+    );
 
     const teamSubmissionsInsightsAssignments = await request(app)
       .get(`/api/v1/insights/teacher/team-submissions/${teamsMock[0].id}`)
@@ -90,12 +100,24 @@ describe("Testing teacher insights routes", () => {
     );
 
     expect(teamSubmissionsInsightsAssignments.status).toBe(200);
-    expect(teamSubmissionsInsightsAssignments.body.hasOwnProperty("success")).toBe(true);
-    expect(teamSubmissionsInsightsAssignments.body.hasOwnProperty("fail")).toBe(true);
-    expect(teamSubmissionsInsightsAssignments.body.hasOwnProperty("notYet")).toBe(true);
-    expect(teamSubmissionsInsightsAssignments.body.success).toBe(filteredAssignments.success);
-    expect(teamSubmissionsInsightsAssignments.body.fail).toBe(filteredAssignments.fail);
-    expect(teamSubmissionsInsightsAssignments.body.notYet).toBe(filteredAssignments.notYet);
+    expect(
+      teamSubmissionsInsightsAssignments.body.hasOwnProperty("success")
+    ).toBe(true);
+    expect(teamSubmissionsInsightsAssignments.body.hasOwnProperty("fail")).toBe(
+      true
+    );
+    expect(
+      teamSubmissionsInsightsAssignments.body.hasOwnProperty("notYet")
+    ).toBe(true);
+    expect(teamSubmissionsInsightsAssignments.body.success).toBe(
+      filteredAssignments.success
+    );
+    expect(teamSubmissionsInsightsAssignments.body.fail).toBe(
+      filteredAssignments.fail
+    );
+    expect(teamSubmissionsInsightsAssignments.body.notYet).toBe(
+      filteredAssignments.notYet
+    );
 
     const unauthorized = await request(app)
       .get(`/api/v1/insights/teacher/team-submissions/${teamsMock[0].id}`)
@@ -115,7 +137,6 @@ describe("Testing teacher insights routes", () => {
   });
 
   test("Teacher can get the most success submitted challenges of his team", async (done) => {
-
     const teamSubmissionsInsightsOneChallenge = await request(app)
       .get(`/api/v1/insights/teacher/success-challenge/${teamsMock[0].id}`)
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
@@ -134,23 +155,32 @@ describe("Testing teacher insights routes", () => {
         equal: "SUCCESS",
       },
     ];
-    const teamSubmissions = filterSubmissionsByTeam(submissionsMock, teamUsersId, conditions);
-    const filteredChallenges = countSuccessSubmissionsPerChallenge(teamSubmissions, challengesMock);
+    const teamSubmissions = filterSubmissionsByTeam(
+      submissionsMock,
+      teamUsersId,
+      conditions
+    );
+    const filteredChallenges = countSuccessSubmissionsPerChallenge(
+      teamSubmissions,
+      challengesMock
+    );
 
     teamSubmissionsInsightsOneChallenge.body.forEach((element, index) => {
       expect(filteredChallenges[index].name).toBe(element.name);
-      expect(filteredChallenges[index].challengeSuccesses).toBe(element.challengeSuccesses);
+      expect(filteredChallenges[index].challengeSuccesses).toBe(
+        element.challengeSuccesses
+      );
     });
 
     const unauthorized = await request(app)
       .get(`/api/v1/insights/teacher/success-challenge/${teamsMock[0].id}`)
-      .set('authorization', `bearer ${generateToken(usersMock[1])}`);
+      .set("authorization", `bearer ${generateToken(usersMock[1])}`);
 
     expect(unauthorized.status).toBe(401);
 
     const adminNotInTeam = await request(app)
       .get(`/api/v1/insights/teacher/success-challenge/${teamsMock[0].id}`)
-      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
+      .set("authorization", `bearer ${generateToken(usersMock[2])}`);
 
     expect(adminNotInTeam.status).toBe(200);
 
@@ -158,7 +188,6 @@ describe("Testing teacher insights routes", () => {
   });
 
   test("Teacher can get the last week submissions of his team", async (done) => {
-
     const teamLastWeekSubmissions = await request(app)
       .get(`/api/v1/insights/teacher/last-week-submissions/${teamsMock[0].id}`)
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
@@ -179,10 +208,10 @@ describe("Testing teacher insights routes", () => {
       momentDate = momentDate.includes("hour")
         ? "today"
         : momentDate.includes("minutes")
-          ? "today"
-          : momentDate.includes("seconds")
-            ? "today"
-            : momentDate;
+        ? "today"
+        : momentDate.includes("seconds")
+        ? "today"
+        : momentDate;
       return { dateSubmissions: 1, createdAt: momentDate };
     });
     const groupSubmissions = countGroupArray(
@@ -190,6 +219,9 @@ describe("Testing teacher insights routes", () => {
       "dateSubmissions",
       "createdAt"
     );
+
+    console.log("js", groupSubmissions);
+    console.log("server", teamLastWeekSubmissions.body);
 
     teamLastWeekSubmissions.body.forEach((element, index) => {
       expect(groupSubmissions[index].dateSubmissions).toBe(
@@ -214,36 +246,53 @@ describe("Testing teacher insights routes", () => {
   });
 
   test("Teacher can get the challenges submissions per challenges of his team", async (done) => {
-
     const teamSubmissionsPerChallenges = await request(app)
-      .get(`/api/v1/insights/teacher/challenges-submissions/${teamsMock[0].id}?onlyLast=false`)
+      .get(
+        `/api/v1/insights/teacher/challenges-submissions/${teamsMock[0].id}?onlyLast=false`
+      )
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
 
     expect(teamSubmissionsPerChallenges.status).toBe(200);
 
     const teamUsersId = filterUsersByTeam(teamsMock[0], usersTeamsMock);
-    const teamSubmissions = filterSubmissionsByTeam(submissionsMock, teamUsersId);
-    const challengesWithCount = combineSubmissionToChallenge(challengesMock, teamSubmissions)
-
+    const teamSubmissions = filterSubmissionsByTeam(
+      submissionsMock,
+      teamUsersId
+    );
+    const challengesWithCount = combineSubmissionToChallenge(
+      challengesMock,
+      teamSubmissions
+    );
 
     teamSubmissionsPerChallenges.body.forEach((challenge, index) => {
-      expect(challengesWithCount[index].Submissions.length)
-        .toBe(challenge.Submissions.length);
+      expect(challengesWithCount[index].Submissions.length).toBe(
+        challenge.Submissions.length
+      );
     });
 
     const teamSubmissionsPerChallengesOnlyLast = await request(app)
-      .get(`/api/v1/insights/teacher/challenges-submissions/${teamsMock[0].id}?onlyLast=true`)
+      .get(
+        `/api/v1/insights/teacher/challenges-submissions/${teamsMock[0].id}?onlyLast=true`
+      )
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
 
     expect(teamSubmissionsPerChallengesOnlyLast.status).toBe(200);
 
     const teamUsersIdOnlyLast = filterUsersByTeam(teamsMock[0], usersTeamsMock);
-    const teamSubmissionsOnlyLast = filterSubmissionsByTeam(submissionsMock, teamUsersIdOnlyLast);
-    const challengesWithCountOnlyLast = combineSubmissionToChallenge(challengesMock, teamSubmissionsOnlyLast, 'true')
+    const teamSubmissionsOnlyLast = filterSubmissionsByTeam(
+      submissionsMock,
+      teamUsersIdOnlyLast
+    );
+    const challengesWithCountOnlyLast = combineSubmissionToChallenge(
+      challengesMock,
+      teamSubmissionsOnlyLast,
+      "true"
+    );
 
     teamSubmissionsPerChallengesOnlyLast.body.forEach((challenge, index) => {
-      expect(challengesWithCountOnlyLast[index].Submissions.length)
-        .toBe(challenge.Submissions.length);
+      expect(challengesWithCountOnlyLast[index].Submissions.length).toBe(
+        challenge.Submissions.length
+      );
     });
 
     const unauthorized = await request(app)
@@ -262,7 +311,6 @@ describe("Testing teacher insights routes", () => {
   });
 
   test("Teacher can get the challenges submissions per users of his team", async (done) => {
-
     const teamSubmissionsPerUsers = await request(app)
       .get(`/api/v1/insights/teacher/users-submissions/${teamsMock[0].id}`)
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
@@ -270,27 +318,47 @@ describe("Testing teacher insights routes", () => {
     expect(teamSubmissionsPerUsers.status).toBe(200);
 
     const teamUsersId = filterUsersByTeam(teamsMock[0], usersTeamsMock);
-    const usersFromTeam = filteredArrayByIds(usersMock, teamUsersId)
-    const usersFromTeamWithSubmissions = combineSubmissionToUserWithChallenge(usersFromTeam, submissionsMock, challengesMock)
+    const usersFromTeam = filteredArrayByIds(usersMock, teamUsersId);
+    const usersFromTeamWithSubmissions = combineSubmissionToUserWithChallenge(
+      usersFromTeam,
+      submissionsMock,
+      challengesMock
+    );
 
     teamSubmissionsPerUsers.body.forEach((user, index) => {
       expect(usersFromTeamWithSubmissions[index].userName).toBe(user.userName);
-      expect(usersFromTeamWithSubmissions[index].Submissions.length).toBe(user.Submissions.length);
+      expect(usersFromTeamWithSubmissions[index].Submissions.length).toBe(
+        user.Submissions.length
+      );
     });
 
     const teamSubmissionsPerUsersOnlyLast = await request(app)
-      .get(`/api/v1/insights/teacher/users-submissions/${teamsMock[0].id}?onlyLast=true`)
+      .get(
+        `/api/v1/insights/teacher/users-submissions/${teamsMock[0].id}?onlyLast=true`
+      )
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
 
     expect(teamSubmissionsPerUsersOnlyLast.status).toBe(200);
 
     const teamUsersIdOnlyLast = filterUsersByTeam(teamsMock[0], usersTeamsMock);
-    const usersFromTeamOnlyLast = filteredArrayByIds(usersMock, teamUsersIdOnlyLast)
-    const usersFromTeamWithSubmissionsOnlyLast = combineSubmissionToUserWithChallenge(usersFromTeamOnlyLast, submissionsMock, challengesMock, true)
+    const usersFromTeamOnlyLast = filteredArrayByIds(
+      usersMock,
+      teamUsersIdOnlyLast
+    );
+    const usersFromTeamWithSubmissionsOnlyLast = combineSubmissionToUserWithChallenge(
+      usersFromTeamOnlyLast,
+      submissionsMock,
+      challengesMock,
+      true
+    );
 
     teamSubmissionsPerUsersOnlyLast.body.forEach((user, index) => {
-      expect(usersFromTeamWithSubmissionsOnlyLast[index].userName).toBe(user.userName);
-      expect(usersFromTeamWithSubmissionsOnlyLast[index].Submissions.length).toBe(user.Submissions.length);
+      expect(usersFromTeamWithSubmissionsOnlyLast[index].userName).toBe(
+        user.userName
+      );
+      expect(
+        usersFromTeamWithSubmissionsOnlyLast[index].Submissions.length
+      ).toBe(user.Submissions.length);
     });
 
     const unauthorized = await request(app)
@@ -309,19 +377,24 @@ describe("Testing teacher insights routes", () => {
   });
 
   test("Teacher can get the top users per success challenges of his team", async (done) => {
-
     const teamSubmissionsPerUsers = await request(app)
       .get(`/api/v1/insights/teacher/top-user/${teamsMock[0].id}`)
       .set("authorization", `bearer ${generateToken(usersMock[0])}`);
 
     const teamUsersId = filterUsersByTeam(teamsMock[0], usersTeamsMock);
-    const usersFromTeam = filteredArrayByIds(usersMock, teamUsersId)
-    const usersFromTeamWithSubmissions = combineSubmissionToUserWithChallenge(usersFromTeam, submissionsMock, challengesMock)
+    const usersFromTeam = filteredArrayByIds(usersMock, teamUsersId);
+    const usersFromTeamWithSubmissions = combineSubmissionToUserWithChallenge(
+      usersFromTeam,
+      submissionsMock,
+      challengesMock
+    );
     const formattedMembers = usersFromTeamWithSubmissions.map((member) => {
       const filteredSubmissions = [];
       let success = 0;
       let fail = 0;
-      member.Submissions = member.Submissions.sort((a, b) => b.createdAt - a.createdAt)
+      member.Submissions = member.Submissions.sort(
+        (a, b) => b.createdAt - a.createdAt
+      );
       member.Submissions.forEach((submission) => {
         if (filteredSubmissions.includes(submission.challengeId)) {
         } else {
