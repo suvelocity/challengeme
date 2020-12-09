@@ -1,9 +1,6 @@
-module.exports = function countSuccessSubmissionsPerChallenge(
-  submissionsOrderedByDate,
-  challengeArray
-) {
+module.exports = function countSuccessSubmissionsPerChallenge(submissionsOrderedByDate, challengesArray) {
   const filteredChallenges = [];
-  challengeArray.forEach((challenge) => {
+  challengesArray.forEach((challenge) => {
     const filteredAlready = [];
     let challengeSuccesses = 0;
     submissionsOrderedByDate.forEach((submission) => {
@@ -24,6 +21,8 @@ module.exports = function countSuccessSubmissionsPerChallenge(
       }
     });
     filteredChallenges.push({ challengeSuccesses, name: challenge.name });
-  });
-  return filteredChallenges;
+  })
+  const ordered = filteredChallenges.filter((challenge) => challenge.challengeSuccesses > 0)
+    .sort((a, b) => b.challengeSuccesses - a.challengeSuccesses);
+  return ordered;
 };
