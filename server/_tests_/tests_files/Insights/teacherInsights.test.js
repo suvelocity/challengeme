@@ -224,9 +224,7 @@ describe("Testing teacher insights routes", () => {
     console.log("server", teamLastWeekSubmissions.body);
 
     teamLastWeekSubmissions.body.forEach((element, index) => {
-      expect(groupSubmissions[index].dateSubmissions).toBe(
-        element.dateSubmissions
-      );
+      expect(groupSubmissions[index].dateSubmissions).toBe(element.dateSubmissions);
       expect(groupSubmissions[index].createdAt).toBe(element.createdAt);
     });
 
