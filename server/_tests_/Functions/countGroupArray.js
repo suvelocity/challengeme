@@ -14,5 +14,6 @@ module.exports = function countGroupArray(array, count, groupParameter) {
       groupedCountArray.push(element);
     }
   });
+  console.log(groupedCountArray);
   return groupedCountArray;
 };
