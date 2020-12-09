@@ -100,9 +100,9 @@ insightTeacherRouter.get('/last-week-submissions/:teamId', checkTeacherPermissio
 
     const lastWeekTeamSubmissions = await Submission.findAll({
       raw: true,
-      group: [sequelize.fn('DAY', sequelize.col('Submission.created_at'))],
+      // group: [sequelize.fn('DAY', sequelize.col('Submission.created_at'))],
       attributes: [
-        [sequelize.fn('COUNT', 'id'), 'dateSubmissions'],
+        // [sequelize.fn('COUNT', 'id'), 'dateSubmissions'],
         'createdAt',
       ],
       where: {
@@ -115,12 +115,14 @@ insightTeacherRouter.get('/last-week-submissions/:teamId', checkTeacherPermissio
         [sequelize.fn('DAY', sequelize.col('Submission.created_at')), 'desc'],
       ],
     });
-
-    const formattedSubmissions = lastWeekTeamSubmissions.map((submission) => {
+    // console.log(lastWeekTeamSubmissions)
+    const formattedSubmissions1 = lastWeekTeamSubmissions.map((submission) => {
       submission.createdAt = moment(submission.createdAt).fromNow();
       submission.createdAt = submission.createdAt.includes('hour') ? 'today' : submission.createdAt.includes('minutes') ? 'today' : submission.createdAt.includes('seconds') ? 'today' : submission.createdAt;
       return submission;
     });
+
+    const formattedSubmissions = Filters.countGroupArray(formattedSubmissions1, 'dateSubmissions', 'createdAt',)
     res.json(formattedSubmissions);
   } catch (error) {
     console.error(error);
