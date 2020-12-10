@@ -9,20 +9,18 @@ import '../style.css';
 
 function TotalSubmission({ darkMode }) {
   const { id } = useParams();
-  const [teamSubmissions, setTeamSubmissions] = useState([]);
+  const [totalSubmissions, setTotalSubmissions] = useState();
   const [challengesOption, setChallengesOption] = useState();
-  const [chosenChallenges, setChosenChallenges] = useState('all');
+  const [chosenChallenges, setChosenChallenges] = useState('');
 
-  const getDataOnTeam = async () => {
+  const getDataOnUsers = async (Challenges) => {
     try {
-      const { data: submissions } = await network.get(`/api/v1/insights/admin/all-submissions?challenge=${chosenChallenges}`);
-      const data = [
+      const { data: submissions } = await network.get(`/api/v1/insights/admin/all-submissions?challenge=${Challenges}`);
+      setTotalSubmissions([
         { name: 'success', value: submissions.success },
         { name: 'fail', value: submissions.fail },
         { name: 'not yet', value: submissions.notYet },
-      ];
-
-      setTeamSubmissions(data);
+      ]);
     } catch (error) {
     }
   };
@@ -39,14 +37,19 @@ function TotalSubmission({ darkMode }) {
   };
 
   useEffect(() => {
-    getDataOnTeam();
+    getDataOnUsers(chosenChallenges);
     // eslint-disable-next-line
-    }, [chosenChallenges, id]);
+  }, [chosenChallenges, id]);
 
   useEffect(() => {
     getAllChallengesForOption();
     // eslint-disable-next-line
-    }, [id]);
+  }, [id]);
+
+  useEffect(() => {
+    setChosenChallenges('all');
+    // eslint-disable-next-line
+  }, []);
 
   const COLORS = ['#00C49F', '#FF8042', '#005FAC'];
 
@@ -66,39 +69,42 @@ function TotalSubmission({ darkMode }) {
   };
 
   return (
-    teamSubmissions
+    totalSubmissions
       ? (
         <div className="success-chart">
-          <h2 className="dashboard-title-chart">Teams Total Submissions</h2>
+          <h2 className="dashboard-title-chart">Users Total Submissions</h2>
           {challengesOption
-                    && (
-                      <select onClick={chooseChallenge}>
-                        {challengesOption}
-                      </select>
-                    )}
+            && (
+              <select onClick={chooseChallenge}>
+                {challengesOption}
+              </select>
+            )}
           <br />
-          <PieChart width={400} height={400}>
-            <Pie
-              data={teamSubmissions}
-              cx={200}
-              cy={200}
-              labelLine={false}
-              label={renderCustomizedLabel}
-              outerRadius={80}
-              fill="#8884d8"
-              dataKey="value"
-            >
-              {teamSubmissions.map((entry, index) => (
-                <Cell
-                  key={`cell-${index + entry}`}
-                  fill={COLORS[index % COLORS.length]}
-                />
-              ))}
+          {totalSubmissions[0].value ? (
+            <PieChart width={400} height={400}>
+              <Pie
+                data={totalSubmissions}
+                cx={200}
+                cy={200}
+                labelLine={false}
+                label={renderCustomizedLabel}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {totalSubmissions.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index + entry}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
 
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          )
+            : chosenChallenges === 'all' ? <h2>There is no submissions Yet</h2> : <h2>There is no submissions on this challenge</h2>}
 
         </div>
       ) : <Loading darkMode={darkMode} />

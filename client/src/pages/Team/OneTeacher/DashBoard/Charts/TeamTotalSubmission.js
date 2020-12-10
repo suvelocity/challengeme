@@ -8,14 +8,18 @@ import network from '../../../../../services/network';
 
 function TeamTotalSubmission({ darkMode }) {
   const { id } = useParams();
-  const [teamSubmissions, setTeamSubmissions] = useState({});
+  const [teamSubmissions, setTeamSubmissions] = useState();
   const [challengesOption, setChallengesOption] = useState();
-  const [chosenChallenges, setChosenChallenges] = useState('assignments');
+  const [chosenChallenges, setChosenChallenges] = useState('');
 
-  const getDataOnTeam = async () => {
+  const getDataOnTeam = async (Challenges) => {
     try {
-      const { data: submissions } = await network.get(`/api/v1/insights/teacher/team-submissions/${id}?challenge=${chosenChallenges}`);
-      setTeamSubmissions(submissions);
+      const { data: submissions } = await network.get(`/api/v1/insights/teacher/team-submissions/${id}?challenge=${Challenges}`);
+      setTeamSubmissions([
+        { name: 'success', value: submissions.success },
+        { name: 'fail', value: submissions.fail },
+        { name: 'not yet', value: submissions.notYet },
+      ])
     } catch (error) {
     }
   };
@@ -32,20 +36,19 @@ function TeamTotalSubmission({ darkMode }) {
   };
 
   useEffect(() => {
-    getDataOnTeam();
+    getDataOnTeam(chosenChallenges);
     // eslint-disable-next-line
-    }, [chosenChallenges, id]);
+  }, [chosenChallenges, id]);
 
   useEffect(() => {
     getAllChallengesForOption();
     // eslint-disable-next-line
-    }, [id]);
+  }, [id]);
 
-  const data = [
-    { name: 'success', value: teamSubmissions.success },
-    { name: 'fail', value: teamSubmissions.fail },
-    { name: 'not yet', value: teamSubmissions.notYet },
-  ];
+
+  useEffect(() => {
+    setChosenChallenges('assignments')
+  }, [])
 
   const COLORS = ['#00C49F', '#FF8042', '#005FAC'];
   const RADIAN = Math.PI / 180;
@@ -69,16 +72,16 @@ function TeamTotalSubmission({ darkMode }) {
         <div className="success-chart">
           <h2 className="dashboard-title-chart">Teams Total Submissions</h2>
           {challengesOption
-                    && (
-                      <select onClick={chooseChallenge}>
-                        {challengesOption}
-                      </select>
-                    )}
+            && (
+              <select onClick={chooseChallenge}>
+                {challengesOption}
+              </select>
+            )}
           <br />
-          {data[0].value ? (
+          {teamSubmissions[0].value ? (
             <PieChart width={400} height={400}>
               <Pie
-                data={data}
+                data={teamSubmissions}
                 cx={200}
                 cy={200}
                 labelLine={false}
@@ -88,14 +91,14 @@ function TeamTotalSubmission({ darkMode }) {
                 dataKey="value"
               >
                 {
-                  data.map((entry, index) => <Cell key={`cell-${index + entry}`} fill={COLORS[index % COLORS.length]} />)
+                  teamSubmissions.map((entry, index) => <Cell key={`cell-${index + entry}`} fill={COLORS[index % COLORS.length]} />)
                 }
               </Pie>
               <Tooltip />
               <Legend />
             </PieChart>
           )
-            : <h2>You haven't Assign Any Assignments Yet</h2>}
+            : chosenChallenges === 'assignments' ? <h2>You haven't Assign Any Assignments Yet</h2> : <h2>There is for submissions on this challenge</h2>}
         </div>
       ) : <Loading darkMode={darkMode} />
   );
