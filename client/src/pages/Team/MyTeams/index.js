@@ -27,7 +27,9 @@ function MyTeams() {
       const { data: userTeam } = await network.get('/api/v1/teams/all-teams-by-user');
       setTeamData(userTeam.Teams);
       if (userTeam.Teams.length === 1) {
-        Location.push(`/teams/${userTeam.Teams[0].id}`);
+        const team = userTeam.Teams[0]
+        const linkPath = team.UserTeam.permission === 'teacher' ? `/teams/teacher/${team.id}` : `/teams/${team.id}`;
+        Location.push(linkPath);
       }
     } catch (error) { }
   };
