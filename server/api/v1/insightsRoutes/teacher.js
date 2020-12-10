@@ -1,7 +1,6 @@
 const insightTeacherRouter = require("express").Router();
 const moment = require("moment");
 const { Op } = require("sequelize");
-const sequelize = require("sequelize");
 const { Filters } = require("../../../helpers");
 const {
   checkTeacherPermission,
@@ -113,59 +112,51 @@ insightTeacherRouter.get(
 );
 
 // returns last week team submissions count
-insightTeacherRouter.get(
-  "/last-week-submissions/:teamId",
-  checkTeacherPermission,
-  async (req, res) => {
-    try {
-      const { teamId } = req.params;
-      const teamUsersIds = await Filters.getTeamUsersIds(teamId);
+insightTeacherRouter.get("/last-week-submissions/:teamId", checkTeacherPermission, async (req, res) => {
+  try {
+    const { teamId } = req.params;
+    const teamUsersIds = await Filters.getTeamUsersIds(teamId);
 
-      // return the teams successful submissions from the last week by day
-      const OneWeek = 7 * 24 * 60 * 60 * 1000;
+    // return the teams successful submissions from the last week by day
+    const OneWeek = 7 * 24 * 60 * 60 * 1000;
 
-      const lastWeekTeamSubmissions = await Submission.findAll({
-        raw: true,
-        // group: [sequelize.fn('DAY', sequelize.col('Submission.created_at'))],
-        attributes: [
-          // [sequelize.fn('COUNT', 'id'), 'dateSubmissions'],
-          "createdAt",
-        ],
-        where: {
-          created_at: {
-            [Op.gte]: new Date(Date.now() - OneWeek),
-          },
-          userId: teamUsersIds,
+    const lastWeekTeamSubmissions = await Submission.findAll({
+      raw: true,
+      attributes: [
+        "createdAt",
+      ],
+      where: {
+        created_at: {
+          [Op.gte]: new Date(Date.now() - OneWeek),
         },
-        // order: [
-        //   [sequelize.fn("DAY", sequelize.col("Submission.created_at")), "desc"],
-        // ],
-      });
-      const formattedSubmissions1 = lastWeekTeamSubmissions
-        .sort((a, b) => b.createdAt - a.createdAt)
-        .map((submission) => {
-          submission.createdAt = moment(submission.createdAt).fromNow();
-          submission.createdAt = submission.createdAt.includes("hour")
-            ? "today"
-            : submission.createdAt.includes("minutes")
+        userId: teamUsersIds,
+      },
+    });
+    const formattedSubmissions1 = lastWeekTeamSubmissions
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .map((submission) => {
+        submission.createdAt = moment(submission.createdAt).fromNow();
+        submission.createdAt = submission.createdAt.includes("hour")
+          ? "today"
+          : submission.createdAt.includes("minutes")
             ? "today"
             : submission.createdAt.includes("seconds")
-            ? "today"
-            : submission.createdAt;
-          return submission;
-        });
+              ? "today"
+              : submission.createdAt;
+        return submission;
+      });
 
-      const formattedSubmissions = Filters.countGroupArray(
-        formattedSubmissions1,
-        "dateSubmissions",
-        "createdAt"
-      );
-      res.json(formattedSubmissions);
-    } catch (error) {
-      console.error(error);
-      res.status(400).json({ message: "Cannot process request" });
-    }
+    const formattedSubmissions = Filters.countGroupArray(
+      formattedSubmissions1,
+      "dateSubmissions",
+      "createdAt"
+    );
+    res.json(formattedSubmissions);
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: "Cannot process request" });
   }
+}
 );
 
 // returns all the team submissions per challenge
@@ -279,8 +270,6 @@ insightTeacherRouter.get(
   }
 );
 
-// =================Not Tested Insights Yet========================//
-
 // returns all the users in the team with ordered submissions by date
 insightTeacherRouter.get(
   "/top-user/:teamId",
@@ -335,7 +324,5 @@ insightTeacherRouter.get(
     }
   }
 );
-
-// =================Not Tested Insights Yet========================//
 
 module.exports = insightTeacherRouter;

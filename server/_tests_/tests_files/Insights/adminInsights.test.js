@@ -1,109 +1,69 @@
 const request = require("supertest");
-const moment = require("moment");
 const app = require("../../../app");
 const {
   User,
-  UserTeam,
-  Team,
   Submission,
-  Challenge,
-  Assignment,
+  Challenge
 } = require("../../../models");
 const {
   generateToken,
   countSuccessSubmissionsPerChallenge,
-  filterUsersByTeam,
-  filterSubmissionsByTeam,
   countGroupArray,
-  countSuccessAndFailSubmissionsPerChallenge,
-  filterLastSubmissionsForTeacherRoute,
   combineSubmissionToChallenge,
   combineSubmissionToUserWithChallenge,
-  filteredArrayByIds,
+  filterLastSubmissionsForAdminRoute,
+  formatCreatedAtToMoment
 } = require("../../Functions");
 const {
   usersMock,
-  teamsMock,
-  usersTeamsMock,
   submissionsMock,
   challengesMock,
-  assignmentsMock,
 } = require("../../mocks");
-
-function filterLastSubmissionsForAdminRoute(
-  challengeIdArray,
-  submissionsArray
-) {
-  const totalSubmissionsShouldBe = usersMock.length * challengeIdArray.length;
-
-  const totalSubmissionsOrderedByDate = submissionsArray
-    .map((submission) => {
-      if (challengeIdArray.includes(submission.challengeId)) {
-        return submission;
-      }
-    })
-    .filter((a) => !!a)
-    .sort((a, b) => b.createdAt - a.createdAt);
-
-  const filteredSubmissions = countSuccessAndFailSubmissionsPerChallenge(
-    totalSubmissionsOrderedByDate
-  );
-  const notYetSubmitted =
-    totalSubmissionsShouldBe -
-    (filteredSubmissions.success + filteredSubmissions.fail);
-  filteredSubmissions.notYet = notYetSubmitted || 0;
-  return filteredSubmissions;
-}
 
 describe("Testing admin insights routes", () => {
   beforeAll(async () => {
     await User.destroy({ truncate: true, force: true });
-    await UserTeam.destroy({ truncate: true, force: true });
-    await Team.destroy({ truncate: true, force: true });
     await Submission.destroy({ truncate: true, force: true });
     await Challenge.destroy({ truncate: true, force: true });
-    await Assignment.destroy({ truncate: true, force: true });
 
     await User.bulkCreate(usersMock);
-    await UserTeam.bulkCreate(usersTeamsMock);
-    await Team.bulkCreate(teamsMock);
     await Submission.bulkCreate(submissionsMock);
     await Challenge.bulkCreate(challengesMock);
-    await Assignment.bulkCreate(assignmentsMock);
   });
 
   test("Admin can get last submissions insights about all users", async (done) => {
-    const teamSubmissionsInsightsOneChallenge = await request(app)
+    const allUSsersSubmissionsInsightsOneChallenge = await request(app)
       .get("/api/v1/insights/admin/all-submissions")
       .query({ challenge: challengesMock[0].id })
       .set("authorization", `bearer ${generateToken(usersMock[2])}`);
 
     const filteredSubmissions = filterLastSubmissionsForAdminRoute(
       [challengesMock[0].id],
-      submissionsMock
+      submissionsMock,
+      usersMock
     );
 
-    expect(teamSubmissionsInsightsOneChallenge.status).toBe(200);
+    expect(allUSsersSubmissionsInsightsOneChallenge.status).toBe(200);
     expect(
-      teamSubmissionsInsightsOneChallenge.body.hasOwnProperty("success")
+      allUSsersSubmissionsInsightsOneChallenge.body.hasOwnProperty("success")
     ).toBe(true);
     expect(
-      teamSubmissionsInsightsOneChallenge.body.hasOwnProperty("fail")
+      allUSsersSubmissionsInsightsOneChallenge.body.hasOwnProperty("fail")
     ).toBe(true);
     expect(
-      teamSubmissionsInsightsOneChallenge.body.hasOwnProperty("notYet")
+      allUSsersSubmissionsInsightsOneChallenge.body.hasOwnProperty("notYet")
     ).toBe(true);
-    expect(teamSubmissionsInsightsOneChallenge.body.success).toBe(
+    expect(allUSsersSubmissionsInsightsOneChallenge.body.success).toBe(
       filteredSubmissions.success
     );
-    expect(teamSubmissionsInsightsOneChallenge.body.fail).toBe(
+    expect(allUSsersSubmissionsInsightsOneChallenge.body.fail).toBe(
       filteredSubmissions.fail
     );
-    expect(teamSubmissionsInsightsOneChallenge.body.notYet).toBe(
+    expect(allUSsersSubmissionsInsightsOneChallenge.body.notYet).toBe(
       filteredSubmissions.notYet
     );
 
-    const teamSubmissionsInsightsAssignments = await request(app)
+    const allUsersSubmissionsInsightsAssignments = await request(app)
       .get("/api/v1/insights/admin/all-submissions")
       .query({ challenge: "all" })
       .set("authorization", `bearer ${generateToken(usersMock[2])}`);
@@ -112,26 +72,27 @@ describe("Testing admin insights routes", () => {
 
     const filteredAssignments = filterLastSubmissionsForAdminRoute(
       challengesId,
-      submissionsMock
+      submissionsMock,
+      usersMock
     );
 
-    expect(teamSubmissionsInsightsAssignments.status).toBe(200);
+    expect(allUsersSubmissionsInsightsAssignments.status).toBe(200);
     expect(
-      teamSubmissionsInsightsAssignments.body.hasOwnProperty("success")
+      allUsersSubmissionsInsightsAssignments.body.hasOwnProperty("success")
     ).toBe(true);
-    expect(teamSubmissionsInsightsAssignments.body.hasOwnProperty("fail")).toBe(
+    expect(allUsersSubmissionsInsightsAssignments.body.hasOwnProperty("fail")).toBe(
       true
     );
     expect(
-      teamSubmissionsInsightsAssignments.body.hasOwnProperty("notYet")
+      allUsersSubmissionsInsightsAssignments.body.hasOwnProperty("notYet")
     ).toBe(true);
-    expect(teamSubmissionsInsightsAssignments.body.success).toBe(
+    expect(allUsersSubmissionsInsightsAssignments.body.success).toBe(
       filteredAssignments.success
     );
-    expect(teamSubmissionsInsightsAssignments.body.fail).toBe(
+    expect(allUsersSubmissionsInsightsAssignments.body.fail).toBe(
       filteredAssignments.fail
     );
-    expect(teamSubmissionsInsightsAssignments.body.notYet).toBe(
+    expect(allUsersSubmissionsInsightsAssignments.body.notYet).toBe(
       filteredAssignments.notYet
     );
 
@@ -182,39 +143,24 @@ describe("Testing admin insights routes", () => {
   });
 
   test("Admin can get the last week submissions of all users", async (done) => {
-    const teamLastWeekSubmissions = await request(app)
+    const allUsersLastWeekSubmissions = await request(app)
       .get("/api/v1/insights/admin/last-week-submissions")
       .set("authorization", `bearer ${generateToken(usersMock[2])}`);
 
-    expect(teamLastWeekSubmissions.status).toBe(200);
+    expect(allUsersLastWeekSubmissions.status).toBe(200);
 
-    const allUsersSubmissionsOrdered = submissionsMock.sort(
-      (a, b) => b.createdAt - a.createdAt
-    );
+    const allUsersSubmissionsOrdered = submissionsMock.sort((a, b) => b.createdAt - a.createdAt);
 
-    const formattedSubmissions = allUsersSubmissionsOrdered.map(
-      (submission) => {
-        let momentDate = moment(submission.createdAt).fromNow();
-        momentDate = momentDate.includes("hour")
-          ? "today"
-          : momentDate.includes("minutes")
-          ? "today"
-          : momentDate.includes("seconds")
-          ? "today"
-          : momentDate;
-        return { dateSubmissions: 1, createdAt: momentDate };
-      }
-    );
+    const formattedSubmissions = formatCreatedAtToMoment(allUsersSubmissionsOrdered)
+
     const groupSubmissions = countGroupArray(
       formattedSubmissions,
       "dateSubmissions",
       "createdAt"
     ).sort((a, b) => b.dateSubmissions - a.dateSubmissions);
 
-    teamLastWeekSubmissions.body.forEach((element, index) => {
-      expect(groupSubmissions[index].dateSubmissions).toBe(
-        element.dateSubmissions
-      );
+    allUsersLastWeekSubmissions.body.forEach((element, index) => {
+      expect(groupSubmissions[index].dateSubmissions).toBe(element.dateSubmissions);
       expect(groupSubmissions[index].createdAt).toBe(element.createdAt);
     });
 
@@ -228,7 +174,7 @@ describe("Testing admin insights routes", () => {
   });
 
   test("Admin can get the challenges submissions per challenges of all users", async (done) => {
-    const teamSubmissionsPerChallenges = await request(app)
+    const allUsersSubmissionsPerChallenges = await request(app)
       .get("/api/v1/insights/admin/challenges-submissions?onlyLast=false")
       .set("authorization", `bearer ${generateToken(usersMock[2])}`);
 
@@ -237,18 +183,18 @@ describe("Testing admin insights routes", () => {
       submissionsMock
     );
 
-    expect(teamSubmissionsPerChallenges.status).toBe(200);
-    teamSubmissionsPerChallenges.body.forEach((challenge, index) => {
+    expect(allUsersSubmissionsPerChallenges.status).toBe(200);
+    allUsersSubmissionsPerChallenges.body.forEach((challenge, index) => {
       expect(challengesWithCount[index].Submissions.length).toBe(
         challenge.Submissions.length
       );
     });
 
-    const teamSubmissionsPerChallengesOnlyLast = await request(app)
+    const allUsersSubmissionsPerChallengesOnlyLast = await request(app)
       .get("/api/v1/insights/admin/challenges-submissions?onlyLast=true")
       .set("authorization", `bearer ${generateToken(usersMock[2])}`);
 
-    expect(teamSubmissionsPerChallengesOnlyLast.status).toBe(200);
+    expect(allUsersSubmissionsPerChallengesOnlyLast.status).toBe(200);
 
     const challengesWithCountOnlyLast = combineSubmissionToChallenge(
       challengesMock,
@@ -258,7 +204,7 @@ describe("Testing admin insights routes", () => {
 
     challengesWithCountOnlyLast.forEach((challenge, index) => {
       expect(
-        teamSubmissionsPerChallengesOnlyLast.body[index].Submissions.length
+        allUsersSubmissionsPerChallengesOnlyLast.body[index].Submissions.length
       ).toBe(challenge.Submissions.length);
     });
 
@@ -272,39 +218,39 @@ describe("Testing admin insights routes", () => {
   });
 
   test("Admin can get the challenges submissions per users of all users", async (done) => {
-    const teamSubmissionsPerUsers = await request(app)
+    const allUsersSubmissionsPerUsers = await request(app)
       .get("/api/v1/insights/admin/users-submissions")
       .set("authorization", `bearer ${generateToken(usersMock[2])}`);
 
-    expect(teamSubmissionsPerUsers.status).toBe(200);
+    expect(allUsersSubmissionsPerUsers.status).toBe(200);
 
-    const usersFromTeamWithSubmissions = combineSubmissionToUserWithChallenge(
+    const usersWithSubmissions = combineSubmissionToUserWithChallenge(
       usersMock,
       submissionsMock,
       challengesMock
     );
 
-    teamSubmissionsPerUsers.body.forEach((user, index) => {
-      expect(usersFromTeamWithSubmissions[index].Submissions.length).toBe(
+    allUsersSubmissionsPerUsers.body.forEach((user, index) => {
+      expect(usersWithSubmissions[index].Submissions.length).toBe(
         user.Submissions.length
       );
     });
 
-    const teamSubmissionsPerUsersOnlyLast = await request(app)
+    const allUsersSubmissionsPerUsersOnlyLast = await request(app)
       .get("/api/v1/insights/admin/users-submissions?onlyLast=true")
       .set("authorization", `bearer ${generateToken(usersMock[2])}`);
 
-    const allUsersTeamWithSubmissionsOnlyLast = combineSubmissionToUserWithChallenge(
+    const allUsersWithSubmissionsOnlyLast = combineSubmissionToUserWithChallenge(
       usersMock,
       submissionsMock,
       challengesMock,
       true
     );
 
-    expect(teamSubmissionsPerUsersOnlyLast.status).toBe(200);
-    teamSubmissionsPerUsersOnlyLast.body.forEach((user, index) => {
+    expect(allUsersSubmissionsPerUsersOnlyLast.status).toBe(200);
+    allUsersSubmissionsPerUsersOnlyLast.body.forEach((user, index) => {
       expect(
-        allUsersTeamWithSubmissionsOnlyLast[index].Submissions.length
+        allUsersWithSubmissionsOnlyLast[index].Submissions.length
       ).toBe(user.Submissions.length);
     });
 
@@ -318,28 +264,14 @@ describe("Testing admin insights routes", () => {
   });
 
   test("Admin can get the top users per success challenges of all users", async (done) => {
-    const teamSubmissionsPerUsers = await request(app)
+    const allUsersSubmissionsPerUsers = await request(app)
       .get("/api/v1/insights/admin/top-user")
       .set("authorization", `bearer ${generateToken(usersMock[2])}`);
 
-    const usersWithSubmissions = usersMock
-      .map((user) => {
-        user.Submissions = [];
-        submissionsMock.forEach((submission) => {
-          if (
-            submission.userId === user.id &&
-            (submission.state === "FAIL" || submission.state === "SUCCESS")
-          ) {
-            user.Submissions.push(submission);
-          }
-        });
-        user.Submissions.sort((a, b) => b.createdAt - a.createdAt);
-        return user;
-      })
-      .sort((a, b) => b.Submissions[0].createdAt - a.Submissions[0].createdAt);
+    const usersWithSubmissions = combineSubmissionToUserWithChallenge(usersMock, submissionsMock, challengesMock)
 
-    expect(teamSubmissionsPerUsers.status).toBe(200);
-    teamSubmissionsPerUsers.body.forEach((user, index) => {
+    expect(allUsersSubmissionsPerUsers.status).toBe(200);
+    allUsersSubmissionsPerUsers.body.forEach((user, index) => {
       expect(usersWithSubmissions[index].userName).toBe(user.userName);
       expect(usersWithSubmissions[index].Submissions.length).toBe(
         user.Submissions.length

@@ -200,9 +200,7 @@ insightAdminRouter.get('/last-week-submissions', async (req, res) => {
     const OneWeek = 7 * 24 * 60 * 60 * 1000;
     const lastWeekAllUsersSubmissions = await Submission.findAll({
       raw: true,
-      // group: [sequelize.fn('DAY', sequelize.col('Submission.created_at'))],
       attributes: [
-        // [sequelize.fn('COUNT', 'id'), 'dateSubmissions'],
         'createdAt',
       ],
       where: {
@@ -215,7 +213,7 @@ insightAdminRouter.get('/last-week-submissions', async (req, res) => {
       ],
     });
 
-    const formattedSubmissions1 = lastWeekAllUsersSubmissions.sort((a,b)=> b.createdAt - a.createdAt).map(
+    const formattedSubmissions1 = lastWeekAllUsersSubmissions.sort((a, b) => b.createdAt - a.createdAt).map(
       (submission) => {
         submission.createdAt = moment(submission.createdAt).fromNow();
         submission.createdAt = submission.createdAt.includes("hour")

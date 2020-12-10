@@ -1,5 +1,4 @@
 const request = require("supertest");
-const moment = require("moment");
 const app = require("../../../app");
 const {
   User,
@@ -19,6 +18,8 @@ const {
   combineSubmissionToChallenge,
   combineSubmissionToUserWithChallenge,
   filteredArrayByIds,
+  countSuccessSubmissionsWithUserName,
+  formatCreatedAtToMoment
 } = require("../../Functions");
 const {
   usersMock,
@@ -203,25 +204,13 @@ describe("Testing teacher insights routes", () => {
       (submission) => submission.createdAt >= new Date(Date.now() - OneWeek)
     );
 
-    const formattedMomentSubmissions = lastWeekSubmissions.map((submission) => {
-      let momentDate = moment(submission.createdAt).fromNow();
-      momentDate = momentDate.includes("hour")
-        ? "today"
-        : momentDate.includes("minutes")
-        ? "today"
-        : momentDate.includes("seconds")
-        ? "today"
-        : momentDate;
-      return { dateSubmissions: 1, createdAt: momentDate };
-    });
+    const formattedMomentSubmissions = formatCreatedAtToMoment(lastWeekSubmissions)
+
     const groupSubmissions = countGroupArray(
       formattedMomentSubmissions,
       "dateSubmissions",
       "createdAt"
     );
-
-    console.log("js", groupSubmissions);
-    console.log("server", teamLastWeekSubmissions.body);
 
     teamLastWeekSubmissions.body.forEach((element, index) => {
       expect(groupSubmissions[index].dateSubmissions).toBe(element.dateSubmissions);
@@ -386,30 +375,7 @@ describe("Testing teacher insights routes", () => {
       submissionsMock,
       challengesMock
     );
-    const formattedMembers = usersFromTeamWithSubmissions.map((member) => {
-      const filteredSubmissions = [];
-      let success = 0;
-      let fail = 0;
-      member.Submissions = member.Submissions.sort(
-        (a, b) => b.createdAt - a.createdAt
-      );
-      member.Submissions.forEach((submission) => {
-        if (filteredSubmissions.includes(submission.challengeId)) {
-        } else {
-          filteredSubmissions.push(submission.challengeId);
-          if (submission.state === "SUCCESS") {
-            success++;
-          } else if (submission.state === "FAIL") {
-            fail++;
-          }
-        }
-      });
-      return {
-        success,
-        fail,
-        userName: member.userName,
-      };
-    });
+    const formattedMembers = countSuccessSubmissionsWithUserName(usersFromTeamWithSubmissions)
 
     expect(teamSubmissionsPerUsers.status).toBe(200);
     formattedMembers.forEach((user, index) => {
