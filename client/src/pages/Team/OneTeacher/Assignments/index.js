@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import network from '../../../../services/network';
 import ChallengeCard from '../../../../components/ChallengeCardSmallVersion';
 import AddAssignment from '../../../../components/Modals/AddAssignment';
+import Loading from '../../../../components/Loading';
 import './style.css';
 
 function TeacherAssignments({ darkMode, teamName }) {
@@ -34,6 +35,7 @@ function TeacherAssignments({ darkMode, teamName }) {
   }, []);
 
   return (
+    allAssignments?
     <div className="generic-page">
       <AddAssignment
         open={openNewAssignmentModal}
@@ -76,7 +78,7 @@ function TeacherAssignments({ darkMode, teamName }) {
       ) : (
         <h1 className="not-found">Not Found</h1>
       )}
-    </div>
+    </div>:<Loading darkMode={darkMode} />
   );
 }
 

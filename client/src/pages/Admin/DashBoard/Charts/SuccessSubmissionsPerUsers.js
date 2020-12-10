@@ -7,12 +7,12 @@ import network from '../../../../services/network';
 import '../style.css';
 
 function SuccessSubmissions({ darkMode }) {
-  const [teamMembers, setTeamMembers] = useState();
+  const [Members, setMembers] = useState();
 
-  const getDataOnTeam = async () => {
+  const getDataOnUsers = async () => {
     try {
       const { data: members } = await network.get('/api/v1/insights/admin/top-user');
-      const fromattedMembers = members.map((member) => {
+      const formattedMembers = members.map((member) => {
         const filteredSubmissions = [];
         let success = 0;
         let fail = 0;
@@ -33,19 +33,19 @@ function SuccessSubmissions({ darkMode }) {
           userName: member.userName,
         };
       });
-      setTeamMembers(fromattedMembers);
-    } catch (error) {}
+      setMembers(formattedMembers);
+    } catch (error) { }
   };
 
   useEffect(() => {
-    getDataOnTeam();
+    getDataOnUsers();
     // eslint-disable-next-line
   }, []);
 
-  return teamMembers ? (
+  return Members ? (
     <div className="success-chart">
-      <h2 className="dashboard-title-chart">Teams Success Submissions</h2>
-      <BarChart width={730} height={250} data={teamMembers}>
+      <h2 className="dashboard-title-chart">Users Success Submissions</h2>
+      <BarChart width={730} height={250} data={Members}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="userName" height={60} />
         <YAxis />
@@ -56,8 +56,8 @@ function SuccessSubmissions({ darkMode }) {
       </BarChart>
     </div>
   ) : (
-    <Loading darkMode={darkMode} />
-  );
+      <Loading darkMode={darkMode} />
+    );
 }
 
 export default SuccessSubmissions;

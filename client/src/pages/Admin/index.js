@@ -82,9 +82,6 @@ function Index({ darkMode }) {
             <Route exact path="/admin/TeamsControl">
               <TeamsControl darkMode={darkMode} />
             </Route>
-            {/* <Route exact path="/admin">
-              <AdminLanding />
-            </Route> */}
             <Route path="*">
               <NotFound />
             </Route>
