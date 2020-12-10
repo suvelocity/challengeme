@@ -12,9 +12,9 @@ function TeamTotalSubmission({ darkMode }) {
   const [challengesOption, setChallengesOption] = useState();
   const [chosenChallenges, setChosenChallenges] = useState('');
 
-  const getDataOnTeam = async () => {
+  const getDataOnTeam = async (Challenges) => {
     try {
-      const { data: submissions } = await network.get(`/api/v1/insights/teacher/team-submissions/${id}?challenge=${chosenChallenges}`);
+      const { data: submissions } = await network.get(`/api/v1/insights/teacher/team-submissions/${id}?challenge=${Challenges}`);
       setTeamSubmissions([
         { name: 'success', value: submissions.success },
         { name: 'fail', value: submissions.fail },
@@ -36,8 +36,7 @@ function TeamTotalSubmission({ darkMode }) {
   };
 
   useEffect(() => {
-    getDataOnTeam();
-    setChosenChallenges('assignments')
+    getDataOnTeam(chosenChallenges);
     // eslint-disable-next-line
   }, [chosenChallenges, id]);
 
@@ -46,6 +45,10 @@ function TeamTotalSubmission({ darkMode }) {
     // eslint-disable-next-line
   }, [id]);
 
+
+  useEffect(() => {
+    setChosenChallenges('assignments')
+  }, [])
 
   const COLORS = ['#00C49F', '#FF8042', '#005FAC'];
   const RADIAN = Math.PI / 180;
@@ -95,7 +98,7 @@ function TeamTotalSubmission({ darkMode }) {
               <Legend />
             </PieChart>
           )
-            : <h2>You haven't Assign Any Assignments Yet</h2>}
+            : chosenChallenges === 'assignments' ? <h2>You haven't Assign Any Assignments Yet</h2> : <h2>There is for submissions on this challenge</h2>}
         </div>
       ) : <Loading darkMode={darkMode} />
   );
