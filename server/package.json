@@ -7,6 +7,7 @@
     "test": "jest --detectOpenHandles --forceExit --runInBand",
     "initDB": "node_modules/.bin/sequelize db:create",
     "migrate": "node_modules/.bin/sequelize db:migrate",
+    "migrateUndo": "node_modules/.bin/sequelize db:migrate:undo",
     "seed": "node_modules/.bin/sequelize db:seed:all",
     "seedUndo": "node_modules/.bin/sequelize db:seed:undo:all",
     "dev": "nodemon index.js",
@@ -42,7 +43,8 @@
     "mysql2": "^2.2.5",
     "nodemailer": "^6.4.13",
     "nodemon": "^2.0.4",
-    "sequelize": "^6.3.5"
+    "sequelize": "^6.3.5",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "eslint": "^7.11.0",

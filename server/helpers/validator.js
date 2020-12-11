@@ -100,6 +100,94 @@ const pwdUpdateValidation = (data) => {
   return schema.validate(data);
 };
 
+// Webhook Creating Single User Validation
+const webhookSingleUserValidation = (data) => {
+  data.birthDate = data.birthDate ? new Date(data.birthDate).valueOf() : undefined;
+  const schema = Joi.object({
+    firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+    lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
+      .required(),
+    email: Joi.string().min(6).email(),
+    country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+    city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+    birthDate: Joi.number().max((new Date()).valueOf()),
+    phoneNumber: Joi.string().regex(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/),
+    reasonOfRegistration: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+    githubAccount: Joi.string().min(1).regex(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i),
+  });
+  return schema.validate(data);
+};
+
+// Webhook Creating Multiplied User Validation
+const webhookMultipliedUsersValidation = (data) => {
+  if (data.users && Array.isArray(data.users)) {
+    data.users = data.users.map(user => {
+      user.birthDate ? new Date(user.birthDate).valueOf() : undefined;
+      return user
+    })
+  }
+  const schema = Joi.object({
+    users: Joi.array().items(
+      Joi.object({
+        firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
+          .required(),
+        email: Joi.string().min(6).email(),
+        country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        birthDate: Joi.number().max((new Date()).valueOf()),
+        phoneNumber: Joi.string().regex(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/),
+        reasonOfRegistration: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        githubAccount: Joi.string().min(1).regex(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i),
+      })).min(1).max(100).required()
+  })
+  return schema.validate(data);
+};
+
+// Webhook Creating Team Validation
+const webhookCreateTeamValidation = (data) => {
+  if (data.users && Array.isArray(data.users)) {
+    data.users = data.users.map(user => {
+      user.birthDate ? new Date(user.birthDate).valueOf() : undefined;
+      return user
+    })
+  }
+  const schema = Joi.object({
+    teamName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
+    teachers: Joi.array().items(
+      Joi.object({
+        firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
+          .required(),
+        email: Joi.string().min(6).email(),
+        country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        birthDate: Joi.number().max((new Date()).valueOf()),
+        phoneNumber: Joi.string().regex(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/),
+        reasonOfRegistration: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        githubAccount: Joi.string().min(1).regex(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i),
+      })).min(1).max(100).required(),
+    users: Joi.array().items(
+      Joi.object({
+        firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
+          .required(),
+        email: Joi.string().min(6).email(),
+        country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        birthDate: Joi.number().max((new Date()).valueOf()),
+        phoneNumber: Joi.string().regex(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/),
+        reasonOfRegistration: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
+        githubAccount: Joi.string().min(1).regex(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i),
+      })).min(1).max(100)
+  })
+  return schema.validate(data);
+};
+
 module.exports.loginValidation = loginValidation;
 module.exports.registerValidation = registerValidation;
 module.exports.userValidation = userValidation;
@@ -107,3 +195,6 @@ module.exports.tokenValidation = tokenValidation;
 module.exports.pwdUpdateValidation = pwdUpdateValidation;
 module.exports.answerValidation = answerValidation;
 module.exports.newChallengeValidation = newChallengeValidation;
+module.exports.webhookSingleUserValidation = webhookSingleUserValidation;
+module.exports.webhookMultipliedUsersValidation = webhookMultipliedUsersValidation;
+module.exports.webhookCreateTeamValidation = webhookCreateTeamValidation;

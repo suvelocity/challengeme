@@ -1,8 +1,8 @@
 const webhookRouter = require('express').Router();
-const { Submission } = require('../../models');
+const { Submission } = require('../../../models');
 
 // github api for update status about submission
-webhookRouter.patch('/submission/:id', async (req, res) => {
+webhookRouter.patch('/:id', async (req, res) => {
   try {
     const { success } = req.body;
     const submission = await Submission.findByPk(req.params.id);

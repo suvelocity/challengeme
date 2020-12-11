@@ -17,10 +17,20 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Assignment, {
         foreignKey: "teamId",
       });
+      this.hasMany(models.WebhookTeamEvent, {
+        foreignKey: 'teamId',
+        sourceKey: 'externalId',
+      });
+      this.belongsTo(models.WebhookAccessKey, {
+        foreignKey: 'creator',
+        sourceKey: 'creator',
+      });
     }
   }
   Team.init({
     name: DataTypes.STRING,
+    externalId: DataTypes.UUID,
+    creator: DataTypes.UUID
   }, {
     sequelize,
     modelName: 'Team',

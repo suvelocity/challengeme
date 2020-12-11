@@ -5,8 +5,10 @@ const checkAdmin = require('../../middleware/checkAdmin');
 //= =======================Authentication================================//
 v1Router.use('/auth', require('./auth'));
 
+//= =======================WebHook================================//
+
+v1Router.use('/webhook', require('./webhook'));
 //= =======================Private Routes================================//
-v1Router.use('/webhook', checkToken, require('./webhook'));
 v1Router.use('/submissions', checkToken, require('./submissions'));
 v1Router.use('/challenges', checkToken, require('./challenges'));
 v1Router.use('/users', checkToken, require('./users'));
