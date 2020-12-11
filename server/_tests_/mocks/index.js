@@ -1,3 +1,4 @@
+const { required } = require('@hapi/joi');
 const assignmentsMock = require('./assignments');
 const challengesMock = require('./challenges');
 const githubHeadersMock = require('./githubHeaders');
@@ -11,6 +12,7 @@ const teamsMock = require('./teams');
 const usersMock = require('./users');
 const usersLoginMock = require('./usersLogin');
 const usersTeamsMock = require('./usersTeams');
+const webhookAccessKeyMock = require('./webhookAccessKeyMock');
 
 module.exports = {
   assignmentsMock,
@@ -26,4 +28,6 @@ module.exports = {
   teamsMock,
   usersLoginMock,
   usersTeamsMock,
+  webhookAccessKeyMock,
+  
 };

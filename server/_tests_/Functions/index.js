@@ -185,7 +185,11 @@ function combineSubmissionToUserWithChallenge(
       user.Submissions.sort((a, b) => b.createdAt - a.createdAt);
       return user;
     })
-    .sort((a, b) => b.Submissions[0].createdAt - a.Submissions[0].createdAt);
+    .sort((a, b) => {
+      if (b.Submissions[0] && a.Submissions[0]) {
+        return b.Submissions[0].createdAt - a.Submissions[0].createdAt
+      }
+    });
 }
 
 function filteredArrayByIds(array, idsArray) {
