@@ -1,4 +1,6 @@
 const adminWebhookRouter = require('express').Router();
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 const { WebhookAccessKey } = require('../../../models');
 
 // get all access keys on our system
@@ -15,10 +17,10 @@ adminWebhookRouter.get('/', async (req, res) => {
 
 // add access key
 adminWebhookRouter.post('/', async (req, res) => {
-    const { hashKey, entityName } = req.body
+    const { key, entityName } = req.body
     try {
         const destructedAccessKey = {
-            hashKey,
+            hashKey: key,
             entityName
         };
         await WebhookAccessKey.create(destructedAccessKey);

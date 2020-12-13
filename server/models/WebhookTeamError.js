@@ -3,27 +3,27 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class WebhookAccessKey extends Model {
+  class WebhookTeamError extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.hasMany(models.Team, {
-        foreignKey: 'creator'
+      this.belongsTo(models.WebhookTeam, {
+        foreignKey: 'webhookId',
       });
       // define association here
     }
   };
-  WebhookAccessKey.init({
-    key: DataTypes.UUID,
-    entityName: DataTypes.STRING,
-    email: DataTypes.STRING
+  WebhookTeamError.init({
+    webhookId: DataTypes.INTEGER,
+    message: DataTypes.TEXT,
+    data: DataTypes.JSON
   }, {
     sequelize,
-    modelName: 'WebhookAccessKey',
-    tableName: 'webhook_access_keys'
+    modelName: 'WebhookTeamError',
+    tableName: 'webhook_team_errors'
   });
-  return WebhookAccessKey;
+  return WebhookTeamError;
 };

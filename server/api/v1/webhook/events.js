@@ -122,7 +122,6 @@ body : {
     "teamId": "77d2ccb6-e6e2-4e85-92b2-73bf7c642adb",
     "webhookUrl": "http://localhost:8090/api/v1/webhook",
       "events": {"StartedChallenge": "true", "submittedChallenge": "true"},
-    "authorizationToken": "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 }
 */
 

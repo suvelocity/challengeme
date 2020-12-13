@@ -1,26 +1,15 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('webhook_access_keys', {
+    await queryInterface.createTable('webhook_events', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      key: {
-        allowNull: false,
-        type: Sequelize.UUID,
-        unique: true,
-      },
-      entity_name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        unique: true,
-      },
-      email: {
-        allowNull: false,
-        type: Sequelize.STRING,
+      name: {
+        type: Sequelize.STRING
       },
       created_at: {
         allowNull: false,
@@ -37,6 +26,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('webhook_access_keys');
+    await queryInterface.dropTable('webhook_events');
   }
 };

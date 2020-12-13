@@ -1,26 +1,21 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('webhook_access_keys', {
+    await queryInterface.createTable('webhook_team_errors', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      key: {
-        allowNull: false,
-        type: Sequelize.UUID,
-        unique: true,
+      webhook_id: {
+        type: Sequelize.INTEGER
       },
-      entity_name: {
-        allowNull: false,
-        type: Sequelize.STRING,
-        unique: true,
+      message: {
+        type: Sequelize.TEXT
       },
-      email: {
-        allowNull: false,
-        type: Sequelize.STRING,
+      data: {
+        type: Sequelize.JSON
       },
       created_at: {
         allowNull: false,
@@ -37,6 +32,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('webhook_access_keys');
+    await queryInterface.dropTable('webhook_team_errors');
   }
 };

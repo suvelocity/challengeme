@@ -8,7 +8,7 @@ module.exports = {
       allowNull: true,
     });
     await queryInterface.addColumn("teams", "creator", {
-      type: Sequelize.UUID,
+      type: Sequelize.INTEGER,
       allowNull: true,
     });
     /**

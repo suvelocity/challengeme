@@ -6,7 +6,6 @@ const { handleGithubTokens } = require('../../helpers');
 const {
   Submission, User, Challenge, Review,
 } = require('../../models');
-const webhookSendEvents = require('../../middleware/webhookSendEvents');
 
 // get challenge last submission by username
 submissionRouter.get('/by-user/:challengeId', async (req, res) => {
@@ -150,13 +149,6 @@ submissionRouter.post('/apply/:challengeId', async (req, res) => {
         console.error(error.message);
       });
     handleGithubTokens(response.headers);
-    webhookSendEvents({
-      eventName: 'SubmittedChallenge',
-      challengeId,
-      userId: req.user.userId,
-      state: 'PENDING',
-      solutionRepository,
-    })
     res.json(response.status);
   } catch (error) {
     console.error(error.message);

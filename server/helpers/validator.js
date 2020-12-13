@@ -106,8 +106,7 @@ const webhookSingleUserValidation = (data) => {
   const schema = Joi.object({
     firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
     lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
-      .required(),
+    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
     email: Joi.string().min(6).email(),
     country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
     city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
@@ -132,8 +131,7 @@ const webhookMultipliedUsersValidation = (data) => {
       Joi.object({
         firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
         lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-        userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
-          .required(),
+        userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
         email: Joi.string().min(6).email(),
         country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
         city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
@@ -158,24 +156,13 @@ const webhookCreateTeamValidation = (data) => {
     teamName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
     teachers: Joi.array().items(
       Joi.object({
-        firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-        lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-        userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
-          .required(),
-        email: Joi.string().min(6).email(),
-        country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-        city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-        birthDate: Joi.number().max((new Date()).valueOf()),
-        phoneNumber: Joi.string().regex(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/),
-        reasonOfRegistration: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-        githubAccount: Joi.string().min(1).regex(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i),
+        userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
       })).min(1).max(100).required(),
     users: Joi.array().items(
       Joi.object({
         firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
         lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-        userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
-          .required(),
+        userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
         email: Joi.string().min(6).email(),
         country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
         city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),

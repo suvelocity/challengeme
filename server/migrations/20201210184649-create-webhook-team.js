@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Webhook_team_events', {
+    await queryInterface.createTable('webhooks_teams', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,10 +9,6 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       team_id: {
-        allowNull: false,
-        type: Sequelize.UUID
-      },
-      team_inside_id: {
         allowNull: false,
         type: Sequelize.INTEGER
       },
@@ -23,10 +19,6 @@ module.exports = {
       authorization_token: {
         allowNull: false,
         type: Sequelize.TEXT
-      },
-      events: {
-        allowNull: false,
-        type: Sequelize.JSON
       },
       created_at: {
         allowNull: false,
@@ -43,6 +35,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Webhook_team_events');
+    await queryInterface.dropTable('webhooks_teams');
   }
 };
