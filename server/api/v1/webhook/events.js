@@ -1,6 +1,7 @@
 const eventsWebhookRouter = require('express').Router();
 const axios = require('axios');
 const { Op } = require('sequelize');
+const db = require('../../../models');
 const { WebhookTeam, WebhookEventTeam, WebhookEvent, Team } = require('../../../models');
 
 /* 
@@ -128,7 +129,7 @@ eventsWebhookRouter.delete('/logout', async (req, res) => {
             await WebhookEventTeam.destroy({
                 where: {
                     eventId: isWebhookExist.WebhookTeams[0].WebhookEventTeams.map(ev => ev.toJSON().eventId),
-                    webhookId: isWebhookExist.WebhookTeams[0].teamId
+                    webhookId: isWebhookExist.WebhookTeams[0].toJSON().id
                 },
             })
             return res.json({ message: `Logout from ${events} Events Success` })
@@ -146,61 +147,61 @@ async function eventsRegistration(res, teamId, webhookUrl, events, authorization
         const teamInsideId = await Team.findOne({
             where: {
                 externalId: teamId
-            }
-        })
-        if (!teamInsideId) {
-            return res.status(400).json({ message: 'There is no such team with this team id' });
-        } else {
-            const eventsFromDb = await WebhookEvent.findAll({
+            },
+            include: [{
+                model: WebhookTeam,
                 where: {
-                    name: events
-                }
-            })
-            const alreadyRegistered = await WebhookTeam.findOne({
-                where: {
-                    teamId: teamInsideId.id,
                     webhookUrl
-                }
-            })
-            let webhookEventTeamToCreate = []
-            if (alreadyRegistered) {
-                const alreadyExistWebhook = await WebhookTeam.findOne({
-                    where: {
-                        teamId: teamInsideId.id,
-                        webhookUrl
-                    },
-                })
-                const alreadySignEvents = await await WebhookEventTeam.findAll({
-                    where: {
-                        eventId: eventsFromDb.map(event => event.id),
-                        webhookId: alreadyExistWebhook.id
-                    },
-                    include: WebhookEvent
-                })
-                if (alreadySignEvents.length > 0) {
-                    const ifManyEvents = (alreadySignEvents.length > 1) ? 's' : '';
-                    return res.status(400)
-                        .json({
-                            message: `You already registered with ${alreadySignEvents.map(event => event.WebhookEvent.name)} event${ifManyEvents}`
-                        });
-                }
-                webhookEventTeamToCreate = eventsFromDb.map(event => {
-                    return { webhookId: alreadyExistWebhook.id, eventId: event.id }
-                })
-            } else {
-                const destructedRegistrationTeamWebhook = {
-                    teamId: teamInsideId.id,
-                    webhookUrl,
-                    authorizationToken
-                };
-                const webhooksCreated = await WebhookTeam.create(destructedRegistrationTeamWebhook);
-                webhookEventTeamToCreate = eventsFromDb.map(event => {
-                    return { webhookId: webhooksCreated.id, eventId: event.id }
-                })
-            }
-            await WebhookEventTeam.bulkCreate(webhookEventTeamToCreate)
-            res.sendStatus(201);
+                },
+                required: false
+            }]
+        })
+        if (!teamInsideId) return res.status(400).json({ message: 'There is no such team with this team id' });
+        const alreadyRegisteredId = teamInsideId.WebhookTeams[0] ? teamInsideId.WebhookTeams[0].id : null;
+        const eventsFromDb = await WebhookEvent.findAll({
+            where: {
+                name: events
+            },
+            include: [{
+                model: WebhookEventTeam,
+                where: {
+                    webhookId: alreadyRegisteredId
+                },
+                required: false
+            }]
+        })
+
+        if (eventsFromDb.length === 0) return res.status(400).json({ message: 'There is no such events' });
+        if (events.length !== eventsFromDb.length) {
+            const notExistEvents = events.filter(event => !eventsFromDb.some(dbEvent => event === dbEvent.name))
+            return res.status(400).json({ message: `There is no such events as ${notExistEvents}` });
         }
+
+        let webhookEventTeamToCreate = []
+        if (alreadyRegisteredId) {
+            const alreadySignEvents = eventsFromDb.map(e => e.toJSON()).filter(x => !!x.WebhookEventTeams[0])
+            if (alreadySignEvents.length > 0) {
+                const ifManyEvents = (alreadySignEvents.length > 1) ? 's' : '';
+                return res.status(400)
+                    .json({
+                        message: `You already registered with ${alreadySignEvents.map(event => event.name)} event${ifManyEvents}`
+                    });
+            }
+            webhookEventTeamToCreate = eventsFromDb.map(event => {
+                return { webhookId: alreadyRegisteredId, eventId: event.id }
+            })
+        } else {
+            const webhooksCreated = await WebhookTeam.create({
+                teamId: teamInsideId.id,
+                webhookUrl,
+                authorizationToken
+            });
+            webhookEventTeamToCreate = eventsFromDb.map(event => {
+                return { webhookId: webhooksCreated.id, eventId: event.id }
+            })
+        }
+        await WebhookEventTeam.bulkCreate(webhookEventTeamToCreate)
+        res.sendStatus(201);
     } catch (error) {
         console.error(error.message);
         return res.status(400).json({ message: 'Cannot process request' });

@@ -16,7 +16,7 @@ header : {
 }
 body : {
     "teamName": "crm",
-    "teachers": [
+    "leaders": [
         {
             "userName": "roy"
         },
@@ -24,12 +24,24 @@ body : {
             "userName": "dan"
         }
     ],
-    "usersToCreate": [
+    "usersToCreate": [    // optional
         {
             "userName": "roy"
         },
         {
             "userName": "david"
+        }
+    ],
+    "eventsRegistration": [ // optional
+        {
+        "webhookUrl": "http://localhost:8090/api/v1/webhook",
+        "events":  ["startedChallenge","submittedChallenge"],
+        "authorizationToken": "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        },
+        {
+        "webhookUrl": "http://localhost:8091/api/v1/webhook",
+        "events":  ["startedChallenge"],
+        "authorizationToken": "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         }
     ]
 }
@@ -46,35 +58,35 @@ createUsersWebhookRouter.post('/create', async (req, res, next) => {
         }
         const externalId = generateId();
         const { teamName } = req.body;
-        const teachersInfo = req.body.teachers
-        const usersInfo = req.body.users
+        const leadersInfo = req.body.leaders
+        const usersInfo = req.body.usersToCreate
         const whichTeachersExist = await User.findAll({
             where: {
-                // userName: teachersInfo.map(teacher => { return { userName: teacher.userName } })
-                userName: teachersInfo.map(teacher => teacher.userName)
+                // userName: leadersInfo.map(leader => { return { userName: leader.userName } })
+                userName: leadersInfo.map(leader => leader.userName)
             }
         })
-        const teachersExistUserNames = whichTeachersExist.map(teacher => teacher.userName)
-        console.log(teachersExistUserNames);
+        const leadersExistUserNames = whichTeachersExist.map(leader => leader.userName)
+        console.log(leadersExistUserNames);
         console.log(usersInfo);
-        console.log(teachersInfo);
-        console.log(teachersInfo.every(user => usersInfo.some(teacher => user.userName === teacher.userName)));
-        if (usersInfo && teachersInfo.every(user => usersInfo.some(teacher => user.userName === teacher.userName) || teachersExistUserNames.some(teacher => user.userName === teacher.userName))) {
+        console.log(leadersInfo);
+        console.log(leadersInfo.every(user => usersInfo.some(leader => user.userName === leader.userName)));
+        if (usersInfo && leadersInfo.every(user => usersInfo.some(leader => user.userName === leader.userName) || leadersExistUserNames.some(leader => user.userName === leader.userName))) {
             const createUsers = await bulkCreateUsers(usersInfo, res)
             if (createUsers) {
                 const newUsersResponse = await User.bulkCreate(createUsers.newUsersToCreate);
                 const newTeamResponse = await Team.create({ name: teamName, externalId });
                 const newUsersIds = newUsersResponse.map(user => user.id)
-                const teachers = newUsersResponse.filter((user => teachersInfo.some(teacher => teacher.userName === user.userName)))
-                const teachersUserNames = teachers.map(teacher => teacher.userName)
+                const leaders = newUsersResponse.filter((user => leadersInfo.some(leader => leader.userName === user.userName)))
+                const leadersUserNames = leaders.map(leader => leader.userName)
                 const usersTeamArray = newUsersIds.map(id => {
-                    if (teachers.some(teacher => teacher.id === id)) {
+                    if (leaders.some(leader => leader.id === id)) {
                         return { teamId: newTeamResponse.id, userId: id, permission: 'student' }
                     }
                 }).filter(x => !!x)
 
-                const teachersIds = whichTeachersExist.map(teacher => teacher.id)
-                teachersIds.forEach(id => {
+                const leadersIds = whichTeachersExist.map(leader => leader.id)
+                leadersIds.forEach(id => {
                     usersTeamArray.push({ teamId: newTeamResponse.id, userId: id, permission: 'teacher' })
                 })
                 console.log('usersTeamArray', usersTeamArray.length);
@@ -82,31 +94,31 @@ createUsersWebhookRouter.post('/create', async (req, res, next) => {
                 res.status(201).json({
                     message: `Create ${teamName} Team With ${createUsers.newUsersForResponse.length} New Users Success`,
                     newUsers: createUsers.newUsersForResponse,
-                    teachers: teachersUserNames,
+                    leaders: leadersUserNames,
                     teamId: externalId
                 });
             }
         } else {
             const whichTeachersExist = await User.findAll({
                 where: {
-                    userName: teachersInfo.map(teacher => teacher.userName)
+                    userName: leadersInfo.map(leader => leader.userName)
                 }
             })
-            if (whichTeachersExist.length === teachersInfo.length) {
+            if (whichTeachersExist.length === leadersInfo.length) {
                 const newTeamResponse = await Team.create({ name: teamName, externalId });
-                const teachersIds = whichTeachersExist.map(teacher => teacher.id)
-                const teachersTeamArray = teachersIds.map(id => {
+                const leadersIds = whichTeachersExist.map(leader => leader.id)
+                const leadersTeamArray = leadersIds.map(id => {
                     return { teamId: newTeamResponse.id, userId: id, permission: 'teacher' }
                 })
-                await UserTeam.bulkCreate(teachersTeamArray);
+                await UserTeam.bulkCreate(leadersTeamArray);
                 res.status(201).json({
                     message: `Create ${teamName} Team Success`,
                     teamId: externalId
                 });
             } else {
-                const missingUsers = teachersInfo.filter(teacher => !whichTeachersExist
-                    .some(teacherExist => teacher.userName === teacherExist.userName))
-                    .map(teacher => teacher.userName)
+                const missingUsers = leadersInfo.filter(leader => !whichTeachersExist
+                    .some(leaderExist => leader.userName === leaderExist.userName))
+                    .map(leader => leader.userName)
 
                 res.status(406).json({ message: `${missingUsers} Are not Exist In The System, Please Add Them Inside 'users' Array ` })
             }
@@ -128,49 +140,67 @@ createUsersWebhookRouter.post('/add-users', async (req, res, next) => {
         }
         const externalId = generateId();
         const { teamName } = req.body;
-        const teachersInfo = req.body.teachers
-        const usersInfo = req.body.users
-        if (usersInfo && teachersInfo.every(user => usersInfo.some(teacher => user.userName === teacher.userName))) {
+        const leadersInfo = req.body.leaders
+        const usersInfo = req.body.usersToCreate
+        const whichTeachersExist = await User.findAll({
+            where: {
+                // userName: leadersInfo.map(leader => { return { userName: leader.userName } })
+                userName: leadersInfo.map(leader => leader.userName)
+            }
+        })
+        const leadersExistUserNames = whichTeachersExist.map(leader => leader.userName)
+        console.log(leadersExistUserNames);
+        console.log(usersInfo);
+        console.log(leadersInfo);
+        console.log(leadersInfo.every(user => usersInfo.some(leader => user.userName === leader.userName)));
+        if (usersInfo && leadersInfo.every(user => usersInfo.some(leader => user.userName === leader.userName) || leadersExistUserNames.some(leader => user.userName === leader.userName))) {
             const createUsers = await bulkCreateUsers(usersInfo, res)
             if (createUsers) {
                 const newUsersResponse = await User.bulkCreate(createUsers.newUsersToCreate);
                 const newTeamResponse = await Team.create({ name: teamName, externalId });
                 const newUsersIds = newUsersResponse.map(user => user.id)
-                const teachers = newUsersResponse.filter((user => teachersInfo.some(teacher => teacher.userName === user.userName)))
-                const teachersUserNames = teachers.map(teacher => teacher.userName)
+                const leaders = newUsersResponse.filter((user => leadersInfo.some(leader => leader.userName === user.userName)))
+                const leadersUserNames = leaders.map(leader => leader.userName)
                 const usersTeamArray = newUsersIds.map(id => {
-                    const permission = teachers.some(teacher => teacher.id === id) ? 'teacher' : 'student';
-                    return { teamId: newTeamResponse.id, userId: id, permission }
+                    if (leaders.some(leader => leader.id === id)) {
+                        return { teamId: newTeamResponse.id, userId: id, permission: 'student' }
+                    }
+                }).filter(x => !!x)
+
+                const leadersIds = whichTeachersExist.map(leader => leader.id)
+                leadersIds.forEach(id => {
+                    usersTeamArray.push({ teamId: newTeamResponse.id, userId: id, permission: 'teacher' })
                 })
+                console.log('usersTeamArray', usersTeamArray.length);
                 await UserTeam.bulkCreate(usersTeamArray);
                 res.status(201).json({
                     message: `Create ${teamName} Team With ${createUsers.newUsersForResponse.length} New Users Success`,
                     newUsers: createUsers.newUsersForResponse,
-                    teachers: teachersUserNames,
+                    leaders: leadersUserNames,
                     teamId: externalId
                 });
             }
         } else {
             const whichTeachersExist = await User.findAll({
                 where: {
-                    userName: teachersInfo.map(teacher => teacher.userName)
+                    userName: leadersInfo.map(leader => leader.userName)
                 }
             })
-            if (whichTeachersExist.length === teachersInfo.length) {
+            if (whichTeachersExist.length === leadersInfo.length) {
                 const newTeamResponse = await Team.create({ name: teamName, externalId });
-                const teachersIds = whichTeachersExist.map(teacher => teacher.id)
-                const teachersTeamArray = teachersIds.map(id => {
+                const leadersIds = whichTeachersExist.map(leader => leader.id)
+                const leadersTeamArray = leadersIds.map(id => {
                     return { teamId: newTeamResponse.id, userId: id, permission: 'teacher' }
                 })
-                await UserTeam.bulkCreate(teachersTeamArray);
+                await UserTeam.bulkCreate(leadersTeamArray);
                 res.status(201).json({
                     message: `Create ${teamName} Team Success`,
                     teamId: externalId
                 });
             } else {
-                const missingUsers = teachersInfo.filter(teacher => !whichTeachersExist
-                    .some(teacherExist => teacher.userName === teacherExist.userName))
-                    .map(teacher => teacher.userName)
+                const missingUsers = leadersInfo.filter(leader => !whichTeachersExist
+                    .some(leaderExist => leader.userName === leaderExist.userName))
+                    .map(leader => leader.userName)
 
                 res.status(406).json({ message: `${missingUsers} Are not Exist In The System, Please Add Them Inside 'users' Array ` })
             }
@@ -197,7 +227,7 @@ body : {
         },
         {
             "userName": "suvelocity",
-            "permission": "teacher"
+            "permission": "leader"
         }
     ]
 }
