@@ -10,8 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      this.belongsToMany(models.WebhookEvent, {
-        through: 'WebhookEventTeam',
+      this.hasMany(models.WebhookEventTeam, {
         foreignKey: 'webhookId'
       });
       this.hasMany(models.WebhookTeamError, {

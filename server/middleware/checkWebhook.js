@@ -10,8 +10,8 @@ module.exports = async function checkWebhook(req, res, next) {
     // const hashedToken = await bcrypt.hashSync(token, 10);
     // const tokenForLog = {
     //     token: hashedToken,
-    //     name: 'davidOrganization',
-    //     id: 5
+    //     name: 'DavidOrganization',
+    //     id: 1
     // }
     // const accessKeyToken = jwt.sign(tokenForLog, process.env.WEBHOOK_SECRET);
     // console.log(accessKeyToken);

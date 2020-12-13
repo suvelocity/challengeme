@@ -1,7 +1,7 @@
 const adminWebhookRouter = require('express').Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const { WebhookAccessKey, WebhookEvents, WebhookTeamError } = require('../../../models');
+const { WebhookAccessKey, WebhookEvent, WebhookTeamError } = require('../../../models');
 
 // get all access keys on our system
 adminWebhookRouter.get('/access-key', async (req, res) => {
@@ -19,12 +19,7 @@ adminWebhookRouter.get('/access-key', async (req, res) => {
 adminWebhookRouter.post('/access-key', async (req, res) => {
     const { key, entityName, email } = req.body
     try {
-        const destructedAccessKey = {
-            key: key,
-            entityName,
-            email
-        };
-        await WebhookAccessKey.create(destructedAccessKey);
+        await WebhookAccessKey.create({ key, entityName, email });
         res.sendStatus(201);
     } catch (error) {
         console.error(error);
@@ -75,7 +70,7 @@ adminWebhookRouter.delete('/access-key/:id', async (req, res) => {
 adminWebhookRouter.get('/webhook-event', async (req, res) => {
     const id = req.query.id ? { where: { id: req.query.id } } : {};
     try {
-        const allWebhookEvents = await WebhookEvents.findAll(id);
+        const allWebhookEvents = await WebhookEvent.findAll(id);
         res.json(allWebhookEvents);
     } catch (error) {
         console.error(error);
@@ -87,7 +82,7 @@ adminWebhookRouter.get('/webhook-event', async (req, res) => {
 adminWebhookRouter.post('/webhook-event', async (req, res) => {
     const { name } = req.body
     try {
-        await WebhookEvents.create({ name });
+        await WebhookEvent.create({ name });
         res.sendStatus(201);
     } catch (error) {
         console.error(error);
@@ -100,7 +95,7 @@ adminWebhookRouter.patch('/webhook-event/:id', async (req, res) => {
     const { name } = req.body
     const { id } = req.params;
     try {
-        await WebhookEvents.update({ name }, {
+        await WebhookEvent.update({ name }, {
             where: {
                 id
             },
@@ -117,7 +112,7 @@ adminWebhookRouter.patch('/webhook-event/:id', async (req, res) => {
 adminWebhookRouter.delete('/webhook-event/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        await WebhookEvents.destroy({
+        await WebhookEvent.destroy({
             where: {
                 id,
             },

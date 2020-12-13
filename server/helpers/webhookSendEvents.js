@@ -1,6 +1,6 @@
 require('dotenv').config();
 const axios = require('axios');
-const { WebhookTeamEvent, Team, User } = require('../models');
+const { WebhookTeam, Team, User } = require('../models');
 
 module.exports = async function webhookSendEvents(event) {
     try {
@@ -13,12 +13,12 @@ module.exports = async function webhookSendEvents(event) {
                     model: Team,
                     through: {},
                     attributes: ['id'],
-                    include: WebhookTeamEvent
+                    include: WebhookTeam
                 },
             ],
         })
 
-        const webhookTeamEvent = userWithTeams.Teams.map(t => t.WebhookTeamEvents[0].dataValues);
+        const webhookTeamEvent = userWithTeams.Teams.map(t => t.WebhookTeams[0].dataValues);
 
         for (let index = 0; index < webhookTeamEvent.length; index++) {
             console.log(webhookTeamEvent[index].events);

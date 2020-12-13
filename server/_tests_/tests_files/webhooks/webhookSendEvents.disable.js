@@ -4,7 +4,7 @@
 const request = require('supertest');
 const nock = require('nock');
 const {
-  User, UserTeam, Team, WebhookTeamEvent, WebhookAccessKey
+  User, UserTeam, Team, WebhookTeam, WebhookAccessKey
 } = require('../../../models');
 const {
   usersMock, usersTeamsMock, teamsMock, webhookTeamMock, webhookAccessKeyMock
@@ -15,14 +15,14 @@ const webhookSendEvents = require('../../../middleware/webhookSendEvents')
 describe('Webhook Send Events Process', () => {
   beforeAll(async () => {
     await UserTeam.destroy({ truncate: true, force: true });
-    await WebhookTeamEvent.destroy({ truncate: true, force: true });
+    await WebhookTeam.destroy({ truncate: true, force: true });
     await WebhookAccessKey.destroy({ truncate: true, force: true });
     await Team.destroy({ truncate: true, force: true });
     await User.destroy({ truncate: true, force: true });
 
     await User.bulkCreate(usersMock);
     await Team.bulkCreate(teamsMock);
-    await WebhookTeamEvent.bulkCreate(webhookTeamMock);
+    await WebhookTeam.bulkCreate(webhookTeamMock);
     await WebhookAccessKey.bulkCreate(webhookAccessKeyMock);
     await UserTeam.bulkCreate(usersTeamsMock);
   });
