@@ -4,9 +4,10 @@ const { v4: generateId } = require('uuid');
 const { User, Team, UserTeam, WebhookAccessKey } = require('../../../models');
 const {
     webhookAddUsersValidation,
-    webhookCreateTeamValidation
+    webhookCreateTeamValidation,
+    webhookChangePermissionsValidation
 } = require('../../../helpers/validator');
-const { userNameInArray } = require('../../../helpers/Filters');
+const Filters = require('../../../helpers/Filters');
 const { eventsRegistrationFunc } = require('./events');
 
 /* 
@@ -71,7 +72,7 @@ createUsersWebhookRouter.post('/create', async (req, res) => {
         })
 
         // a boolean condition based on existent users in the system or request 'usersToCreate'
-        const leadersExistInDbOrCreationList = (leader) => userNameInArray(usersToCreate, leader.userName) || userNameInArray(dbLeadersExist, leader.userName)
+        const leadersExistInDbOrCreationList = (leader) => Filters.userNameInArray(usersToCreate, leader.userName) || Filters.userNameInArray(dbLeadersExist, leader.userName)
 
         if (!leaders.every(leader => leadersExistInDbOrCreationList(leader))) {
             const missingLeaders = leaders.filter(leader => !leadersExistInDbOrCreationList(leader))
@@ -99,7 +100,7 @@ createUsersWebhookRouter.post('/create', async (req, res) => {
 
         // convert the 'usersTeamToCreate' to usersTeams convention on the db with the proper permission
         usersTeamToCreate = usersTeamToCreate.map(user => {
-            const permission = userNameInArray(leaders, user.userName) ? 'teacher' : 'student';
+            const permission = Filters.userNameInArray(leaders, user.userName) ? 'teacher' : 'student';
             return { teamId: newTeamResponse.id, userId: user.id, permission }
         })
 
@@ -169,7 +170,7 @@ createUsersWebhookRouter.post('/add-users', async (req, res) => {
         const newUsersResponse = await User.bulkCreate(createUsers.newUsersToCreate);
         const leaders = usersToCreate.filter(user => user.leader === 'true')
         const usersTeamToCreate = newUsersResponse.map(user => {
-            const permission = userNameInArray(leaders, user.userName) ? 'teacher' : 'student';
+            const permission = Filters.userNameInArray(leaders, user.userName) ? 'teacher' : 'student';
             return { teamId: teamExists.id, userId: user.id, permission }
         })
 
@@ -178,6 +179,76 @@ createUsersWebhookRouter.post('/add-users', async (req, res) => {
         res.status(201).json({ message: `Add ${usersToCreate.length} new users to team ${teamExists.name}` })
 
 
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: 'Cannot process request' });
+    }
+});
+
+
+/* 
+request look like this :
+header : {
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // webhook token
+}
+params : e9db316f-4b2b-4f40-a096-5ee443007a00 // uuid
+body : {
+    "usersToBeLeaders": [
+        {
+            "userName": "royTheKing"
+        },
+        {
+            "userName": "suvelocity"
+        }
+    ]
+}
+*/
+
+// github api for update status about submission
+createUsersWebhookRouter.patch('/change-permissions/:teamId', async (req, res) => {
+    try {
+        // Joi validation
+        const { error } = webhookChangePermissionsValidation(req.body);
+        if (error) {
+            console.error(error.message);
+            return res.status(400).json({ success: false, message: error.message });
+        }
+
+        const { teamId } = req.params;
+        const { usersToBeLeaders } = req.body;
+
+        const teamExists = await Team.findOne({
+            where: {
+                externalId: teamId
+            },
+            include: [{
+                model: User,
+                through: {},
+                attributes: ['id', 'userName'],
+                where: {
+                    userName: usersToBeLeaders.map(user => user.userName)
+                }
+            }]
+        })
+        if (!teamExists) return res.status(400).json({ message: `There is no such team with ${teamId} team id` })
+
+        const dbUsers = teamExists.Users.map(user => user.toJSON())
+
+        if (dbUsers.length !== usersToBeLeaders.length) {
+            const missingUsers = usersToBeLeaders.filter(user => !Filters.userNameInArray(dbUsers, user.userName))
+                .map(user => user.userName)
+
+            return res.status(406).json({ message: `${missingUsers} Are not exist on this team, Please check the 'usersToBeLeaders' list that will contain only team members` })
+        }
+
+        const updatedNum = await UserTeam.update({ permission: 'teacher' }, {
+            where: {
+                userId: dbUsers.map(user => user.id),
+                teamId: teamExists.id,
+            }
+        })
+
+        return res.status(200).json({ message: `Update ${updatedNum[0]} Users Permission` });
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: 'Cannot process request' });

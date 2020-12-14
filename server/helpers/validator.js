@@ -204,10 +204,21 @@ const webhookCreateTeamValidation = (data) => {
   return schema.validate(data);
 };
 
+// Webhook Change Permissions Validation
+const webhookChangePermissionsValidation = (data) => {
+  const schema = Joi.object({
+    usersToBeLeaders: Joi.array().items(
+      Joi.object({
+        userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required()
+      })).min(1).max(100).required()
+  })
+  return schema.validate(data);
+};
+
 module.exports = {
   loginValidation, registerValidation, userValidation,
   tokenValidation, pwdUpdateValidation, answerValidation,
   newChallengeValidation, webhookEventsValidation, webhookAddUsersValidation,
   webhookCreateTeamValidation, webhookAuthorizationChangeValidation,
-  webhookUrlChangeValidation, webhookEventsLogoutValidation
+  webhookUrlChangeValidation, webhookEventsLogoutValidation, webhookChangePermissionsValidation
 }
