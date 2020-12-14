@@ -1,8 +1,11 @@
 const eventsWebhookRouter = require('express').Router();
-const axios = require('axios');
-const { Op } = require('sequelize');
-const db = require('../../../models');
 const { WebhookTeam, WebhookEventTeam, WebhookEvent, Team } = require('../../../models');
+const {
+    webhookEventsValidation,
+    webhookAuthorizationChangeValidation,
+    webhookUrlChangeValidation,
+    webhookEventsLogoutValidation
+} = require('../../../helpers/validator');
 
 /* 
 request look like this :
@@ -18,8 +21,16 @@ body : {
 */
 // register to events webhook
 eventsWebhookRouter.post('/registration', async (req, res) => {
+    // Joi validation
+    const { error } = webhookEventsValidation(req.body);
+    if (error) {
+        console.error(error.message);
+        return res.status(400).json({ success: false, message: error.message });
+    }
+
     const { teamId, webhookUrl, events, authorizationToken } = req.body
-    eventsRegistration(res, teamId, webhookUrl, events, authorizationToken)
+    const eventsRegistrationResponse = await eventsRegistrationFunc({ teamId, webhookUrl, events, authorizationToken })
+    res.status(eventsRegistrationResponse.status).json(eventsRegistrationResponse.response);
 });
 
 /*
@@ -34,6 +45,13 @@ body : {
 
 // update authorization token
 eventsWebhookRouter.patch('/authorization', async (req, res) => {
+    // Joi validation
+    const { error } = webhookAuthorizationChangeValidation(req.body);
+    if (error) {
+        console.error(error.message);
+        return res.status(400).json({ success: false, message: error.message });
+    }
+
     const { webhookUrl, authorizationToken } = req.body
     try {
         const isWebhookExist = await WebhookTeam.update({
@@ -66,14 +84,29 @@ body : {
 
 // update webhookUrl
 eventsWebhookRouter.patch('/url', async (req, res) => {
-    const { webhookUrl } = req.body
+    // Joi validation
+    const { error } = webhookUrlChangeValidation(req.body);
+    if (error) {
+        console.error(error.message);
+        return res.status(400).json({ success: false, message: error.message });
+    }
+
+    const { oldWebhookUrl, newWebhookUrl, teamId, } = req.body
     try {
+        const teamExists = await Team.findOne({
+            where: {
+                externalId: teamId
+            }
+        })
+        if (!teamExists) return res.status(400).json({ message: `There is no such team with ${teamId} team id` })
+
         const isWebhookExist = await WebhookTeam.update({
-            webhookUrl
+            webhookUrl: newWebhookUrl
         },
             {
                 where: {
-                    webhookUrl
+                    teamId: teamExists.id,
+                    webhookUrl: oldWebhookUrl
                 },
             })
         if (isWebhookExist[0] > 0) {
@@ -101,6 +134,13 @@ body : {
 
 // update authorization token
 eventsWebhookRouter.delete('/logout', async (req, res) => {
+    // Joi validation
+    const { error } = webhookEventsLogoutValidation(req.body);
+    if (error) {
+        console.error(error.message);
+        return res.status(400).json({ success: false, message: error.message });
+    }
+
     const { teamId, events, webhookUrl } = req.body
     try {
         const isWebhookExist = await Team.findOne({
@@ -142,7 +182,7 @@ eventsWebhookRouter.delete('/logout', async (req, res) => {
 
 
 
-async function eventsRegistration(res, teamId, webhookUrl, events, authorizationToken) {
+async function eventsRegistrationFunc({ teamId, webhookUrl, events, authorizationToken }) {
     try {
         const teamInsideId = await Team.findOne({
             where: {
@@ -156,7 +196,7 @@ async function eventsRegistration(res, teamId, webhookUrl, events, authorization
                 required: false
             }]
         })
-        if (!teamInsideId) return res.status(400).json({ message: 'There is no such team with this team id' });
+        if (!teamInsideId) return { status: 400, response: { message: `There is no such team with ${teamId} team id` } };
         const alreadyRegisteredId = teamInsideId.WebhookTeams[0] ? teamInsideId.WebhookTeams[0].id : null;
         const eventsFromDb = await WebhookEvent.findAll({
             where: {
@@ -171,10 +211,10 @@ async function eventsRegistration(res, teamId, webhookUrl, events, authorization
             }]
         })
 
-        if (eventsFromDb.length === 0) return res.status(400).json({ message: 'There is no such events' });
+        if (eventsFromDb.length === 0) return { status: 400, response: { message: 'There is no such events' } };
         if (events.length !== eventsFromDb.length) {
             const notExistEvents = events.filter(event => !eventsFromDb.some(dbEvent => event === dbEvent.name))
-            return res.status(400).json({ message: `There is no such events as ${notExistEvents}` });
+            return { status: 400, response: { message: `There is no such events as ${notExistEvents}` } };
         }
 
         let webhookEventTeamToCreate = []
@@ -182,10 +222,11 @@ async function eventsRegistration(res, teamId, webhookUrl, events, authorization
             const alreadySignEvents = eventsFromDb.map(e => e.toJSON()).filter(x => !!x.WebhookEventTeams[0])
             if (alreadySignEvents.length > 0) {
                 const ifManyEvents = (alreadySignEvents.length > 1) ? 's' : '';
-                return res.status(400)
-                    .json({
+                return {
+                    status: 400, response: {
                         message: `You already registered with ${alreadySignEvents.map(event => event.name)} event${ifManyEvents}`
-                    });
+                    }
+                };
             }
             webhookEventTeamToCreate = eventsFromDb.map(event => {
                 return { webhookId: alreadyRegisteredId, eventId: event.id }
@@ -201,13 +242,13 @@ async function eventsRegistration(res, teamId, webhookUrl, events, authorization
             })
         }
         await WebhookEventTeam.bulkCreate(webhookEventTeamToCreate)
-        res.sendStatus(201);
+        return { status: 201, response: { message: 'Events Registration Success' } };
     } catch (error) {
         console.error(error.message);
-        return res.status(400).json({ message: 'Cannot process request' });
+        return { status: 400, response: { message: 'Cannot process request' } };
     }
 }
 
 
 module.exports = eventsWebhookRouter;
-module.exports.eventsRegistration = eventsRegistration
+module.exports.eventsRegistrationFunc = eventsRegistrationFunc

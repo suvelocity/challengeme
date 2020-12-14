@@ -3,11 +3,11 @@ const bcrypt = require('bcryptjs');
 const { v4: generateId } = require('uuid');
 const { User, Team, UserTeam, WebhookAccessKey } = require('../../../models');
 const {
-    webhookSingleUserValidation,
-    webhookMultipliedUsersValidation,
+    webhookAddUsersValidation,
     webhookCreateTeamValidation
 } = require('../../../helpers/validator');
-
+const { userNameInArray } = require('../../../helpers/Filters');
+const { eventsRegistrationFunc } = require('./events');
 
 /* 
 request look like this :
@@ -20,35 +20,27 @@ body : {
         {
             "userName": "roy"
         },
-           {
-            "userName": "dan"
-        }
-    ],
-    "usersToCreate": [    // optional
-        {
-            "userName": "roy"
-        },
         {
             "userName": "david"
         }
     ],
-    "eventsRegistration": [ // optional
+    "usersToCreate": [
         {
+            "userName": "david"
+        },
+        {
+            "userName": "omer"
+        }
+    ]
+    "eventsRegistration": { // optional
         "webhookUrl": "http://localhost:8090/api/v1/webhook",
         "events":  ["startedChallenge","submittedChallenge"],
         "authorizationToken": "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        },
-        {
-        "webhookUrl": "http://localhost:8091/api/v1/webhook",
-        "events":  ["startedChallenge"],
-        "authorizationToken": "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        }
-    ]
-}
+    }
 */
 
 // webhook create team with/out users
-createUsersWebhookRouter.post('/create', async (req, res, next) => {
+createUsersWebhookRouter.post('/create', async (req, res) => {
     try {
         // Joi validation
         const { error } = webhookCreateTeamValidation(req.body);
@@ -56,230 +48,131 @@ createUsersWebhookRouter.post('/create', async (req, res, next) => {
             console.error(error.message);
             return res.status(400).json({ success: false, message: error.message });
         }
-        const externalId = generateId();
-        const { teamName } = req.body;
-        const leadersInfo = req.body.leaders
-        const usersInfo = req.body.usersToCreate
-        const whichTeachersExist = await User.findAll({
+        const { teamName, leaders, usersToCreate, eventsRegistration } = req.body;
+
+        const teamExternalId = generateId();
+        let usersTeamToCreate = [];
+
+        // create base response because it could change
+        const baseResponse = {
+            message: `Create ${teamName} Team Success`,
+            leaders: leaders,
+            teamId: teamExternalId
+        }
+
+
+        // check if leaders(users) exist already in the db by userName
+        const dbLeadersExist = await User.findAll({
             where: {
-                // userName: leadersInfo.map(leader => { return { userName: leader.userName } })
-                userName: leadersInfo.map(leader => leader.userName)
+                userName: leaders.map(leader => leader.userName)
             }
         })
-        const leadersExistUserNames = whichTeachersExist.map(leader => leader.userName)
-        console.log(leadersExistUserNames);
-        console.log(usersInfo);
-        console.log(leadersInfo);
-        console.log(leadersInfo.every(user => usersInfo.some(leader => user.userName === leader.userName)));
-        if (usersInfo && leadersInfo.every(user => usersInfo.some(leader => user.userName === leader.userName) || leadersExistUserNames.some(leader => user.userName === leader.userName))) {
-            const createUsers = await bulkCreateUsers(usersInfo, res)
-            if (createUsers) {
-                const newUsersResponse = await User.bulkCreate(createUsers.newUsersToCreate);
-                const newTeamResponse = await Team.create({ name: teamName, externalId });
-                const newUsersIds = newUsersResponse.map(user => user.id)
-                const leaders = newUsersResponse.filter((user => leadersInfo.some(leader => leader.userName === user.userName)))
-                const leadersUserNames = leaders.map(leader => leader.userName)
-                const usersTeamArray = newUsersIds.map(id => {
-                    if (leaders.some(leader => leader.id === id)) {
-                        return { teamId: newTeamResponse.id, userId: id, permission: 'student' }
-                    }
-                }).filter(x => !!x)
 
-                const leadersIds = whichTeachersExist.map(leader => leader.id)
-                leadersIds.forEach(id => {
-                    usersTeamArray.push({ teamId: newTeamResponse.id, userId: id, permission: 'teacher' })
-                })
-                console.log('usersTeamArray', usersTeamArray.length);
-                await UserTeam.bulkCreate(usersTeamArray);
-                res.status(201).json({
-                    message: `Create ${teamName} Team With ${createUsers.newUsersForResponse.length} New Users Success`,
-                    newUsers: createUsers.newUsersForResponse,
-                    leaders: leadersUserNames,
-                    teamId: externalId
-                });
-            }
-        } else {
-            const whichTeachersExist = await User.findAll({
-                where: {
-                    userName: leadersInfo.map(leader => leader.userName)
-                }
-            })
-            if (whichTeachersExist.length === leadersInfo.length) {
-                const newTeamResponse = await Team.create({ name: teamName, externalId });
-                const leadersIds = whichTeachersExist.map(leader => leader.id)
-                const leadersTeamArray = leadersIds.map(id => {
-                    return { teamId: newTeamResponse.id, userId: id, permission: 'teacher' }
-                })
-                await UserTeam.bulkCreate(leadersTeamArray);
-                res.status(201).json({
-                    message: `Create ${teamName} Team Success`,
-                    teamId: externalId
-                });
-            } else {
-                const missingUsers = leadersInfo.filter(leader => !whichTeachersExist
-                    .some(leaderExist => leader.userName === leaderExist.userName))
-                    .map(leader => leader.userName)
+        // a boolean condition based on existent users in the system or request 'usersToCreate'
+        const leadersExistInDbOrCreationList = (leader) => userNameInArray(usersToCreate, leader.userName) || userNameInArray(dbLeadersExist, leader.userName)
 
-                res.status(406).json({ message: `${missingUsers} Are not Exist In The System, Please Add Them Inside 'users' Array ` })
-            }
+        if (!leaders.every(leader => leadersExistInDbOrCreationList(leader))) {
+            const missingLeaders = leaders.filter(leader => !leadersExistInDbOrCreationList(leader))
+                .map(leader => leader.userName)
+
+            return res.status(406).json({ message: `${missingLeaders} Are not Exist In The System, Please Add Them Inside 'usersToCreate' Array ` })
         }
+
+        if (usersToCreate) {
+            const createUsers = await bulkCreateUsers(usersToCreate, res)
+            if (!createUsers) {
+                return
+            }
+            const newUsersResponse = await User.bulkCreate(createUsers.newUsersToCreate);
+            newUsersResponse.forEach(user => usersTeamToCreate.push(user.toJSON()))
+            baseResponse.newUsers = createUsers.newUsersForResponse;
+            baseResponse.message = `Create ${teamName} Team With ${createUsers.newUsersForResponse.length} New Users Success`;
+        }
+
+        const newTeamResponse = await Team.create({ name: teamName, externalId: teamExternalId });
+
+        dbLeadersExist.forEach(leader =>
+            usersTeamToCreate.push(leader.toJSON())
+        )
+
+        // convert the 'usersTeamToCreate' to usersTeams convention on the db with the proper permission
+        usersTeamToCreate = usersTeamToCreate.map(user => {
+            const permission = userNameInArray(leaders, user.userName) ? 'teacher' : 'student';
+            return { teamId: newTeamResponse.id, userId: user.id, permission }
+        })
+
+        await UserTeam.bulkCreate(usersTeamToCreate);
+
+        let statusCode = 201;
+        if (eventsRegistration) {
+            eventsRegistration.teamId = teamExternalId;
+            const eventsRegistrationResponse = await eventsRegistrationFunc(eventsRegistration)
+            statusCode = eventsRegistrationResponse.status;
+            baseResponse.eventRegistrationMessage = eventsRegistrationResponse.response.message;
+        }
+
+        res.status(statusCode).json(baseResponse);
+
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: 'Cannot process request' });
     }
 });
-
-
-createUsersWebhookRouter.post('/add-users', async (req, res, next) => {
-    try {
-        // Joi validation
-        const { error } = webhookCreateTeamValidation(req.body);
-        if (error) {
-            console.error(error.message);
-            return res.status(400).json({ success: false, message: error.message });
-        }
-        const externalId = generateId();
-        const { teamName } = req.body;
-        const leadersInfo = req.body.leaders
-        const usersInfo = req.body.usersToCreate
-        const whichTeachersExist = await User.findAll({
-            where: {
-                // userName: leadersInfo.map(leader => { return { userName: leader.userName } })
-                userName: leadersInfo.map(leader => leader.userName)
-            }
-        })
-        const leadersExistUserNames = whichTeachersExist.map(leader => leader.userName)
-        console.log(leadersExistUserNames);
-        console.log(usersInfo);
-        console.log(leadersInfo);
-        console.log(leadersInfo.every(user => usersInfo.some(leader => user.userName === leader.userName)));
-        if (usersInfo && leadersInfo.every(user => usersInfo.some(leader => user.userName === leader.userName) || leadersExistUserNames.some(leader => user.userName === leader.userName))) {
-            const createUsers = await bulkCreateUsers(usersInfo, res)
-            if (createUsers) {
-                const newUsersResponse = await User.bulkCreate(createUsers.newUsersToCreate);
-                const newTeamResponse = await Team.create({ name: teamName, externalId });
-                const newUsersIds = newUsersResponse.map(user => user.id)
-                const leaders = newUsersResponse.filter((user => leadersInfo.some(leader => leader.userName === user.userName)))
-                const leadersUserNames = leaders.map(leader => leader.userName)
-                const usersTeamArray = newUsersIds.map(id => {
-                    if (leaders.some(leader => leader.id === id)) {
-                        return { teamId: newTeamResponse.id, userId: id, permission: 'student' }
-                    }
-                }).filter(x => !!x)
-
-                const leadersIds = whichTeachersExist.map(leader => leader.id)
-                leadersIds.forEach(id => {
-                    usersTeamArray.push({ teamId: newTeamResponse.id, userId: id, permission: 'teacher' })
-                })
-                console.log('usersTeamArray', usersTeamArray.length);
-                await UserTeam.bulkCreate(usersTeamArray);
-                res.status(201).json({
-                    message: `Create ${teamName} Team With ${createUsers.newUsersForResponse.length} New Users Success`,
-                    newUsers: createUsers.newUsersForResponse,
-                    leaders: leadersUserNames,
-                    teamId: externalId
-                });
-            }
-        } else {
-            const whichTeachersExist = await User.findAll({
-                where: {
-                    userName: leadersInfo.map(leader => leader.userName)
-                }
-            })
-            if (whichTeachersExist.length === leadersInfo.length) {
-                const newTeamResponse = await Team.create({ name: teamName, externalId });
-                const leadersIds = whichTeachersExist.map(leader => leader.id)
-                const leadersTeamArray = leadersIds.map(id => {
-                    return { teamId: newTeamResponse.id, userId: id, permission: 'teacher' }
-                })
-                await UserTeam.bulkCreate(leadersTeamArray);
-                res.status(201).json({
-                    message: `Create ${teamName} Team Success`,
-                    teamId: externalId
-                });
-            } else {
-                const missingUsers = leadersInfo.filter(leader => !whichTeachersExist
-                    .some(leaderExist => leader.userName === leaderExist.userName))
-                    .map(leader => leader.userName)
-
-                res.status(406).json({ message: `${missingUsers} Are not Exist In The System, Please Add Them Inside 'users' Array ` })
-            }
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(400).json({ message: 'Cannot process request' });
-    }
-});
-
 
 /* 
 request look like this :
 header : {
     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // webhook token
 }
-params : e9db316f-4b2b-4f40-a096-5ee443007a00 // uuid
-
 body : {
-    "users": [
+    "teamId": "77d2ccb6-e6e2-4e85-92b2-73bf7c642adb",
+    "usersToCreate": [
         {
-            "userName": "royTheKing",
-            "permission": "student"
+            "userName": "david", "leader": "true"   // leader true is optional(must be string)
         },
         {
-            "userName": "suvelocity",
-            "permission": "leader"
+            "userName": "omer"
         }
     ]
-}
 */
-
-// github api for update status about submission
-createUsersWebhookRouter.patch('/change-permissions/:id', async (req, res) => {
+createUsersWebhookRouter.post('/add-users', async (req, res) => {
     try {
-        const { id } = req.params;
-        const { users } = req.body;
-        const entity = req.entity
-        const teamCreator = await WebhookAccessKey.findOne({
-            where: {
-                id: entity.id
-            },
-            include: [
-                {
-                    model: Team,
-                    attributes: ["externalId", 'id'],
-                },
-            ],
-        })
-        if (teamCreator.Teams.some(team => team.externalId === id)) {
-            const teamId = teamCreator.Teams[0].id
-            const userNames = users.map(user => user.userName)
-            const usersFromDb = await User.findAll({
-                where: {
-                    userName: userNames
-                },
-                attributes: ['id', 'userName']
-            })
-            const formattedUsers = usersFromDb.map(userDb => {
-                users.map(user => {
-                    if (user.userName === userDb.userName) {
-                        userDb.permission = user.permission
-                    }
-                })
-                return userDb
-            })
-            formattedUsers.map(async (user) => {
-                await UserTeam.update({ permission: user.permission }, {
-                    where: {
-                        userId: user.id,
-                        teamId,
-                    }
-                })
-            })
-
-            res.status(200).json({ message: `Update ${users.length} Users Permission` });
-        } else {
-            res.status(401).json({ message: 'Not Allowed' });
+        // Joi validation
+        const { error } = webhookAddUsersValidation(req.body);
+        if (error) {
+            console.error(error.message);
+            return res.status(400).json({ success: false, message: error.message });
         }
+        const { teamId, usersToCreate } = req.body;
+        const teamExists = await Team.findOne({
+            where: {
+                externalId: teamId
+            }
+        })
+        if (!teamExists) return res.status(400).json({ message: `There is no such team with ${teamId} team id` })
+
+        const filteredUsers = usersToCreate.map(user => {
+            const newUser = { ...user }
+            delete newUser.leader
+            return newUser
+        })
+
+        const createUsers = await bulkCreateUsers(filteredUsers, res)
+        if (!createUsers) {
+            return
+        }
+        const newUsersResponse = await User.bulkCreate(createUsers.newUsersToCreate);
+        const leaders = usersToCreate.filter(user => user.leader === 'true')
+        const usersTeamToCreate = newUsersResponse.map(user => {
+            const permission = userNameInArray(leaders, user.userName) ? 'teacher' : 'student';
+            return { teamId: teamExists.id, userId: user.id, permission }
+        })
+
+        await UserTeam.bulkCreate(usersTeamToCreate);
+
+        res.status(201).json({ message: `Add ${usersToCreate.length} new users to team ${teamExists.name}` })
+
+
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: 'Cannot process request' });

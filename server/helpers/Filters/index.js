@@ -20,6 +20,12 @@ function countGroupArray(array, count, groupParameter) {
   return groupedCountArray;
 };
 
+function userNameInArray(array, userName) {
+  if (Array.isArray(array)) {
+    return array.some(user => user.userName === userName)
+  } return false
+}
+
 module.exports = {
-  getTeamUsersIds, filterLastSubmissionPerChallenge, countGroupArray
+  getTeamUsersIds, filterLastSubmissionPerChallenge, countGroupArray, userNameInArray
 };

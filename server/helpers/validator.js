@@ -100,26 +100,48 @@ const pwdUpdateValidation = (data) => {
   return schema.validate(data);
 };
 
-// Webhook Creating Single User Validation
-const webhookSingleUserValidation = (data) => {
-  data.birthDate = data.birthDate ? new Date(data.birthDate).valueOf() : undefined;
+// Webhook Events Registration Validation
+const webhookEventsValidation = (data) => {
   const schema = Joi.object({
-    firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-    lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
-    email: Joi.string().min(6).email(),
-    country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-    city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-    birthDate: Joi.number().max((new Date()).valueOf()),
-    phoneNumber: Joi.string().regex(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/),
-    reasonOfRegistration: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-    githubAccount: Joi.string().min(1).regex(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i),
-  });
+    teamId: Joi.string().guid({ version: ['uuidv4'] }).required(),
+    webhookUrl: Joi.string().uri().required(),
+    events: Joi.array().items(Joi.string().regex(/^[a-zA-Z\s]*$/)).min(1).required(),
+    authorizationToken: Joi.string().min(1)
+  })
+  return schema.validate(data);
+};
+
+// Webhook Events Change Authorization Validation
+const webhookAuthorizationChangeValidation = (data) => {
+  const schema = Joi.object({
+    webhookUrl: Joi.string().uri().required(),
+    authorizationToken: Joi.string().min(1).required()
+  })
+  return schema.validate(data);
+};
+
+// Webhook Events Change Url Validation
+const webhookUrlChangeValidation = (data) => {
+  const schema = Joi.object({
+    teamId: Joi.string().guid({ version: ['uuidv4'] }).required(),
+    oldWebhookUrl: Joi.string().uri().required(),
+    newWebhookUrl: Joi.string().uri().required(),
+  })
+  return schema.validate(data);
+};
+
+// Webhook Events Logout Validation
+const webhookEventsLogoutValidation = (data) => {
+  const schema = Joi.object({
+    teamId: Joi.string().guid({ version: ['uuidv4'] }).required(),
+    webhookUrl: Joi.string().uri().required(),
+    events: Joi.array().items(Joi.string().regex(/^[a-zA-Z\s]*$/)).min(1).required()
+  })
   return schema.validate(data);
 };
 
 // Webhook Creating Multiplied User Validation
-const webhookMultipliedUsersValidation = (data) => {
+const webhookAddUsersValidation = (data) => {
   if (data.users && Array.isArray(data.users)) {
     data.users = data.users.map(user => {
       user.birthDate ? new Date(user.birthDate).valueOf() : undefined;
@@ -127,8 +149,10 @@ const webhookMultipliedUsersValidation = (data) => {
     })
   }
   const schema = Joi.object({
-    users: Joi.array().items(
+    teamId: Joi.string().guid({ version: ['uuidv4'] }).required(),
+    usersToCreate: Joi.array().items(
       Joi.object({
+        leader: Joi.string().valid('true'),
         firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
         lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
         userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
@@ -146,19 +170,19 @@ const webhookMultipliedUsersValidation = (data) => {
 
 // Webhook Creating Team Validation
 const webhookCreateTeamValidation = (data) => {
-  if (data.users && Array.isArray(data.users)) {
-    data.users = data.users.map(user => {
+  if (data.usersToCreate && Array.isArray(data.usersToCreate)) {
+    data.usersToCreate = data.usersToCreate.map(user => {
       user.birthDate ? new Date(user.birthDate).valueOf() : undefined;
       return user
     })
   }
   const schema = Joi.object({
     teamName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
-    teachers: Joi.array().items(
+    leaders: Joi.array().items(
       Joi.object({
         userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
       })).min(1).max(100).required(),
-    users: Joi.array().items(
+    usersToCreate: Joi.array().items(
       Joi.object({
         firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
         lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
@@ -170,18 +194,20 @@ const webhookCreateTeamValidation = (data) => {
         phoneNumber: Joi.string().regex(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/),
         reasonOfRegistration: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
         githubAccount: Joi.string().min(1).regex(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i),
-      })).min(1).max(100)
+      })).min(1).max(100),
+    eventsRegistration: Joi.object({
+      webhookUrl: Joi.string().uri().required(),
+      events: Joi.array().items(Joi.string().regex(/^[a-zA-Z\s]*$/)).min(1).required(),
+      authorizationToken: Joi.string().min(1)
+    })
   })
   return schema.validate(data);
 };
 
-module.exports.loginValidation = loginValidation;
-module.exports.registerValidation = registerValidation;
-module.exports.userValidation = userValidation;
-module.exports.tokenValidation = tokenValidation;
-module.exports.pwdUpdateValidation = pwdUpdateValidation;
-module.exports.answerValidation = answerValidation;
-module.exports.newChallengeValidation = newChallengeValidation;
-module.exports.webhookSingleUserValidation = webhookSingleUserValidation;
-module.exports.webhookMultipliedUsersValidation = webhookMultipliedUsersValidation;
-module.exports.webhookCreateTeamValidation = webhookCreateTeamValidation;
+module.exports = {
+  loginValidation, registerValidation, userValidation,
+  tokenValidation, pwdUpdateValidation, answerValidation,
+  newChallengeValidation, webhookEventsValidation, webhookAddUsersValidation,
+  webhookCreateTeamValidation, webhookAuthorizationChangeValidation,
+  webhookUrlChangeValidation, webhookEventsLogoutValidation
+}
