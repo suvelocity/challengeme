@@ -1,7 +1,7 @@
 const createUsersWebhookRouter = require('express').Router();
 const bcrypt = require('bcryptjs');
 const { v4: generateId } = require('uuid');
-const { User, Team, UserTeam, WebhookAccessKey } = require('../../../models');
+const { User, Team, UserTeam } = require('../../../models');
 const {
     webhookAddUsersValidation,
     webhookCreateTeamValidation,
@@ -127,8 +127,8 @@ request look like this :
 header : {
     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // webhook token
 }
+params : e9db316f-4b2b-4f40-a096-5ee443007a00 // team id
 body : {
-    "teamId": "77d2ccb6-e6e2-4e85-92b2-73bf7c642adb",
     "usersToCreate": [
         {
             "userName": "david", 
@@ -141,7 +141,9 @@ body : {
         }
     ]
 */
-createUsersWebhookRouter.post('/add-users', async (req, res) => {
+createUsersWebhookRouter.post('/add-users/:externalId', async (req, res) => {
+    const { externalId } = req.params;
+    req.body.externalId = externalId
     try {
         // Joi validation
         const { error } = webhookAddUsersValidation(req.body);
@@ -149,13 +151,14 @@ createUsersWebhookRouter.post('/add-users', async (req, res) => {
             console.error(error.message);
             return res.status(400).json({ success: false, message: error.message });
         }
-        const { teamId, usersToCreate } = req.body;
+        const { usersToCreate } = req.body;
+
         const teamExists = await Team.findOne({
             where: {
-                externalId: teamId
+                externalId: externalId
             }
         })
-        if (!teamExists) return res.status(400).json({ message: `There is no such team with ${teamId} team id` })
+        if (!teamExists) return res.status(400).json({ message: `There is no such team with ${externalId} team id` })
 
         const filteredUsers = usersToCreate.map(user => {
             const newUser = { ...user }
@@ -191,7 +194,7 @@ request look like this :
 header : {
     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // webhook token
 }
-params : e9db316f-4b2b-4f40-a096-5ee443007a00 // uuid
+params : e9db316f-4b2b-4f40-a096-5ee443007a00 //team id
 body : {
     "usersToBeLeaders": [
         {
@@ -205,7 +208,9 @@ body : {
 */
 
 // github api for update status about submission
-createUsersWebhookRouter.patch('/change-permissions/:teamId', async (req, res) => {
+createUsersWebhookRouter.patch('/change-permissions/:externalId', async (req, res) => {
+    const { externalId } = req.params;
+    req.body.externalId = externalId
     try {
         // Joi validation
         const { error } = webhookChangePermissionsValidation(req.body);
@@ -214,12 +219,11 @@ createUsersWebhookRouter.patch('/change-permissions/:teamId', async (req, res) =
             return res.status(400).json({ success: false, message: error.message });
         }
 
-        const { teamId } = req.params;
         const { usersToBeLeaders } = req.body;
 
         const teamExists = await Team.findOne({
             where: {
-                externalId: teamId
+                externalId: externalId
             },
             include: [{
                 model: User,
@@ -230,7 +234,7 @@ createUsersWebhookRouter.patch('/change-permissions/:teamId', async (req, res) =
                 }
             }]
         })
-        if (!teamExists) return res.status(400).json({ message: `There is no such team with ${teamId} team id` })
+        if (!teamExists) return res.status(400).json({ message: `There is no such team with ${externalId} team id` })
 
         const dbUsers = teamExists.Users.map(user => user.toJSON())
 

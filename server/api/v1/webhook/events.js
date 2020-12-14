@@ -12,15 +12,17 @@ request look like this :
 header : {
     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // webhook token
 }
+params : e9db316f-4b2b-4f40-a096-5ee443007a00 // team id
 body : {
-    "teamId": "77d2ccb6-e6e2-4e85-92b2-73bf7c642adb",
     "webhookUrl": "http://localhost:8090/api/v1/webhook",
     "events":  ["submittedChallenge", "startedChallenge"],
     "authorizationToken": "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 }
 */
 // register to events webhook
-eventsWebhookRouter.post('/registration', async (req, res) => {
+eventsWebhookRouter.post('/registration/:externalId', async (req, res) => {
+    const { externalId } = req.params;
+    req.body.externalId = externalId
     // Joi validation
     const { error } = webhookEventsValidation(req.body);
     if (error) {
@@ -28,8 +30,8 @@ eventsWebhookRouter.post('/registration', async (req, res) => {
         return res.status(400).json({ success: false, message: error.message });
     }
 
-    const { teamId, webhookUrl, events, authorizationToken } = req.body
-    const eventsRegistrationResponse = await eventsRegistrationFunc({ teamId, webhookUrl, events, authorizationToken })
+    const { webhookUrl, events, authorizationToken } = req.body
+    const eventsRegistrationResponse = await eventsRegistrationFunc({ externalId, webhookUrl, events, authorizationToken })
     res.status(eventsRegistrationResponse.status).json(eventsRegistrationResponse.response);
 });
 
@@ -37,6 +39,7 @@ eventsWebhookRouter.post('/registration', async (req, res) => {
  header : {
     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // webhook token
 }
+params : e9db316f-4b2b-4f40-a096-5ee443007a00 // team id
 body : {
     "webhookUrl": "http://localhost:8090/api/v1/webhook",
     "authorizationToken": "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" // new one
@@ -44,13 +47,23 @@ body : {
  */
 
 // update authorization token
-eventsWebhookRouter.patch('/authorization', async (req, res) => {
+eventsWebhookRouter.patch('/authorization/:externalId', async (req, res) => {
+    const { externalId } = req.params;
+    req.body.externalId = externalId
     // Joi validation
     const { error } = webhookAuthorizationChangeValidation(req.body);
     if (error) {
         console.error(error.message);
         return res.status(400).json({ success: false, message: error.message });
     }
+
+    const teamExists = await Team.findOne({
+        where: {
+            externalId: externalId
+        }
+    })
+    if (!teamExists) return res.status(400).json({ message: `There is no such team with ${externalId} team id` })
+
 
     const { webhookUrl, authorizationToken } = req.body
     try {
@@ -59,13 +72,14 @@ eventsWebhookRouter.patch('/authorization', async (req, res) => {
         },
             {
                 where: {
-                    webhookUrl
+                    webhookUrl,
+                    teamId: teamExists.id
                 },
             })
         if (isWebhookExist[0] > 0) {
             res.json({ message: 'Update Authorization Token Success' })
         } else {
-            res.status(400).json({ message: 'Update Authorization Token Fail' })
+            res.status(400).json({ message: `Update Authorization Token Fail, There is no webhook url '${webhookUrl}' fot this team` })
         }
     } catch (error) {
         console.error(error.message);
@@ -77,13 +91,17 @@ eventsWebhookRouter.patch('/authorization', async (req, res) => {
  header : {
     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // webhook token
 }
+params : e9db316f-4b2b-4f40-a096-5ee443007a00 // team id
 body : {
-    "webhookUrl": "http://localhost:8090/api/v1/webhook", // new one
+    "oldWebhookUrl": "http://localhost:8090/api/v1/webhook",
+    "newWebhookUrl": "http://localhost:8090/api/v1/webhook", // new one
 }
  */
 
 // update webhookUrl
-eventsWebhookRouter.patch('/url', async (req, res) => {
+eventsWebhookRouter.patch('/url/:externalId', async (req, res) => {
+    const { externalId } = req.params;
+    req.body.externalId = externalId
     // Joi validation
     const { error } = webhookUrlChangeValidation(req.body);
     if (error) {
@@ -91,14 +109,14 @@ eventsWebhookRouter.patch('/url', async (req, res) => {
         return res.status(400).json({ success: false, message: error.message });
     }
 
-    const { oldWebhookUrl, newWebhookUrl, teamId, } = req.body
+    const { oldWebhookUrl, newWebhookUrl, } = req.body
     try {
         const teamExists = await Team.findOne({
             where: {
-                externalId: teamId
+                externalId: externalId
             }
         })
-        if (!teamExists) return res.status(400).json({ message: `There is no such team with ${teamId} team id` })
+        if (!teamExists) return res.status(400).json({ message: `There is no such team with ${externalId} team id` })
 
         const isWebhookExist = await WebhookTeam.update({
             webhookUrl: newWebhookUrl
@@ -112,7 +130,7 @@ eventsWebhookRouter.patch('/url', async (req, res) => {
         if (isWebhookExist[0] > 0) {
             res.json({ message: 'Update Url Success' })
         } else {
-            res.status(400).json({ message: 'Update Url Fail' })
+            res.status(400).json({ message: `Update url Fail, There is no webhook url '${oldWebhookUrl}' fot this team` })
         }
     } catch (error) {
         console.error(error.message);
@@ -125,15 +143,17 @@ request look like this :
 header : {
     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // webhook token
 }
+params : e9db316f-4b2b-4f40-a096-5ee443007a00 // team id
 body : {
-    "teamId": "77d2ccb6-e6e2-4e85-92b2-73bf7c642adb",
     "webhookUrl": "http://localhost:8090/api/v1/webhook",
     "events": ["submittedChallenge", "startedChallenge"]
 }
 */
 
 // update authorization token
-eventsWebhookRouter.delete('/logout', async (req, res) => {
+eventsWebhookRouter.delete('/logout/:externalId', async (req, res) => {
+    const { externalId } = req.params;
+    req.body.externalId = externalId
     // Joi validation
     const { error } = webhookEventsLogoutValidation(req.body);
     if (error) {
@@ -141,11 +161,11 @@ eventsWebhookRouter.delete('/logout', async (req, res) => {
         return res.status(400).json({ success: false, message: error.message });
     }
 
-    const { teamId, events, webhookUrl } = req.body
+    const { events, webhookUrl } = req.body
     try {
         const isWebhookExist = await Team.findOne({
             where: {
-                externalId: teamId,
+                externalId: externalId,
             },
             include: [
                 {
@@ -180,13 +200,11 @@ eventsWebhookRouter.delete('/logout', async (req, res) => {
     }
 });
 
-
-
-async function eventsRegistrationFunc({ teamId, webhookUrl, events, authorizationToken }) {
+async function eventsRegistrationFunc({ externalId, webhookUrl, events, authorizationToken }) {
     try {
         const teamInsideId = await Team.findOne({
             where: {
-                externalId: teamId
+                externalId: externalId
             },
             include: [{
                 model: WebhookTeam,
@@ -196,7 +214,7 @@ async function eventsRegistrationFunc({ teamId, webhookUrl, events, authorizatio
                 required: false
             }]
         })
-        if (!teamInsideId) return { status: 400, response: { message: `There is no such team with ${teamId} team id` } };
+        if (!teamInsideId) return { status: 400, response: { message: `There is no such team with ${externalId} team id` } };
         const alreadyRegisteredId = teamInsideId.WebhookTeams[0] ? teamInsideId.WebhookTeams[0].id : null;
         const eventsFromDb = await WebhookEvent.findAll({
             where: {

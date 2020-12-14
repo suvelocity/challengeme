@@ -103,7 +103,7 @@ const pwdUpdateValidation = (data) => {
 // Webhook Events Registration Validation
 const webhookEventsValidation = (data) => {
   const schema = Joi.object({
-    teamId: Joi.string().guid({ version: ['uuidv4'] }).required(),
+    externalId: Joi.string().guid({ version: ['uuidv4'] }).required(),
     webhookUrl: Joi.string().uri().required(),
     events: Joi.array().items(Joi.string().regex(/^[a-zA-Z\s]*$/)).min(1).required(),
     authorizationToken: Joi.string().min(1)
@@ -114,6 +114,7 @@ const webhookEventsValidation = (data) => {
 // Webhook Events Change Authorization Validation
 const webhookAuthorizationChangeValidation = (data) => {
   const schema = Joi.object({
+    externalId: Joi.string().guid({ version: ['uuidv4'] }).required(),
     webhookUrl: Joi.string().uri().required(),
     authorizationToken: Joi.string().min(1).required()
   })
@@ -123,7 +124,7 @@ const webhookAuthorizationChangeValidation = (data) => {
 // Webhook Events Change Url Validation
 const webhookUrlChangeValidation = (data) => {
   const schema = Joi.object({
-    teamId: Joi.string().guid({ version: ['uuidv4'] }).required(),
+    externalId: Joi.string().guid({ version: ['uuidv4'] }).required(),
     oldWebhookUrl: Joi.string().uri().required(),
     newWebhookUrl: Joi.string().uri().required(),
   })
@@ -133,7 +134,7 @@ const webhookUrlChangeValidation = (data) => {
 // Webhook Events Logout Validation
 const webhookEventsLogoutValidation = (data) => {
   const schema = Joi.object({
-    teamId: Joi.string().guid({ version: ['uuidv4'] }).required(),
+    externalId: Joi.string().guid({ version: ['uuidv4'] }).required(),
     webhookUrl: Joi.string().uri().required(),
     events: Joi.array().items(Joi.string().regex(/^[a-zA-Z\s]*$/)).min(1).required()
   })
@@ -149,7 +150,7 @@ const webhookAddUsersValidation = (data) => {
     })
   }
   const schema = Joi.object({
-    teamId: Joi.string().guid({ version: ['uuidv4'] }).required(),
+    externalId: Joi.string().guid({ version: ['uuidv4'] }).required(),
     usersToCreate: Joi.array().items(
       Joi.object({
         leader: Joi.string().valid('true'),
@@ -207,6 +208,7 @@ const webhookCreateTeamValidation = (data) => {
 // Webhook Change Permissions Validation
 const webhookChangePermissionsValidation = (data) => {
   const schema = Joi.object({
+    externalId: Joi.string().guid({ version: ['uuidv4'] }).required(),
     usersToBeLeaders: Joi.array().items(
       Joi.object({
         userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required()
