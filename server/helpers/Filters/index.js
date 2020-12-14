@@ -1,5 +1,47 @@
-const getTeamUsersIds = require('./getTeamUsersIds');
-const filterLastSubmissionPerChallenge = require('./filterLastSubmissionPerChallenge');
+const { User, Team } = require("../../models");
+
+async function getTeamUsersIds(teamId) {
+  const currentTeamUsers = await Team.findOne({
+    where: {
+      id: teamId,
+    },
+    attributes: ["name"],
+    include: [
+      {
+        model: User,
+        attributes: ["id"],
+        through: {
+          where: {
+            permission: "student",
+          },
+          attributes: [],
+        },
+      },
+    ],
+  });
+  // returns array with users ids
+  const usersId = currentTeamUsers.Users.map((value) => value.id);
+  return usersId;
+};
+
+function filterLastSubmissionPerChallenge(submissionsOrderedByDate) {
+  const filteredAlready = [];
+  let success = 0;
+  let fail = 0;
+  submissionsOrderedByDate.forEach((submission) => {
+    if (filteredAlready.some((filteredSubmission) => filteredSubmission.userId === submission.userId
+      && filteredSubmission.challengeId === submission.challengeId)) {
+    } else {
+      filteredAlready.push({ userId: submission.userId, challengeId: submission.challengeId });
+      if (submission.state === 'SUCCESS') {
+        success++;
+      } else {
+        fail++;
+      }
+    }
+  });
+  return { success, fail };
+};
 
 function countGroupArray(array, count, groupParameter) {
   const groupedCountArray = [];
@@ -20,12 +62,19 @@ function countGroupArray(array, count, groupParameter) {
   return groupedCountArray;
 };
 
-function userNameInArray(array, userName) {
+function stringInObjectArray(array, string, property = 'userName', property2) {
   if (Array.isArray(array)) {
-    return array.some(user => user.userName === userName)
-  } return false
+    return array.some(element => {
+      if (property2) {
+        return element[property][property2] === string
+      } else {
+        return element[property] === string
+      }
+    })
+  }
+  return false
 }
 
 module.exports = {
-  getTeamUsersIds, filterLastSubmissionPerChallenge, countGroupArray, userNameInArray
+  getTeamUsersIds, filterLastSubmissionPerChallenge, countGroupArray, stringInObjectArray
 };

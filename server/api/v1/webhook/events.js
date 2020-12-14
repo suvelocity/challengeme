@@ -6,6 +6,8 @@ const {
     webhookUrlChangeValidation,
     webhookEventsLogoutValidation
 } = require('../../../helpers/validator');
+const checkTeamOwnerPermission = require('../../../middleware/checkTeamOwner');
+const Filters = require('../../../helpers/Filters');
 
 /* 
 request look like this :
@@ -20,7 +22,7 @@ body : {
 }
 */
 // register to events webhook
-eventsWebhookRouter.post('/registration/:externalId', async (req, res) => {
+eventsWebhookRouter.post('/registration/:externalId', checkTeamOwnerPermission, async (req, res) => {
     const { externalId } = req.params;
     req.body.externalId = externalId
     // Joi validation
@@ -47,7 +49,7 @@ body : {
  */
 
 // update authorization token
-eventsWebhookRouter.patch('/authorization/:externalId', async (req, res) => {
+eventsWebhookRouter.patch('/authorization/:externalId', checkTeamOwnerPermission, async (req, res) => {
     const { externalId } = req.params;
     req.body.externalId = externalId
     // Joi validation
@@ -57,13 +59,7 @@ eventsWebhookRouter.patch('/authorization/:externalId', async (req, res) => {
         return res.status(400).json({ success: false, message: error.message });
     }
 
-    const teamExists = await Team.findOne({
-        where: {
-            externalId: externalId
-        }
-    })
-    if (!teamExists) return res.status(400).json({ message: `There is no such team with ${externalId} team id` })
-
+    const teamData = req.team
 
     const { webhookUrl, authorizationToken } = req.body
     try {
@@ -73,7 +69,7 @@ eventsWebhookRouter.patch('/authorization/:externalId', async (req, res) => {
             {
                 where: {
                     webhookUrl,
-                    teamId: teamExists.id
+                    teamId: teamData.id
                 },
             })
         if (isWebhookExist[0] > 0) {
@@ -99,7 +95,7 @@ body : {
  */
 
 // update webhookUrl
-eventsWebhookRouter.patch('/url/:externalId', async (req, res) => {
+eventsWebhookRouter.patch('/url/:externalId', checkTeamOwnerPermission, async (req, res) => {
     const { externalId } = req.params;
     req.body.externalId = externalId
     // Joi validation
@@ -110,20 +106,14 @@ eventsWebhookRouter.patch('/url/:externalId', async (req, res) => {
     }
 
     const { oldWebhookUrl, newWebhookUrl, } = req.body
+    const teamData = req.team;
     try {
-        const teamExists = await Team.findOne({
-            where: {
-                externalId: externalId
-            }
-        })
-        if (!teamExists) return res.status(400).json({ message: `There is no such team with ${externalId} team id` })
-
         const isWebhookExist = await WebhookTeam.update({
             webhookUrl: newWebhookUrl
         },
             {
                 where: {
-                    teamId: teamExists.id,
+                    teamId: teamData.id,
                     webhookUrl: oldWebhookUrl
                 },
             })
@@ -151,7 +141,7 @@ body : {
 */
 
 // update authorization token
-eventsWebhookRouter.delete('/logout/:externalId', async (req, res) => {
+eventsWebhookRouter.delete('/logout/:externalId', checkTeamOwnerPermission, async (req, res) => {
     const { externalId } = req.params;
     req.body.externalId = externalId
     // Joi validation
@@ -160,36 +150,36 @@ eventsWebhookRouter.delete('/logout/:externalId', async (req, res) => {
         console.error(error.message);
         return res.status(400).json({ success: false, message: error.message });
     }
-
-    const { events, webhookUrl } = req.body
+    const { events, webhookUrl } = req.body;
+    const teamData = req.team;
     try {
-        const isWebhookExist = await Team.findOne({
+        const isWebhookExist = await WebhookTeam.findOne({
             where: {
-                externalId: externalId,
+                teamId: teamData.id,
+                webhookUrl
             },
-            include: [
-                {
-                    model: WebhookTeam,
+            include: [{
+                model: WebhookEventTeam,
+                include: [{
+                    model: WebhookEvent,
                     where: {
-                        webhookUrl
-                    },
-                    include: [
-                        {
-                            model: WebhookEventTeam,
-                        }
-                    ]
-                }
-            ]
+                        name: events
+                    }
+                }]
+            }]
         })
         if (!isWebhookExist) {
-            return res.status(400).json({ message: 'You are not register with this team to this webhookUrl' })
-        } else if (!isWebhookExist.WebhookTeams[0].WebhookEventTeams[0]) {
-            return res.status(400).json({ message: 'You are not register with this events to this webhookUrl' })
+            return res.status(400).json({ message: `You are not register with this '${events}' events to this webhookUrl` })
+        }
+        const whatEventsAreNotExist = event => Filters.stringInObjectArray(isWebhookExist.WebhookEventTeams, event, 'WebhookEvent', 'name')
+        if (!events.every(whatEventsAreNotExist)) {
+            const missingEvents = events.filter(event => !whatEventsAreNotExist(event))
+            return res.status(400).json({ message: `You are not register with this '${missingEvents}' events to this webhookUrl` })
         } else {
             await WebhookEventTeam.destroy({
                 where: {
-                    eventId: isWebhookExist.WebhookTeams[0].WebhookEventTeams.map(ev => ev.toJSON().eventId),
-                    webhookId: isWebhookExist.WebhookTeams[0].toJSON().id
+                    eventId: isWebhookExist.WebhookEventTeams.map(ev => ev.toJSON().eventId),
+                    webhookId: isWebhookExist.toJSON().id
                 },
             })
             return res.json({ message: `Logout from ${events} Events Success` })

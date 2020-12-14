@@ -9,6 +9,7 @@ const {
 } = require('../../../helpers/validator');
 const Filters = require('../../../helpers/Filters');
 const { eventsRegistrationFunc } = require('./events');
+const checkTeamOwnerPermission = require('../../../middleware/checkTeamOwner')
 
 /* 
 request look like this :
@@ -72,9 +73,9 @@ createUsersWebhookRouter.post('/create', async (req, res) => {
         })
 
         // a boolean condition based on existent users in the system or request 'usersToCreate'
-        const leadersExistInDbOrCreationList = (leader) => Filters.userNameInArray(usersToCreate, leader.userName) || Filters.userNameInArray(dbLeadersExist, leader.userName)
+        const leadersExistInDbOrCreationList = (leader) => Filters.stringInObjectArray(usersToCreate, leader.userName) || Filters.stringInObjectArray(dbLeadersExist, leader.userName)
 
-        if (!leaders.every(leader => leadersExistInDbOrCreationList(leader))) {
+        if (!leaders.every(leadersExistInDbOrCreationList)) {
             const missingLeaders = leaders.filter(leader => !leadersExistInDbOrCreationList(leader))
                 .map(leader => leader.userName)
 
@@ -100,7 +101,7 @@ createUsersWebhookRouter.post('/create', async (req, res) => {
 
         // convert the 'usersTeamToCreate' to usersTeams convention on the db with the proper permission
         usersTeamToCreate = usersTeamToCreate.map(user => {
-            const permission = Filters.userNameInArray(leaders, user.userName) ? 'teacher' : 'student';
+            const permission = Filters.stringInObjectArray(leaders, user.userName) ? 'teacher' : 'student';
             return { teamId: newTeamResponse.id, userId: user.id, permission }
         })
 
@@ -108,7 +109,7 @@ createUsersWebhookRouter.post('/create', async (req, res) => {
 
         let statusCode = 201;
         if (eventsRegistration) {
-            eventsRegistration.teamId = teamExternalId;
+            eventsRegistration.externalId = teamExternalId;
             const eventsRegistrationResponse = await eventsRegistrationFunc(eventsRegistration)
             statusCode = eventsRegistrationResponse.status;
             baseResponse.eventRegistrationMessage = eventsRegistrationResponse.response.message;
@@ -141,7 +142,7 @@ body : {
         }
     ]
 */
-createUsersWebhookRouter.post('/add-users/:externalId', async (req, res) => {
+createUsersWebhookRouter.post('/add-users/:externalId', checkTeamOwnerPermission, async (req, res) => {
     const { externalId } = req.params;
     req.body.externalId = externalId
     try {
@@ -152,13 +153,7 @@ createUsersWebhookRouter.post('/add-users/:externalId', async (req, res) => {
             return res.status(400).json({ success: false, message: error.message });
         }
         const { usersToCreate } = req.body;
-
-        const teamExists = await Team.findOne({
-            where: {
-                externalId: externalId
-            }
-        })
-        if (!teamExists) return res.status(400).json({ message: `There is no such team with ${externalId} team id` })
+        const teamData = req.team
 
         const filteredUsers = usersToCreate.map(user => {
             const newUser = { ...user }
@@ -173,13 +168,13 @@ createUsersWebhookRouter.post('/add-users/:externalId', async (req, res) => {
         const newUsersResponse = await User.bulkCreate(createUsers.newUsersToCreate);
         const leaders = usersToCreate.filter(user => user.leader === 'true')
         const usersTeamToCreate = newUsersResponse.map(user => {
-            const permission = Filters.userNameInArray(leaders, user.userName) ? 'teacher' : 'student';
-            return { teamId: teamExists.id, userId: user.id, permission }
+            const permission = Filters.stringInObjectArray(leaders, user.userName) ? 'teacher' : 'student';
+            return { teamId: teamData.id, userId: user.id, permission }
         })
 
         await UserTeam.bulkCreate(usersTeamToCreate);
 
-        res.status(201).json({ message: `Add ${usersToCreate.length} new users to team ${teamExists.name}` })
+        res.status(201).json({ message: `Add ${usersToCreate.length} new users to team ${teamData.name}` })
 
 
     } catch (error) {
@@ -208,7 +203,7 @@ body : {
 */
 
 // github api for update status about submission
-createUsersWebhookRouter.patch('/change-permissions/:externalId', async (req, res) => {
+createUsersWebhookRouter.patch('/change-permissions/:externalId', checkTeamOwnerPermission, async (req, res) => {
     const { externalId } = req.params;
     req.body.externalId = externalId
     try {
@@ -220,26 +215,23 @@ createUsersWebhookRouter.patch('/change-permissions/:externalId', async (req, re
         }
 
         const { usersToBeLeaders } = req.body;
+        const teamData = req.team
 
-        const teamExists = await Team.findOne({
+        const teamUsers = await UserTeam.findAll({
             where: {
-                externalId: externalId
+                teamId: teamData.id,
             },
             include: [{
                 model: User,
-                through: {},
                 attributes: ['id', 'userName'],
                 where: {
                     userName: usersToBeLeaders.map(user => user.userName)
                 }
             }]
         })
-        if (!teamExists) return res.status(400).json({ message: `There is no such team with ${externalId} team id` })
-
-        const dbUsers = teamExists.Users.map(user => user.toJSON())
-
+        const dbUsers = teamUsers.map(user => user.User.toJSON())
         if (dbUsers.length !== usersToBeLeaders.length) {
-            const missingUsers = usersToBeLeaders.filter(user => !Filters.userNameInArray(dbUsers, user.userName))
+            const missingUsers = usersToBeLeaders.filter(user => !Filters.stringInObjectArray(dbUsers, user.userName))
                 .map(user => user.userName)
 
             return res.status(406).json({ message: `${missingUsers} Are not exist on this team, Please check the 'usersToBeLeaders' list that will contain only team members` })
@@ -248,7 +240,7 @@ createUsersWebhookRouter.patch('/change-permissions/:externalId', async (req, re
         const updatedNum = await UserTeam.update({ permission: 'teacher' }, {
             where: {
                 userId: dbUsers.map(user => user.id),
-                teamId: teamExists.id,
+                teamId: teamData.id,
             }
         })
 
