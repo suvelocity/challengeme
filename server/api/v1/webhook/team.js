@@ -24,14 +24,16 @@ body : {
             "userName": "david"
         }
     ],
-    "usersToCreate": [
+    "usersToCreate": [ optional
         {
-            "userName": "david"
+            "userName": "david",
+            "email": "david@email.com"
         },
         {
-            "userName": "omer"
+            "userName": "omer",
+            "email":"omer@email.com"
         }
-    ]
+    ],
     "eventsRegistration": { // optional
         "webhookUrl": "http://localhost:8090/api/v1/webhook",
         "events":  ["startedChallenge","submittedChallenge"],
@@ -128,10 +130,13 @@ body : {
     "teamId": "77d2ccb6-e6e2-4e85-92b2-73bf7c642adb",
     "usersToCreate": [
         {
-            "userName": "david", "leader": "true"   // leader true is optional(must be string)
+            "userName": "david", 
+            "email": "david@email.com",
+            "leader": "true"   // leader true is optional(must be string)
         },
         {
-            "userName": "omer"
+            "userName": "omer",
+            "email":"omer@email.com"
         }
     ]
 */
