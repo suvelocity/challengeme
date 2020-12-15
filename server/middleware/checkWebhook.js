@@ -7,18 +7,8 @@ module.exports = async function checkWebhook(req, res, next) {
     let token = req.headers.authorization;
     if (!token) return res.status(400).json({ message: 'Access Token Required' });
     token = token.split(' ')[1];
-    // const hashedToken = await bcrypt.hashSync(token, 10);
-    // const tokenForLog = {
-    //     token: hashedToken,
-    //     name: 'DavidOrganization',
-    //     id: 1
-    // }
-    // const accessKeyToken = jwt.sign(tokenForLog, process.env.WEBHOOK_SECRET);
-    // console.log(accessKeyToken);
     jwt.verify(token, process.env.WEBHOOK_SECRET, async (error, decoded) => {
-        if (error) {
-            return res.status(408).json({ message: 'Invalid Access Token' });
-        }
+        if (error) return res.status(408).json({ message: 'Invalid Access Token' });
         const accessKey = await WebhookAccessKey.findOne({
             where: { id: decoded.id }
         })

@@ -217,10 +217,27 @@ const webhookChangePermissionsValidation = (data) => {
   return schema.validate(data);
 };
 
+// Webhook Event Trigger Validation
+const webhookUrlEventTriggerValidation = (data) => {
+  const schema = Joi.object({
+    challengeName: Joi.string().required()
+  })
+  return schema.validate(data);
+};
+
+// Webhook Github Response Validation
+const webhookUrlGithubResponseValidation = (data) => {
+  const schema = Joi.object({
+    success: Joi.boolean().required()
+  })
+  return schema.validate(data);
+};
+
 module.exports = {
   loginValidation, registerValidation, userValidation,
   tokenValidation, pwdUpdateValidation, answerValidation,
   newChallengeValidation, webhookEventsValidation, webhookAddUsersValidation,
   webhookCreateTeamValidation, webhookAuthorizationChangeValidation,
-  webhookUrlChangeValidation, webhookEventsLogoutValidation, webhookChangePermissionsValidation
+  webhookUrlChangeValidation, webhookEventsLogoutValidation, webhookChangePermissionsValidation,
+  webhookUrlEventTriggerValidation, webhookUrlGithubResponseValidation
 }

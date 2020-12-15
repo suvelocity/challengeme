@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   WebhookTeamError.init({
     webhookId: DataTypes.INTEGER,
+    statusCode: DataTypes.INTEGER,
     message: DataTypes.TEXT,
     data: DataTypes.JSON
   }, {

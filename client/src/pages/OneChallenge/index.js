@@ -298,12 +298,16 @@ function ChallengePage({ darkMode }) {
               cy-test="challenge-boilerPlate"
               variant="contained"
               className={classes.getStartedButton}
-              onClick={() => {
+              onClick={async () => {
                 const user = Cookies.get('userName');
                 mixpanel.track('User Started Challenge', {
                   User: `${user}`,
                   ChallengeId: `${challengeId}`,
                 });
+                try {
+                  await network.post(`/api/v1/webhook/trigger-event/start-challenge`, { challengeName: challenge.name });
+                } catch (error) {
+                }
               }}
               href={`https://github.com/${challenge.boilerPlate}`}
               target="_blank"
@@ -319,10 +323,10 @@ function ChallengePage({ darkMode }) {
               {getSubmissionButton()}
             </div>
           ) : (
-            <div style={{ textAlign: 'center' }}>
-              <CircularProgress style={{ margin: '30px' }} />
-            </div>
-          )}
+              <div style={{ textAlign: 'center' }}>
+                <CircularProgress style={{ margin: '30px' }} />
+              </div>
+            )}
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
@@ -336,8 +340,8 @@ function ChallengePage({ darkMode }) {
       </div>
     </div>
   ) : (
-    <Loading darkMode={darkMode} />
-  );
+      <Loading darkMode={darkMode} />
+    );
 }
 
 export default ChallengePage;

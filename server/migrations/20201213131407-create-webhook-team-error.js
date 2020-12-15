@@ -11,6 +11,9 @@ module.exports = {
       webhook_id: {
         type: Sequelize.INTEGER
       },
+      status_code: {
+        type: Sequelize.INTEGER
+      },
       message: {
         type: Sequelize.TEXT
       },

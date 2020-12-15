@@ -9,6 +9,19 @@ const {
 const checkTeamOwnerPermission = require('../../../middleware/checkTeamOwner');
 const Filters = require('../../../helpers/Filters');
 
+// get all webhook events on our system
+eventsWebhookRouter.get('/all', async (req, res) => {
+    const name = req.query.name ? { where: { entityName: { [Op.like]: `%${req.query.name}%` } } } : {};
+    try {
+        const allWebhookEvents = await WebhookEvent.findAll(name);
+        const eventsName = allWebhookEvents.map(event => event.name)
+        res.json(eventsName);
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: 'Cannot process request' });
+    }
+});
+
 /* 
 request look like this :
 header : {

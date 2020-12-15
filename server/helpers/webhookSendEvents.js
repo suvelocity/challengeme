@@ -1,40 +1,64 @@
 require('dotenv').config();
 const axios = require('axios');
-const { WebhookTeam, Team, User } = require('../models');
+const { WebhookTeam, WebhookEvent, WebhookTeamError, Team, UserTeam } = require('../models');
 
 module.exports = async function webhookSendEvents(event) {
     try {
-        const userWithTeams = await User.findOne({
+        const userWithTeams = await UserTeam.findAll({
             where: {
-                id: event.userId
+                userId: event.userId
             },
-            include: [
-                {
-                    model: Team,
-                    through: {},
-                    attributes: ['id'],
-                    include: WebhookTeam
-                },
-            ],
+            include: [{
+                model: Team,
+                attributes: ['id', 'name'],
+                include: {
+                    model: WebhookTeam,
+                    include: {
+                        model: WebhookEvent,
+                        through: {},
+                        where: {
+                            name: event.eventName
+                        }
+                    }
+                }
+            }]
         })
 
-        const webhookTeamEvent = userWithTeams.Teams.map(t => t.WebhookTeams[0].dataValues);
+        const webhooks = []
+        userWithTeams.forEach(team => {
+            if (team.Team.WebhookTeams.length > 0) {
+                team.Team.WebhookTeams.forEach(hook => {
+                    const jsonHook = hook.toJSON()
+                    jsonHook.team = team.Team.name
+                    webhooks.push(jsonHook)
+                })
+            }
+        })
 
-        for (let index = 0; index < webhookTeamEvent.length; index++) {
-            console.log(webhookTeamEvent[index].events);
-            if (webhookTeamEvent[index].events[`${event.eventName}`] === 'true') {
-                try {
-                    console.table({ webhookUrl: webhookTeamEvent[index].webhookUrl, event, authorizationToken: webhookTeamEvent[index].authorizationToken })
-                    const response = await axios.post(webhookTeamEvent[index].webhookUrl, event, {
-                        headers: {
-                            'Authorization': `token ${webhookTeamEvent[index].authorizationToken}`,
-                        },
-                    })
-                    console.log('response', response.status);
-                } catch (error) {
-                    console.error(error);
-
+        for (let index = 0; index < webhooks.length; index++) {
+            try {
+                console.table([{ team: webhooks[index].team, webhookUrl: webhooks[index].webhookUrl, authorizationToken: webhooks[index].authorizationToken }])
+                event.team = webhooks[index].team
+                delete event.userId;
+                await axios.post(webhooks[index].webhookUrl, event, {
+                    headers: {
+                        'Authorization': `token ${webhooks[index].authorizationToken}`,
+                    },
+                })
+            } catch (error) {
+                const errorToDb = {
+                    webhookId: webhooks[index].id,
+                    message: error.message,
+                    data: error
                 }
+                if (error.response) {
+                    console.error(error.response.status, error.message);
+                    errorToDb.statusCode = error.response.status;
+                } else {
+                    console.error(500, error.message);
+                    errorToDb.statusCode = 500;
+                }
+                await WebhookTeamError.create(errorToDb)
             }
         }
     } catch (error) {

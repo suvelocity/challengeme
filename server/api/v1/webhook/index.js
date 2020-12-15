@@ -6,6 +6,7 @@ const checkWebhook = require('../../../middleware/checkWebhook');
 router.use('/submission', checkToken, require('./githubResponse'));
 router.use('/team', checkWebhook, require('./team'));
 router.use('/events', checkWebhook, require('./events'));
-router.use('/admin',checkToken, checkAdmin, require('./admin'));
+router.use('/admin', checkToken, checkAdmin, require('./admin'));
+router.use('/trigger-event', checkToken, require('./triggerEvents'));
 
 module.exports = router;
