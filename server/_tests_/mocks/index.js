@@ -14,8 +14,6 @@ const usersTeamsMock = require('./usersTeams');
 const webhookAccessKeyMock = require('./webhookAccessKeyMock');
 const webhookTeamErrorMock = require('./webhookTeamErrorMock');
 const webhookEventMock = require('./webhookEventMock');
-
-
 const webhookTeamMock = require('./webhookTeamMock');
 
 module.exports = {
