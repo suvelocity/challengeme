@@ -217,7 +217,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test.skip('Admin can get the challenges submissions per users of all users', async (done) => {
+  test('Admin can get the challenges submissions per users of all users', async (done) => {
     const allUsersSubmissionsPerUsers = await request(app)
       .get('/api/v1/insights/admin/users-submissions')
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
@@ -227,14 +227,14 @@ describe('Testing admin insights routes', () => {
     const usersWithSubmissions = combineSubmissionToUserWithChallenge(
       usersMock,
       submissionsMock,
-      challengesMock,
-    );
+      challengesMock);
 
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
-      console.log('-----------', user.Submissions.length, '-----------------------');
-      console.log('-----------', user.Submissions.length, '-----------------------');
-      console.log('-----------', user.Submissions.length, '-----------------------');
-      console.log('-----------', user.Submissions.length, '-----------------------');
+      console.log('----------------------------------');
+      console.log('---response---', user.Submissions.length, '-----------------------');
+      console.log('----------------------------------');
+      console.log('---js------', usersWithSubmissions[index].Submissions.length, '-----------------------');
+      console.log('----------------------------------');
       expect(user.Submissions).toHaveLength(usersWithSubmissions[index].Submissions.length);
     });
 
@@ -269,7 +269,7 @@ describe('Testing admin insights routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     const usersWithSubmissions = combineSubmissionToUserWithChallenge(usersMock, submissionsMock, challengesMock);
-   
+
     expect(allUsersSubmissionsPerUsers.status).toBe(200);
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
       console.log('---------------------------------------------');

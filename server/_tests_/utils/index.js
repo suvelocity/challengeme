@@ -150,43 +150,34 @@ function combineSubmissionToChallenge(challengeArray, submissionsArray, onlyLast
     .sort((a, b) => b.Submissions.length - a.Submissions.length);
 }
 
-function combineSubmissionToUserWithChallenge(
-  usersArray,
-  submissionsArray,
-  challengesArray,
-  onlyLast = 'false',
-) {
-  return usersArray
-    .map((user) => {
-      user.Submissions = [];
-      submissionsArray.forEach((submission) => {
-        if (submission.userId === user.id) {
-          submission.Challenge = challengesArray.find(
-            (challenge) => challenge.id === submission.challengeId,
-          );
-          user.Submissions.push(submission);
-        }
-      });
-      if (onlyLast === 'true') {
-        const myFilteredArray = [];
-        const myFilteredArrayUsers = [];
-        user.Submissions.forEach((submission) => {
-          if (myFilteredArrayUsers.includes(submission.challengeId)) {
-          } else {
-            myFilteredArrayUsers.push(submission.challengeId);
-            myFilteredArray.push(submission);
-          }
-        });
-        user.Submissions = myFilteredArray;
-      }
-      user.Submissions.sort((a, b) => b.createdAt - a.createdAt);
-      return user;
-    })
-    .sort((a, b) => {
-      if (b.Submissions[0] && a.Submissions[0]) {
-        return b.Submissions[0].createdAt - a.Submissions[0].createdAt;
+function combineSubmissionToUserWithChallenge(usersArray, submissionsArray, challengesArray, onlyLast = 'false') {
+  return usersArray.map((user) => {
+    user.Submissions = [];
+    submissionsArray.forEach((submission) => {
+      if (submission.userId === user.id) {
+        submission.Challenge = challengesArray.find((challenge) => challenge.id === submission.challengeId);
+        user.Submissions.push(submission);
       }
     });
+    if (onlyLast === 'true') {
+      const myFilteredArray = [];
+      const myFilteredArrayUsers = [];
+      user.Submissions.forEach((submission) => {
+        if (myFilteredArrayUsers.includes(submission.challengeId)) {
+        } else {
+          myFilteredArrayUsers.push(submission.challengeId);
+          myFilteredArray.push(submission);
+        }
+      });
+      user.Submissions = myFilteredArray;
+    }
+    user.Submissions.sort((a, b) => b.createdAt - a.createdAt);
+    return user;
+  }).sort((a, b) => {
+    if (b.Submissions[0] && a.Submissions[0]) {
+      return b.Submissions[0].createdAt - a.Submissions[0].createdAt;
+    }
+  });
 }
 
 function filteredArrayByIds(array, idsArray) {
