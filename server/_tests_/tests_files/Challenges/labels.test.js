@@ -1,7 +1,7 @@
 const request = require('supertest');
 const bcrypt = require('bcryptjs');
 const app = require('../../../app');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const {
   Challenge, Label, LabelChallenge, Submission, User,
 } = require('../../../models');
@@ -21,7 +21,7 @@ describe('testing labels endpoints', () => {
     const response = await request(app)
       .get('/api/v1/labels')
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
-    expect(response.body.length).toBe(14);
+    expect(response.body).toHaveLength(14);
     expect(response.status).toBe(200);
     done();
   });
@@ -51,7 +51,7 @@ describe('testing labels endpoints', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(challengesBeforeAddLabels.status).toBe(200);
-    expect(challengesBeforeAddLabels.body[0].Labels.length).toBe(0);
+    expect(challengesBeforeAddLabels.body[0].Labels).toHaveLength(0);
 
     const addLabels = await request(app)
       .post(`/api/v1/labels/${challengesMock[0].id}`)
@@ -65,7 +65,7 @@ describe('testing labels endpoints', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(challengesWithLables.status).toBe(200);
-    expect(challengesWithLables.body[0].Labels.length).toBe(2);
+    expect(challengesWithLables.body[0].Labels).toHaveLength(2);
     done();
   });
 });

@@ -4,7 +4,7 @@ const app = require('../../../app');
 const {
   Challenge, Label, LabelChallenge, Submission, User,
 } = require('../../../models');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const { challengesMock, usersMock } = require('../../mocks');
 
 describe('testing challenges endpoints', () => {
@@ -23,7 +23,7 @@ describe('testing challenges endpoints', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(allChallenges.status).toBe(200);
-    expect(allChallenges.body.length).toBe(challengesMock.length);
+    expect(allChallenges.body).toHaveLength(challengesMock.length);
 
     done();
   });
@@ -49,7 +49,7 @@ describe('testing challenges endpoints', () => {
       .set('authorization', `bearer ${generateToken(usersMock[1])}`);
 
     expect(filteredChallenges.status).toBe(200);
-    expect(filteredChallenges.body.length).toBe(challengesMock.filter((challenge) => challenge.authorId === usersMock[1].id).length);
+    expect(filteredChallenges.body).toHaveLength(challengesMock.filter((challenge) => challenge.authorId === usersMock[1].id).length);
 
     done();
   });
@@ -89,7 +89,7 @@ describe('testing challenges endpoints', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(response.status).toBe(200);
-    expect(response.body.length).toBe(0);
+    expect(response.body).toHaveLength(0);
 
     const newChallengeFromDB = await Challenge.findOne({
       where: {
@@ -97,7 +97,7 @@ describe('testing challenges endpoints', () => {
       },
     });
 
-    expect(newChallengeFromDB.dataValues.name).toBe(challengesMock[0].name);
+    expect(newChallengeFromDB.toJSON().name).toBe(challengesMock[0].name);
 
     const postNewChallengeAgain = await request(app)
       .post('/api/v1/challenges')
@@ -137,7 +137,7 @@ describe('testing challenges endpoints', () => {
 
     const allChallenges = await Challenge.findAll({});
 
-    expect(pendingChallenges.body.length).toBe(allChallenges.length);
+    expect(pendingChallenges.body).toHaveLength(allChallenges.length);
 
     done();
   });
@@ -159,7 +159,7 @@ describe('testing challenges endpoints', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(challengesBeforeApproved.status).toBe(200);
-    expect(challengesBeforeApproved.body.length).toBe(0);
+    expect(challengesBeforeApproved.body).toHaveLength(0);
 
     const changeStateChallenge = await request(app)
       .patch(`/api/v1/challenges/state-update/${challengesMock[0].id}`)

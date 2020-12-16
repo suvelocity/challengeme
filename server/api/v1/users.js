@@ -20,10 +20,10 @@ userRouter.get('/info', async (req, res) => {
         'createdAt',
       ],
     });
-    res.json(user);
+    return res.json(user);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -38,6 +38,7 @@ userRouter.get('/teacher/:teamId', checkTeacherPermission, async (req, res) => {
       },
       include: {
         model: User,
+        attributes: ['id', 'userName'],
         through: {
           paranoid: false,
         },
@@ -48,10 +49,10 @@ userRouter.get('/teacher/:teamId', checkTeacherPermission, async (req, res) => {
       delete user.dataValues.securityAnswer;
       return user.dataValues;
     });
-    res.json(flitteredUsersSensitiveData);
+    return res.json(flitteredUsersSensitiveData);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -66,10 +67,10 @@ userRouter.get('/admin', checkAdmin, async (req, res) => {
       delete user.dataValues.securityAnswer;
       return user.dataValues;
     });
-    res.json(filtterdUsersSensitiveData);
+    return res.json(filtterdUsersSensitiveData);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -82,10 +83,10 @@ userRouter.patch('/permission', checkAdmin, async (req, res) => {
         userName,
       },
     });
-    res.json(updatedUser);
+    return res.json(updatedUser);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

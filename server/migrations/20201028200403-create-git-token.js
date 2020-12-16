@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('git_tokens', {
@@ -6,15 +5,15 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       token: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       status: {
         type: Sequelize.DataTypes.ENUM,
-        values: ["blocked", "available"],
-        defaultValue: "available",
+        values: ['blocked', 'available'],
+        defaultValue: 'available',
       },
       resets_at: {
         allowNull: false,
@@ -22,22 +21,22 @@ module.exports = {
         defaultValue: new Date(),
       },
       git_account: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       actions_limit: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       created_at: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updated_at: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('git_tokens');
-  }
+  },
 };

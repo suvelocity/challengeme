@@ -13,10 +13,10 @@ typeRouter.get('/', async (req, res) => {
       ? file
       : null));
     types = types.filter((type) => type !== null);
-    res.json(types);
+    return res.json(types);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

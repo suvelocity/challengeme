@@ -1,11 +1,11 @@
 const images = require('./seedFiles/images');
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async (queryInterface) => {
     await queryInterface.bulkInsert('images', images, {});
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.bulkDelete('images', null, {});
   },
 };

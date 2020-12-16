@@ -152,7 +152,7 @@ export default function NewChallengeForm() {
       /* post newRepo to challenge table */
       try {
         const { data: postedRepo } = await network.post('/api/v1/challenges', newRepo);
-        await network.post('/api/v1/image', {
+        await network.post('/api/v1/images', {
           challengeId: postedRepo.id,
           img: file.result,
         });

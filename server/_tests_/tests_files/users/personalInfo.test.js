@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../../../app');
 const { User } = require('../../../models');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const { usersMock } = require('../../mocks');
 
 describe('Testing users routes', () => {
@@ -29,7 +29,7 @@ describe('Testing users routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(userInformation.status).toBe(200);
-    expect(userInformation.body.length).toBe(usersMock.length);
+    expect(userInformation.body).toHaveLength(usersMock.length);
 
     const unauthorized = await request(app)
       .get('/api/v1/users/admin')
@@ -61,7 +61,7 @@ describe('Testing users routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(allUsersWithPermission.status).toBe(200);
-    expect(allUsersWithPermission.body.length).toBe(usersMock.length);
+    expect(allUsersWithPermission.body).toHaveLength(usersMock.length);
 
     done();
   });

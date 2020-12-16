@@ -1,24 +1,24 @@
-const { Model } = require("sequelize");
+const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Challenge extends Model {
     static associate(models) {
       this.belongsTo(models.User, {
-        foreignKey: "authorId",
-        as: "Author",
+        foreignKey: 'authorId',
+        as: 'Author',
       });
       this.hasMany(models.Submission, {
-        foreignKey: "challengeId",
+        foreignKey: 'challengeId',
       });
       this.hasMany(models.Review, {
-        foreignKey: "challengeId",
+        foreignKey: 'challengeId',
       });
       this.hasMany(models.Assignment, {
-        foreignKey: "challengeId",
+        foreignKey: 'challengeId',
       });
       this.belongsToMany(models.Label, {
-        through: "LabelChallenge",
-        foreignKey: "challengeId",
+        through: 'LabelChallenge',
+        foreignKey: 'challengeId',
       });
     }
   }
@@ -30,13 +30,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       repositoryName: DataTypes.STRING,
       authorId: DataTypes.STRING,
-      state: DataTypes.ENUM("pending", "denied", "approved"),
+      state: DataTypes.ENUM('pending', 'denied', 'approved'),
     },
     {
       sequelize,
-      modelName: "Challenge",
-      tableName: "challenges",
-    }
+      modelName: 'Challenge',
+      tableName: 'challenges',
+    },
   );
   return Challenge;
 };
