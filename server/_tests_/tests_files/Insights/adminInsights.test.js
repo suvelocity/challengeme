@@ -185,7 +185,9 @@ describe('Testing admin insights routes', () => {
 
     expect(allUsersSubmissionsPerChallenges.status).toBe(200);
     allUsersSubmissionsPerChallenges.body.forEach((challenge, index) => {
-      expect(challengesWithCount[index].Submissions.length).toBe(challenge.Submissions.length);
+      expect(challengesWithCount[index].Submissions).toHaveLength(
+        challenge.Submissions.length,
+      );
     });
 
     const allUsersSubmissionsPerChallengesOnlyLast = await request(app)
@@ -201,7 +203,9 @@ describe('Testing admin insights routes', () => {
     );
 
     challengesWithCountOnlyLast.forEach((challenge, index) => {
-      expect(allUsersSubmissionsPerChallengesOnlyLast.body[index].Submissions.length).toBe(challenge.Submissions.length);
+      expect(
+        allUsersSubmissionsPerChallengesOnlyLast.body[index].Submissions,
+      ).toHaveLength(challenge.Submissions.length);
     });
 
     const unauthorized = await request(app)
@@ -227,7 +231,7 @@ describe('Testing admin insights routes', () => {
     );
 
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
-      expect(usersWithSubmissions[index].Submissions.length).toBe(
+      expect(usersWithSubmissions[index].Submissions).toHaveLength(
         user.Submissions.length,
       );
     });
@@ -246,7 +250,8 @@ describe('Testing admin insights routes', () => {
     expect(allUsersSubmissionsPerUsersOnlyLast.status).toBe(200);
     allUsersSubmissionsPerUsersOnlyLast.body.forEach((user, index) => {
       expect(
-        allUsersWithSubmissionsOnlyLast[index].Submissions.length).toBe(user.Submissions.length);
+        allUsersWithSubmissionsOnlyLast[index].Submissions,
+      ).toHaveLength(user.Submissions.length);
     });
 
     const unauthorized = await request(app)
@@ -268,7 +273,8 @@ describe('Testing admin insights routes', () => {
     expect(allUsersSubmissionsPerUsers.status).toBe(200);
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
       expect(usersWithSubmissions[index].userName).toBe(user.userName);
-      expect(usersWithSubmissions[index].Submissions.length).toBe(
+      console.log(user.Submissions);
+      expect(usersWithSubmissions[index].Submissions).toHaveLength(
         user.Submissions.length,
       );
     });
