@@ -246,7 +246,7 @@ describe('Testing admin insights routes', () => {
       usersMock,
       submissionsMock,
       challengesMock,
-      true,
+      'true'
     );
 
     expect(allUsersSubmissionsPerUsersOnlyLast.status).toBe(200);
