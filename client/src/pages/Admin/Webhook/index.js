@@ -11,6 +11,7 @@ const NotFound = lazy(() => import("../../../pages/NotFound"));
 const AccessKeyControl = lazy(() => import("./AccessKey/index"));
 const ErrorControl = lazy(() => import("./ErrorControl/index"));
 const EventsControl = lazy(() => import("./EventsControl/index"));
+const TeamsControl = lazy(() => import("./TeamsControl/index"));
 
 function Index({ darkMode }) {
   const location = useHistory();
@@ -70,8 +71,8 @@ function Index({ darkMode }) {
               {/* <div>hello Events</div> */}
             </Route>
             <Route exact path="/admin/Webhook/Teams">
-              {/* <UsersControl darkMode={darkMode} /> */}
-              <div>hello Teams</div>
+              <TeamsControl darkMode={darkMode} />
+              {/* <div>hello Teams</div> */}
             </Route>
             <Route path="*">
               <NotFound />
