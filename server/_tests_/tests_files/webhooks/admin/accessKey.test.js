@@ -10,7 +10,7 @@ describe('Testing assignments routes', () => {
         await User.destroy({ truncate: true, force: true });
     });
 
-    test('Can admin get webhook access keys by query', async (done) => {
+    test('Can admin get all webhook access keys', async (done) => {
         await WebhookAccessKey.bulkCreate(webhookAccessKeyMock);
         await User.bulkCreate(usersMock);
         const allAccessKeys = await request(app)
@@ -28,7 +28,7 @@ describe('Testing assignments routes', () => {
         done();
     });
 
-    test('Can admin get all webhook access keys', async (done) => {
+    test('Can admin get webhook access keys by query', async (done) => {
         await WebhookAccessKey.bulkCreate(webhookAccessKeyMock);
         await User.bulkCreate(usersMock);
 

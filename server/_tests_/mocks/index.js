@@ -12,6 +12,9 @@ const usersMock = require('./users');
 const usersLoginMock = require('./usersLogin');
 const usersTeamsMock = require('./usersTeams');
 const webhookAccessKeyMock = require('./webhookAccessKeyMock');
+const webhookTeamErrorMock = require('./webhookTeamErrorMock');
+
+
 const webhookTeamMock = require('./webhookTeamMock');
 
 module.exports = {
@@ -29,5 +32,6 @@ module.exports = {
   usersLoginMock,
   usersTeamsMock,
   webhookAccessKeyMock,
+  webhookTeamErrorMock,
   webhookTeamMock,
 };
