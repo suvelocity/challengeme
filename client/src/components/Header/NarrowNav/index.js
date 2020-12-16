@@ -230,8 +230,8 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
               {darkMode ? (
                 <Brightness7Icon style={letterColor} />
               ) : (
-                  <Brightness4Icon style={letterColor} />
-                )}
+                <Brightness4Icon style={letterColor} />
+              )}
             </IconButton>
           </ListItem>
           <Divider style={dividerColor} />

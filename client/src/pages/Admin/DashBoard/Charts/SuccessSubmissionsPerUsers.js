@@ -56,8 +56,8 @@ function SuccessSubmissions({ darkMode }) {
       </BarChart>
     </div>
   ) : (
-      <Loading darkMode={darkMode} />
-    );
+    <Loading darkMode={darkMode} />
+  );
 }
 
 export default SuccessSubmissions;

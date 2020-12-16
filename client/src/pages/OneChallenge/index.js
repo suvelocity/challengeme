@@ -305,7 +305,7 @@ function ChallengePage({ darkMode }) {
                   ChallengeId: `${challengeId}`,
                 });
                 try {
-                  await network.post(`/api/v1/webhooks/trigger-events/start-challenge`, { challengeName: challenge.name });
+                  await network.post('/api/v1/webhooks/trigger-events/start-challenge', { challengeName: challenge.name });
                 } catch (error) {
                 }
               }}
@@ -323,10 +323,10 @@ function ChallengePage({ darkMode }) {
               {getSubmissionButton()}
             </div>
           ) : (
-              <div style={{ textAlign: 'center' }}>
-                <CircularProgress style={{ margin: '30px' }} />
-              </div>
-            )}
+            <div style={{ textAlign: 'center' }}>
+              <CircularProgress style={{ margin: '30px' }} />
+            </div>
+          )}
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
@@ -340,8 +340,8 @@ function ChallengePage({ darkMode }) {
       </div>
     </div>
   ) : (
-      <Loading darkMode={darkMode} />
-    );
+    <Loading darkMode={darkMode} />
+  );
 }
 
 export default ChallengePage;

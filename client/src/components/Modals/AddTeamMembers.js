@@ -65,7 +65,7 @@ export default function AddTeamMembers({
       <div style={modalStyle} className={classes.paper}>
         <h2 id="simple-modal-title">
           Add New Members To Team
-        {teamNameForMember}
+          {teamNameForMember}
         </h2>
         <div id="simple-modal-description">
           <ChooseMembers
@@ -84,7 +84,7 @@ export default function AddTeamMembers({
 
         >
           Add
-      </Button>
+        </Button>
         <AddTeamMembers />
       </div>
     </Modal>

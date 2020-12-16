@@ -27,7 +27,7 @@ function MyTeams() {
       const { data: userTeam } = await network.get('/api/v1/teams/all-teams-by-user');
       setTeamData(userTeam.Teams);
       if (userTeam.Teams.length === 1) {
-        const team = userTeam.Teams[0]
+        const team = userTeam.Teams[0];
         const linkPath = team.UserTeam.permission === 'teacher' ? `/teams/teacher/${team.id}` : `/teams/${team.id}`;
         Location.push(linkPath);
       }
@@ -49,9 +49,7 @@ function MyTeams() {
             team={team}
           />
         ))
-          :
-          <h1>Your not member in any team </h1>
-        }
+          : <h1>Your not member in any team </h1>}
       </div>
     </div>
   );

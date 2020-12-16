@@ -46,7 +46,9 @@ const useRowStyles = makeStyles({
 });
 
 function Row(props) {
-  const { row, getAllTeams, teamId, teamName } = props;
+  const {
+    row, getAllTeams, teamId, teamName,
+  } = props;
   const [open, setOpen] = useState(false);
 
   const removeUserFromTeam = async (user) => {
@@ -100,20 +102,25 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    {row.UserTeam.permission === 'student' &&
-                      <StyledTableCell>Give Teacher Permission</StyledTableCell>}
-                    <StyledTableCell align="left">Remove {row.UserTeam.permission}</StyledTableCell>
+                    {row.UserTeam.permission === 'student'
+                      && <StyledTableCell>Give Teacher Permission</StyledTableCell>}
+                    <StyledTableCell align="left">
+                      Remove
+                      {row.UserTeam.permission}
+                    </StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <StyledTableRow key={row.userName}>
-                    {row.UserTeam.permission === 'student' && <StyledTableCell component="th" scope="row">
-                      <Button
-                        onClick={() => changeUserPermissionToBeTeacher(row.id, row.UserTeam.permission)}
-                      >
-                        CLick
-                      </Button>
-                    </StyledTableCell>}
+                    {row.UserTeam.permission === 'student' && (
+                      <StyledTableCell component="th" scope="row">
+                        <Button
+                          onClick={() => changeUserPermissionToBeTeacher(row.id, row.UserTeam.permission)}
+                        >
+                          CLick
+                        </Button>
+                      </StyledTableCell>
+                    )}
                     <StyledTableCell component="th" scope="row">
                       <Button onClick={() => removeUserFromTeam(row.id)}>Click</Button>
                     </StyledTableCell>
