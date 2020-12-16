@@ -185,9 +185,7 @@ describe('Testing admin insights routes', () => {
 
     expect(allUsersSubmissionsPerChallenges.status).toBe(200);
     allUsersSubmissionsPerChallenges.body.forEach((challenge, index) => {
-      expect(challengesWithCount[index].Submissions).toHaveLength(
-        challenge.Submissions.length,
-      );
+      expect(challengesWithCount[index].Submissions.length).toBe(challenge.Submissions.length);
     });
 
     const allUsersSubmissionsPerChallengesOnlyLast = await request(app)
