@@ -15,9 +15,6 @@ import TableRow from "@material-ui/core/TableRow";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import network from "../../../../services/network";
-import AddAccessKey from "../../../../components/Modals/AddAccessKey";
-import UpdateAccessKey from "../../../../components/Modals/UpdateAccessKey";
-import "./style.css";
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -58,16 +55,15 @@ const useRowStyles = makeStyles({
 });
 
 function Row(props) {
-  const { row, getAllAccessKeys } = props;
+  const { row, getAllErrors } = props;
   const [open, setOpen] = useState(false);
-  const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
-  const deleteAccessKey = async (accessKey) => {
+  const deleteAccessKey = async (error) => {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
-        await network.delete(`/api/v1/webhooks/admin/access-key/${accessKey}`);
-        getAllAccessKeys();
+        await network.delete(`/api/v1/webhooks/admin/errors/${error}`);
+        getAllErrors();
       }
     } catch (error) {}
   };
@@ -88,8 +84,9 @@ function Row(props) {
         <StyledTableCell component="th" scope="row">
           {row.id}
         </StyledTableCell>
-        <StyledTableCell align="left">{row.entityName}</StyledTableCell>
-        <StyledTableCell align="left">{row.email}</StyledTableCell>
+        <StyledTableCell align="left">{row.webhookId}</StyledTableCell>
+        <StyledTableCell align="left">{row.statusCode}</StyledTableCell>
+        <StyledTableCell align="left">{row.message}</StyledTableCell>
         <StyledTableCell align="left">
           {new Date(row.createdAt).toString().substring(0, 24)}
         </StyledTableCell>
@@ -100,11 +97,6 @@ function Row(props) {
         <StyledTableCell align="left">
           <Button onClick={() => deleteAccessKey(row.id)}>
             Delete Access Key
-          </Button>
-        </StyledTableCell>
-        <StyledTableCell align="left">
-          <Button onClick={() => setOpenUpdateModal(true)}>
-            Update Access Key
           </Button>
         </StyledTableCell>
       </StyledTableRow>
@@ -118,13 +110,13 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell>Key</StyledTableCell>
+                    <StyledTableCell>Data</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <StyledTableRow>
                     <StyledTableCellKey component="th" scope="row">
-                      {row.key}
+                      {row.data}
                     </StyledTableCellKey>
                   </StyledTableRow>
                 </TableBody>
@@ -133,51 +125,28 @@ function Row(props) {
           </Collapse>
         </StyledTableCell>
       </StyledTableRow>
-      <UpdateAccessKey
-        open={openUpdateModal}
-        setOpen={setOpenUpdateModal}
-        data={{ entityName: row.entityName, email: row.email, id: row.id }}
-        getAllAccessKeys={getAllAccessKeys}
-      />
     </React.Fragment>
   );
 }
-function AccessKeyControl({ darkMode }) {
-  const [allAccessKeys, setAllAccessKeys] = useState([]);
-  const [openNewAccessKeyModal, setOpenNewAccessKeyModal] = useState(false);
+function ErrorControl({ darkMode }) {
+  const [allErrors, setAllErrors] = useState([]);
 
-  async function getAllAccessKeys() {
+  async function getAllErrors() {
     try {
-      const { data: allAccessKeysFromServer } = await network.get(
-        "/api/v1/webhooks/admin/access-key"
+      const { data: allErrorsFromServer } = await network.get(
+        "/api/v1/webhooks/admin/errors"
       );
-      setAllAccessKeys(allAccessKeysFromServer);
+      setAllErrors(allErrorsFromServer);
     } catch (error) {}
   }
 
-  const addNewAccessKey = () => {
-    setOpenNewAccessKeyModal(true);
-  };
-
   useEffect(() => {
-    getAllAccessKeys();
+    getAllErrors();
   }, []);
 
   return (
     <div className="generic-page" style={{ textAlign: "center" }}>
-      <h1 className="team-control-title">Access Keys Management Area</h1>
-      <AddAccessKey
-        open={openNewAccessKeyModal}
-        setOpen={setOpenNewAccessKeyModal}
-        getAllAccessKeys={getAllAccessKeys}
-      />
-      <Button
-        variant={darkMode ? "contained" : "outlined"}
-        style={{ marginBottom: "20px" }}
-        onClick={addNewAccessKey}
-      >
-        Add New Access Key
-      </Button>
+      <h1 className="team-control-title">Errors Management Area</h1>
 
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
@@ -185,21 +154,21 @@ function AccessKeyControl({ darkMode }) {
             <TableRow>
               <StyledTableCell />
               <StyledTableCell>Id</StyledTableCell>
-              <StyledTableCell align="left">Entity Name</StyledTableCell>
-              <StyledTableCell align="left">Email</StyledTableCell>
+              <StyledTableCell align="left">Webhook Id</StyledTableCell>
+              <StyledTableCell align="left">Status Code</StyledTableCell>
+              <StyledTableCell align="left">Message</StyledTableCell>
               <StyledTableCell align="left">Created At</StyledTableCell>
               <StyledTableCell align="left">Updated At</StyledTableCell>
-              <StyledTableCell align="left" />
               <StyledTableCell align="left" />
             </TableRow>
           </TableHead>
           <TableBody>
-            {allAccessKeys &&
-              allAccessKeys.map((accessKey) => (
+            {allErrors &&
+              allErrors.map((accessKey) => (
                 <Row
                   key={accessKey.id}
                   row={accessKey}
-                  getAllAccessKeys={getAllAccessKeys}
+                  getAllErrors={getAllErrors}
                 />
               ))}
           </TableBody>
@@ -209,4 +178,4 @@ function AccessKeyControl({ darkMode }) {
   );
 }
 
-export default AccessKeyControl;
+export default ErrorControl;

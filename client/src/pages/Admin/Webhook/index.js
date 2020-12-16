@@ -9,6 +9,8 @@ import SecondHeader from "../../../components/Header/SecondHeader";
 
 const NotFound = lazy(() => import("../../../pages/NotFound"));
 const AccessKeyControl = lazy(() => import("./AccessKey/index"));
+const ErrorControl = lazy(() => import("./ErrorControl/index"));
+const EventsControl = lazy(() => import("./EventsControl/index"));
 
 function Index({ darkMode }) {
   const location = useHistory();
@@ -59,15 +61,13 @@ function Index({ darkMode }) {
           <Switch>
             <Route exact path="/admin/Webhook/AccessKey">
               <AccessKeyControl darkMode={darkMode} />
-              {/* <div>hello AccessKey</div> */}
             </Route>
             <Route exact path="/admin/Webhook/Errors">
-              {/* <SubmissionsByUsers darkMode={darkMode} /> */}
-              <div>hello Errors</div>
+              <ErrorControl darkMode={darkMode} />
             </Route>
             <Route exact path="/admin/Webhook/Events">
-              {/* <ProposedChallenge darkMode={darkMode} /> */}
-              <div>hello Events</div>
+              <EventsControl darkMode={darkMode} />
+              {/* <div>hello Events</div> */}
             </Route>
             <Route exact path="/admin/Webhook/Teams">
               {/* <UsersControl darkMode={darkMode} /> */}
