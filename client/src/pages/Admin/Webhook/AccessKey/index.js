@@ -14,9 +14,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import network from "../../../services/network";
-import AddAccessKey from "../../../components/Modals/AddAccessKey";
-import UpdateAccessKey from "../../../components/Modals/UpdateAccessKey";
+import network from "../../../../services/network";
+import AddAccessKey from "../../../../components/Modals/AddAccessKey";
+import UpdateAccessKey from "../../../../components/Modals/UpdateAccessKey";
 import "./style.css";
 
 const StyledTableCell = withStyles((theme) => ({

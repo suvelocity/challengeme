@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import SecondHeader from "../../../components/Header/SecondHeader";
 
 const NotFound = lazy(() => import("../../../pages/NotFound"));
-const AccessKeyControl = lazy(() => import("./AccessKey"));
+const AccessKeyControl = lazy(() => import("./AccessKey/index"));
 
 function Index({ darkMode }) {
   const location = useHistory();
