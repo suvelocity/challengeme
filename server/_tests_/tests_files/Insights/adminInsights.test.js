@@ -217,7 +217,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test.skip('Admin can get the challenges submissions per users of all users', async (done) => {
+  test('Admin can get the challenges submissions per users of all users', async (done) => {
     const allUsersSubmissionsPerUsers = await request(app)
       .get('/api/v1/insights/admin/users-submissions')
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
@@ -263,7 +263,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test.skip('Admin can get the top users per success challenges of all users', async (done) => {
+  test('Admin can get the top users per success challenges of all users', async (done) => {
     const allUsersSubmissionsPerUsers = await request(app)
       .get('/api/v1/insights/admin/top-user')
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
