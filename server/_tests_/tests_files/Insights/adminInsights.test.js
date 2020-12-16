@@ -249,6 +249,8 @@ describe('Testing admin insights routes', () => {
 
     expect(allUsersSubmissionsPerUsersOnlyLast.status).toBe(200);
     allUsersSubmissionsPerUsersOnlyLast.body.forEach((user, index) => {
+      console.log('response', user.Submissions.length);
+      console.log('js', allUsersWithSubmissionsOnlyLast[index].Submissions.length);
       expect(
         allUsersWithSubmissionsOnlyLast[index].Submissions,
       ).toHaveLength(user.Submissions.length);
@@ -272,8 +274,9 @@ describe('Testing admin insights routes', () => {
 
     expect(allUsersSubmissionsPerUsers.status).toBe(200);
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
+      console.log('response', user.userName);
+      console.log('js', usersWithSubmissions[index].userName);
       expect(usersWithSubmissions[index].userName).toBe(user.userName);
-      console.log(user.Submissions);
       expect(usersWithSubmissions[index].Submissions).toHaveLength(
         user.Submissions.length,
       );
