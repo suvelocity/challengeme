@@ -253,7 +253,7 @@ describe('Testing admin insights routes', () => {
       console.log('js', allUsersWithSubmissionsOnlyLast[index].Submissions.length);
       expect(
         allUsersWithSubmissionsOnlyLast[index].Submissions,
-      ).toHaveLength(user.Submissions.length);
+      ).toHaveLength(10);
     });
 
     const unauthorized = await request(app)
@@ -275,7 +275,7 @@ describe('Testing admin insights routes', () => {
     expect(allUsersSubmissionsPerUsers.status).toBe(200);
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
       expect(usersWithSubmissions[index].Submissions).toHaveLength(
-        user.Submissions.length,
+        10
       );
     });
 
