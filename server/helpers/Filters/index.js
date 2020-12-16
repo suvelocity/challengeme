@@ -1,18 +1,18 @@
-const { User, Team } = require("../../models");
+const { User, Team } = require('../../models');
 
 async function getTeamUsersIds(teamId) {
   const currentTeamUsers = await Team.findOne({
     where: {
       id: teamId,
     },
-    attributes: ["name"],
+    attributes: ['name'],
     include: [
       {
         model: User,
-        attributes: ["id"],
+        attributes: ['id'],
         through: {
           where: {
-            permission: "student",
+            permission: 'student',
           },
           attributes: [],
         },
@@ -22,7 +22,7 @@ async function getTeamUsersIds(teamId) {
   // returns array with users ids
   const usersId = currentTeamUsers.Users.map((value) => value.id);
   return usersId;
-};
+}
 
 function filterLastSubmissionPerChallenge(submissionsOrderedByDate) {
   const filteredAlready = [];
@@ -41,7 +41,7 @@ function filterLastSubmissionPerChallenge(submissionsOrderedByDate) {
     }
   });
   return { success, fail };
-};
+}
 
 function countGroupArray(array, count, groupParameter) {
   const groupedCountArray = [];
@@ -60,21 +60,20 @@ function countGroupArray(array, count, groupParameter) {
     }
   });
   return groupedCountArray;
-};
+}
 
 function stringInObjectArray(array, string, property = 'userName', property2) {
   if (Array.isArray(array)) {
-    return array.some(element => {
+    return array.some((element) => {
       if (property2) {
-        return element[property][property2] === string
-      } else {
-        return element[property] === string
+        return element[property][property2] === string;
       }
-    })
+      return element[property] === string;
+    });
   }
-  return false
+  return false;
 }
 
 module.exports = {
-  getTeamUsersIds, filterLastSubmissionPerChallenge, countGroupArray, stringInObjectArray
+  getTeamUsersIds, filterLastSubmissionPerChallenge, countGroupArray, stringInObjectArray,
 };

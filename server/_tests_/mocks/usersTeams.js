@@ -133,5 +133,5 @@ module.exports = [
     teamId: 7,
     userId: 12,
     permission: 'student',
-  }
+  },
 ];

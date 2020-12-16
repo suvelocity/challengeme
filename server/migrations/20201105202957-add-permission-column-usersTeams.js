@@ -1,11 +1,9 @@
-'use strict';
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn("users_teams", "permission", {
+    await queryInterface.addColumn('users_teams', 'permission', {
       type: Sequelize.DataTypes.ENUM,
-      values: ["teacher", "student"],
-      defaultValue: "student",
+      values: ['teacher', 'student'],
+      defaultValue: 'student',
     });
     /**
      * Add altering commands here.
@@ -15,8 +13,8 @@ module.exports = {
      */
   },
 
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn("users_teams", "permission");
+  down: async (queryInterface) => {
+    await queryInterface.removeColumn('users_teams', 'permission');
     /**
      * Add reverting commands here.
      *

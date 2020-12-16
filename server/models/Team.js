@@ -12,10 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsToMany(models.User, {
         through: 'UserTeam',
-        foreignKey: 'teamId'
+        foreignKey: 'teamId',
       });
       this.hasMany(models.Assignment, {
-        foreignKey: "teamId",
+        foreignKey: 'teamId',
       });
       this.hasMany(models.WebhookTeam, {
         foreignKey: 'teamId',
@@ -24,14 +24,14 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'teamId',
       });
       this.belongsTo(models.WebhookAccessKey, {
-        foreignKey: 'creator'
+        foreignKey: 'creator',
       });
     }
   }
   Team.init({
     name: DataTypes.STRING,
     externalId: DataTypes.UUID,
-    creator: DataTypes.INTEGER
+    creator: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Team',

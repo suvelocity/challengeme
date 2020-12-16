@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class WebhookTeamError extends Model {
     /**
@@ -15,16 +15,16 @@ module.exports = (sequelize, DataTypes) => {
       });
       // define association here
     }
-  };
+  }
   WebhookTeamError.init({
     webhookId: DataTypes.INTEGER,
     statusCode: DataTypes.INTEGER,
     message: DataTypes.TEXT,
-    data: DataTypes.JSON
+    data: DataTypes.JSON,
   }, {
     sequelize,
     modelName: 'WebhookTeamError',
-    tableName: 'webhook_team_errors'
+    tableName: 'webhook_team_errors',
   });
   return WebhookTeamError;
 };

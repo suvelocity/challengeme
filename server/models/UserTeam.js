@@ -11,10 +11,10 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Team, {
-        foreignKey: 'teamId'
+        foreignKey: 'teamId',
       });
       this.belongsTo(models.User, {
-        foreignKey: 'userId'
+        foreignKey: 'userId',
       });
       // define association here
     }
@@ -24,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     permission: {
       defaultValue: 'student',
-      type: DataTypes.ENUM("teacher", "student"),
-    }
+      type: DataTypes.ENUM('teacher', 'student'),
+    },
   }, {
     sequelize,
     modelName: 'UserTeam',

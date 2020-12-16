@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('webhook_events', {
@@ -6,10 +5,10 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       created_at: {
         allowNull: false,
@@ -22,10 +21,10 @@ module.exports = {
       deleted_at: {
         allowNull: true,
         type: Sequelize.DATE,
-      }
+      },
     });
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('webhook_events');
-  }
+  },
 };

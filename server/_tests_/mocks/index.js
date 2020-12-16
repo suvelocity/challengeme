@@ -29,5 +29,5 @@ module.exports = {
   usersLoginMock,
   usersTeamsMock,
   webhookAccessKeyMock,
-  webhookTeamMock
+  webhookTeamMock,
 };

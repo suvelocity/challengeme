@@ -65,7 +65,7 @@ describe('testing challenges endpoints', () => {
     const reviews = await Review.findAll({});
 
     expect(deletedReview.status).toBe(204);
-    expect(reviews.length).toBe(reviewsMock.length - 1);
+    expect(reviews).toHaveLength(reviewsMock.length - 1);
 
     const unauthorized = await request(app)
       .delete(`/api/v1/reviews/${reviewsMock[0].id}`)

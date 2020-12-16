@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class WebhookEvent extends Model {
     /**
@@ -12,20 +12,20 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       this.belongsToMany(models.WebhookTeam, {
         through: 'WebhookEventTeam',
-        foreignKey: 'eventId'
+        foreignKey: 'eventId',
       });
       this.hasMany(models.WebhookEventTeam, {
-        foreignKey: 'eventId'
+        foreignKey: 'eventId',
       });
       // define association here
     }
-  };
+  }
   WebhookEvent.init({
-    name: DataTypes.STRING
+    name: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'WebhookEvent',
-    tableName: 'webhook_events'
+    tableName: 'webhook_events',
   });
   return WebhookEvent;
 };

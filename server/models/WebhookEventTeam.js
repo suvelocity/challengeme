@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class WebhookEventTeam extends Model {
     /**
@@ -18,14 +18,14 @@ module.exports = (sequelize, DataTypes) => {
       });
       // define association here
     }
-  };
+  }
   WebhookEventTeam.init({
     webhookId: DataTypes.INTEGER,
-    eventId: DataTypes.INTEGER
+    eventId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'WebhookEventTeam',
-    tableName: 'webhook_events_teams'
+    tableName: 'webhook_events_teams',
   });
   return WebhookEventTeam;
 };

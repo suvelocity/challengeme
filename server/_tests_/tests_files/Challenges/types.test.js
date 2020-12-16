@@ -14,7 +14,7 @@ describe('testing types endpoints', () => {
     const response = await request(app)
       .get('/api/v1/types')
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
-    expect(response.body.length).toBe(6);
+    expect(response.body).toHaveLength(6);
     expect(response.status).toBe(200);
     done();
   });

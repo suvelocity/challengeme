@@ -4,13 +4,12 @@
 const request = require('supertest');
 const nock = require('nock');
 const {
-  User, UserTeam, Team, WebhookTeam, WebhookAccessKey
+  User, UserTeam, Team, WebhookTeam, WebhookAccessKey,
 } = require('../../../models');
 const {
-  usersMock, usersTeamsMock, teamsMock, webhookTeamMock, webhookAccessKeyMock
+  usersMock, usersTeamsMock, teamsMock, webhookTeamMock, webhookAccessKeyMock,
 } = require('../../mocks');
-const webhookSendEvents = require('../../../middleware/webhookSendEvents')
-
+const webhookSendEvents = require('../../../middleware/webhookSendEvents');
 
 describe('Webhook Send Events Process', () => {
   beforeAll(async () => {
@@ -28,32 +27,27 @@ describe('Webhook Send Events Process', () => {
   });
 
   test('Check If Webhook Send Events To The Single Registered Entity', async (done) => {
-
-
     const webhookPostEventRequest = nock('http://localhost:8090', {
       reqHeaders: {
         Authorization: `token ${webhookTeamMock[0].authorizationToken}`,
       },
     })
-      .post(`/api/v1/webhook`, { eventName: 'submittedChallenge', userId: usersMock[6].id },)
+      .post('/api/v1/webhook', { eventName: 'submittedChallenge', userId: usersMock[6].id })
       .reply(200);
 
-
-    await webhookSendEvents({ eventName: 'submittedChallenge', userId: usersMock[6].id })
+    await webhookSendEvents({ eventName: 'submittedChallenge', userId: usersMock[6].id });
     expect(webhookPostEventRequest.isDone()).toEqual(true);
 
-    done()
+    done();
   }, 10000);
 
   test('Check If Webhook Send Events To The multiple Registered Entity', async (done) => {
-
-
     const webhookPostEventRequest = nock('http://localhost:8090', {
       reqHeaders: {
         Authorization: `token ${webhookTeamMock[0].authorizationToken}`,
       },
     })
-      .post(`/api/v1/webhook`, { eventName: 'submittedChallenge', userId: usersMock[4].id },)
+      .post('/api/v1/webhook', { eventName: 'submittedChallenge', userId: usersMock[4].id })
       .reply(200);
 
     const webhookPostEventRequest1 = nock('http://localhost:8092', {
@@ -61,17 +55,16 @@ describe('Webhook Send Events Process', () => {
         Authorization: `token ${webhookTeamMock[2].authorizationToken}`,
       },
     })
-      .post(`/api/v1/webhook`, { eventName: 'submittedChallenge', userId: usersMock[4].id },)
+      .post('/api/v1/webhook', { eventName: 'submittedChallenge', userId: usersMock[4].id })
       .reply(200);
 
-    await webhookSendEvents({ eventName: 'submittedChallenge', userId: usersMock[4].id })
+    await webhookSendEvents({ eventName: 'submittedChallenge', userId: usersMock[4].id });
     setTimeout(() => {
       console.log('aaaa');
       expect(webhookPostEventRequest.isDone()).toEqual(true);
       expect(webhookPostEventRequest1.isDone()).toEqual(true);
     }, 2000);
 
-    done()
+    done();
   }, 10000);
-
 });

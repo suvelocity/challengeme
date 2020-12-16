@@ -27,7 +27,6 @@ describe('Testing teams routes', () => {
   });
 
   test("Can user can't get info about other team", async (done) => {
-
     const teamInformation = await request(app)
       .get(`/api/v1/teams/team-page/${teamsMock[1].id}`)
       .set('authorization', `bearer ${generateToken(usersMock[1])}`);
@@ -38,16 +37,15 @@ describe('Testing teams routes', () => {
   });
 
   test('Can user get all teams information he belongs to', async (done) => {
-
     const teamsInformation = await request(app)
       .get('/api/v1/teams/all-teams-by-user')
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(teamsInformation.status).toBe(200);
 
-    const allTeamsByUser = usersTeamsMock.filter(team => team.userId === usersMock[0].id)
+    const allTeamsByUser = usersTeamsMock.filter((team) => team.userId === usersMock[0].id);
 
-    expect(teamsInformation.body.Teams.length).toBe(allTeamsByUser.length);
+    expect(teamsInformation.body.Teams).toHaveLength(allTeamsByUser.length);
 
     done();
   });

@@ -72,7 +72,7 @@ describe('Submission process', () => {
     expect(githubPostMock1.isDone()).toEqual(true);
 
     const submissions = await Submission.findAll();
-    expect(submissions.length).toBe(1);
+    expect(submissions).toHaveLength(1);
     submissions.forEach((submission) => expect(submission.state).toBe('PENDING'));
   }, 10000);
 

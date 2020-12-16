@@ -17,7 +17,7 @@ module.exports = [
     creator: '2',
     externalId: 'c11d3234-3bb5-11eb-adc1-0242ac120002',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   },
   {
     id: 5,
@@ -25,7 +25,7 @@ module.exports = [
     creator: '1',
     externalId: 'c11d3482-3bb5-11eb-adc1-0242ac120002',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   },
   {
     id: 6,
@@ -33,7 +33,7 @@ module.exports = [
     creator: '3',
     externalId: 'c11d357c-3bb5-11eb-adc1-0242ac120002',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   },
   {
     id: 7,
@@ -41,6 +41,6 @@ module.exports = [
     creator: '3',
     externalId: 'c11d3644-3bb5-11eb-adc1-0242ac120002',
     createdAt: new Date(),
-    updatedAt: new Date()
+    updatedAt: new Date(),
   },
 ];

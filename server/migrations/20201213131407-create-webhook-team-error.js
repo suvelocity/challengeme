@@ -1,4 +1,3 @@
-'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('webhook_team_errors', {
@@ -6,19 +5,19 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       webhook_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       status_code: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       message: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       data: {
-        type: Sequelize.JSON
+        type: Sequelize.JSON,
       },
       created_at: {
         allowNull: false,
@@ -31,10 +30,10 @@ module.exports = {
       deleted_at: {
         allowNull: true,
         type: Sequelize.DATE,
-      }
+      },
     });
   },
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.dropTable('webhook_team_errors');
-  }
+  },
 };
