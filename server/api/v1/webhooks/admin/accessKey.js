@@ -70,14 +70,7 @@ accessKeyAdminWebhookRouter.patch("/:id", async (req, res) => {
         id,
       },
     });
-    const hashedToken = await bcrypt.hashSync(key, 10);
-    const tokenKey = {
-      token: hashedToken,
-      name: entityName,
-      id,
-    };
-    const accessKeyToken = jwt.sign(tokenKey, process.env.WEBHOOK_SECRET);
-    return res.json(accessKeyToken);
+    return res.json({ message: "Update Success" });
   } catch (error) {
     console.error(error);
     return res.status(400).json({ message: "Cannot process request" });

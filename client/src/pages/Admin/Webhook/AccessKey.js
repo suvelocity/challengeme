@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
@@ -10,12 +12,11 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import network from "../../../services/network";
 import AddAccessKey from "../../../components/Modals/AddAccessKey";
+import UpdateAccessKey from "../../../components/Modals/UpdateAccessKey";
 import "./style.css";
 
 const StyledTableCell = withStyles((theme) => ({
@@ -59,6 +60,7 @@ const useRowStyles = makeStyles({
 function Row(props) {
   const { row, getAllAccessKeys } = props;
   const [open, setOpen] = useState(false);
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const deleteAccessKey = async (accessKey) => {
     try {
@@ -66,17 +68,6 @@ function Row(props) {
       if (isDeleteOk != null) {
         await network.delete(`/api/v1/webhooks/admin/access-key/${accessKey}`);
         getAllAccessKeys();
-      }
-    } catch (error) {}
-  };
-
-  const updateAccessKey = async (accessKey) => {
-    try {
-      const isUpdateOk = prompt("What's your favorite cocktail drink?");
-      if (isUpdateOk.length > 0) {
-        console.log(isUpdateOk);
-        // await network.patch(`/api/v1/webhooks/admin/access-key/${accessKey}`);
-        // getAllAccessKeys();
       }
     } catch (error) {}
   };
@@ -112,7 +103,7 @@ function Row(props) {
           </Button>
         </StyledTableCell>
         <StyledTableCell align="left">
-          <Button onClick={() => updateAccessKey(row.id)}>
+          <Button onClick={() => setOpenUpdateModal(true)}>
             Update Access Key
           </Button>
         </StyledTableCell>
@@ -142,6 +133,12 @@ function Row(props) {
           </Collapse>
         </StyledTableCell>
       </StyledTableRow>
+      <UpdateAccessKey
+        open={openUpdateModal}
+        setOpen={setOpenUpdateModal}
+        data={{ entityName: row.entityName, email: row.email, id: row.id }}
+        getAllAccessKeys={getAllAccessKeys}
+      />
     </React.Fragment>
   );
 }
