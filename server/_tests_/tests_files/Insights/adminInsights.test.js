@@ -246,8 +246,7 @@ describe('Testing admin insights routes', () => {
     expect(allUsersSubmissionsPerUsersOnlyLast.status).toBe(200);
     allUsersSubmissionsPerUsersOnlyLast.body.forEach((user, index) => {
       expect(
-        allUsersWithSubmissionsOnlyLast[index].Submissions,
-      .length).toBe(user.Submissions.length);
+        allUsersWithSubmissionsOnlyLast[index].Submissions.length).toBe(user.Submissions.length);
     });
 
     const unauthorized = await request(app)
