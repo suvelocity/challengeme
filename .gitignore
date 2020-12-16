@@ -9,3 +9,5 @@ Grequests/tempIgnored/t.js
 Grequests/getUserSucces.rest
 *.log
 client/debug.log
+docker-compose.yml
+Dockerfile.server
