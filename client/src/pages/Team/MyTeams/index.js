@@ -43,12 +43,15 @@ function MyTeams() {
     <div className="my-teams">
       <h1 className="my-teams-title">Teams Area</h1>
       <div className="my-teams-container">
-        {teamData && teamData.map((team) => (
+        {teamData && teamData.length > 0 ? teamData.map((team) => (
           <TeamCard
             key={team.id}
             team={team}
           />
-        ))}
+        ))
+          :
+          <h1>Your not member in any team </h1>
+        }
       </div>
     </div>
   );

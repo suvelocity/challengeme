@@ -11,9 +11,9 @@ teamRouter.get('/team-name/:teamId', checkTeamPermission, async (req, res) => {
     where: {
       id: teamId,
     },
-    attributes: ['name']
+    attributes: ['name'],
   });
-  res.json({ name: teamName.name });
+  return res.json({ name: teamName.name });
 });
 
 // check if user is a part of a team
@@ -37,10 +37,10 @@ teamRouter.get('/team-page/:teamId', checkTeamPermission, async (req, res) => {
         },
       ],
     });
-    res.json(teamUsers);
+    return res.json(teamUsers);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -64,10 +64,10 @@ teamRouter.get('/all-teams-by-user', async (req, res) => {
       ],
 
     });
-    res.status(200).json(userTeam);
+    return res.status(200).json(userTeam);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -99,10 +99,10 @@ teamRouter.get('/teacher-area/:teamId', checkTeacherPermission, async (req, res)
         },
       ],
     });
-    res.json(teamUsers);
+    return res.json(teamUsers);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -110,19 +110,19 @@ teamRouter.get('/teacher-area/:teamId', checkTeacherPermission, async (req, res)
 teamRouter.post('/add-users/:teamId', checkTeacherPermission, async (req, res) => {
   try {
     const { newUsers } = req.body;
-    const resp = await Promise.all(newUsers.map(async (user) => (
-      await UserTeam.update({ deletedAt: null }, {
+    await Promise.all(newUsers.map(async (user) => (
+      UserTeam.update({ deletedAt: null }, {
         where: {
           userId: user.value,
           teamId: req.params.teamId,
         },
         paranoid: false,
       })
-    )))
-    res.status(201).json({ message: 'Team Users Created' });
+    )));
+    return res.status(201).json({ message: 'Team Users Created' });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -138,10 +138,10 @@ teamRouter.patch('/teacher-permission/:teamId', checkTeacherPermission, async (r
       },
     });
     console.log(updatedUser);
-    res.json(updatedUser);
+    return res.json(updatedUser);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -158,10 +158,10 @@ teamRouter.delete('/remove-user/:teamId', checkTeacherPermission, async (req, re
         ],
       },
     });
-    res.sendStatus(204);
+    return res.sendStatus(204);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -184,10 +184,10 @@ teamRouter.get('/all-teams', checkAdmin, async (req, res) => {
         },
       ],
     });
-    res.json(userTeam);
+    return res.json(userTeam);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -211,10 +211,10 @@ teamRouter.get('/single-team/:id', checkAdmin, async (req, res) => {
         },
       ],
     });
-    res.json(userTeam);
+    return res.json(userTeam);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -222,10 +222,10 @@ teamRouter.get('/single-team/:id', checkAdmin, async (req, res) => {
 teamRouter.post('/create-team', checkAdmin, async (req, res) => {
   try {
     await Team.create({ name: req.body.name });
-    res.status(201).json({ message: `Team ${req.body.name} Created` });
+    return res.status(201).json({ message: `Team ${req.body.name} Created` });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -240,10 +240,10 @@ teamRouter.patch('/permission/:teamId', checkAdmin, async (req, res) => {
         userId,
       },
     });
-    res.json(updatedUser);
+    return res.json(updatedUser);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -260,10 +260,10 @@ teamRouter.delete('/remove-team/:id', checkAdmin, async (req, res) => {
         team_id: req.params.id,
       },
     });
-    res.sendStatus(204);
+    return res.sendStatus(204);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

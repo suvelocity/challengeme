@@ -47,7 +47,6 @@ module.exports = {
         'react/no-deprecated': 0,
         'no-param-reassign': 0,
         'class-methods-use-this': 0,
-        'no-debugger': 0,
         'import/prefer-default-export': 0,
     }
 };

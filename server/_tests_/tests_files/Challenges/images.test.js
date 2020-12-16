@@ -26,7 +26,7 @@ describe('testing challenges endpoints', () => {
       .send(imagesMock[1])
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
-    expect(newImage.status).toBe(200);
+    expect(newImage.status).toBe(201);
 
     const imageResponse = await request(app)
       .get('/api/v1/images?id=2')

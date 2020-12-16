@@ -8,10 +8,10 @@ imagRouter.get('/', async (req, res) => {
     const image = await Image.findOne({
       where: { challengeId },
     });
-    res.json(image);
+    return res.json(image);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -24,14 +24,13 @@ imagRouter.post('/', async (req, res) => {
     });
 
     if (!checkIfExists) {
-      const newImage = await Image.create(image);
-      res.sendStatus(200);
-    } else {
-      res.status(400).send('This challenge already have an image');
+      await Image.create(image);
+      return res.sendStatus(201);
     }
+    return res.status(400).send('This challenge already have an image');
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

@@ -18,11 +18,11 @@ webhookRouter.patch('/:id', async (req, res) => {
     const submission = await Submission.findByPk(req.params.id, {
       include: [{
         model: User,
-        attributes: ['userName', 'id']
+        attributes: ['userName', 'id'],
       }, {
         model: Challenge,
-        attributes: ['name']
-      }]
+        attributes: ['name'],
+      }],
     });
     const updatedSubmission = await submission.update({ state: success ? 'SUCCESS' : 'FAIL' });
     const eventToSend = {
@@ -31,14 +31,14 @@ webhookRouter.patch('/:id', async (req, res) => {
       userName: updatedSubmission.User.userName,
       challengeName: updatedSubmission.Challenge.name,
       submissionState: updatedSubmission.state,
-      createdAt: Date.now()
-    }
-    webhookSendEvents(eventToSend)
+      createdAt: Date.now(),
+    };
+    webhookSendEvents(eventToSend);
     console.log(eventToSend);
-    res.json(submission);
+    return res.json(submission);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

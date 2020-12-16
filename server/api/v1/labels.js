@@ -13,13 +13,13 @@ labelRouter.post('/:challengeId', async (req, res) => {
           challengeId,
         })),
       );
-      res.json({ message: 'lables created successfully' });
+      return res.json({ message: 'labels created successfully' });
     } catch (error) {
       console.error(error);
-      res.status(400).json({ message: 'Cannot process request' });
+      return res.status(400).json({ message: 'Cannot process request' });
     }
   } else {
-    res.status(400).json({ message: 'No labels chosen' });
+    return res.status(400).json({ message: 'No labels chosen' });
   }
 });
 
@@ -27,10 +27,10 @@ labelRouter.post('/:challengeId', async (req, res) => {
 labelRouter.get('/', async (req, res) => {
   try {
     const allLabels = await Label.findAll({ attributes: ['id', 'name'] });
-    res.json(allLabels);
+    return res.json(allLabels);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

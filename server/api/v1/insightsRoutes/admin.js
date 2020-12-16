@@ -27,10 +27,10 @@ insightAdminRouter.get('/top-challenges', async (req, res) => {
       limit: 5,
     });
 
-    res.json(topChallenges);
+    return res.json(topChallenges);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -46,10 +46,10 @@ insightAdminRouter.get('/challenges-type', async (req, res) => {
       order: [[sequelize.fn('COUNT', sequelize.col('type')), 'DESC']],
       limit: 5,
     });
-    res.json(challengesByType);
+    return res.json(challengesByType);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -72,10 +72,10 @@ insightAdminRouter.get('/challenges-by-reviews', async (req, res) => {
       return element;
     });
 
-    res.json(challengesTopRating);
+    return res.json(challengesTopRating);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -111,10 +111,10 @@ insightAdminRouter.get('/top', async (req, res) => {
 
     const topFiveTeams = topTeams.slice(0, 5);
 
-    res.json(topFiveTeams);
+    return res.json(topFiveTeams);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -154,10 +154,10 @@ insightAdminRouter.get('/all-submissions/', async (req, res) => {
     const notYetSubmitted = (users.length * totalSubmissionsShouldBe) - (filteredSubmissions.success + filteredSubmissions.fail);
     filteredSubmissions.notYet = notYetSubmitted || 0;
 
-    res.json(filteredSubmissions);
+    return res.json(filteredSubmissions);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -187,10 +187,10 @@ insightAdminRouter.get('/success-challenge', async (req, res) => {
       });
     });
 
-    res.json(onlyLast.sort((a, b) => b.challengeSuccesses - a.challengeSuccesses).slice(0, 5));
+    return res.json(onlyLast.sort((a, b) => b.challengeSuccesses - a.challengeSuccesses).slice(0, 5));
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -216,27 +216,27 @@ insightAdminRouter.get('/last-week-submissions', async (req, res) => {
     const formattedSubmissions1 = lastWeekAllUsersSubmissions.sort((a, b) => b.createdAt - a.createdAt).map(
       (submission) => {
         submission.createdAt = moment(submission.createdAt).fromNow();
-        submission.createdAt = submission.createdAt.includes("hour")
-          ? "today"
-          : submission.createdAt.includes("minutes")
-            ? "today"
-            : submission.createdAt.includes("seconds")
-              ? "today"
+        submission.createdAt = submission.createdAt.includes('hour')
+          ? 'today'
+          : submission.createdAt.includes('minutes')
+            ? 'today'
+            : submission.createdAt.includes('seconds')
+              ? 'today'
               : submission.createdAt;
         return submission;
-      }
+      },
     );
 
     const formattedSubmissions = Filters.countGroupArray(
       formattedSubmissions1,
-      "dateSubmissions",
-      "createdAt"
+      'dateSubmissions',
+      'createdAt',
     );
 
-    res.json(formattedSubmissions);
+    return res.json(formattedSubmissions);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -262,20 +262,21 @@ insightAdminRouter.get('/challenges-submissions', async (req, res) => {
         const myFilteredArrayUsers = [];
         challenge.Submissions.forEach((submission) => {
           if (myFilteredArrayUsers.includes(submission.dataValues.userId)) {
-          } else {
-            myFilteredArrayUsers.push(submission.dataValues.userId);
-            myFilteredArray.push(submission);
+            return null;
           }
+          myFilteredArrayUsers.push(submission.dataValues.userId);
+          myFilteredArray.push(submission);
+          return null;
         });
         challenge.dataValues.Submissions = myFilteredArray;
       });
     }
     challenges.sort((a, b) => b.dataValues.Submissions.length - a.dataValues.Submissions.length);
 
-    res.json(challenges);
+    return res.json(challenges);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -298,19 +299,20 @@ insightAdminRouter.get('/users-submissions', async (req, res) => {
         const myFilteredArrayUsers = [];
         user.Submissions.forEach((submission) => {
           if (myFilteredArrayUsers.includes(submission.challengeId)) {
-          } else {
-            myFilteredArrayUsers.push(submission.challengeId);
-            myFilteredArray.push(submission);
+            return null;
           }
+          myFilteredArrayUsers.push(submission.challengeId);
+          myFilteredArray.push(submission);
+          return null;
         });
         user.dataValues.Submissions = myFilteredArray;
       });
     }
 
-    res.json(topUsers);
+    return res.json(topUsers);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -327,10 +329,10 @@ insightAdminRouter.get('/top-user', async (req, res) => {
       },
       order: [[Submission, 'createdAt', 'DESC']],
     });
-    res.json(topUsers);
+    return res.json(topUsers);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
