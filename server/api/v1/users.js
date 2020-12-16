@@ -38,6 +38,7 @@ userRouter.get('/teacher/:teamId', checkTeacherPermission, async (req, res) => {
       },
       include: {
         model: User,
+        attributes: ['id', 'userName'],
         through: {
           paranoid: false,
         },

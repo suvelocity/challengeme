@@ -20,7 +20,7 @@ const {
   filteredArrayByIds,
   countSuccessSubmissionsWithUserName,
   formatCreatedAtToMoment
-} = require("../../Functions");
+} = require("../../utils");
 const {
   usersMock,
   teamsMock,

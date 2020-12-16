@@ -13,7 +13,7 @@ const {
   combineSubmissionToUserWithChallenge,
   filterLastSubmissionsForAdminRoute,
   formatCreatedAtToMoment
-} = require("../../Functions");
+} = require("../../utils");
 const {
   usersMock,
   submissionsMock,

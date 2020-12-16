@@ -2,7 +2,7 @@ const request = require('supertest');
 const { Op } = require('sequelize');
 const app = require('../../../app');
 const { User, UserTeam, Team } = require('../../../models');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const { usersMock, teamsMock, usersTeamsMock } = require('../../mocks');
 
 describe('Testing teams routes', () => {
@@ -49,6 +49,12 @@ describe('Testing teams routes', () => {
 
     expect(teamInformation.status).toBe(200);
     expect(teamInformation.body.Users.length).toBe(usersTeamsMock.filter((connection) => connection.teamId === teamsMock[0].id).length);
+
+    await UserTeam.create({
+      teamId: teamsMock[0].id,
+      userId: 3,
+      deletedAt: new Date(Date.now().valueOf() - (2 * 24 * 60 * 24 * 1000))
+    });
 
     const addUser = await request(app)
       .post(`/api/v1/teams/add-users/${teamsMock[0].id}`)

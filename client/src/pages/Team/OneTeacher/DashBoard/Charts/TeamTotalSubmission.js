@@ -30,8 +30,8 @@ function TeamTotalSubmission({ darkMode }) {
 
   const getAllChallengesForOption = async () => {
     const { data: allChallengesFromServer } = await network.get('/api/v1/challenges/');
-    const challengesOptions = allChallengesFromServer.map((challenge) => <option onClick={() => { chooseChallenge(challenge.id); }} value={challenge.id}>{challenge.name}</option>);
-    challengesOptions.unshift(<option onClick={() => { chooseChallenge('assignments'); }} value="assignments">Team Assignments</option>);
+    const challengesOptions = allChallengesFromServer.map((challenge) => <option key={challenge.id} onClick={() => { chooseChallenge(challenge.id); }} value={challenge.id}>{challenge.name}</option>);
+    challengesOptions.unshift(<option key={'assignments'} onClick={() => { chooseChallenge('assignments'); }} value="assignments">Team Assignments</option>);
     setChallengesOption(challengesOptions);
   };
 

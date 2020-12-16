@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const app = require('../../../app');
 const { User, UserTeam, Team } = require('../../../models');
 const { usersMock, teamsMock, usersTeamsMock } = require('../../mocks');

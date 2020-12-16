@@ -305,7 +305,7 @@ function ChallengePage({ darkMode }) {
                   ChallengeId: `${challengeId}`,
                 });
                 try {
-                  await network.post(`/api/v1/webhook/trigger-events/start-challenge`, { challengeName: challenge.name });
+                  await network.post(`/api/v1/webhooks/trigger-events/start-challenge`, { challengeName: challenge.name });
                 } catch (error) {
                 }
               }}

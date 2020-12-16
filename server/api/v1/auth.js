@@ -340,7 +340,7 @@ async function userIsExist(userName) {
       },
     });
     if (user) {
-      return user.dataValues;
+      return user.toJSON();
     }
     return false;
   } catch (error) {

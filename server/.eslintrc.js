@@ -12,5 +12,14 @@ module.exports = {
   },
   rules: {
     'linebreak-style': ['error', 'windows'],
-  },
-};
+    'no-debugger': 0,
+    "no-console": "off",
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "CallExpression[callee.object.name='console'][callee.property.name!=/^(error|table)$/]",
+        "message": "Unexpected property on console object was called"
+      }
+    ]
+  }
+}

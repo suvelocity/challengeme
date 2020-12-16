@@ -7,7 +7,7 @@ const {
   filteredArrayByIds,
   countSuccessAndFailSubmissionsPerChallenge,
   combineSubmissionToUserWithChallenge
-} = require('../../Functions');
+} = require('../../utils');
 const { usersMock, teamsMock, usersTeamsMock, submissionsMock, challengesMock } = require('../../mocks');
 
 describe('Testing student insights routes', () => {

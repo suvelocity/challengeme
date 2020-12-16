@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../../../app');
 const { User, UserTeam, Team } = require('../../../models');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const { usersMock, teamsMock, usersTeamsMock } = require('../../mocks');
 
 describe('Testing teams routes', () => {

@@ -188,15 +188,6 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
             </ListItem>
           </Link>
           <Divider style={dividerColor} />
-          <Link to="/addnewchallenge" className="link-rout">
-            <ListItem button onClick={handleDrawerClose} style={letterColor}>
-              <ListItemIcon>
-                <AddIcon style={letterColor} />
-              </ListItemIcon>
-              <ListItemText primary="Add New Challenge" />
-            </ListItem>
-          </Link>
-          <Divider style={dividerColor} />
           <Link to="/teams" className="link-rout">
             <ListItem button onClick={handleDrawerClose} style={letterColor}>
               <ListItemIcon>
@@ -219,6 +210,15 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
             </>
           )}
           <Divider style={dividerColor} />
+          <Link to="/addnewchallenge" className="link-rout">
+            <ListItem button onClick={handleDrawerClose} style={letterColor}>
+              <ListItemIcon>
+                <AddIcon style={letterColor} />
+              </ListItemIcon>
+              <ListItemText primary="Add New Challenge" />
+            </ListItem>
+          </Link>
+          <Divider style={dividerColor} />
           <ListItem className={classes.logOut} onClick={handleDrawerClose}>
             <IconButton
               aria-label="delete"
@@ -230,8 +230,8 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
               {darkMode ? (
                 <Brightness7Icon style={letterColor} />
               ) : (
-                <Brightness4Icon style={letterColor} />
-              )}
+                  <Brightness4Icon style={letterColor} />
+                )}
             </IconButton>
           </ListItem>
           <Divider style={dividerColor} />

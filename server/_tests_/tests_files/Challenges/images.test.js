@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../../../app');
 const { Image } = require('../../../models');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const { usersMock, imagesMock } = require('../../mocks');
 
 describe('testing challenges endpoints', () => {

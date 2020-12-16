@@ -4,7 +4,7 @@ const app = require('../../../app');
 const {
   Challenge, Label, LabelChallenge, Submission, User,
 } = require('../../../models');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const { challengesMock, usersMock } = require('../../mocks');
 
 describe('testing challenges endpoints', () => {
@@ -97,7 +97,7 @@ describe('testing challenges endpoints', () => {
       },
     });
 
-    expect(newChallengeFromDB.dataValues.name).toBe(challengesMock[0].name);
+    expect(newChallengeFromDB.toJSON().name).toBe(challengesMock[0].name);
 
     const postNewChallengeAgain = await request(app)
       .post('/api/v1/challenges')

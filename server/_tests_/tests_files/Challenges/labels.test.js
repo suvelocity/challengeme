@@ -1,7 +1,7 @@
 const request = require('supertest');
 const bcrypt = require('bcryptjs');
 const app = require('../../../app');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const {
   Challenge, Label, LabelChallenge, Submission, User,
 } = require('../../../models');

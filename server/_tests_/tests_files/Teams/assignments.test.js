@@ -3,7 +3,7 @@ const app = require('../../../app');
 const {
   User, UserTeam, Team, Assignment,
 } = require('../../../models');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const {
   usersMock, teamsMock, usersTeamsMock, assignmentsMock,
 } = require('../../mocks');

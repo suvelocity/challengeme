@@ -46,12 +46,12 @@ const useRowStyles = makeStyles({
 });
 
 function Row(props) {
-  const { row, getAllTeams, teamId } = props;
+  const { row, getAllTeams, teamId, teamName } = props;
   const [open, setOpen] = useState(false);
 
   const removeUserFromTeam = async (user) => {
     try {
-      const isDeleteOk = prompt("What's your favorite cocktail drink?");
+      const isDeleteOk = window.confirm(`Are you sure you want to remove ${row.userName} from ${teamName} team ?`);
       if (isDeleteOk != null) {
         await network.delete(`/api/v1/teams/remove-user/${teamId}?userId=${user}`);
         getAllTeams();
@@ -60,14 +60,12 @@ function Row(props) {
     }
   };
 
-  const changeUserPermissionOnTeam = async (user, permission) => {
+  const changeUserPermissionToBeTeacher = async (user, permission) => {
     try {
-      const isDeleteOk = prompt("What's your favorite cocktail drink?");
+      const isDeleteOk = window.confirm(`Are you sure you want to give ${row.userName}, teacher permissions on ${teamName} team?`);
       if (isDeleteOk != null) {
-        const newPermission = permission === 'student' ? 'teacher' : 'student';
-        await network.patch(`/api/v1/teams/permission/${teamId}`, {
+        await network.patch(`/api/v1/teams/teacher-permission/${teamId}`, {
           userId: user,
-          permission: newPermission,
         });
         getAllTeams();
       }
@@ -102,19 +100,20 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <StyledTableCell>Change Permission</StyledTableCell>
-                    <StyledTableCell align="left">Remove Student</StyledTableCell>
+                    {row.UserTeam.permission === 'student' &&
+                      <StyledTableCell>Give Teacher Permission</StyledTableCell>}
+                    <StyledTableCell align="left">Remove {row.UserTeam.permission}</StyledTableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <StyledTableRow key={row.userName}>
-                    <StyledTableCell component="th" scope="row">
+                    {row.UserTeam.permission === 'student' && <StyledTableCell component="th" scope="row">
                       <Button
-                        onClick={() => changeUserPermissionOnTeam(row.id, row.UserTeam.permission)}
+                        onClick={() => changeUserPermissionToBeTeacher(row.id, row.UserTeam.permission)}
                       >
                         CLick
                       </Button>
-                    </StyledTableCell>
+                    </StyledTableCell>}
                     <StyledTableCell component="th" scope="row">
                       <Button onClick={() => removeUserFromTeam(row.id)}>Click</Button>
                     </StyledTableCell>
@@ -195,6 +194,7 @@ function TeamsControl({ teamName, darkMode }) {
                   key={user.id + user.userName}
                   row={user}
                   teamId={id}
+                  teamName={teamName}
                   getAllTeams={getAllTeamMembers}
                 />
               ))}

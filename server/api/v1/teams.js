@@ -11,6 +11,7 @@ teamRouter.get('/team-name/:teamId', checkTeamPermission, async (req, res) => {
     where: {
       id: teamId,
     },
+    attributes: ['name']
   });
   res.json({ name: teamName.name });
 });
@@ -109,13 +110,35 @@ teamRouter.get('/teacher-area/:teamId', checkTeacherPermission, async (req, res)
 teamRouter.post('/add-users/:teamId', checkTeacherPermission, async (req, res) => {
   try {
     const { newUsers } = req.body;
-    await UserTeam.bulkCreate(
-      newUsers.map((user) => ({
-        userId: user.value,
-        teamId: req.params.teamId,
-      })),
-    );
+    const resp = await Promise.all(newUsers.map(async (user) => (
+      await UserTeam.update({ deletedAt: null }, {
+        where: {
+          userId: user.value,
+          teamId: req.params.teamId,
+        },
+        paranoid: false,
+      })
+    )))
     res.status(201).json({ message: 'Team Users Created' });
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+// change permission
+teamRouter.patch('/teacher-permission/:teamId', checkTeacherPermission, async (req, res) => {
+  const { userId } = req.body;
+  const { teamId } = req.params;
+  try {
+    const updatedUser = await UserTeam.update({ permission: 'teacher' }, {
+      where: {
+        teamId,
+        userId,
+      },
+    });
+    console.log(updatedUser);
+    res.json(updatedUser);
   } catch (error) {
     console.error(error);
     res.status(400).json({ message: 'Cannot process request' });

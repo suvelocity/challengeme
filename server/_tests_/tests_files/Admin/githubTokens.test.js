@@ -1,7 +1,7 @@
 require('dotenv').config();
 const request = require('supertest');
 const app = require('../../../app');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const { handleGithubTokens } = require('../../../helpers');
 const { User, GitToken } = require('../../../models');
 const { githubTokensMock, githubHeadersMock, usersMock } = require('../../mocks');
