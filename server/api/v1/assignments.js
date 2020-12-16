@@ -24,7 +24,7 @@ assignmentsRouter.get('/:teamId', checkTeamPermission, async (req, res) => {
         }],
     });
     if (assignments.length === 0) {
-      teamName = await Team.findOne({
+      const teamName = await Team.findOne({
         where: {
           id: teamId,
         },
@@ -33,10 +33,10 @@ assignmentsRouter.get('/:teamId', checkTeamPermission, async (req, res) => {
         Team: { name: teamName.name },
       }];
     }
-    res.json(assignments);
+    return res.json(assignments);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -51,10 +51,10 @@ assignmentsRouter.post('/:teamId', checkTeacherPermission, async (req, res) => {
       challengeId: challenge.value,
       teamId,
     })));
-    res.status(201).json({ message: 'Uploaded new assignment!' });
+    return res.status(201).json({ message: 'Uploaded new assignment!' });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -69,10 +69,10 @@ assignmentsRouter.delete('/:teamId', checkTeacherPermission, async (req, res) =>
         challengeId,
       },
     });
-    res.sendStatus(204);
+    return res.sendStatus(204);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

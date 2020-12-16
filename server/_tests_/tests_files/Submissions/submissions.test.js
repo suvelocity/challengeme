@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../../app');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const {
   Challenge, Label, LabelChallenge, Submission, User,
 } = require('../../../models');
@@ -15,7 +15,7 @@ describe('testing challenges endpoints', () => {
     await User.destroy({ truncate: true, force: true });
   });
 
-  test('Can get submission per certain challenge for logged user ', async (done) => {
+  test('Can get submission per certain challenge for logged user', async (done) => {
     await Challenge.bulkCreate(challengesMock);
     await User.bulkCreate(usersMock);
     await Submission.bulkCreate(submissionsMock);
@@ -51,11 +51,7 @@ describe('testing challenges endpoints', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(allSubmissionsChallenge.status).toBe(200);
-    expect(allSubmissionsChallenge.body.length).toBe(submissionsMock.filter((submission) => submission.challengeId === challengesMock[0].id).length);
+    expect(allSubmissionsChallenge.body).toHaveLength(submissionsMock.filter((submission) => submission.challengeId === challengesMock[0].id).length);
     done();
   });
 });
-
-function timeout(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}

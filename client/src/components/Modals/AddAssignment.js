@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AddAssignment({
-  open, setOpen, getAllAssignments, teamId,
+  open = false, setOpen, getAllAssignments, teamId,
 }) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render

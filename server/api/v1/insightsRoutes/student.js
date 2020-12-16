@@ -5,7 +5,7 @@ const checkAdmin = require('../../../middleware/checkAdmin');
 const { checkTeamPermission } = require('../../../middleware/checkTeamPermission');
 const { Filters } = require('../../../helpers');
 const {
-  Submission, Challenge, User, Team
+  Submission, Challenge, User, Team,
 } = require('../../../models');
 
 // returns the 5 users with the most successful submissions
@@ -41,24 +41,22 @@ insightStudentRouter.get('/top-user/:teamId', checkTeamPermission, async (req, r
       ],
     });
 
-    const formattedMembers = teamUsersTopSuccess1.Users.map((member) => {
+    let formattedMembers = teamUsersTopSuccess1.Users.map((member) => {
       const { success } = Filters.filterLastSubmissionPerChallenge(member.Submissions);
       const { userName } = member;
       return ({ success, userName });
     });
 
-    formattedMember = formattedMembers.sort((a, b) => b.success - a.success);
+    formattedMembers = formattedMembers.sort((a, b) => b.success - a.success);
 
-    res.json(formattedMember.splice(0, 5));
+    return res.json(formattedMembers.splice(0, 5));
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
-insightStudentRouter.use(checkAdmin, (req, res, next) => {
-  next();
-});
+insightStudentRouter.use(checkAdmin, (req, res, next) => next());
 
 //= ==========Not in use==========================================//
 
@@ -74,12 +72,6 @@ insightStudentRouter.get('/user-success', async (req, res) => {
         'createdAt',
         [sequelize.fn('COUNT', sequelize.col('user_id')), 'CountByUserID'],
       ],
-      // include: [
-      //   {
-      //     model: User,
-      //     attributes: ["id", "userName"],
-      //   },
-      // ],
       where: {
         [Op.and]: [
           { userId: loggedUser },
@@ -87,10 +79,10 @@ insightStudentRouter.get('/user-success', async (req, res) => {
         ],
       },
     });
-    res.json([subBySuccess, req.user.userName]);
+    return res.json([subBySuccess, req.user.userName]);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -113,10 +105,10 @@ insightStudentRouter.get('/sub-by-date', async (req, res) => {
       },
     });
 
-    res.json(subByDate);
+    return res.json(subByDate);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -141,10 +133,10 @@ insightStudentRouter.get('/sub-by-type', async (req, res) => {
         userId: loggedUser,
       },
     });
-    res.json(subByType);
+    return res.json(subByType);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -172,10 +164,10 @@ insightStudentRouter.get('/unsolved-challenges', async (req, res) => {
       },
     });
 
-    res.json(unsolvedChallenges);
+    return res.json(unsolvedChallenges);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

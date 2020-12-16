@@ -3,7 +3,7 @@ const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const server = require('../../../app');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const { User, RefreshToken } = require('../../../models');
 const { usersMock, usersLoginMock } = require('../../mocks');
 

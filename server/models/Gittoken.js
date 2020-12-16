@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class GitToken extends Model {
     /**
@@ -12,10 +12,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
+  }
   GitToken.init({
     token: DataTypes.TEXT,
-    status: DataTypes.ENUM("blocked", "available"),
+    status: DataTypes.ENUM('blocked', 'available'),
     resetsAt: DataTypes.DATE,
     gitAccount: DataTypes.STRING,
     actionsLimit: DataTypes.INTEGER,

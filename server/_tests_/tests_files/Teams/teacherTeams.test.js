@@ -2,7 +2,7 @@ const request = require('supertest');
 const { Op } = require('sequelize');
 const app = require('../../../app');
 const { User, UserTeam, Team } = require('../../../models');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const { usersMock, teamsMock, usersTeamsMock } = require('../../mocks');
 
 describe('Testing teams routes', () => {
@@ -48,7 +48,13 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(teamInformation.status).toBe(200);
-    expect(teamInformation.body.Users.length).toBe(usersTeamsMock.filter((connection) => connection.teamId === teamsMock[0].id).length);
+    expect(teamInformation.body.Users).toHaveLength(usersTeamsMock.filter((connection) => connection.teamId === teamsMock[0].id).length);
+
+    await UserTeam.create({
+      teamId: teamsMock[0].id,
+      userId: 3,
+      deletedAt: new Date(Date.now().valueOf() - (2 * 24 * 60 * 24 * 1000)),
+    });
 
     const addUser = await request(app)
       .post(`/api/v1/teams/add-users/${teamsMock[0].id}`)
@@ -62,7 +68,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(teamInformationAfterAdded.status).toBe(200);
-    expect(teamInformationAfterAdded.body.Users.length).toBe(usersTeamsMock.filter((connection) => connection.teamId === teamsMock[0].id).length + 1);
+    expect(teamInformationAfterAdded.body.Users).toHaveLength(usersTeamsMock.filter((connection) => connection.teamId === teamsMock[0].id).length + 1);
 
     const unauthorized = await request(app)
       .post(`/api/v1/teams/add-users/${teamsMock[0].id}`)
@@ -91,7 +97,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(teamInformation.status).toBe(200);
-    expect(teamInformation.body.Users.length).toBe(usersTeamsMock.filter((connection) => connection.teamId === teamsMock[0].id).length);
+    expect(teamInformation.body.Users).toHaveLength(usersTeamsMock.filter((connection) => connection.teamId === teamsMock[0].id).length);
 
     const addUser = await request(app)
       .delete(`/api/v1/teams/remove-user/${teamsMock[0].id}`)
@@ -105,7 +111,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(teamInformationAfterRemoved.status).toBe(200);
-    expect(teamInformationAfterRemoved.body.Users.length).toBe(usersTeamsMock.filter((connection) => connection.teamId === teamsMock[0].id).length - 1);
+    expect(teamInformationAfterRemoved.body.Users).toHaveLength(usersTeamsMock.filter((connection) => connection.teamId === teamsMock[0].id).length - 1);
 
     const unauthorized = await request(app)
       .delete(`/api/v1/teams/remove-user/${teamsMock[0].id}`)
@@ -134,7 +140,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(userInformation.status).toBe(200);
-    expect(userInformation.body.length).toBe(usersTeamsMock.filter((x) => x.teamId === teamsMock[0].id).length);
+    expect(userInformation.body).toHaveLength(usersTeamsMock.filter((x) => x.teamId === teamsMock[0].id).length);
 
     await UserTeam.destroy({
       where: {
@@ -150,7 +156,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(userInformationAfterDelete.status).toBe(200);
-    expect(userInformationAfterDelete.body.length).toBe(usersTeamsMock.filter((x) => x.teamId === teamsMock[0].id).length);
+    expect(userInformationAfterDelete.body).toHaveLength(usersTeamsMock.filter((x) => x.teamId === teamsMock[0].id).length);
 
     const unauthorized = await request(app)
       .get(`/api/v1/users/teacher/${teamsMock[0].id}`)

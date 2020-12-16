@@ -47,7 +47,7 @@ authRouter.post('/register', async (req, res) => {
       securityAnswer: hashsecurityAnswer,
     };
     const mailedToken = jwt.sign(newUser, process.env.EMAIL_TOKEN_SECRET);
-    mailer.sendHTMLMail(
+    return mailer.sendHTMLMail(
       req.body.email,
       'Validate your E-mail',
       `<p>
@@ -62,16 +62,15 @@ authRouter.post('/register', async (req, res) => {
       (error, info) => {
         if (error) {
           console.error(error.message);
-          res.status(400).json({ message: 'Email Invalid' });
-        } else {
-          console.log(info);
-          res.json({ message: 'Waiting For Mail Validation' });
+          return res.status(400).json({ message: 'Email Invalid' });
         }
+        console.log(info);
+        return res.json({ message: 'Waiting For Mail Validation' });
       },
     );
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -83,26 +82,22 @@ authRouter.post('/create-user', (req, res) => {
       console.error(error.message);
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
-    jwt.verify(
-      req.body.token,
-      process.env.EMAIL_TOKEN_SECRET,
-      async (error, decoded) => {
-        if (error) {
-          console.error(error.message);
-          return res.status(403).json({ message: 'Invalid Token' });
-        }
-        delete decoded.iat;
-        delete decoded.exp;
+    return jwt.verify(req.body.token, process.env.EMAIL_TOKEN_SECRET, async (error, decoded) => {
+      if (error) {
+        console.error(error.message);
+        return res.status(403).json({ message: 'Invalid Token' });
+      }
+      delete decoded.iat;
+      delete decoded.exp;
 
-        const checkUser = await userIsExist(decoded.userName);
-        if (checkUser) return res.status(409).send('user name already exists');
-        await User.create(decoded);
-        res.status(201).json({ message: 'Register Success' });
-      },
-    );
+      const checkUser = await userIsExist(decoded.userName);
+      if (checkUser) return res.status(409).send('user name already exists');
+      await User.create(decoded);
+      return res.status(201).json({ message: 'Register Success' });
+    });
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -117,17 +112,15 @@ authRouter.post('/user-exist', async (req, res) => {
     }
     const currentUser = await userIsExist(req.body.userName);
     if (currentUser) return res.status(409).json({ message: 'user name already exists' });
-    res.json({ notExist: true });
+    return res.json({ notExist: true });
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // Validate Token
-authRouter.get('/validate-token', checkToken, (req, res) => {
-  res.json({ valid: true });
-});
+authRouter.get('/validate-token', checkToken, (req, res) => res.json({ valid: true }));
 
 // Log In
 authRouter.post('/login', async (req, res) => {
@@ -183,10 +176,10 @@ authRouter.post('/login', async (req, res) => {
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
     res.cookie('isAdmin', currentUser.permission);
-    res.json({ userDetails: currentUser });
+    return res.json({ userDetails: currentUser });
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -206,7 +199,7 @@ authRouter.post('/token', async (req, res) => {
       },
     });
     if (!validRefreshToken) return res.status(403).json({ message: 'Invalid Refresh Token' });
-    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, decoded) => {
+    return jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, decoded) => {
       if (error) {
         console.error(error.message);
         return res.status(403).json({ message: 'Invalid Refresh Token' });
@@ -215,11 +208,11 @@ authRouter.post('/token', async (req, res) => {
       delete decoded.exp;
       const accessToken = generateToken(decoded);
       res.cookie('accessToken', accessToken);
-      res.json({ message: 'token updated' });
+      return res.json({ message: 'token updated' });
     });
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -238,14 +231,14 @@ authRouter.post('/logout', async (req, res) => {
       },
     });
     if (!result) return res.status(400).json({ message: 'Refresh Token is required' });
-    res.json({ message: 'User Logged Out Successfully' });
+    return res.json({ message: 'User Logged Out Successfully' });
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
-// Geting Sequrity Question
+// Getting Security Question
 authRouter.post('/get-question', async (req, res) => {
   try {
     const { error } = userValidation(req.body);
@@ -260,10 +253,10 @@ authRouter.post('/get-question', async (req, res) => {
           'What is the name, breed, and color of your favorite pet?',
       });
     }
-    res.json({ securityQuestion: currentUser.securityQuestion });
+    return res.json({ securityQuestion: currentUser.securityQuestion });
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -274,7 +267,7 @@ authRouter.post('/validate-answer', async (req, res) => {
     const { error } = answerValidation(req.body);
     if (error) {
       console.error(error.message);
-      res.status(400).json({ success: false, message: "Don't mess with me" });
+      return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const currentUser = await userIsExist(req.body.userName);
     if (!currentUser) return res.status(403).json({ message: 'Wrong Answer' });
@@ -286,10 +279,10 @@ authRouter.post('/validate-answer', async (req, res) => {
     const resetToken = jwt.sign(currentUser, process.env.RESET_PASSWORD_TOKEN, {
       expiresIn: '300s',
     });
-    res.json({ resetToken });
+    return res.json({ resetToken });
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -303,7 +296,7 @@ authRouter.patch('/password-update', async (req, res) => {
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const { resetToken } = req.body;
-    jwt.verify(
+    return jwt.verify(
       resetToken,
       process.env.RESET_PASSWORD_TOKEN,
       async (error, decoded) => {
@@ -317,19 +310,17 @@ authRouter.patch('/password-update', async (req, res) => {
             },
           },
         );
-        res.json({ message: 'Changed Password Sucsessfuly' });
+        return res.json({ message: 'Changed Password Sucsessfuly' });
       },
     );
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // validate if user has admin permission
-authRouter.get('/validate-admin', checkToken, checkAdmin, (req, res) => {
-  res.json({ admin: true });
-});
+authRouter.get('/validate-admin', checkToken, checkAdmin, (req, res) => res.json({ admin: true }));
 
 // check in the DateBase if user is in the system
 async function userIsExist(userName) {
@@ -340,11 +331,12 @@ async function userIsExist(userName) {
       },
     });
     if (user) {
-      return user.dataValues;
+      return user.toJSON();
     }
     return false;
   } catch (error) {
     console.error(error.message);
+    return false;
   }
 }
 

@@ -12,10 +12,10 @@ reviewsRouter.get('/:challengeId', async (req, res) => {
         attributes: ['userName'],
       },
     });
-    res.json(reviews);
+    return res.json(reviews);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -32,10 +32,10 @@ reviewsRouter.post('/:challengeId', async (req, res) => {
   };
   try {
     await Review.create(query);
-    res.status(201).json({ message: 'Uploaded new review!' });
+    return res.status(201).json({ message: 'Uploaded new review!' });
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -50,10 +50,10 @@ reviewsRouter.delete('/:reviewId', checkAdmin, async (req, res) => {
         id: reviewId,
       },
     });
-    res.sendStatus(204);
+    return res.sendStatus(204);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

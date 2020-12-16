@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../../../app');
 const { User, UserTeam, Team } = require('../../../models');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const { usersMock, teamsMock, usersTeamsMock } = require('../../mocks');
 
 describe('Testing teams routes', () => {
@@ -21,7 +21,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(allTeamInformation.status).toBe(200);
-    expect(allTeamInformation.body.length).toBe(teamsMock.length);
+    expect(allTeamInformation.body).toHaveLength(teamsMock.length);
 
     const unauthorized = await request(app)
       .get('/api/v1/teams/all-teams')
@@ -42,7 +42,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(oneTeamInformation.status).toBe(200);
-    expect(oneTeamInformation.body.length).toBe(1);
+    expect(oneTeamInformation.body).toHaveLength(1);
 
     const unauthorized = await request(app)
       .get(`/api/v1/teams/single-team/${teamsMock[0].id}`)
@@ -70,7 +70,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(allTeamInformation.status).toBe(200);
-    expect(allTeamInformation.body.length).toBe(teamsMock.length + 1);
+    expect(allTeamInformation.body).toHaveLength(teamsMock.length + 1);
 
     const unauthorized = await request(app)
       .post('/api/v1/teams/create-team')
@@ -132,7 +132,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(allTeamInformation.status).toBe(200);
-    expect(allTeamInformation.body.length).toBe(teamsMock.length - 1);
+    expect(allTeamInformation.body).toHaveLength(teamsMock.length - 1);
 
     const unauthorized = await request(app)
       .delete(`/api/v1/teams/remove-team/${teamsMock[0].id}`)
