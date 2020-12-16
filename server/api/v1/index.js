@@ -5,15 +5,15 @@ const checkAdmin = require('../../middleware/checkAdmin');
 //= =======================Authentication================================//
 v1Router.use('/auth', require('./auth'));
 
-//= =======================WebHook================================//
+//= =======================Webhooks================================//
+v1Router.use('/webhooks', require('./webhooks'));
 
-v1Router.use('/webhook', require('./webhook'));
 //= =======================Private Routes================================//
 v1Router.use('/submissions', checkToken, require('./submissions'));
 v1Router.use('/challenges', checkToken, require('./challenges'));
 v1Router.use('/users', checkToken, require('./users'));
 v1Router.use('/services', checkToken, require('./services'));
-v1Router.use('/image', checkToken, require('./image'));
+v1Router.use('/images', checkToken, require('./images'));
 v1Router.use('/types', checkToken, require('./types'));
 v1Router.use('/labels', checkToken, require('./labels'));
 v1Router.use('/reviews', checkToken, require('./reviews'));

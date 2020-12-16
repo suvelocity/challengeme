@@ -44,7 +44,7 @@ body : {
 */
 
 // webhook create team with/out users
-createUsersWebhookRouter.post('/create', async (req, res) => {
+createUsersWebhookRouter.post('/', async (req, res) => {
     try {
         // Joi validation
         const { error } = webhookCreateTeamValidation(req.body);

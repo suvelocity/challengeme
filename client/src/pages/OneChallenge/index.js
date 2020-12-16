@@ -113,7 +113,7 @@ function ChallengePage({ darkMode }) {
     }, 5000);
     const setImg = async () => {
       try {
-        const { data } = await network.get(`/api/v1/image?id=${challengeId}`);
+        const { data } = await network.get(`/api/v1/images?id=${challengeId}`);
         setImage(data.img);
       } catch (error) {
       }
@@ -305,7 +305,7 @@ function ChallengePage({ darkMode }) {
                   ChallengeId: `${challengeId}`,
                 });
                 try {
-                  await network.post(`/api/v1/webhook/trigger-event/start-challenge`, { challengeName: challenge.name });
+                  await network.post(`/api/v1/webhook/trigger-events/start-challenge`, { challengeName: challenge.name });
                 } catch (error) {
                 }
               }}

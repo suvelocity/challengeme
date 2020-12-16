@@ -12,7 +12,7 @@ describe('testing challenges endpoints', () => {
   test('Can get image by challenge id', async (done) => {
     await Image.bulkCreate(imagesMock);
     const imageResponse = await request(app)
-      .get('/api/v1/image?id=2')
+      .get('/api/v1/images?id=2')
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(imageResponse.status).toBe(200);
@@ -22,20 +22,20 @@ describe('testing challenges endpoints', () => {
 
   test('Can post image to a challenge, sends an error if image already exists', async (done) => {
     const newImage = await request(app)
-      .post('/api/v1/image')
+      .post('/api/v1/images')
       .send(imagesMock[1])
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(newImage.status).toBe(200);
 
     const imageResponse = await request(app)
-      .get('/api/v1/image?id=2')
+      .get('/api/v1/images?id=2')
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
     expect(imageResponse.status).toBe(200);
     expect(imageResponse.body.challengeId).toBe(2);
 
     const alreadyExistImage = await request(app)
-      .post('/api/v1/image')
+      .post('/api/v1/images')
       .send(imagesMock[1])
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 

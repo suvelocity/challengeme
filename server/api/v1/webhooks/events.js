@@ -22,6 +22,40 @@ eventsWebhookRouter.get('/all', async (req, res) => {
     }
 });
 
+// get all webhook events this team are signed to, on our system
+eventsWebhookRouter.get('/registered/:externalId', checkTeamOwnerPermission, async (req, res) => {
+    try {
+        const registered = await WebhookTeam.findAll({
+            where: {
+                teamId: req.team.id,
+            },
+            include: [{
+                model: WebhookEvent,
+                through: {
+                    attributes: []
+                }
+            }]
+        })
+        const orderRegistered = registered.map(webhook => {
+            if (webhook.WebhookEvents.length > 0) {
+                const cleanResponse = {
+                    teamId: req.team.externalId,
+                    teamName: req.team.name,
+                    webhookUrl: webhook.webhookUrl,
+                    authorizationToken: webhook.authorizationToken,
+                    events: webhook.WebhookEvents.map(event => event.name)
+                }
+                return cleanResponse
+            }
+        }).filter(x => !!x)
+        if (orderRegistered.length === 0) return res.status(400).json({ message: 'This team are not registered on any event on our system' });
+        res.json(orderRegistered);
+    } catch (error) {
+        console.error(error);
+        res.status(400).json({ message: 'Cannot process request' });
+    }
+});
+
 /* 
 request look like this :
 header : {
