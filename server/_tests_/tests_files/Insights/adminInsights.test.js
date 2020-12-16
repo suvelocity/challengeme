@@ -230,11 +230,6 @@ describe('Testing admin insights routes', () => {
       challengesMock);
 
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
-      console.log('----------------------------------');
-      console.log('---response---', user.Submissions.length, '-----------------------');
-      console.log('----------------------------------');
-      console.log('---js------', usersWithSubmissions[index].Submissions.length, '-----------------------');
-      console.log('----------------------------------');
       expect(user.Submissions).toHaveLength(usersWithSubmissions[index].Submissions.length);
     });
 
@@ -272,14 +267,7 @@ describe('Testing admin insights routes', () => {
 
     expect(allUsersSubmissionsPerUsers.status).toBe(200);
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
-      console.log('---------------------------------------------');
-      console.log('response', user.Submissions.length);
-      console.log('---------------------------------------------');
-      console.log('js', usersWithSubmissions[index].Submissions.length);
-      console.log('---------------------------------------------');
       expect(user.Submissions).toHaveLength(usersWithSubmissions[index].Submissions.length);
-      console.log('---------------------------------------------');
-
     });
 
     const unauthorized = await request(app)
