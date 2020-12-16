@@ -199,7 +199,7 @@ describe('Testing admin insights routes', () => {
     const challengesWithCountOnlyLast = combineSubmissionToChallenge(
       challengesMock,
       submissionsMock,
-      true,
+      'true',
     );
 
     challengesWithCountOnlyLast.forEach((challenge, index) => {
@@ -269,6 +269,7 @@ describe('Testing admin insights routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     const usersWithSubmissions = combineSubmissionToUserWithChallenge(usersMock, submissionsMock, challengesMock);
+   
     expect(allUsersSubmissionsPerUsers.status).toBe(200);
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
       console.log('---------------------------------------------');

@@ -132,7 +132,7 @@ function combineSubmissionToChallenge(challengeArray, submissionsArray, onlyLast
         }
       });
       challenge.Submissions.sort((a, b) => b.createdAt - a.createdAt);
-      if (eval(onlyLast)) {
+      if (onlyLast === 'true') {
         const myFilteredArray = [];
         const myFilteredArrayUsers = [];
         challenge.Submissions.forEach((submission) => {
@@ -167,7 +167,7 @@ function combineSubmissionToUserWithChallenge(
           user.Submissions.push(submission);
         }
       });
-      if (eval(onlyLast)) {
+      if (onlyLast === 'true') {
         const myFilteredArray = [];
         const myFilteredArrayUsers = [];
         user.Submissions.forEach((submission) => {
