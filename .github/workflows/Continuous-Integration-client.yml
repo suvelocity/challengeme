@@ -7,8 +7,7 @@ name: CI-Client
 on:
   pull_request:
     branches: [master,staging] # if github changes the 'master' to 'main'
-  push:
-    branches: [master,staging]
+    
     # we will change that name to 'main'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel

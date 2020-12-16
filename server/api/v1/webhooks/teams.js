@@ -172,7 +172,11 @@ createUsersWebhookRouter.post('/add-users/:externalId', checkTeamOwnerPermission
 
     await UserTeam.bulkCreate(usersTeamToCreate);
 
-    return res.status(201).json({ message: `Add ${usersToCreate.length} new users to team ${teamData.name}` });
+    return res.status(201).json({
+      message: `Add ${createUsers.newUsersForResponse.length} users to ${teamData.name} team Success`,
+      leaders: leaders.map(leader => { return { userName: leader.userName } }),
+      newUsers: createUsers.newUsersForResponse
+    });
   } catch (error) {
     console.error(error);
     return res.status(400).json({ message: 'Cannot process request' });
