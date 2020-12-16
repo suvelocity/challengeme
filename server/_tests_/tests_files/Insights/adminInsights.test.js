@@ -268,6 +268,7 @@ describe('Testing admin insights routes', () => {
 
     expect(allUsersSubmissionsPerUsers.status).toBe(200);
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
+      console.log(user.Submissions);
       expect(user.Submissions).toHaveLength(usersWithSubmissions[index].Submissions.length);
     });
 

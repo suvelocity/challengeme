@@ -300,10 +300,11 @@ insightAdminRouter.get('/users-submissions', async (req, res) => {
         user.Submissions.forEach((submission) => {
           if (myFilteredArrayUsers.includes(submission.challengeId)) {
             return null;
+          } else {
+            myFilteredArrayUsers.push(submission.challengeId);
+            myFilteredArray.push(submission);
+            return null;
           }
-          myFilteredArrayUsers.push(submission.challengeId);
-          myFilteredArray.push(submission);
-          return null;
         });
         user.dataValues.Submissions = myFilteredArray;
       });
