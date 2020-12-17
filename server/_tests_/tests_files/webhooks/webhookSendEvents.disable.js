@@ -1,6 +1,7 @@
 /**
  * @jest-environment node
  */
+const app = require('../../../app');
 const request = require('supertest');
 const nock = require('nock');
 const {
@@ -9,7 +10,8 @@ const {
 const {
   usersMock, usersTeamsMock, teamsMock, webhookTeamMock, webhookAccessKeyMock,
 } = require('../../mocks');
-const webhookSendEvents = require('../../../middleware/webhookSendEvents');
+const { generateToken } = require('../../utils');
+const webhookSendEvents = require('../../../helpers/webhookSendEvents');
 
 describe('Webhook Send Events Process', () => {
   beforeAll(async () => {
@@ -27,16 +29,27 @@ describe('Webhook Send Events Process', () => {
   });
 
   test('Check If Webhook Send Events To The Single Registered Entity', async (done) => {
-    const webhookPostEventRequest = nock('http://localhost:8090', {
+    const webhookPostEventRequest = await nock('http://localhost:8091', {
       reqHeaders: {
         Authorization: `token ${webhookTeamMock[0].authorizationToken}`,
       },
     })
-      .post('/api/v1/webhook', { eventName: 'submittedChallenge', userId: usersMock[6].id })
+      .post('/api/v1/webhook', {
+        eventName: 'startedChallenge',
+        userName: 'suvelocity',
+        challengeName: 'JWT - Node.js',
+      })
       .reply(200);
+    const triggerEvent = await request(app)
+      .post(`/api/v1/webhooks/trigger-events/start-challenge`)
+      .send({ challengeName: 'JWT - Node.js' })
+      .set('authorization', `bearer ${generateToken(usersMock[7])}`);
 
-    await webhookSendEvents({ eventName: 'submittedChallenge', userId: usersMock[6].id });
-    expect(webhookPostEventRequest.isDone()).toEqual(true);
+    expect(triggerEvent.status).toBe(200);
+
+    setTimeout(() => {
+      expect(webhookPostEventRequest.isDone()).toEqual(true);
+    }, 2000);
 
     done();
   }, 10000);
@@ -60,7 +73,6 @@ describe('Webhook Send Events Process', () => {
 
     await webhookSendEvents({ eventName: 'submittedChallenge', userId: usersMock[4].id });
     setTimeout(() => {
-      console.log('aaaa');
       expect(webhookPostEventRequest.isDone()).toEqual(true);
       expect(webhookPostEventRequest1.isDone()).toEqual(true);
     }, 2000);
