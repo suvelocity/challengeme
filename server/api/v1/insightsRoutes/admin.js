@@ -330,7 +330,6 @@ insightAdminRouter.get('/top-user', async (req, res) => {
       },
       order: [[Submission, 'createdAt', 'DESC']],
     });
-    console.log(topUsers);
     return res.json(topUsers);
   } catch (error) {
     console.error(error);

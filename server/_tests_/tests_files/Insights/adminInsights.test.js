@@ -199,7 +199,7 @@ describe('Testing admin insights routes', () => {
     const challengesWithCountOnlyLast = combineSubmissionToChallenge(
       challengesMock,
       submissionsMock,
-      true,
+      'true',
     );
 
     challengesWithCountOnlyLast.forEach((challenge, index) => {
@@ -231,10 +231,6 @@ describe('Testing admin insights routes', () => {
     );
 
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
-      console.log('-----------', user.Submissions.length, '-----------------------');
-      console.log('-----------', user.Submissions.length, '-----------------------');
-      console.log('-----------', user.Submissions.length, '-----------------------');
-      console.log('-----------', user.Submissions.length, '-----------------------');
       expect(user.Submissions).toHaveLength(usersWithSubmissions[index].Submissions.length);
     });
 
@@ -263,7 +259,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test.skip('Admin can get the top users per success challenges of all users', async (done) => {
+  test('Admin can get the top users per success challenges of all users', async (done) => {
     const allUsersSubmissionsPerUsers = await request(app)
       .get('/api/v1/insights/admin/top-user')
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);

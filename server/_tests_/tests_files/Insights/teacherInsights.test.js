@@ -336,7 +336,7 @@ describe('Testing teacher insights routes', () => {
       usersFromTeamOnlyLast,
       submissionsMock,
       challengesMock,
-      true,
+      'true',
     );
 
     teamSubmissionsPerUsersOnlyLast.body.forEach((user, index) => {
