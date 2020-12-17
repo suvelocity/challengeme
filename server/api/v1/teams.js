@@ -228,6 +228,23 @@ teamRouter.post('/create-team', checkAdmin, async (req, res) => {
   }
 });
 
+// add users to team
+teamRouter.post('/admin-add-users/:teamId', checkAdmin, async (req, res) => {
+  try {
+    const { newUsers } = req.body;
+    await Promise.all(newUsers.map(async (user) => (
+      UserTeam.create({
+        userId: user.value,
+        teamId: req.params.teamId,
+      })
+    )));
+    return res.status(201).json({ message: 'Team Users Created' });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
 // change permission
 teamRouter.patch('/permission/:teamId', checkAdmin, async (req, res) => {
   const { permission, userId } = req.body;

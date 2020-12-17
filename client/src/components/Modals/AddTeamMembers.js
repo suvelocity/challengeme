@@ -42,7 +42,8 @@ export default function AddTeamMembers({
 
   const handleSubmitNewTeam = async () => {
     try {
-      await network.post(`/api/v1/teams/add-users/${teamNameForMember}`, { newUsers: newTeamMembers });
+      const url = isTeacher ? `add-users` : 'admin-add-users';
+      await network.post(`/api/v1/teams/${url}/${teamNameForMember}`, { newUsers: newTeamMembers });
       getAllTeams();
       setOpen(false);
       setNewTeamMembers([]);
