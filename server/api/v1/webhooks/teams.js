@@ -62,7 +62,7 @@ createUsersWebhookRouter.post('/', async (req, res) => {
     // create base response because it could change
     const baseResponse = {
       message: `Create ${teamName} Team Success`,
-      leaders,
+      leaders: leaders.map(leader => { return { userName: leader.userName } }),
       teamId: teamExternalId,
     };
 
@@ -80,7 +80,7 @@ createUsersWebhookRouter.post('/', async (req, res) => {
       const missingLeaders = leaders.filter((leader) => !leadersExistInDbOrCreationList(leader))
         .map((leader) => leader.userName);
 
-      return res.status(406).json({ message: `${missingLeaders} Are not Exist In The System, Please Add Them Inside 'usersToCreate' Array ` });
+      return res.status(404).json({ message: `${missingLeaders} Are not Exist In The System, Please Add Them Inside 'usersToCreate' Array` });
     }
 
     if (usersToCreate) {
@@ -110,9 +110,10 @@ createUsersWebhookRouter.post('/', async (req, res) => {
     if (eventsRegistration) {
       eventsRegistration.externalId = teamExternalId;
       const eventsRegistrationResponse = await eventsRegistrationFunc(eventsRegistration);
-      statusCode = eventsRegistrationResponse.status >= 400 ? 207 : 201;
+      statusCode = (eventsRegistrationResponse.status >= 400) ? 207 : 201;
+      const eventRegistrationMessage = eventsRegistrationResponse.status >= 400 ? ', You need to registered on /api/v1/webhook/events/registration again' : '';
       baseResponse.eventRegistrationStatus = eventsRegistrationResponse.status;
-      baseResponse.eventRegistrationMessage = eventsRegistrationResponse.response.message;
+      baseResponse.eventRegistrationMessage = eventsRegistrationResponse.response.message + eventRegistrationMessage;
     }
 
     return res.status(statusCode).json(baseResponse);
@@ -234,7 +235,7 @@ createUsersWebhookRouter.patch('/change-permissions/:externalId', checkTeamOwner
       const missingUsers = usersToBeLeaders.filter((user) => !Filters.stringInObjectArray(dbUsers, user.userName))
         .map((user) => user.userName);
 
-      return res.status(406).json({ message: `${missingUsers} Are not exist on this team, Please check the 'usersToBeLeaders' list that will contain only team members` });
+      return res.status(404).json({ message: `${missingUsers} Are not exist on this team, Please check the 'usersToBeLeaders' list that will contain only team members` });
     }
 
     const updatedNum = await UserTeam.update({ permission: 'teacher' }, {

@@ -16,6 +16,7 @@ const webhookTeamErrorMock = require('./webhookTeamErrorMock');
 const webhookEventMock = require('./webhookEventMock');
 const webhookTeamMock = require('./webhookTeamMock');
 const webhookTeamEventsMock = require('./webhookTeamEventsMock');
+const webhookTeamRegistration = require('./webhookTeamRegistration');
 
 module.exports = {
   assignmentsMock,
@@ -35,5 +36,6 @@ module.exports = {
   webhookTeamErrorMock,
   webhookEventMock,
   webhookTeamMock,
-  webhookTeamEventsMock
+  webhookTeamEventsMock,
+  webhookTeamRegistration
 };
