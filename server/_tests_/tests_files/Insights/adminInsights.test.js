@@ -217,7 +217,7 @@ describe('Testing admin insights routes', () => {
     done();
   });
 
-  test.skip('Admin can get the challenges submissions per users of all users', async (done) => {
+  test('Admin can get the challenges submissions per users of all users', async (done) => {
     const allUsersSubmissionsPerUsers = await request(app)
       .get('/api/v1/insights/admin/users-submissions')
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
@@ -227,8 +227,7 @@ describe('Testing admin insights routes', () => {
     const usersWithSubmissions = combineSubmissionToUserWithChallenge(
       usersMock,
       submissionsMock,
-      challengesMock,
-    );
+      challengesMock);
 
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
       expect(user.Submissions).toHaveLength(usersWithSubmissions[index].Submissions.length);
@@ -242,7 +241,7 @@ describe('Testing admin insights routes', () => {
       usersMock,
       submissionsMock,
       challengesMock,
-      true,
+      'true'
     );
 
     expect(allUsersSubmissionsPerUsersOnlyLast.status).toBe(200);
