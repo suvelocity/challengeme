@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+import React, { useEffect, useState } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
 
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import Collapse from "@material-ui/core/Collapse";
-import IconButton from "@material-ui/core/IconButton";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import network from "../../../../services/network";
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import network from '../../../../services/network';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -32,15 +32,15 @@ const StyledTableCellKey = withStyles((theme) => ({
     color: theme.palette.common.white,
   },
   body: {
-    maxWidth: "800px",
-    overflowX: "auto",
+    maxWidth: '800px',
+    overflowX: 'auto',
     fontSize: 14,
   },
 }))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
-    "&:nth-of-type(odd)": {
+    '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },
   },
@@ -48,8 +48,8 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useRowStyles = makeStyles({
   root: {
-    "& > *": {
-      borderBottom: "unset",
+    '& > *': {
+      borderBottom: 'unset',
     },
   },
 });
@@ -135,7 +135,7 @@ function ErrorControl({ darkMode }) {
   async function getAllErrors() {
     try {
       const { data: allErrorsFromServer } = await network.get(
-        "/api/v1/webhooks/admin/errors"
+        '/api/v1/webhooks/admin/errors',
       );
       setAllErrors(allErrorsFromServer);
     } catch (error) { }
@@ -146,7 +146,7 @@ function ErrorControl({ darkMode }) {
   }, []);
 
   return (
-    <div className="generic-page" style={{ textAlign: "center" }}>
+    <div className="generic-page" style={{ textAlign: 'center' }}>
       <h1 className="team-control-title">Errors Management Area</h1>
 
       <TableContainer component={Paper}>
@@ -166,8 +166,8 @@ function ErrorControl({ darkMode }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allErrors &&
-              allErrors.map((error) => (
+            {allErrors
+              && allErrors.map((error) => (
                 <Row
                   key={error.id}
                   row={error}

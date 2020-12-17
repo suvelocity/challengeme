@@ -62,7 +62,7 @@ createUsersWebhookRouter.post('/', async (req, res) => {
     // create base response because it could change
     const baseResponse = {
       message: `Create ${teamName} Team Success`,
-      leaders: leaders.map(leader => { return { userName: leader.userName } }),
+      leaders: leaders.map((leader) => ({ userName: leader.userName })),
       teamId: teamExternalId,
     };
 
@@ -176,8 +176,8 @@ createUsersWebhookRouter.post('/add-users/:externalId', checkTeamOwnerPermission
 
     return res.status(201).json({
       message: `Add ${createUsers.newUsersForResponse.length} users to ${teamData.name} team Success`,
-      leaders: leaders.map(leader => { return { userName: leader.userName } }),
-      newUsers: createUsers.newUsersForResponse
+      leaders: leaders.map((leader) => ({ userName: leader.userName })),
+      newUsers: createUsers.newUsersForResponse,
     });
   } catch (error) {
     console.error(error);

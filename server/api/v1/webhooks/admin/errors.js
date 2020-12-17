@@ -1,5 +1,7 @@
 const teamErrorAdminWebhookRouter = require('express').Router();
-const { WebhookTeamError, WebhookTeam, Team, WebhookAccessKey } = require('../../../../models');
+const {
+  WebhookTeamError, WebhookTeam, Team, WebhookAccessKey,
+} = require('../../../../models');
 
 // get all webhook team errors on our system
 teamErrorAdminWebhookRouter.get('/', async (req, res) => {
@@ -16,8 +18,8 @@ teamErrorAdminWebhookRouter.get('/', async (req, res) => {
           include: {
             model: WebhookAccessKey,
             attributes: ['entityName'],
-          }
-        }
+          },
+        },
       },
     });
     return res.json(allWebhookTeamErrors);

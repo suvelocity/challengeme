@@ -119,12 +119,12 @@ eventsWebhookRouter.patch('/authorization/:externalId', checkTeamOwnerPermission
     const isWebhookExist = await WebhookTeam.update({
       authorizationToken,
     },
-      {
-        where: {
-          webhookUrl,
-          teamId: teamData.id,
-        },
-      });
+    {
+      where: {
+        webhookUrl,
+        teamId: teamData.id,
+      },
+    });
     if (isWebhookExist[0] > 0) {
       return res.json({ message: 'Update Authorization Token Success' });
     }
@@ -163,12 +163,12 @@ eventsWebhookRouter.patch('/url/:externalId', checkTeamOwnerPermission, async (r
     const isWebhookExist = await WebhookTeam.update({
       webhookUrl: newWebhookUrl,
     },
-      {
-        where: {
-          teamId: teamData.id,
-          webhookUrl: oldWebhookUrl,
-        },
-      });
+    {
+      where: {
+        teamId: teamData.id,
+        webhookUrl: oldWebhookUrl,
+      },
+    });
     if (isWebhookExist[0] > 0) {
       return res.json({ message: 'Update Url Success' });
     }

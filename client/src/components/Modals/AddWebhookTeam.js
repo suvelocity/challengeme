@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Button from "@material-ui/core/Button";
-import Input from "@material-ui/core/Input";
-import network from "../../services/network";
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Modal from '@material-ui/core/Modal';
+import Button from '@material-ui/core/Button';
+import Input from '@material-ui/core/Input';
+import network from '../../services/network';
 import ChooseEvents from '../Choosers/ChooseEvents';
-
 
 function getModalStyle() {
   const top = '15vh';
@@ -19,19 +18,19 @@ function getModalStyle() {
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    position: "absolute",
+    position: 'absolute',
     width: '40vw',
     height: '60vh',
     maxHeight: '400px',
     overflowY: 'auto',
     backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
+    border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
   },
   input: {
-    width: '100%'
-  }
+    width: '100%',
+  },
 }));
 
 export default function AddWebhookTeam({ open = false, setOpen, getAllTeams }) {
@@ -46,11 +45,11 @@ export default function AddWebhookTeam({ open = false, setOpen, getAllTeams }) {
 
   const handleSubmitNewWebhookTeam = async () => {
     try {
-      await network.post("/api/v1/webhooks/admin/teams", {
+      await network.post('/api/v1/webhooks/admin/teams', {
         teamId,
         webhookUrl,
         authorizationToken,
-        events: events.map(event => event.label),
+        events: events.map((event) => event.label),
       });
       getAllTeams();
       setOpen(false);
@@ -70,18 +69,24 @@ export default function AddWebhookTeam({ open = false, setOpen, getAllTeams }) {
           onChange={(event) => setTeamId(event.target.value)}
           placeholder="Insert Team ID Name..."
         />
-        <br /> <br />
+        <br />
+        {' '}
+        <br />
         <Input
           className={classes.input}
           onChange={(event) => setWebhookUrl(event.target.value)}
           placeholder="Insert Webhook Url Name..."
-        />{" "}
-        <br /> <br />
+        />
+        {' '}
+        <br />
+        {' '}
+        <br />
         <Input
           className={classes.input}
           onChange={(event) => setAuthorizationToken(event.target.value)}
           placeholder="Insert Authorization Token ..."
-        />{" "}
+        />
+        {' '}
       </div>
       <ChooseEvents
         chooseEvents={events}

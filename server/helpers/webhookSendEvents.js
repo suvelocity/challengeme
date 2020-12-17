@@ -9,7 +9,7 @@ module.exports = async function webhookSendEvents(event) {
     const userWithTeams = await UserTeam.findAll({
       where: {
         userId: event.userId,
-        permission: 'student'
+        permission: 'student',
       },
       include: [{
         model: Team,

@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import network from "../../../../services/network";
-import AddWebhookEvent from "../../../../components/Modals/AddWebhookEvent";
-import UpdateWebhookEvent from "../../../../components/Modals/UpdateWebhookEvent";
+import React, { useEffect, useState } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import network from '../../../../services/network';
+import AddWebhookEvent from '../../../../components/Modals/AddWebhookEvent';
+import UpdateWebhookEvent from '../../../../components/Modals/UpdateWebhookEvent';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -24,7 +24,7 @@ const StyledTableCell = withStyles((theme) => ({
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
-    "&:nth-of-type(odd)": {
+    '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },
   },
@@ -32,8 +32,8 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useRowStyles = makeStyles({
   root: {
-    "& > *": {
-      borderBottom: "unset",
+    '& > *': {
+      borderBottom: 'unset',
     },
   },
 });
@@ -90,7 +90,7 @@ function EventsControl({ darkMode }) {
   async function getAllEvents() {
     try {
       const { data: allEventsFromServer } = await network.get(
-        "/api/v1/webhooks/admin/events"
+        '/api/v1/webhooks/admin/events',
       );
       setAllEvents(allEventsFromServer);
     } catch (error) { }
@@ -105,7 +105,7 @@ function EventsControl({ darkMode }) {
   }, []);
 
   return (
-    <div className="generic-page" style={{ textAlign: "center" }}>
+    <div className="generic-page" style={{ textAlign: 'center' }}>
       <h1 className="team-control-title">Events Management Area</h1>
       <AddWebhookEvent
         open={openNewEventsModal}
@@ -113,8 +113,8 @@ function EventsControl({ darkMode }) {
         getAllEvents={getAllEvents}
       />
       <Button
-        variant={darkMode ? "contained" : "outlined"}
-        style={{ marginBottom: "20px" }}
+        variant={darkMode ? 'contained' : 'outlined'}
+        style={{ marginBottom: '20px' }}
         onClick={addNewEvents}
       >
         Add New Event
@@ -134,8 +134,8 @@ function EventsControl({ darkMode }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allEvents &&
-              allEvents.map((accessKey) => (
+            {allEvents
+              && allEvents.map((accessKey) => (
                 <Row
                   key={accessKey.id}
                   row={accessKey}
