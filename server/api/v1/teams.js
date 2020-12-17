@@ -137,7 +137,6 @@ teamRouter.patch('/teacher-permission/:teamId', checkTeacherPermission, async (r
         userId,
       },
     });
-    console.log(updatedUser);
     return res.json(updatedUser);
   } catch (error) {
     console.error(error);
