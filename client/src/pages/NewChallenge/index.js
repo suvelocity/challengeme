@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import mixpanel from 'mixpanel-browser';
 import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import {
@@ -60,6 +62,8 @@ export default function NewChallengeForm() {
 
   useEffect(() => {
     openOptions();
+    const user = Cookies.get('userName');
+    mixpanel.track('User On Add New Challenge Page', { User: `${user}` });
   }, []);
 
   /* validate data before poting */

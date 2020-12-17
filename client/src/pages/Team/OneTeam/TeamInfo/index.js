@@ -1,5 +1,7 @@
 import React, { useState, useEffect, lazy } from "react";
 import { useParams } from "react-router-dom";
+import Cookies from 'js-cookie';
+import mixpanel from 'mixpanel-browser';
 import Loading from "../../../../components/Loading";
 import NotFound from "../../../NotFound";
 import network from "../../../../services/network";
@@ -41,6 +43,8 @@ function OneTeamPage({ darkMode }) {
         setLoading(false);
       }
     })();
+    const user = Cookies.get('userName');
+    mixpanel.track('User On Team Info Student Area', { User: `${user}`, Team: id });
   }, [id]);
 
   const paths = [
