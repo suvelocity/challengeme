@@ -110,7 +110,8 @@ createUsersWebhookRouter.post('/', async (req, res) => {
     if (eventsRegistration) {
       eventsRegistration.externalId = teamExternalId;
       const eventsRegistrationResponse = await eventsRegistrationFunc(eventsRegistration);
-      statusCode = eventsRegistrationResponse.status;
+      statusCode = eventsRegistrationResponse.status >= 400 ? 207 : 201;
+      baseResponse.eventRegistrationStatus = eventsRegistrationResponse.status;
       baseResponse.eventRegistrationMessage = eventsRegistrationResponse.response.message;
     }
 

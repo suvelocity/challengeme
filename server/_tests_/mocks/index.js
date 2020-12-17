@@ -15,6 +15,7 @@ const webhookAccessKeyMock = require('./webhookAccessKeyMock');
 const webhookTeamErrorMock = require('./webhookTeamErrorMock');
 const webhookEventMock = require('./webhookEventMock');
 const webhookTeamMock = require('./webhookTeamMock');
+const webhookTeamEventsMock = require('./webhookTeamEventsMock');
 
 module.exports = {
   assignmentsMock,
@@ -34,4 +35,5 @@ module.exports = {
   webhookTeamErrorMock,
   webhookEventMock,
   webhookTeamMock,
+  webhookTeamEventsMock
 };

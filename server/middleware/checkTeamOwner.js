@@ -8,7 +8,7 @@ module.exports = async function checkTeamOwnerPermission(req, res, next) {
         externalId,
       },
     });
-    if (!teamExists) return res.status(400).json({ message: `There is no such team with ${externalId} team id` });
+    if (!teamExists) return res.status(404).json({ message: `There is no such team with ${externalId} team id` });
     req.team = teamExists;
 
     const isTeamBelongsToOwner = await Team.findOne({
