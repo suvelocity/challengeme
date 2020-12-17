@@ -49,5 +49,6 @@ jobs:
           ACCESS_TOKEN_SECRET: "sdlkmf4930fjerfdfokvmdsldm1920ejeiockdv950gij54eorjflrf9430r4rjo34plre"
           EMAIL_TOKEN_SECRET: "dsvldfmldkm54y89j5effdc389ejewkmcsldmf4390rfwemdpvmdlfkg509gker0krkf94f"
           REFRESH_TOKEN_SECRET: "dfgklfmg834t3958tjervr9fft4ejrfknf32893rufjriofj5905t4i5t905itreokf5822"
+          WEBHOOK_SECRET: "sdfkjndfsdjfnskjfnsdfjkn345456756764n3rwkjednn34kn5t5kjtgrndfjknvsjkenr43jnt5"
           SUVELOCITY_MAIL: suvelocity@gmail.com
         working-directory: ./server
