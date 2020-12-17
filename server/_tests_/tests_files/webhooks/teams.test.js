@@ -45,7 +45,7 @@ describe('Testing assignments routes', () => {
 
         expect(missingUsersOnTheSystem.status).toBe(404);
         expect(missingUsersOnTheSystem.body.message)
-            .toBe(`${webhookTeamRegistration.fail.onlyLeaders.leaders.map(leader => leader.userName)} Are not Exist In The System, Please Add Them Inside 'usersToCreate' Array`)
+            .toBe(`${webhookTeamRegistration.fail.onlyLeaders.leaders.map(leader => leader.userName)} do not Exist in The System, Please Add Them Inside 'usersToCreate' Array`)
 
         const successRegistration = await request(app)
             .post(`/api/v1/webhooks/teams`)
@@ -78,7 +78,7 @@ describe('Testing assignments routes', () => {
 
         expect(missingUsersOnTheSystem.status).toBe(404);
         expect(missingUsersOnTheSystem.body.message)
-            .toBe(`roy Are not Exist In The System, Please Add Them Inside 'usersToCreate' Array`)
+            .toBe(`roy do not Exist in The System, Please Add Them Inside 'usersToCreate' Array`)
 
         const alreadyExistUsersOnTheSystem1 = await request(app)
             .post(`/api/v1/webhooks/teams`)
@@ -127,7 +127,7 @@ describe('Testing assignments routes', () => {
 
         expect(missingUsersOnTheSystem1.status).toBe(404);
         expect(missingUsersOnTheSystem1.body.message)
-            .toBe(`${webhookTeamRegistration.fail.leadersNotExistAndEvents.leaders.map(leader => leader.userName)} Are not Exist In The System, Please Add Them Inside 'usersToCreate' Array`)
+            .toBe(`${webhookTeamRegistration.fail.leadersNotExistAndEvents.leaders.map(leader => leader.userName)} do not Exist in The System, Please Add Them Inside 'usersToCreate' Array`)
 
         const notGoodEvents = await request(app)
             .post(`/api/v1/webhooks/teams`)

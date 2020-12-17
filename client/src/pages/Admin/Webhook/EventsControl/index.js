@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -43,7 +42,6 @@ const useRowStyles = makeStyles({
 
 function Row(props) {
   const { row, getAllEvents } = props;
-  const [open, setOpen] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
   const deleteAccessKey = async (event) => {
@@ -60,15 +58,6 @@ function Row(props) {
   return (
     <React.Fragment>
       <StyledTableRow className={classes.root}>
-        <StyledTableCell>
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </StyledTableCell>
         <StyledTableCell component="th" scope="row">
           {row.id}
         </StyledTableCell>

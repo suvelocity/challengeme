@@ -209,7 +209,7 @@ function TeamsControl({ darkMode }) {
             {allTeams &&
               allTeams.map((team) => (
                 <Row
-                  key={team.id + team.teamId}
+                  key={team.id}
                   row={team}
                   getAllTeams={getAllTeams}
                 />

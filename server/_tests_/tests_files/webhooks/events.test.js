@@ -223,7 +223,7 @@ describe('Testing assignments routes', () => {
             .set('authorization', `bearer ${await generateWebhookToken(webhookAccessKeyMock[1])}`);
 
         expect(notRegisteredToEvents.status).toBe(406);
-        expect(notRegisteredToEvents.body.message).toBe(`You are not register with this 'submittedChallenge,startedChallenge' events to this webhookUrl`)
+        expect(notRegisteredToEvents.body.message).toBe(`You are not registered to this events: 'submittedChallenge,startedChallenge' with the specified webhookUrl`)
 
 
         const notRegisteredToPartOfEvents = await request(app)
@@ -235,7 +235,7 @@ describe('Testing assignments routes', () => {
             .set('authorization', `bearer ${await generateWebhookToken(webhookAccessKeyMock[1])}`);
 
         expect(notRegisteredToPartOfEvents.status).toBe(406);
-        expect(notRegisteredToPartOfEvents.body.message).toBe(`You are not register with this 'startedChallenge' events to this webhookUrl`)
+        expect(notRegisteredToPartOfEvents.body.message).toBe(`You are not registered to this events: 'startedChallenge' with the specified webhookUrl`)
 
         const eventsLogoutSuccess = await request(app)
             .delete(`/api/v1/webhooks/events/logout/${teamsMock[4].externalId}`)

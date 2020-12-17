@@ -220,12 +220,12 @@ eventsWebhookRouter.delete('/logout/:externalId', checkTeamOwnerPermission, asyn
       }],
     });
     if (!isWebhookExist) {
-      return res.status(406).json({ message: `You are not register with this '${events}' events to this webhookUrl` });
+      return res.status(406).json({ message: `You are not registered to this events: '${events}' with the specified webhookUrl` });
     }
     const whatEventsAreNotExist = (event) => Filters.stringInObjectArray(isWebhookExist.WebhookEventTeams, event, 'WebhookEvent', 'name');
     if (!events.every(whatEventsAreNotExist)) {
       const missingEvents = events.filter((event) => !whatEventsAreNotExist(event));
-      return res.status(406).json({ message: `You are not register with this '${missingEvents}' events to this webhookUrl` });
+      return res.status(406).json({ message: `You are not registered to this events: '${missingEvents}' with the specified webhookUrl` });
     }
     await WebhookEventTeam.destroy({
       where: {

@@ -80,7 +80,7 @@ createUsersWebhookRouter.post('/', async (req, res) => {
       const missingLeaders = leaders.filter((leader) => !leadersExistInDbOrCreationList(leader))
         .map((leader) => leader.userName);
 
-      return res.status(404).json({ message: `${missingLeaders} Are not Exist In The System, Please Add Them Inside 'usersToCreate' Array` });
+      return res.status(404).json({ message: `${missingLeaders} do not Exist in The System, Please Add Them Inside 'usersToCreate' Array` });
     }
 
     if (usersToCreate) {
