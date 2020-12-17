@@ -58,14 +58,14 @@ function Row(props) {
   const { row, getAllErrors } = props;
   const [open, setOpen] = useState(false);
 
-  const deleteAccessKey = async (error) => {
+  const deleteError = async (error) => {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
         await network.delete(`/api/v1/webhooks/admin/errors/${error}`);
         getAllErrors();
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const classes = useRowStyles();
@@ -85,18 +85,19 @@ function Row(props) {
           {row.id}
         </StyledTableCell>
         <StyledTableCell align="left">{row.webhookId}</StyledTableCell>
+        <StyledTableCell align="left">{row.WebhookTeam.Team.name}</StyledTableCell>
+        <StyledTableCell align="left">{row.WebhookTeam.Team.WebhookAccessKey.entityName}</StyledTableCell>
         <StyledTableCell align="left">{row.statusCode}</StyledTableCell>
         <StyledTableCell align="left">{row.message}</StyledTableCell>
         <StyledTableCell align="left">
-          {new Date(row.createdAt).toString().substring(0, 24)}
+          {new Date(row.createdAt).toDateString()}
         </StyledTableCell>
         <StyledTableCell align="left">
-          updatedAt
-          {new Date(row.updatedAt).toString().substring(0, 24)}
+          {new Date(row.updatedAt).toDateString()}
         </StyledTableCell>
         <StyledTableCell align="left">
-          <Button onClick={() => deleteAccessKey(row.id)}>
-            Delete Access Key
+          <Button onClick={() => deleteError(row.id)}>
+            Delete error
           </Button>
         </StyledTableCell>
       </StyledTableRow>
@@ -115,8 +116,8 @@ function Row(props) {
                 </TableHead>
                 <TableBody>
                   <StyledTableRow>
-                    <StyledTableCellKey component="th" scope="row">
-                      {row.data}
+                    <StyledTableCellKey style={{ whiteSpace: 'pre' }} component="th" scope="row">
+                      {JSON.stringify(row.data, null, 2)}
                     </StyledTableCellKey>
                   </StyledTableRow>
                 </TableBody>
@@ -137,7 +138,7 @@ function ErrorControl({ darkMode }) {
         "/api/v1/webhooks/admin/errors"
       );
       setAllErrors(allErrorsFromServer);
-    } catch (error) {}
+    } catch (error) { }
   }
 
   useEffect(() => {
@@ -155,6 +156,8 @@ function ErrorControl({ darkMode }) {
               <StyledTableCell />
               <StyledTableCell>Id</StyledTableCell>
               <StyledTableCell align="left">Webhook Id</StyledTableCell>
+              <StyledTableCell align="left">Team</StyledTableCell>
+              <StyledTableCell align="left">Entity</StyledTableCell>
               <StyledTableCell align="left">Status Code</StyledTableCell>
               <StyledTableCell align="left">Message</StyledTableCell>
               <StyledTableCell align="left">Created At</StyledTableCell>
@@ -164,10 +167,10 @@ function ErrorControl({ darkMode }) {
           </TableHead>
           <TableBody>
             {allErrors &&
-              allErrors.map((accessKey) => (
+              allErrors.map((error) => (
                 <Row
-                  key={accessKey.id}
-                  row={accessKey}
+                  key={error.id}
+                  row={error}
                   getAllErrors={getAllErrors}
                 />
               ))}
