@@ -14,7 +14,6 @@ const ChooseEvents = ({
         (async () => {
             try {
                 const { data: allEvents } = await network.get(`/api/v1/webhooks/admin/events`);
-                console.log(allEvents);
                 setEventsOptions(allEvents.map(event => {
                     return {
                         value: event.id,

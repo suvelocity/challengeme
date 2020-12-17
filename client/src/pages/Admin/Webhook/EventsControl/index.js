@@ -8,8 +8,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import network from "../../../../services/network";
 import AddWebhookEvent from "../../../../components/Modals/AddWebhookEvent";
 import UpdateWebhookEvent from "../../../../components/Modals/UpdateWebhookEvent";
@@ -51,7 +49,7 @@ function Row(props) {
         await network.delete(`/api/v1/webhooks/admin/events/${event}`);
         getAllEvents();
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const classes = useRowStyles();
@@ -95,7 +93,7 @@ function EventsControl({ darkMode }) {
         "/api/v1/webhooks/admin/events"
       );
       setAllEvents(allEventsFromServer);
-    } catch (error) {}
+    } catch (error) { }
   }
 
   const addNewEvents = () => {
