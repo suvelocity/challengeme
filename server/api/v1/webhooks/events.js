@@ -14,7 +14,7 @@ const Filters = require('../../../helpers/Filters');
 
 // get all webhook events on our system
 eventsWebhookRouter.get('/all', async (req, res) => {
-  const name = req.query.name ? { where: { entityName: { [Op.like]: `%${req.query.name}%` } } } : {};
+  const name = req.query.name ? { where: { name: { [Op.like]: `%${req.query.name}%` } } } : {};
   try {
     const allWebhookEvents = await WebhookEvent.findAll(name);
     const eventsName = allWebhookEvents.map((event) => event.name);
@@ -52,7 +52,7 @@ eventsWebhookRouter.get('/registered/:externalId', checkTeamOwnerPermission, asy
       }
       return null;
     }).filter((x) => !!x);
-    if (orderRegistered.length === 0) return res.status(400).json({ message: 'This team are not registered on any event on our system' });
+    if (orderRegistered.length === 0) return res.status(200).json({ message: 'This team are not registered on any event on our system' });
     return res.json(orderRegistered);
   } catch (error) {
     console.error(error);
@@ -119,16 +119,16 @@ eventsWebhookRouter.patch('/authorization/:externalId', checkTeamOwnerPermission
     const isWebhookExist = await WebhookTeam.update({
       authorizationToken,
     },
-    {
-      where: {
-        webhookUrl,
-        teamId: teamData.id,
-      },
-    });
+      {
+        where: {
+          webhookUrl,
+          teamId: teamData.id,
+        },
+      });
     if (isWebhookExist[0] > 0) {
       return res.json({ message: 'Update Authorization Token Success' });
     }
-    return res.status(400).json({ message: `Update Authorization Token Fail, There is no webhook url '${webhookUrl}' fot this team` });
+    return res.status(404).json({ message: `Update Authorization Token Fail, There is no webhook url '${webhookUrl}' fot this team` });
   } catch (error) {
     console.error(error.message);
     return res.status(400).json({ message: 'Cannot process request' });
@@ -163,16 +163,16 @@ eventsWebhookRouter.patch('/url/:externalId', checkTeamOwnerPermission, async (r
     const isWebhookExist = await WebhookTeam.update({
       webhookUrl: newWebhookUrl,
     },
-    {
-      where: {
-        teamId: teamData.id,
-        webhookUrl: oldWebhookUrl,
-      },
-    });
+      {
+        where: {
+          teamId: teamData.id,
+          webhookUrl: oldWebhookUrl,
+        },
+      });
     if (isWebhookExist[0] > 0) {
       return res.json({ message: 'Update Url Success' });
     }
-    return res.status(400).json({ message: `Update url Fail, There is no webhook url '${oldWebhookUrl}' fot this team` });
+    return res.status(404).json({ message: `Update url Fail, There is no webhook url '${oldWebhookUrl}' fot this team` });
   } catch (error) {
     console.error(error.message);
     return res.status(400).json({ message: 'Cannot process request' });
@@ -220,12 +220,12 @@ eventsWebhookRouter.delete('/logout/:externalId', checkTeamOwnerPermission, asyn
       }],
     });
     if (!isWebhookExist) {
-      return res.status(400).json({ message: `You are not register with this '${events}' events to this webhookUrl` });
+      return res.status(406).json({ message: `You are not register with this '${events}' events to this webhookUrl` });
     }
     const whatEventsAreNotExist = (event) => Filters.stringInObjectArray(isWebhookExist.WebhookEventTeams, event, 'WebhookEvent', 'name');
     if (!events.every(whatEventsAreNotExist)) {
       const missingEvents = events.filter((event) => !whatEventsAreNotExist(event));
-      return res.status(400).json({ message: `You are not register with this '${missingEvents}' events to this webhookUrl` });
+      return res.status(406).json({ message: `You are not register with this '${missingEvents}' events to this webhookUrl` });
     }
     await WebhookEventTeam.destroy({
       where: {
@@ -256,7 +256,7 @@ async function eventsRegistrationFunc({
         required: false,
       }],
     });
-    if (!teamInsideId) return { status: 400, response: { message: `There is no such team with ${externalId} team id` } };
+    if (!teamInsideId) return { status: 404, response: { message: `There is no such team with ${externalId} team id` } };
     const alreadyRegisteredId = teamInsideId.WebhookTeams[0] ? teamInsideId.WebhookTeams[0].id : null;
     const eventsFromDb = await WebhookEvent.findAll({
       where: {
@@ -271,10 +271,10 @@ async function eventsRegistrationFunc({
       }],
     });
 
-    if (eventsFromDb.length === 0) return { status: 400, response: { message: 'There is no such events' } };
+    if (eventsFromDb.length === 0) return { status: 404, response: { message: 'There is no such events' } };
     if (events.length !== eventsFromDb.length) {
       const notExistEvents = events.filter((event) => !eventsFromDb.some((dbEvent) => event === dbEvent.name));
-      return { status: 400, response: { message: `There is no such events as ${notExistEvents}` } };
+      return { status: 404, response: { message: `There is no such events as ${notExistEvents}` } };
     }
 
     let webhookEventTeamToCreate = [];
@@ -283,7 +283,7 @@ async function eventsRegistrationFunc({
       if (alreadySignEvents.length > 0) {
         const ifManyEvents = (alreadySignEvents.length > 1) ? 's' : '';
         return {
-          status: 400,
+          status: 409,
           response: {
             message: `You already registered with ${alreadySignEvents.map((event) => event.name)} event${ifManyEvents}`,
           },

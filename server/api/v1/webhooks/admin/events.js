@@ -5,7 +5,7 @@ const { WebhookEvent } = require('../../../../models');
 // get all webhook events on our system
 eventsAdminWebhookRouter.get('/', async (req, res) => {
   let query = req.query.id ? { where: { id: req.query.id } } : {};
-  query = req.query.name ? { where: { entityName: { [Op.like]: `%${req.query.name}%` } } } : query;
+  query = req.query.name ? { where: { name: { [Op.like]: `%${req.query.name}%` } } } : query;
   try {
     const allWebhookEvents = await WebhookEvent.findAll(query);
     return res.json(allWebhookEvents);
@@ -37,8 +37,7 @@ eventsAdminWebhookRouter.patch('/:id', async (req, res) => {
         id,
       },
     });
-    const allEventsKeys = await WebhookEvent.findAll({});
-    return res.json(allEventsKeys);
+    return res.json({ message: "Update Success" });
   } catch (error) {
     console.error(error);
     return res.status(400).json({ message: 'Cannot process request' });

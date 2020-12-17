@@ -1,7 +1,7 @@
 module.exports = [
   {
     id: 1,
-    teamId: '4',
+    teamId: 4,
     webhookUrl: 'http://localhost:8090/api/v1/webhook',
     authorizationToken: 'abcdefghijklmnopqrstuvwxyz',
     createdAt: new Date(),
@@ -9,7 +9,7 @@ module.exports = [
   },
   {
     id: 2,
-    teamId: '5',
+    teamId: 5,
     webhookUrl: 'http://localhost:8091/api/v1/webhook',
     authorizationToken: 'abcdefghijklmnopqrstuvwxyz',
     createdAt: new Date(),
@@ -17,7 +17,7 @@ module.exports = [
   },
   {
     id: 3,
-    teamId: '6',
+    teamId: 6,
     webhookUrl: 'http://localhost:8092/api/v1/webhook',
     authorizationToken: 'abcdefghijklmnopqrstuvwxyz',
     createdAt: new Date(),
@@ -25,7 +25,7 @@ module.exports = [
   },
   {
     id: 4,
-    teamId: '6',
+    teamId: 6,
     webhookUrl: 'http://localhost:8093/api/v1/webhook',
     authorizationToken: 'abcdefghijklmnopqrstuvwxyz',
     createdAt: new Date(),

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit --runInBand",
+    "testCoverage": "jest --detectOpenHandles --forceExit --runInBand --coverage",
     "initDB": "node_modules/.bin/sequelize db:create",
     "migrate": "node_modules/.bin/sequelize db:migrate",
     "migrateUndo": "node_modules/.bin/sequelize db:migrate:undo",

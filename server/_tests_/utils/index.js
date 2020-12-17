@@ -1,5 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
+const bcrypt = require("bcryptjs");
 const moment = require('moment');
 
 function generateToken(currentUser) {
@@ -10,6 +11,16 @@ function generateToken(currentUser) {
   return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: '900s',
   });
+}
+
+async function generateWebhookToken(entity) {
+  const hashedToken = await bcrypt.hashSync(entity.key, 10);
+  const tokenKey = {
+    token: hashedToken,
+    name: entity.entityName,
+    id: entity.id,
+  };
+  return jwt.sign(tokenKey, process.env.WEBHOOK_SECRET);
 }
 
 function countSuccessAndFailSubmissionsPerChallenge(submissionsOrderedByDate) {
@@ -260,4 +271,5 @@ module.exports = {
   filterLastSubmissionsForAdminRoute,
   countSuccessSubmissionsWithUserName,
   formatCreatedAtToMoment,
+  generateWebhookToken
 };

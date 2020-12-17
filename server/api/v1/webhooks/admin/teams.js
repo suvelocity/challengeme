@@ -3,7 +3,7 @@ const { WebhookTeam, WebhookEvent, WebhookEventTeam } = require('../../../../mod
 
 // get all webhook teams on our system
 teamsAdminWebhookRouter.get('/', async (req, res) => {
-  const where = req.query.id ? { teamId: req.query.id } : {};
+  const where = req.query.id ? { id: req.query.id } : {};
   try {
     const allWebhookTeams = await WebhookTeam.findAll({
       where,
@@ -57,8 +57,7 @@ teamsAdminWebhookRouter.patch('/:id', async (req, res) => {
         id,
       },
     });
-    const allTeamsKeys = await WebhookTeam.findAll({});
-    return res.json(allTeamsKeys);
+    return res.json({ message: "Update Success" });
   } catch (error) {
     console.error(error);
     return res.status(400).json({ message: 'Cannot process request' });
@@ -73,7 +72,7 @@ teamsAdminWebhookRouter.delete('/:id', async (req, res) => {
       where: {
         id,
       },
-      truncate: true,
+      cascade: true,
     });
     return res.sendStatus(204);
   } catch (error) {
