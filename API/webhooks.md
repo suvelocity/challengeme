@@ -20,9 +20,9 @@ In order to receive updates on events in the ChallengeMe system you have to regi
 
 ## General Errors
 Status : 401
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "message": "you don't have permission for team <teamId>" // you may only access teams for which you have permissions
+    message: "you don't have permission for team <teamId>" // you may only access teams for which you have permissions
 }
 {% endhighlight %}
 ## Get All Available Events 
@@ -52,14 +52,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // the word "Bearer" follo
 
 ### Response
 A successful will be an array of objects:
-{% highlight JSON %}
+{% highlight typescript %}
 [
     {
-        "teamId": "77d2ccb6-e6e2-4e85-92b2-73bf7c642adb", 
-        "teamName": "teamC",
-        "webhookUrl": "http://your_address.com/api/v1/webhook", // url receiving updates
+        teamId: "77d2ccb6-e6e2-4e85-92b2-73bf7c642adb", 
+        teamName: "teamC",
+        webhookUrl: "http://your_address.com/api/v1/webhook", // url receiving updates
         "authorizationToken": "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", 
-        "events": [
+        events: [
             "submittedChallenge",
             "startedChallenge"
         ] // an array of events the webhook listens for
@@ -68,9 +68,9 @@ A successful will be an array of objects:
 {% endhighlight %}
 
 ### Possible Error:
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "message": "This team are not registered on any event on our system"
+    message: "This team are not registered on any event on our system"
 }
 {% endhighlight %}
 
@@ -87,11 +87,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // the word "Bearer" follo
 {% endhighlight %}
 
 The request body:
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "webhookUrl": "http://your_address.com/api/v1/webhook", // webhook address to send events to you on
-    "events": ["submittedChallenge", "startedChallenge"],// array of strings, event names to listen for
-    "authorizationToken": "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" // the requesting team's Access token to ChallengeMe
+    webhookUrl: "http://your_address.com/api/v1/webhook", 
+    // webhook address to send events to you on
+    events: ["submittedChallenge", "startedChallenge"],// array of strings, event names to listen for
+    authorizationToken: "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" 
+    // the requesting team's Access token to ChallengeMe
 
 }
 {% endhighlight %}
@@ -99,9 +101,9 @@ The request body:
 ### Response
 A successful request will receive a a response:
 Status:201  
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "message": "Events Registration Success"
+    message: "Events Registration Success"
 }
 {% endhighlight %}
 
@@ -112,33 +114,31 @@ PATCH http://35.239.15.221:8080/api/v1/webhook/events/authorization/:teamId
 ```
 With headers as such: 
 {% highlight javascript%}
-
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // the word "Bearer" followed by your current webhook token
 {% endhighlight %}
 
 The request body:
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "webhookUrl": "http://your_address.com/api/v1/webhook", // webhook address used to send events to you on
-    "authorizationToken": "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" // the new token to switch to
-
+    webhookUrl: "http://your_address.com/api/v1/webhook", // webhook address used to send events to you on
+    authorizationToken: "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" // the new token to switch to
 }
 {% endhighlight %}
 
 ### Response
 A successful request will receive a a response:
 Status:200
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "message": "Update Authorization Token Success"
+    message: "Update Authorization Token Success"
 }
 {% endhighlight %}
 
 ### Possible Error
 Status: 404
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "message": "Update Authorization Token Fail, There is no webhook url 'http://your_address.com/api/v1/webhook' fot this team"
+    message: "Update Authorization Token Fail, There is no webhook url 'http://your_address.com/api/v1/webhook' for this team"
 }
 {% endhighlight %}
 
@@ -149,33 +149,31 @@ PATCH http://35.239.15.221:8080/api/v1/webhooks/events/url/:teamId
 ```
 With headers as such: 
 {% highlight javascript%}
-
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // the word "Bearer" followed by your current webhook token
 {% endhighlight %}
 
 The request body:
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "oldWebhookUrl": "http://your_address.com/api/v1/webhook",
-    "newWebhookUrl": "http://your_address.com/api/v1/webhook", // new webhook address to send events to you on
-
+    oldWebhookUrl: "http://your_address.com/api/v1/webhook",
+    newWebhookUrl: "http://your_address.com/api/v1/webhook", // new webhook address to send events to you on
 }
 {% endhighlight %}
 
 ### Response
 A successful request will receive a a response:
 Status:200
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "message": "Update Url Success"
+    message: "Update Url Success"
 }
 {% endhighlight %}
 
 ### Possible Error
 Status:404
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "message": "Update url Fail, There is no webhook url 'http://your_address.com/api/v1/webhook' fot this team"
+    message: "Update url Fail, There is no webhook url 'http://your_address.com/api/v1/webhook' for this team"
 }
 {% endhighlight %}
 
@@ -188,15 +186,15 @@ DELETE http://35.239.15.221:8080/api/v1/webhook/events/logout/:teamId
 ```
 With headers as such: 
 {% highlight javascript%}
-
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // the word "Bearer" followed by your webhook token
 {% endhighlight %}
 
 The request body:
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "webhookUrl": "http://your_address.com/api/v1/webhook", // webhook address used to send events to you on
-    "events": ["submittedChallenge", "startedChallenge"] // array of strings, event names listened for
+    webhookUrl: "http://your_address.com/api/v1/webhook", // webhook address used to send events to you on
+    events: ["submittedChallenge", "startedChallenge"] 
+    // array of strings, event names listened for
 }
 {% endhighlight %}
 
@@ -204,23 +202,24 @@ The request body:
 ### Response
 A successful request will receive a a response:
 Status: 200
-{% highlight JSON %}
+{% highlight typescript %}
 {
-  "message": "Logout from submittedChallenge,startedChallenge Events Success"
+  message: "Logout from submittedChallenge,startedChallenge Events Success"
 } // comma delimited list of events you successfully logged out from 
 {% endhighlight %}
 
 ### Possible Error
 Status: 404
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "message": "There is no such team with <wrongTeamId> team id"
+    message: "There is no such team with <wrongTeamId> team id"
 }
 {% endhighlight %}
 
 Status: 406
-{% highlight JSON %}
+{% highlight typescript %}
 {
-    "message": "You are not registered to these events: 'submittedChallenge,startedChallenge' with the specified webhookUrl" // comma delimited list of events you aren't registered to on the webhookUrl you ave in the request
+    message: "You are not registered to these events: 'submittedChallenge,startedChallenge' with the specified webhookUrl" 
+    // comma delimited list of events you aren't registered to on the webhookUrl you ave in the request
 }
 {% endhighlight %}

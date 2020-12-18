@@ -68,7 +68,7 @@ The request body: (? means optional property)
 }
 {% endhighlight %}
 NOTE:
-- Users data as defined in [here](#user-Data) page.  
+- Users data as defined up [here](#user-Data).  
 - Webhook Registration data as defined in the [Webhooks](webhooks.md) page.  
 - The request must contain at least one leader user. if that user does not exist it must be included in `usersToCreate` with a property `leader:true`.
 - The `usersToCreate` property is optional, but if you choose to include it use it only to **create new users** and place them in the team
