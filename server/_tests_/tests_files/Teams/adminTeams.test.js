@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../../../app');
 const { User, UserTeam, Team } = require('../../../models');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const { usersMock, teamsMock, usersTeamsMock } = require('../../mocks');
 
 describe('Testing teams routes', () => {
@@ -21,7 +21,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(allTeamInformation.status).toBe(200);
-    expect(allTeamInformation.body.length).toBe(teamsMock.length);
+    expect(allTeamInformation.body).toHaveLength(teamsMock.length);
 
     const unauthorized = await request(app)
       .get('/api/v1/teams/all-teams')
@@ -42,7 +42,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(oneTeamInformation.status).toBe(200);
-    expect(oneTeamInformation.body.length).toBe(1);
+    expect(oneTeamInformation.body).toHaveLength(1);
 
     const unauthorized = await request(app)
       .get(`/api/v1/teams/single-team/${teamsMock[0].id}`)
@@ -70,11 +70,47 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(allTeamInformation.status).toBe(200);
-    expect(allTeamInformation.body.length).toBe(teamsMock.length + 1);
+    expect(allTeamInformation.body).toHaveLength(teamsMock.length + 1);
 
     const unauthorized = await request(app)
       .post('/api/v1/teams/create-team')
       .send({ name: 'test' })
+      .set('authorization', `bearer ${generateToken(usersMock[1])}`);
+
+    expect(unauthorized.status).toBe(401);
+
+    done();
+  });
+
+  test('Can admin add user to team', async (done) => {
+    await User.bulkCreate(usersMock);
+    await UserTeam.bulkCreate(usersTeamsMock);
+    await Team.bulkCreate(teamsMock);
+
+    const allUsersInformation = await request(app)
+      .get(`/api/v1/teams/team-page/${teamsMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
+
+    expect(allUsersInformation.status).toBe(200);
+    expect(allUsersInformation.body.Users).toHaveLength(usersTeamsMock.filter((connection) => connection.teamId === teamsMock[0].id).length);
+
+    const addUser = await request(app)
+      .post(`/api/v1/teams/admin-add-users/${teamsMock[0].id}`)
+      .send({ newUsers: [{ value: 3 }] })
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
+
+    expect(addUser.status).toBe(201);
+
+    const allUsersInformationAfterAdded = await request(app)
+      .get(`/api/v1/teams/team-page/${teamsMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
+
+    expect(allUsersInformationAfterAdded.status).toBe(200);
+    expect(allUsersInformationAfterAdded.body.Users).toHaveLength(usersTeamsMock.filter((connection) => connection.teamId === teamsMock[0].id).length + 1);
+
+    const unauthorized = await request(app)
+      .post(`/api/v1/teams/admin-add-users/${teamsMock[0].id}`)
+      .send({ newUsers: [{ value: 3 }] })
       .set('authorization', `bearer ${generateToken(usersMock[1])}`);
 
     expect(unauthorized.status).toBe(401);
@@ -132,7 +168,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(allTeamInformation.status).toBe(200);
-    expect(allTeamInformation.body.length).toBe(teamsMock.length - 1);
+    expect(allTeamInformation.body).toHaveLength(teamsMock.length - 1);
 
     const unauthorized = await request(app)
       .delete(`/api/v1/teams/remove-team/${teamsMock[0].id}`)

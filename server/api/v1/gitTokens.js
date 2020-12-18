@@ -16,10 +16,10 @@ gitRouter.get('/', async (req, res) => {
       }
       return token;
     });
-    res.json(allTokensForResponse);
+    return res.json(allTokensForResponse);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -32,10 +32,10 @@ gitRouter.post('/', async (req, res) => {
       actionsLimit: req.body.actionsLimit,
     };
     await GitToken.create(destructuredToken);
-    res.sendStatus(201);
+    return res.sendStatus(201);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -67,10 +67,10 @@ gitRouter.patch('/', async (req, res) => {
     const tokensArray = allTokens.map((token) => token.dataValues.token);
     process.env.GITHUB_ACCESS_TOKEN = tokensArray[0];
     console.log(process.env.GITHUB_ACCESS_TOKEN);
-    res.json(newToken);
+    return res.json(newToken);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
@@ -83,10 +83,10 @@ gitRouter.delete('/:token', async (req, res) => {
         token,
       },
     });
-    res.sendStatus(204);
+    return res.sendStatus(204);
   } catch (error) {
     console.error(error);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

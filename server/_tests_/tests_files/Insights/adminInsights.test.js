@@ -1,10 +1,10 @@
-const request = require("supertest");
-const app = require("../../../app");
+const request = require('supertest');
+const app = require('../../../app');
 const {
   User,
   Submission,
-  Challenge
-} = require("../../../models");
+  Challenge,
+} = require('../../../models');
 const {
   generateToken,
   countSuccessSubmissionsPerChallenge,
@@ -12,15 +12,15 @@ const {
   combineSubmissionToChallenge,
   combineSubmissionToUserWithChallenge,
   filterLastSubmissionsForAdminRoute,
-  formatCreatedAtToMoment
-} = require("../../Functions");
+  formatCreatedAtToMoment,
+} = require('../../utils');
 const {
   usersMock,
   submissionsMock,
   challengesMock,
-} = require("../../mocks");
+} = require('../../mocks');
 
-describe("Testing admin insights routes", () => {
+describe('Testing admin insights routes', () => {
   beforeAll(async () => {
     await User.destroy({ truncate: true, force: true });
     await Submission.destroy({ truncate: true, force: true });
@@ -31,132 +31,132 @@ describe("Testing admin insights routes", () => {
     await Challenge.bulkCreate(challengesMock);
   });
 
-  test("Admin can get last submissions insights about all users", async (done) => {
+  test('Admin can get last submissions insights about all users', async (done) => {
     const allUSsersSubmissionsInsightsOneChallenge = await request(app)
-      .get("/api/v1/insights/admin/all-submissions")
+      .get('/api/v1/insights/admin/all-submissions')
       .query({ challenge: challengesMock[0].id })
-      .set("authorization", `bearer ${generateToken(usersMock[2])}`);
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     const filteredSubmissions = filterLastSubmissionsForAdminRoute(
       [challengesMock[0].id],
       submissionsMock,
-      usersMock
+      usersMock,
     );
 
     expect(allUSsersSubmissionsInsightsOneChallenge.status).toBe(200);
     expect(
-      allUSsersSubmissionsInsightsOneChallenge.body.hasOwnProperty("success")
+      allUSsersSubmissionsInsightsOneChallenge.body.hasOwnProperty('success'),
     ).toBe(true);
     expect(
-      allUSsersSubmissionsInsightsOneChallenge.body.hasOwnProperty("fail")
+      allUSsersSubmissionsInsightsOneChallenge.body.hasOwnProperty('fail'),
     ).toBe(true);
     expect(
-      allUSsersSubmissionsInsightsOneChallenge.body.hasOwnProperty("notYet")
+      allUSsersSubmissionsInsightsOneChallenge.body.hasOwnProperty('notYet'),
     ).toBe(true);
     expect(allUSsersSubmissionsInsightsOneChallenge.body.success).toBe(
-      filteredSubmissions.success
+      filteredSubmissions.success,
     );
     expect(allUSsersSubmissionsInsightsOneChallenge.body.fail).toBe(
-      filteredSubmissions.fail
+      filteredSubmissions.fail,
     );
     expect(allUSsersSubmissionsInsightsOneChallenge.body.notYet).toBe(
-      filteredSubmissions.notYet
+      filteredSubmissions.notYet,
     );
 
     const allUsersSubmissionsInsightsAssignments = await request(app)
-      .get("/api/v1/insights/admin/all-submissions")
-      .query({ challenge: "all" })
-      .set("authorization", `bearer ${generateToken(usersMock[2])}`);
+      .get('/api/v1/insights/admin/all-submissions')
+      .query({ challenge: 'all' })
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     const challengesId = challengesMock.map((challenge) => challenge.id);
 
     const filteredAssignments = filterLastSubmissionsForAdminRoute(
       challengesId,
       submissionsMock,
-      usersMock
+      usersMock,
     );
 
     expect(allUsersSubmissionsInsightsAssignments.status).toBe(200);
     expect(
-      allUsersSubmissionsInsightsAssignments.body.hasOwnProperty("success")
+      allUsersSubmissionsInsightsAssignments.body.hasOwnProperty('success'),
     ).toBe(true);
-    expect(allUsersSubmissionsInsightsAssignments.body.hasOwnProperty("fail")).toBe(
-      true
+    expect(allUsersSubmissionsInsightsAssignments.body.hasOwnProperty('fail')).toBe(
+      true,
     );
     expect(
-      allUsersSubmissionsInsightsAssignments.body.hasOwnProperty("notYet")
+      allUsersSubmissionsInsightsAssignments.body.hasOwnProperty('notYet'),
     ).toBe(true);
     expect(allUsersSubmissionsInsightsAssignments.body.success).toBe(
-      filteredAssignments.success
+      filteredAssignments.success,
     );
     expect(allUsersSubmissionsInsightsAssignments.body.fail).toBe(
-      filteredAssignments.fail
+      filteredAssignments.fail,
     );
     expect(allUsersSubmissionsInsightsAssignments.body.notYet).toBe(
-      filteredAssignments.notYet
+      filteredAssignments.notYet,
     );
 
     const unauthorized = await request(app)
-      .get("/api/v1/insights/admin/all-submissions")
+      .get('/api/v1/insights/admin/all-submissions')
       .query({ challenge: challengesMock[0].id })
-      .set("authorization", `bearer ${generateToken(usersMock[1])}`);
+      .set('authorization', `bearer ${generateToken(usersMock[1])}`);
 
     expect(unauthorized.status).toBe(401);
 
     done();
   });
 
-  test("Admin can get the most success submitted challenges of all users", async (done) => {
+  test('Admin can get the most success submitted challenges of all users', async (done) => {
     const adminSubmissionsInsightsOneChallenge = await request(app)
-      .get("/api/v1/insights/admin/success-challenge")
-      .set("authorization", `bearer ${generateToken(usersMock[2])}`);
+      .get('/api/v1/insights/admin/success-challenge')
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(adminSubmissionsInsightsOneChallenge.status).toBe(200);
     expect(adminSubmissionsInsightsOneChallenge.body.length <= 5).toBe(true);
     adminSubmissionsInsightsOneChallenge.body.forEach((challenge) => {
-      expect(challenge.hasOwnProperty("challengeSuccesses")).toBe(true);
-      expect(challenge.hasOwnProperty("name")).toBe(true);
+      expect(challenge.hasOwnProperty('challengeSuccesses')).toBe(true);
+      expect(challenge.hasOwnProperty('name')).toBe(true);
     });
 
     const allUsersSubmissionsOrdered = submissionsMock
-      .filter((submission) => submission.state === "SUCCESS")
+      .filter((submission) => submission.state === 'SUCCESS')
       .sort((a, b) => b.createdAt - a.createdAt);
 
     const filteredChallenges = countSuccessSubmissionsPerChallenge(
       allUsersSubmissionsOrdered,
-      challengesMock
+      challengesMock,
     ).slice(0, 5);
 
     filteredChallenges.forEach((element, index) => {
       expect(
-        adminSubmissionsInsightsOneChallenge.body[index].challengeSuccesses
+        adminSubmissionsInsightsOneChallenge.body[index].challengeSuccesses,
       ).toBe(element.challengeSuccesses);
     });
 
     const unauthorized = await request(app)
-      .get("/api/v1/insights/admin/success-challenge")
-      .set("authorization", `bearer ${generateToken(usersMock[1])}`);
+      .get('/api/v1/insights/admin/success-challenge')
+      .set('authorization', `bearer ${generateToken(usersMock[1])}`);
 
     expect(unauthorized.status).toBe(401);
 
     done();
   });
 
-  test("Admin can get the last week submissions of all users", async (done) => {
+  test('Admin can get the last week submissions of all users', async (done) => {
     const allUsersLastWeekSubmissions = await request(app)
-      .get("/api/v1/insights/admin/last-week-submissions")
-      .set("authorization", `bearer ${generateToken(usersMock[2])}`);
+      .get('/api/v1/insights/admin/last-week-submissions')
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(allUsersLastWeekSubmissions.status).toBe(200);
 
     const allUsersSubmissionsOrdered = submissionsMock.sort((a, b) => b.createdAt - a.createdAt);
 
-    const formattedSubmissions = formatCreatedAtToMoment(allUsersSubmissionsOrdered)
+    const formattedSubmissions = formatCreatedAtToMoment(allUsersSubmissionsOrdered);
 
     const groupSubmissions = countGroupArray(
       formattedSubmissions,
-      "dateSubmissions",
-      "createdAt"
+      'dateSubmissions',
+      'createdAt',
     ).sort((a, b) => b.dateSubmissions - a.dateSubmissions);
 
     allUsersLastWeekSubmissions.body.forEach((element, index) => {
@@ -165,122 +165,115 @@ describe("Testing admin insights routes", () => {
     });
 
     const unauthorized = await request(app)
-      .get("/api/v1/insights/admin/last-week-submissions")
-      .set("authorization", `bearer ${generateToken(usersMock[1])}`);
+      .get('/api/v1/insights/admin/last-week-submissions')
+      .set('authorization', `bearer ${generateToken(usersMock[1])}`);
 
     expect(unauthorized.status).toBe(401);
 
     done();
   });
 
-  test("Admin can get the challenges submissions per challenges of all users", async (done) => {
+  test('Admin can get the challenges submissions per challenges of all users', async (done) => {
     const allUsersSubmissionsPerChallenges = await request(app)
-      .get("/api/v1/insights/admin/challenges-submissions?onlyLast=false")
-      .set("authorization", `bearer ${generateToken(usersMock[2])}`);
+      .get('/api/v1/insights/admin/challenges-submissions?onlyLast=false')
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     const challengesWithCount = combineSubmissionToChallenge(
       challengesMock,
-      submissionsMock
+      submissionsMock,
     );
 
     expect(allUsersSubmissionsPerChallenges.status).toBe(200);
     allUsersSubmissionsPerChallenges.body.forEach((challenge, index) => {
-      expect(challengesWithCount[index].Submissions.length).toBe(
-        challenge.Submissions.length
+      expect(challengesWithCount[index].Submissions).toHaveLength(
+        challenge.Submissions.length,
       );
     });
 
     const allUsersSubmissionsPerChallengesOnlyLast = await request(app)
-      .get("/api/v1/insights/admin/challenges-submissions?onlyLast=true")
-      .set("authorization", `bearer ${generateToken(usersMock[2])}`);
+      .get('/api/v1/insights/admin/challenges-submissions?onlyLast=true')
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(allUsersSubmissionsPerChallengesOnlyLast.status).toBe(200);
 
     const challengesWithCountOnlyLast = combineSubmissionToChallenge(
       challengesMock,
       submissionsMock,
-      true
+      'true',
     );
 
     challengesWithCountOnlyLast.forEach((challenge, index) => {
       expect(
-        allUsersSubmissionsPerChallengesOnlyLast.body[index].Submissions.length
-      ).toBe(challenge.Submissions.length);
+        allUsersSubmissionsPerChallengesOnlyLast.body[index].Submissions,
+      ).toHaveLength(challenge.Submissions.length);
     });
 
     const unauthorized = await request(app)
-      .get("/api/v1/insights/admin/challenges-submissions")
-      .set("authorization", `bearer ${generateToken(usersMock[1])}`);
+      .get('/api/v1/insights/admin/challenges-submissions')
+      .set('authorization', `bearer ${generateToken(usersMock[1])}`);
 
     expect(unauthorized.status).toBe(401);
 
     done();
   });
 
-  test("Admin can get the challenges submissions per users of all users", async (done) => {
+  test('Admin can get the challenges submissions per users of all users', async (done) => {
     const allUsersSubmissionsPerUsers = await request(app)
-      .get("/api/v1/insights/admin/users-submissions")
-      .set("authorization", `bearer ${generateToken(usersMock[2])}`);
+      .get('/api/v1/insights/admin/users-submissions')
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(allUsersSubmissionsPerUsers.status).toBe(200);
 
     const usersWithSubmissions = combineSubmissionToUserWithChallenge(
       usersMock,
       submissionsMock,
-      challengesMock
+      challengesMock,
     );
 
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
-      expect(usersWithSubmissions[index].Submissions.length).toBe(
-        user.Submissions.length
-      );
+      expect(user.Submissions).toHaveLength(usersWithSubmissions[index].Submissions.length);
     });
 
     const allUsersSubmissionsPerUsersOnlyLast = await request(app)
-      .get("/api/v1/insights/admin/users-submissions?onlyLast=true")
-      .set("authorization", `bearer ${generateToken(usersMock[2])}`);
+      .get('/api/v1/insights/admin/users-submissions?onlyLast=true')
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     const allUsersWithSubmissionsOnlyLast = combineSubmissionToUserWithChallenge(
       usersMock,
       submissionsMock,
       challengesMock,
-      true
+      'true',
     );
 
     expect(allUsersSubmissionsPerUsersOnlyLast.status).toBe(200);
     allUsersSubmissionsPerUsersOnlyLast.body.forEach((user, index) => {
-      expect(
-        allUsersWithSubmissionsOnlyLast[index].Submissions.length
-      ).toBe(user.Submissions.length);
+      expect(user.Submissions).toHaveLength(allUsersWithSubmissionsOnlyLast[index].Submissions.length);
     });
 
     const unauthorized = await request(app)
-      .get("/api/v1/insights/admin/users-submissions")
-      .set("authorization", `bearer ${generateToken(usersMock[1])}`);
+      .get('/api/v1/insights/admin/users-submissions')
+      .set('authorization', `bearer ${generateToken(usersMock[1])}`);
 
     expect(unauthorized.status).toBe(401);
 
     done();
   });
 
-  test("Admin can get the top users per success challenges of all users", async (done) => {
+  test('Admin can get the top users per success challenges of all users', async (done) => {
     const allUsersSubmissionsPerUsers = await request(app)
-      .get("/api/v1/insights/admin/top-user")
-      .set("authorization", `bearer ${generateToken(usersMock[2])}`);
+      .get('/api/v1/insights/admin/top-user')
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
-    const usersWithSubmissions = combineSubmissionToUserWithChallenge(usersMock, submissionsMock, challengesMock)
+    const usersWithSubmissions = combineSubmissionToUserWithChallenge(usersMock, submissionsMock, challengesMock);
 
     expect(allUsersSubmissionsPerUsers.status).toBe(200);
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
-      expect(usersWithSubmissions[index].userName).toBe(user.userName);
-      expect(usersWithSubmissions[index].Submissions.length).toBe(
-        user.Submissions.length
-      );
+      expect(user.Submissions).toHaveLength(usersWithSubmissions[index].Submissions.length);
     });
 
     const unauthorized = await request(app)
-      .get("/api/v1/insights/admin/top-user")
-      .set("authorization", `bearer ${generateToken(usersMock[1])}`);
+      .get('/api/v1/insights/admin/top-user')
+      .set('authorization', `bearer ${generateToken(usersMock[1])}`);
 
     expect(unauthorized.status).toBe(401);
 

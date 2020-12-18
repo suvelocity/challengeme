@@ -3,7 +3,7 @@ const app = require('../../../app');
 const {
   User, UserTeam, Team, Assignment,
 } = require('../../../models');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const {
   usersMock, teamsMock, usersTeamsMock, assignmentsMock,
 } = require('../../mocks');
@@ -27,7 +27,7 @@ describe('Testing assignments routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(assignmentsForTeam.status).toBe(200);
-    expect(assignmentsForTeam.body.length).toBe(assignmentsMock.filter((assign) => assign.teamId === teamsMock[0].id).length);
+    expect(assignmentsForTeam.body).toHaveLength(assignmentsMock.filter((assign) => assign.teamId === teamsMock[0].id).length);
 
     const unauthorized = await request(app)
       .get(`/api/v1/assignments/${teamsMock[1].id}`)
@@ -55,7 +55,7 @@ describe('Testing assignments routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(assignmentsForTeam.status).toBe(200);
-    expect(assignmentsForTeam.body.length).toBe(assignmentsMock.filter((assign) => assign.teamId === teamsMock[0].id).length);
+    expect(assignmentsForTeam.body).toHaveLength(assignmentsMock.filter((assign) => assign.teamId === teamsMock[0].id).length);
 
     const addAssignment = await request(app)
       .post(`/api/v1/assignments/${teamsMock[0].id}`)
@@ -69,8 +69,8 @@ describe('Testing assignments routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(assignmentsForTeamAfterAdded.status).toBe(200);
-    expect(assignmentsForTeamAfterAdded.body.length)
-      .toBe(assignmentsMock.filter((assign) => assign.teamId === teamsMock[0].id).length + 2);
+    expect(assignmentsForTeamAfterAdded.body)
+      .toHaveLength(assignmentsMock.filter((assign) => assign.teamId === teamsMock[0].id).length + 2);
 
     const unauthorized = await request(app)
       .post(`/api/v1/assignments/${teamsMock[1].id}`)
@@ -100,7 +100,7 @@ describe('Testing assignments routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(assignmentsForTeam.status).toBe(200);
-    expect(assignmentsForTeam.body.length).toBe(assignmentsMock.filter((assign) => assign.teamId === teamsMock[0].id).length);
+    expect(assignmentsForTeam.body).toHaveLength(assignmentsMock.filter((assign) => assign.teamId === teamsMock[0].id).length);
 
     const removeUser = await request(app)
       .delete(`/api/v1/assignments/${teamsMock[0].id}`)
@@ -114,7 +114,7 @@ describe('Testing assignments routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(assignmentsForTeamAfterRemove.status).toBe(200);
-    expect(assignmentsForTeamAfterRemove.body.length).toBe(assignmentsMock.filter((assign) => assign.teamId === teamsMock[0].id).length - 1);
+    expect(assignmentsForTeamAfterRemove.body).toHaveLength(assignmentsMock.filter((assign) => assign.teamId === teamsMock[0].id).length - 1);
 
     const unauthorized = await request(app)
       .delete(`/api/v1/assignments/${teamsMock[0].id}`)

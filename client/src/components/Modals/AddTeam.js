@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddTeam({ open, setOpen, getAllTeams }) {
+export default function AddTeam({ open = false, setOpen, getAllTeams }) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
@@ -42,8 +42,7 @@ export default function AddTeam({ open, setOpen, getAllTeams }) {
       await network.post('/api/v1/teams/create-team', { name: newTeamName });
       getAllTeams();
       setOpen(false);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleClose = () => {
@@ -54,16 +53,14 @@ export default function AddTeam({ open, setOpen, getAllTeams }) {
     <div style={modalStyle} className={classes.paper}>
       <h2 id="simple-modal-title">Text in a modal</h2>
       <div id="simple-modal-description">
-        <Input onChange={(event) => setNewTeamName(event.target.value)} placeholder="Insert Team Name..." />
+        <Input
+          onChange={(event) => setNewTeamName(event.target.value)}
+          placeholder="Insert Team Name..."
+        />
       </div>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSubmitNewTeam}
-      >
+      <Button variant="contained" color="primary" onClick={handleSubmitNewTeam}>
         Add New Team
       </Button>
-      <AddTeam />
     </div>
   );
 

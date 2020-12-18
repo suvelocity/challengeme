@@ -14,6 +14,7 @@ const UsersControl = lazy(() => import("./UsersControl"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
 const TeamsControl = lazy(() => import("./TeamsControl"));
 const DashBoard = lazy(() => import("./DashBoard"));
+const Webhook = lazy(() => import("./Webhook"));
 
 function Index({ darkMode }) {
   const location = useHistory();
@@ -57,6 +58,7 @@ function Index({ darkMode }) {
     { name: "Users Control", URL: "/admin/UsersControl" },
     { name: "Githhub Tokens", URL: "/admin/GithhubTokens" },
     { name: "Teams Control", URL: "/admin/TeamsControl" },
+    { name: "Webhook Control", URL: "/admin/Webhook/AccessKey" },
   ];
   return (
     <>
@@ -81,6 +83,9 @@ function Index({ darkMode }) {
             </Route>
             <Route exact path="/admin/TeamsControl">
               <TeamsControl darkMode={darkMode} />
+            </Route>
+            <Route path="/admin/Webhook">
+              <Webhook darkMode={darkMode} />
             </Route>
             <Route path="*">
               <NotFound />

@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SecondHeader({ paths, darkMode }) {
+export default function SecondHeader({ paths, darkMode, position }) {
   const classes = useStyles();
   const location = useLocation();
 
@@ -31,8 +31,10 @@ export default function SecondHeader({ paths, darkMode }) {
     backgroundColor: darkMode ? '#686868' : 'rgba(44, 44, 119,0.9)',
   };
 
+  const marginTop = position ? { marginTop: '0px' } : { marginTop: '60px' };
+
   return (
-    <div style={{ marginTop: '60px' }}>
+    <div style={marginTop}>
       <AppBar position="static" className={classes.root} style={headerStyle}>
         {/* <Toolbar> */}
         {paths.map((path, i) => (

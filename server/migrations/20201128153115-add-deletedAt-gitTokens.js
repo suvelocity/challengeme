@@ -1,8 +1,6 @@
-'use strict';
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn("git_tokens", "deleted_at", {
+    await queryInterface.addColumn('git_tokens', 'deleted_at', {
       type: Sequelize.DATE,
       allowNull: true,
     });
@@ -14,13 +12,13 @@ module.exports = {
      */
   },
 
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn("git_tokens", "git_tokens");
+  down: async (queryInterface) => {
+    await queryInterface.removeColumn('git_tokens', 'git_tokens');
     /**
      * Add reverting commands here.
      *
      * Example:
      * await queryInterface.dropTable('users');
      */
-  }
+  },
 };

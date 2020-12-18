@@ -67,7 +67,7 @@ describe('Submission process', () => {
     await request(app).post(`/api/v1/submissions/apply/${failRepos[0].challengeId}`).set('authorization', `bearer ${accessToken}`)
       .send({ repository: failRepos[0].repo, ...review });
     const submissions = await Submission.findAll();
-    expect(submissions.length).toBe(5);
+    expect(submissions).toHaveLength(5);
     submissions.forEach((submission) => expect(submission.state).toBe('PENDING'));
     done();
   });
@@ -75,11 +75,11 @@ describe('Submission process', () => {
     let submissions;
     // changing the state of a successed submission to 'FAIL' to see if it will get resolved
     function checkingPending() {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         function checking() {
           setTimeout(async () => {
             submissions = await Submission.findAll();
-            expect(submissions.length).toBe(5);
+            expect(submissions).toHaveLength(5);
             if (submissions.every((submission) => submission.state !== 'PENDING')) {
               console.log('success');
               return resolve('success');
@@ -97,7 +97,7 @@ describe('Submission process', () => {
 
   test('Correct status on the Submissions', async (done) => {
     const allSubmissions = await Submission.findAll();
-    expect(allSubmissions.length).toBe(5);
+    expect(allSubmissions).toHaveLength(5);
     solutionRepos.forEach((solution) => {
       const index = allSubmissions.findIndex((submission) => submission.solutionRepository === solution.repo && submission.state === 'SUCCESS');
       expect(index).toBeGreaterThan(-1);

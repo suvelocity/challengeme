@@ -113,7 +113,7 @@ function ChallengePage({ darkMode }) {
     }, 5000);
     const setImg = async () => {
       try {
-        const { data } = await network.get(`/api/v1/image?id=${challengeId}`);
+        const { data } = await network.get(`/api/v1/images?id=${challengeId}`);
         setImage(data.img);
       } catch (error) {
       }
@@ -298,12 +298,16 @@ function ChallengePage({ darkMode }) {
               cy-test="challenge-boilerPlate"
               variant="contained"
               className={classes.getStartedButton}
-              onClick={() => {
+              onClick={async () => {
                 const user = Cookies.get('userName');
                 mixpanel.track('User Started Challenge', {
                   User: `${user}`,
                   ChallengeId: `${challengeId}`,
                 });
+                try {
+                  await network.post('/api/v1/webhooks/trigger-events/start-challenge', { challengeName: challenge.name });
+                } catch (error) {
+                }
               }}
               href={`https://github.com/${challenge.boilerPlate}`}
               target="_blank"

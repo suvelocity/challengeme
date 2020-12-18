@@ -18,7 +18,7 @@ export default function AdminChallengeCard({
   useEffect(() => {
     (async () => {
       try {
-        const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`);
+        const { data: coverImage } = await network.get(`/api/v1/images?id=${challengeId}`);
         setCoverImg(coverImage ? coverImage.img : '');
         setLoading(false);
       } catch (error) {

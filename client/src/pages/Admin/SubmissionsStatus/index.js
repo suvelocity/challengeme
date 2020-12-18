@@ -21,8 +21,8 @@ export default function Index({ darkMode }) {
       {showByChallengeOrUser ? (
         <SubmissionsByChallenges darkMode={darkMode} />
       ) : (
-          <SubmissionsByUsers darkMode={darkMode} />
-        )}
+        <SubmissionsByUsers darkMode={darkMode} />
+      )}
     </div>
   );
 }
