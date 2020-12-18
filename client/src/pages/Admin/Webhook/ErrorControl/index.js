@@ -85,8 +85,8 @@ function Row(props) {
           {row.id}
         </StyledTableCell>
         <StyledTableCell align="left">{row.webhookId}</StyledTableCell>
-        <StyledTableCell align="left">{row.WebhookTeam.Team.name}</StyledTableCell>
-        <StyledTableCell align="left">{row.WebhookTeam.Team.WebhookAccessKey.entityName}</StyledTableCell>
+        <StyledTableCell align="left">{row.WebhookTeam ? row.WebhookTeam.Team.name : 'admin'}</StyledTableCell>
+        <StyledTableCell align="left">{row.WebhookTeam ? row.WebhookTeam.Team.WebhookAccessKey.entityName : 'admin'}</StyledTableCell>
         <StyledTableCell align="left">{row.statusCode}</StyledTableCell>
         <StyledTableCell align="left">{row.message}</StyledTableCell>
         <StyledTableCell align="left">
