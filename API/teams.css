@@ -30,7 +30,7 @@
 .highlight .ni { color: #f8f8f2 } /* Name.Entity */
 .highlight .ne { color: #a6e22e } /* Name.Exception */
 .highlight .nf { color: #a6e22e } /* Name.Function */
-.highlight .nl { color: #f8f8f2; background-color: #272822; } /* Name.Label */
+.highlight .nl { color: #66d9ef; background-color: #272822; } /* Name.Label */
 .highlight .nn { color: #f8f8f2 } /* Name.Namespace */
 .highlight .nx { color: #a6e22e } /* Name.Other */
 .highlight .py { color: #f8f8f2 } /* Name.Property */

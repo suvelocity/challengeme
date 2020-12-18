@@ -19,7 +19,7 @@ These teams have users defined as **teachers** that can add other users to the t
 
 ## User Data
 this is the data used for User registration (? denotes an optional property)
-{% highlight JSON %}
+{% highlight typescript %}
 {
   "userName": "david12", // the userName to be used for login.
   "email": "david@email.com", 
