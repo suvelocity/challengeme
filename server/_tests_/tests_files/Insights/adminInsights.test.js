@@ -227,7 +227,8 @@ describe('Testing admin insights routes', () => {
     const usersWithSubmissions = combineSubmissionToUserWithChallenge(
       usersMock,
       submissionsMock,
-      challengesMock);
+      challengesMock,
+    );
 
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
       expect(user.Submissions).toHaveLength(usersWithSubmissions[index].Submissions.length);
@@ -241,7 +242,7 @@ describe('Testing admin insights routes', () => {
       usersMock,
       submissionsMock,
       challengesMock,
-      'true'
+      'true',
     );
 
     expect(allUsersSubmissionsPerUsersOnlyLast.status).toBe(200);

@@ -45,7 +45,7 @@ describe('All the routes are working together', () => {
     const pageTitleValue = await (await pageTitle.getProperty('innerText')).jsonValue();
     expect(pageTitleValue).toBe('ChallengeMe');
     const elements = await page.$$('.challenge-card');
-    expect(elements.length).toBe(homePageMock.length);
+    expect(elements).toHaveLength(homePageMock.length);
     expect(getAllChallenges.isDone()).toBe(true);
   });
 });

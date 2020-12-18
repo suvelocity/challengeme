@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import mixpanel from 'mixpanel-browser';
 import { useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import network from '../../../../services/network';
@@ -31,8 +33,10 @@ function TeacherAssignments({ darkMode, teamName }) {
 
   useEffect(() => {
     getAllAssignments();
+    const user = Cookies.get('userName');
+    mixpanel.track('User On Team Assignments Teacher Area', { User: `${user}`, Team: teamName });
     // eslint-disable-next-line
-  }, []);
+  }, [teamName]);
 
   return (
     allAssignments
@@ -77,8 +81,8 @@ function TeacherAssignments({ darkMode, teamName }) {
               ))}
             </div>
           ) : (
-            <h1 className="not-found">Not Found</h1>
-          )}
+              <h1 className="not-found">Not Found</h1>
+            )}
         </div>
       ) : <Loading darkMode={darkMode} />
   );

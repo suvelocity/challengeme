@@ -31,24 +31,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddAccessKey({
+export default function AddWebhookEvent({
   open = false,
   setOpen,
-  getAllAccessKeys,
+  getAllEvents,
 }) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
-  const [newEntityName, setNewEntityName] = useState();
-  const [newEmail, setNewEmail] = useState();
+  const [newName, setNewName] = useState();
 
   const handleSubmitNewAccessKey = async () => {
     try {
-      await network.post('/api/v1/webhooks/admin/access-key', {
-        email: newEmail,
-        entityName: newEntityName,
+      await network.post('/api/v1/webhooks/admin/events', {
+        name: newName,
       });
-      getAllAccessKeys();
+      getAllEvents();
       setOpen(false);
     } catch (error) {}
   };
@@ -62,15 +60,8 @@ export default function AddAccessKey({
       <h2 id="simple-modal-title">Text in a modal</h2>
       <div id="simple-modal-description">
         <Input
-          onChange={(event) => setNewEntityName(event.target.value)}
-          placeholder="Insert Entity Name Name..."
-        />
-        <br />
-        {' '}
-        <br />
-        <Input
-          onChange={(event) => setNewEmail(event.target.value)}
-          placeholder="Insert Email Name..."
+          onChange={(event) => setNewName(event.target.value)}
+          placeholder="Insert New Name..."
         />
         {' '}
       </div>
@@ -82,7 +73,7 @@ export default function AddAccessKey({
         color="primary"
         onClick={handleSubmitNewAccessKey}
       >
-        Add New Access Key
+        Add New Event
       </Button>
     </div>
   );

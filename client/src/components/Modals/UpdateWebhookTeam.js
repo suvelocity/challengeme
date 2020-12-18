@@ -31,24 +31,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddAccessKey({
+export default function UpdateWebhookTeam({
   open = false,
   setOpen,
-  getAllAccessKeys,
+  getAllTeams,
+  data,
 }) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
-  const [newEntityName, setNewEntityName] = useState();
-  const [newEmail, setNewEmail] = useState();
-
+  const [webhookUrl, setWebhookUrl] = useState(data.webhookUrl);
+  const [authorizationToken, setAuthorizationToken] = useState(
+    data.authorizationToken,
+  );
   const handleSubmitNewAccessKey = async () => {
     try {
-      await network.post('/api/v1/webhooks/admin/access-key', {
-        email: newEmail,
-        entityName: newEntityName,
+      await network.patch(`/api/v1/webhooks/admin/teams/${data.id}`, {
+        webhookUrl,
+        authorizationToken,
       });
-      getAllAccessKeys();
+      getAllTeams();
       setOpen(false);
     } catch (error) {}
   };
@@ -62,27 +64,29 @@ export default function AddAccessKey({
       <h2 id="simple-modal-title">Text in a modal</h2>
       <div id="simple-modal-description">
         <Input
-          onChange={(event) => setNewEntityName(event.target.value)}
-          placeholder="Insert Entity Name Name..."
+          onChange={(event) => setWebhookUrl(event.target.value)}
+          placeholder="Insert Webhook Url..."
+          value={webhookUrl}
         />
         <br />
         {' '}
         <br />
         <Input
-          onChange={(event) => setNewEmail(event.target.value)}
-          placeholder="Insert Email Name..."
+          onChange={(event) => setAuthorizationToken(event.target.value)}
+          placeholder="Insert Authorization Token Name..."
+          value={authorizationToken}
         />
         {' '}
       </div>
+      {' '}
       <br />
       <br />
-
       <Button
         variant="contained"
         color="primary"
         onClick={handleSubmitNewAccessKey}
       >
-        Add New Access Key
+        Update Team
       </Button>
     </div>
   );

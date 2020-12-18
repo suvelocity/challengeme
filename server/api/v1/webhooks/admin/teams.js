@@ -57,7 +57,7 @@ teamsAdminWebhookRouter.patch('/:id', async (req, res) => {
         id,
       },
     });
-    return res.json({ message: "Update Success" });
+    return res.json({ message: 'Update Success' });
   } catch (error) {
     console.error(error);
     return res.status(400).json({ message: 'Cannot process request' });

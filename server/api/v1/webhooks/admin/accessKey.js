@@ -1,12 +1,12 @@
-const accessKeyAdminWebhookRouter = require("express").Router();
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
-const { v4: generateId } = require("uuid");
-const { Op } = require("sequelize");
-const { WebhookAccessKey } = require("../../../../models");
+const accessKeyAdminWebhookRouter = require('express').Router();
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const { v4: generateId } = require('uuid');
+const { Op } = require('sequelize');
+const { WebhookAccessKey } = require('../../../../models');
 
 // get all access keys on our system
-accessKeyAdminWebhookRouter.get("/", async (req, res) => {
+accessKeyAdminWebhookRouter.get('/', async (req, res) => {
   let query = req.query.id ? { where: { id: req.query.id } } : {};
   query = req.query.name
     ? { where: { entityName: { [Op.like]: `%${req.query.name}%` } } }
@@ -23,17 +23,17 @@ accessKeyAdminWebhookRouter.get("/", async (req, res) => {
         };
         key.key = jwt.sign(tokenKey, process.env.WEBHOOK_SECRET);
         return key;
-      })
+      }),
     );
     return res.json(hashedAccessKeys);
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ message: "Cannot process request" });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // add access key
-accessKeyAdminWebhookRouter.post("/", async (req, res) => {
+accessKeyAdminWebhookRouter.post('/', async (req, res) => {
   const { entityName, email } = req.body;
   try {
     const key = generateId();
@@ -48,12 +48,12 @@ accessKeyAdminWebhookRouter.post("/", async (req, res) => {
     return res.status(201).json({ key: accessKeyToken });
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ message: "Cannot process request" });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // update access key status
-accessKeyAdminWebhookRouter.patch("/:id", async (req, res) => {
+accessKeyAdminWebhookRouter.patch('/:id', async (req, res) => {
   const { updateKey, entityName, email } = req.body;
   const { id } = req.params;
   try {
@@ -61,7 +61,7 @@ accessKeyAdminWebhookRouter.patch("/:id", async (req, res) => {
       entityName,
       email,
     };
-    if (updateKey === "true") {
+    if (updateKey === 'true') {
       const newKey = generateId();
       destructedAccessKey.key = newKey;
     }
@@ -70,16 +70,15 @@ accessKeyAdminWebhookRouter.patch("/:id", async (req, res) => {
         id,
       },
     });
-    return res.json({ message: "Update Success" });
+    return res.json({ message: 'Update Success' });
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ message: "Cannot process request" });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
-
 // delete access key
-accessKeyAdminWebhookRouter.delete("/:id", async (req, res) => {
+accessKeyAdminWebhookRouter.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     await WebhookAccessKey.destroy({
@@ -90,7 +89,7 @@ accessKeyAdminWebhookRouter.delete("/:id", async (req, res) => {
     return res.sendStatus(204);
   } catch (error) {
     console.error(error);
-    return res.status(400).json({ message: "Cannot process request" });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

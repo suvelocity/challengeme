@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import mixpanel from 'mixpanel-browser';
 import { Link, useHistory } from 'react-router-dom';
 import network from '../../../services/network';
 import './MyTeams.css';
 
 function TeamCard({ team }) {
   const linkPath = team.UserTeam.permission === 'teacher' ? `/teams/teacher/${team.id}` : `/teams/${team.id}`;
+
+  useEffect(() => {
+    const user = Cookies.get('userName');
+    mixpanel.track('User On Teams Area', { User: `${user}` });
+  }, []);
 
   return (
     <Link to={linkPath} className="my-team-link">

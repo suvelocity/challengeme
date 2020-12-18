@@ -31,22 +31,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddAccessKey({
+export default function UpdateAccessKey({
   open = false,
   setOpen,
   getAllAccessKeys,
+  data,
 }) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
-  const [newEntityName, setNewEntityName] = useState();
-  const [newEmail, setNewEmail] = useState();
-
+  const [newEntityName, setNewEntityName] = useState(data.entityName);
+  const [newEmail, setNewEmail] = useState(data.email);
+  const [updateKey, setUpdateKey] = useState('false');
   const handleSubmitNewAccessKey = async () => {
     try {
-      await network.post('/api/v1/webhooks/admin/access-key', {
+      await network.patch(`/api/v1/webhooks/admin/access-key/${data.id}`, {
         email: newEmail,
         entityName: newEntityName,
+        updateKey,
       });
       getAllAccessKeys();
       setOpen(false);
@@ -64,6 +66,7 @@ export default function AddAccessKey({
         <Input
           onChange={(event) => setNewEntityName(event.target.value)}
           placeholder="Insert Entity Name Name..."
+          value={newEntityName}
         />
         <br />
         {' '}
@@ -71,18 +74,25 @@ export default function AddAccessKey({
         <Input
           onChange={(event) => setNewEmail(event.target.value)}
           placeholder="Insert Email Name..."
+          value={newEmail}
         />
         {' '}
       </div>
+      {' '}
+      <br />
+      <label>Update Key:</label>
+      <select onChange={(event) => setUpdateKey(event.target.value)}>
+        <option value="false">False</option>
+        <option value="true">True</option>
+      </select>
       <br />
       <br />
-
       <Button
         variant="contained"
         color="primary"
         onClick={handleSubmitNewAccessKey}
       >
-        Add New Access Key
+        Update Access Key
       </Button>
     </div>
   );
