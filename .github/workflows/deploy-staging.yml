@@ -49,7 +49,7 @@ jobs:
           sudo git stash &&
           sudo git pull origin staging &&
           cd ./server &&
-          sudo npm ci &&
+          sudo npm ci --production &&
           sudo npx sequelize db:migrate &&
           sudo pm2 reload 0
         '
