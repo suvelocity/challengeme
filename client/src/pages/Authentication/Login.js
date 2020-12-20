@@ -91,7 +91,7 @@ export default function Login() {
       });
       LoggedContext.setLogged(true);
       LoggedContext.setIsAdmin(data.isAdmin);
-      mixpanel.track('User Logged In', { User: `${userName}`, 'Remember Me': `${rememberMe}` });
+      mixpanel.track('User Logged In', { User: `${data.userName}`, 'Remember Me': `${rememberMe}` });
       location.push('/');
     } catch (error) {
       setError({ message: error.response.data.message });

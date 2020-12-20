@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-
 import Review from './Review';
-import network from '../../../../services/network';
+import network from '../../services/network';
 
 function ReviewsTab({ challengeId, setRatingCount }) {
   const [reviews, setReviews] = useState([]);
@@ -40,7 +39,7 @@ function ReviewsTab({ challengeId, setRatingCount }) {
       } = review;
       return (
         <Review
-          key={title + createdAt}
+          key={id}
           reviewId={id}
           author={userName}
           createdAt={createdAt}
@@ -51,10 +50,10 @@ function ReviewsTab({ challengeId, setRatingCount }) {
       );
     })
   ) : (
-    <div>
-      {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
-    </div>
-  );
+      <div>
+        {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
+      </div>
+    );
 }
 
 export default ReviewsTab;

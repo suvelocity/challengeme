@@ -1,4 +1,5 @@
 const imagRouter = require('express').Router();
+const checkToken = require('../../middleware/checkToken');
 const { Image } = require('../../models');
 
 // get image per challenge by query
@@ -16,7 +17,7 @@ imagRouter.get('/', async (req, res) => {
 });
 
 // add image for challenge
-imagRouter.post('/', async (req, res) => {
+imagRouter.post('/', checkToken, async (req, res) => {
   const image = req.body;
   try {
     const checkIfExists = await Image.findOne({

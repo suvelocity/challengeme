@@ -3,8 +3,8 @@ import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 import Rating from '@material-ui/lab/Rating';
 import { Button } from '@material-ui/core';
-import { Logged } from '../../../../context/LoggedInContext';
-import network from '../../../../services/network';
+import { Logged } from '../../context/LoggedInContext';
+import network from '../../services/network';
 import './Review.css';
 
 function Review({

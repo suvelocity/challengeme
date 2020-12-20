@@ -2,6 +2,7 @@ require('dotenv').config();
 const submissionRouter = require('express').Router();
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const checkAdmin = require('../../middleware/checkAdmin');
 const { handleGithubTokens } = require('../../helpers');
 const {
   Submission, User, Challenge, Review,
@@ -40,28 +41,6 @@ submissionRouter.get('/by-user/:challengeId', async (req, res) => {
     }
 
     return res.json(testSubmission[testSubmission.length - 1]);
-  } catch (error) {
-    console.error(error.message);
-    return res.status(400).json({ message: "can't get the challenge submissions" });
-  }
-});
-
-// get all challenge submissions
-submissionRouter.get('/:challengeId', async (req, res) => {
-  try {
-    const { challengeId } = req.params;
-    const allSubmission = await Submission.findAll({
-      include: [
-        {
-          model: User,
-          attributes: ['userName'],
-        },
-      ],
-      where: {
-        challengeId,
-      },
-    });
-    return res.json(allSubmission);
   } catch (error) {
     console.error(error.message);
     return res.status(400).json({ message: "can't get the challenge submissions" });
@@ -156,5 +135,30 @@ submissionRouter.post('/apply/:challengeId', async (req, res) => {
     return res.status(400).json({ message: 'Cannot process request' });
   }
 });
+
+//===================Not in use=========================================//
+
+// get all challenge submissions
+submissionRouter.get('/:challengeId', checkAdmin, async (req, res) => {
+  try {
+    const { challengeId } = req.params;
+    const allSubmission = await Submission.findAll({
+      where: {
+        challengeId,
+      },
+      include: [
+        {
+          model: User,
+          attributes: ['userName'],
+        },
+      ]
+    });
+    return res.json(allSubmission);
+  } catch (error) {
+    console.error(error.message);
+    return res.status(400).json({ message: "can't get the challenge submissions" });
+  }
+});
+
 
 module.exports = submissionRouter;

@@ -178,7 +178,7 @@ authRouter.post('/login', async (req, res) => {
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
     const isAdmin = currentUser.permission === 'admin' ? true : false;
-    return res.json({ userDetails: currentUser, isAdmin });
+    return res.json({ userName: currentUser.userName, isAdmin });
   } catch (error) {
     console.error(error.message);
     return res.status(400).json({ message: 'Cannot process request' });
@@ -314,7 +314,7 @@ authRouter.patch('/password-update', async (req, res) => {
             },
           },
         );
-        return res.json({ message: 'Changed Password Sucsessfuly' });
+        return res.json({ message: 'Changed Password Successfully' });
       },
     );
   } catch (error) {

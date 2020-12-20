@@ -84,12 +84,8 @@ userRouter.get('/teacher/:teamId', checkTeacherPermission, async (req, res) => {
         },
       },
     });
-    const flitteredUsersSensitiveData = allUsers.Users.map((user) => {
-      delete user.dataValues.password;
-      delete user.dataValues.securityAnswer;
-      return user.dataValues;
-    });
-    return res.json(flitteredUsersSensitiveData);
+
+    return res.json(allUsers);
   } catch (error) {
     console.error(error);
     return res.status(400).json({ message: 'Cannot process request' });

@@ -1,12 +1,18 @@
 const reviewsRouter = require('express').Router();
+const checkToken = require('../../middleware/checkToken');
 const checkAdmin = require('../../middleware/checkAdmin');
 const { Review, User } = require('../../models');
 
 // get reviews by challenge with params
 reviewsRouter.get('/:challengeId', async (req, res) => {
   try {
+    const { challengeId } = req.params
+
     const reviews = await Review.findAll({
-      where: { challengeId: req.params.challengeId },
+      where: {
+        challengeId
+      },
+      attributes: ['id', 'title', 'content', 'rating', 'createdAt'],
       include: {
         model: User,
         attributes: ['userName'],
@@ -20,7 +26,7 @@ reviewsRouter.get('/:challengeId', async (req, res) => {
 });
 
 // add review to challenge
-reviewsRouter.post('/:challengeId', async (req, res) => {
+reviewsRouter.post('/:challengeId', checkToken, async (req, res) => {
   const { title, content, rating } = req.body;
   const { userId } = req.user;
   const query = {
@@ -42,7 +48,7 @@ reviewsRouter.post('/:challengeId', async (req, res) => {
 //= ============================= Admin Routes ======================================
 
 // delete review from challenge
-reviewsRouter.delete('/:reviewId', checkAdmin, async (req, res) => {
+reviewsRouter.delete('/:reviewId', checkToken, checkAdmin, async (req, res) => {
   const { reviewId } = req.params;
   try {
     await Review.destroy({

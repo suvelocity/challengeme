@@ -5,7 +5,7 @@ const { checkTeamPermission, checkTeacherPermission } = require('../../middlewar
 const { User, Team, UserTeam } = require('../../models');
 
 // get team name
-teamRouter.get('/team-name/:teamId', checkTeamPermission, async (req, res) => {
+teamRouter.get('/team-name/:teamId', checkTeacherPermission, async (req, res) => {
   const { teamId } = req.params;
   const teamName = await Team.findOne({
     where: {
@@ -111,12 +111,11 @@ teamRouter.post('/add-users/:teamId', checkTeacherPermission, async (req, res) =
   try {
     const { newUsers } = req.body;
     await Promise.all(newUsers.map(async (user) => (
-      UserTeam.update({ deletedAt: null }, {
+      UserTeam.restore({
         where: {
           userId: user.value,
           teamId: req.params.teamId,
-        },
-        paranoid: false,
+        }
       })
     )));
     return res.status(201).json({ message: 'Team Users Created' });
@@ -164,6 +163,33 @@ teamRouter.delete('/remove-user/:teamId', checkTeacherPermission, async (req, re
   }
 });
 
+// get team information
+teamRouter.get('/single-team/:id', checkTeacherPermission, async (req, res) => {
+  try {
+    const userTeam = await Team.findAll({
+      where: {
+        id: req.params.id,
+      },
+      attributes: [
+        'id', 'name', 'createdAt', 'updatedAt',
+      ],
+      include: [
+        {
+          model: User,
+          attributes: ['id', 'userName'],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
+    return res.json(userTeam);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
 //= ============================= Admin Routes ======================================
 
 // get all teams
@@ -179,33 +205,6 @@ teamRouter.get('/all-teams', checkAdmin, async (req, res) => {
           attributes: ['id', 'userName'],
           through: {
             attributes: ['permission'],
-          },
-        },
-      ],
-    });
-    return res.json(userTeam);
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({ message: 'Cannot process request' });
-  }
-});
-
-// get team information
-teamRouter.get('/single-team/:id', checkAdmin, async (req, res) => {
-  try {
-    const userTeam = await Team.findAll({
-      where: {
-        id: req.params.id,
-      },
-      attributes: [
-        'id', 'name', 'createdAt', 'updatedAt',
-      ],
-      include: [
-        {
-          model: User,
-          attributes: ['id', 'userName', 'permission'],
-          through: {
-            attributes: [],
           },
         },
       ],

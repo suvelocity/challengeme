@@ -137,7 +137,7 @@ challengeRouter.get('/info/:challengeId', async (req, res) => {
         {
           model: User,
           as: 'Author',
-          attributes: ['email', 'userName'],
+          attributes: ['userName'],
         },
       ],
     });
