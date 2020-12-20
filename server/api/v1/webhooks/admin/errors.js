@@ -1,11 +1,27 @@
 const teamErrorAdminWebhookRouter = require('express').Router();
-const { WebhookTeamError } = require('../../../../models');
+const {
+  WebhookTeamError, WebhookTeam, Team, WebhookAccessKey,
+} = require('../../../../models');
 
 // get all webhook team errors on our system
 teamErrorAdminWebhookRouter.get('/', async (req, res) => {
-  const id = req.query.id ? { where: { id: req.query.id } } : {};
+  const where = req.query.id ? { id: req.query.id } : {};
   try {
-    const allWebhookTeamErrors = await WebhookTeamError.findAll(id);
+    const allWebhookTeamErrors = await WebhookTeamError.findAll({
+      where,
+      include: {
+        model: WebhookTeam,
+        attributes: ['teamId'],
+        include: {
+          model: Team,
+          attributes: ['name', 'creator'],
+          include: {
+            model: WebhookAccessKey,
+            attributes: ['entityName'],
+          },
+        },
+      },
+    });
     return res.json(allWebhookTeamErrors);
   } catch (error) {
     console.error(error);

@@ -1,6 +1,6 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const bcrypt = require("bcryptjs");
+const bcrypt = require('bcryptjs');
 const moment = require('moment');
 
 function generateToken(currentUser) {
@@ -271,5 +271,5 @@ module.exports = {
   filterLastSubmissionsForAdminRoute,
   countSuccessSubmissionsWithUserName,
   formatCreatedAtToMoment,
-  generateWebhookToken
+  generateWebhookToken,
 };

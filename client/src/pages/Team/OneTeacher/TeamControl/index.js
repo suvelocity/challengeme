@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Cookies from 'js-cookie';
+import mixpanel from 'mixpanel-browser';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
@@ -156,8 +158,10 @@ function TeamsControl({ teamName, darkMode }) {
 
   useEffect(() => {
     getAllTeamMembers();
+    const user = Cookies.get('userName');
+    mixpanel.track('User On Team Control Teacher Area', { User: `${user}`, Team: id });
     // eslint-disable-next-line
-  }, []);
+  }, [id]);
 
   return (
     <div className="generic-page">

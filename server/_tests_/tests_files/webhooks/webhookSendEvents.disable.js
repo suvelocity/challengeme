@@ -1,9 +1,9 @@
 /**
  * @jest-environment node
  */
-const app = require('../../../app');
 const request = require('supertest');
 const nock = require('nock');
+const app = require('../../../app');
 const {
   User, UserTeam, Team, WebhookTeam, WebhookAccessKey,
 } = require('../../../models');
@@ -41,7 +41,7 @@ describe('Webhook Send Events Process', () => {
       })
       .reply(200);
     const triggerEvent = await request(app)
-      .post(`/api/v1/webhooks/trigger-events/start-challenge`)
+      .post('/api/v1/webhooks/trigger-events/start-challenge')
       .send({ challengeName: 'JWT - Node.js' })
       .set('authorization', `bearer ${generateToken(usersMock[7])}`);
 

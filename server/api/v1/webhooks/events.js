@@ -119,12 +119,12 @@ eventsWebhookRouter.patch('/authorization/:externalId', checkTeamOwnerPermission
     const isWebhookExist = await WebhookTeam.update({
       authorizationToken,
     },
-      {
-        where: {
-          webhookUrl,
-          teamId: teamData.id,
-        },
-      });
+    {
+      where: {
+        webhookUrl,
+        teamId: teamData.id,
+      },
+    });
     if (isWebhookExist[0] > 0) {
       return res.json({ message: 'Update Authorization Token Success' });
     }
@@ -163,12 +163,12 @@ eventsWebhookRouter.patch('/url/:externalId', checkTeamOwnerPermission, async (r
     const isWebhookExist = await WebhookTeam.update({
       webhookUrl: newWebhookUrl,
     },
-      {
-        where: {
-          teamId: teamData.id,
-          webhookUrl: oldWebhookUrl,
-        },
-      });
+    {
+      where: {
+        teamId: teamData.id,
+        webhookUrl: oldWebhookUrl,
+      },
+    });
     if (isWebhookExist[0] > 0) {
       return res.json({ message: 'Update Url Success' });
     }
@@ -220,12 +220,12 @@ eventsWebhookRouter.delete('/logout/:externalId', checkTeamOwnerPermission, asyn
       }],
     });
     if (!isWebhookExist) {
-      return res.status(406).json({ message: `You are not register with this '${events}' events to this webhookUrl` });
+      return res.status(406).json({ message: `You are not registered to this events: '${events}' with the specified webhookUrl` });
     }
     const whatEventsAreNotExist = (event) => Filters.stringInObjectArray(isWebhookExist.WebhookEventTeams, event, 'WebhookEvent', 'name');
     if (!events.every(whatEventsAreNotExist)) {
       const missingEvents = events.filter((event) => !whatEventsAreNotExist(event));
-      return res.status(406).json({ message: `You are not register with this '${missingEvents}' events to this webhookUrl` });
+      return res.status(406).json({ message: `You are not registered to this events: '${missingEvents}' with the specified webhookUrl` });
     }
     await WebhookEventTeam.destroy({
       where: {

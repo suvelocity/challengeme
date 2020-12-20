@@ -1,191 +1,191 @@
 module.exports = {
-    success: {
-        onlyLeaders: {
-            teamName: "crm",
-            leaders: [
-                {
-                    userName: "regularUser"
-                },
-                {
-                    userName: "boosty123"
-                }
-            ]
+  success: {
+    onlyLeaders: {
+      teamName: 'crm',
+      leaders: [
+        {
+          userName: 'regularUser',
         },
-        leadersWithUsers: {
-            teamName: "crm",
-            leaders: [
-                {
-                    userName: "roy"
-                },
-                {
-                    userName: "david"
-                }
-            ],
-            usersToCreate: [
-                {
-                    userName: "david",
-                    email: "david@email.com"
-                },
-                {
-                    userName: "roy",
-                    email: "roy@email.com"
-                }
-            ]
+        {
+          userName: 'boosty123',
         },
-        leadersAndEvents: {
-            teamName: "crm",
-            leaders: [
-                {
-                    userName: "regularUser"
-                },
-                {
-                    userName: "boosty123"
-                }
-            ],
-            eventsRegistration: {
-                webhookUrl: "http://localhost:8090/api/v1/webhook",
-                events: ["startedChallenge", "submittedChallenge"],
-                authorizationToken: "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            }
-        },
-        fullRequest: {
-            teamName: "crm",
-            leaders: [
-                {
-                    userName: "roy"
-                },
-                {
-                    userName: "boosty123"
-                }
-            ],
-            usersToCreate: [
-                {
-                    userName: "roy",
-                    email: "roy@email.com"
-                },
-                {
-                    userName: "nir",
-                    email: "nir@email.com"
-                }
-            ],
-            eventsRegistration: {
-                webhookUrl: "http://localhost:8090/api/v1/webhook",
-                events: ["startedChallenge", "submittedChallenge"],
-                authorizationToken: "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            }
-        }
+      ],
     },
-    fail: {
-        onlyLeaders: {
-            teamName: "crm",
-            leaders: [
-                {
-                    userName: "roy"
-                },
-                {
-                    userName: "david"
-                }
-            ]
+    leadersWithUsers: {
+      teamName: 'crm',
+      leaders: [
+        {
+          userName: 'roy',
         },
-        leadersNotInCreateList: {
-            teamName: "crm",
-            leaders: [
-                {
-                    userName: "roy"
-                },
-                {
-                    userName: "david"
-                }
-            ],
-            usersToCreate: [
-                {
-                    userName: "david",
-                    email: "david@email.com"
-                },
-                {
-                    userName: "omer",
-                    email: "omer@email.com"
-                }
-            ]
+        {
+          userName: 'david',
         },
-        usersAlreadyExist: {
-            teamName: "crm",
-            leaders: [
-                {
-                    userName: "regularUser"
-                },
-                {
-                    userName: "david"
-                }
-            ],
-            usersToCreate: [
-                {
-                    userName: "david",
-                    email: "david@email.com"
-                },
-                {
-                    userName: "regularUser",
-                    email: "regularUser@email.com"
-                }
-            ]
+      ],
+      usersToCreate: [
+        {
+          userName: 'david',
+          email: 'david@email.com',
         },
-        leadersNotExistAndEvents: {
-            teamName: "crm",
-            leaders: [
-                {
-                    userName: "roy"
-                },
-                {
-                    userName: "david"
-                }
-            ],
-            eventsRegistration: {
-                webhookUrl: "http://localhost:8090/api/v1/webhook",
-                events: ["startedChallenge", "submittedChallenge"],
-                authorizationToken: "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            }
+        {
+          userName: 'roy',
+          email: 'roy@email.com',
         },
-        leadersAndBadEvents: {
-            teamName: "crm",
-            leaders: [
-                {
-                    userName: "regularUser"
-                },
-                {
-                    userName: "boosty123"
-                }
-            ],
-            eventsRegistration: {
-                webhookUrl: "http://localhost:8090/api/v1/webhook",
-                events: ["efg", "abdc"],
-                authorizationToken: "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            }
+      ],
+    },
+    leadersAndEvents: {
+      teamName: 'crm',
+      leaders: [
+        {
+          userName: 'regularUser',
         },
-        fullRequestAndBadEvents: {
-            teamName: "crm",
-            leaders: [
-                {
-                    userName: "david"
-                },
-                {
-                    userName: "boosty123"
-                }
-            ],
-            usersToCreate: [
-                {
-                    userName: "david",
-                    email: "david@email.com"
-                },
-                {
-                    userName: "omer",
-                    email: "omer@email.com"
-                }
-            ],
-            eventsRegistration: {
-                webhookUrl: "http://localhost:8090/api/v1/webhook",
-                events: ["efg", "abdc"],
-                authorizationToken: "1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            }
+        {
+          userName: 'boosty123',
         },
-    }
+      ],
+      eventsRegistration: {
+        webhookUrl: 'http://localhost:8090/api/v1/webhook',
+        events: ['startedChallenge', 'submittedChallenge'],
+        authorizationToken: '1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      },
+    },
+    fullRequest: {
+      teamName: 'crm',
+      leaders: [
+        {
+          userName: 'roy',
+        },
+        {
+          userName: 'boosty123',
+        },
+      ],
+      usersToCreate: [
+        {
+          userName: 'roy',
+          email: 'roy@email.com',
+        },
+        {
+          userName: 'nir',
+          email: 'nir@email.com',
+        },
+      ],
+      eventsRegistration: {
+        webhookUrl: 'http://localhost:8090/api/v1/webhook',
+        events: ['startedChallenge', 'submittedChallenge'],
+        authorizationToken: '1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      },
+    },
+  },
+  fail: {
+    onlyLeaders: {
+      teamName: 'crm',
+      leaders: [
+        {
+          userName: 'roy',
+        },
+        {
+          userName: 'david',
+        },
+      ],
+    },
+    leadersNotInCreateList: {
+      teamName: 'crm',
+      leaders: [
+        {
+          userName: 'roy',
+        },
+        {
+          userName: 'david',
+        },
+      ],
+      usersToCreate: [
+        {
+          userName: 'david',
+          email: 'david@email.com',
+        },
+        {
+          userName: 'omer',
+          email: 'omer@email.com',
+        },
+      ],
+    },
+    usersAlreadyExist: {
+      teamName: 'crm',
+      leaders: [
+        {
+          userName: 'regularUser',
+        },
+        {
+          userName: 'david',
+        },
+      ],
+      usersToCreate: [
+        {
+          userName: 'david',
+          email: 'david@email.com',
+        },
+        {
+          userName: 'regularUser',
+          email: 'regularUser@email.com',
+        },
+      ],
+    },
+    leadersNotExistAndEvents: {
+      teamName: 'crm',
+      leaders: [
+        {
+          userName: 'roy',
+        },
+        {
+          userName: 'david',
+        },
+      ],
+      eventsRegistration: {
+        webhookUrl: 'http://localhost:8090/api/v1/webhook',
+        events: ['startedChallenge', 'submittedChallenge'],
+        authorizationToken: '1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      },
+    },
+    leadersAndBadEvents: {
+      teamName: 'crm',
+      leaders: [
+        {
+          userName: 'regularUser',
+        },
+        {
+          userName: 'boosty123',
+        },
+      ],
+      eventsRegistration: {
+        webhookUrl: 'http://localhost:8090/api/v1/webhook',
+        events: ['efg', 'abdc'],
+        authorizationToken: '1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      },
+    },
+    fullRequestAndBadEvents: {
+      teamName: 'crm',
+      leaders: [
+        {
+          userName: 'david',
+        },
+        {
+          userName: 'boosty123',
+        },
+      ],
+      usersToCreate: [
+        {
+          userName: 'david',
+          email: 'david@email.com',
+        },
+        {
+          userName: 'omer',
+          email: 'omer@email.com',
+        },
+      ],
+      eventsRegistration: {
+        webhookUrl: 'http://localhost:8090/api/v1/webhook',
+        events: ['efg', 'abdc'],
+        authorizationToken: '1234567abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+      },
+    },
+  },
 };
