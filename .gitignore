@@ -12,3 +12,4 @@ Grequests/getUserSucces.rest
 client/debug.log
 docker-compose.yml
 Dockerfile.server
+server/api/v1/signUpWithGithub.js

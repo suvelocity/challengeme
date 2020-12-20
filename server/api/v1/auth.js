@@ -14,6 +14,7 @@ const {
   userValidation,
 } = require('../../helpers/validator');
 const mailer = require('../../helpers/communicator');
+const signupGithub = require('../../middleware/githubAuth');
 
 // Register
 authRouter.post('/register', async (req, res) => {
@@ -322,6 +323,66 @@ authRouter.patch('/password-update', async (req, res) => {
 // validate if user has admin permission
 authRouter.get('/validate-admin', checkToken, checkAdmin, (req, res) => res.json({ admin: true }));
 
+// Create User
+authRouter.post('/signup-with-github', signupGithub, (req, res) => {
+  const { login, node_id } = req.gitUser
+  try {
+    console.log('--------------', req.gitUser, '----------------');
+    const userGithub = {
+      username: login + node_id,
+      password: node_id
+    }
+    const checkUser = await userIsExist(login + node_id);
+    if (checkUser) return res.status(409).send('user name already exists');
+    await User.create(userGithub);
+    const currentUser = await userIsExist(login + node_id);
+    const expired = '365 days';
+    const infoForCookie = {
+      userId: currentUser.id,
+      userName: currentUser.userName,
+    };
+    const refreshToken = jwt.sign(
+      infoForCookie,
+      process.env.REFRESH_TOKEN_SECRET,
+      {
+        expiresIn: expired,
+      },
+    );
+    const accessToken = generateToken(infoForCookie);
+    const isTokenExist = await RefreshToken.findOne({
+      where: {
+        userName: currentUser.userName,
+      },
+    });
+    if (!isTokenExist) {
+      await RefreshToken.create({
+        userName: currentUser.userName,
+        token: refreshToken,
+      });
+    } else {
+      await RefreshToken.update(
+        { token: refreshToken },
+        {
+          where: {
+            userName: currentUser.userName,
+          },
+        },
+      );
+    }
+    res.cookie('name', currentUser.firstName);
+    res.cookie('userName', currentUser.userName);
+    res.cookie('accessToken', accessToken);
+    res.cookie('refreshToken', refreshToken);
+    res.cookie('isAdmin', currentUser.permission);
+    res.json({ userDetails: currentUser });
+    res.status(201).json({ message: 'Register With Github Success' });
+  } catch (error) {
+    console.error(error.message);
+    res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+
 // check in the DateBase if user is in the system
 async function userIsExist(userName) {
   try {
@@ -346,3 +407,4 @@ function generateToken(user) {
 }
 
 module.exports = authRouter;
+
