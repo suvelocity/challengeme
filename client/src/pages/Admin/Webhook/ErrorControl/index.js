@@ -35,6 +35,7 @@ const StyledTableCellKey = withStyles((theme) => ({
     maxWidth: '800px',
     overflowX: 'auto',
     fontSize: 14,
+    whiteSpace: 'pre'
   },
 }))(TableCell);
 
@@ -116,7 +117,7 @@ function Row(props) {
                 </TableHead>
                 <TableBody>
                   <StyledTableRow>
-                    <StyledTableCellKey style={{ whiteSpace: 'pre' }} component="th" scope="row">
+                    <StyledTableCellKey component="th" scope="row">
                       {JSON.stringify(row.data, null, 2)}
                     </StyledTableCellKey>
                   </StyledTableRow>

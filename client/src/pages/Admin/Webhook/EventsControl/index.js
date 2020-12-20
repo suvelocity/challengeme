@@ -64,7 +64,6 @@ function Row(props) {
           {new Date(row.createdAt).toString().substring(0, 24)}
         </StyledTableCell>
         <StyledTableCell align="left">
-          updatedAt
           {new Date(row.updatedAt).toString().substring(0, 24)}
         </StyledTableCell>
         <StyledTableCell align="left">
@@ -124,7 +123,6 @@ function EventsControl({ darkMode }) {
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
-              <StyledTableCell />
               <StyledTableCell>Id</StyledTableCell>
               <StyledTableCell align="left">Name</StyledTableCell>
               <StyledTableCell align="left">Created At</StyledTableCell>

@@ -100,7 +100,7 @@ submissionRouter.post('/apply/:challengeId', async (req, res) => {
     });
 
     const urltoSet = process.env.MY_URL.concat(
-      `/api/v1/webhook/submission/${submission.id}`,
+      `/api/v1/webhooks/submissions/${submission.id}`,
     );
     const bearerToken = jwt.sign(
       { userId: req.user.userId, userName: req.user.userName },
