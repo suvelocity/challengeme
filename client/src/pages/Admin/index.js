@@ -8,13 +8,13 @@ import Cookies from "js-cookie";
 import SecondHeader from "../../components/Header/SecondHeader";
 
 const GithubTokens = lazy(() => import("./GithhubTokens"));
-const SubmissionsByUsers = lazy(() => import("./UsersStatus/SubmissionsByUsers"));
-const SubmissionsByChallenges = lazy(() => import("./UsersStatus/SubmissionsByChallenges"));
+const SubmissionsByUsers = lazy(() => import("./SubmissionsStatus"));
 const ProposedChallenge = lazy(() => import("./ChallengeApproval"));
 const UsersControl = lazy(() => import("./UsersControl"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
 const TeamsControl = lazy(() => import("./TeamsControl"));
 const DashBoard = lazy(() => import("./DashBoard"));
+const Webhook = lazy(() => import("./Webhook"));
 
 function Index({ darkMode }) {
   const location = useHistory();
@@ -25,7 +25,6 @@ function Index({ darkMode }) {
       try {
         await network.get("/api/v1/auth/validate-admin");
       } catch (error) {
-        console.error(error);
         Cookies.remove("refreshToken");
         Cookies.remove("accessToken");
         Cookies.remove("name");
@@ -54,12 +53,12 @@ function Index({ darkMode }) {
 
   const paths = [
     { name: "DashBoard", URL: "/admin/DashBoard" },
-    { name: "Submissions By Challenges", URL: "/admin/SubmissionsByChallenges" },
-    { name: "Submissions By Users", URL: "/admin/SubmissionsByUsers" },
+    { name: "Submissions Status", URL: `/admin/SubmissionsStatus` },
     { name: "Challenges Management", URL: "/admin/ChallengesManagement" },
     { name: "Users Control", URL: "/admin/UsersControl" },
     { name: "Githhub Tokens", URL: "/admin/GithhubTokens" },
     { name: "Teams Control", URL: "/admin/TeamsControl" },
+    { name: "Webhook Control", URL: "/admin/Webhook/AccessKey" },
   ];
   return (
     <>
@@ -67,30 +66,27 @@ function Index({ darkMode }) {
       <Suspense fallback={<Loading />}>
         <ErrorBoundary>
           <Switch>
-          <Route exact path="/admin/DashBoard">
-              <DashBoard />
+            <Route exact path="/admin/DashBoard">
+              <DashBoard darkMode={darkMode} />
             </Route>
-            <Route exact path="/admin/SubmissionsByUsers">
-              <SubmissionsByUsers />
-            </Route>
-            <Route exact path="/admin/SubmissionsByChallenges">
-              <SubmissionsByChallenges />
+            <Route exact path="/admin/SubmissionsStatus">
+              <SubmissionsByUsers darkMode={darkMode} />
             </Route>
             <Route exact path="/admin/ChallengesManagement">
-              <ProposedChallenge />
+              <ProposedChallenge darkMode={darkMode} />
             </Route>
             <Route exact path="/admin/UsersControl">
-              <UsersControl />
+              <UsersControl darkMode={darkMode} />
             </Route>
             <Route exact path="/admin/GithhubTokens">
-              <GithubTokens />
+              <GithubTokens darkMode={darkMode} />
             </Route>
             <Route exact path="/admin/TeamsControl">
-              <TeamsControl />
+              <TeamsControl darkMode={darkMode} />
             </Route>
-            {/* <Route exact path="/admin">
-              <AdminLanding />
-            </Route> */}
+            <Route path="/admin/Webhook">
+              <Webhook darkMode={darkMode} />
+            </Route>
             <Route path="*">
               <NotFound />
             </Route>

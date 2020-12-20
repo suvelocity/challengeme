@@ -1,11 +1,9 @@
-"use strict";
-
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn("challenges", "state", {
+    await queryInterface.addColumn('challenges', 'state', {
       type: Sequelize.DataTypes.ENUM,
-      values: ["pending", "denied", "approved"],
-      defaultValue: "Pending",
+      values: ['pending', 'denied', 'approved'],
+      defaultValue: 'Pending',
     });
     /**
      * Add altering commands here.
@@ -15,8 +13,8 @@ module.exports = {
      */
   },
 
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn("challenges", "state");
+  down: async (queryInterface) => {
+    await queryInterface.removeColumn('challenges', 'state');
     /**
      * Add reverting commands here.
      *

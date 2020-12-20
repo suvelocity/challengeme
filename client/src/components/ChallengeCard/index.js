@@ -20,11 +20,10 @@ export default function ChallengeCard({
   useEffect(() => {
     (async () => {
       try {
-        const { data: coverImage } = await network.get(`/api/v1/image?id=${challengeId}`);
+        const { data: coverImage } = await network.get(`/api/v1/images?id=${challengeId}`);
         setCoverImg(coverImage ? coverImage.img : '');
         setLoading(false);
-      } catch (err) {
-        console.error(err.message);
+      } catch (error) {
       }
     })();
     // eslint-disable-next-line

@@ -1,73 +1,91 @@
 import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import mixpanel from 'mixpanel-browser';
 import { useParams } from 'react-router-dom';
-import Button from "@material-ui/core/Button";
+import Button from '@material-ui/core/Button';
 import network from '../../../../services/network';
-import ChallengeCard from '../../../../components/ChallengeCard';
+import ChallengeCard from '../../../../components/ChallengeCardSmallVersion';
 import AddAssignment from '../../../../components/Modals/AddAssignment';
+import Loading from '../../../../components/Loading';
+import './style.css';
 
-function Assignments({ darkMode }) {
-    const { id } = useParams();
+function TeacherAssignments({ darkMode, teamName }) {
+  const { id } = useParams();
 
-    const [allAssignments, setAllAssignments] = useState()
-    const [openNewAssignmentModal, setOpenNewAssignmentModal] = useState(false);
+  const [allAssignments, setAllAssignments] = useState();
+  const [openNewAssignmentModal, setOpenNewAssignmentModal] = useState(false);
 
-    const getAllAssignments = async () => {
-        try {
-            const { data: assignments } = await network.get(`/api/v1/assignments/${id}`)
-            setAllAssignments(assignments)
-        } catch (error) {
-            console.error(error);
-        }
+  const getAllAssignments = async () => {
+    try {
+      const { data: assignments } = await network.get(`/api/v1/assignments/${id}`);
+      setAllAssignments(assignments);
+    } catch (error) {
     }
+  };
 
-    const removeAssignment = async (challengeId) => {
-        try {
-            await network.delete(`/api/v1/assignments/${id}?challengeId=${challengeId}`)
-            getAllAssignments()
-        } catch (error) {
-            console.error(error);
-        }
+  const removeAssignment = async (challengeId) => {
+    try {
+      await network.delete(`/api/v1/assignments/${id}?challengeId=${challengeId}`);
+      getAllAssignments();
+    } catch (error) {
     }
+  };
 
-    useEffect(() => {
-        getAllAssignments();
-        // eslint-disable-next-line
-    }, [])
+  useEffect(() => {
+    getAllAssignments();
+    const user = Cookies.get('userName');
+    mixpanel.track('User On Team Assignments Teacher Area', { User: `${user}`, Team: teamName });
+    // eslint-disable-next-line
+  }, [teamName]);
 
-    return (
-        <div >
-            <br /><br /><br /><br />
-            <AddAssignment
-                open={openNewAssignmentModal}
-                setOpen={setOpenNewAssignmentModal}
-                getAllAssignments={getAllAssignments}
-                teamId={id}
-            />
-            <h1>This Assignments Teacher For Team{' '}{id}{' '}Page</h1>
-            <Button onClick={() => setOpenNewAssignmentModal(true)} >
-                Add New Assignment
+  return (
+    allAssignments
+      ? (
+        <div className="generic-page">
+          <AddAssignment
+            open={openNewAssignmentModal}
+            setOpen={setOpenNewAssignmentModal}
+            getAllAssignments={getAllAssignments}
+            teamId={id}
+          />
+          <div className="assignments-title-and-button">
+            <h1>
+              This Assignments Teacher For Team
+              {teamName}
+              {' '}
+              Page
+            </h1>
+            <Button variant={darkMode ? 'contained' : 'outlined'} onClick={() => setOpenNewAssignmentModal(true)}>
+              Add New Assignment
             </Button>
-            {allAssignments ? (
-                allAssignments.map((challenge) => (
-                    <div style={{ display: 'flex' }}>
-                        <ChallengeCard
-                            key={challenge.Challenge.id}
-                            challengeId={challenge.Challenge.id}
-                            name={challenge.Challenge.name}
-                            description={challenge.Challenge.description}
-                            repositoryName={challenge.Challenge.repositoryName}
-                            labels={challenge.Challenge.Labels}
-                            rating={challenge.Challenge.averageRaiting}
-                            submissions={challenge.Challenge.submissionsCount}
-                            createdAt={challenge.Challenge.createdAt}
-                        />
-                        <Button onClick={() => removeAssignment(challenge.Challenge.id)} >
-                            Remove Assignment
-            </Button>
-                    </div>
-                ))) : <h1>Not Found</h1>}
+          </div>
+          {allAssignments && allAssignments[0].Challenge ? (
+            <div className="assignments-flexbox">
+              {allAssignments.map((challenge) => (
+                <div className="assignments-card-and-button" key={challenge.Challenge.id + challenge.Challenge.name}>
+                  <ChallengeCard
+                    key={challenge.Challenge.id}
+                    challengeId={challenge.Challenge.id}
+                    name={challenge.Challenge.name}
+                    description={challenge.Challenge.description}
+                    repositoryName={challenge.Challenge.repositoryName}
+                    labels={challenge.Challenge.Labels}
+                    rating={challenge.Challenge.averageRaiting}
+                    submissions={challenge.Challenge.submissionsCount}
+                    createdAt={challenge.Challenge.createdAt}
+                  />
+                  <Button variant="contained" style={{ marginBottom: '50px' }} onClick={() => removeAssignment(challenge.Challenge.id)}>
+                    Remove Assignment
+                  </Button>
+                </div>
+              ))}
+            </div>
+          ) : (
+              <h1 className="not-found">Not Found</h1>
+            )}
         </div>
-    )
+      ) : <Loading darkMode={darkMode} />
+  );
 }
 
-export default Assignments;
+export default TeacherAssignments;

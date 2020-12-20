@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function AddTeamMembers({
-  open, setOpen, getAllTeams, teamNameForMember,
+  open = false, setOpen, getAllTeams, teamNameForMember, isTeacher,
 }) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
@@ -42,12 +42,12 @@ export default function AddTeamMembers({
 
   const handleSubmitNewTeam = async () => {
     try {
-      await network.post(`/api/v1/teams/add-users/${teamNameForMember}`, { newUsers: newTeamMembers });
+      const url = isTeacher ? 'add-users' : 'admin-add-users';
+      await network.post(`/api/v1/teams/${url}/${teamNameForMember}`, { newUsers: newTeamMembers });
       getAllTeams();
       setOpen(false);
       setNewTeamMembers([]);
     } catch (error) {
-      console.error(error);
     }
   };
 
@@ -56,32 +56,6 @@ export default function AddTeamMembers({
     setNewTeamMembers([]);
   };
 
-  const body = (
-    <div style={modalStyle} className={classes.paper}>
-      <h2 id="simple-modal-title">
-        Add New Members To Team
-        {teamNameForMember}
-      </h2>
-      <div id="simple-modal-description">
-        <ChooseMembers
-          teamId={teamNameForMember}
-          chooseMembers={newTeamMembers}
-          setChooseMembers={setNewTeamMembers}
-          membersOptions={newTeamMembersOptions}
-          setMembersOptions={setNewTeamMembersOptions}
-        />
-      </div>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSubmitNewTeam}
-      >
-        Add
-      </Button>
-      <AddTeamMembers />
-    </div>
-  );
-
   return (
     <Modal
       open={open}
@@ -89,7 +63,31 @@ export default function AddTeamMembers({
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
     >
-      {body}
+      <div style={modalStyle} className={classes.paper}>
+        <h2 id="simple-modal-title">
+          Add New Members To Team
+          {teamNameForMember}
+        </h2>
+        <div id="simple-modal-description">
+          <ChooseMembers
+            isTeacher={isTeacher}
+            teamId={teamNameForMember}
+            chooseMembers={newTeamMembers}
+            setChooseMembers={setNewTeamMembers}
+            membersOptions={newTeamMembersOptions}
+            setMembersOptions={setNewTeamMembersOptions}
+          />
+        </div>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleSubmitNewTeam}
+
+        >
+          Add
+        </Button>
+        <AddTeamMembers />
+      </div>
     </Modal>
   );
 }

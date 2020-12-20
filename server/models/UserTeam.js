@@ -10,6 +10,12 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      this.belongsTo(models.Team, {
+        foreignKey: 'teamId',
+      });
+      this.belongsTo(models.User, {
+        foreignKey: 'userId',
+      });
       // define association here
     }
   }
@@ -18,8 +24,8 @@ module.exports = (sequelize, DataTypes) => {
     userId: DataTypes.INTEGER,
     permission: {
       defaultValue: 'student',
-      type: DataTypes.ENUM("teacher", "student"),
-    }
+      type: DataTypes.ENUM('teacher', 'student'),
+    },
   }, {
     sequelize,
     modelName: 'UserTeam',

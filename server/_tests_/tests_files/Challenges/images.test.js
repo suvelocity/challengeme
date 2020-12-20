@@ -1,19 +1,8 @@
 const request = require('supertest');
-const jwt = require('jsonwebtoken');
 const app = require('../../../app');
 const { Image } = require('../../../models');
-const imageMock = require('../../mocks/images');
-const usersMock = require('../../mocks/users');
-
-function generateToken(currentUser) {
-  const infoForCookie = {
-    userId: currentUser.id,
-    userName: currentUser.userName,
-  };
-  return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: '900s',
-  });
-}
+const { generateToken } = require('../../utils');
+const { usersMock, imagesMock } = require('../../mocks');
 
 describe('testing challenges endpoints', () => {
   beforeEach(async () => {
@@ -21,9 +10,9 @@ describe('testing challenges endpoints', () => {
   });
 
   test('Can get image by challenge id', async (done) => {
-    await Image.bulkCreate(imageMock);
+    await Image.bulkCreate(imagesMock);
     const imageResponse = await request(app)
-      .get('/api/v1/image?id=2')
+      .get('/api/v1/images?id=2')
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(imageResponse.status).toBe(200);
@@ -33,21 +22,21 @@ describe('testing challenges endpoints', () => {
 
   test('Can post image to a challenge, sends an error if image already exists', async (done) => {
     const newImage = await request(app)
-      .post('/api/v1/image')
-      .send(imageMock[1])
+      .post('/api/v1/images')
+      .send(imagesMock[1])
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
-    expect(newImage.status).toBe(200);
+    expect(newImage.status).toBe(201);
 
     const imageResponse = await request(app)
-      .get('/api/v1/image?id=2')
+      .get('/api/v1/images?id=2')
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
     expect(imageResponse.status).toBe(200);
     expect(imageResponse.body.challengeId).toBe(2);
 
     const alreadyExistImage = await request(app)
-      .post('/api/v1/image')
-      .send(imageMock[1])
+      .post('/api/v1/images')
+      .send(imagesMock[1])
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(alreadyExistImage.status).toBe(400);

@@ -14,7 +14,6 @@ const UserProfileLanding = () => {
       );
       setAllMyChallenges(allMyChallengesFromServer);
     } catch (error) {
-      console.error(error);
     }
   };
   useEffect(() => {
@@ -115,9 +114,7 @@ const UserProfileLanding = () => {
             </div>
           ))}
       </div>
-      <div className="user-profile-my-challenges-button-container">
-
-      </div>
+      <div className="user-profile-my-challenges-button-container" />
     </div>
   );
 };

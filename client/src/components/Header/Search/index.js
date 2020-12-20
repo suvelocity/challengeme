@@ -1,20 +1,20 @@
-import React, { useState, useContext, useCallback } from "react";
-import InputBase from "@material-ui/core/InputBase";
-import SearchIcon from "@material-ui/icons/Search";
-import "./Search.css";
-import Divider from "@material-ui/core/Divider";
-import AllChallenges from "../../../context/AllChallengesContext";
-import SearchTicket from "./SearchTicket";
-import useStyles from "./SearchStyle";
+import React, { useState, useContext, useCallback } from 'react';
+import InputBase from '@material-ui/core/InputBase';
+import SearchIcon from '@material-ui/icons/Search';
+import './Search.css';
+import Divider from '@material-ui/core/Divider';
+import AllChallenges from '../../../context/AllChallengesContext';
+import SearchTicket from './SearchTicket';
+import useStyles from './SearchStyle';
 
 const Search = ({ darkMode }) => {
   const classes = useStyles();
   const [results, setResults] = useState([]);
   const allChallenges = useContext(AllChallenges).challenges;
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
 
   const letterColor = {
-    color: darkMode ? "white" : "black",
+    color: darkMode ? 'white' : 'black',
   };
 
   // search function to the the challenges
@@ -22,7 +22,7 @@ const Search = ({ darkMode }) => {
     setSearchValue(e.target.value);
     const { value } = e.target;
     if (value.length === 0) {
-      setSearchValue("");
+      setSearchValue('');
       setResults([]);
       return;
     }
@@ -35,26 +35,24 @@ const Search = ({ darkMode }) => {
       }
       setResults(filteredChallenges);
     } catch (error) {
-      console.error(error);
     }
   };
 
   const closeSearch = useCallback(() => {
-    setSearchValue("");
+    setSearchValue('');
     setResults([]);
   }, []);
 
   const onSearchLoseFocus = () => {
     setTimeout(() => {
       setResults([]);
-      setSearchValue("");
+      setSearchValue('');
     }, 200);
   };
 
-  const resultsList =
-    results &&
-    results.length > 0 &&
-    results.map((result) => (
+  const resultsList = results
+    && results.length > 0
+    && results.map((result) => (
       <SearchTicket darkMode={darkMode} ticket={result} key={result.id} closeSearch={closeSearch} />
     ));
   // search bar item
@@ -75,22 +73,22 @@ const Search = ({ darkMode }) => {
         }}
         onBlur={onSearchLoseFocus}
         value={searchValue}
-        inputProps={{ "aria-label": "search" }}
+        inputProps={{ 'aria-label': 'search' }}
       />
     </div>
   );
   const SearchContainerStyle = {
-    backgroundColor: darkMode ? "rgb(51,51,51)" : "white",
-    color: darkMode ? "white" : "black",
+    backgroundColor: darkMode ? 'rgb(51,51,51)' : 'white',
+    color: darkMode ? 'white' : 'black',
   };
 
   return (
     <>
       <div id="search">{searchInput}</div>
       <Divider />
-      <div id="searchResults" className={results.length !== 0 ? "open" : "closed"}>
+      <div id="searchResults" className={results.length !== 0 ? 'open' : 'closed'}>
         <div className="display" style={SearchContainerStyle}>
-          <div className="background-black-to-search"></div>
+          <div className="background-black-to-search" />
           {resultsList}
         </div>
       </div>

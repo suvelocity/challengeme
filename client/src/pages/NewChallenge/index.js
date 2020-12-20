@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import mixpanel from 'mixpanel-browser';
 import { useHistory } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import {
@@ -55,12 +57,13 @@ export default function NewChallengeForm() {
         )),
       );
     } catch (error) {
-      console.error(error);
     }
   };
 
   useEffect(() => {
     openOptions();
+    const user = Cookies.get('userName');
+    mixpanel.track('User On Add New Challenge Page', { User: `${user}` });
   }, []);
 
   /* validate data before poting */
@@ -153,7 +156,7 @@ export default function NewChallengeForm() {
       /* post newRepo to challenge table */
       try {
         const { data: postedRepo } = await network.post('/api/v1/challenges', newRepo);
-        await network.post('/api/v1/image', {
+        await network.post('/api/v1/images', {
           challengeId: postedRepo.id,
           img: file.result,
         });

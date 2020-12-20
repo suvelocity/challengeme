@@ -1,45 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import Loading from '../../../../../components/Loading';
-import network from '../../../../../services/network';
 import { useParams } from 'react-router-dom';
 import {
-  Tooltip, Legend, BarChart, Bar, CartesianGrid, XAxis, YAxis,
+  Tooltip, Legend, Brush, BarChart, Bar, CartesianGrid, XAxis, YAxis,
 } from 'recharts';
+import Loading from '../../../../../components/Loading';
+import network from '../../../../../services/network';
 
 function SuccessSubmissions({ darkMode }) {
-
   const { id } = useParams();
-  const [teamMembers, setTeamMembers] = useState();
+  const [teamSubmissions, setTeamSubmissions] = useState();
 
   const getDataOnTeam = async () => {
     try {
-      const { data: members } = await network.get(`/api/v1/insights/teams/top-user/${id}`);
-      const fromattedMembers = members.map((member) => {
-        const filteredSubmissions = []
-        let success = 0
-        let fail = 0
-        member.Submissions.forEach((submission) => {
-          if (filteredSubmissions.includes(submission.challengeId)) {
-          } else {
-            filteredSubmissions.push(submission.challengeId);
-            if (submission.state === 'SUCCESS') {
-              success++
-            } else {
-              fail++
-            }
-          }
-        })
-        return ({
-          success,
-          fail,
-          userName: member.userName
-        })
-      })
-      setTeamMembers(fromattedMembers)
+      const { data: submissions } = await network.get(`/api/v1/insights/teacher/top-user/${id}`);
+      setTeamSubmissions(submissions);
     } catch (error) {
-      console.error(error);
     }
-  }
+  };
 
   useEffect(() => {
     getDataOnTeam();
@@ -47,23 +24,25 @@ function SuccessSubmissions({ darkMode }) {
   }, [id]);
 
   return (
-    teamMembers ?
-      (<div className="success-chart">
-        <h2>Teams Success Submissions</h2>
-        <BarChart
-          width={730}
-          height={250}
-          data={teamMembers}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="userName" height={60} />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="success" fill="#29bf12" />
-          <Bar dataKey="fail" fill="#bf0603" />
-        </BarChart>
-      </div>
+    teamSubmissions
+      ? (
+        <div className="success-chart">
+          <h2 className="dashboard-title-chart">Teams Success Submissions</h2>
+          <BarChart
+            width={730}
+            height={250}
+            data={teamSubmissions}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="userName" height={60} interval={0} />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="success" fill="#FF8042" />
+            <Bar dataKey="fail" fill="#005FAC" />
+            <Brush dataKey="userName" height={30} endIndex={teamSubmissions.length >= 5 ? 4 : teamSubmissions.length - 1} stroke="#8884d8" />
+          </BarChart>
+        </div>
       ) : <Loading darkMode={darkMode} />
   );
 }

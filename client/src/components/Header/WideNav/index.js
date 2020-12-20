@@ -1,35 +1,37 @@
-import React, { useContext, useState, useEffect } from "react";
-import Cookies from "js-cookie";
-import { Link, NavLink, useHistory, useLocation } from "react-router-dom";
-import clsx from "clsx";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import Tooltip from "@material-ui/core/Tooltip";
-import Avatar from "@material-ui/core/Avatar";
-import HomeIcon from "@material-ui/icons/Home";
-import "../Header.css";
-import Search from "../Search";
-import { Logged } from "../../../context/LoggedInContext";
-import FilteredLabels from "../../../context/FilteredLabelsContext";
-import network from "../../../services/network";
-import ChooseLabels from "../../Choosers/ChooseLabels";
-import useStyles from "./WideNavStyle";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import Divider from "@material-ui/core/Divider";
-import Brightness7Icon from "@material-ui/icons/Brightness7";
-import Brightness4Icon from "@material-ui/icons/Brightness4";
-import GroupIcon from "@material-ui/icons/Group";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import LockIcon from "@material-ui/icons/Lock";
+import React, { useContext, useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import {
+  Link, NavLink, useHistory, useLocation,
+} from 'react-router-dom';
+import clsx from 'clsx';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import Tooltip from '@material-ui/core/Tooltip';
+import Avatar from '@material-ui/core/Avatar';
+import HomeIcon from '@material-ui/icons/Home';
+import '../Header.css';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Divider from '@material-ui/core/Divider';
+import Brightness7Icon from '@material-ui/icons/Brightness7';
+import Brightness4Icon from '@material-ui/icons/Brightness4';
+import GroupIcon from '@material-ui/icons/Group';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import LockIcon from '@material-ui/icons/Lock';
+import useStyles from './WideNavStyle';
+import ChooseLabels from '../../Choosers/ChooseLabels';
+import network from '../../../services/network';
+import FilteredLabels from '../../../context/FilteredLabelsContext';
+import { Logged } from '../../../context/LoggedInContext';
+import Search from '../Search';
 
 export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
   const filteredLabels = useContext(FilteredLabels);
@@ -42,11 +44,11 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
   const [openNavBar, setOpenNavBar] = useState(false);
 
   useEffect(() => {
-    if (currentLocation.pathname !== "/") {
+    if (currentLocation.pathname !== '/') {
       setLabels([]);
     } else {
       const newFilter = chooseLabels.filter(
-        (label) => label.value === (filteredLabels ? filteredLabels.filteredLabels[0] : null)
+        (label) => label.value === (filteredLabels ? filteredLabels.filteredLabels[0] : null),
       );
       setLabels(newFilter);
     }
@@ -63,35 +65,34 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
 
   const logOut = async () => {
     try {
-      await network.post("/api/v1/auth/logout", {
-        token: Cookies.get("refreshToken"),
+      await network.post('/api/v1/auth/logout', {
+        token: Cookies.get('refreshToken'),
       });
-      Cookies.remove("refreshToken");
-      Cookies.remove("accessToken");
-      Cookies.remove("name");
-      Cookies.remove("userId");
-      Cookies.remove("isAdmin");
-      Cookies.remove("userName");
+      Cookies.remove('refreshToken');
+      Cookies.remove('accessToken');
+      Cookies.remove('name');
+      Cookies.remove('userId');
+      Cookies.remove('isAdmin');
+      Cookies.remove('userName');
       loggedContext.setLogged(false);
-      location.push("/");
+      location.push('/');
     } catch (error) {
-      console.error(error);
     }
   };
 
   const headerStyle = {
-    backgroundColor: darkMode ? "rgb(51,51,51)" : "rgb(44, 44, 119)",
+    backgroundColor: darkMode ? 'rgb(51,51,51)' : 'rgb(44, 44, 119)',
   };
   const letterColor = {
-    color: darkMode ? "white" : "white",
+    color: darkMode ? 'white' : 'white',
   };
   const drawerColor = {
-    color: darkMode ? "white" : "black",
+    color: darkMode ? 'white' : 'black',
   };
   const dividerColor = darkMode
     ? {
-        backgroundColor: "rgba(255,255,255,0.3)",
-      }
+      backgroundColor: 'rgba(255,255,255,0.3)',
+    }
     : {};
   return (
     <>
@@ -110,9 +111,9 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
             <NavLink to="/" exact className="link-rout">
               <div
                 style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginRight: "10px",
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginRight: '10px',
                 }}
               >
                 <HomeIcon style={letterColor} />
@@ -124,8 +125,8 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
             </NavLink>
           </Typography>
           <Search darkMode={darkMode} setDarkMode={setDarkMode} />
-          <div style={{ minWidth: "150px", width: "fit-content" }}>
-            {currentLocation.pathname === "/" ? (
+          <div style={{ minWidth: '150px', width: 'fit-content' }}>
+            {currentLocation.pathname === '/' ? (
               <ChooseLabels
                 labels={labels}
                 chooseLabels={chooseLabels}
@@ -135,7 +136,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
               />
             ) : null}
           </div>
-          {currentLocation.pathname === "/" ? (
+          {currentLocation.pathname === '/' ? (
             <Button
               onClick={() => {
                 filteredLabels.setFilteredLabels(labels ? labels.map((label) => label.value) : []);
@@ -150,7 +151,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
           <IconButton
             aria-label="delete"
             onClick={() => {
-              localStorage.setItem("darkMode", !darkMode);
+              localStorage.setItem('darkMode', !darkMode);
               setDarkMode((prev) => !prev);
             }}
           >
@@ -160,7 +161,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
               <Brightness4Icon style={letterColor} />
             )}
           </IconButton>
-          <Tooltip title={Cookies.get("name")}>
+          <Tooltip title={Cookies.get('name')}>
             <Link to="/profile/info" className="link-rout">
               <Avatar
                 aria-label="account of current user"
@@ -168,11 +169,11 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
                 aria-haspopup="true"
                 color="inherit"
                 style={{
-                  cursor: "pointer",
-                  backgroundColor: darkMode ? "rgb(140,110,99)" : "#7BACB4",
+                  cursor: 'pointer',
+                  backgroundColor: darkMode ? 'rgb(140,110,99)' : '#7BACB4',
                 }}
               >
-                {Cookies.get("name").slice(0, 2)}
+                {Cookies.get('name').slice(0, 2)}
               </Avatar>
             </Link>
           </Tooltip>

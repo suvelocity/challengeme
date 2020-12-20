@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import Collapse from "@material-ui/core/Collapse";
-import IconButton from "@material-ui/core/IconButton";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import network from "../../../services/network";
-import AddTeam from "../../../components/Modals/AddTeam";
-import AddTeamMembers from "../../../components/Modals/AddTeamMembers";
+import React, { useEffect, useState } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import network from '../../../services/network';
+import AddTeam from '../../../components/Modals/AddTeam';
+import AddTeamMembers from '../../../components/Modals/AddTeamMembers';
+import './style.css';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -30,7 +31,7 @@ const StyledTableCell = withStyles((theme) => ({
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
-    "&:nth-of-type(odd)": {
+    '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },
   },
@@ -38,8 +39,8 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useRowStyles = makeStyles({
   root: {
-    "& > *": {
-      borderBottom: "unset",
+    '& > *': {
+      borderBottom: 'unset',
     },
   },
 });
@@ -55,25 +56,21 @@ function Row(props) {
         await network.delete(`/api/v1/teams/remove-user/${row.id}?userId=${user}`);
         getAllTeams();
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const changeUserPermissionOnTeam = async (user, permission) => {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
-        const newPermission = permission === "student" ? "teacher" : "student";
+        const newPermission = permission === 'student' ? 'teacher' : 'student';
         await network.patch(`/api/v1/teams/permission/${row.id}`, {
           userId: user,
           permission: newPermission,
         });
         getAllTeams();
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   const deleteTeam = async (team) => {
@@ -83,24 +80,8 @@ function Row(props) {
         await network.delete(`/api/v1/teams/remove-team/${team}`);
         getAllTeams();
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
-
-  // const updateTeam = async (token, status) => {
-  //     try {
-  //         const isUpdateOk = prompt("Who's your favorite student?");
-  //         if (isUpdateOk != null) {
-  //             const newStatus = status === 'blocked' ? 'available' : 'blocked';
-  //             const { data: allTokensFromServer } = await network.patch('/api/v1/git/', { token, status: newStatus });
-  //             console.log(allTokensFromServer);
-  //             getAllTeams();
-  //         }
-  //     } catch (error) {
-  //         console.error(error);
-  //     }
-  // };
 
   const classes = useRowStyles();
   return (
@@ -160,9 +141,7 @@ function Row(props) {
                       </StyledTableCell>
                       <StyledTableCell component="th" scope="row">
                         <Button
-                          onClick={() =>
-                            changeUserPermissionOnTeam(user.id, user.UserTeam.permission)
-                          }
+                          onClick={() => changeUserPermissionOnTeam(user.id, user.UserTeam.permission)}
                         >
                           Change User Permission On Team
                         </Button>
@@ -183,7 +162,7 @@ function Row(props) {
     </React.Fragment>
   );
 }
-function TeamsControl() {
+function TeamsControl({ darkMode }) {
   const [allTeams, setAllTeams] = useState([]);
   const [openNewTeamModal, setOpenNewTeamModal] = useState(false);
   const [teamNameForMember, setTeamNameForMember] = useState(false);
@@ -191,11 +170,9 @@ function TeamsControl() {
 
   async function getAllTeams() {
     try {
-      const { data: allTeamsFromServer } = await network.get("/api/v1/teams/all-teams");
+      const { data: allTeamsFromServer } = await network.get('/api/v1/teams/all-teams');
       setAllTeams(allTeamsFromServer);
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   }
 
   const addNewTeam = () => {
@@ -212,8 +189,8 @@ function TeamsControl() {
   }, []);
 
   return (
-    <div className="generic-page" style={{ textAlign: "center" }}>
-      <h1>Teams Management Area</h1>
+    <div className="generic-page" style={{ textAlign: 'center' }}>
+      <h1 className="team-control-title">Teams Management Area</h1>
       <AddTeam open={openNewTeamModal} setOpen={setOpenNewTeamModal} getAllTeams={getAllTeams} />
       <AddTeamMembers
         open={openAddMemberModal}
@@ -222,7 +199,11 @@ function TeamsControl() {
         teamNameForMember={teamNameForMember}
       />
 
-      <Button variant="contained" color="primary" onClick={addNewTeam}>
+      <Button
+        variant={darkMode ? 'contained' : 'outlined'}
+        style={{ marginBottom: '20px' }}
+        onClick={addNewTeam}
+      >
         Add New Team
       </Button>
 
@@ -241,8 +222,8 @@ function TeamsControl() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allTeams &&
-              allTeams.map((team) => (
+            {allTeams
+              && allTeams.map((team) => (
                 <Row
                   key={team.id + team.name}
                   row={team}

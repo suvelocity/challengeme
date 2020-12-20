@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import Collapse from "@material-ui/core/Collapse";
-import IconButton from "@material-ui/core/IconButton";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import network from "../../../services/network";
-import "../Admin.css";
+import React, { useEffect, useState } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
+import Paper from '@material-ui/core/Paper';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import network from '../../../services/network';
+import '../Admin.css';
+import './style.css';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -29,7 +30,7 @@ const StyledTableCell = withStyles((theme) => ({
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
-    "&:nth-of-type(odd)": {
+    '&:nth-of-type(odd)': {
       backgroundColor: theme.palette.action.hover,
     },
   },
@@ -37,8 +38,8 @@ const StyledTableRow = withStyles((theme) => ({
 
 const useRowStyles = makeStyles({
   root: {
-    "& > *": {
-      borderBottom: "unset",
+    '& > *': {
+      borderBottom: 'unset',
     },
   },
 });
@@ -52,16 +53,14 @@ function Row(props) {
     try {
       const isUpdateOk = prompt("Who's your favorite student?");
       if (isUpdateOk != null) {
-        const newPermission = row.permission === "user" ? "admin" : "user";
-        await network.patch("/api/v1/users/permission", {
+        const newPermission = row.permission === 'user' ? 'admin' : 'user';
+        await network.patch('/api/v1/users/permission', {
           permission: newPermission,
           userName: row.userName,
         });
         props.getAllUsers();
       }
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) {}
   };
 
   return (
@@ -76,16 +75,18 @@ function Row(props) {
           {row.userName}
         </StyledTableCell>
         <StyledTableCell align="left">
-          {row.firstName} {row.lastName}
+          {row.firstName}
+          {' '}
+          {row.lastName}
         </StyledTableCell>
         <StyledTableCell align="left">{row.email}</StyledTableCell>
         <StyledTableCell align="left">{row.githubAccount}</StyledTableCell>
         <StyledTableCell align="left">
           <div
             style={
-              row.permission === "user"
-                ? { color: "green" }
-                : { color: "red", fontSize: "20px", fontWeight: "bold" }
+              row.permission === 'user'
+                ? { color: 'green' }
+                : { color: 'red', fontSize: '20px', fontWeight: 'bold' }
             }
           >
             {row.permission}
@@ -119,14 +120,21 @@ function Row(props) {
                     <StyledTableCell component="th" scope="row">
                       {row.id}
                     </StyledTableCell>
-                    <StyledTableCell> {row.phoneNumber} </StyledTableCell>
+                    <StyledTableCell>
+                      {' '}
+                      {row.phoneNumber}
+                      {' '}
+                    </StyledTableCell>
                     <StyledTableCell align="left">{row.country}</StyledTableCell>
                     <StyledTableCell align="left">{row.city}</StyledTableCell>
                     <StyledTableCell align="left">
                       {new Date(row.birthDate).toDateString()}
                     </StyledTableCell>
                     <StyledTableCell align="left">{row.securityQuestion}</StyledTableCell>
-                    <StyledTableCell align="left"> {row.reasonOfRegistration}</StyledTableCell>
+                    <StyledTableCell align="left">
+                      {' '}
+                      {row.reasonOfRegistration}
+                    </StyledTableCell>
                     <StyledTableCell align="left">
                       {new Date(row.createdAt).toString().substring(0, 24)}
                     </StyledTableCell>
@@ -148,7 +156,7 @@ function UsersControl() {
   const [allUsers, setAllUsers] = useState([]);
 
   async function getAllUsers() {
-    const { data: allUsersFromServer } = await network.get("/api/v1/users/all");
+    const { data: allUsersFromServer } = await network.get('/api/v1/users/admin');
     setAllUsers(allUsersFromServer);
   }
   useEffect(() => {
@@ -158,7 +166,7 @@ function UsersControl() {
   return (
     <div className="generic-page">
       <div className="align">
-        <h1>This is Users Management Page</h1>
+        <h1 className="user-control-title">This is Users Management Page</h1>
         <TableContainer component={Paper}>
           <Table aria-label="collapsible table">
             <TableHead>
@@ -172,8 +180,8 @@ function UsersControl() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {allUsers &&
-                allUsers.map((user) => (
+              {allUsers
+                && allUsers.map((user) => (
                   <Row key={user.userName + user.id} row={user} getAllUsers={getAllUsers} />
                 ))}
             </TableBody>
