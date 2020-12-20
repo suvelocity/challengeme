@@ -1,6 +1,7 @@
 require('dotenv').config();
 const challengeRouter = require('express').Router();
 const { Sequelize, Op } = require('sequelize');
+const checkToken = require('../../middleware/checkToken');
 const checkAdmin = require('../../middleware/checkAdmin');
 const { newChallengeValidation } = require('../../helpers/validator');
 const {
@@ -92,7 +93,7 @@ challengeRouter.get('/', async (req, res) => {
 });
 
 // get challenges that the user add to the system
-challengeRouter.get('/user-challenges', async (req, res) => {
+challengeRouter.get('/user-challenges', checkToken, async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
       where: {
@@ -121,7 +122,7 @@ challengeRouter.get('/user-challenges', async (req, res) => {
 });
 
 // get challenge by id with all information
-challengeRouter.get('/info/:challengeId', async (req, res) => {
+challengeRouter.get('/info/:challengeId', checkToken, async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
       where: { id: req.params.challengeId, state: 'approved' },
@@ -174,7 +175,7 @@ challengeRouter.get('/info/:challengeId', async (req, res) => {
 });
 
 // router Post - new challenge
-challengeRouter.post('/', async (req, res) => {
+challengeRouter.post('/', checkToken, async (req, res) => {
   try {
     const { repositoryName: newRepo } = req.body;
     const repoExists = await Challenge.findOne({
@@ -209,7 +210,7 @@ challengeRouter.post('/', async (req, res) => {
 //= ============================= Admin Routes ======================================//
 
 // get all challenges no matter the state
-challengeRouter.get('/no-matter-the-state', checkAdmin, async (req, res) => {
+challengeRouter.get('/no-matter-the-state', checkToken, checkAdmin, async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
       include: [
@@ -235,18 +236,18 @@ challengeRouter.get('/no-matter-the-state', checkAdmin, async (req, res) => {
 });
 
 // update challenge state
-challengeRouter.patch('/state-update/:challengeId', checkAdmin, async (req, res) => {
+challengeRouter.patch('/state-update/:challengeId', checkToken, checkAdmin, async (req, res) => {
   try {
     const { challengeId } = req.params;
     const { state } = req.body;
     const updatedChallenge = await Challenge.update({
       state,
     },
-    {
-      where: {
-        id: challengeId,
-      },
-    });
+      {
+        where: {
+          id: challengeId,
+        },
+      });
     if (updatedChallenge[0]) {
       return res.json({ message: 'Success' });
     }

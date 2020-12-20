@@ -10,7 +10,7 @@ v1Router.use('/webhooks', require('./webhooks'));
 
 //= =======================Private Routes================================//
 v1Router.use('/submissions', checkToken, require('./submissions'));
-v1Router.use('/challenges', checkToken, require('./challenges'));
+v1Router.use('/challenges', require('./challenges'));
 v1Router.use('/users', checkToken, require('./users'));
 v1Router.use('/services', checkToken, require('./services'));
 v1Router.use('/images', checkToken, require('./images'));
