@@ -3,7 +3,7 @@ const checkAdmin = require('../../../middleware/checkAdmin');
 const checkToken = require('../../../middleware/checkToken');
 const checkWebhook = require('../../../middleware/checkWebhook');
 
-router.use('/submission', checkToken, require('./githubResponses'));
+router.use('/submissions', checkToken, require('./githubResponses'));
 router.use('/teams', checkWebhook, require('./teams'));
 router.use('/events', checkWebhook, require('./events'));
 router.use('/admin', checkToken, checkAdmin, require('./admin'));

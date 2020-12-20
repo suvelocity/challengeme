@@ -13,8 +13,7 @@
     "seedUndo": "node_modules/.bin/sequelize db:seed:undo:all",
     "dev": "nodemon index.js",
     "initProject": "node_modules/.bin/sequelize db:create && node_modules/.bin/sequelize db:migrate && node_modules/.bin/sequelize db:seed:all && nodemon index.js",
-    "devTest": "NODE_ENV=test nodemon index.js",
-    "cyTest": "npm run devTest & cypress run"
+    "devTest": "NODE_ENV=test nodemon index.js"
   },
   "repository": {
     "type": "git",
