@@ -19,6 +19,7 @@ import NewChallengeForm from "./NewChallenge";
 import UserProfile from "./UserProfile";
 import Admin from "./Admin";
 import Team from "./Team";
+import PrivateRoute from '../components/Routes/privateRoute'
 
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Home = lazy(() => import("./Home"));
