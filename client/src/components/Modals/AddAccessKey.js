@@ -4,6 +4,7 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import network from '../../services/network';
+import Swal from 'sweetalert2';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -50,7 +51,14 @@ export default function AddAccessKey({
       });
       getAllAccessKeys();
       setOpen(false);
-    } catch (error) {}
+    } catch (error) {
+      setOpen(false);
+      Swal.fire({
+        icon: 'error',
+        title: error.response.data.message,
+        showConfirmButton: true,
+      });
+    }
   };
 
   const handleClose = () => {
