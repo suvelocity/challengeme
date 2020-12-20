@@ -12,7 +12,7 @@ triggerEventsRouter.post('/start-challenge', async (req, res) => {
     }
     const { challengeName } = req.body;
     const eventToSend = {
-      eventName: 'startedChallenge',
+      eventName: 'Started Challenge',
       userId: req.user.userId,
       userName: req.user.userName,
       challengeName,

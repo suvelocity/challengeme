@@ -26,7 +26,7 @@ webhookRouter.patch('/:id', async (req, res) => {
     });
     const updatedSubmission = await submission.update({ state: success ? 'SUCCESS' : 'FAIL' });
     const eventToSend = {
-      eventName: 'submittedChallenge',
+      eventName: 'Submitted Challenge',
       userId: updatedSubmission.userId,
       userName: updatedSubmission.User.userName,
       challengeName: updatedSubmission.Challenge.name,

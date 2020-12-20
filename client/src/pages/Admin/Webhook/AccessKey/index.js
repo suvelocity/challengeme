@@ -69,7 +69,7 @@ function Row(props) {
         await network.delete(`/api/v1/webhooks/admin/access-key/${accessKey}`);
         getAllAccessKeys();
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const classes = useRowStyles();
@@ -94,7 +94,6 @@ function Row(props) {
           {new Date(row.createdAt).toString().substring(0, 24)}
         </StyledTableCell>
         <StyledTableCell align="left">
-          updatedAt
           {new Date(row.updatedAt).toString().substring(0, 24)}
         </StyledTableCell>
         <StyledTableCell align="left">
@@ -152,7 +151,7 @@ function AccessKeyControl({ darkMode }) {
         '/api/v1/webhooks/admin/access-key',
       );
       setAllAccessKeys(allAccessKeysFromServer);
-    } catch (error) {}
+    } catch (error) { }
   }
 
   const addNewAccessKey = () => {
