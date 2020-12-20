@@ -1,12 +1,10 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import './Header.css';
-import Cookies from 'js-cookie';
 import NarrowNav from './NarrowNav';
 import WideNav from './WideNav';
 
 function Header({ darkMode, setDarkMode }) {
   const [navOrMenu, setNavOrMenu] = useState(window.innerWidth < 700);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   const displayWindowSize = () => {
     if (window.innerWidth < 700) {
@@ -15,20 +13,15 @@ function Header({ darkMode, setDarkMode }) {
       setNavOrMenu(false);
     }
   };
-  useEffect(() => {
-    if (Cookies.get('isAdmin') === 'admin') {
-      setIsAdmin(true);
-    }
-  }, []);
 
   useMemo(() => window.addEventListener('resize', displayWindowSize), []);
   return (
     <>
       {!navOrMenu ? (
-        <WideNav isAdmin={isAdmin} darkMode={darkMode} setDarkMode={setDarkMode} />
+        <WideNav darkMode={darkMode} setDarkMode={setDarkMode} />
       ) : (
-        <NarrowNav isAdmin={isAdmin} darkMode={darkMode} setDarkMode={setDarkMode} />
-      )}
+          <NarrowNav darkMode={darkMode} setDarkMode={setDarkMode} />
+        )}
     </>
   );
 }

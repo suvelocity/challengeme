@@ -13,7 +13,7 @@ function Review({
   const [date, setDate] = useState('');
   // TODO: POP: use moment instead
   const location = useHistory();
-  const loggedContext = useContext(Logged);
+  const LoggedContext = useContext(Logged);
   useEffect(() => {
     const dateNow = Date.now();
     const updateRepoDate = new Date(createdAt);
@@ -51,11 +51,10 @@ function Review({
     } catch (error) {
       Cookies.remove('refreshToken');
       Cookies.remove('accessToken');
-      Cookies.remove('name');
+      ;
       Cookies.remove('userId');
-      Cookies.remove('isAdmin');
       Cookies.remove('userName');
-      loggedContext.setLogged(false);
+      LoggedContext.setLogged(false);
       location.push('/');
     }
   };
@@ -77,16 +76,15 @@ function Review({
         By:
         {author}
       </div>
-      {Cookies.get('isAdmin') === 'admin'
-        && (
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={deleteReview}
-          >
-            Delete
-          </Button>
-        )}
+      {LoggedContext.isAdmin && (
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={deleteReview}
+        >
+          Delete
+        </Button>
+      )}
     </div>
   );
 }

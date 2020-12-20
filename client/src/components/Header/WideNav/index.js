@@ -33,16 +33,15 @@ import FilteredLabels from '../../../context/FilteredLabelsContext';
 import { Logged } from '../../../context/LoggedInContext';
 import Search from '../Search';
 
-export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
+export default function WideNav({ darkMode, setDarkMode }) {
   const filteredLabels = useContext(FilteredLabels);
   const classes = useStyles();
   const location = useHistory();
-  const loggedContext = useContext(Logged);
+  const LoggedContext = useContext(Logged);
   const [labels, setLabels] = useState([]);
   const [chooseLabels, setChooseLabels] = useState([]);
   const currentLocation = useLocation();
   const [openNavBar, setOpenNavBar] = useState(false);
-
   useEffect(() => {
     if (currentLocation.pathname !== '/') {
       setLabels([]);
@@ -70,11 +69,11 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
       });
       Cookies.remove('refreshToken');
       Cookies.remove('accessToken');
-      Cookies.remove('name');
+      ;
       Cookies.remove('userId');
-      Cookies.remove('isAdmin');
       Cookies.remove('userName');
-      loggedContext.setLogged(false);
+      LoggedContext.setLogged(false);
+      LoggedContext.setIsAdmin(false);
       location.push('/');
     } catch (error) {
     }
@@ -158,25 +157,38 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
             {darkMode ? (
               <Brightness7Icon style={letterColor} />
             ) : (
-              <Brightness4Icon style={letterColor} />
-            )}
+                <Brightness4Icon style={letterColor} />
+              )}
           </IconButton>
-          <Tooltip title={Cookies.get('name')}>
-            <Link to="/profile/info" className="link-rout">
-              <Avatar
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                color="inherit"
-                style={{
-                  cursor: 'pointer',
-                  backgroundColor: darkMode ? 'rgb(140,110,99)' : '#7BACB4',
-                }}
-              >
-                {Cookies.get('name').slice(0, 2)}
-              </Avatar>
-            </Link>
-          </Tooltip>
+          {LoggedContext.logged&& Cookies.get('userName')?
+            <Tooltip title={Cookies.get('userName')}>
+              <Link to="/profile/info" className="link-rout">
+                <Avatar
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                  style={{
+                    cursor: 'pointer',
+                    backgroundColor: darkMode ? 'rgb(140,110,99)' : '#7BACB4',
+                  }}
+                >
+                  {Cookies.get('userName').slice(0, 2)}
+                </Avatar>
+              </Link>
+            </Tooltip> :
+            <>
+              <Link to="/login" className="link-rout">
+                <Button variant="contained" className={darkMode ? classes.filterButtonDark : classes.filterButton}>
+                  Login
+                  </Button>
+              </Link>
+              <Link to="/register" className="link-rout">
+                <Button variant="contained" className={darkMode ? classes.filterButtonDark : classes.filterButton}>
+                  Register
+                  </Button>
+              </Link>
+            </>}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -186,6 +198,9 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
         classes={darkMode ? { paper: classes.drawerPaperDark } : { paper: classes.drawerPaper }}
       >
         <div className={classes.drawerHeader}>
+        <b>
+                {LoggedContext.logged&&Cookies.get('userName') ? (`Hey ${Cookies.get('userName')}`): 'Welcome to ChallengeMe'}
+              </b>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon style={drawerColor} />
           </IconButton>
@@ -220,7 +235,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
               <ListItemText primary="Teams Area" />
             </ListItem>
           </Link>
-          {isAdmin && (
+          {LoggedContext.isAdmin && (
             <>
               <Divider style={dividerColor} />
               <Link to="/admin/DashBoard" className="link-rout">
@@ -247,6 +262,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
             </ListItem>
           </Link>
           <Divider style={dividerColor} />
+          {LoggedContext.logged?
           <ListItem className={classes.logOut} onClick={handleDrawerClose}>
             <Button
               className={classes.logOutButton}
@@ -257,7 +273,7 @@ export default function WideNav({ darkMode, setDarkMode, isAdmin }) {
             >
               Log Out
             </Button>
-          </ListItem>
+          </ListItem>:null}
           <Divider style={dividerColor} />
         </List>
       </Drawer>

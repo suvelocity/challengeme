@@ -1,5 +1,5 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { Logged } from "../context/LoggedInContext";
 import AllChallenges from "../context/AllChallengesContext";
 import FilteredLabels from "../context/FilteredLabelsContext";
@@ -9,8 +9,8 @@ import Cookies from "js-cookie";
 import Forgot from "./Authentication/ForgotPasswordPage";
 import ValidatingMail from "./Authentication/Register/ValidatingMail";
 import network from "../services/network";
-import Landing from "./Authentication";
-import { AnimatePresence } from "framer-motion";
+// import Landing from "./Authentication";
+// import { AnimatePresence } from "framer-motion";
 import Header from "../components/Header";
 import ErrorBoundary from "../components/ErrorBoundary";
 import Loading from "../components/Loading";
@@ -19,7 +19,9 @@ import NewChallengeForm from "./NewChallenge";
 import UserProfile from "./UserProfile";
 import Admin from "./Admin";
 import Team from "./Team";
-import PrivateRoute from '../components/Routes/privateRoute'
+import PrivateRoute from '../Routes/privateRoute'
+import PublicRoute from '../Routes/publicRoute'
+
 
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Home = lazy(() => import("./Home"));
@@ -36,9 +38,6 @@ export default function Router() {
   useEffect(() => {
     if (logged) {
       const previousTheme = localStorage.getItem("darkMode"); //get previous selected theme
-      if (Cookies.get("isAdmin") === "admin") {
-        setIsAdmin(true);
-      }
 
       if (previousTheme === "false") {
         setDarkTheme(false);
@@ -55,22 +54,26 @@ export default function Router() {
       try {
         const { data: challengesFromServer } = await network.get("/api/v1/challenges");
         typeof challengesFromServer === "object" && setChallenges(challengesFromServer);
-      } catch {}
+      } catch { }
     })();
   }, [logged]);
 
   useEffect(() => {
     // auth
     (async () => {
-      if (Cookies.get("accessToken")) {
-        try {
+      try {
+        if (Cookies.get("accessToken")) {
           const { data } = await network.get("/api/v1/auth/validate-token");
           setLogged(data);
+          setIsAdmin(data.isAdmin)
           setLoading(false);
-        } catch (e) {
+        } else if (Cookies.get("refreshToken")) {
+          await network.post('/api/v1/auth/token', { token: Cookies.get('refreshToken') });
+          setLoading(false);
+        } else {
           setLoading(false);
         }
-      } else {
+      } catch (error) {
         setLoading(false);
       }
     })();
@@ -79,80 +82,37 @@ export default function Router() {
   return (
     <BrowserRouter>
       {!loading ? (
-        !logged ? (
-          <Logged.Provider value={{ logged, setLogged }}>
-            <AnimatePresence>
-              <ErrorBoundary>
-                <Route
-                  render={({ location }) => (
-                    <Switch location={location} key={location.pathname}>
-                      <Route exact path="/register">
-                        <Register />
-                      </Route>
-                      <Route exact path="/login">
-                        <Login />
-                      </Route>
-                      <Route exact path="/forgot">
-                        <Forgot />
-                      </Route>
-                      <Route exact path="/auth">
-                        <ValidatingMail />
-                      </Route>
-                      <Route exact path="/">
-                        <Landing />
-                      </Route>
-                      <Route path="*">
-                        <Redirect to="/" />
-                      </Route>
+        <Logged.Provider value={{ logged, isAdmin, setLogged, setIsAdmin }}>
+          <AllChallenges.Provider value={{ challenges, setChallenges }}>
+            <FilteredLabels.Provider value={{ filteredLabels, setFilteredLabels }}>
+              <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
+              <div className={darkTheme ? "dark" : "light"}>
+                <Suspense fallback={<Loading darkMode={darkTheme} />}>
+                  <ErrorBoundary>
+                    <Switch>
+                      <Route exact={true} path="/" component={Home} />
+                      <Route exact={true} path="/challenges/:id" render={() => <ChallengePage darkMode={darkTheme} />} />
+                      <PublicRoute exact={true} path="/register" component={Register} />
+                      <PublicRoute exact={true} path="/login" component={Login} />
+                      <PublicRoute exact={true} path="/forgot" component={Forgot} />
+                      <PublicRoute exact={true} path="/auth" component={ValidatingMail} />
+                      <PrivateRoute exact={true} path="/addnewchallenge" component={NewChallengeForm} darkMode={darkTheme} />
+                      <PrivateRoute path="/profile" component={UserProfile} darkMode={darkTheme} />
+                      <PrivateRoute path="/teams" component={Team} darkMode={darkTheme} />
+                      {isAdmin && (
+                        <PrivateRoute path="/admin" component={Admin} darkMode={darkTheme} />
+                      )}
+                      <Route path="*" component={NotFound} />
                     </Switch>
-                  )}
-                />
-              </ErrorBoundary>
-            </AnimatePresence>
-          </Logged.Provider>
-        ) : (
-          <Logged.Provider value={{ logged, setLogged }}>
-            <AllChallenges.Provider value={{ challenges, setChallenges }}>
-              <FilteredLabels.Provider value={{ filteredLabels, setFilteredLabels }}>
-                <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
-                <div className={darkTheme ? "dark" : "light"}>
-                  <Suspense fallback={<Loading darkMode={darkTheme} />}>
-                    <ErrorBoundary>
-                      <Switch>
-                        <Route exact path="/challenges/:id">
-                          <ChallengePage darkMode={darkTheme} />
-                        </Route>
-                        <Route path="/profile">
-                          <UserProfile darkMode={darkTheme} />
-                        </Route>
-                        <Route exact path="/addnewchallenge">
-                          <NewChallengeForm />
-                        </Route>
-                        <Route path="/teams">
-                          <Team darkMode={darkTheme} />
-                        </Route>
-                        {isAdmin && (
-                          <Route path="/admin">
-                            <Admin darkMode={darkTheme} />
-                          </Route>
-                        )}
-                        <Route exact path="/">
-                          <Home />
-                        </Route>
-                        <Route path="*">
-                          <NotFound />
-                        </Route>
-                      </Switch>
-                    </ErrorBoundary>
-                  </Suspense>
-                </div>
-              </FilteredLabels.Provider>
-            </AllChallenges.Provider>
-          </Logged.Provider>
-        )
+                  </ErrorBoundary>
+                </Suspense>
+              </div>
+            </FilteredLabels.Provider>
+          </AllChallenges.Provider>
+        </Logged.Provider>
       ) : (
-        <Loading firstLoading={true} />
-      )}
+          <Loading firstLoading={true} />
+        )}
     </BrowserRouter>
   );
 }

@@ -14,6 +14,9 @@ import SubmitModal from '../../components/Modals/SubmitModal';
 import network from '../../services/network';
 import Loading from '../../components/Loading';
 import FilteredLabels from '../../context/FilteredLabelsContext';
+import { Logged } from '../../context/LoggedInContext';
+import Swal from 'sweetalert2';
+
 
 const useStyles = makeStyles(() => ({
   getStartedButton: {
@@ -62,13 +65,15 @@ function ChallengePage({ darkMode }) {
   const [challenge, setChallenge] = useState(null);
   const { id: challengeId } = useParams();
   const [image, setImage] = useState('');
-  const [submissionStatus, setSubmissionStatus] = useState(null);
+  const [submissionStatus, setSubmissionStatus] = useState();
   const [rating, setRating] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loadingReq, setLoadingReq] = useState(false);
   const [ratingCount, setRatingCount] = useState('');
 
   const filteredLabels = useContext(FilteredLabels);
+  const LoggedContext = useContext(Logged);
+
 
   useEffect(() => {
     const user = Cookies.get('userName');
@@ -76,63 +81,60 @@ function ChallengePage({ darkMode }) {
     // eslint-disable-next-line
   }, []);
 
+  const getLastSubmissions = async () => {
+    try {
+      const { data: submission } = await network.get(
+        `/api/v1/submissions/by-user/${challengeId}`,
+      );
+      if (submission) {
+        setSubmissionStatus({
+          state: submission.state,
+          createdAt: submission.createdAt,
+        });
+      } else {
+        setSubmissionStatus(null);
+      }
+      setLoadingReq(true);
+    } catch (error) {
+    }
+  }
+
+  const fetchChallenge = async () => {
+    try {
+      const { data: challengeFromServer } = await network.get(`/api/v1/challenges/info/${challengeId}`);
+      setChallenge(challengeFromServer);
+      setRating(
+        challengeFromServer.averageRaiting
+          ? Math.round(challengeFromServer.averageRaiting)
+          : 0,
+      );
+      setSubmissions(challengeFromServer.submissionsCount);
+    } catch (error) {
+    }
+  };
+
+  const setImg = async () => {
+    try {
+      const { data } = await network.get(`/api/v1/images?id=${challengeId}`);
+      setImage(data.img);
+    } catch (error) {
+    }
+  };
+
   useEffect(() => {
-    (async () => {
-      try {
-        const { data: submission } = await network.get(
-          `/api/v1/submissions/by-user/${challengeId}`,
-        );
-        if (submission) {
-          setSubmissionStatus({
-            state: submission.state,
-            createdAt: submission.createdAt,
-          });
-        } else {
-          setSubmissionStatus(null);
-        }
-        setLoadingReq(true);
-      } catch (error) {
-      }
-    })();
-    const getSubmissionInterval = setInterval(async () => {
-      try {
-        const { data: submission } = await network.get(
-          `/api/v1/submissions/by-user/${challengeId}`,
-        );
-        if (submission) {
-          setSubmissionStatus({
-            state: submission.state,
-            createdAt: submission.createdAt,
-          });
-        } else {
-          setSubmissionStatus(null);
-        }
-        setLoadingReq(true);
-      } catch (error) {
-      }
-    }, 5000);
-    const setImg = async () => {
-      try {
-        const { data } = await network.get(`/api/v1/images?id=${challengeId}`);
-        setImage(data.img);
-      } catch (error) {
-      }
-    };
-    const fetchChallenge = async () => {
-      try {
-        const { data: challengeFromServer } = await network.get(`/api/v1/challenges/info/${challengeId}`);
-        setChallenge(challengeFromServer);
-        setRating(
-          challengeFromServer.averageRaiting
-            ? Math.round(challengeFromServer.averageRaiting)
-            : 0,
-        );
-        setSubmissions(challengeFromServer.submissionsCount);
-      } catch (error) {
-      }
-    };
     setImg();
     fetchChallenge();
+    if (LoggedContext.logged) {
+      getLastSubmissions();
+    } else {
+      setLoadingReq(true);
+    }
+    const getSubmissionInterval = setInterval(async () => {
+      if (LoggedContext.logged) {
+        getLastSubmissions();
+      }
+    }, 5000);
+
     return () => clearInterval(getSubmissionInterval);
     // eslint-disable-next-line
   }, [challengeId]);
@@ -140,20 +142,32 @@ function ChallengePage({ darkMode }) {
   function handleModalClose() {
     setIsModalOpen(false);
   }
-
   const getSubmissionButton = () => {
     if (!submissionStatus) {
       return (
-        <Button
-          cy-test="submit-button"
-          className={classes.SubmitdButton}
-          variant="contained"
-          onClick={() => setIsModalOpen(true)}
-        >
-          Submit
+        LoggedContext.logged ?
+          <Button
+            cy-test="submit-button"
+            className={classes.SubmitdButton}
+            variant="contained"
+            onClick={() => setIsModalOpen(true)}
+          >
+            Submit
         </Button>
-      );
+          :
+          <Button
+            variant="contained"
+            className={classes.SubmitdButton}
+            onClick={() => Swal.fire({
+              icon: 'error',
+              title: 'You Must Login First!',
+              showConfirmButton: true
+            })}>
+            Submit
+              </Button >
+      )
     }
+
     if (submissionStatus.state === 'PENDING') {
       return <CircularProgress style={{ marginBottom: '20px' }} />;
     }
@@ -180,6 +194,7 @@ function ChallengePage({ darkMode }) {
       </Button>
     );
   };
+
 
   const getSubmissionStatus = () => {
     if (!submissionStatus) {
@@ -294,26 +309,38 @@ function ChallengePage({ darkMode }) {
             </div>
           </div>
           <div className={classes.getStartedButtonContainer}>
-            <Button
-              cy-test="challenge-boilerPlate"
-              variant="contained"
-              className={classes.getStartedButton}
-              onClick={async () => {
-                const user = Cookies.get('userName');
-                mixpanel.track('User Started Challenge', {
-                  User: `${user}`,
-                  ChallengeId: `${challengeId}`,
-                });
-                try {
-                  await network.post('/api/v1/webhooks/trigger-events/start-challenge', { challengeName: challenge.name });
-                } catch (error) {
-                }
-              }}
-              href={`https://github.com/${challenge.boilerPlate}`}
-              target="_blank"
-            >
-              Start this challenge
-            </Button>
+            {LoggedContext.logged ?
+              <Button
+                cy-test="challenge-boilerPlate"
+                variant="contained"
+                className={classes.getStartedButton}
+                onClick={async () => {
+                  const user = Cookies.get('userName');
+                  mixpanel.track('User Started Challenge', {
+                    User: `${user}`,
+                    ChallengeId: `${challengeId}`,
+                  });
+                  try {
+                    await network.post('/api/v1/webhooks/trigger-events/start-challenge', { challengeName: challenge.name });
+                  } catch (error) {
+                  }
+                }}
+                href={`https://github.com/${challenge.boilerPlate}`}
+                target="_blank"
+              >
+                Start this challenge
+            </Button> : <Button
+                cy-test="challenge-boilerPlate"
+                variant="contained"
+                className={classes.getStartedButton}
+                onClick={() => Swal.fire({
+                  icon: 'error',
+                  title: 'You Must Login First!',
+                  showConfirmButton: true,
+                })}
+              >
+                Start this challenge
+              </Button>}
           </div>
         </div>
         <div className="one-challenge-submission-container">
@@ -323,10 +350,10 @@ function ChallengePage({ darkMode }) {
               {getSubmissionButton()}
             </div>
           ) : (
-            <div style={{ textAlign: 'center' }}>
-              <CircularProgress style={{ margin: '30px' }} />
-            </div>
-          )}
+              <div style={{ textAlign: 'center' }}>
+                <CircularProgress style={{ margin: '30px' }} />
+              </div>
+            )}
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
@@ -340,8 +367,8 @@ function ChallengePage({ darkMode }) {
       </div>
     </div>
   ) : (
-    <Loading darkMode={darkMode} />
-  );
+      <Loading darkMode={darkMode} />
+    );
 }
 
 export default ChallengePage;
