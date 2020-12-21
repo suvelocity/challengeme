@@ -1,7 +1,7 @@
 require('dotenv').config();
 const request = require('supertest');
 const app = require('../../../app');
-const { generateToken } = require('../../Functions');
+const { generateToken } = require('../../utils');
 const { handleGithubTokens } = require('../../../helpers');
 const { User, GitToken } = require('../../../models');
 const { githubTokensMock, githubHeadersMock, usersMock } = require('../../mocks');
@@ -23,7 +23,7 @@ describe('testing challenges endpoints', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(getAllToken.status).toBe(200);
-    expect(getAllToken.body.length).toBe(githubTokensMock.length);
+    expect(getAllToken.body).toHaveLength(githubTokensMock.length);
     expect(getAllToken.body[2].active).toBe(true);
 
     process.env.GITHUB_ACCESS_TOKEN = githubTokensMock[0].token;
@@ -33,7 +33,7 @@ describe('testing challenges endpoints', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(getAllToken2.status).toBe(200);
-    expect(getAllToken2.body.length).toBe(githubTokensMock.length);
+    expect(getAllToken2.body).toHaveLength(githubTokensMock.length);
     expect(getAllToken2.body[0].active).toBe(true);
 
     const unauthorized = await request(app)
@@ -60,7 +60,7 @@ describe('testing challenges endpoints', () => {
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(allTokens.status).toBe(200);
-    expect(allTokens.body.length).toBe(1);
+    expect(allTokens.body).toHaveLength(1);
 
     const unauthorized = await request(app)
       .post('/api/v1/git')
@@ -125,7 +125,7 @@ describe('testing challenges endpoints', () => {
       .get('/api/v1/git')
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
-    expect(getAllToken.length).toBe(3);
+    expect(getAllToken).toHaveLength(3);
 
     const deleteNewToken = await request(app)
       .delete(`/api/v1/git/${githubTokensMock[2].token}`)
@@ -137,7 +137,7 @@ describe('testing challenges endpoints', () => {
       .get('/api/v1/git')
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
-    expect(getAllToken1.length).toBe(2);
+    expect(getAllToken1).toHaveLength(2);
 
     const unauthorized = await request(app)
       .delete('/api/v1/git')

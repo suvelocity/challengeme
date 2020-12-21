@@ -1,6 +1,7 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const moment = require("moment");
+const bcrypt = require('bcryptjs');
+const moment = require('moment');
 
 function generateToken(currentUser) {
   const infoForCookie = {
@@ -10,7 +11,17 @@ function generateToken(currentUser) {
   return jwt.sign(infoForCookie, process.env.ACCESS_TOKEN_SECRET, {
     expiresIn: '900s',
   });
-};
+}
+
+async function generateWebhookToken(entity) {
+  const hashedToken = await bcrypt.hashSync(entity.key, 10);
+  const tokenKey = {
+    token: hashedToken,
+    name: entity.entityName,
+    id: entity.id,
+  };
+  return jwt.sign(tokenKey, process.env.WEBHOOK_SECRET);
+}
 
 function countSuccessAndFailSubmissionsPerChallenge(submissionsOrderedByDate) {
   const filteredAlready = [];
@@ -29,7 +40,7 @@ function countSuccessAndFailSubmissionsPerChallenge(submissionsOrderedByDate) {
     }
   });
   return { success, fail };
-};
+}
 
 function countSuccessSubmissionsPerChallenge(submissionsOrderedByDate, challengesArray) {
   const filteredChallenges = [];
@@ -40,8 +51,7 @@ function countSuccessSubmissionsPerChallenge(submissionsOrderedByDate, challenge
       if (challenge.id === submission.challengeId) {
         if (
           filteredAlready.some(
-            (filteredSubmission) =>
-              filteredSubmission.userId === submission.userId
+            (filteredSubmission) => filteredSubmission.userId === submission.userId,
           )
         ) {
         } else {
@@ -54,11 +64,11 @@ function countSuccessSubmissionsPerChallenge(submissionsOrderedByDate, challenge
       }
     });
     filteredChallenges.push({ challengeSuccesses, name: challenge.name });
-  })
+  });
   const ordered = filteredChallenges.filter((challenge) => challenge.challengeSuccesses > 0)
     .sort((a, b) => b.challengeSuccesses - a.challengeSuccesses);
   return ordered;
-};
+}
 
 function filterUsersByTeam(team, userTeamArray) {
   return userTeamArray.map((userTeam) => {
@@ -66,29 +76,27 @@ function filterUsersByTeam(team, userTeamArray) {
       return userTeam.userId;
     }
   }).filter((a) => !(!a));
-};
+}
 
 function filterSubmissionsByTeam(
   submissionsArray,
   teamIdArray,
-  conditions = [{ paramter: "aaa", equal: undefined }]
+  conditions = [{ paramter: 'aaa', equal: undefined }],
 ) {
   const filteredSubmissions = [];
   const filteredSubmissionsId = [];
   submissionsArray.forEach((submission) => {
     if (
-      !filteredSubmissionsId.includes(submission.id) &&
-      teamIdArray.includes(submission.userId) &&
-      conditions.every((condition) => {
-        return submission[`${condition.paramter}`] === condition.equal;
-      })
+      !filteredSubmissionsId.includes(submission.id)
+      && teamIdArray.includes(submission.userId)
+      && conditions.every((condition) => submission[`${condition.paramter}`] === condition.equal)
     ) {
       filteredSubmissions.push(submission);
       filteredSubmissionsId.push(submission.id);
     }
   });
   return filteredSubmissions.sort((a, b) => b.createdAt - a.createdAt);
-};
+}
 
 function countGroupArray(array, count, groupParameter) {
   const groupedCountArray = [];
@@ -107,7 +115,7 @@ function countGroupArray(array, count, groupParameter) {
     }
   });
   return groupedCountArray;
-};
+}
 
 function filterLastSubmissionsForTeacherRoute(team, challengeIdArray, submissionsArray, userTeamArray) {
   const teamUsersId = filterUsersByTeam(team, userTeamArray);
@@ -123,9 +131,9 @@ function filterLastSubmissionsForTeacherRoute(team, challengeIdArray, submission
   const notYetSubmitted = (teamUsersId.length * totalSubmissionsShouldBe) - (filteredSubmissions.success + filteredSubmissions.fail);
   filteredSubmissions.notYet = notYetSubmitted || 0;
   return filteredSubmissions;
-};
+}
 
-function combineSubmissionToChallenge(challengeArray, submissionsArray, onlyLast = "false") {
+function combineSubmissionToChallenge(challengeArray, submissionsArray, onlyLast = 'false') {
   return challengeArray
     .map((challenge) => {
       challenge.Submissions = [];
@@ -135,7 +143,7 @@ function combineSubmissionToChallenge(challengeArray, submissionsArray, onlyLast
         }
       });
       challenge.Submissions.sort((a, b) => b.createdAt - a.createdAt);
-      if (eval(onlyLast)) {
+      if (onlyLast === 'true') {
         const myFilteredArray = [];
         const myFilteredArrayUsers = [];
         challenge.Submissions.forEach((submission) => {
@@ -153,39 +161,34 @@ function combineSubmissionToChallenge(challengeArray, submissionsArray, onlyLast
     .sort((a, b) => b.Submissions.length - a.Submissions.length);
 }
 
-function combineSubmissionToUserWithChallenge(
-  usersArray,
-  submissionsArray,
-  challengesArray,
-  onlyLast = "false"
-) {
-  return usersArray
-    .map((user) => {
-      user.Submissions = [];
-      submissionsArray.forEach((submission) => {
-        if (submission.userId === user.id) {
-          submission.Challenge = challengesArray.find(
-            (challenge) => challenge.id === submission.challengeId
-          );
-          user.Submissions.push(submission);
+function combineSubmissionToUserWithChallenge(usersArray, submissionsArray, challengesArray, onlyLast = 'false') {
+  return usersArray.map((user) => {
+    user.Submissions = [];
+    submissionsArray.forEach((submission) => {
+      if (submission.userId === user.id) {
+        submission.Challenge = challengesArray.find((challenge) => challenge.id === submission.challengeId);
+        user.Submissions.push(submission);
+      }
+    });
+    if (onlyLast === 'true') {
+      const myFilteredArray = [];
+      const myFilteredArrayUsers = [];
+      user.Submissions.forEach((submission) => {
+        if (myFilteredArrayUsers.includes(submission.challengeId)) {
+        } else {
+          myFilteredArrayUsers.push(submission.challengeId);
+          myFilteredArray.push(submission);
         }
       });
-      if (eval(onlyLast)) {
-        const myFilteredArray = [];
-        const myFilteredArrayUsers = [];
-        user.Submissions.forEach((submission) => {
-          if (myFilteredArrayUsers.includes(submission.challengeId)) {
-          } else {
-            myFilteredArrayUsers.push(submission.challengeId);
-            myFilteredArray.push(submission);
-          }
-        });
-        user.Submissions = myFilteredArray;
-      }
-      user.Submissions.sort((a, b) => b.createdAt - a.createdAt);
-      return user;
-    })
-    .sort((a, b) => b.Submissions[0].createdAt - a.Submissions[0].createdAt);
+      user.Submissions = myFilteredArray;
+    }
+    user.Submissions.sort((a, b) => b.createdAt - a.createdAt);
+    return user;
+  }).sort((a, b) => {
+    if (b.Submissions[0] && a.Submissions[0]) {
+      return b.Submissions[0].createdAt - a.Submissions[0].createdAt;
+    }
+  });
 }
 
 function filteredArrayByIds(array, idsArray) {
@@ -205,30 +208,29 @@ function filterLastSubmissionsForAdminRoute(challengeIdArray, submissionsArray, 
     .sort((a, b) => b.createdAt - a.createdAt);
 
   const filteredSubmissions = countSuccessAndFailSubmissionsPerChallenge(
-    totalSubmissionsOrderedByDate
+    totalSubmissionsOrderedByDate,
   );
-  const notYetSubmitted =
-    totalSubmissionsShouldBe -
-    (filteredSubmissions.success + filteredSubmissions.fail);
+  const notYetSubmitted = totalSubmissionsShouldBe
+    - (filteredSubmissions.success + filteredSubmissions.fail);
   filteredSubmissions.notYet = notYetSubmitted || 0;
   return filteredSubmissions;
 }
 
-function countSuccessSubmissionsWithUserName(usersWithSubmissions,) {
+function countSuccessSubmissionsWithUserName(usersWithSubmissions) {
   return usersWithSubmissions.map((member) => {
     const filteredSubmissions = [];
     let success = 0;
     let fail = 0;
     member.Submissions = member.Submissions.sort(
-      (a, b) => b.createdAt - a.createdAt
+      (a, b) => b.createdAt - a.createdAt,
     );
     member.Submissions.forEach((submission) => {
       if (filteredSubmissions.includes(submission.challengeId)) {
       } else {
         filteredSubmissions.push(submission.challengeId);
-        if (submission.state === "SUCCESS") {
+        if (submission.state === 'SUCCESS') {
           success++;
-        } else if (submission.state === "FAIL") {
+        } else if (submission.state === 'FAIL') {
           fail++;
         }
       }
@@ -244,16 +246,15 @@ function countSuccessSubmissionsWithUserName(usersWithSubmissions,) {
 function formatCreatedAtToMoment(submissions) {
   return submissions.map((submission) => {
     let momentDate = moment(submission.createdAt).fromNow();
-    momentDate = momentDate.includes("hour")
-      ? "today"
-      : momentDate.includes("minutes")
-        ? "today"
-        : momentDate.includes("seconds")
-          ? "today"
+    momentDate = momentDate.includes('hour')
+      ? 'today'
+      : momentDate.includes('minutes')
+        ? 'today'
+        : momentDate.includes('seconds')
+          ? 'today'
           : momentDate;
     return { dateSubmissions: 1, createdAt: momentDate };
-  }
-  );
+  });
 }
 
 module.exports = {
@@ -269,5 +270,6 @@ module.exports = {
   filteredArrayByIds,
   filterLastSubmissionsForAdminRoute,
   countSuccessSubmissionsWithUserName,
-  formatCreatedAtToMoment
+  formatCreatedAtToMoment,
+  generateWebhookToken,
 };

@@ -7,8 +7,7 @@ name: CI-Client
 on:
   pull_request:
     branches: [master,staging] # if github changes the 'master' to 'main'
-  push:
-    branches: [master,staging]
+    
     # we will change that name to 'main'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -19,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x]
+        node-version: [12.x]
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2

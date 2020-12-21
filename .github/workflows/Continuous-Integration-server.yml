@@ -7,8 +7,6 @@ name: CI-SERVER
 on:
   pull_request:
     branches: [master,staging] # if github changes the 'master' to 'main'
-  push:
-    branches: [master,staging]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -18,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: mysql:5.7
+        image: mysql:8.0.17
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: challenge_test
@@ -27,7 +25,7 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     strategy:
       matrix:
-        node-version: [10.x]
+        node-version: [12.x]
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -51,5 +49,6 @@ jobs:
           ACCESS_TOKEN_SECRET: "sdlkmf4930fjerfdfokvmdsldm1920ejeiockdv950gij54eorjflrf9430r4rjo34plre"
           EMAIL_TOKEN_SECRET: "dsvldfmldkm54y89j5effdc389ejewkmcsldmf4390rfwemdpvmdlfkg509gker0krkf94f"
           REFRESH_TOKEN_SECRET: "dfgklfmg834t3958tjervr9fft4ejrfknf32893rufjriofj5905t4i5t905itreokf5822"
+          WEBHOOK_SECRET: "sdfkjndfsdjfnskjfnsdfjkn345456756764n3rwkjednn34kn5t5kjtgrndfjknvsjkenr43jnt5"
           SUVELOCITY_MAIL: suvelocity@gmail.com
         working-directory: ./server

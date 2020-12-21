@@ -39,10 +39,10 @@ submissionRouter.get('/by-user/:challengeId', async (req, res) => {
       }
     }
 
-    res.json(testSubmission[testSubmission.length - 1]);
+    return res.json(testSubmission[testSubmission.length - 1]);
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: "can't get the challenge submissions" });
+    return res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
 
@@ -61,10 +61,10 @@ submissionRouter.get('/:challengeId', async (req, res) => {
         challengeId,
       },
     });
-    res.json(allSubmission);
+    return res.json(allSubmission);
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: "can't get the challenge submissions" });
+    return res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
 
@@ -100,7 +100,7 @@ submissionRouter.post('/apply/:challengeId', async (req, res) => {
     });
 
     const urltoSet = process.env.MY_URL.concat(
-      `/api/v1/webhook/submission/${submission.id}`,
+      `/api/v1/webhooks/submissions/${submission.id}`,
     );
     const bearerToken = jwt.sign(
       { userId: req.user.userId, userName: req.user.userName },
@@ -149,11 +149,11 @@ submissionRouter.post('/apply/:challengeId', async (req, res) => {
         console.error(error.message);
       });
     handleGithubTokens(response.headers);
-    res.json(response.status);
+    return res.json(response.status);
   } catch (error) {
     console.error(error.message);
     handleGithubTokens(error.response.headers);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

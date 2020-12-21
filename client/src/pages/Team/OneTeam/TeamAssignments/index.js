@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import mixpanel from 'mixpanel-browser';
 import network from '../../../../services/network';
 import Loading from '../../../../components/Loading';
 import NotFound from '../../../NotFound';
@@ -24,6 +26,8 @@ function TeamAssignments({ darkMode }) {
 
   useEffect(() => {
     getAllAssignments();
+    const user = Cookies.get('userName');
+    mixpanel.track('User On Assignments Student Area', { User: `${user}`, Team: id });
     // eslint-disable-next-line
   }, [id]);
 
@@ -62,17 +66,17 @@ function TeamAssignments({ darkMode }) {
                 />
               ))
             ) : (
-              <h1 className="not-found">Not Found</h1>
-            )}
+                <h1 className="not-found">Not Found</h1>
+              )}
           </div>
         </div>
       </>
     ) : (
-      <NotFound />
-    )
+        <NotFound />
+      )
   ) : (
-    <Loading darkMode={darkMode} />
-  );
+      <Loading darkMode={darkMode} />
+    );
 }
 
 export default TeamAssignments;

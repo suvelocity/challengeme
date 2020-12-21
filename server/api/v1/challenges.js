@@ -1,6 +1,7 @@
 require('dotenv').config();
 const challengeRouter = require('express').Router();
 const { Sequelize, Op } = require('sequelize');
+const checkToken = require('../../middleware/checkToken');
 const checkAdmin = require('../../middleware/checkAdmin');
 const { newChallengeValidation } = require('../../helpers/validator');
 const {
@@ -84,15 +85,15 @@ challengeRouter.get('/', async (req, res) => {
       return challenge;
     });
 
-    res.json(allChallengesWithReviews);
+    return res.json(allChallengesWithReviews);
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: "can't get the challenges" });
+    return res.status(400).json({ message: "can't get the challenges" });
   }
 });
 
 // get challenges that the user add to the system
-challengeRouter.get('/user-challenges', async (req, res) => {
+challengeRouter.get('/user-challenges', checkToken, async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
       where: {
@@ -113,15 +114,15 @@ challengeRouter.get('/user-challenges', async (req, res) => {
         },
       ],
     });
-    res.json(allChallenges);
+    return res.json(allChallenges);
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // get challenge by id with all information
-challengeRouter.get('/info/:challengeId', async (req, res) => {
+challengeRouter.get('/info/:challengeId', checkToken, async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
       where: { id: req.params.challengeId, state: 'approved' },
@@ -166,15 +167,15 @@ challengeRouter.get('/info/:challengeId', async (req, res) => {
       ? challengeSubmittions[0].dataValues.submissionsCount
       : 0;
 
-    res.json(challenge);
+    return res.json(challenge);
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // router Post - new challenge
-challengeRouter.post('/', async (req, res) => {
+challengeRouter.post('/', checkToken, async (req, res) => {
   try {
     const { repositoryName: newRepo } = req.body;
     const repoExists = await Challenge.findOne({
@@ -199,17 +200,17 @@ challengeRouter.post('/', async (req, res) => {
       return res.status(400).json({ success: false, message: "Don't mess with me" });
     }
     const newChallenge = await Challenge.create(newChallengeObj);
-    res.status(201).json(newChallenge);
+    return res.status(201).json(newChallenge);
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 //= ============================= Admin Routes ======================================//
 
 // get all challenges no matter the state
-challengeRouter.get('/no-matter-the-state', checkAdmin, async (req, res) => {
+challengeRouter.get('/no-matter-the-state', checkToken, checkAdmin, async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
       include: [
@@ -227,35 +228,34 @@ challengeRouter.get('/no-matter-the-state', checkAdmin, async (req, res) => {
         },
       ],
     });
-    res.json(allChallenges);
+    return res.json(allChallenges);
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 
 // update challenge state
-challengeRouter.patch('/state-update/:challengeId', checkAdmin, async (req, res) => {
+challengeRouter.patch('/state-update/:challengeId', checkToken, checkAdmin, async (req, res) => {
   try {
     const { challengeId } = req.params;
     const { state } = req.body;
     const updatedChallenge = await Challenge.update({
       state,
     },
-    {
-      where: {
-        id: challengeId,
-      },
-    });
+      {
+        where: {
+          id: challengeId,
+        },
+      });
     if (updatedChallenge[0]) {
-      res.json({ message: 'Success' });
-    } else {
-      console.error('Failed to Update State');
-      res.status(400).json({ message: 'Failed to Update State' });
+      return res.json({ message: 'Success' });
     }
+    console.error('Failed to Update State');
+    return res.status(400).json({ message: 'Failed to Update State' });
   } catch (error) {
     console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
+    return res.status(400).json({ message: 'Cannot process request' });
   }
 });
 

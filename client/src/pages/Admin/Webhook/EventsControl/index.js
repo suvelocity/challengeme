@@ -1,0 +1,150 @@
+import React, { useEffect, useState } from 'react';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import network from '../../../../services/network';
+import AddWebhookEvent from '../../../../components/Modals/AddWebhookEvent';
+import UpdateWebhookEvent from '../../../../components/Modals/UpdateWebhookEvent';
+
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+  },
+}))(TableRow);
+
+const useRowStyles = makeStyles({
+  root: {
+    '& > *': {
+      borderBottom: 'unset',
+    },
+  },
+});
+
+function Row(props) {
+  const { row, getAllEvents } = props;
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+
+  const deleteAccessKey = async (event) => {
+    try {
+      const isDeleteOk = prompt("What's your favorite cocktail drink?");
+      if (isDeleteOk != null) {
+        await network.delete(`/api/v1/webhooks/admin/events/${event}`);
+        getAllEvents();
+      }
+    } catch (error) { }
+  };
+
+  const classes = useRowStyles();
+  return (
+    <React.Fragment>
+      <StyledTableRow className={classes.root}>
+        <StyledTableCell component="th" scope="row">
+          {row.id}
+        </StyledTableCell>
+        <StyledTableCell align="left">{row.name}</StyledTableCell>
+        <StyledTableCell align="left">
+          {new Date(row.createdAt).toString().substring(0, 24)}
+        </StyledTableCell>
+        <StyledTableCell align="left">
+          {new Date(row.updatedAt).toString().substring(0, 24)}
+        </StyledTableCell>
+        <StyledTableCell align="left">
+          <Button onClick={() => deleteAccessKey(row.id)}>Delete Event</Button>
+        </StyledTableCell>
+        <StyledTableCell align="left">
+          <Button onClick={() => setOpenUpdateModal(true)}>Update Event</Button>
+        </StyledTableCell>
+      </StyledTableRow>
+      <UpdateWebhookEvent
+        open={openUpdateModal}
+        setOpen={setOpenUpdateModal}
+        data={{ name: row.name, id: row.id }}
+        getAllEvents={getAllEvents}
+      />
+    </React.Fragment>
+  );
+}
+function EventsControl({ darkMode }) {
+  const [allEvents, setAllEvents] = useState([]);
+  const [openNewEventsModal, setOpenNewEventsModal] = useState(false);
+
+  async function getAllEvents() {
+    try {
+      const { data: allEventsFromServer } = await network.get(
+        '/api/v1/webhooks/admin/events',
+      );
+      setAllEvents(allEventsFromServer);
+    } catch (error) { }
+  }
+
+  const addNewEvents = () => {
+    setOpenNewEventsModal(true);
+  };
+
+  useEffect(() => {
+    getAllEvents();
+  }, []);
+
+  return (
+    <div className="generic-page" style={{ textAlign: 'center' }}>
+      <h1 className="team-control-title">Events Management Area</h1>
+      <AddWebhookEvent
+        open={openNewEventsModal}
+        setOpen={setOpenNewEventsModal}
+        getAllEvents={getAllEvents}
+      />
+      <Button
+        variant={darkMode ? 'contained' : 'outlined'}
+        style={{ marginBottom: '20px' }}
+        onClick={addNewEvents}
+      >
+        Add New Event
+      </Button>
+
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell>Id</StyledTableCell>
+              <StyledTableCell align="left">Name</StyledTableCell>
+              <StyledTableCell align="left">Created At</StyledTableCell>
+              <StyledTableCell align="left">Updated At</StyledTableCell>
+              <StyledTableCell align="left" />
+              <StyledTableCell align="left" />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {allEvents
+              && allEvents.map((accessKey) => (
+                <Row
+                  key={accessKey.id}
+                  row={accessKey}
+                  getAllEvents={getAllEvents}
+                />
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+  );
+}
+
+export default EventsControl;

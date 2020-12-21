@@ -1,6 +1,7 @@
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Assignment extends Model {
     /**
@@ -10,13 +11,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       this.belongsTo(models.Team, {
-        foreignKey: "teamId",
+        foreignKey: 'teamId',
       });
       this.belongsTo(models.Challenge, {
-        foreignKey: "challengeId",
+        foreignKey: 'challengeId',
       });
     }
-  };
+  }
   Assignment.init({
     teamId: {
       field: 'team_id',

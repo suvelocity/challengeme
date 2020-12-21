@@ -19,7 +19,7 @@ function TeamTotalSubmission({ darkMode }) {
         { name: 'success', value: submissions.success },
         { name: 'fail', value: submissions.fail },
         { name: 'not yet', value: submissions.notYet },
-      ])
+      ]);
     } catch (error) {
     }
   };
@@ -30,8 +30,8 @@ function TeamTotalSubmission({ darkMode }) {
 
   const getAllChallengesForOption = async () => {
     const { data: allChallengesFromServer } = await network.get('/api/v1/challenges/');
-    const challengesOptions = allChallengesFromServer.map((challenge) => <option onClick={() => { chooseChallenge(challenge.id); }} value={challenge.id}>{challenge.name}</option>);
-    challengesOptions.unshift(<option onClick={() => { chooseChallenge('assignments'); }} value="assignments">Team Assignments</option>);
+    const challengesOptions = allChallengesFromServer.map((challenge) => <option key={challenge.id} onClick={() => { chooseChallenge(challenge.id); }} value={challenge.id}>{challenge.name}</option>);
+    challengesOptions.unshift(<option key="assignments" onClick={() => { chooseChallenge('assignments'); }} value="assignments">Team Assignments</option>);
     setChallengesOption(challengesOptions);
   };
 
@@ -45,15 +45,14 @@ function TeamTotalSubmission({ darkMode }) {
     // eslint-disable-next-line
   }, [id]);
 
-
   useEffect(() => {
-    setChosenChallenges('assignments')
-  }, [])
+    setChosenChallenges('assignments');
+  }, []);
 
   const COLORS = ['#00C49F', '#FF8042', '#005FAC'];
   const RADIAN = Math.PI / 180;
   const renderCustomizedLabel = ({
-    cx, cy, midAngle, innerRadius, outerRadius, percent
+    cx, cy, midAngle, innerRadius, outerRadius, percent,
   }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
