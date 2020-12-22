@@ -132,7 +132,7 @@
     width: 40%;
     text-align: center;
 }
-/**/
+
 .Landing-page-Open-Source-Button {
     width: 20%;
     background-color: transparent;
@@ -142,6 +142,66 @@
     align-self: center;
     cursor: pointer;
 }
+
+.Landing-page-Project-Leaders {
+    position: relative;
+    padding-top: 25%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-evenly;
+    color: white;
+}
+
+.Landing-page-Project-Leaders-H2 {
+    font-size: 3rem;
+}
+
+.Landing-page-Project-Leaders-Cards {
+    position: relative;
+    padding-top: 5%;
+    display: flex;
+    text-align: center;
+    justify-content: space-evenly;
+}
+
+.Landing-page-Project-Leaders-Root {
+    width: 25%;
+    height: 400px;
+    color: black;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.Landing-page-Project-Leaders-Icon {
+    position: absolute;
+    align-self: center;
+    margin: -50px auto auto -35px;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+.Landing-page-Project-Leaders-Name {
+    margin-top: 25px;
+    color: rgb(12, 12, 179);
+    font-weight: bold;
+}
+
+.Landing-page-Project-Leaders-Rule {
+    margin-top: 5px;
+    font-size: 0.8rem;
+}
+
+.Landing-page-Project-Leaders-Content {
+    margin-top: 10px;
+    font-size: 1.0rem;
+    overflow: auto;
+    height: 275px;
+}
+
+/**/
 
 .Heading-and-Buttons {
     position: absolute;
