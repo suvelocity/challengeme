@@ -99,7 +99,48 @@
     padding-top: 75%;
     display: flex;
     justify-content: space-evenly;
-    align-content: space-evenly;
+}
+
+.Landing-page-Open-Source {
+    position: relative;
+    padding-top: 65%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-evenly;
+    color: white;
+}
+
+.Landing-page-Open-Source-H2 {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    height: 30%;
+    font-size: 2.8rem;
+    align-self: center;
+    color: #FFFFFF;
+}
+
+.Landing-page-Open-Source-P {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.2rem;
+    align-self: center;
+    line-height: 2rem;
+    color: #FFFFFF;
+    width: 40%;
+    text-align: center;
+}
+/**/
+.Landing-page-Open-Source-Button {
+    width: 20%;
+    background-color: transparent;
+    min-width: 150px;
+    color: white;
+    border: 1px solid white;
+    align-self: center;
+    cursor: pointer;
 }
 
 .Heading-and-Buttons {

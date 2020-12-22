@@ -8,7 +8,8 @@ import Section from './Cards/Section';
 import Student from './SvgComponents/Student';
 import Teams from './SvgComponents/Teams';
 import TeacherAnalytics from './SvgComponents/TeacherAnalytics';
-
+import IconButton from '@material-ui/core/IconButton';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import './LandingPage.css';
 
 export default function LandingPage() {
@@ -74,6 +75,20 @@ export default function LandingPage() {
                     < Section head={elem.head} content={elem.content} picture={elem.picture} />)
                 }
             </suction>
+            <section className='Landing-page-Open-Source' >
+                <h2 className='Landing-page-Open-Source-H2'>Hey... It’s  an Open Source Project!</h2>
+                <p className='Landing-page-Open-Source-P'>Lorem ipsum dolor sit amet consecrator
+                adipisicing elit. Porro ullam consequuntur
+                amet reprehenderit unde tenetur saepe
+                fuga nobis voluptatum ipsam reiciendis est
+                nemo dolorem molestias, molestiae ipsum
+                        minus quas eaque?</p>
+                <button className='Landing-page-Open-Source-Button' >Join the Team
+                   <IconButton>
+                        <GitHubIcon style={{ color: 'white' }} />
+                    </IconButton></button>
+            </section>
+
             {/* <div className='Heading-and-Buttons'></div> */}
             {/* <div className='Card-explanation-section'></div> */}
             {/* <div className='Auto-Layout'></div> */}
