@@ -250,7 +250,10 @@ function ChallengePage({ darkMode }) {
   };
 
   return challenge ? (
-    <div style={{ overflowY: 'auto', height: '100vh', width: '100%' }}>
+    <div style={{
+      overflowY: 'auto', height: '100vh', width: '100%', background: 'linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%)'
+
+    }}>
       <div className="one-challenge-container">
         <div className="one-challenge-challenge-container">
           <h1 className="one-challenge-info-title" cy-test="challenge-name">

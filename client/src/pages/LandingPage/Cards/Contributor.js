@@ -11,7 +11,7 @@ export default function SimpleCard({ icon, name, github }) {
             <CardContent>
                 <Typography className='Landing-page-Contributors-Name' variant="h5" component="h2">{name}</Typography>
                 <Typography className='Landing-page-Contributors-Icon' variant="h5" component="img" src={icon} />
-                <div> <IconButton href={`https://github.com/${github}`} >
+                <div> <IconButton href={`https://github.com/${github}`} target="_blank" >
                     <GitHubIcon className='Landing-page-Contributors-Github-Icon' />
                 </IconButton>
                 </div>

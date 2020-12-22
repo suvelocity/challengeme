@@ -110,7 +110,7 @@ export default function LandingPage() {
                       new challenges with many feauture’s to come</p>
                     <div className='Landing-page-View-Buttons'>
                         <Link to='/challenges' className='Landing-page-View-GetStarted' >Get started</Link>
-                        <a href='https://suvelocity.github.io/challengeme/Guides/getting-started.html' className='Landing-page-View-Learn-More'>Learn more</a>
+                        <a href='https://suvelocity.github.io/challengeme/Guides/getting-started.html' target="_blank" className='Landing-page-View-Learn-More'>Learn more</a>
                     </div>
                 </div>
                 <div className='Landing-page-View-Hacker-walks'>
@@ -134,7 +134,7 @@ export default function LandingPage() {
                 fuga nobis voluptatum ipsam reiciendis est
                 nemo dolorem molestias, molestiae ipsum
                         minus quas eaque?</p>
-                <a href='https://github.com/suvelocity/challengeme' className='Landing-page-Open-Source-Button' >Join the Team
+                <a href='https://github.com/suvelocity/challengeme' target="_blank" className='Landing-page-Open-Source-Button' >Join the Team
                    <IconButton>
                         <GitHubIcon style={{ color: 'white' }} />
                     </IconButton></a>
