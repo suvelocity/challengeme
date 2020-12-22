@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import mixpanel from 'mixpanel-browser';
 import Cookies from 'js-cookie';
+import { Link } from "react-router-dom";
 import WalkingManIcon from './SvgComponents/WalkingManIcon';
 import Title from './SvgComponents/Title';
 import Stripes from './SvgComponents/Stripes';
@@ -107,9 +108,9 @@ export default function LandingPage() {
                     <p>ChallengeMe is your best choice if you wish to master
                     your coding skill, manage your class tasks and creating
                       new challenges with many feauture’s to come</p>
-                    <div style={{ display: 'flex' }}>
-                        <button>Get started</button>
-                        <button>Learn more</button>
+                    <div className='Landing-page-View-Buttons'>
+                        <Link to='/challenges' className='Landing-page-View-GetStarted' >Get started</Link>
+                        <a href='https://suvelocity.github.io/challengeme/Guides/getting-started.html' className='Landing-page-View-Learn-More'>Learn more</a>
                     </div>
                 </div>
                 <div className='Landing-page-View-Hacker-walks'>
@@ -133,10 +134,10 @@ export default function LandingPage() {
                 fuga nobis voluptatum ipsam reiciendis est
                 nemo dolorem molestias, molestiae ipsum
                         minus quas eaque?</p>
-                <button className='Landing-page-Open-Source-Button' >Join the Team
+                <a href='https://github.com/suvelocity/challengeme' className='Landing-page-Open-Source-Button' >Join the Team
                    <IconButton>
                         <GitHubIcon style={{ color: 'white' }} />
-                    </IconButton></button>
+                    </IconButton></a>
             </section>
             <section className='Landing-page-Project-Leaders' >
                 <h2 className='Landing-page-Project-Leaders-H2'>Project Leaders</h2>

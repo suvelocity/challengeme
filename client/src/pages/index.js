@@ -92,6 +92,7 @@ export default function Router() {
                   <ErrorBoundary>
                     <Switch>
                       <Route exact={true} path="/" component={LandingPage} />
+                      <Route exact={true} path="/challenges" component={Home} />
                       <Route exact={true} path="/challenges/:id" render={() => <ChallengePage darkMode={darkTheme} />} />
                       <PublicRoute exact={true} path="/register" component={Register} />
                       <PublicRoute exact={true} path="/login" component={Login} />
