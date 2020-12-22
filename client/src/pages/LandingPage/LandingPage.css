@@ -1,5 +1,3 @@
-/* Landing */
-
 .Landing-page-main {
     position: relative;
     width: 100%;
@@ -7,29 +5,94 @@
     background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
 }
 
-/* Vector 3 */
-
-.Vector-3 {
+.Landing-page-Vector {
     position: absolute;
-    width: 3458px;
-    height: 4828px;
-    left: 0px;
-    top: 448px;
-    background: #FFFFFF;
-    border: 1px solid #000000;
+    background-image: url('../../images/Vector-3.svg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    height: 100%;
+    width: 100%;
+    top: 4%;
 }
 
-/* Hacker walks */
+.Landing-page-title {
+    display: flex;
+    justify-content: center;
+    padding-top: 20%;
+}
 
-.Hacker-walks {
+.Landing-page-under-title-paragraph {
+    position: absolute;
+    width: 600px;
+    padding-top: 10%;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 59px;
+    text-align: center;
+    letter-spacing: 0.245em;
+    color: #FFFFFF;
+}
+
+.Landing-page-View {
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    padding-top: 35%;
+    height: 20%vh;
+    width: 100vw;
+}
+
+.Landing-page-View-content {
+    display: flex;
+    flex-direction: column;
+    height: 30%;
+    width: 40%;
+}
+
+.Landing-page-View-content h2 {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    height: 30%;
+    font-size: 2.8rem;
+    color: #FFFFFF;
+}
+
+.Landing-page-View-content p {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    color: #FFFFFF;
+}
+
+.Landing-page-stripes {
+    position: absolute;
+    float: right;
+    padding-top: 25%;
+    padding-left: 70%;
+}
+
+.Landing-page-Watch-Video {
     position: relative;
-    width: 658.96px;
-    height: 461px;
-    /* left: 1193.64px; */
-    top: 1008px;
+    top: 7%;
+    cursor: pointer;
+    margin-left: 45%;
+    width: 20%;
+    height: 0.8%;
+    background: #FAFAFA;
+    border: 1px solid #00AD98;
+    box-sizing: border-box;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2.5rem;
+    text-align: center;
+    color: #00AD98;
 }
-
-/* Heading and Buttons */
 
 .Heading-and-Buttons {
     position: absolute;
@@ -50,14 +113,6 @@
 }
 
 /* Watch Video */
-
-.Watch-Video {
-    position: absolute;
-    width: 499.88px;
-    height: 148px;
-    left: 713px;
-    top: 2549px;
-}
 
 /* Card explanation section */
 
@@ -96,22 +151,6 @@
 }
 
 /* Dont limit your challenges Challenge your Limits */
-
-.Dont-limit-your-challenges-Challenge-your-Limits {
-    position: absolute;
-    width: 954px;
-    height: 118px;
-    left: 513px;
-    top: 559px;
-    font-family: Ubuntu;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 51px;
-    line-height: 59px;
-    text-align: center;
-    letter-spacing: 0.245em;
-    color: #FFFFFF;
-}
 
 /* Frame 4 */
 

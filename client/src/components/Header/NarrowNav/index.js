@@ -78,7 +78,7 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
     }
   };
   const headerStyle = {
-    backgroundColor: darkMode ? 'rgb(51,51,51)' : 'rgb(44, 44, 119)',
+    backgroundColor: darkMode ? 'rgb(51,51,51)' : 'transfer',
   };
   const letterColor = {
     color: darkMode ? 'white' : 'black',

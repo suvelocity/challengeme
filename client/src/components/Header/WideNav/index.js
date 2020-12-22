@@ -80,7 +80,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
   };
 
   const headerStyle = {
-    backgroundColor: darkMode ? 'rgb(51,51,51)' : 'rgb(44, 44, 119)',
+    backgroundColor: darkMode ? 'rgb(51,51,51)' : 'transport',
   };
   const letterColor = {
     color: darkMode ? 'white' : 'white',

@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import mixpanel from 'mixpanel-browser';
 import Cookies from 'js-cookie';
-// import WalkingManIcon from './WalkingManIcon';
+import WalkingManIcon from './WalkingManIcon';
+import Title from './Title';
+import Stripes from './Stripes';
 import './LandingPage.css';
 
 export default function LandingPage() {
@@ -14,14 +16,34 @@ export default function LandingPage() {
 
     return (
         <div className='Landing-page-main'>
-            Landing Page
-            {/* <div className='Vector-3'></div> */}
-            <div className='Hacker-walks'>
-            {/* <WalkingManIcon /> */}
-            </div>
+            <section className='Landing-page-title'>
+                <Title />
+                <p className='Landing-page-under-title-paragraph' >
+                    Dont limit your challenges
+                    Challenge your Limits
+            </p>
+            </section  >
+            <div className='Landing-page-Vector' />
+            <section className='Landing-page-View'  >
+                <div className='Landing-page-View-content'  >
+                    <h2>Up for the Challenge?</h2>
+                    <p>ChallengeMe is your best choice if you wish to master
+                    your coding skill, manage your class tasks and creating
+                      new challenges with many feauture’s to come</p>
+                    <div style={{ display: 'flex' }}>
+                        <button>Get started</button>
+                        <button>Learn more</button>
+                    </div>
+                </div>
+                <div className='Landing-page-View-Hacker-walks'>
+                    <WalkingManIcon />
+                </div>
+            </section>
+            <span className='Landing-page-stripes'>
+                <Stripes />
+            </span>
+            <button className='Landing-page-Watch-Video'>Watch Video</button>
             {/* <div className='Heading-and-Buttons'></div> */}
-            {/* <div className='go-like-lines'></div> */}
-            {/* <div className='Watch-Video'></div> */}
             {/* <div className='Card-explanation-section'></div> */}
             {/* <div className='Auto-Layout'></div> */}
             {/* <div className='Its-Open-Source'></div> */}
