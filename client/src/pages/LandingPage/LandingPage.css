@@ -94,6 +94,14 @@
     color: #00AD98;
 }
 
+.Landing-page-Sections-Cards {
+    position: relative;
+    padding-top: 75%;
+    display: flex;
+    justify-content: space-evenly;
+    align-content: space-evenly;
+}
+
 .Heading-and-Buttons {
     position: absolute;
     width: 871px;

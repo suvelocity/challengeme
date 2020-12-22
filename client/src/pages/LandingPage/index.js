@@ -1,18 +1,44 @@
 import React, { useEffect, useState, useContext } from 'react';
 import mixpanel from 'mixpanel-browser';
 import Cookies from 'js-cookie';
-import WalkingManIcon from './WalkingManIcon';
-import Title from './Title';
-import Stripes from './Stripes';
+import WalkingManIcon from './SvgComponents/WalkingManIcon';
+import Title from './SvgComponents/Title';
+import Stripes from './SvgComponents/Stripes';
+import Section from './Cards/Section';
+import Student from './SvgComponents/Student';
+import Teams from './SvgComponents/Teams';
+import TeacherAnalytics from './SvgComponents/TeacherAnalytics';
+
 import './LandingPage.css';
 
 export default function LandingPage() {
-    const [state, setState] = useState()
+    // const [state, setState] = useState()
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        // eslint-disable-next-line
-    }, [])
+    //     // eslint-disable-next-line
+    // }, [])
+
+    const SectionsCards = [
+        {
+            head: 'Student',
+            content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
+            `,
+            picture: <Student />
+        },
+        {
+            head: 'Teams',
+            content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
+            `,
+            picture: <Teams />
+        },
+        {
+            head: 'Teacher and Analytics',
+            content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
+            ` ,
+            picture: <TeacherAnalytics />
+        }
+    ]
 
     return (
         <div className='Landing-page-main'>
@@ -43,6 +69,11 @@ export default function LandingPage() {
                 <Stripes />
             </span>
             <button className='Landing-page-Watch-Video'>Watch Video</button>
+            <suction className='Landing-page-Sections-Cards' >
+                {SectionsCards.map(elem =>
+                    < Section head={elem.head} content={elem.content} picture={elem.picture} />)
+                }
+            </suction>
             {/* <div className='Heading-and-Buttons'></div> */}
             {/* <div className='Card-explanation-section'></div> */}
             {/* <div className='Auto-Layout'></div> */}
