@@ -176,17 +176,22 @@
 
 .Landing-page-Project-Leaders-Icon {
     position: absolute;
-    align-self: center;
-    margin: -50px auto auto -35px;
-    width: 70px;
+}
+
+.Landing-page-Project-Leaders-Image {
+    position: absolute;
+    margin: -50px auto auto 130px;
     height: 70px;
+    width: 70px;
     border-radius: 50%;
+    cursor: pointer;
 }
 
 .Landing-page-Project-Leaders-Name {
     margin-top: 25px;
     color: rgb(12, 12, 179);
     font-weight: bold;
+    cursor: pointer;
 }
 
 .Landing-page-Project-Leaders-Rule {
@@ -201,131 +206,63 @@
     height: 275px;
 }
 
-/**/
-
-.Heading-and-Buttons {
-    position: absolute;
-    width: 871px;
-    height: 477.56px;
-    left: 127px;
-    top: 1043.44px;
-}
-
-/* go like lines */
-
-.go-like-lines {
-    position: absolute;
-    width: 511.72px;
-    height: 334px;
-    left: 1294px;
-    top: 1993px;
-}
-
-/* Watch Video */
-
-/* Card explanation section */
-
-.Card-explanation-section {
-    position: absolute;
-    width: 1654px;
-    height: 661px;
-    left: 163px;
-    top: 3045px;
-}
-
-/* Contribute Heading */
-
-/* Auto Layout */
-
-.Auto-Layout {
+.Landing-page-Contributors {
+    position: relative;
+    padding-top: 25%;
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 10px;
-    position: absolute;
-    width: 456px;
-    height: 154px;
-    left: 791px;
-    top: 7879px;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-evenly;
+    color: white;
 }
 
-/* Its Open Source */
-
-.Its-Open-Source {
-    position: absolute;
-    width: 1294px;
-    height: 966px;
-    left: 365px;
-    top: 5138px;
+.Landing-page-Contributors-H2 {
+    font-size: 3rem;
 }
 
-/* Dont limit your challenges Challenge your Limits */
-
-/* Frame 4 */
-
-/* Auto Layout */
-
-.Auto-Layout1 {
+.Landing-page-Contributors-Cards {
+    position: relative;
+    padding-top: 5%;
+    padding-bottom: 5%;
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 10px;
-    position: absolute;
-    width: 709px;
-    height: 159px;
-    left: 636px;
-    top: 346px;
+    text-align: center;
+    justify-content: space-evenly;
+    border-top: 1px solid white;
+    border-bottom: 1px solid white;
 }
 
-/* NavbarII */
-
-.NavbarII {
-    position: absolute;
-    width: 1980px;
-    height: 350px;
-    left: 0px;
-    top: 0px;
+.Landing-page-Contributors-Root {
+    width: 15%;
+    height: 250px;
+    color: black;
+    background-color: transparent;
+    border: 1px solid white;
+    display: flex;
+    flex-direction: column;
 }
 
-/* Project Leaders */
-
-.Project-Leaders {
-    position: absolute;
-    width: 1832px;
-    height: 1223px;
-    left: 67px;
-    top: 6276px;
+.Landing-page-Contributors-Name {
+    color: rgb(0, 0, 0);
+    font-weight: bold;
 }
 
-/* Contribute Section */
-
-.Contribute-Section {
-    width: 2049px;
-    height: 1653px;
-    left: 1px;
-    top: 7809px;
+.Landing-page-Contributors-Icon {
+    position: relative;
+    align-self: center;
+    margin-top: 10px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
 }
 
-/* image 5 */
-
-.image-5 {
-    position: absolute;
-    width: 110px;
-    height: 110px;
-    left: 917px;
-    top: 6666px;
-    /* background: url(image.png); */
-    border-radius: 400px;
+.Landing-page-Contributors-Github-Icon {
+    position: relative;
+    margin-top: 3px;
+    height: 50px;
+    width: 50px;
+    color: white;
 }
 
-/* image 6 */
-
-.image-6 {
-    position: absolute;
-    width: 110px;
-    height: 110px;
-    left: 1572px;
-    top: 6667px;
-    /* background: url(image.png); */
-    border-radius: 55px;
+.Landing-page-Contributors-Github {
+    color: white;
 }
