@@ -25,6 +25,7 @@ import PublicRoute from '../Routes/publicRoute'
 
 const NotFound = lazy(() => import("../pages/NotFound"));
 const Home = lazy(() => import("./Home"));
+const LandingPage = lazy(() => import("./LandingPage"));
 const ChallengePage = lazy(() => import("./OneChallenge"));
 
 export default function Router() {
@@ -90,7 +91,7 @@ export default function Router() {
                 <Suspense fallback={<Loading darkMode={darkTheme} />}>
                   <ErrorBoundary>
                     <Switch>
-                      <Route exact={true} path="/" component={Home} />
+                      <Route exact={true} path="/" component={LandingPage} />
                       <Route exact={true} path="/challenges/:id" render={() => <ChallengePage darkMode={darkTheme} />} />
                       <PublicRoute exact={true} path="/register" component={Register} />
                       <PublicRoute exact={true} path="/login" component={Login} />

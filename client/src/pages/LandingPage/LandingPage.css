@@ -1,0 +1,183 @@
+/* Landing */
+
+.Landing-page-main {
+    position: relative;
+    width: 100%;
+    height: 10000px;
+    background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
+}
+
+/* Vector 3 */
+
+.Vector-3 {
+    position: absolute;
+    width: 3458px;
+    height: 4828px;
+    left: 0px;
+    top: 448px;
+    background: #FFFFFF;
+    border: 1px solid #000000;
+}
+
+/* Hacker walks */
+
+.Hacker-walks {
+    position: relative;
+    width: 658.96px;
+    height: 461px;
+    /* left: 1193.64px; */
+    top: 1008px;
+}
+
+/* Heading and Buttons */
+
+.Heading-and-Buttons {
+    position: absolute;
+    width: 871px;
+    height: 477.56px;
+    left: 127px;
+    top: 1043.44px;
+}
+
+/* go like lines */
+
+.go-like-lines {
+    position: absolute;
+    width: 511.72px;
+    height: 334px;
+    left: 1294px;
+    top: 1993px;
+}
+
+/* Watch Video */
+
+.Watch-Video {
+    position: absolute;
+    width: 499.88px;
+    height: 148px;
+    left: 713px;
+    top: 2549px;
+}
+
+/* Card explanation section */
+
+.Card-explanation-section {
+    position: absolute;
+    width: 1654px;
+    height: 661px;
+    left: 163px;
+    top: 3045px;
+}
+
+/* Contribute Heading */
+
+/* Auto Layout */
+
+.Auto-Layout {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 10px;
+    position: absolute;
+    width: 456px;
+    height: 154px;
+    left: 791px;
+    top: 7879px;
+}
+
+/* Its Open Source */
+
+.Its-Open-Source {
+    position: absolute;
+    width: 1294px;
+    height: 966px;
+    left: 365px;
+    top: 5138px;
+}
+
+/* Dont limit your challenges Challenge your Limits */
+
+.Dont-limit-your-challenges-Challenge-your-Limits {
+    position: absolute;
+    width: 954px;
+    height: 118px;
+    left: 513px;
+    top: 559px;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 51px;
+    line-height: 59px;
+    text-align: center;
+    letter-spacing: 0.245em;
+    color: #FFFFFF;
+}
+
+/* Frame 4 */
+
+/* Auto Layout */
+
+.Auto-Layout1 {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 10px;
+    position: absolute;
+    width: 709px;
+    height: 159px;
+    left: 636px;
+    top: 346px;
+}
+
+/* NavbarII */
+
+.NavbarII {
+    position: absolute;
+    width: 1980px;
+    height: 350px;
+    left: 0px;
+    top: 0px;
+}
+
+/* Project Leaders */
+
+.Project-Leaders {
+    position: absolute;
+    width: 1832px;
+    height: 1223px;
+    left: 67px;
+    top: 6276px;
+}
+
+/* Contribute Section */
+
+.Contribute-Section {
+    width: 2049px;
+    height: 1653px;
+    left: 1px;
+    top: 7809px;
+}
+
+/* image 5 */
+
+.image-5 {
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    left: 917px;
+    top: 6666px;
+    /* background: url(image.png); */
+    border-radius: 400px;
+}
+
+/* image 6 */
+
+.image-6 {
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    left: 1572px;
+    top: 6667px;
+    /* background: url(image.png); */
+    border-radius: 55px;
+}
