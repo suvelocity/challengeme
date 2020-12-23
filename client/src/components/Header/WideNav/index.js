@@ -19,7 +19,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import Divider from '@material-ui/core/Divider';
 import Brightness7Icon from '@material-ui/icons/Brightness7';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
@@ -32,6 +32,42 @@ import network from '../../../services/network';
 import FilteredLabels from '../../../context/FilteredLabelsContext';
 import { Logged } from '../../../context/LoggedInContext';
 import Search from '../Search';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { withStyles  } from '@material-ui/core/styles';
+
+
+const StyledMenu = withStyles({
+  paper: {
+    border: '1px solid #d3d4d5',
+  },
+})((props) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'top',
+      horizontal: 'right',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+const StyledMenuItem = withStyles((theme) => ({
+  root: {
+    '&:focus': {
+      backgroundColor: theme.palette.primary.main,
+      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+        color: theme.palette.common.white,
+      },
+    },
+  },
+}))(MenuItem);
+
 
 export default function WideNav({ darkMode, setDarkMode }) {
   const filteredLabels = useContext(FilteredLabels);
@@ -43,7 +79,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
   const currentLocation = useLocation();
   const [openNavBar, setOpenNavBar] = useState(false);
   useEffect(() => {
-    if (currentLocation.pathname !== '/') {
+    if (currentLocation.pathname !== '/challenges') {
       setLabels([]);
     } else {
       const newFilter = chooseLabels.filter(
@@ -97,7 +133,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
     <>
       <AppBar position="fixed" className={clsx(classes.appBarRegolar)} style={headerStyle}>
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -105,7 +141,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
             className={clsx(classes.menuButton)}
           >
             <MenuIcon style={letterColor} />
-          </IconButton>
+          </IconButton> */}
           <Typography variant="h6" className={classes.title}>
             <NavLink to="/" exact className="link-rout">
               <div
@@ -123,9 +159,10 @@ export default function WideNav({ darkMode, setDarkMode }) {
               </div>
             </NavLink>
           </Typography>
+            {currentLocation.pathname === '/challenges' ? (
+              <>
           <Search darkMode={darkMode} setDarkMode={setDarkMode} />
           <div style={{ minWidth: '150px', width: 'fit-content' }}>
-            {currentLocation.pathname === '/' ? (
               <ChooseLabels
                 labels={labels}
                 chooseLabels={chooseLabels}
@@ -133,9 +170,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
                 darkMode={darkMode}
                 setLabels={setLabels}
               />
-            ) : null}
           </div>
-          {currentLocation.pathname === '/' ? (
             <Button
               onClick={() => {
                 filteredLabels.setFilteredLabels(labels ? labels.map((label) => label.value) : []);
@@ -144,7 +179,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
               className={darkMode ? classes.filterButtonDark : classes.filterButton}
             >
               filter
-            </Button>
+            </Button></>
           ) : null}
           <div style={{ flex: 1 }} />
           <IconButton
@@ -154,16 +189,18 @@ export default function WideNav({ darkMode, setDarkMode }) {
               setDarkMode((prev) => !prev);
             }}
           >
-            {darkMode ? (
+            {currentLocation.pathname !== '/' ? 
+            darkMode ? (
               <Brightness7Icon style={letterColor} />
             ) : (
                 <Brightness4Icon style={letterColor} />
-              )}
+              ):null}
           </IconButton>
           {LoggedContext.logged&& Cookies.get('userName')?
             <Tooltip title={Cookies.get('userName')}>
-              <Link to="/profile/info" className="link-rout">
+              {/* <Link to="/profile/info" className="link-rout"> */}
                 <Avatar
+                onClick={handleDrawerOpen}
                   aria-label="account of current user"
                   aria-controls="menu-appbar"
                   aria-haspopup="true"
@@ -175,7 +212,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
                 >
                   {Cookies.get('userName').slice(0, 2)}
                 </Avatar>
-              </Link>
+              {/* </Link> */}
             </Tooltip> :
             <>
               <Link to="/login" className="link-rout">
@@ -191,21 +228,27 @@ export default function WideNav({ darkMode, setDarkMode }) {
             </>}
         </Toolbar>
       </AppBar>
-      <Drawer
+      {/* <Drawer
         variant="persistent"
         anchor="left"
         open={openNavBar}
         classes={darkMode ? { paper: classes.drawerPaperDark } : { paper: classes.drawerPaper }}
+      >*/}
+        <StyledMenu
+        id="customized-menu"
+        anchorEl={openNavBar}
+        keepMounted
+        open={Boolean(openNavBar)}
+        onClose={handleDrawerClose}
       >
         <div className={classes.drawerHeader}>
         <b>
                 {LoggedContext.logged&&Cookies.get('userName') ? (`Hey ${Cookies.get('userName')}`): 'Welcome to ChallengeMe'}
               </b>
           <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon style={drawerColor} />
+            <ExpandLessIcon style={drawerColor} />
           </IconButton>
-        </div>
-
+        </div> 
         <Divider style={dividerColor} />
         <List className={classes.list}>
           <Link to="/" className="link-rout">
@@ -276,7 +319,8 @@ export default function WideNav({ darkMode, setDarkMode }) {
           </ListItem>:null}
           <Divider style={dividerColor} />
         </List>
-      </Drawer>
+        </StyledMenu>
+      {/* </Drawer> */}
     </>
   );
 }

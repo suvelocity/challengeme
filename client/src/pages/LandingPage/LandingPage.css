@@ -3,6 +3,7 @@
     width: 100%;
     height: 10000px;
     background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
+    /* mix-blend-mode: darken; */
 }
 
 .Landing-page-Vector {
@@ -81,7 +82,8 @@
     width: 40%;
     font-size: 25px;
     line-height: 50px;
-    border: 1px solid white;
+    /* border: 1px solid white; */
+    border: none;
     color: white;
     background-color: #00AD98;
     text-decoration: none;
