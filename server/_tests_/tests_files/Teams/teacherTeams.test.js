@@ -140,7 +140,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(userInformation.status).toBe(200);
-    expect(userInformation.body).toHaveLength(usersTeamsMock.filter((x) => x.teamId === teamsMock[0].id).length);
+    expect(userInformation.body.Users).toHaveLength(usersTeamsMock.filter((x) => x.teamId === teamsMock[0].id).length);
 
     await UserTeam.destroy({
       where: {
@@ -156,7 +156,7 @@ describe('Testing teams routes', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(userInformationAfterDelete.status).toBe(200);
-    expect(userInformationAfterDelete.body).toHaveLength(usersTeamsMock.filter((x) => x.teamId === teamsMock[0].id).length);
+    expect(userInformationAfterDelete.body.Users).toHaveLength(usersTeamsMock.filter((x) => x.teamId === teamsMock[0].id).length);
 
     const unauthorized = await request(app)
       .get(`/api/v1/users/teacher/${teamsMock[0].id}`)
