@@ -49,10 +49,10 @@ const StyledMenu = withStyles({
       vertical: 'top',
       horizontal: 'right',
     }}
-    transformOrigin={{
-      vertical: 'top',
-      horizontal: 'center',
-    }}
+    // transformOrigin={{
+    //   vertical: 'center bottom',
+    //   horizontal: 'center bottom',
+    // }}
     {...props}
   />
 ));
@@ -159,6 +159,24 @@ export default function WideNav({ darkMode, setDarkMode }) {
               </div>
             </NavLink>
           </Typography>
+          <Typography variant="h10" className={classes.title}>
+          <Link  to={LoggedContext.logged?"/teams":currentLocation.pathname} className="link-rout">
+                <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  marginRight: '10px',
+                  marginLeft: '40px',
+                }}
+              >
+                <GroupIcon style={letterColor} />
+                &nbsp;
+                <span style={letterColor} className="header-link-title">
+                Teams
+                </span>
+              </div>
+          </Link>
+          </Typography>
             {currentLocation.pathname === '/challenges' ? (
               <>
           <Search darkMode={darkMode} setDarkMode={setDarkMode} />
@@ -182,20 +200,20 @@ export default function WideNav({ darkMode, setDarkMode }) {
             </Button></>
           ) : null}
           <div style={{ flex: 1 }} />
-          <IconButton
-            aria-label="delete"
-            onClick={() => {
-              localStorage.setItem('darkMode', !darkMode);
-              setDarkMode((prev) => !prev);
-            }}
+          {currentLocation.pathname !== '/' ? 
+          (<IconButton
+          aria-label="delete"
+          onClick={() => {
+            localStorage.setItem('darkMode', !darkMode);
+            setDarkMode((prev) => !prev);
+          }}
           >
-            {currentLocation.pathname !== '/' ? 
-            darkMode ? (
+            {darkMode ? (
               <Brightness7Icon style={letterColor} />
             ) : (
-                <Brightness4Icon style={letterColor} />
-              ):null}
-          </IconButton>
+                <Brightness4Icon style={letterColor} />)}
+          </IconButton>)
+              :null}
           {LoggedContext.logged&& Cookies.get('userName')?
             <Tooltip title={Cookies.get('userName')}>
               {/* <Link to="/profile/info" className="link-rout"> */}
@@ -240,6 +258,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
         keepMounted
         open={Boolean(openNavBar)}
         onClose={handleDrawerClose}
+        className={classes.menu}
       >
         <div className={classes.drawerHeader}>
         <b>
@@ -251,6 +270,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
         </div> 
         <Divider style={dividerColor} />
         <List className={classes.list}>
+        {currentLocation.pathname === '/challenges' ? 
           <Link to="/" className="link-rout">
             <ListItem button onClick={handleDrawerClose} style={drawerColor}>
               <ListItemIcon>
@@ -258,7 +278,15 @@ export default function WideNav({ darkMode, setDarkMode }) {
               </ListItemIcon>
               <ListItemText primary="Home" />
             </ListItem>
-          </Link>
+          </Link>:
+          <Link to="/challenges" className="link-rout">
+          <ListItem button onClick={handleDrawerClose} style={drawerColor}>
+            <ListItemIcon>
+              <HomeIcon style={drawerColor} />
+            </ListItemIcon>
+            <ListItemText primary="Challenges" />
+          </ListItem>
+        </Link>}
           <Divider style={dividerColor} />
           <Link to="/profile/info" className="link-rout">
             <ListItem button onClick={handleDrawerClose} style={drawerColor}>
@@ -270,14 +298,14 @@ export default function WideNav({ darkMode, setDarkMode }) {
           </Link>
 
           <Divider style={dividerColor} />
-          <Link to="/teams" className="link-rout">
+          {/* <Link to="/teams" className="link-rout">
             <ListItem button onClick={handleDrawerClose} style={drawerColor}>
               <ListItemIcon>
                 <GroupIcon style={drawerColor} />
               </ListItemIcon>
               <ListItemText primary="Teams Area" />
             </ListItem>
-          </Link>
+          </Link> */}
           {LoggedContext.isAdmin && (
             <>
               <Divider style={dividerColor} />

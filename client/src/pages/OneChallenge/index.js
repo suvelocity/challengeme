@@ -70,14 +70,24 @@ function ChallengePage({ darkMode }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loadingReq, setLoadingReq] = useState(false);
   const [ratingCount, setRatingCount] = useState('');
+  const [boilerPlate, setBoilerPlate] = useState('');
 
   const filteredLabels = useContext(FilteredLabels);
   const LoggedContext = useContext(Logged);
 
+  const getBoilerPlate = async () => {
+    const { data: boilerPlate } = await network.get(
+      `/api/v1/challenges/boiler-plate/${challengeId}`,
+    );
+    setBoilerPlate(boilerPlate.boilerPlate)
+  }
 
   useEffect(() => {
-    const user = Cookies.get('userName');
-    mixpanel.track('User On Challenge Page', { User: `${user}`, ChallengeId: `${challengeId}` });
+    if (LoggedContext.logged) {
+      const user = Cookies.get('userName');
+      mixpanel.track('User On Challenge Page', { User: `${user}`, ChallengeId: `${challengeId}` });
+      getBoilerPlate()
+    }
     // eslint-disable-next-line
   }, []);
 
@@ -328,7 +338,7 @@ function ChallengePage({ darkMode }) {
                   } catch (error) {
                   }
                 }}
-                href={`https://github.com/${challenge.boilerPlate}`}
+                href={`https://github.com/${boilerPlate}`}
                 target="_blank"
               >
                 Start this challenge
