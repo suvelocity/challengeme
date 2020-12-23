@@ -12,7 +12,7 @@ reviewsRouter.get('/:challengeId', async (req, res) => {
       where: {
         challengeId
       },
-      attributes: ['id', 'title', 'content', 'rating', 'createdAt'],
+      attributes: ['id','challengeId', 'title', 'content', 'rating', 'createdAt'],
       include: {
         model: User,
         attributes: ['userName'],

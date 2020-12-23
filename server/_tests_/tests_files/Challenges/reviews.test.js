@@ -21,7 +21,7 @@ describe('testing challenges endpoints', () => {
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(reviewsByChallenge.status).toBe(200);
-    expect(reviewsByChallenge.body.every((challenge) => challenge.challengeId === challengesMock[0].id)).toBe(true);
+    expect(reviewsByChallenge.body.every((review) => review.challengeId === challengesMock[0].id)).toBe(true);
 
     done();
   });
