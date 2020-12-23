@@ -54,7 +54,7 @@ describe('testing challenges endpoints', () => {
     done();
   });
 
-  test('Can get challenge information', async (done) => {
+  test.only('Can get challenge information', async (done) => {
     await Challenge.bulkCreate(challengesMock);
 
     const challenges = await request(app)
@@ -66,8 +66,8 @@ describe('testing challenges endpoints', () => {
     expect(challenges.body.name).toBe(challengesMock[0].name);
     expect(challenges.body.description).toBe(challengesMock[0].description);
     expect(challenges.body.type).toBe(challengesMock[0].type);
-    expect(challenges.body.boilerPlate).toBe(challengesMock[0].boilerPlate);
-    expect(challenges.body.repositoryName).toBe(challengesMock[0].repositoryName);
+    expect(challenges.body.boilerPlate).toBeUndefined()
+    expect(challenges.body.repositoryName).toBeUndefined()
     expect(challenges.body.hasOwnProperty('Labels')).toBe(true);
     expect(challenges.body.hasOwnProperty('Author')).toBe(true);
     expect(challenges.body.hasOwnProperty('averageRaiting')).toBe(true);
