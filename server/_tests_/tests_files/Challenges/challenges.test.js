@@ -54,12 +54,11 @@ describe('testing challenges endpoints', () => {
     done();
   });
 
-  test.only('Can get challenge information', async (done) => {
+  test('Can get challenge information without repositories', async (done) => {
     await Challenge.bulkCreate(challengesMock);
 
     const challenges = await request(app)
       .get(`/api/v1/challenges/info/${challengesMock[0].id}`)
-      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(challenges.status).toBe(200);
     expect(challenges.body.id).toBe(challengesMock[0].id);
@@ -72,6 +71,23 @@ describe('testing challenges endpoints', () => {
     expect(challenges.body.hasOwnProperty('Author')).toBe(true);
     expect(challenges.body.hasOwnProperty('averageRaiting')).toBe(true);
     expect(challenges.body.hasOwnProperty('submissionsCount')).toBe(true);
+    done();
+  });
+
+  test('Can get challenge boilerplate', async (done) => {
+    await Challenge.bulkCreate(challengesMock);
+
+    const challenges = await request(app)
+      .get(`/api/v1/challenges/boiler-plate/${challengesMock[0].id}`)
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
+
+    expect(challenges.status).toBe(200);
+    expect(challenges.body.boilerPlate).toBe(challengesMock[0].boilerPlate);
+
+    const unauthorized = await request(app)
+      .get(`/api/v1/challenges/boiler-plate/${challengesMock[0].id}`)
+
+    expect(unauthorized.status).toBe(401);
     done();
   });
 
