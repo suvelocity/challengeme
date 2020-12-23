@@ -164,11 +164,11 @@ teamRouter.delete('/remove-user/:teamId', checkTeacherPermission, async (req, re
 });
 
 // get team information
-teamRouter.get('/single-team/:id', checkTeacherPermission, async (req, res) => {
+teamRouter.get('/single-team/:teamId', checkTeacherPermission, async (req, res) => {
   try {
     const userTeam = await Team.findAll({
       where: {
-        id: req.params.id,
+        id: req.params.teamId,
       },
       attributes: [
         'id', 'name', 'createdAt', 'updatedAt',
