@@ -1,19 +1,18 @@
 .Landing-page-main {
     position: relative;
     width: 100%;
-    height: 10000px;
+    height: 100%;
     background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
-    /* mix-blend-mode: darken; */
 }
 
 .Landing-page-Vector {
     position: absolute;
-    background-image: url('../../images/Vector-3.svg');
+    background-image: url('../../images/Second\ Try\ ShapitWhite.svg');
     background-repeat: no-repeat;
     background-size: 100%;
     height: 100%;
     width: 100%;
-    top: 4%;
+    top: 17%;
 }
 
 .Landing-page-title {
@@ -25,7 +24,7 @@
 .Landing-page-under-title-paragraph {
     position: absolute;
     width: 600px;
-    padding-top: 10%;
+    padding-top: 7%;
     font-family: Ubuntu;
     font-style: normal;
     font-weight: bold;
@@ -48,8 +47,9 @@
 .Landing-page-View-content {
     display: flex;
     flex-direction: column;
+    text-align: left;
     height: 30%;
-    width: 40%;
+    width: 37%;
 }
 
 .Landing-page-View-content h2 {
@@ -65,24 +65,27 @@
     font-family: Ubuntu;
     font-style: normal;
     font-weight: normal;
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 1.5rem;
     color: #FFFFFF;
 }
 
 .Landing-page-View-Buttons {
     display: flex;
-    justify-content: space-evenly;
+    width: auto;
+    padding-top: 10%;
+    padding-right: 30%;
+    width: 90%;
+    justify-content: space-between;
     text-align: center;
 }
 
 .Landing-page-View-GetStarted {
     z-index: 1000;
-    height: 50px;
-    width: 40%;
+    height: 55px;
+    width: 45%;
     font-size: 25px;
     line-height: 50px;
-    /* border: 1px solid white; */
     border: none;
     color: white;
     background-color: #00AD98;
@@ -92,9 +95,9 @@
 
 .Landing-page-View-Learn-More {
     z-index: 1000;
-    height: 50px;
+    height: 55px;
     line-height: 50px;
-    width: 40%;
+    width: 45%;
     font-size: 25px;
     text-decoration: none;
     color: white;
@@ -115,12 +118,12 @@
 
 .Landing-page-Watch-Video {
     position: relative;
-    top: 7%;
+    margin-top: 55%;
     cursor: pointer;
-    margin-left: 45%;
-    width: 20%;
+    margin-left: 37.5%;
+    width: 25%;
     min-width: 250px;
-    height: 0.8%;
+    height: 100px;
     background: #FAFAFA;
     border: 1px solid #00AD98;
     box-sizing: border-box;
@@ -128,14 +131,16 @@
     font-style: normal;
     font-weight: 500;
     font-size: 2.5rem;
+    line-height: 2.5rem;
     text-align: center;
     color: #00AD98;
 }
 
 .Landing-page-Sections-Cards {
     position: relative;
-    padding-top: 75%;
+    padding-top: 20%;
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
@@ -188,7 +193,6 @@
     display: flex;
     flex-direction: column;
     text-align: center;
-    justify-content: space-evenly;
     color: white;
 }
 
@@ -198,14 +202,16 @@
 
 .Landing-page-Project-Leaders-Cards {
     position: relative;
-    padding-top: 5%;
     display: flex;
     text-align: center;
+    flex-wrap: wrap;
     justify-content: space-evenly;
 }
 
 .Landing-page-Project-Leaders-Root {
     width: 25%;
+    min-width: 320px;
+    margin-top: 3%;
     height: 400px;
     color: black;
     background-color: white;
@@ -261,21 +267,25 @@
 
 .Landing-page-Contributors-Cards {
     position: relative;
-    padding-top: 5%;
-    padding-bottom: 5%;
+    padding-top: 1%;
+    padding-bottom: 1%;
     display: flex;
     text-align: center;
+    flex-wrap: wrap;
     justify-content: space-evenly;
-    border-top: 1px solid white;
-    border-bottom: 1px solid white;
+    border-top: 3px solid white;
+    border-bottom: 3px solid white;
 }
 
 .Landing-page-Contributors-Root {
-    width: 15%;
-    height: 250px;
+    width: 25%;
+    min-width: 150px;
+    max-width: 250px;
+    height: 100%;
     color: black;
     background-color: transparent;
-    border: 1px solid white;
+    border: 2px solid white;
+    border-radius: 5%;
     display: flex;
     flex-direction: column;
 }
@@ -304,4 +314,108 @@
 
 .Landing-page-Contributors-Github {
     color: white;
+}
+
+.Landing-page-Build-Your-Own-Challenge {
+    border-top: 3px solid white;
+    border-bottom: 3px solid white;
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    margin-top: 35%;
+    padding-bottom: 5%;
+    height: 20%vh;
+    width: 100vw;
+}
+
+.Landing-page-Build-Your-Own-Challenge-content {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    height: 30%;
+    width: 37%;
+}
+
+.Landing-page-Build-Your-Own-Challenge-content h2 {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    height: 30%;
+    font-size: 2.8rem;
+    color: #FFFFFF;
+}
+
+.Landing-page-Build-Your-Own-Challenge-content p {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    color: #FFFFFF;
+}
+
+.Landing-page-Build-Your-Own-Challenge-Buttons {
+    display: flex;
+    width: auto;
+    padding-top: 10%;
+    padding-right: 30%;
+    width: 90%;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.Landing-page-Build-Your-Own-Challenge-GetStarted {
+    z-index: 1000;
+    height: 55px;
+    width: 45%;
+    font-size: 25px;
+    line-height: 50px;
+    border: none;
+    color: white;
+    background-color: #00AD98;
+    text-decoration: none;
+    font-family: sans-serif;
+}
+
+.Landing-page-Build-Your-Own-Challenge-Learn-More {
+    z-index: 1000;
+    height: 55px;
+    line-height: 50px;
+    width: 45%;
+    font-size: 25px;
+    text-decoration: none;
+    color: white;
+    border: 1px solid white;
+    font-family: sans-serif;
+}
+
+.Landing-page-Build-Your-Own-Challenge-Board {
+    margin: auto 0 auto 0;
+    /* width: 40%; */
+    z-index: 1000;
+}
+
+.Landing-page-Footer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    color: white;
+    /* margin-bottom: -10000px; */
+}
+
+.Landing-page-Footer-Labels {
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    padding-top: 20%;
+    padding-left: 30%;
+    width: 40%;
+}
+
+.Landing-page-Footer-Single-Label {
+    color: white;
+}
+
+.Landing-page-Footer p {
+    padding-top:1%;
 }

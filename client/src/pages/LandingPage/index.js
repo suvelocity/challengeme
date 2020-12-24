@@ -11,6 +11,7 @@ import Contributor from './Cards/Contributor';
 import Student from './SvgComponents/Student';
 import Teams from './SvgComponents/Teams';
 import TeacherAnalytics from './SvgComponents/TeacherAnalytics';
+import Board from './SvgComponents/Board';
 import IconButton from '@material-ui/core/IconButton';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import './LandingPage.css';
@@ -24,6 +25,24 @@ export default function LandingPage() {
     // }, [])
 
     const SectionsCards = [
+        {
+            head: 'Student',
+            content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
+            `,
+            picture: <Student />
+        },
+        {
+            head: 'Teams',
+            content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
+            `,
+            picture: <Teams />
+        },
+        {
+            head: 'Teacher and Analytics',
+            content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
+            ` ,
+            picture: <TeacherAnalytics />
+        },
         {
             head: 'Student',
             content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
@@ -90,6 +109,35 @@ export default function LandingPage() {
             name: 'Tsach Ovadia',
             github: 'ItsDrTsach',
         }
+    ]
+
+    const footerLabels = [
+        {
+            name: 'Contact Us',
+            link: ''
+        },
+        {
+            name: '|'
+        },
+
+        {
+            name: 'FAQ',
+            link: ''
+        },
+        {
+            name: '|'
+        },
+        {
+            name: 'Reviews',
+            link: ''
+        },
+        {
+            name: '|'
+        },
+        {
+            name: 'Legal Stuff',
+            link: ''
+        },
     ]
 
     return (
@@ -162,7 +210,31 @@ export default function LandingPage() {
                     }
                 </div>
             </section>
+            <section className='Landing-page-Build-Your-Own-Challenge'  >
+                <div className='Landing-page-Build-Your-Own-Challenge-Board'>
+                    <Board />
+                </div>
+                <div className='Landing-page-Build-Your-Own-Challenge-content'  >
+                    <h2>Build Your Own Challenge?</h2>
+                    <p>ChallengeMe is your best choice if you wish to master
+                    your coding skill, manage your class tasks and creating
+                      new challenges with many feauture’s to come</p>
+                    <div className='Landing-page-Build-Your-Own-Challenge-Buttons'>
+                        <Link to='/AddNewChallenge' className='Landing-page-Build-Your-Own-Challenge-GetStarted' >Get started</Link>
+                        <a href='https://suvelocity.github.io/challengeme/Guides/addChallenge.html' target="_blank" className='Landing-page-Build-Your-Own-Challenge-Learn-More'>Learn more</a>
+                    </div>
+                </div>
 
+            </section>
+            <section className='Landing-page-Footer' >
+                <div className='Landing-page-Footer-Labels' >
+                    {footerLabels.map((label, index) =>
+                        <Link className='Landing-page-Footer-Single-Label' to={`/${label.link}`}>{label.name}</Link>
+                    )}
+                </div>
+                <p> Copyright © 2020 David And Shnitzer, Will allays love each other. All rights reserved. </p>
+
+            </section>
         </div>
     );
 }
