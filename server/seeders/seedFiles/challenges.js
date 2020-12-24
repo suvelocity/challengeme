@@ -14,7 +14,7 @@ module.exports = [
   {
     id: 2,
     name: 'React - 4 In A Row',
-    description: `The goal of the game is to draw either a vertical, horizontal or diagonal line with four balls of the same player chained together. Two players take turns in threading their balls into one of the seven columns. Each ball is placed in the lowest possible position in the selected column. The game immediately ends when one player connects four balls or when there is no empty space on the board - a tie.`,
+    description: `The goal of the game is to draw either a vertical, horizontal or diagonal line with four balls of the same player chained together.`,
     type: 'client-only',
     repository_name: 'suvelocity/4In-a-row-CHALLENGE',
     boiler_plate: 'suvelocity/4In-a-row-BOILERPLATE',
@@ -50,13 +50,7 @@ module.exports = [
   {
     id: 5,
     name: 'React - Chat app',
-    description: `Hello friend, today we are going to help you create a simple Chat-App.
-
-    In the app you will have to create both client and backend using React and Express accordingly.
-    
-    You have all the requirements below + A gif that will help you understand our requirements.
-    
-    Don't worry, we already took care of the CSS, the dependencies, the React configuration and the express configuration so chill and enjoy.`,
+    description: `Hello friend, today we are going to help you create a simple Chat-App.`,
     type: 'fullstack',
     repository_name: 'suvelocity/Chat_App-Challange',
     boiler_plate: 'suvelocity/Chat-App-Template',
@@ -92,9 +86,7 @@ module.exports = [
   {
     id: 8,
     name: 'JWT - Node.js',
-    description: `Welcome to the Best Authentication Challenge ever existed.
-    This challenge's goal is to learn and practice building a User Authentication and Authorization System in your project.
-    In order to pass this challenge successfully you should follow all of the requirements detailed below.`,
+    description: `Welcome to the Best Authentication Challenge ever existed.`,
     type: 'server-only',
     repository_name: 'suvelocity/Authentication-Challenge',
     boiler_plate: 'suvelocity/Authentication-Challenge-TEMPLATE',
@@ -119,8 +111,7 @@ module.exports = [
   {
     id: 10,
     name: 'React - Corona dashboard',
-    description: `We need your help to beat the COVID pandemic !!
-    this challenge will test your Back-End skills. you are required to use express.js and sequelize to analyze data from the given data base.`,
+    description: `We need your help to beat the COVID pandemic !!`,
     type: 'server-mysql',
     repository_name: 'suvelocity/corona-manager-chalenge',
     boiler_plate: 'suvelocity/corona-pandemic-manager',
