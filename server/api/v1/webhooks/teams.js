@@ -94,7 +94,7 @@ createUsersWebhookRouter.post('/', async (req, res) => {
       baseResponse.message = `Create ${teamName} Team With ${createUsers.newUsersForResponse.length} New Users Success`;
     }
 
-    const newTeamResponse = await Team.create({ name: teamName, externalId: teamExternalId });
+    const newTeamResponse = await Team.create({ name: teamName, externalId: teamExternalId, creator: req.entity.id  });
 
     dbLeadersExist.forEach((leader) => usersTeamToCreate.push(leader.toJSON()));
 
