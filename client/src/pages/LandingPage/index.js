@@ -1,6 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
-import mixpanel from 'mixpanel-browser';
-import Cookies from 'js-cookie';
+import React from 'react';
 import { Link } from "react-router-dom";
 import WalkingManIcon from './SvgComponents/WalkingManIcon';
 import Title from './SvgComponents/Title';
@@ -9,57 +7,60 @@ import Section from './Cards/Section';
 import ProjectLeader from './Cards/ProjectLeader';
 import Contributor from './Cards/Contributor';
 import Student from './SvgComponents/Student';
+import ChallengeMySelf from './SvgComponents/ChallengeMySelf';
 import Teams from './SvgComponents/Teams';
 import TeacherAnalytics from './SvgComponents/TeacherAnalytics';
+import Boss from './SvgComponents/Boss'
+import Webhook from './SvgComponents/Webhook'
 import Board from './SvgComponents/Board';
 import IconButton from '@material-ui/core/IconButton';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import './LandingPage.css';
 
 export default function LandingPage() {
-    // const [state, setState] = useState()
-
-    // useEffect(() => {
-
-    //     // eslint-disable-next-line
-    // }, [])
 
     const SectionsCards = [
         {
-            head: 'Student',
-            content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
-            `,
-            picture: <Student />
+            head: 'Challenge yourself',
+            content: `Learn and Engage with challenges made by developers, for developers.
+
+            Test based challenges in a variety of topics and levels, each designed to teach and broaden you understanding of code and Industry practices`,
+            picture: <ChallengeMySelf />
         },
         {
-            head: 'Teams',
-            content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
-            `,
+            head: 'Challenge your team',
+            content: `Create and manage a team on ChallengeMe for your students, friends, or colleagues. 
+
+            Learn together and compete against each other to become better codders. 
+            
+            Use ChallengeMe's extensive analytic systems to track your team's progress and qualifications`,
             picture: <Teams />
         },
         {
-            head: 'Teacher and Analytics',
-            content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
-            ` ,
+            head: 'Challenge Others',
+            content: `Create[link to guide] Your own challenges for others to learn from and enjoy.
+
+            practice good test practices and make something for the world to see` ,
             picture: <TeacherAnalytics />
         },
         {
-            head: 'Student',
-            content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
-            `,
-            picture: <Student />
+            head: 'Interview Candidate',
+            content: `- Interview with ChallengeMe
+
+            Create a challenge for a limited time and use it to test the mettle of potential recruits.
+            Test them not only on their coding abilities, but also on how familiar they are with tests and git flow.`,
+            picture: <Boss />
         },
         {
-            head: 'Teams',
-            content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
-            `,
+            head: 'Integrate with ChallengeMe',
+            content: `You can use http requests to Create and manage teams (eg. classes) on the ChallengeMe system.
+            These teams have users defined as teachers that can add other users to the team.`,
             picture: <Teams />
         },
         {
-            head: 'Teacher and Analytics',
-            content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro ullam consequuntur amet reprehenderit unde tenetur saepe fuga nobis voluptatum ipsam reiciendis est nemo dolorem molestias, molestiae ipsum minus quas eaque?
-            ` ,
-            picture: <TeacherAnalytics />
+            head: 'Webhook - Stay up to date ',
+            content: `In order to receive updates on events in the ChallengeMe system you have to register a webhook on our system that will send you updates as events happen, to a given address.`,
+            picture: <Webhook />
         }
     ]
 
