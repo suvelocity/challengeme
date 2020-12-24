@@ -2,7 +2,7 @@ module.exports = [
   {
     id: 1,
     name: 'React Recoil',
-    description: 'https://github.com/suvelocity/recoil-boilerplate',
+    description: 'In the following project you will be introduced with the advantages of recoil for state management and application efficiency',
     type: 'client-only',
     repository_name: 'suvelocity/recoil-challenge',
     boiler_plate: 'suvelocity/recoil-boilerplate',
@@ -14,7 +14,7 @@ module.exports = [
   {
     id: 2,
     name: 'React - 4 In A Row',
-    description: 'https://github.com/suvelocity/4In-a-row-BOILERPLATE',
+    description: `The goal of the game is to draw either a vertical, horizontal or diagonal line with four balls of the same player chained together. Two players take turns in threading their balls into one of the seven columns. Each ball is placed in the lowest possible position in the selected column. The game immediately ends when one player connects four balls or when there is no empty space on the board - a tie.`,
     type: 'client-only',
     repository_name: 'suvelocity/4In-a-row-CHALLENGE',
     boiler_plate: 'suvelocity/4In-a-row-BOILERPLATE',
@@ -26,7 +26,7 @@ module.exports = [
   {
     id: 3,
     name: 'React - Calculator',
-    description: 'https://github.com/suvelocity/calculator-challenge',
+    description: 'Welcome! looks like our calculator broke down, please help us fix it!',
     type: 'client-only',
     repository_name: 'suvelocity/calculator-challange-tests',
     boiler_plate: 'suvelocity/calculator-challenge',
@@ -38,7 +38,7 @@ module.exports = [
   {
     id: 4,
     name: 'React - Tv shows',
-    description: 'tomer: https://github.com/suvelocity/TV-shows-boilerplate',
+    description: 'In this challenge we will test your abilities to create a simple react app and using API. Your task is to build a simple IMDB clone for TV shows.',
     type: 'client-only',
     repository_name: 'suvelocity/TV-shows-challenge',
     boiler_plate: 'suvelocity/TV-shows-boilerplate',
@@ -50,7 +50,13 @@ module.exports = [
   {
     id: 5,
     name: 'React - Chat app',
-    description: 'https://github.com/suvelocity/Chat-App-Template',
+    description: `Hello friend, today we are going to help you create a simple Chat-App.
+
+    In the app you will have to create both client and backend using React and Express accordingly.
+    
+    You have all the requirements below + A gif that will help you understand our requirements.
+    
+    Don't worry, we already took care of the CSS, the dependencies, the React configuration and the express configuration so chill and enjoy.`,
     type: 'fullstack',
     repository_name: 'suvelocity/Chat_App-Challange',
     boiler_plate: 'suvelocity/Chat-App-Template',
@@ -62,7 +68,7 @@ module.exports = [
   {
     id: 6,
     name: 'Js - Drag N Scale',
-    description: 'https://github.com/suvelocity/DragAndScaleBoilerplate',
+    description: 'Show your dominance in front end vanilla JavaScript by creating a movable scalable object!',
     type: 'client-only',
     repository_name: 'suvelocity/drag-n-scale',
     boiler_plate: 'suvelocity/DragAndScaleBoilerplate',
@@ -74,7 +80,7 @@ module.exports = [
   {
     id: 7,
     name: 'Mysql - My Nodejs ORM',
-    description: 'https://github.com/suvelocity/challenge-sequelize-template',
+    description: 'In this challenge we will be building basic ORM functionality base on Sequelize using mysql2',
     type: 'server-mysql',
     repository_name: 'suvelocity/challenge-sequelize',
     boiler_plate: 'suvelocity/challenge-sequelize-template',
@@ -86,7 +92,9 @@ module.exports = [
   {
     id: 8,
     name: 'JWT - Node.js',
-    description: 'https://github.com/suvelocity/Authentication-Challenge-TEMPLATE',
+    description: `Welcome to the Best Authentication Challenge ever existed.
+    This challenge's goal is to learn and practice building a User Authentication and Authorization System in your project.
+    In order to pass this challenge successfully you should follow all of the requirements detailed below.`,
     type: 'server-only',
     repository_name: 'suvelocity/Authentication-Challenge',
     boiler_plate: 'suvelocity/Authentication-Challenge-TEMPLATE',
@@ -98,7 +106,8 @@ module.exports = [
   {
     id: 9,
     name: 'Promise Implementation',
-    description: 'https://github.com/suvelocity/PromiseBoilerplate',
+    description: `The client comes from a religious background and isn't comfortable with the word "promise" being part of their software
+    The client wants a new class to replace the Promise, called... Declare`,
     type: 'server-only',
     repository_name: 'suvelocity/PromiseChallenge',
     boiler_plate: 'suvelocity/PromiseBoilerplate',
@@ -110,7 +119,8 @@ module.exports = [
   {
     id: 10,
     name: 'React - Corona dashboard',
-    description: 'https://github.com/suvelocity/corona-pandemic-manager',
+    description: `We need your help to beat the COVID pandemic !!
+    this challenge will test your Back-End skills. you are required to use express.js and sequelize to analyze data from the given data base.`,
     type: 'server-mysql',
     repository_name: 'suvelocity/corona-manager-chalenge',
     boiler_plate: 'suvelocity/corona-pandemic-manager',
@@ -119,4 +129,16 @@ module.exports = [
     created_at: '2020-10-01 20:00:00',
     updated_at: '2020-10-01 20:00:00',
   },
+  {
+    id: 11,
+    name: "Analytics Challenge",
+    description: "Use TypeScript with React and Express to build a data analysis system for a mobile payment site",
+    type: "server-only",
+    repository_name: "suvelocity/analytics-tests",
+    boiler_plate: "suvelocity/analytics-challenge-boilerplate",
+    author_id: 1,
+    state: 'pending',
+    created_at: '2020-10-01 20:00:00',
+    updated_at: '2020-10-01 20:00:00',
+  }
 ];
