@@ -14,14 +14,14 @@ const Assignments = lazy(() => import("./Assignments"));
 function Index({ darkMode }) {
 
     const { id } = useParams();
-    const [teamName, setTeamName] = useState('')
+    const [teamName, setTeamName] = useState()
 
     const getTeamNameFromDb = async () => {
         try {
             const { data: teamNameFromDb } = await network.get(`/api/v1/teams/team-name/${id}`);
             setTeamName(teamNameFromDb.name);
         } catch (error) {
-            }
+        }
     }
 
     useEffect(() => {
@@ -37,30 +37,34 @@ function Index({ darkMode }) {
     ];
 
     return (
-        <div>
-            <SecondHeader paths={paths} darkMode={darkMode} />
-            <Suspense fallback={<Loading />}>
-                <ErrorBoundary>
-                    <Switch>
-                        <Route exact path="/teams/teacher/:id/TeamControl">
-                            <TeamControl darkMode={darkMode} teamName={teamName} />
-                        </Route>
-                        <Route exact path="/teams/teacher/:id/SubmissionsStatus">
-                            <SubmissionsStatus darkMode={darkMode} teamName={teamName} />
-                        </Route>
-                        <Route exact path="/teams/teacher/:id/Assignments">
-                            <Assignments darkMode={darkMode} teamName={teamName} />
-                        </Route>
-                        <Route exact path="/teams/teacher/:id">
-                            <DashBoard darkMode={darkMode} teamName={teamName} />
-                        </Route>
-                        <Route path="*">
-                            <NotFound darkMode={darkMode} />
-                        </Route>
-                    </Switch>
-                </ErrorBoundary>
-            </Suspense>
-        </div>
+        teamName ?
+            <div>
+                <SecondHeader paths={paths} darkMode={darkMode} />
+                <Suspense fallback={<Loading />}>
+                    <ErrorBoundary>
+                        <Switch>
+                            <Route exact path="/teams/teacher/:id/TeamControl">
+                                <TeamControl darkMode={darkMode} teamName={teamName} />
+                            </Route>
+                            <Route exact path="/teams/teacher/:id/SubmissionsStatus">
+                                <SubmissionsStatus darkMode={darkMode} teamName={teamName} />
+                            </Route>
+                            <Route exact path="/teams/teacher/:id/Assignments">
+                                <Assignments darkMode={darkMode} teamName={teamName} />
+                            </Route>
+                            <Route exact path="/teams/teacher/:id">
+                                <DashBoard darkMode={darkMode} teamName={teamName} />
+                            </Route>
+                            <Route path="*">
+                                <NotFound darkMode={darkMode} />
+                            </Route>
+
+                        </Switch>
+                    </ErrorBoundary>
+                </Suspense>
+            </div>
+            : <NotFound darkMode={darkMode} />
+
     );
 }
 

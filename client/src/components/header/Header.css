@@ -1,34 +1,33 @@
-
 .header-link-title {
   display: 'none';
+
 }
+
 .link-rout {
   text-decoration: none;
 }
 
-/* .MuiToolbar-root.MuiToolbar-regular.MuiToolbar-gutters{
-  max-height: 40px;
-  top: 0%;
-} */
-
-/* @media (min-width: 600px){
-.MuiToolbar-regular {
-    min-height: 40px;
-}
-} */
-
-
-#menu-appbar{
+#menu-appbar {
   max-width: 213px;
-  margin-top:49px;
-  margin-left:38px;
+  margin-top: 49px;
+  margin-left: 38px;
 }
 
-.infoButton{
-  margin:5px
+.infoButton {
+  margin: 5px
+}
+
+
+.MuiAppBar-colorPrimary {
+  background-color: transparent !important;
+  background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
+  border: none !important;
+  box-shadow: none !important;
+  color: white !important;
+  /* mix-blend-mode: difference; */
+  background-size: 100% 40px;
 }
 
 .MuiToolbar-regular {
-min-height: 60px !important;
+  min-height: 60px !important;
 }
-/* MuiPaper-root MuiMenu-paper MuiPopover-paper MuiPaper-elevation8 MuiPaper-rounded */

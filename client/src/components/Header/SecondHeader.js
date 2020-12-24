@@ -9,6 +9,12 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexDirection: 'row',
     height: '50px',
+    background: 'linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%)',
+  },
+  rootDark: {
+    flexDirection: 'row',
+    height: '50px',
+    backgroundColor: '#686868 !important'
   },
   item: {
     fontWeight: 'bold',
@@ -27,15 +33,13 @@ export default function SecondHeader({ paths, darkMode, position }) {
   const classes = useStyles();
   const location = useLocation();
 
-  const headerStyle = {
-    backgroundColor: darkMode ? '#686868' : 'rgba(44, 44, 119,0.9)',
-  };
+  const headerStyle = darkMode ? classes.rootDark : classes.root;
 
   const marginTop = position ? { marginTop: '0px' } : { marginTop: '60px' };
 
   return (
     <div style={marginTop}>
-      <AppBar position="static" className={classes.root} style={headerStyle}>
+      <AppBar position="static" className={headerStyle}>
         {/* <Toolbar> */}
         {paths.map((path, i) => (
           <Link to={path.URL} key={path.URL} className={classes.link}>

@@ -4,7 +4,7 @@ body {
   font-family: "Abel", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #eef2f7;
+  background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
   overflow-x: hidden;
   /* font-family: "Roboto", sans-serif; */
 }

@@ -106,4 +106,7 @@ export default makeStyles((theme) => ({
     backgroundColor: 'rgb(51,51,51)',
     boxShadow: '2px 0px 35px 0px black',
   },
+  menu: {
+    marginTop:'49px'
+  }
 }));

@@ -19,7 +19,9 @@ challengeRouter.get('/', async (req, res) => {
           [Op.like]: `%${name}%`,
         },
         state: 'approved',
+
       },
+      attributes: ['id', 'name', 'description', 'type', 'createdAt'],
       include: [
         {
           model: User,
@@ -126,6 +128,7 @@ challengeRouter.get('/info/:challengeId', checkToken, async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
       where: { id: req.params.challengeId, state: 'approved' },
+      attributes: ['id', 'name', 'description', 'type', 'createdAt'],
       include: [
         {
           model: Label,
@@ -137,7 +140,7 @@ challengeRouter.get('/info/:challengeId', checkToken, async (req, res) => {
         {
           model: User,
           as: 'Author',
-          attributes: ['email', 'userName'],
+          attributes: ['userName'],
         },
       ],
     });
@@ -167,6 +170,20 @@ challengeRouter.get('/info/:challengeId', checkToken, async (req, res) => {
       ? challengeSubmittions[0].dataValues.submissionsCount
       : 0;
 
+    return res.json(challenge);
+  } catch (error) {
+    console.error(error.message);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+
+challengeRouter.get('/boiler-plate/:challengeId', checkToken, async (req, res) => {
+  try {
+    const challenge = await Challenge.findOne({
+      where: { id: req.params.challengeId, state: 'approved' },
+      attributes: ['boilerPlate'],
+    });
     return res.json(challenge);
   } catch (error) {
     console.error(error.message);

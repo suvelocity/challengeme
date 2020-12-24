@@ -31,13 +31,13 @@ import { Logged } from '../../../context/LoggedInContext';
 import Search from '../Search';
 import network from '../../../services/network';
 
-export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
+export default function NarrowNav({ darkMode, setDarkMode }) {
   const classes = useStyles();
   const filteredLabels = useContext(FilteredLabels);
   const [labels, setLabels] = useState([]);
   const [chooseLabels, setChooseLabels] = useState([]);
   const location = useHistory();
-  const value = useContext(Logged);
+  const LoggedContext = useContext(Logged);
   const [openNavBar, setOpenNavBar] = useState(false);
   const currentLocation = useLocation();
 
@@ -68,18 +68,17 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
       });
       Cookies.remove('refreshToken');
       Cookies.remove('accessToken');
-      Cookies.remove('name');
+      ;
       Cookies.remove('userId');
-      Cookies.remove('isAdmin');
       Cookies.remove('userName');
-      value.setLogged(false);
+      LoggedContext.setLogged(false);
+      LoggedContext.setIsAdmin(false);
       location.push('/login');
     } catch (error) {
     }
   };
-
   const headerStyle = {
-    backgroundColor: darkMode ? 'rgb(51,51,51)' : 'rgb(44, 44, 119)',
+    backgroundColor: darkMode ? 'rgb(51,51,51)' : 'transfer',
   };
   const letterColor = {
     color: darkMode ? 'white' : 'black',
@@ -141,24 +140,24 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
       >
         <div className={classes.generalDrawerHeader}>
           <div className={classes.avatarUserInfo}>
-            <Tooltip title={Cookies.get('name')}>
-              <Avatar
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                color="inherit"
-                style={{
-                  cursor: 'pointer',
-                  backgroundColor: darkMode ? 'rgb(140,110,99)' : '#7BACB4',
-                }}
-              >
-                {Cookies.get('name').slice(0, 2)}
-              </Avatar>
-            </Tooltip>
+            {LoggedContext.logged&& Cookies.get('userName') ?
+              <Tooltip title={Cookies.get('userName')}>
+                <Avatar
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                  style={{
+                    cursor: 'pointer',
+                    backgroundColor: darkMode ? 'rgb(140,110,99)' : '#7BACB4',
+                  }}
+                >
+                  {Cookies.get('userName').slice(0, 2)}
+                </Avatar>
+              </Tooltip> : null}
             <div className={classes.heyName} style={letterColor}>
               <b>
-                Hey
-                {Cookies.get('name')}
+                {Cookies.get('userName') ? (`Hey ${Cookies.get('userName')}`): 'Welcome to ChallengeMe'}
               </b>
             </div>
           </div>
@@ -196,7 +195,7 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
               <ListItemText primary="Teams Area" />
             </ListItem>
           </Link>
-          {isAdmin && (
+          {LoggedContext.isAdmin && (
             <>
               <Divider style={dividerColor} />
               <Link to="/admin/DashBoard" className="link-rout">
@@ -230,22 +229,34 @@ export default function NarrowNav({ darkMode, setDarkMode, isAdmin }) {
               {darkMode ? (
                 <Brightness7Icon style={letterColor} />
               ) : (
-                <Brightness4Icon style={letterColor} />
-              )}
+                  <Brightness4Icon style={letterColor} />
+                )}
             </IconButton>
           </ListItem>
           <Divider style={dividerColor} />
-          <ListItem className={classes.logOut} onClick={handleDrawerClose}>
-            <Button
-              className={classes.logOutButton}
-              onClick={logOut}
-              style={{ minWidth: 150 }}
-              variant="contained"
-              color="secondary"
-            >
-              Log Out
+          {LoggedContext.logged ?
+            <ListItem className={classes.logOut} onClick={handleDrawerClose}>
+              <Button
+                className={classes.logOutButton}
+                onClick={logOut}
+                style={{ minWidth: 150 }}
+                variant="contained"
+                color="secondary"
+              >
+                Log Out
             </Button>
-          </ListItem>
+            </ListItem> : <>
+              <Link to="/login" className="link-rout">
+                <Button variant="contained" className={darkMode ? classes.filterButtonDark : classes.filterButton}>
+                  Login
+                  </Button>
+              </Link>
+              <Link to="/register" className="link-rout">
+                <Button variant="contained" className={darkMode ? classes.filterButtonDark : classes.filterButton}>
+                  Register
+                  </Button>
+              </Link>
+            </>}
           <Divider style={dividerColor} />
         </List>
       </Drawer>

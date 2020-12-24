@@ -4,8 +4,11 @@ import mixpanel from 'mixpanel-browser';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import network from '../../../services/network';
-
+import EditIcon from '@material-ui/icons/Edit';
 import './UserInfo.css';
+import { Button } from '@material-ui/core';
+import moment from 'moment';
+import Swal from 'sweetalert2';
 
 const useStyles = makeStyles(() => ({
   info: {
@@ -27,6 +30,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function generateTime(date) {
+  if (!date) return ''
   let today = new Date(date);
   const dd = String(today.getDate()).padStart(2, '0');
   const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -37,120 +41,163 @@ function generateTime(date) {
 
 const generateName = (name) => {
   let changedName = '';
-  for (let i = 0; i < name.length; i++) {
-    i === 0 ? (changedName += name[i].toUpperCase()) : (changedName += name[i].toLowerCase());
+  if (name) {
+    for (let i = 0; i < name.length; i++) {
+      i === 0 ? (changedName += name[i].toUpperCase()) : (changedName += name[i].toLowerCase());
+    }
+    return changedName;
+  } else {
+    return ''
   }
-  return changedName;
 };
 
 const getUpdated = (date) => {
-  const dateNow = Date.now();
-  const userCreationDate = new Date(date);
-  let diff = (dateNow - userCreationDate.getTime()) / 1000 / 60 / 60;
-  if (diff < 24) {
-    return `${Math.floor(diff)} Hours ago`;
-  }
-  diff /= 24;
-  diff = Math.floor(diff);
-  if (diff < 8) {
-    return `${Math.floor(diff)} Days ago`;
-  }
-  diff = Math.floor(diff / 7);
-  if (diff < 5) {
-    return `${Math.floor(diff)} Weeks ago`;
-  }
-  diff = Math.floor(diff / 4);
-  if (diff < 13) {
-    return `${Math.floor(diff)} Months ago`;
-  }
-  diff = Math.floor(diff / 12);
-  return `${Math.floor(diff)} Years ago`;
-};
+  return moment(date).fromNow()
+}
 
 function UserInfo({ darkMode }) {
   const [userInfo, setUserInfo] = useState({});
+  const [editedUserInfo, setEditedUserInfo] = useState({});
+  const [readOnly, setReadOnly] = useState(true);
   const classes = useStyles();
 
+  const fetchUserInfo = async () => {
+    try {
+      const username = Cookies.get('userName');
+      mixpanel.track('User On Personal Details Page', { User: `${username}` });
+      const { data: info } = await network.get('/api/v1/users/info');
+      setUserInfo(info);
+      setEditedUserInfo(info)
+    } catch (error) {
+
+    }
+  }
   useEffect(() => {
-    (async () => {
-      try {
-        const username = Cookies.get('userName');
-        mixpanel.track('User On Personal Details Page', { User: `${username}` });
-        const { data: info } = await network.get('/api/v1/users/info');
-        setUserInfo(info);
-      } catch (error) {
-      }
-    })();
+    fetchUserInfo()
   }, []);
-  return userInfo.firstName ? (
+
+  const startEditInfo = async () => {
+    setReadOnly(false)
+  }
+
+  const editing = async (event) => {
+    const key = event.target.name;
+    const value = event.target.value
+    const edited = { ...editedUserInfo }
+    edited[key] = value
+    setEditedUserInfo(edited)
+  }
+
+  const onSave = async () => {
+    try {
+      await network.patch('/api/v1/users/info', editedUserInfo);
+      fetchUserInfo()
+      setReadOnly(true)
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: error.response.data.message,
+        showConfirmButton: true,
+      });
+    }
+  }
+  const onCancel = () => {
+    setEditedUserInfo(userInfo)
+    setReadOnly(true)
+  }
+
+  return userInfo.userName ? (
     <div className="generic-page">
       <div className="user-page">
         <div className="user-info-container">
           <h1>User Info</h1>
+          <Button onClick={startEditInfo}><EditIcon /></Button>
           <TextField
+            name='firstName'
+            onChange={editing}
             className={darkMode ? classes.infoDark : classes.info}
-            defaultValue={generateName(userInfo.firstName)}
+            value={generateName(editedUserInfo.firstName)}
             label="First name"
-            InputProps={{
-              readOnly: true,
-            }}
+            InputProps={{ readOnly }}
           />
           <TextField
+            name='lastName'
+            onChange={editing}
             className={darkMode ? classes.infoDark : classes.info}
             label="Last name"
-            defaultValue={generateName(userInfo.lastName)}
-            InputProps={{
-              readOnly: true,
-            }}
+            value={generateName(editedUserInfo.lastName)}
+            InputProps={{ readOnly }}
           />
+          {readOnly ?
+            <TextField
+              name='birthDate'
+              className={darkMode ? classes.infoDark : classes.info}
+              style={{ color: 'white' }}
+              label="Birth Date"
+              value={generateTime(editedUserInfo.birthDate)}
+              InputProps={{ readOnly }}
+            /> :
+            <>
+              <label
+                style={{
+                  marginRight: '130px',
+                  marginBottom: '5px',
+                  color: 'gray',
+                }}
+              >
+                Birth Date
+      </label>
+              <input
+                className={classes.birthDate}
+                name="birthDate"
+                type="date"
+                value={generateTime(editedUserInfo.birthDate)}
+                onChange={editing}
+              />
+            </>
+          }
           <TextField
-            className={darkMode ? classes.infoDark : classes.info}
-            style={{ color: 'white' }}
-            label="Birth Day"
-            defaultValue={generateTime(userInfo.birthDate)}
-            InputProps={{
-              readOnly: true,
-            }}
-          />
-          <TextField
+            onChange={editing}
+            name='country'
             className={darkMode ? classes.infoDark : classes.info}
             label="Country"
-            defaultValue={userInfo.country}
-            InputProps={{
-              readOnly: true,
-            }}
+            value={editedUserInfo.country ? editedUserInfo.country : ''}
+            InputProps={{ readOnly }}
           />
           <TextField
+            onChange={editing}
+            name='city'
             className={darkMode ? classes.infoDark : classes.info}
             label="City"
-            defaultValue={userInfo.city}
-            InputProps={{
-              readOnly: true,
-            }}
+            value={editedUserInfo.city ? editedUserInfo.city : ''}
+            InputProps={{ readOnly }}
           />
           <TextField
+            onChange={editing}
+            name='githubAccount'
             className={darkMode ? classes.infoDark : classes.info}
             label="Github"
-            defaultValue={userInfo.githubAccount}
-            InputProps={{
-              readOnly: true,
-            }}
+            value={editedUserInfo.githubAccount ? editedUserInfo.githubAccount : ''}
+            InputProps={{ readOnly }}
           />
           <TextField
             className={darkMode ? classes.infoDark : classes.info}
             label="Account Created"
-            defaultValue={getUpdated(userInfo.createdAt)}
-            InputProps={{
-              readOnly: true,
-            }}
+            value={getUpdated(editedUserInfo.createdAt)}
+            InputProps={{ readOnly: true }}
           />
+          {!readOnly &&
+            <div style={{ display: 'flex' }}>
+              <Button onClick={onSave} >save</Button>
+              <Button onClick={onCancel} >cancel</Button>
+            </div>}
 
         </div>
       </div>
     </div>
   ) : (
-    <div />
-  );
+      <div />
+    );
 }
 
 export default UserInfo;
