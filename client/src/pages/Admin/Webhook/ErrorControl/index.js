@@ -118,7 +118,7 @@ function Row(props) {
                 <TableBody>
                   <StyledTableRow>
                     <StyledTableCellKey component="th" scope="row">
-                      {JSON.stringify(row.data, null, 2)}
+                      {process.env.NODE_ENV === 'development' ? JSON.stringify(row.data, null, 2) : row.data}
                     </StyledTableCellKey>
                   </StyledTableRow>
                 </TableBody>
