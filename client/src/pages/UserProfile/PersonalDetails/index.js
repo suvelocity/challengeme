@@ -7,6 +7,7 @@ import network from '../../../services/network';
 import EditIcon from '@material-ui/icons/Edit';
 import './UserInfo.css';
 import { Button } from '@material-ui/core';
+import ResetPassword from '../../../components/Modals/ResetPassword';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 
@@ -58,7 +59,8 @@ const getUpdated = (date) => {
 function UserInfo({ darkMode }) {
   const [userInfo, setUserInfo] = useState({});
   const [editedUserInfo, setEditedUserInfo] = useState({});
-  const [readOnly, setReadOnly] = useState(true);
+  const [isReadOnly, setIsReadOnly] = useState(true);
+  const [resetPasswordModal, setResetPasswordModal] = useState(false)
   const classes = useStyles();
 
   const fetchUserInfo = async () => {
@@ -77,7 +79,7 @@ function UserInfo({ darkMode }) {
   }, []);
 
   const startEditInfo = async () => {
-    setReadOnly(false)
+    setIsReadOnly(false)
   }
 
   const editing = async (event) => {
@@ -92,7 +94,7 @@ function UserInfo({ darkMode }) {
     try {
       await network.patch('/api/v1/users/info', editedUserInfo);
       fetchUserInfo()
-      setReadOnly(true)
+      setIsReadOnly(true)
     } catch (error) {
       Swal.fire({
         icon: 'error',
@@ -103,22 +105,37 @@ function UserInfo({ darkMode }) {
   }
   const onCancel = () => {
     setEditedUserInfo(userInfo)
-    setReadOnly(true)
+    setIsReadOnly(true)
   }
+
+  const changePassword = async () => {
+    setResetPasswordModal(true)
+  }
+
 
   return userInfo.userName ? (
     <div className="generic-page">
       <div className="user-page">
         <div className="user-info-container">
           <h1>User Info</h1>
+          {resetPasswordModal &&
+            <ResetPassword
+              open={resetPasswordModal}
+              setOpen={setResetPasswordModal}
+            />}
           <Button onClick={startEditInfo}><EditIcon /></Button>
+          {!isReadOnly &&
+            <Button onClick={changePassword}>
+              Change Password
+            </Button>
+          }
           <TextField
             name='firstName'
             onChange={editing}
             className={darkMode ? classes.infoDark : classes.info}
             value={generateName(editedUserInfo.firstName)}
             label="First name"
-            InputProps={{ readOnly }}
+            InputProps={{ readOnly: isReadOnly }}
           />
           <TextField
             name='lastName'
@@ -126,16 +143,16 @@ function UserInfo({ darkMode }) {
             className={darkMode ? classes.infoDark : classes.info}
             label="Last name"
             value={generateName(editedUserInfo.lastName)}
-            InputProps={{ readOnly }}
+            InputProps={{ readOnly: isReadOnly }}
           />
-          {readOnly ?
+          {isReadOnly ?
             <TextField
               name='birthDate'
               className={darkMode ? classes.infoDark : classes.info}
               style={{ color: 'white' }}
               label="Birth Date"
               value={generateTime(editedUserInfo.birthDate)}
-              InputProps={{ readOnly }}
+              InputProps={{ readOnly: isReadOnly }}
             /> :
             <>
               <label
@@ -162,7 +179,7 @@ function UserInfo({ darkMode }) {
             className={darkMode ? classes.infoDark : classes.info}
             label="Country"
             value={editedUserInfo.country ? editedUserInfo.country : ''}
-            InputProps={{ readOnly }}
+            InputProps={{ readOnly: isReadOnly }}
           />
           <TextField
             onChange={editing}
@@ -170,7 +187,7 @@ function UserInfo({ darkMode }) {
             className={darkMode ? classes.infoDark : classes.info}
             label="City"
             value={editedUserInfo.city ? editedUserInfo.city : ''}
-            InputProps={{ readOnly }}
+            InputProps={{ readOnly: isReadOnly }}
           />
           <TextField
             onChange={editing}
@@ -178,7 +195,7 @@ function UserInfo({ darkMode }) {
             className={darkMode ? classes.infoDark : classes.info}
             label="Github"
             value={editedUserInfo.githubAccount ? editedUserInfo.githubAccount : ''}
-            InputProps={{ readOnly }}
+            InputProps={{ readOnly: isReadOnly }}
           />
           <TextField
             className={darkMode ? classes.infoDark : classes.info}
@@ -186,7 +203,7 @@ function UserInfo({ darkMode }) {
             value={getUpdated(editedUserInfo.createdAt)}
             InputProps={{ readOnly: true }}
           />
-          {!readOnly &&
+          {!isReadOnly &&
             <div style={{ display: 'flex' }}>
               <Button onClick={onSave} >save</Button>
               <Button onClick={onCancel} >cancel</Button>
