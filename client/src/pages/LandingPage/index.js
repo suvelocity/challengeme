@@ -12,7 +12,7 @@ import Teams from './SvgComponents/Teams';
 import TeacherAnalytics from './SvgComponents/TeacherAnalytics';
 import Boss from './SvgComponents/Boss'
 import Webhook from './SvgComponents/Webhook'
-import Board from './SvgComponents/Board';
+import CreateChallenge from './SvgComponents/CreateChallenge';
 import IconButton from '@material-ui/core/IconButton';
 import GitHubIcon from '@material-ui/icons/GitHub';
 import './LandingPage.css';
@@ -213,7 +213,7 @@ export default function LandingPage() {
             </section>
             <section className='Landing-page-Build-Your-Own-Challenge'  >
                 <div className='Landing-page-Build-Your-Own-Challenge-Board'>
-                    <Board />
+                    <CreateChallenge />
                 </div>
                 <div className='Landing-page-Build-Your-Own-Challenge-content'  >
                     <h2>Build Your Own Challenge?</h2>
@@ -229,9 +229,14 @@ export default function LandingPage() {
             </section>
             <section className='Landing-page-Footer' >
                 <div className='Landing-page-Footer-Labels' >
-                    {footerLabels.map((label, index) =>
-                        <Link className='Landing-page-Footer-Single-Label' to={`/${label.link}`}>{label.name}</Link>
-                    )}
+                    {footerLabels.map((label) => {
+                        if (label.name !== '|') {
+                            return <Link className='Landing-page-Footer-Single-Label' to={`/${label.link}`}>{label.name}</Link>
+                        } else {
+                            return <span className='Landing-page-Footer-Single-Label' >{label.name}</span>
+                        }
+
+                    })}
                 </div>
                 <p> Copyright © 2020 David And Shnitzer, Will allays love each other. All rights reserved. </p>
 
