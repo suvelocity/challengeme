@@ -124,7 +124,7 @@ challengeRouter.get('/user-challenges', checkToken, async (req, res) => {
 });
 
 // get challenge by id with all information
-challengeRouter.get('/info/:challengeId', async (req, res) => {
+challengeRouter.get('/info/:challengeId', checkToken, async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
       where: { id: req.params.challengeId, state: 'approved' },
