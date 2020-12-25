@@ -5,8 +5,8 @@ function Icon() {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width="280"
-      height="180"
+      height="170"
+      width="260"
       data-name="Layer 1"
       viewBox="0 0 1137.68 859.71"
     >

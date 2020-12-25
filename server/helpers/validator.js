@@ -24,8 +24,9 @@ const registerValidation = (data) => {
   return schema.validate(data);
 };
 
+// Personal Info Change User Details
 const editUserValidation = (data) => {
-  data.birthDate ? data.birthDate = new Date(data.birthDate).valueOf() :null;
+  data.birthDate ? data.birthDate = new Date(data.birthDate).valueOf() : null;
   const schema = Joi.object({
     firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
     lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
@@ -33,6 +34,16 @@ const editUserValidation = (data) => {
     city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
     birthDate: Joi.number().max((new Date()).valueOf()),
     githubAccount: Joi.string().min(1).regex(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i),
+  });
+
+  return schema.validate(data);
+};
+
+// Personal Info Change Password
+const changePasswordValidation = (data) => {
+  const schema = Joi.object({
+    oldPassword: Joi.string().min(8).required(),
+    newPassword: Joi.string().min(8).required()
   });
 
   return schema.validate(data);
@@ -276,5 +287,6 @@ module.exports = {
   webhookChangePermissionsValidation,
   webhookUrlEventTriggerValidation,
   webhookUrlGithubResponseValidation,
-  editUserValidation
+  editUserValidation,
+  changePasswordValidation
 };

@@ -6,7 +6,7 @@ import Stripes from './SvgComponents/Stripes';
 import Section from './Cards/Section';
 import ProjectLeader from './Cards/ProjectLeader';
 import Contributor from './Cards/Contributor';
-import Student from './SvgComponents/Student';
+import Integration from './SvgComponents/Integration';
 import ChallengeMySelf from './SvgComponents/ChallengeMySelf';
 import Teams from './SvgComponents/Teams';
 import TeacherAnalytics from './SvgComponents/TeacherAnalytics';
@@ -25,7 +25,8 @@ export default function LandingPage() {
             content: `Learn and Engage with challenges made by developers, for developers.
 
             Test based challenges in a variety of topics and levels, each designed to teach and broaden you understanding of code and Industry practices`,
-            picture: <ChallengeMySelf />
+            picture: <ChallengeMySelf />,
+            link: '/challenges'
         },
         {
             head: 'Challenge your team',
@@ -34,14 +35,16 @@ export default function LandingPage() {
             Learn together and compete against each other to become better codders. 
             
             Use ChallengeMe's extensive analytic systems to track your team's progress and qualifications`,
-            picture: <Teams />
+            picture: <Teams />,
+            link: '/teams'
         },
         {
             head: 'Challenge Others',
             content: `Create[link to guide] Your own challenges for others to learn from and enjoy.
 
             practice good test practices and make something for the world to see` ,
-            picture: <TeacherAnalytics />
+            picture: <TeacherAnalytics />,
+            link: '/teams'
         },
         {
             head: 'Interview Candidate',
@@ -49,18 +52,20 @@ export default function LandingPage() {
 
             Create a challenge for a limited time and use it to test the mettle of potential recruits.
             Test them not only on their coding abilities, but also on how familiar they are with tests and git flow.`,
-            picture: <Boss />
+            picture: <Boss />,
         },
         {
             head: 'Integrate with ChallengeMe',
             content: `You can use http requests to Create and manage teams (eg. classes) on the ChallengeMe system.
             These teams have users defined as teachers that can add other users to the team.`,
-            picture: <Teams />
+            picture: <Integration />,
+            href: 'https://suvelocity.github.io/challengeme/API/teams.html'
         },
         {
             head: 'Webhook - Stay up to date ',
             content: `In order to receive updates on events in the ChallengeMe system you have to register a webhook on our system that will send you updates as events happen, to a given address.`,
-            picture: <Webhook />
+            picture: <Webhook />,
+            href: 'https://suvelocity.github.io/challengeme/API/webhooks.html'
         }
     ]
 
@@ -172,7 +177,13 @@ export default function LandingPage() {
             <button className='Landing-page-Watch-Video'>Watch Video</button>
             <suction className='Landing-page-Sections-Cards' >
                 {SectionsCards.map(elem =>
-                    < Section head={elem.head} content={elem.content} picture={elem.picture} />)
+                    < Section
+                        head={elem.head}
+                        content={elem.content}
+                        picture={elem.picture}
+                        link={elem.link}
+                        href={elem.href}
+                    />)
                 }
             </suction>
             <section className='Landing-page-Open-Source' >

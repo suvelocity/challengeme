@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
@@ -118,7 +117,7 @@ function Row(props) {
                 <TableBody>
                   <StyledTableRow>
                     <StyledTableCellKey component="th" scope="row">
-                      {process.env.NODE_ENV === 'development' ? JSON.stringify(row.data, null, 2) : row.data}
+                      {process.env.NODE_ENV === 'development' ? JSON.stringify(row.data, null, 2) : `${row.data}`}
                     </StyledTableCellKey>
                   </StyledTableRow>
                 </TableBody>

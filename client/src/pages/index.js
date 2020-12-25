@@ -6,7 +6,7 @@ import FilteredLabels from "../context/FilteredLabelsContext";
 import Register from "./Authentication/Register";
 import Login from "./Authentication/Login";
 import Cookies from "js-cookie";
-import Forgot from "./Authentication/ForgotPasswordPage";
+import Forgot from "../components/ForgotPasswordPage";
 import ValidatingMail from "./Authentication/Register/ValidatingMail";
 import network from "../services/network";
 // import Landing from "./Authentication";

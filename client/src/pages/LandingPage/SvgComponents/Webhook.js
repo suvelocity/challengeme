@@ -4,8 +4,8 @@ function Icon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="300"
-      height="220"
+      height="170"
+      width="260"
       ariaHidden="true"
       style={{ MsTransform: "rotate(360deg)" }}
       transform="rotate(360)"

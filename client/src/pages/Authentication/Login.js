@@ -20,7 +20,7 @@ import { motion } from 'framer-motion';
 import { Logged } from '../../context/LoggedInContext';
 import network from '../../services/network';
 import Background from '../Background';
-import './styles/Login.css';
+import '../../styles/Login.css';
 
 const useStyles = makeStyles(() => ({
   userNameLoginInput: {

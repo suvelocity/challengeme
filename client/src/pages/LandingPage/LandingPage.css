@@ -2,7 +2,8 @@
     position: relative;
     width: 100%;
     height: 100%;
-    background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
+    background-color: #1E3D5B;
+    /* background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%); */
 }
 
 .Landing-page-Vector {
@@ -90,7 +91,7 @@
     height: 55px;
     width: 45%;
     font-size: 25px;
-    line-height: 50px;
+    line-height: 55px;
     border: none;
     color: white;
     background-color: #00AD98;
@@ -143,10 +144,54 @@
 
 .Landing-page-Sections-Cards {
     position: relative;
-    padding-top: 20%;
+    padding-top: 9%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+}
+
+.Landing-page-Sections-Single-Card {
+    position: relative;
+    box-shadow: 11px 10px 16px 0px #000000 34%;
+    width: 25%;
+    min-width: 350px;
+    height: 500px;
+    background-color: #1B3F55;
+    margin: 5% 2% auto 2%;
+    color: white;
+}
+
+.Landing-page-Sections-Head {
+    font-weight: bold;
+    font-family: Ubuntu;
+    font-size: 25px;
+}
+
+.Landing-page-Sections-Content {
+    margin-top: 35px;
+    font-family: Ubuntu;
+    letter-spacing: 0.1em;
+    color: #C6E9FF;
+}
+
+.Landing-page-Sections-Picture {
+    text-align: center;
+    margin-top: 10%;
+}
+
+.Landing-page-Sections-Learn-More {
+    position: absolute;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    bottom: 10px;
+    left: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+.Landing-page-Sections-Learn-More:hover {
+    text-decoration: underline;
 }
 
 .Landing-page-Open-Source {
@@ -238,8 +283,10 @@
 }
 
 .Landing-page-Project-Leaders-Name {
+    font-family: Ubuntu;
+    font-style: normal;
     margin-top: 25px;
-    color: rgb(12, 12, 179);
+    color: #034077;
     font-weight: bold;
     cursor: pointer;
 }
@@ -278,8 +325,6 @@
     text-align: center;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    border-top: 3px solid white;
-    border-bottom: 3px solid white;
 }
 
 .Landing-page-Contributors-Root {
@@ -296,7 +341,7 @@
 }
 
 .Landing-page-Contributors-Name {
-    color: rgb(0, 0, 0);
+    color: white;
     font-weight: bold;
 }
 
@@ -322,8 +367,6 @@
 }
 
 .Landing-page-Build-Your-Own-Challenge {
-    border-top: 3px solid white;
-    border-bottom: 3px solid white;
     display: flex;
     justify-content: space-evenly;
     align-content: center;
@@ -374,7 +417,7 @@
     height: 55px;
     width: 45%;
     font-size: 25px;
-    line-height: 50px;
+    line-height: 55px;
     border: none;
     color: white;
     background-color: #00AD98;
@@ -396,7 +439,6 @@
 
 .Landing-page-Build-Your-Own-Challenge-Board {
     margin: auto 0 auto 0;
-    /* width: 40%; */
     z-index: 1000;
 }
 
@@ -424,5 +466,5 @@
 }
 
 .Landing-page-Footer p {
-    padding-top:1%;
+    padding-top: 1%;
 }

@@ -7,7 +7,7 @@ import network from '../../../services/network';
 import EditIcon from '@material-ui/icons/Edit';
 import './UserInfo.css';
 import { Button } from '@material-ui/core';
-import ResetPassword from '../../../components/Modals/ResetPassword';
+import ResetPassword from '../../../components/Modals/ChangePassword';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 

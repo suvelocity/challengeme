@@ -6,12 +6,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import ErrorIcon from '@material-ui/icons/Error';
 import { motion } from 'framer-motion';
 import Swal from 'sweetalert2';
-import Background from '../../Background';
-import network from '../../../services/network';
+import Background from '../../pages/Background';
+import network from '../../services/network';
 import Identify from './Identify';
 import Change from './Change';
 import Security from './Security';
-import '../styles/Forgot.css';
+import '../../styles/Forgot.css';
 
 const useStyles = makeStyles(() => ({
   nextButtonForgotPass: {

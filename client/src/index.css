@@ -8,6 +8,10 @@ body {
   overflow-x: hidden;
   /* font-family: "Roboto", sans-serif; */
 }
+
+.swal2-container {
+  z-index: 10000000000000 !important;
+}
 .generic-page {
   height: calc(100vh - 110px);
   max-height: calc(100vh - 110px);
