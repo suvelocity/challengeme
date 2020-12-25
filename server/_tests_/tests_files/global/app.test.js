@@ -7,14 +7,14 @@ describe('Testing app routes', () => {
         await User.destroy({ truncate: true, force: true });
     });
 
-    // On CI only
-    test('Can user get client from app', async (done) => {
-        const unknown = await request(app)
-            .get('/')
+    // // On CI only
+    // test('Can user get client from app', async (done) => {
+    //     const unknown = await request(app)
+    //         .get('/')
 
-        expect(unknown.status).toBe(404);
-        done();
-    });
+    //     expect(unknown.status).toBe(404);
+    //     done();
+    // });
 
     // test('Can user get client from app', async (done) => {
     //     const appHtml = await request(app)
