@@ -463,6 +463,13 @@
 
 .Landing-page-Footer-Single-Label {
     color: white;
+    text-decoration: none;
+}
+
+
+.Landing-page-Footer-Single-Label:hover {
+    color: white;
+    text-decoration: underline;
 }
 
 .Landing-page-Footer p {

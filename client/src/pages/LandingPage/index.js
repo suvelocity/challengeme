@@ -23,47 +23,43 @@ export default function LandingPage() {
         {
             head: 'Challenge yourself',
             content: `Learn and Engage with challenges made by developers, for developers.
-
-            Test based challenges in a variety of topics and levels, each designed to teach and broaden you understanding of code and Industry practices`,
+            Test based challenges in a variety of topics and levels,
+             each designed to teach and broaden you understanding of code and Industry practices`,
             picture: <ChallengeMySelf />,
             link: '/challenges'
         },
         {
             head: 'Challenge your team',
-            content: `Create and manage a team on ChallengeMe for your students, friends, or colleagues. 
-
+            content: `Create and manage a team on ChallengeMe for your student, friends, or colleagues. 
             Learn together and compete against each other to become better codders. 
-            
             Use ChallengeMe's extensive analytic systems to track your team's progress and qualifications`,
             picture: <Teams />,
             link: '/teams'
         },
         {
             head: 'Challenge Others',
-            content: `Create[link to guide] Your own challenges for others to learn from and enjoy.
-
+            content: `Create Your own challenges for others to learn from and enjoy.
             practice good test practices and make something for the world to see` ,
             picture: <TeacherAnalytics />,
             link: '/teams'
         },
         {
             head: 'Interview Candidate',
-            content: `- Interview with ChallengeMe
-
-            Create a challenge for a limited time and use it to test the mettle of potential recruits.
+            content: `Create a challenge for a limited time and use it to test the mettle of potential recruits.
             Test them not only on their coding abilities, but also on how familiar they are with tests and git flow.`,
             picture: <Boss />,
         },
         {
             head: 'Integrate with ChallengeMe',
-            content: `You can use http requests to Create and manage teams (eg. classes) on the ChallengeMe system.
-            These teams have users defined as teachers that can add other users to the team.`,
+            content: `Use our exposed team creation API to Create and manage teams (eg. classes) on the ChallengeMe system.
+            Define users as team leaders to allow them to manage the teams, view statistics and more.`,
             picture: <Integration />,
             href: 'https://suvelocity.github.io/challengeme/API/teams.html'
         },
         {
             head: 'Webhook - Stay up to date ',
-            content: `In order to receive updates on events in the ChallengeMe system you have to register a webhook on our system that will send you updates as events happen, to a given address.`,
+            content: `Receive updates on events in the ChallengeMe system related to you and your team. 
+            register a webhook on our system that will send http requests to a given address with updates on events as they happen.`,
             picture: <Webhook />,
             href: 'https://suvelocity.github.io/challengeme/API/webhooks.html'
         }
@@ -188,12 +184,9 @@ export default function LandingPage() {
             </suction>
             <section className='Landing-page-Open-Source' >
                 <h2 className='Landing-page-Open-Source-H2'>Hey... It’s  an Open Source Project!</h2>
-                <p className='Landing-page-Open-Source-P'>Lorem ipsum dolor sit amet consecrator
-                adipisicing elit. Porro ullam consequuntur
-                amet reprehenderit unde tenetur saepe
-                fuga nobis voluptatum ipsam reiciendis est
-                nemo dolorem molestias, molestiae ipsum
-                        minus quas eaque?</p>
+                <p className='Landing-page-Open-Source-P'>ChallengeMe's source code is freely available to view, study and contribute to.
+                This means you are free to use it as a base for your learning, as a class project or most anything else, and if you do a good enough job, your contributions could even be accepted into the Site.
+Our extensive CI/CD system ensures that any additions made will not be breaking, so you can rest assured that your contribution will not do any damage.</p>
                 <a href='https://github.com/suvelocity/challengeme' target="_blank" className='Landing-page-Open-Source-Button' >Join the Team
                    <IconButton>
                         <GitHubIcon style={{ color: 'white' }} />
@@ -228,9 +221,12 @@ export default function LandingPage() {
                 </div>
                 <div className='Landing-page-Build-Your-Own-Challenge-content'  >
                     <h2>Build Your Own Challenge?</h2>
-                    <p>ChallengeMe is your best choice if you wish to master
-                    your coding skill, manage your class tasks and creating
-                      new challenges with many feauture’s to come</p>
+                    <p>ChallengeMe is the open-source, test based
+                    code learning program.
+                    Test based challenges work with industry standard technologies commonly found as part of QA and CI/CD systems,
+                    to check if  submitted code holds up to scrutiny.
+                    You can create challenges and make them fit your needs exactly, to teach, test or evaluate the skills of prospective employees.
+                    If you or you team want to learn, teach or challenge yourselves in the world of software and web development, ChallengeMe is the way to go.</p>
                     <div className='Landing-page-Build-Your-Own-Challenge-Buttons'>
                         <Link to='/AddNewChallenge' className='Landing-page-Build-Your-Own-Challenge-GetStarted' >Get started</Link>
                         <a href='https://suvelocity.github.io/challengeme/Guides/addChallenge.html' target="_blank" className='Landing-page-Build-Your-Own-Challenge-Learn-More'>Learn more</a>
@@ -249,7 +245,7 @@ export default function LandingPage() {
 
                     })}
                 </div>
-                <p> Copyright © 2020 David And Shnitzer, Will allays love each other. All rights reserved. </p>
+                <p> Copyright © 2020 suvelocity, All rights reserved. </p>
 
             </section>
         </div>
