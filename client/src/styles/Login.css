@@ -4,8 +4,11 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    /* background: linear-gradient(60deg, rgba(58, 106, 183, 0.7) 0%, rgba(213, 240, 255, 0.5) 100%); */
+    /* background-color: #1E3D5B; */
+    background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
+
 }
+
 .containerHeaderLogin {
     margin-bottom: 450px;
     position: absolute;
@@ -15,11 +18,7 @@
     color: white;
     width: 450px;
     height: 160px;
-    background: linear-gradient(
-        90deg,
-        rgb(49, 92, 171) 0%,
-        rgb(69, 125, 199) 100%
-    );
+    background: linear-gradient( 90deg, rgb(49, 92, 171) 0%, rgb(69, 125, 199) 100%);
     display: flex;
     flex-direction: column;
 }
@@ -49,16 +48,19 @@
 a {
     color: black;
 }
+
 .RememberAndforgot {
     width: 330px;
     display: flex;
     /* justify-content: space-around; */
     align-items: center;
 }
+
 .forgotLabel {
     /* margin-bottom: 20px; */
     margin-left: 55px;
 }
+
 .containerErrorLogin {
     position: absolute;
     margin-top: 300px;
@@ -68,28 +70,27 @@ a {
     color: white;
     background-color: rgba(255, 0, 0, 0.616);
     display: flex;
-
     align-items: center;
 }
+
 .errorInput {
     height: auto;
     margin-left: 5px;
     color: white;
 }
+
 @media (max-width: 700px) {
     .containerHeaderLogin {
-
-        top:0;
-        margin:0px;
+        top: 0;
+        margin: 0px;
         width: 100vw;
     }
     .loginBody {
         height: calc(100vh);
-        width:100vw;
-        
+        width: 100vw;
     }
     .containerErrorLogin {
-        width:80vw;
+        width: 80vw;
         height: 50px;
     }
 }

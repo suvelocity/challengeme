@@ -8,12 +8,12 @@
 
 .Landing-page-Vector {
     position: absolute;
-    background-image: url('../../images/Second\ Try\ ShapitWhite.svg');
+    background-image: url('../images/Second\ Try\ ShapitWhite.svg');
     background-repeat: no-repeat;
     background-size: 100%;
     /* background-color: white; */
     /* z-index: 30; */
-    /* mask-image: url('../../images/Second\ Try\ ShapitWhite.svg') ; */
+    /* mask-image: url('../images/Second\ Try\ ShapitWhite.svg') ; */
     /* mask-repeat: no-repeat; */
     height: 80%;
     width: 100%;

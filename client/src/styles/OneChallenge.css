@@ -1,0 +1,78 @@
+.One-Challenge-Page {
+    width: 100%;
+}
+
+.One-Challenge-Page-Head {
+    font-family: Ubuntu;
+    font-style: normal;
+    color: #FFFFFF;
+}
+
+.One-Challenge-Page-Head img {
+    width: 100%;
+}
+
+.One-Challenge-Page-Head h1 {
+    position: absolute;
+    width: 757px;
+    height: 132px;
+    left: 166px;
+    top: 27%;
+    font-weight: bold;
+    font-size: 60px;
+    line-height: 69px;
+    display: flex;
+    align-items: center;
+}
+
+.One-Challenge-Page-Head h2 {
+    position: absolute;
+    display: flex;
+    justify-content: space-evenly;
+    width: 30%;
+    height: 96px;
+    left: 120px;
+    top: 40%;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+}
+
+.One-Challenge-Page-Head p {
+    position: absolute;
+    width: 870px;
+    height: 96px;
+    left: 172px;
+    top: 45%;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 21px;
+    display: flex;
+    align-items: center;
+}
+
+.One-Challenge-Page-Head ul {
+    /* display: flex; */
+    /* justify-content: space-evenly; */
+
+}
+
+.One-Challenge-Page-Head ul span {
+    position: absolute;
+    left: 0%;
+    right: 0%;
+    top: 0%;
+    bottom: 0%;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 7px;
+    line-height: 8px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    /* white */
+    color: #FFFFFF;
+}

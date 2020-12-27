@@ -15,7 +15,7 @@ import Webhook from './SvgComponents/Webhook'
 import CreateChallenge from './SvgComponents/CreateChallenge';
 import IconButton from '@material-ui/core/IconButton';
 import GitHubIcon from '@material-ui/icons/GitHub';
-import './LandingPage.css';
+import '../..//styles/LandingPage.css';
 
 export default function LandingPage() {
 
