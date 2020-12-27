@@ -8,8 +8,21 @@
     color: #FFFFFF;
 }
 
+.One-Challenge-Image-Container {
+    z-index: 3;
+    box-shadow: inset 0px -400px 2500px  rgba(0,0,0,0.9);
+
+}
+
 .One-Challenge-Page-Head img {
+    position: absolute;;
+    /* z-index: -2; */
     width: 100%;
+    /* position: absolute; */
+    /* box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9); */
+    /* background: linear-gradient(180deg, rgba(0, 0, 0, 0) 31.6%, rgba(0, 0, 0, 0.52) 73.45%); */
+    /* background-position: top; */
+    /* border-radius: 2.1613px; */
 }
 
 .One-Challenge-Page-Head h1 {
@@ -17,6 +30,8 @@
     width: 757px;
     height: 132px;
     left: 166px;
+    font-family: Ubuntu;
+    font-style: normal;
     top: 27%;
     font-weight: bold;
     font-size: 60px;
@@ -29,12 +44,14 @@
     position: absolute;
     display: flex;
     justify-content: space-evenly;
-    width: 30%;
+    width: 490px;
     height: 96px;
     left: 120px;
     top: 40%;
     font-weight: 500;
     font-size: 18px;
+    font-family: Ubuntu;
+    font-style: normal;
     line-height: 21px;
     display: flex;
     align-items: center;
@@ -47,6 +64,8 @@
     left: 172px;
     top: 45%;
     font-weight: 500;
+    font-family: Ubuntu;
+    font-style: normal;
     font-size: 18px;
     line-height: 21px;
     display: flex;
@@ -54,25 +73,39 @@
 }
 
 .One-Challenge-Page-Head ul {
-    /* display: flex; */
-    /* justify-content: space-evenly; */
-
+    position: absolute;
+    width: 870px;
+    height: 96px;
+    left: 80px;
+    top: 55%;
+    font-weight: 500;
+    font-size: 18px;
+    font-family: Ubuntu;
+    font-style: normal;
+    line-height: 21px;
+    /* display: flex;
+    align-items: center;
+    justify-content: space-evenly; */
 }
 
 .One-Challenge-Page-Head ul span {
-    position: absolute;
-    left: 0%;
-    right: 0%;
-    top: 0%;
-    bottom: 0%;
+    position: relative;
+    margin-left: 55px;
+    width: 60px;
+    height: 20px;
+    padding: 5px;
     font-family: Ubuntu;
     font-style: normal;
     font-weight: 500;
-    font-size: 7px;
-    line-height: 8px;
-    display: flex;
+    font-size: 12px;
+    line-height: 12px;
     align-items: center;
     text-align: center;
-    /* white */
     color: #FFFFFF;
+    border: 1px solid white;
+    border-radius: 30%;
+}
+
+.One-Challenge-Page-Head ul span:hover {
+    box-shadow: inset 0px -400px 2000px  rgba(255, 255, 255, 0.9);
 }

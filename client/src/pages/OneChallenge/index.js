@@ -265,7 +265,10 @@ function ChallengePage({ darkMode }) {
     return challenge ? (
         <>
             <section className='One-Challenge-Page-Head' >
-                <img src={image} alt="One-Challenge-Image" />
+                <div className='One-Challenge-Image-Container' >
+                    <img src={image} alt="One-Challenge-Image" />
+                </div>
+
                 <h1>{challenge.name}</h1>
                 <h2>
                     <span>{challenge.Author.userName}</span>
