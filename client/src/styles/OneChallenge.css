@@ -9,27 +9,28 @@
 }
 
 .One-Challenge-Image-Container {
-    z-index: 3;
-    box-shadow: inset 0px -400px 2500px  rgba(0,0,0,0.9);
-
+    box-shadow: inset 0px -200px 200px  rgba(0,0,0,0.9); 
+    padding-top:40%;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-.One-Challenge-Page-Head img {
-    position: absolute;;
+/* .One-Challenge-Page-Head img {
+    position: absolute;
     /* z-index: -2; */
-    width: 100%;
+    /* width: 100%; */
     /* position: absolute; */
     /* box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9); */
     /* background: linear-gradient(180deg, rgba(0, 0, 0, 0) 31.6%, rgba(0, 0, 0, 0.52) 73.45%); */
     /* background-position: top; */
     /* border-radius: 2.1613px; */
-}
+/* } */ 
 
 .One-Challenge-Page-Head h1 {
     position: absolute;
-    width: 757px;
-    height: 132px;
-    left: 166px;
+    width: 60%;
+    height: 10%;
+    left: 5%;
     font-family: Ubuntu;
     font-style: normal;
     top: 27%;
@@ -44,10 +45,10 @@
     position: absolute;
     display: flex;
     justify-content: space-evenly;
-    width: 490px;
-    height: 96px;
-    left: 120px;
-    top: 40%;
+    width: 50%;
+    height: 6%;
+    left: 4%;
+    top: 50%;
     font-weight: 500;
     font-size: 18px;
     font-family: Ubuntu;
@@ -59,10 +60,10 @@
 
 .One-Challenge-Page-Head p {
     position: absolute;
-    width: 870px;
-    height: 96px;
-    left: 172px;
-    top: 45%;
+    width: 60%;
+    height: 6%;
+    left: 9%;
+    top: 60%;
     font-weight: 500;
     font-family: Ubuntu;
     font-style: normal;
@@ -74,18 +75,15 @@
 
 .One-Challenge-Page-Head ul {
     position: absolute;
-    width: 870px;
-    height: 96px;
-    left: 80px;
-    top: 55%;
+    width: 70%;
+    height: 6%;
+    left:2%;
+    top: 70%;
     font-weight: 500;
     font-size: 18px;
     font-family: Ubuntu;
     font-style: normal;
     line-height: 21px;
-    /* display: flex;
-    align-items: center;
-    justify-content: space-evenly; */
 }
 
 .One-Challenge-Page-Head ul span {
@@ -102,10 +100,37 @@
     align-items: center;
     text-align: center;
     color: #FFFFFF;
-    border: 1px solid white;
-    border-radius: 30%;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 40px;
 }
 
 .One-Challenge-Page-Head ul span:hover {
-    box-shadow: inset 0px -400px 2000px  rgba(255, 255, 255, 0.9);
+    background: linear-gradient(176.6deg, #FFFFFF -41.64%, rgba(255, 255, 255, 0) 207.73%);
+    text-decoration: none;
+}
+
+.remove:focus {
+    text-decoration: none;
+}
+
+.remove:active {
+    text-decoration: none;
+}
+.remove:visited {
+    text-decoration: none;
+}
+.remove:link {
+    text-decoration: none;
+}
+
+.One-Challenge-Page-Challenge{
+    background: #FFFFFF;
+    box-shadow: 0px 30px 60px rgba(0, 0, 0, 0.5);
+    border-radius: 11px;
+    width: 60%;
+    height:15%;
+    top:82%;
+    left:20%;    
+    position: absolute;
 }
