@@ -27,29 +27,32 @@ function ReviewsTab({ challengeId, setRatingCount }) {
     // eslint-disable-next-line
   }, [challengeId]);
 
-  return reviews.length !== 0 ? (
-    reviews.map((review) => {
-      const {
-        id,
-        createdAt,
-        title,
-        content,
-        rating,
-        User: { userName },
-      } = review;
-      return (
-        <Review
-          key={id}
-          reviewId={id}
-          author={userName}
-          createdAt={createdAt}
-          title={title}
-          content={content}
-          rating={rating}
-        />
-      );
-    })
-  ) : (
+  return reviews.length !== 0 ? (<>
+    <h1 className='Reviews-H1'>Reviews:</h1>
+    <ul>
+      {reviews.map((review) => {
+        const {
+          id,
+          createdAt,
+          title,
+          content,
+          rating,
+          User: { userName },
+        } = review;
+        return (
+          <Review
+            key={id}
+            reviewId={id}
+            author={userName}
+            createdAt={createdAt}
+            title={title}
+            content={content}
+            rating={rating}
+          />
+        )
+      })}
+    </ul>
+  </>) : (
       <div>
         {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
       </div>

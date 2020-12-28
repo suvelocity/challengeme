@@ -1,5 +1,6 @@
 .One-Challenge-Page {
     width: 100%;
+    background-color: white;
 }
 
 .One-Challenge-Page-Head {
@@ -9,34 +10,23 @@
 }
 
 .One-Challenge-Image-Container {
-    box-shadow: inset 0px -200px 200px  rgba(0,0,0,0.9); 
-    padding-top:40%;
+    box-shadow: inset 0px -200px 200px rgba(0, 0, 0, 0.9);
+    padding-top: 530px;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 100% 530px;
 }
-
-/* .One-Challenge-Page-Head img {
-    position: absolute;
-    /* z-index: -2; */
-    /* width: 100%; */
-    /* position: absolute; */
-    /* box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9); */
-    /* background: linear-gradient(180deg, rgba(0, 0, 0, 0) 31.6%, rgba(0, 0, 0, 0.52) 73.45%); */
-    /* background-position: top; */
-    /* border-radius: 2.1613px; */
-/* } */ 
 
 .One-Challenge-Page-Head h1 {
     position: absolute;
-    width: 60%;
-    height: 10%;
-    left: 5%;
+    width: 757px;
+    height: 132px;
+    left: 107px;
+    top: 130px;
     font-family: Ubuntu;
     font-style: normal;
-    top: 27%;
     font-weight: bold;
-    font-size: 60px;
-    line-height: 69px;
+    font-size: 45px;
+    line-height: 40px;
     display: flex;
     align-items: center;
 }
@@ -45,29 +35,29 @@
     position: absolute;
     display: flex;
     justify-content: space-evenly;
-    width: 50%;
-    height: 6%;
-    left: 4%;
-    top: 50%;
+    width: 300px;
+    height: 39px;
+    left: 94px;
+    top: 255px;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 15px;
+    line-height: 21px;
     font-family: Ubuntu;
     font-style: normal;
-    line-height: 21px;
     display: flex;
     align-items: center;
 }
 
 .One-Challenge-Page-Head p {
     position: absolute;
-    width: 60%;
-    height: 6%;
-    left: 9%;
-    top: 60%;
+    width: 870px;
+    height: 96px;
+    left: 109px;
+    top: 270px;
     font-weight: 500;
     font-family: Ubuntu;
     font-style: normal;
-    font-size: 18px;
+    font-size: 15px;
     line-height: 21px;
     display: flex;
     align-items: center;
@@ -75,12 +65,12 @@
 
 .One-Challenge-Page-Head ul {
     position: absolute;
-    width: 70%;
-    height: 6%;
-    left:2%;
-    top: 70%;
+    /* width: 5200px; */
+    height: 39px;
+    left: 59px;
+    top: 355px;
     font-weight: 500;
-    font-size: 18px;
+    /* font-size: 15px; */
     font-family: Ubuntu;
     font-style: normal;
     line-height: 21px;
@@ -88,14 +78,14 @@
 
 .One-Challenge-Page-Head ul span {
     position: relative;
-    margin-left: 55px;
+    margin-left: 10px;
     width: 60px;
     height: 20px;
     padding: 5px;
     font-family: Ubuntu;
     font-style: normal;
     font-weight: 500;
-    font-size: 12px;
+    font-size: 10px;
     line-height: 12px;
     align-items: center;
     text-align: center;
@@ -117,20 +107,111 @@
 .remove:active {
     text-decoration: none;
 }
+
 .remove:visited {
     text-decoration: none;
 }
+
 .remove:link {
     text-decoration: none;
 }
 
-.One-Challenge-Page-Challenge{
+.One-Challenge-Page-Control-Panel {
     background: #FFFFFF;
     box-shadow: 0px 30px 60px rgba(0, 0, 0, 0.5);
     border-radius: 11px;
-    width: 60%;
-    height:15%;
-    top:82%;
-    left:20%;    
+    width: 50%;
+    height: 80px;
+    top: 490px;
+    left: 25%;
     position: absolute;
+    display: flex;
+    justify-content: space-evenly;
+    align-content: space-around;
+}
+
+.One-Challenge-Page-Control-Panel-Rating {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
+.One-Challenge-Page-Control-Panel-Rating-Text {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 100%;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: normal;
+    text-align: center;
+}
+
+.One-Challenge-Page-Control-Panel-Rating-Text p:first-child {
+    margin: 0;
+    font-size: 13px;
+    line-height: 20px;
+    align-content: center;
+}
+
+.One-Challenge-Page-Control-Panel-Rating-Text p b {
+    font-size: 20px;
+}
+
+.One-Challenge-Page-Control-Panel-Rating-Text p:last-child {
+    margin: 0;
+    font-size: 10px;
+    line-height: 9px;
+    width: 80px;
+}
+
+.One-Challenge-Page-Control-Panel {}
+
+.One-Challenge-Page-Control-Panel-Start-Button {
+    border: none;
+    cursor: pointer;
+    width: 120px;
+    height: 100%;
+    font-family: Wendy One;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 30px;
+    line-height: 36px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #00AD98;
+    text-decoration: none;
+}
+
+.One-Challenge-Page-Control-Panel-Submit {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.One-Challenge-Page-More {}
+
+.One-Challenge-Page-More h2 {
+    position: absolute;
+    width: 486px;
+    height: 101px;
+    left: 120px;
+    top: 630px;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 28px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #000000;
+}
+
+.One-Challenge-Page-Reviews {
+    position: relative;
+    top: 200px;
 }

@@ -27,14 +27,14 @@ import GroupIcon from '@material-ui/icons/Group';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LockIcon from '@material-ui/icons/Lock';
 import useStyles from './WideNavStyle';
-import ChooseLabels from '../../Choosers/ChooseLabels';
 import network from '../../../services/network';
-import FilteredLabels from '../../../context/FilteredLabelsContext';
 import { Logged } from '../../../context/LoggedInContext';
 import Search from '../Search';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles  } from '@material-ui/core/styles';
+import AddIcon from '@material-ui/icons/Add';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 
 const StyledMenu = withStyles({
@@ -70,25 +70,13 @@ const StyledMenuItem = withStyles((theme) => ({
 
 
 export default function WideNav({ darkMode, setDarkMode }) {
-  const filteredLabels = useContext(FilteredLabels);
   const classes = useStyles();
   const location = useHistory();
   const LoggedContext = useContext(Logged);
-  const [labels, setLabels] = useState([]);
-  const [chooseLabels, setChooseLabels] = useState([]);
   const currentLocation = useLocation();
+
   const [openNavBar, setOpenNavBar] = useState(false);
-  useEffect(() => {
-    if (currentLocation.pathname !== '/challenges') {
-      setLabels([]);
-    } else {
-      const newFilter = chooseLabels.filter(
-        (label) => label.value === (filteredLabels ? filteredLabels.filteredLabels[0] : null),
-      );
-      setLabels(newFilter);
-    }
-    // eslint-disable-next-line
-  }, [currentLocation]);
+
 
   const handleDrawerOpen = () => {
     setOpenNavBar(true);
@@ -111,6 +99,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
       LoggedContext.setLogged(false);
       LoggedContext.setIsAdmin(false);
       location.push('/');
+      handleDrawerClose()
     } catch (error) {
     }
   };
@@ -133,15 +122,6 @@ export default function WideNav({ darkMode, setDarkMode }) {
     <>
       <AppBar position="fixed" className={clsx(classes.appBarRegolar)} style={headerStyle}>
         <Toolbar>
-          {/* <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton)}
-          >
-            <MenuIcon style={letterColor} />
-          </IconButton> */}
           <Typography variant="h6" className={classes.title}>
             <NavLink to="/" exact className="link-rout">
               <div
@@ -178,26 +158,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
           </Link>
           </Typography>
             {currentLocation.pathname === '/challenges' ? (
-              <>
           <Search darkMode={darkMode} setDarkMode={setDarkMode} />
-          <div style={{ minWidth: '150px', width: 'fit-content' }}>
-              <ChooseLabels
-                labels={labels}
-                chooseLabels={chooseLabels}
-                setChooseLabels={setChooseLabels}
-                darkMode={darkMode}
-                setLabels={setLabels}
-              />
-          </div>
-            <Button
-              onClick={() => {
-                filteredLabels.setFilteredLabels(labels ? labels.map((label) => label.value) : []);
-              }}
-              variant="contained"
-              className={darkMode ? classes.filterButtonDark : classes.filterButton}
-            >
-              filter
-            </Button></>
           ) : null}
           <div style={{ flex: 1 }} />
           {currentLocation.pathname !== '/' ? 
@@ -246,12 +207,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
             </>}
         </Toolbar>
       </AppBar>
-      {/* <Drawer
-        variant="persistent"
-        anchor="left"
-        open={openNavBar}
-        classes={darkMode ? { paper: classes.drawerPaperDark } : { paper: classes.drawerPaper }}
-      >*/}
+
         <StyledMenu
         id="customized-menu"
         anchorEl={openNavBar}
@@ -260,7 +216,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
         onClose={handleDrawerClose}
         className={classes.menu}
       >
-        <div className={classes.drawerHeader}>
+        <div className={`${classes.drawerHeader} ${classes.flexRow}`}>
         <b>
                 {LoggedContext.logged&&Cookies.get('userName') ? (`Hey ${Cookies.get('userName')}`): 'Welcome to ChallengeMe'}
               </b>
@@ -268,87 +224,66 @@ export default function WideNav({ darkMode, setDarkMode }) {
             <ExpandLessIcon style={drawerColor} />
           </IconButton>
         </div> 
-        <Divider style={dividerColor} />
+        <Divider variant="middle" style={dividerColor} />
         <List className={classes.list}>
         {currentLocation.pathname === '/challenges' ? 
           <Link to="/" className="link-rout">
-            <ListItem button onClick={handleDrawerClose} style={drawerColor}>
-              <ListItemIcon>
+            <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
+              <ListItemText primary="Home" />
+              <ListItemIcon className={classes.flexEnd}>
                 <HomeIcon style={drawerColor} />
               </ListItemIcon>
-              <ListItemText primary="Home" />
             </ListItem>
           </Link>:
           <Link to="/challenges" className="link-rout">
-          <ListItem button onClick={handleDrawerClose} style={drawerColor}>
-            <ListItemIcon>
+          <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
+            <ListItemText primary="Challenges" />
+            <ListItemIcon className={classes.flexEnd}>
               <HomeIcon style={drawerColor} />
             </ListItemIcon>
-            <ListItemText primary="Challenges" />
           </ListItem>
         </Link>}
-          <Divider style={dividerColor} />
+          <Divider variant="middle" style={dividerColor} />
           <Link to="/profile/info" className="link-rout">
-            <ListItem button onClick={handleDrawerClose} style={drawerColor}>
-              <ListItemIcon>
+            <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
+              <ListItemText primary="Profile" />
+              <ListItemIcon className={classes.flexEnd}>
                 <AccountCircleIcon style={drawerColor} />
               </ListItemIcon>
-              <ListItemText primary="Profile" />
             </ListItem>
           </Link>
-
-          <Divider style={dividerColor} />
-          {/* <Link to="/teams" className="link-rout">
-            <ListItem button onClick={handleDrawerClose} style={drawerColor}>
-              <ListItemIcon>
-                <GroupIcon style={drawerColor} />
-              </ListItemIcon>
-              <ListItemText primary="Teams Area" />
-            </ListItem>
-          </Link> */}
           {LoggedContext.isAdmin && (
             <>
-              <Divider style={dividerColor} />
+              <Divider  variant="middle" style={dividerColor} />
               <Link to="/admin/DashBoard" className="link-rout">
-                <ListItem button onClick={handleDrawerClose} style={drawerColor}>
-                  <ListItemIcon>
+                <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
+                  <ListItemText primary="Admin Area" />
+                  <ListItemIcon className={classes.flexEnd}>
                     <LockIcon style={drawerColor} />
                   </ListItemIcon>
-                  <ListItemText primary="Admin Area" />
                 </ListItem>
               </Link>
             </>
           )}
-          <Divider style={dividerColor} />
+          <Divider variant="middle" style={dividerColor} />
           <Link to="/addnewchallenge" className="link-rout">
-            <ListItem className={classes.addChanllenge} onClick={handleDrawerClose}>
-              <Button
-                className={classes.addChanllengeButton}
-                style={{ minWidth: 150 }}
-                variant="contained"
-                color="primary"
-              >
-                Add New Challenge
-              </Button>
+            <ListItem className={classes.flexRow} button onClick={handleDrawerClose}>
+            <ListItemText primary="Add New Challenge" />
+                  <ListItemIcon className={classes.flexEnd} >
+                    <AddIcon style={drawerColor} />
+                  </ListItemIcon>
             </ListItem>
           </Link>
-          <Divider style={dividerColor} />
+          <Divider  variant="middle" style={dividerColor} />
           {LoggedContext.logged?
-          <ListItem className={classes.logOut} onClick={handleDrawerClose}>
-            <Button
-              className={classes.logOutButton}
-              onClick={logOut}
-              style={{ minWidth: 150 }}
-              variant="contained"
-              color="secondary"
-            >
-              Log Out
-            </Button>
+          <ListItem button className={classes.flexRow} onClick={logOut}>
+            <ListItemText style={{color:'#C10000'}} primary="Logout" />
+                  <ListItemIcon className={classes.flexEnd}>
+                    <ExitToAppIcon style={{color:'#C10000'}} />
+                  </ListItemIcon>
           </ListItem>:null}
-          <Divider style={dividerColor} />
         </List>
         </StyledMenu>
-      {/* </Drawer> */}
     </>
   );
 }

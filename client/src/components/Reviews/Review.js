@@ -5,7 +5,7 @@ import Rating from '@material-ui/lab/Rating';
 import { Button } from '@material-ui/core';
 import { Logged } from '../../context/LoggedInContext';
 import network from '../../services/network';
-import './Review.css';
+import '../../styles/Review.css';
 
 function Review({
   author, createdAt, title, content, rating, reviewId,
@@ -60,31 +60,30 @@ function Review({
   };
 
   return (
-    <div className="review" cy-test="challenge-single-review">
-      <div className="title" cy-test="review-title">{title}</div>
-      <div className="createdAt" cy-test="review-createdAt">{date}</div>
-      <div className="content" cy-test="review-content">{content}</div>
-      <div className="rating" cy-test="review-rating">
-        <Rating
-          name="half-rating-read"
-          defaultValue={rating}
-          precision={1}
-          readOnly
-        />
+    <div className="Review">
+      <div className='Review-Left'>
+        <div className="author">{author}</div>
       </div>
-      <div className="author" cy-test="review-author">
-        By:
-        {author}
-      </div>
-      {LoggedContext.isAdmin && (
+      <div className='Review-Middle'>
+        <div className="Review-Title" cy-test="review-title">{title}</div>
+        <div className="Review-CreatedAt">{date}</div>
+        <div className="Review-Content">{content}</div>
+
+
+        {/* {LoggedContext.isAdmin && (
         <Button
-          variant="contained"
-          color="secondary"
-          onClick={deleteReview}
+        variant="contained"
+        color="secondary"
+        onClick={deleteReview}
         >
-          Delete
+        Delete
         </Button>
-      )}
+      )} */}
+      </div>
+      <div className='Review-Right'>
+        <p className="Review-Rating-Number">{rating}</p>
+        <p className='Review-Rating-Part-Of'>out of 5</p>
+      </div>
     </div>
   );
 }
