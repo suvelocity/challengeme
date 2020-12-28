@@ -6,7 +6,7 @@
     height: 100vh;
     /* background-color: #1E3D5B; */
     background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
-
+    padding-top:85px;
 }
 
 .containerHeaderLogin {

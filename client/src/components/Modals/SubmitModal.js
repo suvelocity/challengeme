@@ -1,48 +1,51 @@
-import React, { useState } from 'react';
-import mixpanel from 'mixpanel-browser';
-import { Modal, TextField, Button, Typography } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { Rating } from '@material-ui/lab';
-import { useForm } from 'react-hook-form';
-import network from '../../services/network';
+import React, { useState } from "react";
+import mixpanel from "mixpanel-browser";
+import { Modal, TextField, Button, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { Rating } from "@material-ui/lab";
+import { useForm } from "react-hook-form";
+import network from "../../services/network";
 import { Alert, AlertTitle } from "@material-ui/lab";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
 
 function getModalStyle() {
   return {
     outline: 0,
+    width: "50%",
+    height: "80%",
   };
 }
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    position: 'absolute',
+    position: "absolute",
     width: 400,
     backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
+    boxShadow: theme.shadows[8],
     padding: theme.spacing(2, 4, 3),
+    borderRadius: 8,
   },
   formValidationError: {
-    color: 'red',
-    fontSize: '0.8em',
+    color: "red",
+    fontSize: "0.8em",
   },
 }));
 
 function SubmitModal({ isOpen, handleClose, challengeParamId }) {
   const { register, handleSubmit, errors } = useForm();
-  const [userRating, setUserRating] = useState('0');
+  const [userRating, setUserRating] = useState("0");
   const classes = useStyles();
   const [modalStyle] = useState(getModalStyle);
   const [badInput, setBadInput] = useState([]);
   const spaces = new RegExp(/^(\s{1,})$/);
   const hebrew = new RegExp(/^.*([\u0590-\u05FF]{1,}).*$/);
 
-
   /* function to generate alerts for bad or missing inputs */
   const generateAlert = (title, message) => (
     <>
-      <Alert severity='error'>
+      <Alert severity="error">
         <AlertTitle>{title}</AlertTitle>
         {message}
       </Alert>
@@ -81,73 +84,79 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
           `/api/v1/submissions/apply/${challengeParamId}`,
           data
         );
-        const user = Cookies.get('userName')
-        mixpanel.track("User Submited Challenge",
-          {
-            "User": `${user}`,
-            "ChallengeId": `${challengeParamId}`,
-            "Solution Repository": `${data.repository}`,
-            "Rating": `${data.rating}`
-          })
-      }
-      catch (error) {
-      }
+        const user = Cookies.get("userName");
+        mixpanel.track("User Submited Challenge", {
+          User: `${user}`,
+          ChallengeId: `${challengeParamId}`,
+          "Solution Repository": `${data.repository}`,
+          Rating: `${data.rating}`,
+        });
+      } catch (error) {}
       handleClose();
-      setUserRating('0');
-    };
-  }
+      setUserRating("0");
+    }
+  };
 
   return (
     <Modal
       open={isOpen}
       onClose={handleClose}
-      aria-labelledby='simple-modal-title'
-      aria-describedby='simple-modal-description'
+      aria-labelledby="simple-modal-title"
+      aria-describedby="simple-modal-description"
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <div style={modalStyle} className={classes.paper}>
+        <div style={{ marginLeft: "95%" }}>
+          <IconButton onClick={() => handleClose()}>
+            <CloseIcon />
+          </IconButton>
+        </div>
         <form
           onSubmit={handleSubmit(submitForm)}
           style={{
-            display: 'flex',
-            flexDirection: 'column',
+            paddingTop: 30,
+            display: "flex",
+            flexDirection: "column",
+            width: "60%",
+            margin: "auto",
+            height: "90%",
+            justifyContent: "space-between",
           }}
         >
-          <Typography variant='h5'>Submit Your Solution</Typography>
+          <Typography variant="h5">Submit Your Solution</Typography>
           <TextField
-            cy-test="submit-repo-input"
-            label='Solution repository'
-            type='text'
-            id='repoInput'
-            name='repository'
-            placeholder='Owner/Repo'
+            label="Solution repository Url"
+            type="text"
+            id="repoInput"
+            name="repository"
+            placeholder="GitHub-UserName/GitHub-Repository-Name"
             style={{ marginTop: 8 }}
             inputRef={register({
               required: true,
               pattern: /^([^ ]+\/[^ ]+)$/,
             })}
           />
-          <Typography color='error' className='newChallengeFormDisplayErrors'>
+          <Typography color="error" className="newChallengeFormDisplayErrors">
             {badInput}
           </Typography>
-          {errors.repository?.type === 'pattern' && (
+          {errors.repository?.type === "pattern" && (
             <Typography
-              variant='caption'
-              id='required-repo'
+              variant="caption"
+              id="required-repo"
               className={classes.formValidationError}
             >
               The text should look like "username/repository-name"
             </Typography>
           )}
-          {errors.repository?.type === 'required' && (
+          {errors.repository?.type === "required" && (
             <Typography
-              variant='caption'
+              variant="caption"
               className={classes.formValidationError}
-              id='required-repo'
+              id="required-repo"
             >
               Please enter a solution repository
             </Typography>
@@ -157,52 +166,52 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
           <div
             style={{
               marginTop: 12,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
             }}
           >
-            <Typography variant='subtitle1'>Rate this challenge</Typography>
+            <Typography variant="subtitle1">Rate this challenge</Typography>
             <Rating
               cy-test="submit-rating-input"
-              name='rating'
+              name="rating"
               onChange={(_, value) => setUserRating(value)}
             />
           </div>
           <input
-            name='rating'
-            type='number'
+            name="rating"
+            type="number"
             value={userRating}
-            ref={register({ required: true, min: '1' })}
+            ref={register({ required: true, min: "1" })}
             hidden
             readOnly
           />
-          {(errors.rating?.type === 'required' ||
-            errors.rating?.type === 'min') && (
-              <Typography
-                variant='caption'
-                id='required-rating'
-                className={classes.formValidationError}
-              >
-                Please rate this challenge
-              </Typography>
-            )}
-          <Typography variant='subtitle1' style={{ marginTop: 16 }}>
+          {(errors.rating?.type === "required" ||
+            errors.rating?.type === "min") && (
+            <Typography
+              variant="caption"
+              id="required-rating"
+              className={classes.formValidationError}
+            >
+              Please rate this challenge
+            </Typography>
+          )}
+          <Typography variant="subtitle1" style={{ marginTop: 16 }}>
             Please leave your review here
           </Typography>
           <TextField
             cy-test="submit-title-input"
-            label='Title'
-            type='text'
-            id='commentTitleInput'
-            placeholder='Comment Title'
-            name='commentTitle'
+            label="Title"
+            type="text"
+            id="commentTitleInput"
+            placeholder="Comment Title"
+            name="commentTitle"
             inputRef={register({ maxLength: 100 })}
-            variant='filled'
+            variant="outlined"
           />
-          {errors.commentTitle?.type === 'maxLength' && (
+          {errors.commentTitle?.type === "maxLength" && (
             <Typography
-              variant='caption'
+              variant="caption"
               className={classes.formValidationError}
             >
               Title should be less than 100 characters
@@ -210,19 +219,19 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
           )}
           <TextField
             cy-test="submit-content-input"
-            id='reviewContentInput'
-            label='Message'
+            id="reviewContentInput"
+            label="Content"
             multiline
             rows={4}
-            placeholder='Leave your message here'
-            name='commentContent'
+            placeholder="Leave your message here"
+            name="commentContent"
             inputRef={register({ maxLength: 255 })}
-            variant='filled'
+            variant="outlined"
             style={{ marginTop: 8 }}
           />
-          {errors.commentContent?.type === 'maxLength' && (
+          {errors.commentContent?.type === "maxLength" && (
             <Typography
-              variant='caption'
+              variant="caption"
               className={classes.formValidationError}
             >
               Your message should be less than 100 characters
@@ -231,16 +240,21 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
 
           <Button
             cy-test="submit-review-button"
-            variant='contained'
-            color='primary'
-            type='submit'
-            id='submit-form'
-            style={{ marginTop: 16 }}
+            variant="contained"
+            color="primary"
+            type="submit"
+            id="submit-form"
+            style={{
+              marginTop: 16,
+              borderRadius: 67,
+              background: "#00AD98",
+              width: "50%",
+              marginLeft: "25%",
+            }}
           >
             submit
           </Button>
         </form>
-
       </div>
     </Modal>
   );
