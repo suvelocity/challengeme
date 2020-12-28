@@ -92,5 +92,8 @@ export default makeStyles((theme) => ({
   },
   menu: {
     marginTop:'49px',
+  },
+  title: {
+    fontSize: '15px'
   }
 }));

@@ -64,7 +64,7 @@ export default function Change({ data, handleChange, changePassword = false }) {
         clearTimeout(timer);
       };
     }
-  }, []);
+  }, [changePassword]);
 
   return redirect ? (
     <Redirect to="/" />

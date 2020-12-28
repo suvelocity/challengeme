@@ -15,7 +15,8 @@ import Webhook from './SvgComponents/Webhook'
 import CreateChallenge from './SvgComponents/CreateChallenge';
 import IconButton from '@material-ui/core/IconButton';
 import GitHubIcon from '@material-ui/icons/GitHub';
-import '../..//styles/LandingPage.css';
+import Footer from '../../components/Footer';
+import '../../styles/LandingPage.css';
 
 export default function LandingPage() {
 
@@ -113,35 +114,6 @@ export default function LandingPage() {
         }
     ]
 
-    const footerLabels = [
-        {
-            name: 'Contact Us',
-            link: ''
-        },
-        {
-            name: '|'
-        },
-
-        {
-            name: 'FAQ',
-            link: ''
-        },
-        {
-            name: '|'
-        },
-        {
-            name: 'Reviews',
-            link: ''
-        },
-        {
-            name: '|'
-        },
-        {
-            name: 'Legal Stuff',
-            link: ''
-        },
-    ]
-
     return (
         <div className='Landing-page-main'>
             <section className='Landing-page-title'>
@@ -160,7 +132,7 @@ export default function LandingPage() {
                       new challenges with many feauture’s to come</p>
                     <div className='Landing-page-View-Buttons'>
                         <Link to='/challenges' className='Landing-page-View-GetStarted' >Get started</Link>
-                        <a href='https://suvelocity.github.io/challengeme/Guides/getting-started.html' target="_blank" className='Landing-page-View-Learn-More'>Learn more</a>
+                        <a href='https://suvelocity.github.io/challengeme/Guides/getting-started.html' target="_blank" rel="noopener noreferrer" className='Landing-page-View-Learn-More'>Learn more</a>
                     </div>
                 </div>
                 <div className='Landing-page-View-Hacker-walks'>
@@ -187,7 +159,7 @@ export default function LandingPage() {
                 <p className='Landing-page-Open-Source-P'>ChallengeMe's source code is freely available to view, study and contribute to.
                 This means you are free to use it as a base for your learning, as a class project or most anything else, and if you do a good enough job, your contributions could even be accepted into the Site.
 Our extensive CI/CD system ensures that any additions made will not be breaking, so you can rest assured that your contribution will not do any damage.</p>
-                <a href='https://github.com/suvelocity/challengeme' target="_blank" className='Landing-page-Open-Source-Button' >Join the Team
+                <a href='https://github.com/suvelocity/challengeme' target="_blank" rel="noopener noreferrer" className='Landing-page-Open-Source-Button' >Join the Team
                    <IconButton>
                         <GitHubIcon style={{ color: 'white' }} />
                     </IconButton></a>
@@ -229,25 +201,12 @@ Our extensive CI/CD system ensures that any additions made will not be breaking,
                     If you or you team want to learn, teach or challenge yourselves in the world of software and web development, ChallengeMe is the way to go.</p>
                     <div className='Landing-page-Build-Your-Own-Challenge-Buttons'>
                         <Link to='/AddNewChallenge' className='Landing-page-Build-Your-Own-Challenge-GetStarted' >Get started</Link>
-                        <a href='https://suvelocity.github.io/challengeme/Guides/addChallenge.html' target="_blank" className='Landing-page-Build-Your-Own-Challenge-Learn-More'>Learn more</a>
+                        <a href='https://suvelocity.github.io/challengeme/Guides/addChallenge.html' target="_blank" rel="noopener noreferrer" className='Landing-page-Build-Your-Own-Challenge-Learn-More'>Learn more</a>
                     </div>
                 </div>
 
             </section>
-            <section className='Landing-page-Footer' >
-                <div className='Landing-page-Footer-Labels' >
-                    {footerLabels.map((label) => {
-                        if (label.name !== '|') {
-                            return <Link className='Landing-page-Footer-Single-Label' to={`/${label.link}`}>{label.name}</Link>
-                        } else {
-                            return <span className='Landing-page-Footer-Single-Label' >{label.name}</span>
-                        }
-
-                    })}
-                </div>
-                <p> Copyright © 2020 suvelocity, All rights reserved. </p>
-
-            </section>
+            <Footer />
         </div>
     );
 }

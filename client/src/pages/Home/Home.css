@@ -50,7 +50,18 @@
   color:white;
 }
 
-/* .All-Challenge-Title-Container h1{
+.All-Challenge-Challenges-Container {
+  width: 100vw;
+}
+
+.All-Challenge-Carousel p{
   color:white;
-  text-align: center;
-} */
+  text-align: left;
+  margin-left:10%;
+  margin-bottom:50px;
+  font-family: Ubuntu;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 40px;
+}

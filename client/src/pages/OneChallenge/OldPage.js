@@ -1,21 +1,19 @@
-import React, {
-  useState, useEffect, useContext,
-} from 'react';
+import React, { useState, useEffect, useContext, } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
+import Swal from 'sweetalert2';
 import { Button } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 import { makeStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { useParams, Link } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import './ChallengePage.css';
+import network from '../../services/network';
+import { Logged } from '../../context/LoggedInContext';
+import FilteredLabels from '../../context/FilteredLabelsContext';
 import ReviewsTab from '../../components/Reviews';
 import SubmitModal from '../../components/Modals/SubmitModal';
-import network from '../../services/network';
 import Loading from '../../components/Loading';
-import FilteredLabels from '../../context/FilteredLabelsContext';
-import { Logged } from '../../context/LoggedInContext';
-import Swal from 'sweetalert2';
+import '../../styles/OldOneChallenge.css';
 
 
 const useStyles = makeStyles(() => ({

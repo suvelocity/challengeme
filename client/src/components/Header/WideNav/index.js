@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import Cookies from 'js-cookie';
 import {
   Link, NavLink, useHistory, useLocation,
@@ -13,8 +13,6 @@ import Avatar from '@material-ui/core/Avatar';
 import HomeIcon from '@material-ui/icons/Home';
 import '../Header.css';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import Drawer from '@material-ui/core/Drawer';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -31,8 +29,7 @@ import network from '../../../services/network';
 import { Logged } from '../../../context/LoggedInContext';
 import Search from '../Search';
 import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import { withStyles  } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
@@ -49,25 +46,9 @@ const StyledMenu = withStyles({
       vertical: 'top',
       horizontal: 'right',
     }}
-    // transformOrigin={{
-    //   vertical: 'center bottom',
-    //   horizontal: 'center bottom',
-    // }}
     {...props}
   />
 ));
-
-const StyledMenuItem = withStyles((theme) => ({
-  root: {
-    '&:focus': {
-      backgroundColor: theme.palette.primary.main,
-      '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
-        color: theme.palette.common.white,
-      },
-    },
-  },
-}))(MenuItem);
-
 
 export default function WideNav({ darkMode, setDarkMode }) {
   const classes = useStyles();
@@ -122,7 +103,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
     <>
       <AppBar position="fixed" className={clsx(classes.appBarRegolar)} style={headerStyle}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" >
             <NavLink to="/" exact className="link-rout">
               <div
                 style={{
@@ -139,9 +120,9 @@ export default function WideNav({ darkMode, setDarkMode }) {
               </div>
             </NavLink>
           </Typography>
-          <Typography variant="h10" className={classes.title}>
-          <Link  to={LoggedContext.logged?"/teams":currentLocation.pathname} className="link-rout">
-                <div
+          <Typography variant="h6" className={classes.title}>
+            <Link to={LoggedContext.logged ? "/teams" : currentLocation.pathname} className="link-rout">
+              <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -152,45 +133,45 @@ export default function WideNav({ darkMode, setDarkMode }) {
                 <GroupIcon style={letterColor} />
                 &nbsp;
                 <span style={letterColor} className="header-link-title">
-                Teams
+                  Teams
                 </span>
               </div>
-          </Link>
+            </Link>
           </Typography>
-            {currentLocation.pathname === '/challenges' ? (
-          <Search darkMode={darkMode} setDarkMode={setDarkMode} />
+          {currentLocation.pathname === '/challenges' ? (
+            <Search darkMode={darkMode} setDarkMode={setDarkMode} />
           ) : null}
           <div style={{ flex: 1 }} />
-          {currentLocation.pathname !== '/' ? 
-          (<IconButton
-          aria-label="delete"
-          onClick={() => {
-            localStorage.setItem('darkMode', !darkMode);
-            setDarkMode((prev) => !prev);
-          }}
-          >
-            {darkMode ? (
-              <Brightness7Icon style={letterColor} />
-            ) : (
-                <Brightness4Icon style={letterColor} />)}
-          </IconButton>)
-              :null}
-          {LoggedContext.logged&& Cookies.get('userName')?
+          {currentLocation.pathname !== '/' ?
+            (<IconButton
+              aria-label="delete"
+              onClick={() => {
+                localStorage.setItem('darkMode', !darkMode);
+                setDarkMode((prev) => !prev);
+              }}
+            >
+              {darkMode ? (
+                <Brightness7Icon style={letterColor} />
+              ) : (
+                  <Brightness4Icon style={letterColor} />)}
+            </IconButton>)
+            : null}
+          {LoggedContext.logged && Cookies.get('userName') ?
             <Tooltip title={Cookies.get('userName')}>
               {/* <Link to="/profile/info" className="link-rout"> */}
-                <Avatar
+              <Avatar
                 onClick={handleDrawerOpen}
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="inherit"
-                  style={{
-                    cursor: 'pointer',
-                    backgroundColor: darkMode ? 'rgb(140,110,99)' : '#7BACB4',
-                  }}
-                >
-                  {Cookies.get('userName').slice(0, 2)}
-                </Avatar>
+                aria-label="account of current user"
+                aria-controls="menu-appbar"
+                aria-haspopup="true"
+                color="inherit"
+                style={{
+                  cursor: 'pointer',
+                  backgroundColor: darkMode ? 'rgb(140,110,99)' : '#7BACB4',
+                }}
+              >
+                {Cookies.get('userName').slice(0, 2)}
+              </Avatar>
               {/* </Link> */}
             </Tooltip> :
             <>
@@ -208,7 +189,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
         </Toolbar>
       </AppBar>
 
-        <StyledMenu
+      <StyledMenu
         id="customized-menu"
         anchorEl={openNavBar}
         keepMounted
@@ -217,32 +198,32 @@ export default function WideNav({ darkMode, setDarkMode }) {
         className={classes.menu}
       >
         <div className={`${classes.drawerHeader} ${classes.flexRow}`}>
-        <b>
-                {LoggedContext.logged&&Cookies.get('userName') ? (`Hey ${Cookies.get('userName')}`): 'Welcome to ChallengeMe'}
-              </b>
+          <b>
+            {LoggedContext.logged && Cookies.get('userName') ? (`Hey ${Cookies.get('userName')}`) : 'Welcome to ChallengeMe'}
+          </b>
           <IconButton onClick={handleDrawerClose}>
             <ExpandLessIcon style={drawerColor} />
           </IconButton>
-        </div> 
+        </div>
         <Divider variant="middle" style={dividerColor} />
         <List className={classes.list}>
-        {currentLocation.pathname === '/challenges' ? 
-          <Link to="/" className="link-rout">
-            <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
-              <ListItemText primary="Home" />
-              <ListItemIcon className={classes.flexEnd}>
-                <HomeIcon style={drawerColor} />
-              </ListItemIcon>
-            </ListItem>
-          </Link>:
-          <Link to="/challenges" className="link-rout">
-          <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
-            <ListItemText primary="Challenges" />
-            <ListItemIcon className={classes.flexEnd}>
-              <HomeIcon style={drawerColor} />
-            </ListItemIcon>
-          </ListItem>
-        </Link>}
+          {currentLocation.pathname === '/challenges' ?
+            <Link to="/" className="link-rout">
+              <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
+                <ListItemText primary="Home" />
+                <ListItemIcon className={classes.flexEnd}>
+                  <HomeIcon style={drawerColor} />
+                </ListItemIcon>
+              </ListItem>
+            </Link> :
+            <Link to="/challenges" className="link-rout">
+              <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
+                <ListItemText primary="Challenges" />
+                <ListItemIcon className={classes.flexEnd}>
+                  <HomeIcon style={drawerColor} />
+                </ListItemIcon>
+              </ListItem>
+            </Link>}
           <Divider variant="middle" style={dividerColor} />
           <Link to="/profile/info" className="link-rout">
             <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
@@ -254,7 +235,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
           </Link>
           {LoggedContext.isAdmin && (
             <>
-              <Divider  variant="middle" style={dividerColor} />
+              <Divider variant="middle" style={dividerColor} />
               <Link to="/admin/DashBoard" className="link-rout">
                 <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
                   <ListItemText primary="Admin Area" />
@@ -268,22 +249,22 @@ export default function WideNav({ darkMode, setDarkMode }) {
           <Divider variant="middle" style={dividerColor} />
           <Link to="/addnewchallenge" className="link-rout">
             <ListItem className={classes.flexRow} button onClick={handleDrawerClose}>
-            <ListItemText primary="Add New Challenge" />
-                  <ListItemIcon className={classes.flexEnd} >
-                    <AddIcon style={drawerColor} />
-                  </ListItemIcon>
+              <ListItemText primary="Add New Challenge" />
+              <ListItemIcon className={classes.flexEnd} >
+                <AddIcon style={drawerColor} />
+              </ListItemIcon>
             </ListItem>
           </Link>
-          <Divider  variant="middle" style={dividerColor} />
-          {LoggedContext.logged?
-          <ListItem button className={classes.flexRow} onClick={logOut}>
-            <ListItemText style={{color:'#C10000'}} primary="Logout" />
-                  <ListItemIcon className={classes.flexEnd}>
-                    <ExitToAppIcon style={{color:'#C10000'}} />
-                  </ListItemIcon>
-          </ListItem>:null}
+          <Divider variant="middle" style={dividerColor} />
+          {LoggedContext.logged ?
+            <ListItem button className={classes.flexRow} onClick={logOut}>
+              <ListItemText style={{ color: '#C10000' }} primary="Logout" />
+              <ListItemIcon className={classes.flexEnd}>
+                <ExitToAppIcon style={{ color: '#C10000' }} />
+              </ListItemIcon>
+            </ListItem> : null}
         </List>
-        </StyledMenu>
+      </StyledMenu>
     </>
   );
 }

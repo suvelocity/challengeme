@@ -39,6 +39,7 @@ export default function SimpleCard({ head, content, picture, link, href }) {
           <a
             href={href}
             target="_blank"
+            rel="noopener noreferrer"
             className="Landing-page-Sections-Learn-More"
           >
             Learn More

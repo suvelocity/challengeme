@@ -4,7 +4,6 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import ErrorIcon from '@material-ui/icons/Error';
 import { motion } from 'framer-motion';
-import Input from '@material-ui/core/Input';
 import Change from '../ForgotPasswordPage/Change';
 import network from '../../services/network';
 import Swal from 'sweetalert2';

@@ -120,19 +120,25 @@
     background: #FFFFFF;
     box-shadow: 0px 30px 60px rgba(0, 0, 0, 0.5);
     border-radius: 11px;
-    width: 50%;
-    height: 80px;
-    top: 490px;
-    left: 25%;
+    width: 57%;
+    height: 110px;
+    top: 475px;
+    left: 21.5%;
     position: absolute;
     display: flex;
-    justify-content: space-evenly;
-    align-content: space-around;
+    /* justify-content: space-evenly; */
+}
+
+.One-Challenge-Page-Control-Panel-Rating-Container {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+    width: 35%;
 }
 
 .One-Challenge-Page-Control-Panel-Rating {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-around; */
     padding-top: 3px;
     padding-bottom: 3px;
 }
@@ -167,7 +173,11 @@
     width: 80px;
 }
 
-.One-Challenge-Page-Control-Panel {}
+.One-Challenge-Page-Control-Panel-Start-Button-Container {
+    width: 35%;
+    display: flex;
+    justify-content: space-around;
+}
 
 .One-Challenge-Page-Control-Panel-Start-Button {
     border: none;
@@ -188,22 +198,38 @@
 
 .One-Challenge-Page-Control-Panel-Submit {
     display: flex;
-    flex-direction: column;
+    width: 35%;
     justify-content: space-around;
 }
 
-.One-Challenge-Page-More {}
+.One-Challenge-Page-Control-Panel-Submit-Button {
+    cursor: pointer;
+    font-family: Wendy One;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 16px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #00AD98;
+}
+
+.One-Challenge-Page-More {
+    position: relative;
+    top: 100px
+}
 
 .One-Challenge-Page-More h2 {
-    position: absolute;
+    position: relative;
     width: 486px;
     height: 101px;
     left: 120px;
-    top: 630px;
+    top: 30px;
     font-family: Ubuntu;
     font-style: normal;
     font-weight: 500;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 28px;
     display: flex;
     align-items: center;
@@ -214,4 +240,17 @@
 .One-Challenge-Page-Reviews {
     position: relative;
     top: 200px;
+}
+
+.One-Challenge-Footer {
+    position: relative;
+    width: 100%;
+    top: 200px;
+    margin: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    color: black!important;
+    justify-content: space-evenly;
 }
