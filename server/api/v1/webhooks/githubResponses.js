@@ -3,6 +3,11 @@ const { Submission, User, Challenge } = require('../../../models');
 const webhookSendEvents = require('../../../helpers/webhookSendEvents');
 const { webhookUrlGithubResponseValidation } = require('../../../helpers/validator');
 
+webhookRouter.post('/', async (req, res) => {
+  console.log(req)
+  res.sendStatus(200)
+})
+
 // github api for update status about submission
 webhookRouter.patch('/:id', async (req, res) => {
   try {

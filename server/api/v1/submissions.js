@@ -81,6 +81,9 @@ submissionRouter.post('/apply/:challengeId', async (req, res) => {
     const urltoSet = process.env.MY_URL.concat(
       `/api/v1/webhooks/submissions/${submission.id}`,
     );
+    const urltoSetRunId = process.env.MY_URL.concat(
+      `/api/v1/webhooks/submissions`,
+    );
     const bearerToken = jwt.sign(
       { userId: req.user.userId, userName: req.user.userName },
       process.env.ACCESS_TOKEN_SECRET,
@@ -114,6 +117,7 @@ submissionRouter.post('/apply/:challengeId', async (req, res) => {
             solutionRepo: solutionRepository, // The repository that holds the submitted solution
             webhookUrl: urltoSet, // the url to come back to when the action is finished
             bearerToken: pureToken, // the access token to get back to our server ** currently not in use
+            webhookUrlRunId:urltoSetRunId
           },
         },
         {
@@ -128,6 +132,8 @@ submissionRouter.post('/apply/:challengeId', async (req, res) => {
         console.error(error.message);
       });
     handleGithubTokens(response.headers);
+    console.log(Object.keys(response))
+    console.log(response.request);
     return res.json(response.status);
   } catch (error) {
     console.error(error.message);

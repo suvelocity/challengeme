@@ -28,6 +28,13 @@ jobs:
     name: ${{ github.event.inputs.solutionRepo }}
     steps:
     - uses: actions/checkout@v2
+    - name: Send Run Id
+      uses: fjogeleit/http-request-action@master
+      with:
+        method: 'POST'
+        url: ${{ github.event.inputs.webhookUrlRunId }}
+        bearerToken: ${{ github.event.inputs.bearerToken }}
+        data:  ${{github.run_id}}
     - name: Run challenge (Node.js ${{ matrix.node-version }})
       uses: actions/setup-node@v1
       with:
