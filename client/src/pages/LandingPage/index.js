@@ -107,7 +107,7 @@ export default function LandingPage() {
     },
     {
       icon:
-        "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+        "https://icon-library.com/images/no-profile-pic-icon/no-profile-pic-icon-12.jpg",
       name: "Alon Bruk",
       github: "AlonBru",
     },
@@ -158,9 +158,10 @@ export default function LandingPage() {
         <Stripes />
       </span>
       <button className="Landing-page-Watch-Video">Watch Video</button>
-      <suction className="Landing-page-Sections-Cards">
-        {SectionsCards.map((elem) => (
+      <section className="Landing-page-Sections-Cards">
+        {SectionsCards.map((elem,i) => (
           <Section
+            key={elem.head}
             head={elem.head}
             content={elem.content}
             picture={elem.picture}
@@ -168,7 +169,7 @@ export default function LandingPage() {
             href={elem.href}
           />
         ))}
-      </suction>
+      </section>
       <section className="Landing-page-Open-Source">
         <h2 className="Landing-page-Open-Source-H2">
           Hey... It’s an Open Source Project!
@@ -199,6 +200,7 @@ export default function LandingPage() {
         <div className="Landing-page-Project-Leaders-Cards">
           {projectLeaders.map((elem) => (
             <ProjectLeader
+            key={elem.content}
               icon={elem.icon}
               name={elem.name}
               rule={elem.rule}
@@ -214,6 +216,7 @@ export default function LandingPage() {
         <div className="Landing-page-Contributors-Cards">
           {contributors.map((elem) => (
             <Contributor
+            key={elem.name}
               icon={elem.icon}
               name={elem.name}
               github={elem.github}

@@ -6,7 +6,7 @@ function Icon() {
       xmlns="http://www.w3.org/2000/svg"
       height="170"
       width="260"
-      ariaHidden="true"
+      aria-hidden="true"
       style={{ MsTransform: "rotate(360deg)" }}
       transform="rotate(360)"
       viewBox="0 0 256 239"

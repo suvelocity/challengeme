@@ -42,7 +42,7 @@ export default makeStyles((theme) => ({
     marginLeft: 'auto',
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(0,1,0,2),
+    padding: theme.spacing(0, 1, 0, 2),
     ...theme.mixins.toolbar,
     justifyContent: 'flex-start',
   },
@@ -65,19 +65,25 @@ export default makeStyles((theme) => ({
   list: {
     padding: 0,
   },
-  flexRow:{
-    display:'flex',
-    justifyContent:'space-between',
-    marginRight:0,
+  flexRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginRight: 0,
   },
-  flexEnd:{
-    justifyContent:'flex-end',
+  flexEnd: {
+    justifyContent: 'flex-end',
   },
   avatarUserInfo: {
     margin: '20px',
   },
   filterButton: {
-    backgroundColor: 'rgb(219,219,219)',
+    fontFamily: 'Ubuntu',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: '19px',
+    lineHeight: '46px',
+    color: '#00AD98',
+    textAlign: 'right',
     marginLeft: '10px',
   },
   filterButtonDark: {
@@ -91,14 +97,14 @@ export default makeStyles((theme) => ({
     boxShadow: '2px 0px 35px 0px black',
   },
   menu: {
-    marginTop:'49px',
+    marginTop: '49px',
   },
   title: {
     fontSize: '15px'
-  }, 
+  },
   middleFlex: {
     width: '70%',
     display: 'flex',
-    justifyContent: 'space-around'
+    justifyContent: 'center'
   }
 }));

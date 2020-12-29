@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
         through: 'LabelChallenge',
         foreignKey: 'challengeId',
       });
+      this.hasOne(models.Image,{
+        foreignKey: 'challengeId',
+      })
     }
   }
   Challenge.init(

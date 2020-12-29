@@ -8,6 +8,7 @@ import FilteredLabels from "../../context/FilteredLabelsContext";
 import network from "../../services/network";
 import ChooseLabels from "../../components/Choosers/ChooseLabels";
 import ChallengesCarousel from "../../components/ChallengesCarousel";
+import Footer from '../../components/Footer';
 import "../../styles/Home.css";
 
 export default function Home() {
@@ -27,13 +28,11 @@ export default function Home() {
       }));
       setChooseLabels(optionsForSelector);
       const newFilter = optionsForSelector.filter((label) => {
-        console.log(label);
         return (
           label.value ===
           (filteredLabels ? filteredLabels.filteredLabels[0] : null)
         );
       });
-      console.log(newFilter);
       setLabels(newFilter);
     } catch (error) { }
   };
@@ -113,51 +112,36 @@ export default function Home() {
       <div className="All-Challenge-Challenges-Container">
         <div className="All-Challenge-Carousel">
           <p>Recommended For You:</p>
-          {challengesFiltered.length > 0 ? (
-            <ChallengesCarousel challenges={challengesFiltered} />
-          ) : (
-              <h1>Not Found</h1>
-            )}
+          <ChallengesCarousel challenges={challengesFiltered} />
         </div>
         <div className="All-Challenge-Carousel">
           <p>Front End Challenges:</p>
-          {challengesFiltered.length > 0 ? (
-            <ChallengesCarousel
-              challenges={challengesFiltered.filter(
-                (challenge) => challenge.type === "client-only"
-              )}
-            />
-          ) : (
-              <h1>Not Found</h1>
+          <ChallengesCarousel
+            challenges={challengesFiltered.filter(
+              (challenge) => challenge.type === "client-only"
             )}
+          />
         </div>
         <div className="All-Challenge-Carousel">
           <p>Back End Challenges:</p>
-          {challengesFiltered.length > 0 ? (
-            <ChallengesCarousel
-              challenges={challengesFiltered.filter(
-                (challenge) =>
-                  challenge.type === "server-mysql" ||
-                  challenge.type === "server-only"
-              )}
-            />
-          ) : (
-              <h1>Not Found</h1>
+          <ChallengesCarousel
+            challenges={challengesFiltered.filter(
+              (challenge) =>
+                challenge.type === "server-mysql" ||
+                challenge.type === "server-only"
             )}
+          />
         </div>
         <div className="All-Challenge-Carousel">
           <p>Full Stack Challenges:</p>
-          {challengesFiltered.length > 0 ? (
-            <ChallengesCarousel
-              challenges={challengesFiltered.filter(
-                (challenge) => challenge.type === "fullstack"
-              )}
-            />
-          ) : (
-              <h1>Not Found</h1>
+          <ChallengesCarousel
+            challenges={challengesFiltered.filter(
+              (challenge) => challenge.type === "fullstack"
             )}
+          />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

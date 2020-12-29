@@ -19,14 +19,14 @@ const responsive = {
 
 function ChallengesCarousel({ challenges }) {
 
-    const items = challenges.map((challenge) =>
+    const items = challenges.length>0? challenges.map((challenge) =>
         <ChallengeToCarousel
             key={challenge.id + challenge.name}
             id={challenge.id}
             name={challenge.name}
             author={challenge.Author.userName}
             submissionsCount={challenge.submissionsCount}
-        />)
+        />):[<h1>Not Found</h1>];
 
     return (
         <div style={{ width: '80%', margin: 'auto' }}>

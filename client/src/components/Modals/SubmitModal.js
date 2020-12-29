@@ -9,12 +9,15 @@ import { Alert, AlertTitle } from "@material-ui/lab";
 import Cookies from "js-cookie";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import moment from 'moment';
+
 
 function getModalStyle() {
   return {
     outline: 0,
     width: "50%",
-    height: "80%",
+    height: 'auto',
   };
 }
 
@@ -33,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SubmitModal({ isOpen, handleClose, challengeParamId }) {
+function SubmitModal({ isOpen, handleClose, challengeParamId,submissionStatus }) {
   const { register, handleSubmit, errors } = useForm();
   const [userRating, setUserRating] = useState("0");
   const classes = useStyles();
@@ -118,7 +121,6 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
         <form
           onSubmit={handleSubmit(submitForm)}
           style={{
-            paddingTop: 30,
             display: "flex",
             flexDirection: "column",
             width: "60%",
@@ -237,9 +239,8 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
               Your message should be less than 100 characters
             </Typography>
           )}
-
+          {!submissionStatus?
           <Button
-            cy-test="submit-review-button"
             variant="contained"
             color="primary"
             type="submit"
@@ -253,7 +254,54 @@ function SubmitModal({ isOpen, handleClose, challengeParamId }) {
             }}
           >
             submit
-          </Button>
+          </Button>:submissionStatus.state === "PENDING"?
+          <CircularProgress style={{ marginBottom: "20px" }} />:
+          submissionStatus.state === "SUCCESS"?
+          <>
+          <h1 style={{color: '#00AD98',margin:'auto',paddingTop:3,fontFamily: 'Ubuntu'}}>SUCCESS</h1>
+          <div style={{fontFamily: 'Ubuntu',
+fontStyle: 'normal',
+fontWeight: 'bold',
+paddingTop:3,
+              textAlign:'center'}}>You solved this challenge {moment(submissionStatus.createdAt).fromNow()},<br/> well... you made it look easy you better try another challenge</div>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            id="submit-form"
+            style={{
+              marginTop: 16,
+              borderRadius: 67,
+              background: "#00AD98",
+              width: "50%",
+              marginLeft: "25%",
+            }}
+          >
+            submit again 
+          </Button></>:
+          <>
+          <h1 style={{color: '#EB0000',margin:'auto',paddingTop:3,fontFamily: 'Ubuntu'}}>FAIL</h1>
+          <div style={{fontFamily: 'Ubuntu',
+              fontStyle: 'normal',
+              fontWeight: 'bold',
+              paddingTop:3,
+              textAlign:'center'
+}             }>You tried to solved this challenge {moment(submissionStatus.createdAt).fromNow()} You can try to submit again</div>
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            id="submit-form"
+            style={{
+              marginTop: 16,
+              borderRadius: 67,
+              background: "#00AD98",
+              width: "50%",
+              marginLeft: "25%",
+            }}
+          >
+            submit again 
+          </Button></>}
         </form>
       </div>
     </Modal>

@@ -5,7 +5,7 @@ const checkToken = require('../../middleware/checkToken');
 const checkAdmin = require('../../middleware/checkAdmin');
 const { newChallengeValidation } = require('../../helpers/validator');
 const {
-  Submission, User, Challenge, Label, Review,
+  Submission, User, Challenge, Label, Review,Image
 } = require('../../models');
 
 // get all challenges with reviews and labels

@@ -7,9 +7,8 @@ import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
-import Avatar from '@material-ui/core/Avatar';
+import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
 import Cube from '../../../images/Cube';
 import ChallengeMeSmallTitle from '../../../images/ChallengeMeSmallTitle';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,9 +18,9 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import Divider from '@material-ui/core/Divider';
-import Brightness7Icon from '@material-ui/icons/Brightness7';
-import Brightness4Icon from '@material-ui/icons/Brightness4';
 import GroupIcon from '@material-ui/icons/Group';
+import AppsIcon from '@material-ui/icons/Apps';
+import DescriptionIcon from '@material-ui/icons/Description';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LockIcon from '@material-ui/icons/Lock';
 import useStyles from './WideNavStyle';
@@ -119,26 +118,65 @@ export default function WideNav({ darkMode, setDarkMode }) {
           </Typography>
           <div className={classes.middleFlex}>
             {currentLocation.pathname === '/' &&
-              <Typography variant="h6" className={classes.title}>
-                <Link to={LoggedContext.logged ? "/teams" : currentLocation.pathname} className="link-rout">
-                  <div
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      marginRight: '10px',
-                      marginLeft: '40px',
-                    }}
-                  >
-                    <GroupIcon style={letterColor} />
+              <>
+                <Typography variant="h6" className={classes.title}>
+                  <Link to={"/challenges"} className="link-rout">
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginRight: '10px',
+                        marginLeft: '40px',
+                      }}
+                    >
+                      <AppsIcon style={letterColor} />
                 &nbsp;
                 <span style={letterColor} className="header-link-title">
-                      Teams
+                        Challenges
                 </span>
-                  </div>
-                </Link>
-              </Typography>
+                    </div>
+                  </Link>
+                </Typography>
+                <Typography variant="h6" className={classes.title}>
+                  <Link to={LoggedContext.logged ? "/teams" : currentLocation.pathname} className="link-rout">
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginRight: '10px',
+                        marginLeft: '40px',
+                      }}
+                    >
+                      <GroupIcon style={letterColor} />
+                &nbsp;
+                <span style={letterColor} className="header-link-title">
+                        Teams
+                </span>
+                    </div>
+                  </Link>
+                </Typography>
+                <Typography variant="h6" className={classes.title}>
+                  <a href={'https://suvelocity.github.io/challengeme/'} target="_blank"
+                    rel="noopener noreferrer" className="link-rout">
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        marginRight: '10px',
+                        marginLeft: '40px',
+                      }}
+                    >
+                      <DescriptionIcon style={letterColor} />
+                &nbsp;
+                <span style={letterColor} className="header-link-title">
+                        Docs
+                </span>
+                    </div>
+                  </a>
+                </Typography>
+              </>
             }
-            {currentLocation.pathname === '/challenges' && (
+            {currentLocation.pathname.includes('challenges') && (
               <Search darkMode={darkMode} setDarkMode={setDarkMode} />
             )}
           </div>
@@ -160,8 +198,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
 
           {LoggedContext.logged && Cookies.get('userName') ?
             <Tooltip title={Cookies.get('userName')}>
-              {/* <Link to="/profile/info" className="link-rout"> */}
-              <Avatar
+              <AccountCircleOutlinedIcon
                 onClick={handleDrawerOpen}
                 aria-label="account of current user"
                 aria-controls="menu-appbar"
@@ -169,25 +206,17 @@ export default function WideNav({ darkMode, setDarkMode }) {
                 color="inherit"
                 style={{
                   cursor: 'pointer',
-                  backgroundColor: darkMode ? 'rgb(140,110,99)' : '#7BACB4',
                 }}
               >
                 {Cookies.get('userName').slice(0, 2)}
-              </Avatar>
+              </AccountCircleOutlinedIcon>
               {/* </Link> */}
             </Tooltip> :
-            <>
-              <Link to="/login" className="link-rout">
-                <Button variant="contained" className={darkMode ? classes.filterButtonDark : classes.filterButton}>
-                  Login
-                  </Button>
-              </Link>
-              <Link to="/register" className="link-rout">
-                <Button variant="contained" className={darkMode ? classes.filterButtonDark : classes.filterButton}>
-                  Register
-                  </Button>
-              </Link>
-            </>}
+            <Link to="/login" className="link-rout">
+              <div className={classes.filterButton}>
+                Login
+                  </div>
+            </Link>}
         </Toolbar>
       </AppBar>
 
@@ -222,7 +251,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
               <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
                 <ListItemText primary="Challenges" />
                 <ListItemIcon className={classes.flexEnd}>
-                  <Cube style={drawerColor} />
+                  <AppsIcon style={drawerColor} />
                 </ListItemIcon>
               </ListItem>
             </Link>}

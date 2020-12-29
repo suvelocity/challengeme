@@ -21,15 +21,16 @@ function ReviewsTab({ challengeId, setRatingCount }) {
       } catch (error) {
       }
     };
+    setLoading(true)
     fetchReviews();
     const liveReviews = setInterval(fetchReviews, 5000);
     return () => clearInterval(liveReviews);
     // eslint-disable-next-line
   }, [challengeId]);
 
-  return reviews.length !== 0 ? (<>
+  return <>
     <h1 className='Reviews-H1'>Reviews:</h1>
-    <ul>{reviews.map((review) => {
+    <ul className='Reviews-Container'>{!loading ? reviews.length>0? reviews.map((review) => {
       const { id, createdAt, title, content, rating, User: { userName }, } = review;
       return (
         <Review
@@ -42,12 +43,9 @@ function ReviewsTab({ challengeId, setRatingCount }) {
           rating={rating}
         />
       )
-    })}</ul>
-  </>) : (
-      <div>
-        {!loading ? <p className="noReviews">This challenge has no reviews yet</p> : <h1>loading...</h1>}
-      </div>
-    );
+    }):<div className="Review" style={{paddingTop:'40px'}}><h1>This challenge has no reviews yet</h1></div>:<div className="Review" style={{paddingTop:'40px'}}><h1>loading...</h1></div>}
+    </ul>
+  </>
 }
 
 export default ReviewsTab;

@@ -267,6 +267,7 @@
     background-color: white;
     display: flex;
     flex-direction: column;
+    padding-bottom:10px
 }
 
 .Landing-page-Project-Leaders-Icon {
@@ -444,13 +445,15 @@
 
 .Landing-page-Footer {
     display: flex;
+    
     flex-direction: column;
     text-align: center;
     color: white;
     border-top: 1px solid white;
     text-align: center;
     margin-top: 20%;
-    margin-left: 25%;
+    margin-left: auto;
+    margin-right: auto;
     width: 50%;
 }
 
