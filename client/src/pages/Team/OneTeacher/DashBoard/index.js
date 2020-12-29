@@ -8,7 +8,7 @@ const SuccessPerChallenge = lazy(() => import("./Charts/SuccessPerChallenge"));
 const TeamTotalSubmission = lazy(() => import("./Charts/TeamTotalSubmission"));
 const TopSuccessUsers = lazy(() => import("./Charts/TopSuccessUsers"));
 
-function DashBoard({ darkMode, teamName }) {
+function DashBoard({  teamName }) {
 
   useEffect(() => {
     const user = Cookies.get('userName');
@@ -23,19 +23,19 @@ function DashBoard({ darkMode, teamName }) {
       </h1>
       <div className="dashboard-flexbox">
         <div className="paper-dashboard-chart">
-          <TeamTotalSubmission darkMode={darkMode} />
+          <TeamTotalSubmission />
         </div>
         <div className="paper-dashboard-chart">
-          <SuccessPerChallenge darkMode={darkMode} />
+          <SuccessPerChallenge />
         </div>
         <div className="paper-dashboard-chart">
-          <SuccessSubmissionsPerUsers darkMode={darkMode} />
+          <SuccessSubmissionsPerUsers  />
         </div>
         <div className="paper-dashboard-chart">
-          <LastWeekSubmissions darkMode={darkMode} />
+          <LastWeekSubmissions />
         </div>
         <div className="paper-dashboard-chart">
-          <TopSuccessUsers darkMode={darkMode} />
+          <TopSuccessUsers />
         </div>
       </div>
     </div>

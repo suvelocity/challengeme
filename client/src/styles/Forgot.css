@@ -1,18 +1,18 @@
-.registerGeneral {
+.forgotPassGeneral {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    /* background: linear-gradient(60deg, rgba(58, 106, 183, 0.7) 0%, rgba(213, 240, 255, 0.5) 100%); */
-}
+    background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
 
-.containerHeaderRegister {
-    margin-bottom: 575px;
+}
+.containerHeaderForgotPass {
+    margin-bottom: 450px;
     position: absolute;
 }
 
-.registerHeader {
+.forgotPassHeader {
     border-radius: 4px;
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.356);
     text-align: center;
@@ -28,16 +28,17 @@
     flex-direction: column;
 }
 
-.registerTitle {
+.forgotPassTitle {
+    margin-top: 47px;
     font-size: 40px;
 }
 
-.registerBody {
+.ForgotPassBody {
     margin-top: 20px;
     background-color: rgba(255, 255, 255, 0.972);
     border-radius: 5px;
     width: 600px;
-    height: 530px;
+    height: 420px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -45,32 +46,15 @@
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.548);
 }
 
-.containerUserDetails,
-.containerPersonalDetails,
-.containerSecurity,
-.containerExtra {
+.containerButtonsForgotPass {
     display: flex;
     flex-direction: column;
-    align-items: center;
-}
-.MuiPaper-root.MuiStepper-root.MuiStepper-horizontal {
-    background-color: transparent;
-}
-span.MuiTypography-root.MuiStepLabel-label.MuiStepLabel-alternativeLabel.MuiTypography-body2.MuiTypography-displayBlock {
-    font-size: 10px;
-}
-span.MuiStepConnector-line.MuiStepConnector-lineHorizontal {
-    background-color: rgb(182, 182, 182);
-}
-.containerButtonsRegister {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin-bottom: 20px;
 }
 
-.containerErrorRegister {
+.containerErrorForgotPass {
     position: absolute;
-    margin-top: 375px;
+    margin-top: 275px;
     height: 40px;
     border-radius: 5px;
     width: 400px;
@@ -79,30 +63,25 @@ span.MuiStepConnector-line.MuiStepConnector-lineHorizontal {
     display: flex;
     align-items: center;
 }
-.errorInputRegister {
+.errorInputForgotPass {
     height: auto;
     margin-left: 5px;
     color: white;
 }
-.confirmMessage{
-    font-size:20px;
-    margin-top:140px;
-    line-height: 50px;
-    letter-spacing: 2px; 
-    text-align: center;
-}
+
 @media (max-width: 700px) {
-    .registerHeader,.containerHeaderRegister {
+    .containerHeaderForgotPass,.forgotPassHeader {
         /* position:static; */
         top:0;
         margin:0px;
         width: 100vw;
     }
-    .registerBody {
-    position: absolute;
-    top:130px;
-    width:100vw;
-    z-index: -1;
-        /* margin-top: 300px; */
+    .ForgotPassBody {
+        height: calc(100vh - 160px);
+        width:100vw;
+    }
+    .containerErrorForgotPass {
+        width:80vw;
+        height: 50px;
     }
 }

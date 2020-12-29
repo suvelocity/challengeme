@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, lazy, Suspense } from "react";
+import React, { useEffect, useContext, useCallback, lazy, Suspense } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
 import { Logged } from "../../../context/LoggedInContext";
 import ErrorBoundary from "../../../components/ErrorBoundary";
@@ -13,11 +13,18 @@ const ErrorControl = lazy(() => import("./ErrorControl/index"));
 const EventsControl = lazy(() => import("./EventsControl/index"));
 const TeamsControl = lazy(() => import("./TeamsControl/index"));
 
-function Index({ darkMode }) {
+const paths = [
+  { name: "Access Key Control", URL: "/admin/Webhook/AccessKey" },
+  { name: "Errors Control", URL: "/admin/Webhook/Errors" },
+  { name: "Events Control", URL: "/admin/Webhook/Events" },
+  { name: "Teams Control", URL: "/admin/Webhook/Teams" },
+];
+
+function Index() {
   const location = useHistory();
   const loggedContext = useContext(Logged);
 
-  const checkAdminPermissions = async () => {
+  const checkAdminPermissions = useCallback(async () => {
     if (Cookies.get("accessToken")) {
       try {
         await network.get("/api/v1/auth/validate-admin");
@@ -41,38 +48,31 @@ function Index({ darkMode }) {
       loggedContext.setLogged(false);
       location.push("/");
     }
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     checkAdminPermissions();
     // eslint-disable-next-line
   }, []);
 
-  const paths = [
-    { name: "Access Key Control", URL: "/admin/Webhook/AccessKey" },
-    { name: "Errors Control", URL: "/admin/Webhook/Errors" },
-    { name: "Events Control", URL: "/admin/Webhook/Events" },
-    { name: "Teams Control", URL: "/admin/Webhook/Teams" },
-  ];
   return (
     <>
-      <SecondHeader paths={paths} darkMode={darkMode} position="true" />
+      <SecondHeader paths={paths} position="true" />
       <Suspense fallback={<Loading />}>
         <ErrorBoundary>
           <Switch>
             <Route exact path="/admin/Webhook/AccessKey">
-              <AccessKeyControl darkMode={darkMode} />
+              <AccessKeyControl />
             </Route>
             <Route exact path="/admin/Webhook/Errors">
-              <ErrorControl darkMode={darkMode} />
+              <ErrorControl />
             </Route>
             <Route exact path="/admin/Webhook/Events">
-              <EventsControl darkMode={darkMode} />
-              {/* <div>hello Events</div> */}
+              <EventsControl />
             </Route>
             <Route exact path="/admin/Webhook/Teams">
-              <TeamsControl darkMode={darkMode} />
-              {/* <div>hello Teams</div> */}
+              <TeamsControl />
             </Route>
             <Route path="*">
               <NotFound />

@@ -1,6 +1,5 @@
 .header-link-title {
   display: 'none';
-
 }
 
 .link-rout {
@@ -17,15 +16,12 @@
   margin: 5px
 }
 
-
 .MuiAppBar-colorPrimary {
   background-color: transparent !important;
-  background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
+  background: linear-gradient(180deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 350%);
   border: none !important;
   box-shadow: none !important;
   color: white !important;
-  /* mix-blend-mode: difference; */
-  background-size: 100% 40px;
 }
 
 .MuiToolbar-regular {

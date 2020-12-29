@@ -31,7 +31,7 @@ submissionRouter.get('/by-user/:challengeId', async (req, res) => {
     if (testSubmission.length > 0) {
       const recentSubmission = testSubmission[testSubmission.length - 1].dataValues;
       if (recentSubmission.state === 'PENDING') {
-        if (timeNow - recentSubmission.createdAt.getTime() > 150000) {
+        if (timeNow - recentSubmission.createdAt.getTime() > 265000) {
           const submissionThatIsStuck = await Submission.findByPk(
             recentSubmission.id,
           );
@@ -136,7 +136,7 @@ submissionRouter.post('/apply/:challengeId', async (req, res) => {
   }
 });
 
-//===================Not in use=========================================//
+//= ==================Not in use=========================================//
 
 // get all challenge submissions
 submissionRouter.get('/:challengeId', checkAdmin, async (req, res) => {
@@ -151,7 +151,7 @@ submissionRouter.get('/:challengeId', checkAdmin, async (req, res) => {
           model: User,
           attributes: ['userName'],
         },
-      ]
+      ],
     });
     return res.json(allSubmission);
   } catch (error) {
@@ -159,6 +159,5 @@ submissionRouter.get('/:challengeId', checkAdmin, async (req, res) => {
     return res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
-
 
 module.exports = submissionRouter;

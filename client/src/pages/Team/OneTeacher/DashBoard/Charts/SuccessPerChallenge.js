@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
@@ -6,22 +6,23 @@ import {
 import Loading from '../../../../../components/Loading';
 import network from '../../../../../services/network';
 
-function SuccessPerChallenge({ darkMode }) {
+function SuccessPerChallenge() {
   const { id } = useParams();
   const [challenges, setChallenges] = useState();
 
-  const getChallengesByMostSuccess = async () => {
+  const getChallengesByMostSuccess = useCallback(async () => {
     try {
       const { data: challengesMostSuccess } = await network.get(`/api/v1/insights/teacher/success-challenge/${id}`);
       setChallenges(challengesMostSuccess);
     } catch (error) {
     }
-  };
+    // eslint-disable-next-line
+  }, [id])
 
   useEffect(() => {
     getChallengesByMostSuccess();
     // eslint-disable-next-line
-    }, [])
+  }, [])
 
   return (
     challenges
@@ -45,7 +46,7 @@ function SuccessPerChallenge({ darkMode }) {
             <Bar dataKey="challengeSuccesses" barSize={20} fill="#005FAC" />
           </ComposedChart>
         </div>
-      ) : <Loading darkMode={darkMode} />
+      ) : <Loading />
   );
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,54 +27,102 @@ const useStyles = makeStyles(() => ({
     width: '320px',
   },
 }));
-export default function Change({ data, handleChange }) {
+
+const limit = 5;
+
+export default function Change({ data, handleChange, changePassword = false }) {
   const classes = useStyles();
+
+  const [showOldPassword, setShowOldPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const [redirect, setRedirect] = useState(false);
-  const limit = 5;
 
-  const hideBoth = () => {
+  const hideBoth = useCallback(() => {
+    setShowOldPassword(false);
     setShowPassword(false);
     setShowConfirmPassword(false);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     // Prevent special password eye bugs
     document.addEventListener('mouseup', hideBoth);
     document.addEventListener('dragend', hideBoth);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'Sorry, time is up !',
-      }).then(() => {
-        setRedirect(true);
-      });
-    }, limit * 60 * 1000);
+    if (!changePassword) {
+      const timer = setTimeout(() => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Sorry, time is up !',
+        }).then(() => {
+          setRedirect(true);
+        });
+      }, limit * 60 * 1000);
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [changePassword]);
 
   return redirect ? (
     <Redirect to="/" />
   ) : (
     <div className={classes.ForogotPassContainer}>
-      <b> Attention!</b>
-      {' '}
-      You have
-      {' '}
-      <Timer limit={limit} unit="minutes" />
-      {' '}
-      to change your password.
-      <br />
-      Enter new password :
+      {!changePassword && (
+        <>
+          {' '}
+          <b> Attention!</b>
+          {' '}
+          You have
+          {' '}
+          <Timer limit={limit} unit="minutes" />
+          {' '}
+          to change your password.
+          <br />
+          Enter new password :
+        </>
+      )}
+      {changePassword
+          && (
+            <FormControl className={classes.ForogotPasspassword}>
+              <InputLabel
+                style={{ color: 'grey' }}
+                className={classes.labelPass}
+                htmlFor="standard-adornment-password"
+              >
+                Old Password
+              </InputLabel>
+              <Input
+                name="oldP"
+                id="oldPassword"
+                value={data.oldPassword}
+                type={showOldPassword ? 'text' : 'password'}
+                onChange={handleChange('oldP')}
+                endAdornment={(
+                  <InputAdornment position="end">
+                    <IconButton
+                      style={{ opacity: '0.7' }}
+                      aria-label="toggle password visibility"
+                      onMouseDown={() => setShowOldPassword(true)}
+                    >
+                      {showOldPassword ? (
+                        <Visibility />
+                      ) : (
+                        <VisibilityOff />
+                      )}
+                    </IconButton>
+                    <LockIcon style={{ opacity: '0.7' }} />
+                  </InputAdornment>
+                )}
+              />
+            </FormControl>
+          )}
       <FormControl className={classes.ForogotPasspassword}>
         <InputLabel
           style={{ color: 'grey' }}

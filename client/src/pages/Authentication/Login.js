@@ -20,7 +20,7 @@ import { motion } from 'framer-motion';
 import { Logged } from '../../context/LoggedInContext';
 import network from '../../services/network';
 import Background from '../Background';
-import './styles/Login.css';
+import '../../styles/Login.css';
 
 const useStyles = makeStyles(() => ({
   userNameLoginInput: {
@@ -157,6 +157,7 @@ export default function Login() {
                         aria-label="toggle password visibility"
                         onMouseDown={() => setShowPassword(true)}
                         onMouseUp={() => setShowPassword(false)}
+                        autoComplete="current-password"
                       >
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>

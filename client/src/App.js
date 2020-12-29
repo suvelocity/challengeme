@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import './App.css';
 import mixpanel from 'mixpanel-browser';
 import Router from './pages';
+import './styles/App.css';
 
 function App() {
   useEffect(() => {

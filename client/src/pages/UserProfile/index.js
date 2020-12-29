@@ -8,15 +8,16 @@ const UserInfo = lazy(() => import("./PersonalDetails"));
 const MyChallenges = lazy(() => import("./MyChallenges"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
 
-function Index({ darkMode }) {
-  const paths = [
-    { name: "Profile Info", URL: "/profile/info" },
-    { name: "My Challenges", URL: "/profile/MyChallenges" },
-  ];
+const paths = [
+  { name: "Profile Info", URL: "/profile/info" },
+  { name: "My Challenges", URL: "/profile/MyChallenges" },
+];
+
+function Index() {
 
   return (
     <div>
-      <SecondHeader paths={paths} darkMode={darkMode} />
+      <SecondHeader paths={paths} />
       <Suspense fallback={<Loading />}>
         <ErrorBoundary>
           <Switch>

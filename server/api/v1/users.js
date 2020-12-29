@@ -1,8 +1,9 @@
 const userRouter = require('express').Router();
+const bcrypt = require('bcryptjs');
 const checkAdmin = require('../../middleware/checkAdmin');
 const { checkTeacherPermission } = require('../../middleware/checkTeamPermission');
 const { User, Team } = require('../../models');
-const { editUserValidation } = require('../../helpers/validator')
+const { editUserValidation, changePasswordValidation } = require('../../helpers/validator');
 
 // get information about user
 userRouter.get('/info', async (req, res) => {
@@ -29,38 +30,78 @@ userRouter.get('/info', async (req, res) => {
   }
 });
 
-userRouter.patch('/info', async (req, res) => {
-  const { firstName, lastName, birthDate, country, city, githubAccount } = req.body
+userRouter.patch('/change-password', async (req, res) => {
   try {
-    const editedUser = {}
-    firstName ? editedUser.firstName = firstName : null
-    lastName ? editedUser.lastName = lastName : null
-    birthDate ? editedUser.birthDate = birthDate : null
-    country ? editedUser.country = country : null
-    city ? editedUser.city = city : null
-    githubAccount ? editedUser.githubAccount = githubAccount : null
+    const { oldPassword, newPassword } = req.body;
+    if (newPassword === oldPassword) return res.status(409).json({ message: 'You should choose new password' });
+    const { error } = changePasswordValidation(req.body);
+    if (error) {
+      console.error(error.message);
+      return res.status(400).json({ success: false, message: 'password should be at least 8 characters' });
+    }
+
+    const user = await User.findOne({
+      where: {
+        userName: req.user.userName,
+      },
+    });
+
+    const validPass = await bcrypt.compareSync(
+      oldPassword,
+      user.password,
+    );
+
+    if (!validPass) return res.status(400).json({ message: 'Old Password Incorrect' });
+
+    const hashPassword = await bcrypt.hashSync(newPassword, 10);
+
+    await User.update({ password: hashPassword }, {
+      where: {
+        userName: req.user.userName,
+      },
+    });
+
+    return res.json({ message: 'Updated Password Success' });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+userRouter.patch('/info', async (req, res) => {
+  const {
+    firstName, lastName, birthDate, country, city, githubAccount,
+  } = req.body;
+  try {
+    const editedUser = {};
+    firstName ? editedUser.firstName = firstName : null;
+    lastName ? editedUser.lastName = lastName : null;
+    birthDate ? editedUser.birthDate = birthDate : null;
+    country ? editedUser.country = country : null;
+    city ? editedUser.city = city : null;
+    githubAccount ? editedUser.githubAccount = githubAccount : null;
     const { error } = editUserValidation(editedUser);
     if (error) {
       console.error(error.message);
       const onlyLetters = 'must be only letters';
       const validator = {
-        firstName: 'first name ' + onlyLetters,
-        lastName: 'last name ' + onlyLetters,
+        firstName: `first name ${onlyLetters}`,
+        lastName: `last name ${onlyLetters}`,
         birthDate: 'invalid date',
-        country: 'country ' + onlyLetters,
-        city: 'city ' + onlyLetters,
-        githubAccount: 'invalid github account'
-      }
-      const myMessage = validator[error.details[0].context.key]
-      const responseMessage = myMessage ? myMessage : "Don't mess with me!"
+        country: `country ${onlyLetters}`,
+        city: `city ${onlyLetters}`,
+        githubAccount: 'invalid github account',
+      };
+      const myMessage = validator[error.details[0].context.key];
+      const responseMessage = myMessage || "Don't mess with me!";
       return res.status(400).json({ success: false, message: responseMessage });
     }
     await User.update(editedUser, {
       where: {
         userName: req.user.userName,
-      }
+      },
     });
-    return res.json({ message: 'Updated Success' });
+    return res.json({ message: 'Updated Personal Details Success' });
   } catch (error) {
     console.error(error);
     return res.status(400).json({ message: 'Cannot process request' });

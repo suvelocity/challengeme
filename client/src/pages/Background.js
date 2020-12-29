@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Logged } from '../context/LoggedInContext';
 
-export default function Background({ darkMode }) {
+export default function Background() {
   const status = useContext(Logged);
   const authBg = 'linear-gradient(60deg, rgba(58, 106, 183, 0.7) 0%, rgba(213, 240, 255, 0.5) 100%';
-  const appBg = darkMode ? 'rgb(33,33,33)' : 'rgb(232,244,248)';
+  const appBg = 'rgb(232,244,248)';
   return (
     <div
       style={{

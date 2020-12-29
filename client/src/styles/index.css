@@ -4,9 +4,13 @@ body {
   font-family: "Abel", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
+  /* background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%); */
   overflow-x: hidden;
   /* font-family: "Roboto", sans-serif; */
+}
+
+.swal2-container {
+  z-index: 10000000000000 !important;
 }
 .generic-page {
   height: calc(100vh - 110px);
@@ -53,4 +57,8 @@ background-size: cover; */
   background-color: #212121;
   background-attachment: fixed;
   background-size: cover;
+}
+
+.header-link-title:hover {
+  text-decoration: underline;
 }

@@ -115,7 +115,7 @@ teamRouter.post('/add-users/:teamId', checkTeacherPermission, async (req, res) =
         where: {
           userId: user.value,
           teamId: req.params.teamId,
-        }
+        },
       })
     )));
     return res.status(201).json({ message: 'Team Users Created' });
@@ -197,7 +197,7 @@ teamRouter.get('/all-teams', checkAdmin, async (req, res) => {
   try {
     const userTeam = await Team.findAll({
       attributes: [
-        'id', 'name', 'createdAt', 'updatedAt',
+        'id', 'name', 'createdAt', 'updatedAt', 'externalId',
       ],
       include: [
         {

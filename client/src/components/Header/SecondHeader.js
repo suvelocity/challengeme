@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   rootDark: {
     flexDirection: 'row',
     height: '50px',
-    backgroundColor: '#686868 !important'
+    backgroundColor: '#686868 !important',
   },
   item: {
     fontWeight: 'bold',
@@ -29,18 +29,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SecondHeader({ paths, darkMode, position }) {
+export default function SecondHeader({ paths, position }) {
   const classes = useStyles();
   const location = useLocation();
 
-  const headerStyle = darkMode ? classes.rootDark : classes.root;
+  const headerStyle = classes.root;
 
   const marginTop = position ? { marginTop: '0px' } : { marginTop: '60px' };
 
   return (
     <div style={marginTop}>
       <AppBar position="static" className={headerStyle}>
-        {/* <Toolbar> */}
         {paths.map((path, i) => (
           <Link to={path.URL} key={path.URL} className={classes.link}>
             <ListItem
@@ -56,7 +55,6 @@ export default function SecondHeader({ paths, darkMode, position }) {
             </ListItem>
           </Link>
         ))}
-        {/* </Toolbar> */}
       </AppBar>
     </div>
   );

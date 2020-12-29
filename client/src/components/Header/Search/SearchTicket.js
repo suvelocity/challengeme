@@ -1,11 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Avatar from "@material-ui/core/Avatar";
-import Rating from "@material-ui/lab/Rating";
-import { blueGrey } from "@material-ui/core/colors";
-import "./SearchTicket.css";
-import Divider from "@material-ui/core/Divider";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+import Rating from '@material-ui/lab/Rating';
+import { blueGrey } from '@material-ui/core/colors';
+import './SearchTicket.css';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
   blueGrey: {
@@ -14,23 +14,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SearchTicket({ ticket, closeSearch, darkMode }) {
+const avatarName = 'test';
+const dividerColor = {};
+const letterColor = {
+  color: 'black',
+};
+
+function SearchTicket({ ticket, closeSearch }) {
   const rating = ticket.averageRaiting;
   const classes = useStyles();
-  // const avatarName = ticket.repositoryName.substring(0, 2).toUpperCase();
-  const avatarName = "test";
 
-  const dividerColor = darkMode
-    ? {
-        backgroundColor: "rgba(255,255,255,0.3)",
-      }
-    : {};
-
-  const letterColor = {
-    color: darkMode ? "white" : "black",
-  };
   return (
-    <Link to={`/challenges/${ticket.id}`} style={{ textDecoration: "none" }}>
+    <Link to={`/challenges/${ticket.id}`} style={{ textDecoration: 'none' }}>
       <div className="SearchTicket" style={letterColor} onClick={closeSearch}>
         <Avatar className={classes.blueGrey}>{avatarName}</Avatar>
         <div className="ticketName">{ticket.name}</div>

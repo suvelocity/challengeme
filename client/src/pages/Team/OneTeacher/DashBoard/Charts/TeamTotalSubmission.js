@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   PieChart, Pie, Tooltip, Cell, Legend,
@@ -6,13 +6,16 @@ import {
 import Loading from '../../../../../components/Loading';
 import network from '../../../../../services/network';
 
-function TeamTotalSubmission({ darkMode }) {
+const COLORS = ['#00C49F', '#FF8042', '#005FAC'];
+const RADIAN = Math.PI / 180;
+
+function TeamTotalSubmission() {
   const { id } = useParams();
   const [teamSubmissions, setTeamSubmissions] = useState();
   const [challengesOption, setChallengesOption] = useState();
   const [chosenChallenges, setChosenChallenges] = useState('');
 
-  const getDataOnTeam = async (Challenges) => {
+  const getDataOnTeam = useCallback(async (Challenges) => {
     try {
       const { data: submissions } = await network.get(`/api/v1/insights/teacher/team-submissions/${id}?challenge=${Challenges}`);
       setTeamSubmissions([
@@ -22,18 +25,21 @@ function TeamTotalSubmission({ darkMode }) {
       ]);
     } catch (error) {
     }
-  };
+    // eslint-disable-next-line
+  }, [id])
 
-  const chooseChallenge = (event) => {
+  const chooseChallenge = useCallback((event) => {
     setChosenChallenges(event.target.value);
-  };
+    // eslint-disable-next-line
+  }, [])
 
-  const getAllChallengesForOption = async () => {
+  const getAllChallengesForOption = useCallback(async () => {
     const { data: allChallengesFromServer } = await network.get('/api/v1/challenges/');
     const challengesOptions = allChallengesFromServer.map((challenge) => <option key={challenge.id} onClick={() => { chooseChallenge(challenge.id); }} value={challenge.id}>{challenge.name}</option>);
     challengesOptions.unshift(<option key="assignments" onClick={() => { chooseChallenge('assignments'); }} value="assignments">Team Assignments</option>);
     setChallengesOption(challengesOptions);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     getDataOnTeam(chosenChallenges);
@@ -47,11 +53,10 @@ function TeamTotalSubmission({ darkMode }) {
 
   useEffect(() => {
     setChosenChallenges('assignments');
+    // eslint-disable-next-line
   }, []);
 
-  const COLORS = ['#00C49F', '#FF8042', '#005FAC'];
-  const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({
+  const renderCustomizedLabel = useCallback(({
     cx, cy, midAngle, innerRadius, outerRadius, percent,
   }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -63,7 +68,7 @@ function TeamTotalSubmission({ darkMode }) {
         {`${(percent * 100).toFixed(0)}%`}
       </text>
     );
-  };
+  }, []);
 
   return (
     teamSubmissions
@@ -99,7 +104,7 @@ function TeamTotalSubmission({ darkMode }) {
           )
             : chosenChallenges === 'assignments' ? <h2>You haven't Assign Any Assignments Yet</h2> : <h2>There is for submissions on this challenge</h2>}
         </div>
-      ) : <Loading darkMode={darkMode} />
+      ) : <Loading />
   );
 }
 

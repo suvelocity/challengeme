@@ -223,7 +223,7 @@ insightAdminRouter.get('/top-user', async (req, res) => {
   }
 });
 
-//===================Not in use=========================================//
+//= ==================Not in use=========================================//
 
 // returns the 5 challenges with most submissions
 insightAdminRouter.get('/top-challenges', async (req, res) => {
@@ -333,6 +333,5 @@ insightAdminRouter.get('/top', async (req, res) => {
     return res.status(400).json({ message: 'Cannot process request' });
   }
 });
-
 
 module.exports = insightAdminRouter;

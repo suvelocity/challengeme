@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
@@ -34,12 +34,16 @@ function Security({ values, handleChange }) {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const handleClickShowPassword = () => {
+
+  const handleClickShowPassword = useCallback(() => {
     setShowPassword((prev) => !prev);
-  };
-  const handleClickShowConfirmPassword = () => {
+    // eslint-disable-next-line
+  }, [])
+
+  const handleClickShowConfirmPassword = useCallback(() => {
     setShowConfirmPassword((prev) => !prev);
-  };
+    // eslint-disable-next-line
+  }, [])
   return (
     <div className="containerSecurity">
       <FormControl className={classes.password}>

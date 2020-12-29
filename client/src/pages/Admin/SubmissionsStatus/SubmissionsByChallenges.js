@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -16,7 +16,6 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Loading from '../../../components/Loading';
 import network from '../../../services/network';
-import '../Admin.css';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
@@ -46,7 +45,7 @@ const useRowStyles = makeStyles({
 
 function Row(props) {
   const { row } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const classes = useRowStyles();
 
   return (
@@ -129,31 +128,33 @@ function Row(props) {
   );
 }
 
-const SubmissionsByChallenges = ({ darkMode }) => {
+const SubmissionsByChallenges = () => {
   const [dataPresent, setDataPresent] = useState([]);
   const [last, setLast] = useState(false);
 
-  const getChallengesSubmissions = async () => {
+  const getChallengesSubmissions = useCallback(async () => {
     const { data: challengesSubmissionsFromServer } = await network.get(
       `/api/v1/insights/admin/challenges-submissions?onlyLast=${last}`,
     );
     setDataPresent(challengesSubmissionsFromServer);
-  };
+    // eslint-disable-next-line
+  }, [last])
 
   useEffect(() => {
     getChallengesSubmissions();
     // eslint-disable-next-line
   }, [last]);
 
-  const filteredLast = () => {
+  const filteredLast = useCallback(() => {
     setLast((prev) => !prev);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <div>
       <div className="title-and-button">
         <h2>This is All The Submissions By Challenges Page</h2>
-        <Button variant={darkMode ? 'contained' : 'outlined'} onClick={filteredLast}>
+        <Button variant="outlined" onClick={filteredLast}>
           {last ? 'Show All' : 'Show Only Last'}
         </Button>
       </div>

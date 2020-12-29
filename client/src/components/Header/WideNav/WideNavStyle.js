@@ -16,15 +16,6 @@ export default makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  darkModeToggle: {
-    marginRight: '10px;',
-  },
-  infoButton: {
-    margin: '10px',
-  },
-  logOutButton: {
-    margin: '10px',
-  },
   root: {
     display: 'flex',
   },
@@ -48,9 +39,9 @@ export default makeStyles((theme) => ({
     marginLeft: 'auto',
     display: 'flex',
     alignItems: 'center',
-    padding: theme.spacing(0, 1),
+    padding: theme.spacing(0, 1, 0, 2),
     ...theme.mixins.toolbar,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
   },
   content: {
     flexGrow: 1,
@@ -71,11 +62,25 @@ export default makeStyles((theme) => ({
   list: {
     padding: 0,
   },
+  flexRow: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginRight: 0,
+  },
+  flexEnd: {
+    justifyContent: 'flex-end',
+  },
   avatarUserInfo: {
     margin: '20px',
   },
   filterButton: {
-    backgroundColor: 'rgb(219,219,219)',
+    fontFamily: 'Ubuntu',
+    fontStyle: 'normal',
+    fontWeight: 'bold',
+    fontSize: '19px',
+    lineHeight: '46px',
+    color: '#00AD98',
+    textAlign: 'right',
     marginLeft: '10px',
   },
   filterButtonDark: {
@@ -83,30 +88,20 @@ export default makeStyles((theme) => ({
     color: 'white',
     marginLeft: '10px',
   },
-  logOut: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addChanllenge: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  addChanllengeButton: {
-    margin: '10px',
-  },
-  // drawerPaper: {
-  //   width: drawerWidth,
-  //   backgroundColor: 'white',
-  //   boxShadow: '10px 0px 35px 0px rgba(51,51,51,0.7)',
-  // },
   drawerPaperDark: {
     width: drawerWidth,
     backgroundColor: 'rgb(51,51,51)',
     boxShadow: '2px 0px 35px 0px black',
   },
   menu: {
-    marginTop:'49px'
-  }
+    marginTop: '49px',
+  },
+  title: {
+    fontSize: '15px',
+  },
+  middleFlex: {
+    width: '70%',
+    display: 'flex',
+    justifyContent: 'center',
+  },
 }));

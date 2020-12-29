@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   PieChart, Pie, Tooltip, Cell, Legend,
@@ -7,13 +7,16 @@ import Loading from '../../../../components/Loading';
 import network from '../../../../services/network';
 import '../style.css';
 
-function TotalSubmission({ darkMode }) {
+const COLORS = ['#00C49F', '#FF8042', '#005FAC'];
+const RADIAN = Math.PI / 180;
+
+function TotalSubmission() {
   const { id } = useParams();
   const [totalSubmissions, setTotalSubmissions] = useState();
   const [challengesOption, setChallengesOption] = useState();
   const [chosenChallenges, setChosenChallenges] = useState('');
 
-  const getDataOnUsers = async (Challenges) => {
+  const getDataOnUsers = useCallback(async (Challenges) => {
     try {
       const { data: submissions } = await network.get(`/api/v1/insights/admin/all-submissions?challenge=${Challenges}`);
       setTotalSubmissions([
@@ -23,18 +26,21 @@ function TotalSubmission({ darkMode }) {
       ]);
     } catch (error) {
     }
-  };
+    // eslint-disable-next-line
+  }, [])
 
-  const chooseChallenge = (event) => {
+  const chooseChallenge = useCallback((event) => {
     setChosenChallenges(event.target.value);
-  };
+    // eslint-disable-next-line
+  }, [])
 
-  const getAllChallengesForOption = async () => {
+  const getAllChallengesForOption = useCallback(async () => {
     const { data: allChallengesFromServer } = await network.get('/api/v1/challenges/');
     const challengesOptions = allChallengesFromServer.map((challenge) => <option key={challenge.id} onClick={() => { chooseChallenge(challenge.id); }} value={challenge.id}>{challenge.name}</option>);
     challengesOptions.unshift(<option key="all" onClick={() => { chooseChallenge('all'); }} value="all">All Challenges</option>);
     setChallengesOption(challengesOptions);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     getDataOnUsers(chosenChallenges);
@@ -51,10 +57,7 @@ function TotalSubmission({ darkMode }) {
     // eslint-disable-next-line
   }, []);
 
-  const COLORS = ['#00C49F', '#FF8042', '#005FAC'];
-
-  const RADIAN = Math.PI / 180;
-  const renderCustomizedLabel = ({
+  const renderCustomizedLabel = useCallback(({
     cx, cy, midAngle, innerRadius, outerRadius, percent, index,
   }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -66,7 +69,8 @@ function TotalSubmission({ darkMode }) {
         {`${(percent * 100).toFixed(0)}%`}
       </text>
     );
-  };
+    // eslint-disable-next-line
+  }, [RADIAN])
 
   return (
     totalSubmissions
@@ -107,7 +111,7 @@ function TotalSubmission({ darkMode }) {
             : chosenChallenges === 'all' ? <h2>There is no submissions Yet</h2> : <h2>There is no submissions on this challenge</h2>}
 
         </div>
-      ) : <Loading darkMode={darkMode} />
+      ) : <Loading />
   );
 }
 

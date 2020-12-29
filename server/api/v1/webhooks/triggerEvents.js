@@ -2,7 +2,8 @@ const triggerEventsRouter = require('express').Router();
 const webhookSendEvents = require('../../../helpers/webhookSendEvents');
 const { webhookUrlEventTriggerValidation } = require('../../../helpers/validator');
 // github api for update status about submission
-triggerEventsRouter.post('/start-challenge', async (req, res) => {
+triggerEventsRouter.post('/start-challenge/:id', async (req, res) => {
+  const { id } = req.params;
   try {
     // Joi validation
     const { error } = webhookUrlEventTriggerValidation(req.body);
@@ -16,7 +17,7 @@ triggerEventsRouter.post('/start-challenge', async (req, res) => {
       userId: req.user.userId,
       userName: req.user.userName,
       challengeName,
-      createdAt: Date.now(),
+      challengeId: id,
     };
     webhookSendEvents(eventToSend);
     return res.sendStatus(200);

@@ -2,21 +2,18 @@ import React, { useContext } from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { Logged } from '../context/LoggedInContext';
 
-const PublicRoute = ({ component: Component, exact, path, darkMode }) => {
+const PublicRoute = ({ component: Component, exact, path }) => {
+  const LoggedContext = useContext(Logged);
 
-    const LoggedContext = useContext(Logged);
-    
-    return (
-        <Route exact={exact ? true : false} path={path}>
-            { !LoggedContext.logged ? (
-                darkMode ?
-                    <Component darkMode={darkMode} /> :
-                    <Component />
-            ) : (
-                    <Redirect to="/" />
-                )}
-        </Route>
-    )
+  return (
+    <Route exact={!!exact} path={path}>
+      { !LoggedContext.logged ? (
+        <Component />
+      ) : (
+        <Redirect to="/" />
+      )}
+    </Route>
+  );
 };
 
 export default PublicRoute;
