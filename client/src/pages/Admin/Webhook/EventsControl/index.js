@@ -116,7 +116,7 @@ function EventsControl() {
         getAllEvents={getAllEvents}
       />
       <Button
-        variant={'outlined'}
+        variant="outlined"
         style={{ marginBottom: '20px' }}
         onClick={addNewEvents}
       >

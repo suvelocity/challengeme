@@ -41,7 +41,7 @@ export default function AddTeam({ open = false, setOpen, getAllTeams }) {
         </div>
         <Button variant="contained" color="primary" onClick={handleSubmitNewTeam}>
           Add New Team
-      </Button>
+        </Button>
       </div>
     </Modal>
   );

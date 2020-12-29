@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useContext, useCallback } from 'react';
+import React, {
+  useEffect, useState, useContext, useCallback,
+} from 'react';
 import './ChallengeApproval.css';
 import network from '../../../services/network';
 import Loading from '../../../components/Loading';
@@ -88,7 +90,6 @@ const ChallengeApproval = () => {
     setDeniedChallenges(deniedList);
     // eslint-disable-next-line
   }, [challenges, challengesStates]);
-
 
   useEffect(() => {
     getAllSubmissions();

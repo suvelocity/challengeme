@@ -1,16 +1,15 @@
-import React, { useCallback } from "react";
-import Selector from "react-select";
+import React, { useCallback } from 'react';
+import Selector from 'react-select';
 import { labelsChooserStyle } from './ChoosersStyle';
 
-const ChooseLabels = ({ labels, chooseLabels, setLabels, }) => {
-
+const ChooseLabels = ({ labels, chooseLabels, setLabels }) => {
   const selectionChange = useCallback((chosen) => {
     setLabels(chosen);
-        // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [])
 
   return (
-    <div >
+    <div>
       <Selector
         value={labels}
         maxMenuHeight={300}

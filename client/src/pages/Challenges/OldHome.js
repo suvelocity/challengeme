@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import ChallengeCard from '../../components/ChallengeCard';
 import AllChallenges from '../../context/AllChallengesContext';
 import FilteredLabels from '../../context/FilteredLabelsContext';
-import "../../styles/Challenges.css";
+import '../../styles/Challenges.css';
 
 export default function Home() {
   const allChallenges = useContext(AllChallenges).challenges;

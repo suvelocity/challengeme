@@ -97,11 +97,11 @@ export default makeStyles((theme) => ({
     marginTop: '49px',
   },
   title: {
-    fontSize: '15px'
+    fontSize: '15px',
   },
   middleFlex: {
     width: '70%',
     display: 'flex',
-    justifyContent: 'center'
-  }
+    justifyContent: 'center',
+  },
 }));

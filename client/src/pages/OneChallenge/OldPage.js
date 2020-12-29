@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
@@ -14,7 +14,6 @@ import ReviewsTab from '../../components/Reviews';
 import SubmitModal from '../../components/Modals/SubmitModal';
 import Loading from '../../components/Loading';
 import '../../styles/OldOneChallenge.css';
-
 
 const useStyles = makeStyles(() => ({
   getStartedButton: {
@@ -77,14 +76,14 @@ function ChallengePage() {
     const { data: boilerPlate } = await network.get(
       `/api/v1/challenges/boiler-plate/${challengeId}`,
     );
-    setBoilerPlate(boilerPlate.boilerPlate)
-  }
+    setBoilerPlate(boilerPlate.boilerPlate);
+  };
 
   useEffect(() => {
     if (LoggedContext.logged) {
       const user = Cookies.get('userName');
       mixpanel.track('User On Challenge Page', { User: `${user}`, ChallengeId: `${challengeId}` });
-      getBoilerPlate()
+      getBoilerPlate();
     }
     // eslint-disable-next-line
   }, []);
@@ -105,7 +104,7 @@ function ChallengePage() {
       setLoadingReq(true);
     } catch (error) {
     }
-  }
+  };
 
   const fetchChallenge = async () => {
     try {
@@ -153,27 +152,31 @@ function ChallengePage() {
   const getSubmissionButton = () => {
     if (!submissionStatus) {
       return (
-        LoggedContext.logged ?
-          <Button
-            cy-test="submit-button"
-            className={classes.SubmitdButton}
-            variant="contained"
-            onClick={() => setIsModalOpen(true)}
-          >
-            Submit
-        </Button>
-          :
-          <Button
-            variant="contained"
-            className={classes.SubmitdButton}
-            onClick={() => Swal.fire({
-              icon: 'error',
-              title: 'You Must Login First!',
-              showConfirmButton: true
-            })}>
-            Submit
-              </Button >
-      )
+        LoggedContext.logged
+          ? (
+            <Button
+              cy-test="submit-button"
+              className={classes.SubmitdButton}
+              variant="contained"
+              onClick={() => setIsModalOpen(true)}
+            >
+              Submit
+            </Button>
+          )
+          : (
+            <Button
+              variant="contained"
+              className={classes.SubmitdButton}
+              onClick={() => Swal.fire({
+                icon: 'error',
+                title: 'You Must Login First!',
+                showConfirmButton: true,
+              })}
+            >
+              Submit
+            </Button>
+          )
+      );
     }
 
     if (submissionStatus.state === 'PENDING') {
@@ -202,7 +205,6 @@ function ChallengePage() {
       </Button>
     );
   };
-
 
   const getSubmissionStatus = () => {
     if (!submissionStatus) {
@@ -259,9 +261,10 @@ function ChallengePage() {
 
   return challenge ? (
     <div style={{
-      overflowY: 'auto', height: '100vh', width: '100%', background: 'linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%)'
+      overflowY: 'auto', height: '100vh', width: '100%', background: 'linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%)',
 
-    }}>
+    }}
+    >
       <div className="one-challenge-container">
         <div className="one-challenge-challenge-container">
           <h1 className="one-challenge-info-title" cy-test="challenge-name">
@@ -320,38 +323,42 @@ function ChallengePage() {
             </div>
           </div>
           <div className={classes.getStartedButtonContainer}>
-            {LoggedContext.logged ?
-              <Button
-                cy-test="challenge-boilerPlate"
-                variant="contained"
-                className={classes.getStartedButton}
-                onClick={async () => {
-                  const user = Cookies.get('userName');
-                  mixpanel.track('User Started Challenge', {
-                    User: `${user}`,
-                    ChallengeId: `${challengeId}`,
-                  });
-                  try {
-                    await network.post('/api/v1/webhooks/trigger-events/start-challenge', { challengeName: challenge.name });
-                  } catch (error) {
-                  }
-                }}
-                href={`https://github.com/${boilerPlate}`}
-                target="_blank"
-              >
-                Start this challenge
-            </Button> : <Button
-                cy-test="challenge-boilerPlate"
-                variant="contained"
-                className={classes.getStartedButton}
-                onClick={() => Swal.fire({
-                  icon: 'error',
-                  title: 'You Must Login First!',
-                  showConfirmButton: true,
-                })}
-              >
-                Start this challenge
-              </Button>}
+            {LoggedContext.logged
+              ? (
+                <Button
+                  cy-test="challenge-boilerPlate"
+                  variant="contained"
+                  className={classes.getStartedButton}
+                  onClick={async () => {
+                    const user = Cookies.get('userName');
+                    mixpanel.track('User Started Challenge', {
+                      User: `${user}`,
+                      ChallengeId: `${challengeId}`,
+                    });
+                    try {
+                      await network.post('/api/v1/webhooks/trigger-events/start-challenge', { challengeName: challenge.name });
+                    } catch (error) {
+                    }
+                  }}
+                  href={`https://github.com/${boilerPlate}`}
+                  target="_blank"
+                >
+                  Start this challenge
+                </Button>
+              ) : (
+                <Button
+                  cy-test="challenge-boilerPlate"
+                  variant="contained"
+                  className={classes.getStartedButton}
+                  onClick={() => Swal.fire({
+                    icon: 'error',
+                    title: 'You Must Login First!',
+                    showConfirmButton: true,
+                  })}
+                >
+                  Start this challenge
+                </Button>
+              )}
           </div>
         </div>
         <div className="one-challenge-submission-container">
@@ -361,10 +368,10 @@ function ChallengePage() {
               {getSubmissionButton()}
             </div>
           ) : (
-              <div style={{ textAlign: 'center' }}>
-                <CircularProgress style={{ margin: '30px' }} />
-              </div>
-            )}
+            <div style={{ textAlign: 'center' }}>
+              <CircularProgress style={{ margin: '30px' }} />
+            </div>
+          )}
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
@@ -378,8 +385,8 @@ function ChallengePage() {
       </div>
     </div>
   ) : (
-      <Loading  />
-    );
+    <Loading />
+  );
 }
 
 export default ChallengePage;

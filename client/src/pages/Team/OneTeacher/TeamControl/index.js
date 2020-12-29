@@ -65,7 +65,7 @@ function Row(props) {
     // eslint-disable-next-line
   }, [row, teamName, teamId])
 
-  const changeUserPermissionToBeTeacher = useCallback(async (user, permission) => {
+  const changeUserPermissionToBeTeacher = useCallback(async (user) => {
     try {
       const isChangeOk = window.confirm(`Are you sure you want to give ${row.userName}, teacher permissions on ${teamName} team?`);
       if (isChangeOk) {
@@ -119,7 +119,7 @@ function Row(props) {
                     {row.UserTeam.permission === 'student' && (
                       <StyledTableCell component="th" scope="row">
                         <Button
-                          onClick={() => changeUserPermissionToBeTeacher(row.id, row.UserTeam.permission)}
+                          onClick={() => changeUserPermissionToBeTeacher(row.id)}
                         >
                           CLick
                         </Button>
@@ -184,7 +184,7 @@ function TeamsControl({ teamName }) {
       />
       <div className="team-control-add-members">
         <Button
-          variant={'outlined'}
+          variant="outlined"
           onClick={() => handleAddMemberModal(id)}
         >
           Add Team Members

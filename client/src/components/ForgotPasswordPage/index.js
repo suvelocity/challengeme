@@ -35,7 +35,6 @@ export default function Forgot() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-
   useEffect(() => {
     mixpanel.track('User On Forgot Password Page');
   }, []);

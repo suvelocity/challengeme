@@ -1,6 +1,8 @@
 import React, { useContext, useState, useCallback } from 'react';
 import Cookies from 'js-cookie';
-import { Link, NavLink, useHistory, useLocation, } from 'react-router-dom';
+import {
+  Link, NavLink, useHistory, useLocation,
+} from 'react-router-dom';
 import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -29,7 +31,6 @@ import network from '../../../services/network';
 import { Logged } from '../../../context/LoggedInContext';
 import Search from '../Search';
 import useStyles from './WideNavStyle';
-
 
 const StyledMenu = withStyles({
   paper: {
@@ -63,7 +64,6 @@ export default function WideNav() {
 
   const [openNavBar, setOpenNavBar] = useState(false);
 
-
   const handleDrawerOpen = useCallback(() => {
     setOpenNavBar(true);
     // eslint-disable-next-line
@@ -81,24 +81,23 @@ export default function WideNav() {
       });
       Cookies.remove('refreshToken');
       Cookies.remove('accessToken');
-      ;
+
       Cookies.remove('userId');
       Cookies.remove('userName');
       LoggedContext.setLogged(false);
       LoggedContext.setIsAdmin(false);
       location.push('/');
-      handleDrawerClose()
+      handleDrawerClose();
     } catch (error) {
     }
     // eslint-disable-next-line
   }, [LoggedContext])
 
-
   return (
     <>
       <AppBar position="fixed" className={clsx(classes.appBarRegolar)} style={{ backgroundColor: 'transport' }}>
         <Toolbar>
-          <Typography variant="h6" >
+          <Typography variant="h6">
             <NavLink to="/" exact className="link-rout">
               <div
                 style={{
@@ -113,91 +112,100 @@ export default function WideNav() {
             </NavLink>
           </Typography>
           <div className={classes.middleFlex}>
-            {currentLocation.pathname === '/' &&
-              <>
-                <Typography variant="h6" className={classes.title}>
-                  <Link to={"/challenges"} className="link-rout">
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginRight: '10px',
-                        marginLeft: '40px',
-                      }}
-                    >
-                      <AppsIcon style={letterColor} />
+            {currentLocation.pathname === '/'
+              && (
+                <>
+                  <Typography variant="h6" className={classes.title}>
+                    <Link to="/challenges" className="link-rout">
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '10px',
+                          marginLeft: '40px',
+                        }}
+                      >
+                        <AppsIcon style={letterColor} />
                 &nbsp;
-                <span style={letterColor} className="header-link-title">
-                        Challenges
-                </span>
-                    </div>
-                  </Link>
-                </Typography>
-                <Typography variant="h6" className={classes.title}>
-                  <Link to={LoggedContext.logged ? "/teams" : currentLocation.pathname} className="link-rout">
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginRight: '10px',
-                        marginLeft: '40px',
-                      }}
-                    >
-                      <GroupIcon style={letterColor} />
+                        <span style={letterColor} className="header-link-title">
+                          Challenges
+                        </span>
+                      </div>
+                    </Link>
+                  </Typography>
+                  <Typography variant="h6" className={classes.title}>
+                    <Link to={LoggedContext.logged ? '/teams' : currentLocation.pathname} className="link-rout">
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '10px',
+                          marginLeft: '40px',
+                        }}
+                      >
+                        <GroupIcon style={letterColor} />
                 &nbsp;
-                <span style={letterColor} className="header-link-title">
-                        Teams
-                </span>
-                    </div>
-                  </Link>
-                </Typography>
-                <Typography variant="h6" className={classes.title}>
-                  <a href={'https://suvelocity.github.io/challengeme/'} target="_blank"
-                    rel="noopener noreferrer" className="link-rout">
-                    <div
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginRight: '10px',
-                        marginLeft: '40px',
-                      }}
+                        <span style={letterColor} className="header-link-title">
+                          Teams
+                        </span>
+                      </div>
+                    </Link>
+                  </Typography>
+                  <Typography variant="h6" className={classes.title}>
+                    <a
+                      href="https://suvelocity.github.io/challengeme/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-rout"
                     >
-                      <DescriptionIcon style={letterColor} />
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '10px',
+                          marginLeft: '40px',
+                        }}
+                      >
+                        <DescriptionIcon style={letterColor} />
                 &nbsp;
-                <span style={letterColor} className="header-link-title">
-                        Docs
-                </span>
-                    </div>
-                  </a>
-                </Typography>
-              </>
-            }
+                        <span style={letterColor} className="header-link-title">
+                          Docs
+                        </span>
+                      </div>
+                    </a>
+                  </Typography>
+                </>
+              )}
             {currentLocation.pathname.includes('challenges') && (
               <Search />
             )}
           </div>
           <div style={{ flex: 1 }} />
 
-          {LoggedContext.logged && Cookies.get('userName') ?
-            <Tooltip title={Cookies.get('userName')}>
-              <AccountCircleOutlinedIcon
-                onClick={handleDrawerOpen}
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                color="inherit"
-                style={{
-                  cursor: 'pointer',
-                }}
-              >
-                {Cookies.get('userName').slice(0, 2)}
-              </AccountCircleOutlinedIcon>
-            </Tooltip> :
-            <Link to="/login" className="link-rout">
-              <div className={classes.filterButton}>
-                Login
-                  </div>
-            </Link>}
+          {LoggedContext.logged && Cookies.get('userName')
+            ? (
+              <Tooltip title={Cookies.get('userName')}>
+                <AccountCircleOutlinedIcon
+                  onClick={handleDrawerOpen}
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  color="inherit"
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                >
+                  {Cookies.get('userName').slice(0, 2)}
+                </AccountCircleOutlinedIcon>
+              </Tooltip>
+            )
+            : (
+              <Link to="/login" className="link-rout">
+                <div className={classes.filterButton}>
+                  Login
+                </div>
+              </Link>
+            )}
         </Toolbar>
       </AppBar>
 
@@ -217,27 +225,33 @@ export default function WideNav() {
             <ExpandLessIcon style={drawerColor} />
           </IconButton>
         </div>
-        {currentLocation.pathname === '/challenges' ?
-          <>
-            <Divider variant="middle" style={dividerColor} />
-            <Link to="/" className="link-rout">
-              <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
-                <ListItemText primary="Home" />
-                <ListItemIcon className={classes.flexEnd}>
-                  <Cube style={drawerColor} color='#000' />
-                </ListItemIcon>
-              </ListItem>
-            </Link></> :
-          <>
-            <Divider variant="middle" style={dividerColor} />
-            <Link to="/challenges" className="link-rout">
-              <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
-                <ListItemText primary="Challenges" />
-                <ListItemIcon className={classes.flexEnd}>
-                  <AppsIcon style={drawerColor} />
-                </ListItemIcon>
-              </ListItem>
-            </Link></>}
+        {currentLocation.pathname === '/challenges'
+          ? (
+            <>
+              <Divider variant="middle" style={dividerColor} />
+              <Link to="/" className="link-rout">
+                <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
+                  <ListItemText primary="Home" />
+                  <ListItemIcon className={classes.flexEnd}>
+                    <Cube style={drawerColor} color="#000" />
+                  </ListItemIcon>
+                </ListItem>
+              </Link>
+            </>
+          )
+          : (
+            <>
+              <Divider variant="middle" style={dividerColor} />
+              <Link to="/challenges" className="link-rout">
+                <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
+                  <ListItemText primary="Challenges" />
+                  <ListItemIcon className={classes.flexEnd}>
+                    <AppsIcon style={drawerColor} />
+                  </ListItemIcon>
+                </ListItem>
+              </Link>
+            </>
+          )}
         <Divider variant="middle" style={dividerColor} />
         <List className={classes.list}>
           <Link to="/profile/info" className="link-rout">
@@ -252,7 +266,7 @@ export default function WideNav() {
           <Link to="/Teams" className="link-rout">
             <ListItem className={classes.flexRow} button onClick={handleDrawerClose}>
               <ListItemText primary="Teams Area" />
-              <ListItemIcon className={classes.flexEnd} >
+              <ListItemIcon className={classes.flexEnd}>
                 <GroupIcon style={drawerColor} />
               </ListItemIcon>
             </ListItem>
@@ -274,7 +288,7 @@ export default function WideNav() {
           <Link to="/addnewchallenge" className="link-rout">
             <ListItem className={classes.flexRow} button onClick={handleDrawerClose}>
               <ListItemText primary="Add New Challenge" />
-              <ListItemIcon className={classes.flexEnd} >
+              <ListItemIcon className={classes.flexEnd}>
                 <AddIcon style={drawerColor} />
               </ListItemIcon>
             </ListItem>

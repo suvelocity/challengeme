@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, {
+  useEffect, useState, useCallback, useContext,
+} from 'react';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
 import { useHistory } from 'react-router-dom';
@@ -14,6 +16,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { Alert, AlertTitle } from '@material-ui/lab';
+import FilteredLabels from '../../context/FilteredLabelsContext';
 import ChooseLabels from '../../components/Choosers/ChooseLabels';
 import network from '../../services/network';
 import AddImg from '../../components/AddImg';
@@ -48,9 +51,26 @@ export default function NewChallengeForm() {
   const [chooseLabels, setChooseLabels] = useState([]);
   const [file, setFile] = useState({});
   const [badInput, setBadInput] = useState([]);
+  const filteredLabels = useContext(FilteredLabels);
+
+  const getLabels = useCallback(async () => {
+    try {
+      const { data } = await network.get('/api/v1/labels');
+      const optionsForSelector = data.map((labelData) => ({
+        value: labelData.id,
+        label: labelData.name,
+      }));
+      setChooseLabels(optionsForSelector);
+      const newFilter = optionsForSelector.filter((label) => (
+        label.value
+          === (filteredLabels ? filteredLabels.filteredLabels[0] : null)
+      ));
+      setLabels(newFilter);
+    } catch (error) { }
+  }, [filteredLabels]);
 
   /* pull challenge's type options from .github/workflows folder */
-  const openOptions = useCallback(async () => {
+  const getTypes = useCallback(async () => {
     try {
       const { data: types } = await network.get('/api/v1/types');
       setOptionstypes(
@@ -66,7 +86,8 @@ export default function NewChallengeForm() {
   }, [])
 
   useEffect(() => {
-    openOptions();
+    getTypes();
+    getLabels();
     const user = Cookies.get('userName');
     mixpanel.track('User On Add New Challenge Page', { User: `${user}` });
     // eslint-disable-next-line

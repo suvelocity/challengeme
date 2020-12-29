@@ -174,7 +174,7 @@ function AccessKeyControl() {
         getAllAccessKeys={getAllAccessKeys}
       />
       <Button
-        variant={'outlined'}
+        variant="outlined"
         style={{ marginBottom: '20px' }}
         onClick={addNewAccessKey}
       >

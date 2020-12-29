@@ -21,8 +21,8 @@ function Header() {
       {!navOrMenu ? (
         <WideNav />
       ) : (
-          <NarrowNav />
-        )}
+        <NarrowNav />
+      )}
     </>
   );
 }

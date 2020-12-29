@@ -59,7 +59,7 @@ export default function AddToken({ open = false, setOpen, getAllTokens }) {
           onClick={handleSubmitNewToken}
         >
           Add New Token
-      </Button>
+        </Button>
         <AddToken />
       </div>
     </Modal>

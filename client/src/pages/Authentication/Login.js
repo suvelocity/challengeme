@@ -157,7 +157,7 @@ export default function Login() {
                         aria-label="toggle password visibility"
                         onMouseDown={() => setShowPassword(true)}
                         onMouseUp={() => setShowPassword(false)}
-                        autoComplete='current-password'
+                        autoComplete="current-password"
                       >
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>

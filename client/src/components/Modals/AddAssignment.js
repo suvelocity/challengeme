@@ -5,7 +5,6 @@ import network from '../../services/network';
 import ChooseChallenges from '../Choosers/ChooseChallenges';
 import { getModalStyle, useModalStyles } from '../../utils';
 
-
 export default function AddAssignment({
   open = false, setOpen, getAllAssignments, teamId,
 }) {
@@ -42,7 +41,7 @@ export default function AddAssignment({
       <div style={modalStyle} className={classes.paper}>
         <h2 id="simple-modal-title">
           Add New Assignments To Team
-        {' '}
+          {' '}
           {teamId}
         </h2>
         <div id="simple-modal-description">
@@ -60,7 +59,7 @@ export default function AddAssignment({
           onClick={addNewAssignment}
         >
           Add
-      </Button>
+        </Button>
         <AddAssignment />
       </div>
     </Modal>

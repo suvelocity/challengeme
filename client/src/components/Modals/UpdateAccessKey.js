@@ -76,7 +76,7 @@ export default function UpdateAccessKey({
           onClick={handleSubmitNewAccessKey}
         >
           Update Access Key
-      </Button>
+        </Button>
       </div>
     </Modal>
   );

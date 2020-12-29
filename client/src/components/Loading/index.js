@@ -3,13 +3,12 @@ import './Loading.css';
 // import LoadingMatrix from './LoadingAnimation';
 
 function Loading({ firstLoading }) {
-
   const getBackground = useCallback(() => {
     if (firstLoading) {
       return { backgroundColor: 'white' };
     }
     return { backgroundColor: 'transparent' };
-  }, [firstLoading])
+  }, [firstLoading]);
   return (
     <div style={getBackground()} className="loaderContainer">
       <div className="loader" />

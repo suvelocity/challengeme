@@ -1,23 +1,24 @@
-import React, { useEffect, useState, useContext, useCallback } from "react";
-import mixpanel from "mixpanel-browser";
-import Cookies from "js-cookie";
-import { useLocation } from "react-router-dom";
-import Button from "@material-ui/core/Button";
-import AllChallenges from "../../context/AllChallengesContext";
-import FilteredLabels from "../../context/FilteredLabelsContext";
-import network from "../../services/network";
-import ChooseLabels from "../../components/Choosers/ChooseLabels";
-import ChallengesCarousel from "../../components/ChallengesCarousel";
+import React, {
+  useEffect, useState, useContext, useCallback,
+} from 'react';
+import mixpanel from 'mixpanel-browser';
+import Cookies from 'js-cookie';
+import { useLocation } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import AllChallenges from '../../context/AllChallengesContext';
+import FilteredLabels from '../../context/FilteredLabelsContext';
+import network from '../../services/network';
+import ChooseLabels from '../../components/Choosers/ChooseLabels';
+import ChallengesCarousel from '../../components/ChallengesCarousel';
 import Footer from '../../components/Footer';
-import "../../styles/Challenges.css";
+import '../../styles/Challenges.css';
 
 export default function Challenges() {
-
   const currentLocation = useLocation();
 
   const allChallenges = useContext(AllChallenges).challenges;
   const filteredLabels = useContext(FilteredLabels);
-  const allChallengesWithImgState = allChallenges.map((challenge) => { return { ...challenge, img: false } })
+  const allChallengesWithImgState = allChallenges.map((challenge) => ({ ...challenge, img: false }));
 
   const [challengesFiltered, setChallengesFiltered] = useState(allChallengesWithImgState);
   const [labels, setLabels] = useState([]);
@@ -25,45 +26,41 @@ export default function Challenges() {
 
   const getLabels = useCallback(async () => {
     try {
-      const { data } = await network.get("/api/v1/labels");
+      const { data } = await network.get('/api/v1/labels');
       const optionsForSelector = data.map((labelData) => ({
         value: labelData.id,
         label: labelData.name,
       }));
       setChooseLabels(optionsForSelector);
-      const newFilter = optionsForSelector.filter((label) => {
-        return (
-          label.value ===
-          (filteredLabels ? filteredLabels.filteredLabels[0] : null)
-        );
-      });
+      const newFilter = optionsForSelector.filter((label) => (
+        label.value
+          === (filteredLabels ? filteredLabels.filteredLabels[0] : null)
+      ));
       setLabels(newFilter);
     } catch (error) { }
-  }, [filteredLabels])
+  }, [filteredLabels]);
 
   const setNewImg = useCallback((id, newImg) => {
     setChallengesFiltered((prev) => {
       const currentChallenges = prev.map((challenge) => {
         if (challenge.id === id) {
-          challenge.img = newImg
-          return challenge
-        } else {
-          return challenge
+          challenge.img = newImg;
+          return challenge;
         }
-      })
-      return currentChallenges
-    })
-
-  }, [])
+        return challenge;
+      });
+      return currentChallenges;
+    });
+  }, []);
   useEffect(() => {
-    const user = Cookies.get("userName");
-    mixpanel.track("User On Home Page", { User: `${user}` });
+    const user = Cookies.get('userName');
+    mixpanel.track('User On Home Page', { User: `${user}` });
     return () => filteredLabels.setFilteredLabels([]);
     // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
-    if (currentLocation.pathname !== "/challenges") {
+    if (currentLocation.pathname !== '/challenges') {
       setLabels([]);
     } else {
       getLabels();
@@ -77,11 +74,9 @@ export default function Challenges() {
         const filteredByLabelChallenges = [];
         allChallenges.forEach((challenge) => {
           if (
-            filteredLabels.filteredLabels.every((labelChallenge) =>
-              challenge.Labels.map((label) => label.id).includes(
-                labelChallenge
-              )
-            )
+            filteredLabels.filteredLabels.every((labelChallenge) => challenge.Labels.map((label) => label.id).includes(
+              labelChallenge,
+            ))
           ) {
             if (!filteredByLabelChallenges.includes(challenge)) {
               filteredByLabelChallenges.push(challenge);
@@ -93,7 +88,7 @@ export default function Challenges() {
         setChallengesFiltered(allChallenges);
       }
     } catch (error) { }
-  }, [filteredLabels, allChallenges])
+  }, [filteredLabels, allChallenges]);
 
   useEffect(() => {
     filterLabels();
@@ -107,8 +102,8 @@ export default function Challenges() {
           <h1>Explore Your Kind Of challenge</h1>
         </div>
       </div>
-      <div style={{ display: "flex", gap: 10 }}>
-        <div style={{ minWidth: "150px", width: "fit-content" }}>
+      <div style={{ display: 'flex', gap: 10 }}>
+        <div style={{ minWidth: '150px', width: 'fit-content' }}>
           <ChooseLabels
             labels={labels}
             chooseLabels={chooseLabels}
@@ -118,7 +113,7 @@ export default function Challenges() {
         <Button
           onClick={() => {
             filteredLabels.setFilteredLabels(
-              labels ? labels.map((label) => label.value) : []
+              labels ? labels.map((label) => label.value) : [],
             );
           }}
           variant="contained"
@@ -129,14 +124,17 @@ export default function Challenges() {
       <div className="All-Challenge-Challenges-Container">
         <div className="All-Challenge-Carousel">
           <p>Recommended For You:</p>
-          <ChallengesCarousel challenges={challengesFiltered} setNewImg={setNewImg} main={true}
+          <ChallengesCarousel
+            challenges={challengesFiltered}
+            setNewImg={setNewImg}
+            main
           />
         </div>
         <div className="All-Challenge-Carousel">
           <p>Front End Challenges:</p>
           <ChallengesCarousel
             challenges={challengesFiltered.filter(
-              (challenge) => challenge.type === "client-only"
+              (challenge) => challenge.type === 'client-only',
             )}
             setNewImg={setNewImg}
           />
@@ -145,9 +143,8 @@ export default function Challenges() {
           <p>Back End Challenges:</p>
           <ChallengesCarousel
             challenges={challengesFiltered.filter(
-              (challenge) =>
-                challenge.type === "server-mysql" ||
-                challenge.type === "server-only"
+              (challenge) => challenge.type === 'server-mysql'
+                || challenge.type === 'server-only',
             )}
             setNewImg={setNewImg}
           />
@@ -156,14 +153,14 @@ export default function Challenges() {
           <p>Full Stack Challenges:</p>
           <ChallengesCarousel
             challenges={challengesFiltered.filter(
-              (challenge) => challenge.type === "fullstack"
+              (challenge) => challenge.type === 'fullstack',
             )}
             setNewImg={setNewImg}
           />
         </div>
       </div>
-      <div className='All-Challenge-Footer'>
-        <Footer color='black' />
+      <div className="All-Challenge-Footer">
+        <Footer color="black" />
       </div>
     </div>
   );

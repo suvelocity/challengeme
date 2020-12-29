@@ -70,8 +70,8 @@ function Security({ values, handleChange }) {
                 {showPassword ? (
                   <Visibility />
                 ) : (
-                    <VisibilityOff />
-                  )}
+                  <VisibilityOff />
+                )}
               </IconButton>
               <LockIcon style={{ opacity: '0.7' }} />
             </InputAdornment>
@@ -102,8 +102,8 @@ function Security({ values, handleChange }) {
                 {showConfirmPassword ? (
                   <Visibility />
                 ) : (
-                    <VisibilityOff />
-                  )}
+                  <VisibilityOff />
+                )}
               </IconButton>
               <LockIcon style={{ opacity: '0.7' }} />
             </InputAdornment>

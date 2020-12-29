@@ -58,7 +58,7 @@ export default function UpdateWebhookEvent({
           onClick={handleSubmitNewEvent}
         >
           Update Event
-      </Button>
+        </Button>
       </div>
     </Modal>
   );

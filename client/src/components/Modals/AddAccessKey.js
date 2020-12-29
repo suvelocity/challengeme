@@ -11,7 +11,6 @@ export default function AddAccessKey({
   setOpen,
   getAllAccessKeys,
 }) {
-
   const classes = useModalStyles();
   const [modalStyle] = useState(getModalStyle);
   const [newEntityName, setNewEntityName] = useState();
@@ -73,7 +72,7 @@ export default function AddAccessKey({
           onClick={handleSubmitNewAccessKey}
         >
           Add New Access Key
-      </Button>
+        </Button>
       </div>
     </Modal>
   );

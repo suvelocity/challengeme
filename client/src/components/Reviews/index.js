@@ -30,24 +30,29 @@ function ReviewsTab({ challengeId, setRatingCount }) {
     // eslint-disable-next-line
   }, [challengeId]);
 
-  return <>
-    <h1 className='Reviews-H1'>Reviews:</h1>
-    <ul className='Reviews-Container'>{!loading ? reviews.length > 0 ? reviews.map((review) => {
-      const { id, createdAt, title, content, rating, User: { userName }, } = review;
-      return (
-        <Review
-          key={id}
-          reviewId={id}
-          author={userName}
-          createdAt={createdAt}
-          title={title}
-          content={content}
-          rating={rating}
-        />
-      )
-    }) : <div className="Review" style={{ paddingTop: '40px' }}><h1>This challenge has no reviews yet</h1></div> : <div className="Review" style={{ paddingTop: '40px' }}><h1>loading...</h1></div>}
-    </ul>
-  </>
+  return (
+    <>
+      <h1 className="Reviews-H1">Reviews:</h1>
+      <ul className="Reviews-Container">
+        {!loading ? reviews.length > 0 ? reviews.map((review) => {
+          const {
+            id, createdAt, title, content, rating, User: { userName },
+          } = review;
+          return (
+            <Review
+              key={id}
+              reviewId={id}
+              author={userName}
+              createdAt={createdAt}
+              title={title}
+              content={content}
+              rating={rating}
+            />
+          );
+        }) : <div className="Review" style={{ paddingTop: '40px' }}><h1>This challenge has no reviews yet</h1></div> : <div className="Review" style={{ paddingTop: '40px' }}><h1>loading...</h1></div>}
+      </ul>
+    </>
+  );
 }
 
 export default ReviewsTab;

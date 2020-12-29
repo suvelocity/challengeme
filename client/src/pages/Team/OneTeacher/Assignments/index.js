@@ -57,7 +57,7 @@ function TeacherAssignments({ teamName }) {
               {' '}
               Page
             </h1>
-            <Button variant={'outlined'} onClick={() => setOpenNewAssignmentModal(true)}>
+            <Button variant="outlined" onClick={() => setOpenNewAssignmentModal(true)}>
               Add New Assignment
             </Button>
           </div>
@@ -83,8 +83,8 @@ function TeacherAssignments({ teamName }) {
               ))}
             </div>
           ) : (
-              <h1 className="not-found">Not Found</h1>
-            )}
+            <h1 className="not-found">Not Found</h1>
+          )}
         </div>
       ) : <Loading />
   );

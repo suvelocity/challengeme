@@ -48,7 +48,7 @@ function SuccessPerChallenge() {
       </ComposedChart>
     </div>
   ) : (
-      <Loading />
-    );
+    <Loading />
+  );
 }
 export default SuccessPerChallenge;

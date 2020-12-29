@@ -204,7 +204,7 @@ function TeamsControl() {
       />
 
       <Button
-        variant={'outlined'}
+        variant="outlined"
         style={{ marginBottom: '20px' }}
         onClick={addNewTeam}
       >

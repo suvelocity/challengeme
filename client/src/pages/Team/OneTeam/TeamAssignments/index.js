@@ -67,17 +67,17 @@ function TeamAssignments() {
                 />
               ))
             ) : (
-                <h1 className="not-found">Not Found</h1>
-              )}
+              <h1 className="not-found">Not Found</h1>
+            )}
           </div>
         </div>
       </>
     ) : (
-        <NotFound />
-      )
+      <NotFound />
+    )
   ) : (
-      <Loading />
-    );
+    <Loading />
+  );
 }
 
 export default TeamAssignments;

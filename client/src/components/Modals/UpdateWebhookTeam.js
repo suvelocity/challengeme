@@ -19,7 +19,6 @@ export default function UpdateWebhookTeam({
     data.authorizationToken,
   );
 
-
   const handleSubmitNewAccessKey = useCallback(async () => {
     try {
       await network.patch(`/api/v1/webhooks/admin/teams/${data.id}`, {
@@ -71,7 +70,7 @@ export default function UpdateWebhookTeam({
           onClick={handleSubmitNewAccessKey}
         >
           Update Team
-      </Button>
+        </Button>
       </div>
     </Modal>
   );

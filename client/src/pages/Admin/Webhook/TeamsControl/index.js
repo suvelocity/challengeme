@@ -173,7 +173,7 @@ function TeamsControl() {
         getAllTeams={getAllWebhookTeams}
       />
       <Button
-        variant={'outlined'}
+        variant="outlined"
         style={{ marginBottom: '20px' }}
         onClick={addNewWebhookTeam}
       >

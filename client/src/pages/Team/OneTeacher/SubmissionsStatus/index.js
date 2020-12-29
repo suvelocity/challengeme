@@ -12,7 +12,7 @@ export default function Index({ teamName }) {
   useEffect(() => {
     const user = Cookies.get('userName');
     mixpanel.track('User On Team Submissions Teacher Area', { User: `${user}`, Team: teamName });
-  }, [teamName])
+  }, [teamName]);
 
   return (
     <div className="generic-page">
@@ -25,7 +25,7 @@ export default function Index({ teamName }) {
           {' '}
         </h1>
         <Button
-          variant={'outlined'}
+          variant="outlined"
           style={{ marginBottom: '20px' }}
           onClick={() => setShowByChallengeOrUser((prev) => !prev)}
         >

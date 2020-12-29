@@ -1,11 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Avatar from "@material-ui/core/Avatar";
-import Rating from "@material-ui/lab/Rating";
-import { blueGrey } from "@material-ui/core/colors";
-import "./SearchTicket.css";
-import Divider from "@material-ui/core/Divider";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
+import Rating from '@material-ui/lab/Rating';
+import { blueGrey } from '@material-ui/core/colors';
+import './SearchTicket.css';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles((theme) => ({
   blueGrey: {
@@ -14,10 +14,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const avatarName = "test";
+const avatarName = 'test';
 const dividerColor = {};
 const letterColor = {
-  color: "black",
+  color: 'black',
 };
 
 function SearchTicket({ ticket, closeSearch }) {
@@ -25,7 +25,7 @@ function SearchTicket({ ticket, closeSearch }) {
   const classes = useStyles();
 
   return (
-    <Link to={`/challenges/${ticket.id}`} style={{ textDecoration: "none" }}>
+    <Link to={`/challenges/${ticket.id}`} style={{ textDecoration: 'none' }}>
       <div className="SearchTicket" style={letterColor} onClick={closeSearch}>
         <Avatar className={classes.blueGrey}>{avatarName}</Avatar>
         <div className="ticketName">{ticket.name}</div>

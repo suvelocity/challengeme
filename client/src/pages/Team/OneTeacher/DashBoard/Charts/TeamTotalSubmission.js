@@ -56,7 +56,6 @@ function TeamTotalSubmission() {
     // eslint-disable-next-line
   }, []);
 
-
   const renderCustomizedLabel = useCallback(({
     cx, cy, midAngle, innerRadius, outerRadius, percent,
   }) => {
@@ -69,7 +68,7 @@ function TeamTotalSubmission() {
         {`${(percent * 100).toFixed(0)}%`}
       </text>
     );
-  }, [])
+  }, []);
 
   return (
     teamSubmissions

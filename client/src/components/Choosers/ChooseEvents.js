@@ -9,7 +9,6 @@ const ChooseEvents = ({
   eventsOptions,
   setEventsOptions,
 }) => {
-
   const fetchEventsData = useCallback(async () => {
     try {
       const { data: allEvents } = await network.get('/api/v1/webhooks/admin/events');
@@ -21,7 +20,6 @@ const ChooseEvents = ({
     }
     // eslint-disable-next-line
   }, [])
-
 
   useEffect(() => {
     fetchEventsData();

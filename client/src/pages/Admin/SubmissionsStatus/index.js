@@ -12,7 +12,7 @@ export default function Index() {
       <div className="admin-sub-status-control-panel">
         <h1>Submissions Status</h1>
         <Button
-          variant={'outlined'}
+          variant="outlined"
           onClick={() => setShowByChallengeOrUser((prev) => !prev)}
         >
           {showByChallengeOrUser ? 'Show By User' : 'Show By Challenge'}
@@ -21,8 +21,8 @@ export default function Index() {
       {showByChallengeOrUser ? (
         <SubmissionsByChallenges />
       ) : (
-          <SubmissionsByUsers />
-        )}
+        <SubmissionsByUsers />
+      )}
     </div>
   );
 }

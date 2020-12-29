@@ -21,7 +21,7 @@ function LastWeekSubmissions() {
 
   const CustomizedLabel = useCallback(({
     x, y, stroke, value,
-  }) => <text x={x} y={y} dy={-4} fill={stroke} fontSize={10} textAnchor="middle">{value}</text>, [])
+  }) => <text x={x} y={y} dy={-4} fill={stroke} fontSize={10} textAnchor="middle">{value}</text>, []);
 
   const CustomizedAxisTick = useCallback(({
     x, y, stroke, payload,
@@ -29,7 +29,7 @@ function LastWeekSubmissions() {
     <g transform={`translate(${x},${y})`}>
       <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">{payload.value}</text>
     </g>
-  ), [])
+  ), []);
 
   useEffect(() => {
     getLastWeekSubmissions();

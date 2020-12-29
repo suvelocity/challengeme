@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   rootDark: {
     flexDirection: 'row',
     height: '50px',
-    backgroundColor: '#686868 !important'
+    backgroundColor: '#686868 !important',
   },
   item: {
     fontWeight: 'bold',

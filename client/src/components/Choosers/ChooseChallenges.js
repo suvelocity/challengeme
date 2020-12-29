@@ -10,7 +10,6 @@ const ChooseChallenges = ({
   challengesOptions,
   setChallengesOptions,
 }) => {
-
   const fetchAssignmentsData = useCallback(async () => {
     try {
       const { data: challengesAlreadyAssign } = await network.get(`/api/v1/assignments/${teamId}`);
@@ -33,21 +32,18 @@ const ChooseChallenges = ({
     // eslint-disable-next-line
   }, [teamId])
 
-
-
   useEffect(() => {
-    fetchAssignmentsData()
+    fetchAssignmentsData();
     // eslint-disable-next-line
   }, [teamId]);
 
   const selectionChange = useCallback((chosen) => {
     setChooseChallenges(chosen);
-        // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [])
 
-
   return (
-    <div >
+    <div>
       <Selector
         value={chooseChallenges}
         maxMenuHeight={300}

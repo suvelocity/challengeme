@@ -66,7 +66,7 @@ export default function NarrowNav() {
       });
       Cookies.remove('refreshToken');
       Cookies.remove('accessToken');
-      ;
+
       Cookies.remove('userId');
       Cookies.remove('userName');
       LoggedContext.setLogged(false);
@@ -76,10 +76,10 @@ export default function NarrowNav() {
     }
   };
   const headerStyle = {
-    backgroundColor:  'transfer',
+    backgroundColor: 'transfer',
   };
   const letterColor = {
-     color:'black',
+    color: 'black',
   };
   const dividerColor = {};
   return (
@@ -133,24 +133,26 @@ export default function NarrowNav() {
       >
         <div className={classes.generalDrawerHeader}>
           <div className={classes.avatarUserInfo}>
-            {LoggedContext.logged&& Cookies.get('userName') ?
-              <Tooltip title={Cookies.get('userName')}>
-                <Avatar
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="inherit"
-                  style={{
-                    cursor: 'pointer',
-                    backgroundColor: '#7BACB4',
-                  }}
-                >
-                  {Cookies.get('userName').slice(0, 2)}
-                </Avatar>
-              </Tooltip> : null}
+            {LoggedContext.logged && Cookies.get('userName')
+              ? (
+                <Tooltip title={Cookies.get('userName')}>
+                  <Avatar
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    color="inherit"
+                    style={{
+                      cursor: 'pointer',
+                      backgroundColor: '#7BACB4',
+                    }}
+                  >
+                    {Cookies.get('userName').slice(0, 2)}
+                  </Avatar>
+                </Tooltip>
+              ) : null}
             <div className={classes.heyName} style={letterColor}>
               <b>
-                {Cookies.get('userName') ? (`Hey ${Cookies.get('userName')}`): 'Welcome to ChallengeMe'}
+                {Cookies.get('userName') ? (`Hey ${Cookies.get('userName')}`) : 'Welcome to ChallengeMe'}
               </b>
             </div>
           </div>
@@ -215,33 +217,37 @@ export default function NarrowNav() {
             <IconButton
               aria-label="delete"
             >
-<Brightness4Icon style={letterColor} />
+              <Brightness4Icon style={letterColor} />
             </IconButton>
           </ListItem>
           <Divider style={dividerColor} />
-          {LoggedContext.logged ?
-            <ListItem className={classes.logOut} onClick={handleDrawerClose}>
-              <Button
-                className={classes.logOutButton}
-                onClick={logOut}
-                style={{ minWidth: 150 }}
-                variant="contained"
-                color="secondary"
-              >
-                Log Out
-            </Button>
-            </ListItem> : <>
-              <Link to="/login" className="link-rout">
-                <Button variant="contained" className={classes.filterButton}>
-                  Login
+          {LoggedContext.logged
+            ? (
+              <ListItem className={classes.logOut} onClick={handleDrawerClose}>
+                <Button
+                  className={classes.logOutButton}
+                  onClick={logOut}
+                  style={{ minWidth: 150 }}
+                  variant="contained"
+                  color="secondary"
+                >
+                  Log Out
+                </Button>
+              </ListItem>
+            ) : (
+              <>
+                <Link to="/login" className="link-rout">
+                  <Button variant="contained" className={classes.filterButton}>
+                    Login
                   </Button>
-              </Link>
-              <Link to="/register" className="link-rout">
-                <Button variant="contained" className={classes.filterButton}>
-                  Register
+                </Link>
+                <Link to="/register" className="link-rout">
+                  <Button variant="contained" className={classes.filterButton}>
+                    Register
                   </Button>
-              </Link>
-            </>}
+                </Link>
+              </>
+            )}
           <Divider style={dividerColor} />
         </List>
       </Drawer>

@@ -141,7 +141,7 @@ const SubmissionsByUsers = () => {
     <div className="generic-page">
       <div className="title-and-button">
         <h1>This is All The Submissions By Users Page</h1>
-        <Button variant={'outlined'} onClick={filteredLast}>
+        <Button variant="outlined" onClick={filteredLast}>
           {last ? 'Show All' : 'Show Only Last'}
         </Button>
       </div>
@@ -161,8 +161,8 @@ const SubmissionsByUsers = () => {
             {data.length > 0 ? (
               data.map((user) => <Row key={user.userName} color="secondary" row={user} />)
             ) : (
-                <Loading />
-              )}
+              <Loading />
+            )}
           </TableBody>
         </Table>
       </TableContainer>

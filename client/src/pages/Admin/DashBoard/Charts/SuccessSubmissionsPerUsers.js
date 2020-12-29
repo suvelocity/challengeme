@@ -57,8 +57,8 @@ function SuccessSubmissions() {
       </BarChart>
     </div>
   ) : (
-      <Loading />
-    );
+    <Loading />
+  );
 }
 
 export default SuccessSubmissions;

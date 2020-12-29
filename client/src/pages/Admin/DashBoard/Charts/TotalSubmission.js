@@ -57,9 +57,9 @@ function TotalSubmission() {
     // eslint-disable-next-line
   }, []);
 
-
-
-  const renderCustomizedLabel = useCallback(({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+  const renderCustomizedLabel = useCallback(({
+    cx, cy, midAngle, innerRadius, outerRadius, percent, index,
+  }) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);

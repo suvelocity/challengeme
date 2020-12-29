@@ -56,7 +56,7 @@ export default function AddWebhookEvent({
           onClick={handleSubmitNewAccessKey}
         >
           Add New Event
-      </Button>
+        </Button>
       </div>
     </Modal>
   );

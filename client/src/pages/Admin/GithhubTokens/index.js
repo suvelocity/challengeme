@@ -157,7 +157,7 @@ function GithubTokens() {
       <h1 className="github-token-title">Github Tokens Management Area</h1>
       <AddToken open={open} setOpen={setOpen} getAllTokens={getAllTokens} />
       <Button
-        variant={'outlined'}
+        variant="outlined"
         style={{ marginBottom: '20px' }}
         onClick={addNewToken}
       >

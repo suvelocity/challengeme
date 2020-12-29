@@ -154,7 +154,7 @@ const SubmissionsByChallenges = () => {
     <div>
       <div className="title-and-button">
         <h2>This is All The Submissions By Challenges Page</h2>
-        <Button variant={'outlined'} onClick={filteredLast}>
+        <Button variant="outlined" onClick={filteredLast}>
           {last ? 'Show All' : 'Show Only Last'}
         </Button>
       </div>
@@ -177,8 +177,8 @@ const SubmissionsByChallenges = () => {
               />
             ))
           ) : (
-              <Loading />
-            )}
+            <Loading />
+          )}
         </Table>
       </TableContainer>
     </div>

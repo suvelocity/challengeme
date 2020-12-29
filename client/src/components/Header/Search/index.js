@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react';
+import React, {
+  useState, useEffect, useContext, useCallback,
+} from 'react';
 import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import './Search.css';
@@ -6,7 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import AllChallenges from '../../../context/AllChallengesContext';
 import SearchTicket from './SearchTicket';
 import useStyles from './SearchStyle';
-import { useDebounce } from '../../../utils'
+import { useDebounce } from '../../../utils';
 
 const letterColor = {
   color: 'black',

@@ -100,7 +100,7 @@ export default function AddWebhookTeam({ open = false, setOpen, getAllTeams }) {
           onClick={handleSubmitNewWebhookTeam}
         >
           Add New Webhook Team
-      </Button>
+        </Button>
       </div>
     </Modal>
   );
