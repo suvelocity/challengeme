@@ -17,7 +17,6 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import Loading from '../../../../components/Loading';
 import network from '../../../../services/network';
-import '../../../Admin/Admin.css';
 
 const StyledTableCell = withStyles((theme) => ({
   head: {

@@ -15,7 +15,6 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import network from '../../../services/network';
-import '../Admin.css';
 import './style.css';
 
 const StyledTableCell = withStyles((theme) => ({

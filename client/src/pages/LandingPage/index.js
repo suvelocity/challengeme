@@ -68,7 +68,7 @@ export default function LandingPage() {
   const projectLeaders = [
     {
       icon:
-        "https://media-exp1.licdn.com/dms/image/C5635AQGtg-CmTPOa5w/profile-framedphoto-shrink_200_200/0/1605426981590?e=1608753600&v=beta&t=bL2Ss4-UVme-k5-ZVpLdr_ZltvdsPwTzpCBnL4v54Dk",
+        "https://media-exp1.licdn.com/dms/image/C5635AQGtg-CmTPOa5w/profile-framedphoto-shrink_400_400/0/1605426981590?e=1609311600&v=beta&t=qfwtIcURvuoQ9TmvVJNS-eDduHz6t883BjdCvEoArhQ",
       name: "David Diamant",
       rule: "Project Main Leader",
       content: `As a developer who was looking to break into Tech, I knew the underlying logic of programming, but I had a lot of gaps in my understanding, especially on the types of algorithms questions asked at interviews. I can confidently say that ChallengeMe is one of the best resources out there for challenge yourself and others, with fantastic video tutorials and an excellent question selection that allows you to get a deep understanding of the topics and confidence in your problem solving ability. The site is incredibly intuitive to use and I think the staff are some of the best out there, being incredibly supportive and passionate about offering a great customer experience. I can not recommend ChallengeMe highly enough.
@@ -78,7 +78,7 @@ export default function LandingPage() {
     },
     {
       icon:
-        "https://media-exp1.licdn.com/dms/image/C4E35AQEUumDeyAuetw/profile-framedphoto-shrink_200_200/0/1604073201265?e=1608753600&v=beta&t=bKbFqRbwuOE9Arl85haenkiThpT6rWU5khFqU6X1qJk",
+        "https://media-exp1.licdn.com/dms/image/C4E35AQEUumDeyAuetw/profile-framedphoto-shrink_400_400/0/1604073201265?e=1609311600&v=beta&t=hW-JpI4hC1Yy4C3y-ulFWJz1Fr3ZhPMJ8GiImpbSmBs",
       name: "Roy Shnitzer",
       rule: "Project Main Leader",
       content: `ChallengeMe has been the backbone of preparing my technical coding skills. This allows you to work efficiently on the most common variations of the highest WEB development without having to spend hours battling the algorithm just to arrive at an inefficient or incorrect solution. There are plenty of resources available for rehearsal, but ChallengeMe differentiates its product by providing the 'how' and 'why' in clear and concise videos. Developing a deeper understanding of how to approach these issues is better than trying to memorize lines of code. I highly recommend ChallengeMe.
@@ -101,7 +101,7 @@ export default function LandingPage() {
   const contributors = [
     {
       icon:
-        "https://media-exp1.licdn.com/dms/image/C4E35AQG0EjerwTpj_g/profile-framedphoto-shrink_200_200/0/1606295533050?e=1608757200&v=beta&t=-zIfQuTU9Oa6afmDkK2zHt70HoRcF7Diw_TW0ps6YYs",
+        "https://media-exp1.licdn.com/dms/image/C4E35AQG0EjerwTpj_g/profile-framedphoto-shrink_400_400/0/1606295533050?e=1609311600&v=beta&t=PRNVyiHll0OrVUKvRlLliP2Ljh4JFMby3ZlaxdRThb4",
       name: "Dor Kachlon",
       github: "DorKachlon",
     },

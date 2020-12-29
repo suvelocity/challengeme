@@ -65,12 +65,15 @@ export default makeStyles((theme) => ({
     color: 'inherit',
   },
   inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
+    // padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    width: '0px',
-    transition: 'width 2s',
+    width: '100px',
+    height: '13px',
+    transition: '1s',
     '&:focus': {
+      transition: '0.5s',
       width: '100%',
+      height: '20px',
     },
   },
 }));

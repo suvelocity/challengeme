@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
-import './Header.css';
 import NarrowNav from './NarrowNav';
 import WideNav from './WideNav';
+import '../../styles/Header.css';
 
 function Header({ darkMode, setDarkMode }) {
   const [navOrMenu, setNavOrMenu] = useState(window.innerWidth < 700);

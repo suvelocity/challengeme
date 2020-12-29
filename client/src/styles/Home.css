@@ -1,11 +1,10 @@
-
 .home-page {
   overflow-x: hidden;
   height: 100vh;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   align-items: center;
-  width:100%;
+  width: 100%;
   gap: 30px;
   background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
 }
@@ -16,17 +15,16 @@
   /* margin-top: 100px; */
 }
 
-
 .All-Challenge-Image-Container {
-  width:180vw;
+  width: 180vw;
   height: 10000vh;
   box-shadow: inset 0px -200px 530px rgba(0, 0, 0, 0.9);
   padding-top: 530px;
-  background-image: url('../../images/Cobe.svg');
+  background-image: url('../images/allChallengesBackground.svg');
   background-repeat: no-repeat;
   background-size: 100%;
   background-position: center;
-  position:relative
+  position: relative
 }
 
 .All-Challenge-Title-Container {
@@ -36,8 +34,8 @@
   background: rgba(255, 255, 255, 0.38);
   box-shadow: 0px 30px 60px rgba(0, 0, 0, 0.25);
   border-radius: 11px;
-  position:absolute;
-  top:280px;
+  position: absolute;
+  top: 280px;
   font-family: Ubuntu;
   font-style: normal;
   font-weight: bold;
@@ -47,18 +45,18 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  color:white;
+  color: white;
 }
 
 .All-Challenge-Challenges-Container {
   width: 100vw;
 }
 
-.All-Challenge-Carousel p{
-  color:white;
+.All-Challenge-Carousel p {
+  color: white;
   text-align: left;
-  margin-left:10%;
-  margin-bottom:50px;
+  margin-left: 10%;
+  margin-bottom: 50px;
   font-family: Ubuntu;
   font-style: normal;
   font-weight: bold;

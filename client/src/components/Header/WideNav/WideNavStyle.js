@@ -95,5 +95,10 @@ export default makeStyles((theme) => ({
   },
   title: {
     fontSize: '15px'
+  }, 
+  middleFlex: {
+    width: '70%',
+    display: 'flex',
+    justifyContent: 'space-around'
   }
 }));

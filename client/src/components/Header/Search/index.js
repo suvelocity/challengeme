@@ -84,8 +84,8 @@ const Search = ({ darkMode }) => {
 
   return (
     <>
-      <div id="search">{searchInput}</div>
       <Divider />
+      <div id="search">{searchInput}</div>
       <div id="searchResults" className={results.length !== 0 ? 'open' : 'closed'}>
         <div className="display" style={SearchContainerStyle}>
           <div className="background-black-to-search" />

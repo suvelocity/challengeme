@@ -10,8 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
-import HomeIcon from '@material-ui/icons/Home';
-import '../Header.css';
+import Cube from '../../../images/Cube';
+import ChallengeMeSmallTitle from '../../../images/ChallengeMeSmallTitle';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -112,37 +112,38 @@ export default function WideNav({ darkMode, setDarkMode }) {
                   marginRight: '10px',
                 }}
               >
-                <HomeIcon style={letterColor} />
-                &nbsp;
-                <span style={letterColor} className="header-link-title">
-                  ChallengeMe
-                </span>
+                <Cube style={letterColor} />
+                <ChallengeMeSmallTitle />
               </div>
             </NavLink>
           </Typography>
-          <Typography variant="h6" className={classes.title}>
-            <Link to={LoggedContext.logged ? "/teams" : currentLocation.pathname} className="link-rout">
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginRight: '10px',
-                  marginLeft: '40px',
-                }}
-              >
-                <GroupIcon style={letterColor} />
+          <div className={classes.middleFlex}>
+            {currentLocation.pathname === '/' &&
+              <Typography variant="h6" className={classes.title}>
+                <Link to={LoggedContext.logged ? "/teams" : currentLocation.pathname} className="link-rout">
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      marginRight: '10px',
+                      marginLeft: '40px',
+                    }}
+                  >
+                    <GroupIcon style={letterColor} />
                 &nbsp;
                 <span style={letterColor} className="header-link-title">
-                  Teams
+                      Teams
                 </span>
-              </div>
-            </Link>
-          </Typography>
-          {currentLocation.pathname === '/challenges' ? (
-            <Search darkMode={darkMode} setDarkMode={setDarkMode} />
-          ) : null}
+                  </div>
+                </Link>
+              </Typography>
+            }
+            {currentLocation.pathname === '/challenges' && (
+              <Search darkMode={darkMode} setDarkMode={setDarkMode} />
+            )}
+          </div>
           <div style={{ flex: 1 }} />
-          {currentLocation.pathname !== '/' ?
+          {/* {currentLocation.pathname !== '/' ?
             (<IconButton
               aria-label="delete"
               onClick={() => {
@@ -155,7 +156,8 @@ export default function WideNav({ darkMode, setDarkMode }) {
               ) : (
                   <Brightness4Icon style={letterColor} />)}
             </IconButton>)
-            : null}
+            : null} */}
+
           {LoggedContext.logged && Cookies.get('userName') ?
             <Tooltip title={Cookies.get('userName')}>
               {/* <Link to="/profile/info" className="link-rout"> */}
@@ -212,7 +214,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
               <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
                 <ListItemText primary="Home" />
                 <ListItemIcon className={classes.flexEnd}>
-                  <HomeIcon style={drawerColor} />
+                  <Cube style={drawerColor} />
                 </ListItemIcon>
               </ListItem>
             </Link> :
@@ -220,7 +222,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
               <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
                 <ListItemText primary="Challenges" />
                 <ListItemIcon className={classes.flexEnd}>
-                  <HomeIcon style={drawerColor} />
+                  <Cube style={drawerColor} />
                 </ListItemIcon>
               </ListItem>
             </Link>}
