@@ -8,9 +8,8 @@ function ChallengeToCarousel({ id, name, author, submissionsCount, img, setNewIm
 
     const [challengeImage, setChallengeImage] = useState('')
 
-    const fetchChallengeImage = async () => {
+    const fetchChallengeImage = useCallback(async () => {
         if (main) {
-            console.log(main);
             if (img === false) {
                 try {
                     const { data: imgData } = await network.get(`/api/v1/images?id=${id}`)
@@ -18,13 +17,14 @@ function ChallengeToCarousel({ id, name, author, submissionsCount, img, setNewIm
                     setNewImg(id, imgData.img)
                 } catch (error) {
                 }
-            }else {
+            } else {
                 setChallengeImage(img)
             }
         } else {
             setChallengeImage(img)
         }
-    }
+        // eslint-disable-next-line
+    }, [main, img, id])
 
     useEffect(() => {
         fetchChallengeImage()

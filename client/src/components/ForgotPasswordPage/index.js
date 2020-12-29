@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import mixpanel from 'mixpanel-browser';
 import Button from '@material-ui/core/Button';
@@ -179,6 +179,7 @@ export default function Forgot() {
       default:
         return <></>;
     }
+    // eslint-disable-next-line
   }, [step, userName, password, confirmPassword, secQuestion, secAnswer])
 
   return (

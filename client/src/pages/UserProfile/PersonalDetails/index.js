@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
 import TextField from '@material-ui/core/TextField';
@@ -56,14 +56,14 @@ const getUpdated = (date) => {
   return moment(date).fromNow()
 }
 
-function UserInfo({ darkMode }) {
+function UserInfo() {
   const [userInfo, setUserInfo] = useState({});
   const [editedUserInfo, setEditedUserInfo] = useState({});
   const [isReadOnly, setIsReadOnly] = useState(true);
   const [resetPasswordModal, setResetPasswordModal] = useState(false)
   const classes = useStyles();
 
-  const fetchUserInfo = async () => {
+  const fetchUserInfo = useCallback(async () => {
     try {
       const username = Cookies.get('userName');
       mixpanel.track('User On Personal Details Page', { User: `${username}` });
@@ -73,24 +73,28 @@ function UserInfo({ darkMode }) {
     } catch (error) {
 
     }
-  }
+    // eslint-disable-next-line
+  }, [])
+
   useEffect(() => {
     fetchUserInfo()
+    // eslint-disable-next-line
   }, []);
 
-  const startEditInfo = async () => {
+  const startEditInfo = useCallback(async () => {
     setIsReadOnly(false)
-  }
+    // eslint-disable-next-line
+  }, [])
 
-  const editing = async (event) => {
+  const editing = useCallback(async (event) => {
     const key = event.target.name;
     const value = event.target.value
     const edited = { ...editedUserInfo }
     edited[key] = value
     setEditedUserInfo(edited)
-  }
+  }, [editedUserInfo])
 
-  const onSave = async () => {
+  const onSave = useCallback(async () => {
     try {
       await network.patch('/api/v1/users/info', editedUserInfo);
       fetchUserInfo()
@@ -102,15 +106,19 @@ function UserInfo({ darkMode }) {
         showConfirmButton: true,
       });
     }
-  }
-  const onCancel = () => {
+    // eslint-disable-next-line
+  }, [editedUserInfo])
+
+  const onCancel = useCallback(() => {
     setEditedUserInfo(userInfo)
     setIsReadOnly(true)
-  }
+    // eslint-disable-next-line
+  }, [userInfo])
 
-  const changePassword = async () => {
+  const changePassword = useCallback(async () => {
     setResetPasswordModal(true)
-  }
+    // eslint-disable-next-line
+  }, [])
 
 
   return userInfo.userName ? (
@@ -132,7 +140,7 @@ function UserInfo({ darkMode }) {
           <TextField
             name='firstName'
             onChange={editing}
-            className={darkMode ? classes.infoDark : classes.info}
+            className={classes.info}
             value={generateName(editedUserInfo.firstName)}
             label="First name"
             InputProps={{ readOnly: isReadOnly }}
@@ -140,7 +148,7 @@ function UserInfo({ darkMode }) {
           <TextField
             name='lastName'
             onChange={editing}
-            className={darkMode ? classes.infoDark : classes.info}
+            className={classes.info}
             label="Last name"
             value={generateName(editedUserInfo.lastName)}
             InputProps={{ readOnly: isReadOnly }}
@@ -148,7 +156,7 @@ function UserInfo({ darkMode }) {
           {isReadOnly ?
             <TextField
               name='birthDate'
-              className={darkMode ? classes.infoDark : classes.info}
+              className={classes.info}
               style={{ color: 'white' }}
               label="Birth Date"
               value={generateTime(editedUserInfo.birthDate)}
@@ -176,7 +184,7 @@ function UserInfo({ darkMode }) {
           <TextField
             onChange={editing}
             name='country'
-            className={darkMode ? classes.infoDark : classes.info}
+            className={classes.info}
             label="Country"
             value={editedUserInfo.country ? editedUserInfo.country : ''}
             InputProps={{ readOnly: isReadOnly }}
@@ -184,7 +192,7 @@ function UserInfo({ darkMode }) {
           <TextField
             onChange={editing}
             name='city'
-            className={darkMode ? classes.infoDark : classes.info}
+            className={classes.info}
             label="City"
             value={editedUserInfo.city ? editedUserInfo.city : ''}
             InputProps={{ readOnly: isReadOnly }}
@@ -192,13 +200,13 @@ function UserInfo({ darkMode }) {
           <TextField
             onChange={editing}
             name='githubAccount'
-            className={darkMode ? classes.infoDark : classes.info}
+            className={classes.info}
             label="Github"
             value={editedUserInfo.githubAccount ? editedUserInfo.githubAccount : ''}
             InputProps={{ readOnly: isReadOnly }}
           />
           <TextField
-            className={darkMode ? classes.infoDark : classes.info}
+            className={classes.info}
             label="Account Created"
             value={getUpdated(editedUserInfo.createdAt)}
             InputProps={{ readOnly: true }}

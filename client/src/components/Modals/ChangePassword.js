@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import Swal from 'sweetalert2';
+import { motion } from 'framer-motion';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import ErrorIcon from '@material-ui/icons/Error';
-import { motion } from 'framer-motion';
 import Change from '../ForgotPasswordPage/Change';
 import network from '../../services/network';
-import Swal from 'sweetalert2';
 
 function getModalStyle() {
-    const top = '15vh';
+    const top = '16vh';
     const left = '28vw';
 
     return {
@@ -21,8 +21,8 @@ function getModalStyle() {
 const useStyles = makeStyles((theme) => ({
     paper: {
         position: 'absolute',
-        width: '40vw',
-        height: '60vh',
+        width: '30vw',
+        height: '70vh',
         maxHeight: '400px',
         overflowY: 'auto',
         backgroundColor: theme.palette.background.paper,
@@ -37,14 +37,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ResetPassword({ open = false, setOpen, getAllTeams }) {
     const classes = useStyles();
-    // getModalStyle is not a pure function, we roll the style only on the first render
-    const [modalStyle] = React.useState(getModalStyle);
+
+    const [modalStyle] = useState(getModalStyle);
     const [oldPassword, setOldPassword] = useState();
     const [error, setError] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
-    const resetPassword = (passwordForReset, confirmPasswordForReset, oldPasswordForReset) => {
+    const resetPassword = useCallback((passwordForReset, confirmPasswordForReset, oldPasswordForReset) => {
         if (oldPasswordForReset.length < 8) {
             setError('old password should be at least 8 characters');
             return false;
@@ -62,10 +62,11 @@ export default function ResetPassword({ open = false, setOpen, getAllTeams }) {
             return false;
         }
         return true
-    };
+        // eslint-disable-next-line
+    }, [])
 
 
-    const handleSubmitNewWebhookTeam = async () => {
+    const handleSubmitNewWebhookTeam = useCallback(async () => {
         try {
             const passAllChecks = resetPassword(newPassword, confirmNewPassword, oldPassword);
             if (passAllChecks) {
@@ -79,19 +80,21 @@ export default function ResetPassword({ open = false, setOpen, getAllTeams }) {
                 return;
             }
         } catch (error) {
-            console.log(error.response.data.message);
+            console.error(error.response.data.message);
             setError(error.response.data.message);
             return;
         }
-    };
+        // eslint-disable-next-line
+    }, [newPassword, confirmNewPassword, oldPassword])
 
 
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setOpen(false);
-    };
+        // eslint-disable-next-line
+    }, [])
 
-    const handleChange = (field) => (e) => {
+    const handleChange = useCallback((field) => (e) => {
         switch (field) {
             case 'oldP':
                 setOldPassword(e.target.value);
@@ -105,7 +108,8 @@ export default function ResetPassword({ open = false, setOpen, getAllTeams }) {
             default:
                 break;
         }
-    };
+        // eslint-disable-next-line
+    }, [])
 
     return (
         <Modal

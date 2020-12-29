@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -45,10 +45,10 @@ const useRowStyles = makeStyles({
 
 function Row(props) {
   const { row } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const classes = useRowStyles();
 
-  const changePermissions = async () => {
+  const changePermissions = useCallback(async () => {
     try {
       const isUpdateOk = prompt("Who's your favorite student?");
       if (isUpdateOk != null) {
@@ -59,8 +59,9 @@ function Row(props) {
         });
         props.getAllUsers();
       }
-    } catch (error) {}
-  };
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [row, props])
 
   return (
     <React.Fragment>
@@ -154,12 +155,15 @@ function Row(props) {
 function UsersControl() {
   const [allUsers, setAllUsers] = useState([]);
 
-  async function getAllUsers() {
+  const getAllUsers = useCallback(async () => {
     const { data: allUsersFromServer } = await network.get('/api/v1/users/admin');
     setAllUsers(allUsersFromServer);
-  }
+    // eslint-disable-next-line
+  }, [])
+
   useEffect(() => {
     getAllUsers();
+    // eslint-disable-next-line
   }, []);
 
   return (

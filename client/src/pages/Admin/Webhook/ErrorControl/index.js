@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
@@ -58,7 +58,7 @@ function Row(props) {
   const { row, getAllErrors } = props;
   const [open, setOpen] = useState(false);
 
-  const deleteError = async (error) => {
+  const deleteError = useCallback(async (error) => {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
@@ -66,7 +66,8 @@ function Row(props) {
         getAllErrors();
       }
     } catch (error) { }
-  };
+    // eslint-disable-next-line
+  }, [])
 
   const classes = useRowStyles();
   return (
@@ -129,20 +130,22 @@ function Row(props) {
     </React.Fragment>
   );
 }
-function ErrorControl({ darkMode }) {
+function ErrorControl() {
   const [allErrors, setAllErrors] = useState([]);
 
-  async function getAllErrors() {
+  const getAllErrors = useCallback(async () => {
     try {
       const { data: allErrorsFromServer } = await network.get(
         '/api/v1/webhooks/admin/errors',
       );
       setAllErrors(allErrorsFromServer);
     } catch (error) { }
-  }
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     getAllErrors();
+    // eslint-disable-next-line
   }, []);
 
   return (

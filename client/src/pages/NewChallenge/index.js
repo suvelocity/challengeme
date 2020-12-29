@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
 import { useHistory } from 'react-router-dom';
@@ -21,6 +21,10 @@ import './NewChallengeForm.css';
 
 const textFieldStyle = { minWidth: '200px' };
 
+/* validate data before poting */
+const spaces = new RegExp(/^(\s{1,})$/);
+const hebrew = new RegExp(/^.*([\u0590-\u05FF]{1,}).*$/);
+
 /* function to generate alerts for bad or missing inputs */
 const generateAlert = (title, message) => (
   <>
@@ -33,6 +37,7 @@ const generateAlert = (title, message) => (
 );
 
 export default function NewChallengeForm() {
+  const history = useHistory();
   const [optionsTypes, setOptionstypes] = useState([]);
   const [labels, setLabels] = useState([]);
   const [repoName, setRepoName] = useState('');
@@ -43,10 +48,9 @@ export default function NewChallengeForm() {
   const [chooseLabels, setChooseLabels] = useState([]);
   const [file, setFile] = useState({});
   const [badInput, setBadInput] = useState([]);
-  const history = useHistory();
 
   /* pull challenge's type options from .github/workflows folder */
-  const openOptions = async () => {
+  const openOptions = useCallback(async () => {
     try {
       const { data: types } = await network.get('/api/v1/types');
       setOptionstypes(
@@ -58,17 +62,16 @@ export default function NewChallengeForm() {
       );
     } catch (error) {
     }
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     openOptions();
     const user = Cookies.get('userName');
     mixpanel.track('User On Add New Challenge Page', { User: `${user}` });
+    // eslint-disable-next-line
   }, []);
 
-  /* validate data before poting */
-  const spaces = new RegExp(/^(\s{1,})$/);
-  const hebrew = new RegExp(/^.*([\u0590-\u05FF]{1,}).*$/);
   const handleSubmit = async (event) => {
     event.preventDefault();
     const newBadInput = [];
@@ -191,7 +194,7 @@ export default function NewChallengeForm() {
   };
 
   /* add image */
-  const handleFile = (value) => {
+  const handleFile = useCallback((value) => {
     if (value.src) {
       const i = new Image();
       i.src = value.src;
@@ -212,10 +215,11 @@ export default function NewChallengeForm() {
     } else {
       setFile({});
     }
-  };
+    // eslint-disable-next-line
+  }, [])
 
   /* 'clear values' button */
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setRepoName('');
     setRepoLink('');
     setRepoDescription('');
@@ -223,7 +227,8 @@ export default function NewChallengeForm() {
     setFile({});
     setBadInput([]);
     setChooseLabels([]);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <div className="newChallenge">

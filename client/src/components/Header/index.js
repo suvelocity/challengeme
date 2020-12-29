@@ -1,26 +1,27 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import NarrowNav from './NarrowNav';
 import WideNav from './WideNav';
 import '../../styles/Header.css';
 
-function Header({ darkMode, setDarkMode }) {
+function Header() {
   const [navOrMenu, setNavOrMenu] = useState(window.innerWidth < 700);
 
-  const displayWindowSize = () => {
+  const displayWindowSize = useCallback(() => {
     if (window.innerWidth < 700) {
       setNavOrMenu(true);
     } else {
       setNavOrMenu(false);
     }
-  };
+    // eslint-disable-next-line
+  }, [])
 
-  useMemo(() => window.addEventListener('resize', displayWindowSize), []);
+  useMemo(() => window.addEventListener('resize', displayWindowSize), [displayWindowSize]);
   return (
     <>
       {!navOrMenu ? (
-        <WideNav darkMode={darkMode} setDarkMode={setDarkMode} />
+        <WideNav />
       ) : (
-          <NarrowNav darkMode={darkMode} setDarkMode={setDarkMode} />
+          <NarrowNav />
         )}
     </>
   );

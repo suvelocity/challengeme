@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -45,7 +45,7 @@ const useRowStyles = makeStyles({
 
 function Row(props) {
   const { row } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const classes = useRowStyles();
   return (
     <React.Fragment>
@@ -117,18 +117,20 @@ function Row(props) {
   );
 }
 
-const SubmissionsByUsers = ({ darkMode }) => {
+const SubmissionsByUsers = () => {
   const [data, setData] = useState([]);
   const [last, setLast] = useState(false);
 
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     const { data } = await network.get(`/api/v1/insights/admin/users-submissions?onlyLast=${last}`);
     setData(data);
-  }
+    // eslint-disable-next-line
+  }, [last])
 
-  const filteredLast = () => {
+  const filteredLast = useCallback(() => {
     setLast((prev) => !prev);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     fetchData();
@@ -139,7 +141,7 @@ const SubmissionsByUsers = ({ darkMode }) => {
     <div className="generic-page">
       <div className="title-and-button">
         <h1>This is All The Submissions By Users Page</h1>
-        <Button variant={darkMode ? 'contained' : 'outlined'} onClick={filteredLast}>
+        <Button variant={'outlined'} onClick={filteredLast}>
           {last ? 'Show All' : 'Show Only Last'}
         </Button>
       </div>
@@ -159,8 +161,8 @@ const SubmissionsByUsers = ({ darkMode }) => {
             {data.length > 0 ? (
               data.map((user) => <Row key={user.userName} color="secondary" row={user} />)
             ) : (
-              <Loading />
-            )}
+                <Loading />
+              )}
           </TableBody>
         </Table>
       </TableContainer>

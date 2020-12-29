@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useCallback } from 'react';
 import './ChallengeApproval.css';
 import network from '../../../services/network';
 import Loading from '../../../components/Loading';
@@ -13,22 +13,24 @@ const ChallengeApproval = () => {
   const [deniedChallenges, setDeniedChallenges] = useState([]);
   const allChallengesContext = useContext(AllChallenges);
 
-  const getAllSubmissions = async () => {
+  const getAllSubmissions = useCallback(async () => {
     try {
       const { data } = await network.get('/api/v1/challenges/no-matter-the-state');
       setChallenges(data);
       setChallengesStates(data.map((challenge) => challenge.state));
-    } catch (error) {}
-  };
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [])
 
-  const refreshChallenges = async () => {
+  const refreshChallenges = useCallback(async () => {
     try {
       const { data: challengesFromServer } = await network.get('/api/v1/challenges');
       allChallengesContext.setChallenges(challengesFromServer);
-    } catch (error) {}
-  };
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [])
 
-  const changeChallengeState = async (event, challengeId, index) => {
+  const changeChallengeState = useCallback(async (event, challengeId, index) => {
     try {
       const newState = event.target.innerText === 'APPROVE' ? 'approved' : 'denied';
       const cloneStateArray = [...challengesStates];
@@ -40,8 +42,9 @@ const ChallengeApproval = () => {
       `,
         { state: newState },
       );
-    } catch (error) {}
-  };
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [challengesStates])
 
   useEffect(() => {
     const pendingList = [];
@@ -85,6 +88,7 @@ const ChallengeApproval = () => {
     setDeniedChallenges(deniedList);
     // eslint-disable-next-line
   }, [challenges, challengesStates]);
+
 
   useEffect(() => {
     getAllSubmissions();

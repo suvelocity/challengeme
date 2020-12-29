@@ -17,9 +17,9 @@ const responsive = {
     3000: { items: 10 },
 };
 
-function ChallengesCarousel({ challenges,setNewImg,main }) {
+function ChallengesCarousel({ challenges, setNewImg, main }) {
 
-    const items = challenges.length>0? challenges.map((challenge) =>
+    const items = challenges.length > 0 ? challenges.map((challenge) =>
         <ChallengeToCarousel
             key={challenge.id + challenge.name}
             id={challenge.id}
@@ -29,7 +29,7 @@ function ChallengesCarousel({ challenges,setNewImg,main }) {
             img={challenge.img}
             setNewImg={setNewImg}
             main={main}
-        />):[<h1>Not Found</h1>];
+        />) : [<h1>Not Found</h1>];
 
     return (
         <div style={{ width: '80%', margin: 'auto' }}>

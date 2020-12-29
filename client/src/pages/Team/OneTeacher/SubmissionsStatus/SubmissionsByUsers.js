@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -46,7 +46,7 @@ const useRowStyles = makeStyles({
 
 function Row(props) {
   const { row } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const classes = useRowStyles();
   return (
     <React.Fragment>
@@ -118,19 +118,21 @@ function Row(props) {
   );
 }
 
-const SubmissionsByUsers = ({ darkMode }) => {
+const SubmissionsByUsers = () => {
+  const { id } = useParams();
   const [data, setData] = useState([]);
   const [last, setLast] = useState(false);
-  const { id } = useParams();
 
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     const { data } = await network.get(`/api/v1/insights/teacher/users-submissions/${id}?onlyLast=${last}`);
     setData(data);
-  }
+    // eslint-disable-next-line
+  }, [id, last])
 
-  const filteredLast = () => {
+  const filteredLast = useCallback(() => {
     setLast((prev) => !prev);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     fetchData();
@@ -141,7 +143,7 @@ const SubmissionsByUsers = ({ darkMode }) => {
     <div>
       <div className="title-and-button">
         <h2>This is All The Submissions By Users Page</h2>
-        <Button variant={darkMode ? 'contained' : 'outlined'} onClick={filteredLast}>
+        <Button variant={'outlined'} onClick={filteredLast}>
           {last ? 'Show All' : 'Show Only Last'}
         </Button>
       </div>
@@ -161,8 +163,8 @@ const SubmissionsByUsers = ({ darkMode }) => {
             {data.length > 0 ? (
               data.map((user) => <Row key={user.userName} color="secondary" row={user} />)
             ) : (
-              <Loading />
-            )}
+                <Loading />
+              )}
           </TableBody>
         </Table>
       </TableContainer>

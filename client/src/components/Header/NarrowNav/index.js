@@ -17,7 +17,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
-import Brightness7Icon from '@material-ui/icons/Brightness7';
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import GroupIcon from '@material-ui/icons/Group';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -30,7 +29,7 @@ import { Logged } from '../../../context/LoggedInContext';
 import Search from '../Search';
 import network from '../../../services/network';
 
-export default function NarrowNav({ darkMode, setDarkMode }) {
+export default function NarrowNav() {
   const classes = useStyles();
   const filteredLabels = useContext(FilteredLabels);
   const [labels, setLabels] = useState([]);
@@ -77,16 +76,12 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
     }
   };
   const headerStyle = {
-    backgroundColor: darkMode ? 'rgb(51,51,51)' : 'transfer',
+    backgroundColor:  'transfer',
   };
   const letterColor = {
-    color: darkMode ? 'white' : 'black',
+     color:'black',
   };
-  const dividerColor = darkMode
-    ? {
-      backgroundColor: 'rgba(255,255,255,0.3)',
-    }
-    : {};
+  const dividerColor = {};
   return (
     <>
       <AppBar position="fixed" className={clsx(classes.appBar, {})} style={headerStyle}>
@@ -100,7 +95,7 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
           >
             <MenuIcon style={letterColor} />
           </IconButton>
-          <Search darkMode={darkMode} setDarkMode={setDarkMode} />
+          <Search />
           <div
             style={{
               minWidth: '150px',
@@ -113,7 +108,6 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
                 labels={labels}
                 chooseLabels={chooseLabels}
                 setChooseLabels={setChooseLabels}
-                darkMode={darkMode}
                 setLabels={setLabels}
               />
             ) : null}
@@ -124,7 +118,7 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
                 filteredLabels.setFilteredLabels(labels ? labels.map((label) => label.value) : []);
               }}
               variant="contained"
-              className={darkMode ? classes.filterButtonDark : classes.filterButton}
+              className={classes.filterButton}
             >
               filter
             </Button>
@@ -135,7 +129,7 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
         variant="persistent"
         anchor="left"
         open={openNavBar}
-        classes={darkMode ? { paper: classes.drawerPaperDark } : { paper: classes.drawerPaper }}
+        classes={{ paper: classes.drawerPaper }}
       >
         <div className={classes.generalDrawerHeader}>
           <div className={classes.avatarUserInfo}>
@@ -148,7 +142,7 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
                   color="inherit"
                   style={{
                     cursor: 'pointer',
-                    backgroundColor: darkMode ? 'rgb(140,110,99)' : '#7BACB4',
+                    backgroundColor: '#7BACB4',
                   }}
                 >
                   {Cookies.get('userName').slice(0, 2)}
@@ -220,16 +214,8 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
           <ListItem className={classes.logOut} onClick={handleDrawerClose}>
             <IconButton
               aria-label="delete"
-              onClick={() => {
-                localStorage.setItem('darkMode', !darkMode);
-                setDarkMode((prev) => !prev);
-              }}
             >
-              {darkMode ? (
-                <Brightness7Icon style={letterColor} />
-              ) : (
-                  <Brightness4Icon style={letterColor} />
-                )}
+<Brightness4Icon style={letterColor} />
             </IconButton>
           </ListItem>
           <Divider style={dividerColor} />
@@ -246,12 +232,12 @@ export default function NarrowNav({ darkMode, setDarkMode }) {
             </Button>
             </ListItem> : <>
               <Link to="/login" className="link-rout">
-                <Button variant="contained" className={darkMode ? classes.filterButtonDark : classes.filterButton}>
+                <Button variant="contained" className={classes.filterButton}>
                   Login
                   </Button>
               </Link>
               <Link to="/register" className="link-rout">
-                <Button variant="contained" className={darkMode ? classes.filterButtonDark : classes.filterButton}>
+                <Button variant="contained" className={classes.filterButton}>
                   Register
                   </Button>
               </Link>

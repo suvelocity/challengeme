@@ -31,7 +31,7 @@ submissionRouter.get('/by-user/:challengeId', async (req, res) => {
     if (testSubmission.length > 0) {
       const recentSubmission = testSubmission[testSubmission.length - 1].dataValues;
       if (recentSubmission.state === 'PENDING') {
-        if (timeNow - recentSubmission.createdAt.getTime() > 150000) {
+        if (timeNow - recentSubmission.createdAt.getTime() > 265000) {
           const submissionThatIsStuck = await Submission.findByPk(
             recentSubmission.id,
           );

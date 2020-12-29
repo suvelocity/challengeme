@@ -57,7 +57,7 @@ function generateTime(date) {
   return `${today}`;
 }
 
-function ChallengePage({ darkMode }) {
+function ChallengePage() {
   const classes = useStyles();
   const [submissions, setSubmissions] = useState();
   const [challenge, setChallenge] = useState(null);
@@ -378,7 +378,7 @@ function ChallengePage({ darkMode }) {
       </div>
     </div>
   ) : (
-      <Loading darkMode={darkMode} />
+      <Loading  />
     );
 }
 

@@ -197,7 +197,7 @@ teamRouter.get('/all-teams', checkAdmin, async (req, res) => {
   try {
     const userTeam = await Team.findAll({
       attributes: [
-        'id', 'name', 'createdAt', 'updatedAt',
+        'id', 'name', 'createdAt', 'updatedAt','externalId'
       ],
       include: [
         {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   ComposedChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
 } from 'recharts';
@@ -6,17 +6,18 @@ import Loading from '../../../../components/Loading';
 import network from '../../../../services/network';
 import '../style.css';
 
-function SuccessPerChallenge({ darkMode }) {
+function SuccessPerChallenge() {
   const [challenges, setChallenges] = useState();
 
-  const getChallengesByMostSuccess = async () => {
+  const getChallengesByMostSuccess = useCallback(async () => {
     try {
       const { data: challengesMostSuccess } = await network.get(
         '/api/v1/insights/admin/success-challenge/',
       );
       setChallenges(challengesMostSuccess);
     } catch (error) { }
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     getChallengesByMostSuccess();
@@ -47,7 +48,7 @@ function SuccessPerChallenge({ darkMode }) {
       </ComposedChart>
     </div>
   ) : (
-    <Loading darkMode={darkMode} />
-  );
+      <Loading />
+    );
 }
 export default SuccessPerChallenge;

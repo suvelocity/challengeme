@@ -9,6 +9,7 @@ teamErrorAdminWebhookRouter.get('/', async (req, res) => {
   try {
     const allWebhookTeamErrors = await WebhookTeamError.findAll({
       where,
+      order:[['createdAt','DESC']],
       include: {
         model: WebhookTeam,
         attributes: ['teamId'],

@@ -55,7 +55,7 @@ const drawerColor = {
 };
 const dividerColor = {};
 
-export default function WideNav({ darkMode, setDarkMode }) {
+export default function WideNav() {
   const classes = useStyles();
   const location = useHistory();
   const LoggedContext = useContext(Logged);
@@ -90,6 +90,7 @@ export default function WideNav({ darkMode, setDarkMode }) {
       handleDrawerClose()
     } catch (error) {
     }
+    // eslint-disable-next-line
   }, [LoggedContext])
 
 
@@ -172,24 +173,10 @@ export default function WideNav({ darkMode, setDarkMode }) {
               </>
             }
             {currentLocation.pathname.includes('challenges') && (
-              <Search darkMode={darkMode} setDarkMode={setDarkMode} />
+              <Search />
             )}
           </div>
           <div style={{ flex: 1 }} />
-          {/* {currentLocation.pathname !== '/' ?
-            (<IconButton
-              aria-label="delete"
-              onClick={() => {
-                localStorage.setItem('darkMode', !darkMode);
-                setDarkMode((prev) => !prev);
-              }}
-            >
-              {darkMode ? (
-                <Brightness7Icon style={letterColor} />
-              ) : (
-                  <Brightness4Icon style={letterColor} />)}
-            </IconButton>)
-            : null} */}
 
           {LoggedContext.logged && Cookies.get('userName') ?
             <Tooltip title={Cookies.get('userName')}>
@@ -205,7 +192,6 @@ export default function WideNav({ darkMode, setDarkMode }) {
               >
                 {Cookies.get('userName').slice(0, 2)}
               </AccountCircleOutlinedIcon>
-              {/* </Link> */}
             </Tooltip> :
             <Link to="/login" className="link-rout">
               <div className={classes.filterButton}>

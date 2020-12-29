@@ -17,7 +17,8 @@ const ChooseMembers = ({
       const url = isTeacher ? `users/teacher/${teamId}` : 'users/admin';
       const { data: allUsersFromServer } = await network.get(`/api/v1/${url}`);
       const { data: teamAlreadyMembers } = await network.get(`/api/v1/teams/single-team/${teamId}`);
-      setMembersOptions(allUsersFromServer.Users.map((user) => {
+      const allUsers = isTeacher ? allUsersFromServer.Users:allUsersFromServer
+      setMembersOptions(allUsers.map((user) => {
         let userForOptions;
         if (teamAlreadyMembers[0].Users.some((memberUser) => memberUser.id === user.id)) {
           return null;

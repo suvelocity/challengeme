@@ -50,6 +50,7 @@ export default function Change({ data, handleChange, changePassword = false }) {
     // Prevent special password eye bugs
     document.addEventListener('mouseup', hideBoth);
     document.addEventListener('dragend', hideBoth);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
@@ -94,7 +95,7 @@ export default function Change({ data, handleChange, changePassword = false }) {
          </InputLabel>
             <Input
               name="oldP"
-              id="newPassword"
+              id="oldPassword"
               value={data.oldPassword}
               type={showOldPassword ? 'text' : 'password'}
               onChange={handleChange('oldP')}

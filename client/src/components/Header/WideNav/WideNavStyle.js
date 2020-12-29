@@ -16,9 +16,6 @@ export default makeStyles((theme) => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  darkModeToggle: {
-    marginRight: '10px;',
-  },
   root: {
     display: 'flex',
   },

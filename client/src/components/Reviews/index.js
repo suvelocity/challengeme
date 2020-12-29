@@ -19,6 +19,7 @@ function ReviewsTab({ challengeId, setRatingCount }) {
       setLoading(false);
     } catch (error) {
     }
+    // eslint-disable-next-line
   }, [challengeId])
 
   useEffect(() => {

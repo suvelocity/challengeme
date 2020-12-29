@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Tooltip, Legend, Brush, BarChart, Bar, CartesianGrid, XAxis, YAxis,
@@ -6,17 +6,18 @@ import {
 import Loading from '../../../../../components/Loading';
 import network from '../../../../../services/network';
 
-function SuccessSubmissions({ darkMode }) {
+function SuccessSubmissions() {
   const { id } = useParams();
   const [teamSubmissions, setTeamSubmissions] = useState();
 
-  const getDataOnTeam = async () => {
+  const getDataOnTeam = useCallback(async () => {
     try {
       const { data: submissions } = await network.get(`/api/v1/insights/teacher/top-user/${id}`);
       setTeamSubmissions(submissions);
     } catch (error) {
     }
-  };
+    // eslint-disable-next-line
+  }, [id])
 
   useEffect(() => {
     getDataOnTeam();
@@ -43,7 +44,7 @@ function SuccessSubmissions({ darkMode }) {
             <Brush dataKey="userName" height={30} endIndex={teamSubmissions.length >= 5 ? 4 : teamSubmissions.length - 1} stroke="#8884d8" />
           </BarChart>
         </div>
-      ) : <Loading darkMode={darkMode} />
+      ) : <Loading />
   );
 }
 

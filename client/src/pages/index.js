@@ -27,7 +27,6 @@ const LandingPage = lazy(() => import("./LandingPage"));
 const ChallengePage = lazy(() => import("./OneChallenge"));
 
 export default function Router() {
-  const [darkTheme, setDarkTheme] = useState(false);
   const [logged, setLogged] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -35,20 +34,6 @@ export default function Router() {
   const [filteredLabels, setFilteredLabels] = useState([]);
 
   useEffect(() => {
-    if (logged) {
-      const previousTheme = localStorage.getItem("darkMode"); //get previous selected theme
-
-      if (previousTheme === "false") {
-        setDarkTheme(false);
-      } else if (previousTheme === "true") {
-        setDarkTheme(true);
-      } else {
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          //check default theme of the user
-          setDarkTheme(true);
-        }
-      }
-    }
     (async () => {
       try {
         const { data: challengesFromServer } = await network.get("/api/v1/challenges");
@@ -84,23 +69,23 @@ export default function Router() {
         <Logged.Provider value={{ logged, isAdmin, setLogged, setIsAdmin }}>
           <AllChallenges.Provider value={{ challenges, setChallenges }}>
             <FilteredLabels.Provider value={{ filteredLabels, setFilteredLabels }}>
-              <Header darkMode={darkTheme} setDarkMode={setDarkTheme} />
-              <div className={darkTheme ? "dark" : "light"}>
-                <Suspense fallback={<Loading darkMode={darkTheme} />}>
+              <Header />
+              <div className={ "light"}>
+                <Suspense fallback={<Loading />}>
                   <ErrorBoundary>
                     <Switch>
                       <Route exact={true} path="/" component={LandingPage} />
                       <Route exact={true} path="/challenges" component={Challenges} />
-                      <Route exact={true} path="/challenges/:id" render={() => <ChallengePage darkMode={darkTheme} />} />
+                      <Route exact={true} path="/challenges/:id" render={() => <ChallengePage  />} />
                       <PublicRoute exact={true} path="/register" component={Register} />
                       <PublicRoute exact={true} path="/login" component={Login} />
                       <PublicRoute exact={true} path="/forgot" component={Forgot} />
                       <PublicRoute exact={true} path="/auth" component={ValidatingMail} />
-                      <PrivateRoute exact={true} path="/addnewchallenge" component={NewChallengeForm} darkMode={darkTheme} />
-                      <PrivateRoute path="/profile" component={UserProfile} darkMode={darkTheme} />
-                      <PrivateRoute path="/teams" component={Team} darkMode={darkTheme} />
+                      <PrivateRoute exact={true} path="/addnewchallenge" component={NewChallengeForm}  />
+                      <PrivateRoute path="/profile" component={UserProfile} />
+                      <PrivateRoute path="/teams" component={Team}  />
                       {isAdmin && (
-                        <PrivateRoute path="/admin" component={Admin} darkMode={darkTheme} />
+                        <PrivateRoute path="/admin" component={Admin} />
                       )}
                       <Route path="*" component={NotFound} />
                     </Switch>

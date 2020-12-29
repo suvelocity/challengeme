@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -6,43 +6,16 @@ import { Logged } from '../../context/LoggedInContext';
 import network from '../../services/network';
 import AvatarProfile from './AvatarProfile';
 import '../../styles/Review.css';
+import moment from 'moment';
 
 function Review({
   author, createdAt, title, content, rating, reviewId,
 }) {
-  const [date, setDate] = useState('');
-  // TODO: POP: use moment instead
   const location = useHistory();
-  const LoggedContext = useContext(Logged);
-  useEffect(() => {
-    const dateNow = Date.now();
-    const updateRepoDate = new Date(createdAt);
-    let diff = (dateNow - updateRepoDate.getTime()) / 1000 / 60 / 60;
-    if (diff < 24) {
-      setDate(`${Math.floor(diff)} Hours ago`);
-    } else {
-      diff /= 24;
-      diff = Math.floor(diff);
-      if (diff < 8) {
-        setDate(`${Math.floor(diff)} Days ago`);
-      } else {
-        diff = Math.floor(diff / 7);
-        if (diff < 5) {
-          setDate(`${Math.floor(diff)} Weeks ago`);
-        } else {
-          diff = Math.floor(diff / 4);
-          if (diff < 13) {
-            setDate(`${Math.floor(diff)} Months ago`);
-          } else {
-            diff = Math.floor(diff / 12);
-            setDate(`${Math.floor(diff)} Years ago`);
-          }
-        }
-      }
-    }
-  }, [createdAt]);
 
-  const deleteReview = async () => {
+  const LoggedContext = useContext(Logged);
+
+  const deleteReview = useCallback(async () => {
     try {
       const isDeleteOk = prompt("Who's your favorite student?");
       if (isDeleteOk != null) {
@@ -51,13 +24,12 @@ function Review({
     } catch (error) {
       Cookies.remove('refreshToken');
       Cookies.remove('accessToken');
-      ;
-      Cookies.remove('userId');
       Cookies.remove('userName');
       LoggedContext.setLogged(false);
       location.push('/');
     }
-  };
+    // eslint-disable-next-line
+  }, [reviewId, location])
 
   return (
     <div className="Review">
@@ -71,7 +43,7 @@ function Review({
       </div>
       <div className='Review-Middle'>
         <div className="Review-Title" cy-test="review-title">{title}</div>
-        <div className="Review-CreatedAt">{date}</div>
+        <div className="Review-CreatedAt">{moment(createdAt).fromNow()}</div>
         <div className="Review-Content">{content}</div>
 
       </div>

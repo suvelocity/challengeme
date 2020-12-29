@@ -4,7 +4,7 @@ import SubmissionsByChallenges from './SubmissionsByChallenges';
 import SubmissionsByUsers from './SubmissionsByUsers';
 import './style.css';
 
-export default function Index({ darkMode }) {
+export default function Index() {
   const [showByChallengeOrUser, setShowByChallengeOrUser] = useState(true);
 
   return (
@@ -12,17 +12,17 @@ export default function Index({ darkMode }) {
       <div className="admin-sub-status-control-panel">
         <h1>Submissions Status</h1>
         <Button
-          variant={darkMode ? 'contained' : 'outlined'}
+          variant={'outlined'}
           onClick={() => setShowByChallengeOrUser((prev) => !prev)}
         >
           {showByChallengeOrUser ? 'Show By User' : 'Show By Challenge'}
         </Button>
       </div>
       {showByChallengeOrUser ? (
-        <SubmissionsByChallenges darkMode={darkMode} />
+        <SubmissionsByChallenges />
       ) : (
-        <SubmissionsByUsers darkMode={darkMode} />
-      )}
+          <SubmissionsByUsers />
+        )}
     </div>
   );
 }

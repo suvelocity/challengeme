@@ -9,7 +9,7 @@ const MyTeams = lazy(() => import("./MyTeams"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
 const TeamAssignments = lazy(() => import("./OneTeam/TeamAssignments"));
 
-function Index({ darkMode }) {
+function Index() {
 
   return (
     <div>
@@ -17,19 +17,19 @@ function Index({ darkMode }) {
         <ErrorBoundary>
           <Switch>
             <Route exact path="/teams/:id">
-              <OneTeamPage darkMode={darkMode} />
+              <OneTeamPage />
             </Route>
             <Route exact path="/teams/tasks/:id">
-              <TeamAssignments darkMode={darkMode} />
+              <TeamAssignments />
             </Route>
             <Route path="/teams/teacher/:id">
-              <OneTeacherPage darkMode={darkMode} />
+              <OneTeacherPage />
             </Route>
             <Route path="/teams">
-              <MyTeams darkMode={darkMode} />
+              <MyTeams />
             </Route>
             <Route path="*">
-              <NotFound darkMode={darkMode} />
+              <NotFound />
             </Route>
           </Switch>
         </ErrorBoundary>

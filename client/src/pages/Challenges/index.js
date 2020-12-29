@@ -17,7 +17,7 @@ export default function Challenges() {
 
   const allChallenges = useContext(AllChallenges).challenges;
   const filteredLabels = useContext(FilteredLabels);
-  const allChallengesWithImgState = allChallenges.map((challenge) => { return { ...challenge, img: false} })
+  const allChallengesWithImgState = allChallenges.map((challenge) => { return { ...challenge, img: false } })
 
   const [challengesFiltered, setChallengesFiltered] = useState(allChallengesWithImgState);
   const [labels, setLabels] = useState([]);
@@ -41,7 +41,7 @@ export default function Challenges() {
     } catch (error) { }
   }, [filteredLabels])
 
-  const setNewImg = (id, newImg) => {
+  const setNewImg = useCallback((id, newImg) => {
     setChallengesFiltered((prev) => {
       const currentChallenges = prev.map((challenge) => {
         if (challenge.id === id) {
@@ -53,12 +53,11 @@ export default function Challenges() {
       })
       return currentChallenges
     })
-  }
+
+  }, [])
   useEffect(() => {
     const user = Cookies.get("userName");
     mixpanel.track("User On Home Page", { User: `${user}` });
-    // const allChallengesWithImgState = allChallenges.map((challenge) => { return { ...challenge, img: false} })
-    // setChallengesFiltered(allChallengesWithImgState)
     return () => filteredLabels.setFilteredLabels([]);
     // eslint-disable-next-line
   }, []);
@@ -131,12 +130,12 @@ export default function Challenges() {
         <div className="All-Challenge-Carousel">
           <p>Recommended For You:</p>
           <ChallengesCarousel challenges={challengesFiltered} setNewImg={setNewImg} main={true}
-  />
+          />
         </div>
         <div className="All-Challenge-Carousel">
           <p>Front End Challenges:</p>
           <ChallengesCarousel
-            challenges={ challengesFiltered.filter(
+            challenges={challengesFiltered.filter(
               (challenge) => challenge.type === "client-only"
             )}
             setNewImg={setNewImg}

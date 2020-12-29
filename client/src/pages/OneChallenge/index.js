@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation, useHistory } from "react-router-dom";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import mixpanel from "mixpanel-browser";
@@ -18,30 +18,6 @@ import Footer from '../../components/Footer';
 import Smiley from '../../images/Smiley.svg';
 import "../../styles/OneChallenge.css";
 
-// const useStyles = makeStyles(() => ({
-//     SubmitdButton: {
-//         background:
-//             "linear-gradient(270deg, rgba(55,99,192,1) 0%, rgba(87,159,223,1) 100%)",
-//         color: "white",
-//         marginBottom: "10px",
-//         fontSize: "15px",
-//     },
-//     SubmitdButtonFail: {
-//         background:
-//             "linear-gradient(270deg, rgba(193,36,36,1) 0%, rgba(214,95,95,1) 100%)",
-//         color: "white",
-//         marginBottom: "10px",
-//         fontSize: "15px",
-//     },
-//     SubmitdButtonSuccess: {
-//         background:
-//             "linear-gradient(270deg, rgba(36,193,67,1) 0%, rgba(130,214,95,1) 100%);",
-//         color: "white",
-//         marginBottom: "10px",
-//         fontSize: "15px",
-//     },
-// }));
-
 function generateTime(date) {
     let today = new Date(date);
     const dd = String(today.getDate()).padStart(2, "0");
@@ -51,13 +27,15 @@ function generateTime(date) {
     return `${today}`;
 }
 
-function ChallengePage({ darkMode }) {
+function ChallengePage() {
     // const classes = useStyles();
     const { id: challengeId } = useParams();
     const filteredLabels = useContext(FilteredLabels);
     const LoggedContext = useContext(Logged);
     const allChallenges = useContext(AllChallenges).challenges;
-
+    const [challengesFiltered, setChallengesFiltered] = useState(allChallenges)
+    const currentLocation = useLocation()
+    const currentHistory = useHistory()
     const [challenge, setChallenge] = useState(null);
     const [loadingPage, setLoadingPage] = useState(true);
     const [image, setImage] = useState("");
@@ -67,6 +45,7 @@ function ChallengePage({ darkMode }) {
     const [loadingReq, setLoadingReq] = useState(false);
     const [ratingCount, setRatingCount] = useState("");
     const [boilerPlate, setBoilerPlate] = useState("");
+
     const getBoilerPlate = useCallback(async () => {
         const { data: boilerPlate } = await network.get(
             `/api/v1/challenges/boiler-plate/${challengeId}`
@@ -86,7 +65,7 @@ function ChallengePage({ darkMode }) {
             getBoilerPlate();
         }
         // eslint-disable-next-line
-    }, []);
+    }, [challengeId]);
 
     const getLastSubmissions = useCallback(async () => {
         try {
@@ -98,10 +77,14 @@ function ChallengePage({ darkMode }) {
                     state: submission.state,
                     createdAt: submission.createdAt,
                 });
+                setLoadingReq(true);
+                return submission.state
             } else {
                 setSubmissionStatus(null);
+                setLoadingReq(true);
+                return false
             }
-            setLoadingReq(true);
+
         } catch (error) { }
     }, [challengeId])
 
@@ -131,77 +114,94 @@ function ChallengePage({ darkMode }) {
         } catch (error) { }
     }, [challengeId])
 
+    let getSubmissionInterval;
+
+    const updateSubmissionStatus = () => {
+        getSubmissionInterval = setInterval(async () => {
+            if (LoggedContext.logged) {
+                const status = await getLastSubmissions();
+                if (status === 'SUCCESS' || status === 'FAIL' || window.location.pathname !== currentLocation.pathname) clearInterval(getSubmissionInterval)
+            } else {
+                clearInterval(getSubmissionInterval)
+            }
+        }, 2000);
+    }
+
     useEffect(() => {
         setImg();
         fetchChallenge();
         if (LoggedContext.logged) {
-            getLastSubmissions();
+            updateSubmissionStatus();
         } else {
             setLoadingReq(true);
         }
-        const getSubmissionInterval = setInterval(async () => {
-            if (LoggedContext.logged) {
-                getLastSubmissions();
-            }
-        }, 2000);
-
         return () => clearInterval(getSubmissionInterval);
         // eslint-disable-next-line
     }, [challengeId]);
+
+    const setNewImg = (id, newImg) => {
+        setChallengesFiltered((prev) => {
+            const currentChallenges = prev.map((challenge) => {
+                if (challenge.id === id) {
+                    challenge.img = newImg
+                    return challenge
+                } else {
+                    return challenge
+                }
+            })
+            return currentChallenges
+        })
+    }
+
+
 
     const handleModalClose = useCallback(() => {
         setIsModalOpen(false);
     }, [])
 
     const getSubmissionButton = useCallback(() => {
-        if (!submissionStatus) {
-            return <p
-                className='One-Challenge-Page-Control-Panel-Submit-Button'
-                onClick={() => setIsModalOpen(true)}
-            >submit</p>
-        }
+        if (LoggedContext.logged) {
+            if (!submissionStatus) {
+                return <p
+                    className='One-Challenge-Page-Control-Panel-Submit-Button'
+                    onClick={() => setIsModalOpen(true)}
+                >submit</p>
+            }
 
-        if (submissionStatus.state === "PENDING") {
-            return <CircularProgress style={{ marginBottom: "20px" }} />;
-        }
-        if (submissionStatus.state === "SUCCESS") {
+            if (submissionStatus.state === "PENDING") {
+                return <CircularProgress style={{ marginBottom: "20px" }} />;
+            }
+            if (submissionStatus.state === "SUCCESS") {
+                return <p
+                    style={{ color: 'green' }}
+                    className='One-Challenge-Page-Control-Panel-Submit-Button'
+                    onClick={() => setIsModalOpen(true)}
+                > Submit again</p>
+            }
             return <p
-                style={{ color: 'green' }}
+                style={{ color: 'red' }}
                 className='One-Challenge-Page-Control-Panel-Submit-Button'
                 onClick={() => setIsModalOpen(true)}
             > Submit again</p>
-            // (
-            //     <Button
-            //         cy-test="submit-again-button"
-            //         className={classes.SubmitdButtonSuccess}
-            //         variant="contained"
-            //         onClick={() => setIsModalOpen(true)}
-            //     >
-            //         Submit again
-            //     </Button>
-            // );
+        } else {
+            return <p
+                className='One-Challenge-Page-Control-Panel-Submit-Button'
+                onClick={() => Swal.fire({
+                    icon: 'warning',
+                    title: 'You Must Login First!',
+                    showCancelButton: true,
+                    confirmButtonText: 'Login',
+                    cancelButtonText: 'OK'
+                }).then((result) => {
+                    if (result.value) {
+                        currentHistory.push('/login')
+                    }
+                })}
+            >submit</p>
         }
-        return <p
-            style={{ color: 'red' }}
-            className='One-Challenge-Page-Control-Panel-Submit-Button'
-            onClick={() => setIsModalOpen(true)}
-        > Submit again</p>
-
-
-        // (
-        //     <Button
-        //         cy-test="submit-again-button"
-        //         className={classes.SubmitdButtonFail}
-        //         variant="contained"
-        //         onClick={() => setIsModalOpen(true)}
-        //     >
-        //         Submit again
-        //     </Button>
-        // );
-
-
+    }
         // eslint-disable-next-line
-    }, [submissionStatus])
+        , [submissionStatus])
 
     return !loadingPage ?
         challenge ?
@@ -258,7 +258,7 @@ function ChallengePage({ darkMode }) {
                                                 ChallengeId: `${challengeId}`,
                                             });
                                             try {
-                                                await network.post('/api/v1/webhooks/trigger-events/start-challenge', { challengeName: challenge.name });
+                                                await network.post(`/api/v1/webhooks/trigger-events/start-challenge/${challengeId}`, { challengeName: challenge.name });
                                             } catch (error) {
                                             }
                                         }}
@@ -270,10 +270,16 @@ function ChallengePage({ darkMode }) {
             </a> : <button
                                         className='One-Challenge-Page-Control-Panel-Start-Button'
                                         onClick={() => Swal.fire({
-                                            icon: 'error',
-                                            title: 'You Must Login First!',
-                                            showConfirmButton: true,
-                                        })}
+                                            icon: 'warning',
+                    title: 'You Must Login First!',
+                    showCancelButton: true,
+                    confirmButtonText: 'Login',
+                    cancelButtonText: 'OK'
+                }).then((result) => {
+                    if (result.value) {
+                        currentHistory.push('/login')
+                    }
+                })}
                                     >
                                         Start Challenge
               </button>}
@@ -294,13 +300,14 @@ function ChallengePage({ darkMode }) {
                                 handleClose={handleModalClose}
                                 challengeParamId={challengeId}
                                 submissionStatus={submissionStatus}
+                                updateSubmissionStatus={updateSubmissionStatus}
                             />
                         </div>
 
                     </section>
                     <section className='One-Challenge-Page-More'  >
                         <h2 >You might also be interested in:</h2>
-                        <ChallengesCarousel challenges={allChallenges} />
+                        <ChallengesCarousel challenges={challengesFiltered} setNewImg={setNewImg} main={true} />
                     </section>
                     <section className='One-Challenge-Page-Reviews' >
                         <ReviewsTab challengeId={challenge.id} setRatingCount={setRatingCount} />
@@ -311,8 +318,8 @@ function ChallengePage({ darkMode }) {
                 </div>
 
             ) : <h1
-            style={{textAlign: 'center', marginTop: '20%'}}
-            >Not Found</h1> : (<Loading darkMode={darkMode} />);
+                style={{ textAlign: 'center', marginTop: '20%' }}
+            >Not Found</h1> : (<Loading />);
 }
 
 export default ChallengePage;
