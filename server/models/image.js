@@ -13,8 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(models.Challenge, {
         foreignKey: 'challengeId',
-      })
-
+      });
     }
   }
   Image.init({

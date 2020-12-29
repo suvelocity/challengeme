@@ -5,7 +5,7 @@ const checkToken = require('../../middleware/checkToken');
 const checkAdmin = require('../../middleware/checkAdmin');
 const { newChallengeValidation } = require('../../helpers/validator');
 const {
-  Submission, User, Challenge, Label, Review,Image
+  Submission, User, Challenge, Label, Review, Image,
 } = require('../../models');
 
 // get all challenges with reviews and labels
@@ -177,7 +177,6 @@ challengeRouter.get('/info/:challengeId', async (req, res) => {
   }
 });
 
-
 challengeRouter.get('/boiler-plate/:challengeId', checkToken, async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
@@ -260,11 +259,11 @@ challengeRouter.patch('/state-update/:challengeId', checkToken, checkAdmin, asyn
     const updatedChallenge = await Challenge.update({
       state,
     },
-      {
-        where: {
-          id: challengeId,
-        },
-      });
+    {
+      where: {
+        id: challengeId,
+      },
+    });
     if (updatedChallenge[0]) {
       return res.json({ message: 'Success' });
     }

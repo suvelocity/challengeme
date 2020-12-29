@@ -48,10 +48,9 @@ describe('Testing users routes', () => {
     expect(changePasswordSuccessfully.status).toBe(400);
     expect(changePasswordSuccessfully.body.message).toBe('Old Password Incorrect');
 
-
     const unauthorized = await request(app)
       .patch('/api/v1/users/change-password')
-      .send({ oldPassword: '12345678', newPassword: '87654321' })
+      .send({ oldPassword: '12345678', newPassword: '87654321' });
 
     expect(unauthorized.status).toBe(401);
 
@@ -61,11 +60,15 @@ describe('Testing users routes', () => {
   test('Can user change his personal information about himself', async (done) => {
     await User.bulkCreate(usersMock);
 
-    const { firstName, lastName, birthDate, country, city, githubAccount } = usersMock[1]
+    const {
+      firstName, lastName, birthDate, country, city, githubAccount,
+    } = usersMock[1];
 
     const changePersonalDetailsSuccessfully = await request(app)
       .patch('/api/v1/users/info')
-      .send({ firstName, lastName, birthDate, country, city, githubAccount })
+      .send({
+        firstName, lastName, birthDate, country, city, githubAccount,
+      })
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(changePersonalDetailsSuccessfully.status).toBe(200);
@@ -73,9 +76,9 @@ describe('Testing users routes', () => {
 
     const afterChangeUser = await User.findOne({
       where: {
-        userName: usersMock[0].userName
-      }
-    })
+        userName: usersMock[0].userName,
+      },
+    });
 
     expect(afterChangeUser.userName).toBe(usersMock[0].userName);
     expect(afterChangeUser.firstName).toBe(firstName);
@@ -87,7 +90,9 @@ describe('Testing users routes', () => {
 
     const unauthorized = await request(app)
       .patch('/api/v1/users/info')
-      .send({ firstName, lastName, birthDate, country, city, githubAccount })
+      .send({
+        firstName, lastName, birthDate, country, city, githubAccount,
+      });
 
     expect(unauthorized.status).toBe(401);
 

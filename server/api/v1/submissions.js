@@ -136,7 +136,7 @@ submissionRouter.post('/apply/:challengeId', async (req, res) => {
   }
 });
 
-//===================Not in use=========================================//
+//= ==================Not in use=========================================//
 
 // get all challenge submissions
 submissionRouter.get('/:challengeId', checkAdmin, async (req, res) => {
@@ -151,7 +151,7 @@ submissionRouter.get('/:challengeId', checkAdmin, async (req, res) => {
           model: User,
           attributes: ['userName'],
         },
-      ]
+      ],
     });
     return res.json(allSubmission);
   } catch (error) {
@@ -159,6 +159,5 @@ submissionRouter.get('/:challengeId', checkAdmin, async (req, res) => {
     return res.status(400).json({ message: "can't get the challenge submissions" });
   }
 });
-
 
 module.exports = submissionRouter;

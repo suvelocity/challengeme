@@ -121,8 +121,8 @@ authRouter.post('/user-exist', async (req, res) => {
 
 // Validate Token
 authRouter.get('/validate-token', checkToken, async (req, res) => {
-  const isAdmin = await userIsAdmin(req.user.userName)
-  return res.json({ valid: true, isAdmin })
+  const isAdmin = await userIsAdmin(req.user.userName);
+  return res.json({ valid: true, isAdmin });
 });
 
 // Log In
@@ -177,7 +177,7 @@ authRouter.post('/login', async (req, res) => {
     res.cookie('userName', currentUser.userName);
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
-    const isAdmin = currentUser.permission === 'admin' ? true : false;
+    const isAdmin = currentUser.permission === 'admin';
     return res.json({ userName: currentUser.userName, isAdmin });
   } catch (error) {
     console.error(error.message);
@@ -209,9 +209,9 @@ authRouter.post('/token', async (req, res) => {
       delete decoded.iat;
       delete decoded.exp;
       const accessToken = generateToken(decoded);
-      res.cookie('userName', decoded.userName)
+      res.cookie('userName', decoded.userName);
       res.cookie('accessToken', accessToken);
-      const isAdmin = await userIsAdmin(decoded.userName)
+      const isAdmin = await userIsAdmin(decoded.userName);
       return res.json({ message: 'token updated', isAdmin });
     });
   } catch (error) {
@@ -349,15 +349,14 @@ async function userIsAdmin(userName) {
     const userIsAdmin = await User.findOne({
       where: {
         userName,
-        permission: 'admin'
+        permission: 'admin',
       },
-      attributes: ['userName']
-    })
+      attributes: ['userName'],
+    });
     if (userIsAdmin) {
-      return true
-    } else {
-      return false;
+      return true;
     }
+    return false;
   } catch (error) {
     console.error(error.message);
     return false;

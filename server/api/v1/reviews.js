@@ -6,13 +6,13 @@ const { Review, User } = require('../../models');
 // get reviews by challenge with params
 reviewsRouter.get('/:challengeId', async (req, res) => {
   try {
-    const { challengeId } = req.params
+    const { challengeId } = req.params;
 
     const reviews = await Review.findAll({
       where: {
-        challengeId
+        challengeId,
       },
-      attributes: ['id','challengeId', 'title', 'content', 'rating', 'createdAt'],
+      attributes: ['id', 'challengeId', 'title', 'content', 'rating', 'createdAt'],
       include: {
         model: User,
         attributes: ['userName'],

@@ -43,7 +43,7 @@ const editUserValidation = (data) => {
 const changePasswordValidation = (data) => {
   const schema = Joi.object({
     oldPassword: Joi.string().min(8).required(),
-    newPassword: Joi.string().min(8).required()
+    newPassword: Joi.string().min(8).required(),
   });
 
   return schema.validate(data);
@@ -288,5 +288,5 @@ module.exports = {
   webhookUrlEventTriggerValidation,
   webhookUrlGithubResponseValidation,
   editUserValidation,
-  changePasswordValidation
+  changePasswordValidation,
 };

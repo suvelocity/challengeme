@@ -17,7 +17,7 @@ triggerEventsRouter.post('/start-challenge/:id', async (req, res) => {
       userId: req.user.userId,
       userName: req.user.userName,
       challengeName,
-      challengeId: id
+      challengeId: id,
     };
     webhookSendEvents(eventToSend);
     return res.sendStatus(200);

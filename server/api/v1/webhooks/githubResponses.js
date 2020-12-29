@@ -5,7 +5,7 @@ const { webhookUrlGithubResponseValidation } = require('../../../helpers/validat
 
 // github api for update status about submission
 webhookRouter.patch('/:id', async (req, res) => {
-  const { id } = req.params
+  const { id } = req.params;
   try {
     // Joi validation
     const { error } = webhookUrlGithubResponseValidation(req.body);
@@ -20,7 +20,7 @@ webhookRouter.patch('/:id', async (req, res) => {
         attributes: ['userName', 'id'],
       }, {
         model: Challenge,
-        attributes: ['name','id'],
+        attributes: ['name', 'id'],
       }],
     });
     const updatedSubmission = await submission.update({ state: success ? 'SUCCESS' : 'FAIL' });
@@ -30,7 +30,7 @@ webhookRouter.patch('/:id', async (req, res) => {
       userName: updatedSubmission.User.userName,
       challengeName: updatedSubmission.Challenge.name,
       submissionState: updatedSubmission.state,
-      challengeId:submission.Challenge.id
+      challengeId: submission.Challenge.id,
     };
     webhookSendEvents(eventToSend);
     console.log(eventToSend);

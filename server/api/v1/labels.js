@@ -35,5 +35,4 @@ labelRouter.post('/:challengeId', checkToken, async (req, res) => {
   }
 });
 
-
 module.exports = labelRouter;

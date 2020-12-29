@@ -14,7 +14,7 @@ module.exports = [
   {
     id: 2,
     name: 'React - 4 In A Row',
-    description: `The goal of the game is to draw either a vertical, horizontal or diagonal line with four balls of the same player chained together.`,
+    description: 'The goal of the game is to draw either a vertical, horizontal or diagonal line with four balls of the same player chained together.',
     type: 'client-only',
     repository_name: 'suvelocity/4In-a-row-CHALLENGE',
     boiler_plate: 'suvelocity/4In-a-row-BOILERPLATE',
@@ -50,7 +50,7 @@ module.exports = [
   {
     id: 5,
     name: 'React - Chat app',
-    description: `Hello friend, today we are going to help you create a simple Chat-App.`,
+    description: 'Hello friend, today we are going to help you create a simple Chat-App.',
     type: 'fullstack',
     repository_name: 'suvelocity/Chat_App-Challange',
     boiler_plate: 'suvelocity/Chat-App-Template',
@@ -86,7 +86,7 @@ module.exports = [
   {
     id: 8,
     name: 'JWT - Node.js',
-    description: `Welcome to the Best Authentication Challenge ever existed.`,
+    description: 'Welcome to the Best Authentication Challenge ever existed.',
     type: 'server-only',
     repository_name: 'suvelocity/Authentication-Challenge',
     boiler_plate: 'suvelocity/Authentication-Challenge-TEMPLATE',
@@ -111,7 +111,7 @@ module.exports = [
   {
     id: 10,
     name: 'React - Corona dashboard',
-    description: `We need your help to beat the COVID pandemic !!`,
+    description: 'We need your help to beat the COVID pandemic !!',
     type: 'server-mysql',
     repository_name: 'suvelocity/corona-manager-chalenge',
     boiler_plate: 'suvelocity/corona-pandemic-manager',
@@ -122,14 +122,14 @@ module.exports = [
   },
   {
     id: 11,
-    name: "Analytics Challenge",
-    description: "Use TypeScript with React and Express to build a data analysis system for a mobile payment site",
-    type: "server-only",
-    repository_name: "suvelocity/analytics-tests",
-    boiler_plate: "suvelocity/analytics-challenge-boilerplate",
+    name: 'Analytics Challenge',
+    description: 'Use TypeScript with React and Express to build a data analysis system for a mobile payment site',
+    type: 'server-only',
+    repository_name: 'suvelocity/analytics-tests',
+    boiler_plate: 'suvelocity/analytics-challenge-boilerplate',
     author_id: 1,
     state: 'pending',
     created_at: '2020-10-01 20:00:00',
     updated_at: '2020-10-01 20:00:00',
-  }
+  },
 ];
