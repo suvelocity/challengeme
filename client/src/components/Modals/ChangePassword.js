@@ -79,7 +79,6 @@ export default function ResetPassword({ open = false, setOpen, getAllTeams }) {
         return;
       }
     } catch (error) {
-      console.error(error
     }
     // eslint-disable-next-line
     }, [newPassword, confirmNewPassword, oldPassword])
