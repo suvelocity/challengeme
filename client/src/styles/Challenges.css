@@ -6,7 +6,7 @@
   align-items: center;
   width: 100%;
   gap: 30px;
-  background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
+  /* background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%); */
 }
 
 .challenges-container {
@@ -53,7 +53,7 @@
 }
 
 .All-Challenge-Carousel p {
-  color: white;
+  color: black;
   text-align: left;
   margin-left: 10%;
   margin-bottom: 50px;
@@ -62,4 +62,17 @@
   font-weight: bold;
   font-size: 20px;
   line-height: 40px;
+}
+
+.All-Challenge-Footer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: white;
+  border-top: 1px solid white;
+  text-align: center;
+  margin-top: 20%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }

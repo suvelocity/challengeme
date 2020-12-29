@@ -1,16 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useCallback } from 'react';
 import Cookies from 'js-cookie';
-import {
-  Link, NavLink, useHistory, useLocation,
-} from 'react-router-dom';
+import { Link, NavLink, useHistory, useLocation, } from 'react-router-dom';
 import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import AccountCircleOutlinedIcon from '@material-ui/icons/AccountCircleOutlined';
-import Cube from '../../../images/Cube';
-import ChallengeMeSmallTitle from '../../../images/ChallengeMeSmallTitle';
 import IconButton from '@material-ui/core/IconButton';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -23,14 +19,16 @@ import AppsIcon from '@material-ui/icons/Apps';
 import DescriptionIcon from '@material-ui/icons/Description';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LockIcon from '@material-ui/icons/Lock';
-import useStyles from './WideNavStyle';
+import Menu from '@material-ui/core/Menu';
+import AddIcon from '@material-ui/icons/Add';
+import { withStyles } from '@material-ui/core/styles';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ChallengeMeSmallTitle from '../../../images/ChallengeMeSmallTitle';
+import Cube from '../../../images/Cube';
 import network from '../../../services/network';
 import { Logged } from '../../../context/LoggedInContext';
 import Search from '../Search';
-import Menu from '@material-ui/core/Menu';
-import { withStyles } from '@material-ui/core/styles';
-import AddIcon from '@material-ui/icons/Add';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import useStyles from './WideNavStyle';
 
 
 const StyledMenu = withStyles({
@@ -49,6 +47,14 @@ const StyledMenu = withStyles({
   />
 ));
 
+const letterColor = {
+  color: 'white',
+};
+const drawerColor = {
+  color: 'black',
+};
+const dividerColor = {};
+
 export default function WideNav({ darkMode, setDarkMode }) {
   const classes = useStyles();
   const location = useHistory();
@@ -58,15 +64,17 @@ export default function WideNav({ darkMode, setDarkMode }) {
   const [openNavBar, setOpenNavBar] = useState(false);
 
 
-  const handleDrawerOpen = () => {
+  const handleDrawerOpen = useCallback(() => {
     setOpenNavBar(true);
-  };
+    // eslint-disable-next-line
+  }, [])
 
-  const handleDrawerClose = () => {
+  const handleDrawerClose = useCallback(() => {
     setOpenNavBar(false);
-  };
+    // eslint-disable-next-line
+  }, [])
 
-  const logOut = async () => {
+  const logOut = useCallback(async () => {
     try {
       await network.post('/api/v1/auth/logout', {
         token: Cookies.get('refreshToken'),
@@ -82,25 +90,12 @@ export default function WideNav({ darkMode, setDarkMode }) {
       handleDrawerClose()
     } catch (error) {
     }
-  };
+  }, [LoggedContext])
 
-  const headerStyle = {
-    backgroundColor: darkMode ? 'rgb(51,51,51)' : 'transport',
-  };
-  const letterColor = {
-    color: darkMode ? 'white' : 'white',
-  };
-  const drawerColor = {
-    color: darkMode ? 'white' : 'black',
-  };
-  const dividerColor = darkMode
-    ? {
-      backgroundColor: 'rgba(255,255,255,0.3)',
-    }
-    : {};
+
   return (
     <>
-      <AppBar position="fixed" className={clsx(classes.appBarRegolar)} style={headerStyle}>
+      <AppBar position="fixed" className={clsx(classes.appBarRegolar)} style={{ backgroundColor: 'transport' }}>
         <Toolbar>
           <Typography variant="h6" >
             <NavLink to="/" exact className="link-rout">
@@ -236,17 +231,19 @@ export default function WideNav({ darkMode, setDarkMode }) {
             <ExpandLessIcon style={drawerColor} />
           </IconButton>
         </div>
-        <Divider variant="middle" style={dividerColor} />
-        <List className={classes.list}>
-          {currentLocation.pathname === '/challenges' ?
+        {currentLocation.pathname === '/challenges' ?
+          <>
+            <Divider variant="middle" style={dividerColor} />
             <Link to="/" className="link-rout">
               <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
                 <ListItemText primary="Home" />
                 <ListItemIcon className={classes.flexEnd}>
-                  <Cube style={drawerColor} />
+                  <Cube style={drawerColor} color='#000' />
                 </ListItemIcon>
               </ListItem>
-            </Link> :
+            </Link></> :
+          <>
+            <Divider variant="middle" style={dividerColor} />
             <Link to="/challenges" className="link-rout">
               <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
                 <ListItemText primary="Challenges" />
@@ -254,13 +251,23 @@ export default function WideNav({ darkMode, setDarkMode }) {
                   <AppsIcon style={drawerColor} />
                 </ListItemIcon>
               </ListItem>
-            </Link>}
-          <Divider variant="middle" style={dividerColor} />
+            </Link></>}
+        <Divider variant="middle" style={dividerColor} />
+        <List className={classes.list}>
           <Link to="/profile/info" className="link-rout">
             <ListItem className={classes.flexRow} button onClick={handleDrawerClose} style={drawerColor}>
               <ListItemText primary="Profile" />
               <ListItemIcon className={classes.flexEnd}>
                 <AccountCircleIcon style={drawerColor} />
+              </ListItemIcon>
+            </ListItem>
+          </Link>
+          <Divider variant="middle" style={dividerColor} />
+          <Link to="/Teams" className="link-rout">
+            <ListItem className={classes.flexRow} button onClick={handleDrawerClose}>
+              <ListItemText primary="Teams Area" />
+              <ListItemIcon className={classes.flexEnd} >
+                <GroupIcon style={drawerColor} />
               </ListItemIcon>
             </ListItem>
           </Link>
@@ -287,13 +294,12 @@ export default function WideNav({ darkMode, setDarkMode }) {
             </ListItem>
           </Link>
           <Divider variant="middle" style={dividerColor} />
-          {LoggedContext.logged ?
-            <ListItem button className={classes.flexRow} onClick={logOut}>
-              <ListItemText style={{ color: '#C10000' }} primary="Logout" />
-              <ListItemIcon className={classes.flexEnd}>
-                <ExitToAppIcon style={{ color: '#C10000' }} />
-              </ListItemIcon>
-            </ListItem> : null}
+          <ListItem button className={classes.flexRow} onClick={logOut}>
+            <ListItemText style={{ color: '#C10000' }} primary="Logout" />
+            <ListItemIcon className={classes.flexEnd}>
+              <ExitToAppIcon style={{ color: '#C10000' }} />
+            </ListItemIcon>
+          </ListItem>
         </List>
       </StyledMenu>
     </>

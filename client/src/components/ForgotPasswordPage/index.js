@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import mixpanel from 'mixpanel-browser';
 import Button from '@material-ui/core/Button';
@@ -20,9 +20,12 @@ const useStyles = makeStyles(() => ({
     color: 'white',
   },
 }));
-// TODO: POPO: Refactor steps switches to one json configuration
+
 export default function Forgot() {
   const classes = useStyles();
+
+  const history = useHistory();
+
   const [step, setStep] = useState(1);
   const [error, setError] = useState('');
   const [userName, setUserName] = useState('');
@@ -32,13 +35,12 @@ export default function Forgot() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const history = useHistory();
 
   useEffect(() => {
     mixpanel.track('User On Forgot Password Page');
   }, []);
 
-  const handleChange = (field) => (e) => {
+  const handleChange = useCallback((field) => (e) => {
     switch (field) {
       case 'userName':
         setUserName(e.target.value);
@@ -55,9 +57,10 @@ export default function Forgot() {
       default:
         break;
     }
-  };
+    // eslint-disable-next-line
+  }, [])
 
-  const getQuestion = async (userNameForQuestion) => {
+  const getQuestion = useCallback(async (userNameForQuestion) => {
     if (userNameForQuestion.length < 1 || userNameForQuestion.length > 32 || /\W/.test(userNameForQuestion)) {
       setError('Please enter a valid username');
       return;
@@ -74,9 +77,10 @@ export default function Forgot() {
     } catch (e) {
       setError(e.response.data.message);
     }
-  };
+    // eslint-disable-next-line
+  }, [])
 
-  const validateAnswer = async (userNameForValidateAnswer, securityAnswer) => {
+  const validateAnswer = useCallback(async (userNameForValidateAnswer, securityAnswer) => {
     if (!securityAnswer) {
       setError('Please type your anwer');
       return;
@@ -102,9 +106,10 @@ export default function Forgot() {
     } catch (e) {
       setError(e.response.data.message);
     }
-  };
+    // eslint-disable-next-line
+  }, [])
 
-  const resetPassword = async (passwordForReset, confirmPasswordForReset, resetTokenForReset) => {
+  const resetPassword = useCallback(async (passwordForReset, confirmPasswordForReset, resetTokenForReset) => {
     if (passwordForReset.length < 8) {
       setError('password should be at least 8 characters');
       return;
@@ -130,9 +135,10 @@ export default function Forgot() {
     } catch (e) {
       setError(e.response.data.message);
     }
-  };
+    // eslint-disable-next-line
+  }, [])
 
-  const nextStep = () => {
+  const nextStep = useCallback(() => {
     setError('');
     switch (step) {
       case 1:
@@ -147,9 +153,10 @@ export default function Forgot() {
       default:
         break;
     }
-  };
+    // eslint-disable-next-line
+  }, [step, userName, password, confirmPassword, secAnswer])
 
-  const multiForm = () => {
+  const multiForm = useCallback(() => {
     switch (step) {
       case 1:
         return <Identify data={{ userName }} handleChange={handleChange} />;
@@ -172,7 +179,7 @@ export default function Forgot() {
       default:
         return <></>;
     }
-  };
+  }, [step, userName, password, confirmPassword, secQuestion, secAnswer])
 
   return (
     <>

@@ -1,36 +1,36 @@
 import React from 'react'
 import { Link } from "react-router-dom";
+
+const footerLabels = [
+    {
+        name: 'Contact Us',
+        link: ''
+    },
+    {
+        name: '|'
+    },
+
+    {
+        name: 'FAQ',
+        link: ''
+    },
+    {
+        name: '|'
+    },
+    {
+        name: 'Reviews',
+        link: ''
+    },
+    {
+        name: '|'
+    },
+    {
+        name: 'Legal Stuff',
+        link: ''
+    },
+]
+
 export default function Footer({ color = 'white' }) {
-
-    const footerLabels = [
-        {
-            name: 'Contact Us',
-            link: ''
-        },
-        {
-            name: '|'
-        },
-
-        {
-            name: 'FAQ',
-            link: ''
-        },
-        {
-            name: '|'
-        },
-        {
-            name: 'Reviews',
-            link: ''
-        },
-        {
-            name: '|'
-        },
-        {
-            name: 'Legal Stuff',
-            link: ''
-        },
-    ]
-
 
     return (
         <section className='Landing-page-Footer' style={{ color }} >

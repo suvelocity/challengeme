@@ -2,9 +2,9 @@ import React, { useEffect, useState, useContext } from 'react';
 import mixpanel from 'mixpanel-browser';
 import Cookies from 'js-cookie';
 import ChallengeCard from '../../components/ChallengeCard';
-import './Home.css';
 import AllChallenges from '../../context/AllChallengesContext';
 import FilteredLabels from '../../context/FilteredLabelsContext';
+import "../../styles/Challenges.css";
 
 export default function Home() {
   const allChallenges = useContext(AllChallenges).challenges;

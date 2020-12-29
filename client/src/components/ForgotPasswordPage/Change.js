@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
 import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,20 +27,24 @@ const useStyles = makeStyles(() => ({
     width: '320px',
   },
 }));
+
+const limit = 5;
+
 export default function Change({ data, handleChange, changePassword = false }) {
   const classes = useStyles();
+
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
   const [redirect, setRedirect] = useState(false);
-  const limit = 5;
 
-  const hideBoth = () => {
+
+  const hideBoth = useCallback(() => {
     setShowOldPassword(false)
     setShowPassword(false);
     setShowConfirmPassword(false);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     // Prevent special password eye bugs

@@ -1,50 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Selector from 'react-select';
 import network from '../../services/network';
-import './ChooseLabel.css';
+import { customStyles } from './ChoosersStyle';
 
 const ChooseEvents = ({
   chooseEvents,
   setChooseEvents,
   eventsOptions,
   setEventsOptions,
-  darkMode,
 }) => {
+
+  const fetchEventsData = useCallback(async () => {
+    try {
+      const { data: allEvents } = await network.get('/api/v1/webhooks/admin/events');
+      setEventsOptions(allEvents.map((event) => ({
+        value: event.id,
+        label: event.name,
+      })));
+    } catch (error) {
+    }
+    // eslint-disable-next-line
+  }, [])
+
+
   useEffect(() => {
-    (async () => {
-      try {
-        const { data: allEvents } = await network.get('/api/v1/webhooks/admin/events');
-        setEventsOptions(allEvents.map((event) => ({
-          value: event.id,
-          label: event.name,
-        })));
-      } catch (error) {
-      }
-    })();
-  }, [setEventsOptions]);
+    fetchEventsData();
+    // eslint-disable-next-line
+  }, []);
 
-  const selectionChange = (chosens) => {
-    setChooseEvents(chosens);
-  };
+  const selectionChange = useCallback((chosen) => {
+    setChooseEvents(chosen);
+    // eslint-disable-next-line
+  }, [])
 
-  const customStyles = {
-    option: (provided) => ({
-      ...provided,
-      borderBottom: '1px dotted black',
-      color: darkMode ? 'white' : 'blue',
-      backgroundColor: darkMode ? 'rgb(51,51,51)' : 'white',
-      height: '100%',
-    }),
-    control: (provided) => ({
-      ...provided,
-      backgroundColor: 'neutral30',
-    }),
-  };
   return (
-    <div className="labelFilter">
+    <div>
       <Selector
         value={chooseEvents}
-        className="selectLabels"
         maxMenuHeight={300}
         placeholder="select events"
         isMulti

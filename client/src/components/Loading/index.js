@@ -1,16 +1,15 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import './Loading.css';
 // import LoadingMatrix from './LoadingAnimation';
 
-function Loading({ darkMode, firstLoading }) {
-  const getBackground = () => {
+function Loading({ firstLoading }) {
+
+  const getBackground = useCallback(() => {
     if (firstLoading) {
       return { backgroundColor: 'white' };
-    } if (darkMode) {
-      return { backgroundColor: 'transparent' };
     }
     return { backgroundColor: 'transparent' };
-  };
+  }, [firstLoading])
   return (
     <div style={getBackground()} className="loaderContainer">
       <div className="loader" />

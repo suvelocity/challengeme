@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Review from './Review';
 import network from '../../services/network';
 
@@ -6,22 +6,23 @@ function ReviewsTab({ challengeId, setRatingCount }) {
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchReviews = useCallback(async () => {
+    try {
+      const { data: reviewsArrayFromServer } = await network.get(
+        `/api/v1/reviews/${challengeId}`,
+      );
+      setRatingCount(reviewsArrayFromServer.length);
+      const reviewsWithContent = reviewsArrayFromServer.filter(
+        (review) => review.title && review.content,
+      );
+      setReviews(reviewsWithContent);
+      setLoading(false);
+    } catch (error) {
+    }
+  }, [challengeId])
+
   useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const { data: reviewsArrayFromServer } = await network.get(
-          `/api/v1/reviews/${challengeId}`,
-        );
-        setRatingCount(reviewsArrayFromServer.length);
-        const reviewsWithContent = reviewsArrayFromServer.filter(
-          (review) => review.title && review.content,
-        );
-        setReviews(reviewsWithContent);
-        setLoading(false);
-      } catch (error) {
-      }
-    };
-    setLoading(true)
+    setLoading(true);
     fetchReviews();
     const liveReviews = setInterval(fetchReviews, 5000);
     return () => clearInterval(liveReviews);
@@ -30,7 +31,7 @@ function ReviewsTab({ challengeId, setRatingCount }) {
 
   return <>
     <h1 className='Reviews-H1'>Reviews:</h1>
-    <ul className='Reviews-Container'>{!loading ? reviews.length>0? reviews.map((review) => {
+    <ul className='Reviews-Container'>{!loading ? reviews.length > 0 ? reviews.map((review) => {
       const { id, createdAt, title, content, rating, User: { userName }, } = review;
       return (
         <Review
@@ -43,7 +44,7 @@ function ReviewsTab({ challengeId, setRatingCount }) {
           rating={rating}
         />
       )
-    }):<div className="Review" style={{paddingTop:'40px'}}><h1>This challenge has no reviews yet</h1></div>:<div className="Review" style={{paddingTop:'40px'}}><h1>loading...</h1></div>}
+    }) : <div className="Review" style={{ paddingTop: '40px' }}><h1>This challenge has no reviews yet</h1></div> : <div className="Review" style={{ paddingTop: '40px' }}><h1>loading...</h1></div>}
     </ul>
   </>
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import mixpanel from "mixpanel-browser";
 import Cookies from "js-cookie";
 import { useLocation } from "react-router-dom";
@@ -9,17 +9,21 @@ import network from "../../services/network";
 import ChooseLabels from "../../components/Choosers/ChooseLabels";
 import ChallengesCarousel from "../../components/ChallengesCarousel";
 import Footer from '../../components/Footer';
-import "../../styles/Home.css";
+import "../../styles/Challenges.css";
 
-export default function Home() {
-  const allChallenges = useContext(AllChallenges).challenges;
-  const filteredLabels = useContext(FilteredLabels);
-  const [challengesFiltered, setChallengesFiltered] = useState(allChallenges);
-  const [labels, setLabels] = useState([]);
-  const [chooseLabels, setChooseLabels] = useState([]);
+export default function Challenges() {
+
   const currentLocation = useLocation();
 
-  const getLabels = async () => {
+  const allChallenges = useContext(AllChallenges).challenges;
+  const filteredLabels = useContext(FilteredLabels);
+  const allChallengesWithImgState = allChallenges.map((challenge) => { return { ...challenge, img: false} })
+
+  const [challengesFiltered, setChallengesFiltered] = useState(allChallengesWithImgState);
+  const [labels, setLabels] = useState([]);
+  const [chooseLabels, setChooseLabels] = useState([]);
+
+  const getLabels = useCallback(async () => {
     try {
       const { data } = await network.get("/api/v1/labels");
       const optionsForSelector = data.map((labelData) => ({
@@ -35,11 +39,26 @@ export default function Home() {
       });
       setLabels(newFilter);
     } catch (error) { }
-  };
+  }, [filteredLabels])
 
+  const setNewImg = (id, newImg) => {
+    setChallengesFiltered((prev) => {
+      const currentChallenges = prev.map((challenge) => {
+        if (challenge.id === id) {
+          challenge.img = newImg
+          return challenge
+        } else {
+          return challenge
+        }
+      })
+      return currentChallenges
+    })
+  }
   useEffect(() => {
     const user = Cookies.get("userName");
     mixpanel.track("User On Home Page", { User: `${user}` });
+    // const allChallengesWithImgState = allChallenges.map((challenge) => { return { ...challenge, img: false} })
+    // setChallengesFiltered(allChallengesWithImgState)
     return () => filteredLabels.setFilteredLabels([]);
     // eslint-disable-next-line
   }, []);
@@ -53,30 +72,32 @@ export default function Home() {
     // eslint-disable-next-line
   }, [currentLocation]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        if (filteredLabels.filteredLabels.length > 0) {
-          const filteredByLabelChallenges = [];
-          allChallenges.forEach((challenge) => {
-            if (
-              filteredLabels.filteredLabels.every((labelChallenge) =>
-                challenge.Labels.map((label) => label.id).includes(
-                  labelChallenge
-                )
+  const filterLabels = useCallback(() => {
+    try {
+      if (filteredLabels.filteredLabels.length > 0) {
+        const filteredByLabelChallenges = [];
+        allChallenges.forEach((challenge) => {
+          if (
+            filteredLabels.filteredLabels.every((labelChallenge) =>
+              challenge.Labels.map((label) => label.id).includes(
+                labelChallenge
               )
-            ) {
-              if (!filteredByLabelChallenges.includes(challenge)) {
-                filteredByLabelChallenges.push(challenge);
-              }
+            )
+          ) {
+            if (!filteredByLabelChallenges.includes(challenge)) {
+              filteredByLabelChallenges.push(challenge);
             }
-          });
-          setChallengesFiltered(filteredByLabelChallenges);
-        } else {
-          setChallengesFiltered(allChallenges);
-        }
-      } catch (error) { }
-    })();
+          }
+        });
+        setChallengesFiltered(filteredByLabelChallenges);
+      } else {
+        setChallengesFiltered(allChallenges);
+      }
+    } catch (error) { }
+  }, [filteredLabels, allChallenges])
+
+  useEffect(() => {
+    filterLabels();
     // eslint-disable-next-line
   }, [filteredLabels]);
 
@@ -92,8 +113,6 @@ export default function Home() {
           <ChooseLabels
             labels={labels}
             chooseLabels={chooseLabels}
-            setChooseLabels={setChooseLabels}
-            // darkMode={darkMode}
             setLabels={setLabels}
           />
         </div>
@@ -104,7 +123,6 @@ export default function Home() {
             );
           }}
           variant="contained"
-        //   className={darkMode ? classes.filterButtonDark : classes.filterButton}
         >
           filter
         </Button>
@@ -112,14 +130,16 @@ export default function Home() {
       <div className="All-Challenge-Challenges-Container">
         <div className="All-Challenge-Carousel">
           <p>Recommended For You:</p>
-          <ChallengesCarousel challenges={challengesFiltered} />
+          <ChallengesCarousel challenges={challengesFiltered} setNewImg={setNewImg} main={true}
+  />
         </div>
         <div className="All-Challenge-Carousel">
           <p>Front End Challenges:</p>
           <ChallengesCarousel
-            challenges={challengesFiltered.filter(
+            challenges={ challengesFiltered.filter(
               (challenge) => challenge.type === "client-only"
             )}
+            setNewImg={setNewImg}
           />
         </div>
         <div className="All-Challenge-Carousel">
@@ -130,6 +150,7 @@ export default function Home() {
                 challenge.type === "server-mysql" ||
                 challenge.type === "server-only"
             )}
+            setNewImg={setNewImg}
           />
         </div>
         <div className="All-Challenge-Carousel">
@@ -138,10 +159,13 @@ export default function Home() {
             challenges={challengesFiltered.filter(
               (challenge) => challenge.type === "fullstack"
             )}
+            setNewImg={setNewImg}
           />
         </div>
       </div>
-      <Footer />
+      <div className='All-Challenge-Footer'>
+        <Footer color='black' />
+      </div>
     </div>
   );
 }
