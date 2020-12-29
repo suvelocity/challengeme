@@ -33,7 +33,6 @@ webhookRouter.patch('/:id', async (req, res) => {
       challengeId: submission.Challenge.id,
     };
     webhookSendEvents(eventToSend);
-    console.log(eventToSend);
     return res.json(submission);
   } catch (error) {
     console.error(error);
