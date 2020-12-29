@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
 import { Link, useHistory } from 'react-router-dom';
@@ -27,9 +27,11 @@ function TeamCard({ team }) {
 }
 
 function MyTeams() {
-  const [teamData, setTeamData] = useState();
   const Location = useHistory();
-  const fetchUserTeam = async () => {
+
+  const [teamData, setTeamData] = useState();
+
+  const fetchUserTeam = useCallback(async () => {
     try {
       const { data: userTeam } = await network.get('/api/v1/teams/all-teams-by-user');
       setTeamData(userTeam.Teams);
@@ -39,7 +41,8 @@ function MyTeams() {
         Location.push(linkPath);
       }
     } catch (error) { }
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     fetchUserTeam();

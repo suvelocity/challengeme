@@ -14,20 +14,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SearchTicket({ ticket, closeSearch, darkMode }) {
+const avatarName = 'test';
+const dividerColor = {};
+const letterColor = {
+  color: 'black',
+};
+
+function SearchTicket({ ticket, closeSearch }) {
   const rating = ticket.averageRaiting;
   const classes = useStyles();
-  const avatarName = ticket.repositoryName.substring(0, 2).toUpperCase();
 
-  const dividerColor = darkMode
-    ? {
-      backgroundColor: 'rgba(255,255,255,0.3)',
-    }
-    : {};
-
-  const letterColor = {
-    color: darkMode ? 'white' : 'black',
-  };
   return (
     <Link to={`/challenges/${ticket.id}`} style={{ textDecoration: 'none' }}>
       <div className="SearchTicket" style={letterColor} onClick={closeSearch}>

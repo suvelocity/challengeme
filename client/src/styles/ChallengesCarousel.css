@@ -1,0 +1,96 @@
+.Challenge-To-Carousel {
+    border-radius: 2.1613px;
+    box-shadow: inset 0px 15px 30px rgba(0, 0, 0, 0.5);
+    filter: drop-shadow(0px 15px 30px rgba(0, 0, 0, 0.15));
+    width: 210px;
+    height: 170.07px;
+    background-repeat: no-repeat;
+    background-size: 100% 270.07px;
+    color:white;
+    display:flex;
+    align-items:flex-end;
+    justify-content: space-between;
+    padding-left:5px;
+    padding-bottom:5px;
+    text-shadow: 1px 1px rgba(0, 0, 0,0.9); 
+    transition: 0.1s;
+}
+
+.Challenge-To-Carousel:hover {
+    width: 220px;
+    height: 180.07px;
+    transition: 0.1s;
+}
+
+.Challenge-To-Carousel-Header {
+    margin-bottom:10px;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    width: 100%;
+    font-size: 19px;
+    line-height: 20px;
+}
+
+.Challenge-To-Carousel-Author {
+    margin-bottom:10px;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 144%;
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.Challenge-To-Carousel-Submission {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 144%;
+}
+
+.Challenge-To-Carousel-Button {
+    width:100px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 0.801541px solid #FFFFFF;
+    box-sizing: border-box;
+    border-radius: 24.8478px;
+    text-align: center;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12.82px;
+    line-height: 20px;
+    mix-blend-mode: normal;
+    color: #FFFFFF;
+    margin: 0px 10px 10px 0px;
+    cursor: pointer;
+}
+
+.Challenge-To-Carousel-Button:hover {
+    background: linear-gradient(176.6deg, #FFFFFF -41.64%, rgba(255, 255, 255, 0) 207.73%);
+    text-decoration: none;
+    text-shadow: 20px 30px 60px rgba(0, 0, 0,0.9); 
+
+}
+
+.remove:hover {
+    text-decoration: none;
+}
+
+.remove:focus {
+    text-decoration: none;
+}
+
+.remove:active {
+    text-decoration: none;
+}
+
+.remove:visited {
+    text-decoration: none;
+}
+
+.remove:link {
+    text-decoration: none;
+}

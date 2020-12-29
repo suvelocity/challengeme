@@ -1,0 +1,166 @@
+:root {
+  --width-ticket: 45vw;
+}
+
+.link-rout {
+  text-decoration: none;
+}
+
+.one-challenge-container {
+  margin-top: 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr 1fr;
+  gap: 0px 0px;
+  grid-template-areas: "one-challenge-challenge-container one-challenge-submission-container" "one-challenge-challenge-container one-challenge-reviews-container" "one-challenge-challenge-container one-challenge-reviews-container";
+  height: calc(100vh - 100px);
+}
+
+.one-challenge-container-column {
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+}
+
+.one-challenge-challenge-container {
+  grid-area: one-challenge-challenge-container;
+  margin: 0px 30px 30px 30px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 130px);
+  overflow-y: auto;
+  padding: 0px 3px;
+}
+
+.one-challenge-info-container {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.one-challenge-description-title {
+  margin-top: 20px;
+  display: flex;
+}
+
+.challenge-label {
+  display: flex;
+  margin-left: auto;
+}
+
+.one-challenge-description-body {
+  margin-top: 10px;
+}
+
+.one-challenge-author {
+  margin-top: 10px;
+}
+
+.one-challenge-info-title {
+  text-align: center
+}
+
+.one-challenge-info-image {
+  width: 100%;
+}
+
+.one-challenge-labels {
+  margin-left: 10px;
+}
+
+.one-challenge-reviews-and-submissions {
+  width: var(--width-ticket);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.one-challenge-submission-container {
+  grid-area: one-challenge-submission-container;
+  background-color: white;
+  border-radius: 5px;
+  margin: 0px 30px 30px 0px;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+.one-challenge-submit-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.one-challenge-reviews-container {
+  grid-area: one-challenge-reviews-container;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06), 0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086), 0 100px 80px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0px 30px 30px 0px;
+  overflow-y: scroll;
+}
+
+.one-challenge-reviews-title {
+  margin: 10px auto 10px 10%;
+  font-size: 25px;
+}
+
+/* dark container*/
+
+.dark .one-challenge-challenge-container, .dark .one-challenge-submission-container, .dark .one-challenge-reviews-container {
+  color: white;
+  background: rgb(60, 62, 65);
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.116), 0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.151), 0 22.3px 17.9px rgba(0, 0, 0, 0.349), 0 41.8px 33.4px rgba(0, 0, 0, 0.185), 0 100px 80px rgba(0, 0, 0, 0.13);
+}
+
+.one-challenge-labels {
+  font-size: 14px;
+  padding: 2px 8px;
+  color: white;
+  border-radius: 2px;
+  background: linear-gradient(270deg, rgb(133, 133, 133) 0%, rgb(184, 184, 184) 100%);
+  margin-right: -5px;
+  display: inline
+}
+
+.dark .one-challenge-labels {
+  background: linear-gradient(270deg, rgb(54, 54, 54) 0%, rgb(122, 122, 122) 100%);
+}
+
+.submission-status {
+  padding: 10px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .one-challenge-container {
+    margin-top: 80px;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+  }
+  .one-challenge-reviews-container, .one-challenge-submission-container, .one-challenge-challenge-container {
+    width: 95vw;
+    margin: 0px 30px 30px 30px;
+    max-height: none;
+    overflow-y: none;
+    height: auto;
+  }
+  .one-challenge-description-title {
+    flex-direction: column-reverse;
+  }
+  .challenge-label {
+    align-self: center;
+    margin: 0;
+    margin-bottom: 10px;
+  }
+}

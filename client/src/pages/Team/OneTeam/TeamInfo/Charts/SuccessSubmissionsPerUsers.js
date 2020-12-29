@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Tooltip, Legend, BarChart, Bar, CartesianGrid, XAxis, YAxis,
@@ -6,11 +6,11 @@ import {
 import Loading from '../../../../../components/Loading';
 import network from '../../../../../services/network';
 
-function SuccessSubmissions({ darkMode }) {
+function SuccessSubmissions() {
   const { id } = useParams();
   const [teamMembers, setTeamMembers] = useState();
 
-  const getDataOnTeam = async () => {
+  const getDataOnTeam = useCallback(async () => {
     try {
       const { data: mostSuccessChallenges } = await network.get(
         `/api/v1/insights/student/top-user/${id}`,
@@ -18,7 +18,8 @@ function SuccessSubmissions({ darkMode }) {
       setTeamMembers(mostSuccessChallenges);
     } catch (error) {
     }
-  };
+    // eslint-disable-next-line
+  }, [id])
 
   useEffect(() => {
     getDataOnTeam();
@@ -38,7 +39,7 @@ function SuccessSubmissions({ darkMode }) {
       </BarChart>
     </div>
   ) : (
-    <Loading darkMode={darkMode} />
+    <Loading />
   );
 }
 

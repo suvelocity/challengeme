@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
@@ -9,12 +9,12 @@ import SecondHeader from '../../../../components/Header/SecondHeader';
 import ChallengeCard from '../../../../components/ChallengeCard';
 import './style.css';
 
-function TeamAssignments({ darkMode }) {
+function TeamAssignments() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [allAssignments, setAllAssignments] = useState();
 
-  const getAllAssignments = async () => {
+  const getAllAssignments = useCallback(async () => {
     try {
       const { data: assignments } = await network.get(`/api/v1/assignments/${id}`);
       setAllAssignments(assignments);
@@ -22,7 +22,8 @@ function TeamAssignments({ darkMode }) {
     } catch (error) {
       setLoading(false);
     }
-  };
+    // eslint-disable-next-line
+  }, [id])
 
   useEffect(() => {
     getAllAssignments();
@@ -39,7 +40,7 @@ function TeamAssignments({ darkMode }) {
   return !loading ? (
     allAssignments ? (
       <>
-        <SecondHeader paths={paths} darkMode={darkMode} />
+        <SecondHeader paths={paths} />
         <div className="generic-page">
           <h1 className="team-task-title-page">
             {' '}
@@ -66,17 +67,17 @@ function TeamAssignments({ darkMode }) {
                 />
               ))
             ) : (
-                <h1 className="not-found">Not Found</h1>
-              )}
+              <h1 className="not-found">Not Found</h1>
+            )}
           </div>
         </div>
       </>
     ) : (
-        <NotFound />
-      )
+      <NotFound />
+    )
   ) : (
-      <Loading darkMode={darkMode} />
-    );
+    <Loading />
+  );
 }
 
 export default TeamAssignments;

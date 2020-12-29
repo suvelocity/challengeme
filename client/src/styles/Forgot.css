@@ -1,0 +1,87 @@
+.forgotPassGeneral {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
+
+}
+.containerHeaderForgotPass {
+    margin-bottom: 450px;
+    position: absolute;
+}
+
+.forgotPassHeader {
+    border-radius: 4px;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.356);
+    text-align: center;
+    color: white;
+    width: 450px;
+    height: 160px;
+    background: linear-gradient(
+        90deg,
+        rgb(49, 92, 171) 0%,
+        rgb(69, 125, 199) 100%
+    );
+    display: flex;
+    flex-direction: column;
+}
+
+.forgotPassTitle {
+    margin-top: 47px;
+    font-size: 40px;
+}
+
+.ForgotPassBody {
+    margin-top: 20px;
+    background-color: rgba(255, 255, 255, 0.972);
+    border-radius: 5px;
+    width: 600px;
+    height: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.548);
+}
+
+.containerButtonsForgotPass {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.containerErrorForgotPass {
+    position: absolute;
+    margin-top: 275px;
+    height: 40px;
+    border-radius: 5px;
+    width: 400px;
+    color: white;
+    background-color: rgba(255, 0, 0, 0.616);
+    display: flex;
+    align-items: center;
+}
+.errorInputForgotPass {
+    height: auto;
+    margin-left: 5px;
+    color: white;
+}
+
+@media (max-width: 700px) {
+    .containerHeaderForgotPass,.forgotPassHeader {
+        /* position:static; */
+        top:0;
+        margin:0px;
+        width: 100vw;
+    }
+    .ForgotPassBody {
+        height: calc(100vh - 160px);
+        width:100vw;
+    }
+    .containerErrorForgotPass {
+        width:80vw;
+        height: 50px;
+    }
+}

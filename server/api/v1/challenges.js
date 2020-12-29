@@ -5,7 +5,7 @@ const checkToken = require('../../middleware/checkToken');
 const checkAdmin = require('../../middleware/checkAdmin');
 const { newChallengeValidation } = require('../../helpers/validator');
 const {
-  Submission, User, Challenge, Label, Review,
+  Submission, User, Challenge, Label, Review, Image,
 } = require('../../models');
 
 // get all challenges with reviews and labels
@@ -19,7 +19,9 @@ challengeRouter.get('/', async (req, res) => {
           [Op.like]: `%${name}%`,
         },
         state: 'approved',
+
       },
+      attributes: ['id', 'name', 'description', 'type', 'createdAt'],
       include: [
         {
           model: User,
@@ -122,10 +124,11 @@ challengeRouter.get('/user-challenges', checkToken, async (req, res) => {
 });
 
 // get challenge by id with all information
-challengeRouter.get('/info/:challengeId', checkToken, async (req, res) => {
+challengeRouter.get('/info/:challengeId', async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
       where: { id: req.params.challengeId, state: 'approved' },
+      attributes: ['id', 'name', 'description', 'type', 'createdAt'],
       include: [
         {
           model: Label,
@@ -137,7 +140,7 @@ challengeRouter.get('/info/:challengeId', checkToken, async (req, res) => {
         {
           model: User,
           as: 'Author',
-          attributes: ['email', 'userName'],
+          attributes: ['userName'],
         },
       ],
     });
@@ -167,6 +170,19 @@ challengeRouter.get('/info/:challengeId', checkToken, async (req, res) => {
       ? challengeSubmittions[0].dataValues.submissionsCount
       : 0;
 
+    return res.json(challenge);
+  } catch (error) {
+    console.error(error.message);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+challengeRouter.get('/boiler-plate/:challengeId', checkToken, async (req, res) => {
+  try {
+    const challenge = await Challenge.findOne({
+      where: { id: req.params.challengeId, state: 'approved' },
+      attributes: ['boilerPlate'],
+    });
     return res.json(challenge);
   } catch (error) {
     console.error(error.message);
@@ -243,11 +259,11 @@ challengeRouter.patch('/state-update/:challengeId', checkToken, checkAdmin, asyn
     const updatedChallenge = await Challenge.update({
       state,
     },
-      {
-        where: {
-          id: challengeId,
-        },
-      });
+    {
+      where: {
+        id: challengeId,
+      },
+    });
     if (updatedChallenge[0]) {
       return res.json({ message: 'Success' });
     }

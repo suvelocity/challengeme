@@ -14,7 +14,7 @@ import Extras from './Extras';
 import network from '../../../services/network';
 import Stepper from './Stepper';
 import Background from '../../Background';
-import '../styles/Register.css';
+import '../../../styles/Register.css';
 
 const useStyles = makeStyles(() => ({
   nextButton: {

@@ -120,7 +120,10 @@ authRouter.post('/user-exist', async (req, res) => {
 });
 
 // Validate Token
-authRouter.get('/validate-token', checkToken, (req, res) => res.json({ valid: true }));
+authRouter.get('/validate-token', checkToken, async (req, res) => {
+  const isAdmin = await userIsAdmin(req.user.userName);
+  return res.json({ valid: true, isAdmin });
+});
 
 // Log In
 authRouter.post('/login', async (req, res) => {
@@ -171,12 +174,11 @@ authRouter.post('/login', async (req, res) => {
         },
       );
     }
-    res.cookie('name', currentUser.firstName);
     res.cookie('userName', currentUser.userName);
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
-    res.cookie('isAdmin', currentUser.permission);
-    return res.json({ userDetails: currentUser });
+    const isAdmin = currentUser.permission === 'admin';
+    return res.json({ userName: currentUser.userName, isAdmin });
   } catch (error) {
     console.error(error.message);
     return res.status(400).json({ message: 'Cannot process request' });
@@ -199,7 +201,7 @@ authRouter.post('/token', async (req, res) => {
       },
     });
     if (!validRefreshToken) return res.status(403).json({ message: 'Invalid Refresh Token' });
-    return jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, decoded) => {
+    return await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (error, decoded) => {
       if (error) {
         console.error(error.message);
         return res.status(403).json({ message: 'Invalid Refresh Token' });
@@ -207,8 +209,10 @@ authRouter.post('/token', async (req, res) => {
       delete decoded.iat;
       delete decoded.exp;
       const accessToken = generateToken(decoded);
+      res.cookie('userName', decoded.userName);
       res.cookie('accessToken', accessToken);
-      return res.json({ message: 'token updated' });
+      const isAdmin = await userIsAdmin(decoded.userName);
+      return res.json({ message: 'token updated', isAdmin });
     });
   } catch (error) {
     console.error(error.message);
@@ -310,7 +314,7 @@ authRouter.patch('/password-update', async (req, res) => {
             },
           },
         );
-        return res.json({ message: 'Changed Password Sucsessfuly' });
+        return res.json({ message: 'Changed Password Successfully' });
       },
     );
   } catch (error) {
@@ -332,6 +336,25 @@ async function userIsExist(userName) {
     });
     if (user) {
       return user.toJSON();
+    }
+    return false;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+}
+
+async function userIsAdmin(userName) {
+  try {
+    const userIsAdmin = await User.findOne({
+      where: {
+        userName,
+        permission: 'admin',
+      },
+      attributes: ['userName'],
+    });
+    if (userIsAdmin) {
+      return true;
     }
     return false;
   } catch (error) {

@@ -63,7 +63,7 @@ describe('Client Tests', () => {
     button.click();
     await timeout(1000);
     expect(login.isDone()).toBe(true);
-    expect(page._target._targetInfo.url).toBe(`${baseUrl}login`);
+    expect(page._target._targetInfo.url).toBe(`${baseUrl}`);
     done();
   }, 30000);
 

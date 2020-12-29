@@ -1,4 +1,4 @@
-import React, { useState, useEffect, lazy } from "react";
+import React, { useState, useEffect, useCallback, lazy } from "react";
 import { useParams } from "react-router-dom";
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
@@ -6,7 +6,6 @@ import Loading from "../../../../components/Loading";
 import NotFound from "../../../NotFound";
 import network from "../../../../services/network";
 import SecondHeader from "../../../../components/Header/SecondHeader";
-
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -27,24 +26,28 @@ const useStyles = makeStyles({
     width: `calc(100vw - ${tableWidth * 2}px)`,
   },
 });
-function OneTeamPage({ darkMode }) {
+function OneTeamPage() {
   const classes = useStyles();
   const { id } = useParams();
   const [teamMembers, setTeamMembers] = useState();
   const [loading, setLoading] = useState(true);
 
+  const fetchTeamInfo = useCallback(async () => {
+    try {
+      const { data: members } = await network.get(`/api/v1/teams/team-page/${id}`);
+      setTeamMembers(members);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+    }
+    // eslint-disable-next-line
+  }, [id])
+
   useEffect(() => {
-    (async () => {
-      try {
-        const { data: members } = await network.get(`/api/v1/teams/team-page/${id}`);
-        setTeamMembers(members);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-      }
-    })();
+    fetchTeamInfo()
     const user = Cookies.get('userName');
     mixpanel.track('User On Team Info Student Area', { User: `${user}`, Team: id });
+    // eslint-disable-next-line
   }, [id]);
 
   const paths = [
@@ -55,7 +58,7 @@ function OneTeamPage({ darkMode }) {
   return !loading ? (
     teamMembers ? (
       <>
-        <SecondHeader paths={paths} darkMode={darkMode} />
+        <SecondHeader paths={paths} />
 
         <div className="generic-page">
           <h1 className="team-info-title-page">
@@ -63,7 +66,7 @@ function OneTeamPage({ darkMode }) {
         Team: <span className="team-info-title-page-name">{teamMembers.name}</span>{" "}
           </h1>
           <div className="team-info-paper-chart">
-            <SuccessSubmissionsPerUsers darkMode={darkMode} />
+            <SuccessSubmissionsPerUsers />
           </div>
           <h2 style={{ marginLeft: tableWidth }} className="team-info-title-table">My Team Friends:</h2>
           <TableContainer component={Paper} className={classes.container}>
@@ -94,7 +97,7 @@ function OneTeamPage({ darkMode }) {
         <NotFound />
       )
   ) : (
-      <Loading darkMode={darkMode} />
+      <Loading />
     );
 }
 
