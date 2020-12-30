@@ -90,7 +90,7 @@
     z-index: 1000;
     height: 55px;
     width: 45%;
-    font-size: 25px;
+    font-size: 1.2rem;
     line-height: 55px;
     border: none;
     color: white;
@@ -99,16 +99,24 @@
     font-family: sans-serif;
 }
 
+.Landing-page-View-GetStarted:hover {
+    background-color: rgb(0, 173, 152, 70%);
+}
+
 .Landing-page-View-Learn-More {
     z-index: 1000;
     height: 55px;
     line-height: 50px;
     width: 45%;
-    font-size: 25px;
+    font-size: 1.2rem;
     text-decoration: none;
     color: white;
     border: 1px solid white;
     font-family: sans-serif;
+}
+
+.Landing-page-View-Learn-More:hover {
+    background-color: rgb(255, 255, 255, 10%);
 }
 
 .Landing-page-View-Hacker-walks {
@@ -140,6 +148,12 @@
     line-height: 2.5rem;
     text-align: center;
     color: #00AD98;
+    outline: none;
+}
+
+.Landing-page-Watch-Video:hover {
+    color: white;
+    background-color: rgb(0, 173, 152);
 }
 
 .Landing-page-Sections-Cards {
@@ -237,6 +251,10 @@
     text-decoration: none;
 }
 
+.Landing-page-Open-Source-Button:hover {
+    background-color: rgb(255, 255, 255, 10%);
+}
+
 .Landing-page-Project-Leaders {
     position: relative;
     padding-top: 25%;
@@ -267,7 +285,7 @@
     background-color: white;
     display: flex;
     flex-direction: column;
-    padding-bottom:5%
+    padding-bottom: 5%
 }
 
 .Landing-page-Project-Leaders-Icon {
@@ -426,6 +444,10 @@
     font-family: sans-serif;
 }
 
+.Landing-page-Build-Your-Own-Challenge-GetStarted:hover {
+    background-color: rgb(0, 173, 152, 70%);
+}
+
 .Landing-page-Build-Your-Own-Challenge-Learn-More {
     z-index: 1000;
     height: 55px;
@@ -438,6 +460,10 @@
     font-family: sans-serif;
 }
 
+.Landing-page-Build-Your-Own-Challenge-Learn-More:hover {
+    background-color: rgb(255, 255, 255, 10%);
+}
+
 .Landing-page-Build-Your-Own-Challenge-Board {
     margin: auto 0 auto 0;
     z-index: 1000;
@@ -445,16 +471,14 @@
 
 .Landing-page-Footer {
     display: flex;
-    
     flex-direction: column;
     text-align: center;
     color: white;
-    border-top: 1px solid white;
     text-align: center;
     margin-top: 20%;
     margin-left: auto;
     margin-right: auto;
-    width: 50%;
+    width: 100%;
 }
 
 .Landing-page-Footer-Labels {
@@ -468,7 +492,6 @@
     color: white;
     text-decoration: none;
 }
-
 
 .Landing-page-Footer-Single-Label:hover {
     color: white;

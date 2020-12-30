@@ -7,8 +7,8 @@ import {
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
-// import { Button } from "@material-ui/core";
-// import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
+import Rating from '@material-ui/lab/Rating';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ReviewsTab from '../../components/Reviews';
 import SubmitModal from '../../components/Modals/SubmitModal';
@@ -19,25 +19,16 @@ import { Logged } from '../../context/LoggedInContext';
 import ChallengesCarousel from '../../components/ChallengesCarousel';
 import AllChallenges from '../../context/AllChallengesContext';
 import Footer from '../../components/Footer';
-import Smiley from '../../images/Smiley.svg';
 import '../../styles/OneChallenge.css';
-
-function generateTime(date) {
-  let today = new Date(date);
-  const dd = String(today.getDate()).padStart(2, '0');
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const yyyy = today.getFullYear();
-  today = `${yyyy}-${mm}-${dd}`;
-  return `${today}`;
-}
+import { generateTime } from '../../utils';
 
 function ChallengePage() {
-  // const classes = useStyles();
   const { id: challengeId } = useParams();
   const filteredLabels = useContext(FilteredLabels);
   const LoggedContext = useContext(Logged);
   const allChallenges = useContext(AllChallenges).challenges;
-  const [challengesFiltered, setChallengesFiltered] = useState(allChallenges);
+  const allChallengesWithImgState = allChallenges.map((challenge) => ({ ...challenge, img: false }));
+  const [challengesFiltered, setChallengesFiltered] = useState(allChallengesWithImgState);
   const currentLocation = useLocation();
   const currentHistory = useHistory();
   const [challenge, setChallenge] = useState(null);
@@ -69,7 +60,7 @@ function ChallengePage() {
       getBoilerPlate();
     }
     // eslint-disable-next-line
-    }, [challengeId]);
+  }, [challengeId]);
 
   const getLastSubmissions = useCallback(async () => {
     try {
@@ -98,7 +89,7 @@ function ChallengePage() {
       setChallenge(challengeFromServer);
       setRating(
         challengeFromServer.averageRaiting
-          ? Math.round(challengeFromServer.averageRaiting)
+          ? challengeFromServer.averageRaiting
           : 0,
       );
       const { data: reviewsArrayFromServer } = await network.get(
@@ -127,7 +118,7 @@ function ChallengePage() {
         clearInterval(getSubmissionInterval);
       }
     }, 2000);
-  };
+  }
 
   useEffect(() => {
     setImg();
@@ -139,9 +130,9 @@ function ChallengePage() {
     }
     return () => clearInterval(getSubmissionInterval);
     // eslint-disable-next-line
-    }, [challengeId]);
+  }, [challengeId]);
 
-  const setNewImg = (id, newImg) => {
+  const setNewImg = useCallback((id, newImg) => {
     setChallengesFiltered((prev) => {
       const currentChallenges = prev.map((challenge) => {
         if (challenge.id === id) {
@@ -152,72 +143,50 @@ function ChallengePage() {
       });
       return currentChallenges;
     });
-  };
+  }, [setChallengesFiltered])
 
   const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
   }, []);
 
   const getSubmissionButton = useCallback(() => {
-    if (LoggedContext.logged) {
-      if (!submissionStatus) {
-        return (
-          <p
-            className="One-Challenge-Page-Control-Panel-Submit-Button"
-            onClick={() => setIsModalOpen(true)}
-          >
-            submit
-          </p>
-        );
-      }
-
-      if (submissionStatus.state === 'PENDING') {
-        return <CircularProgress style={{ marginBottom: '20px' }} />;
-      }
-      if (submissionStatus.state === 'SUCCESS') {
-        return (
-          <p
-            style={{ color: 'green' }}
-            className="One-Challenge-Page-Control-Panel-Submit-Button"
-            onClick={() => setIsModalOpen(true)}
-          >
-            {' '}
-            Submit again
-          </p>
-        );
-      }
+    if (!submissionStatus) {
       return (
-        <p
-          style={{ color: 'red' }}
-          className="One-Challenge-Page-Control-Panel-Submit-Button"
+        <Button
+          className='One-Challenge-Control-Panel-Submit-Button-Regular'
+          variant="contained"
           onClick={() => setIsModalOpen(true)}
         >
-          {' '}
+          Submit
+        </Button>
+      );
+    }
+    if (submissionStatus.state === 'PENDING') {
+      return <CircularProgress style={{ marginBottom: '20px' }} />;
+    }
+    if (submissionStatus.state === 'SUCCESS') {
+      return (
+        <Button
+          className='One-Challenge-Control-Panel-Submit-Button-Success'
+          variant="contained"
+          onClick={() => setIsModalOpen(true)}
+        >
           Submit again
-        </p>
+        </Button>
       );
     }
     return (
-      <p
-        className="One-Challenge-Page-Control-Panel-Submit-Button"
-        onClick={() => Swal.fire({
-          icon: 'warning',
-          title: 'You Must Login First!',
-          showCancelButton: true,
-          confirmButtonText: 'Login',
-          cancelButtonText: 'OK',
-        }).then((result) => {
-          if (result.value) {
-            currentHistory.push('/login');
-          }
-        })}
+      <Button
+        className='One-Challenge-Control-Panel-Submit-Button-Fail'
+        variant="contained"
+        onClick={() => setIsModalOpen(true)}
       >
-        submit
-      </p>
+        Submit again
+      </Button>
     );
   }
-  // eslint-disable-next-line
-        , [submissionStatus])
+    // eslint-disable-next-line
+    , [submissionStatus])
 
   return !loadingPage
     ? challenge
@@ -243,34 +212,26 @@ function ChallengePage() {
             <p>{challenge.description}</p>
             <ul>
               {challenge.Labels
-                                && challenge.Labels.map((label) => (
-                                  <Link
-                                    key={label.id}
-                                    className="remove"
-                                    to="/challenges"
-                                    onClick={() => filteredLabels.setFilteredLabels([label.id])}
-                                  >
-                                    <span>{label.name}</span>
-                                  </Link>
-                                ))}
+                && challenge.Labels.map((label) => (
+                  <Link
+                    key={label.id}
+                    className="remove"
+                    to="/challenges"
+                    onClick={() => filteredLabels.setFilteredLabels([label.id])}
+                  >
+                    <span>{label.name}</span>
+                  </Link>
+                ))}
             </ul>
           </section>
           <section className="One-Challenge-Page-Control-Panel">
             <div className="One-Challenge-Page-Control-Panel-Rating-Container">
               <div className="One-Challenge-Page-Control-Panel-Rating">
-                <img src={Smiley} alt="Smiley" />
+                <Rating className='One-Challenge-Page-Control-Panel-Rating-Stars' name="half-rating-read" value={rating} readOnly size="large" />
                 <div className="One-Challenge-Page-Control-Panel-Rating-Text">
-                  <p>
-                    <b>{rating}</b>
-                    {' '}
-                    {' '}
-                    out of 5
-                  </p>
-                  <p>
-                    {ratingCount}
-                    {' '}
+                  {ratingCount}
+                  {' '}
                     rates
-                  </p>
                 </div>
               </div>
             </div>
@@ -278,7 +239,8 @@ function ChallengePage() {
               <div className="One-Challenge-Page-Control-Panel-Start">
                 {LoggedContext.logged
                   ? (
-                    <a
+                    <Button
+                      variant="contained"
                       className="One-Challenge-Page-Control-Panel-Start-Button"
                       onClick={async () => {
                         const user = Cookies.get('userName');
@@ -296,9 +258,10 @@ function ChallengePage() {
                       rel="noopener noreferrer"
                     >
                       Start Challenge
-                    </a>
+                    </Button>
                   ) : (
-                    <button
+                    <Button
+                      variant="contained"
                       className="One-Challenge-Page-Control-Panel-Start-Button"
                       onClick={() => Swal.fire({
                         icon: 'warning',
@@ -313,20 +276,44 @@ function ChallengePage() {
                       })}
                     >
                       Start Challenge
-                    </button>
+                    </Button>
                   )}
               </div>
             </div>
             <div className="One-Challenge-Page-Control-Panel-Submit">
-              {loadingReq ? (
+              {LoggedContext.logged ?
+                (loadingReq ? (
+                  <div className="One-Challenge-Page-Control-Panel-Submit-Button">
+                    {getSubmissionButton()}
+                  </div>
+                ) : (
+                    <div style={{ textAlign: 'center' }}>
+                      <CircularProgress style={{ margin: '30px' }} />
+                    </div>
+                  ))
+                :
                 <div className="One-Challenge-Page-Control-Panel-Submit-Button">
-                  {getSubmissionButton()}
+                  <Button
+                    className='One-Challenge-Control-Panel-Submit-Button-Regular'
+                    variant="contained"
+                    onClick={() => Swal.fire({
+                      icon: 'warning',
+                      title: 'You Must Login First!',
+                      showCancelButton: true,
+                      confirmButtonText: 'Login',
+                      cancelButtonText: 'OK',
+                    }).then((result) => {
+                      if (result.value) {
+                        currentHistory.push('/login');
+                      }
+                    })}
+                  >
+                    Submit
+        </Button>
                 </div>
-              ) : (
-                <div style={{ textAlign: 'center' }}>
-                  <CircularProgress style={{ margin: '30px' }} />
-                </div>
-              )}
+              }
+
+
               <SubmitModal
                 isOpen={isModalOpen}
                 handleClose={handleModalClose}
@@ -339,7 +326,7 @@ function ChallengePage() {
           </section>
           <section className="One-Challenge-Page-More">
             <h2>You might also be interested in:</h2>
-            <ChallengesCarousel challenges={challengesFiltered} setNewImg={setNewImg} main />
+            <ChallengesCarousel challenges={challengesFiltered} setNewImg={setNewImg} main={true} />
           </section>
           <section className="One-Challenge-Page-Reviews">
             <ReviewsTab challengeId={challenge.id} setRatingCount={setRatingCount} />
@@ -347,7 +334,7 @@ function ChallengePage() {
           <div className="One-Challenge-Footer">
             <Footer color="black" />
           </div>
-        </div>
+        </div >
 
       ) : (
         <h1

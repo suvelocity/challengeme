@@ -14,7 +14,7 @@ import ReviewsTab from '../../components/Reviews';
 import SubmitModal from '../../components/Modals/SubmitModal';
 import Loading from '../../components/Loading';
 import '../../styles/OldOneChallenge.css';
-
+import { generateTime } from '../../utils';
 const useStyles = makeStyles(() => ({
   getStartedButton: {
     background: 'linear-gradient(270deg, rgba(55,99,192,1) 0%, rgba(87,159,223,1) 100%)',
@@ -46,15 +46,6 @@ const useStyles = makeStyles(() => ({
     fontSize: '15px',
   },
 }));
-
-function generateTime(date) {
-  let today = new Date(date);
-  const dd = String(today.getDate()).padStart(2, '0');
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const yyyy = today.getFullYear();
-  today = `${yyyy}-${mm}-${dd}`;
-  return `${today}`;
-}
 
 function ChallengePage() {
   const classes = useStyles();
@@ -368,10 +359,10 @@ function ChallengePage() {
               {getSubmissionButton()}
             </div>
           ) : (
-            <div style={{ textAlign: 'center' }}>
-              <CircularProgress style={{ margin: '30px' }} />
-            </div>
-          )}
+              <div style={{ textAlign: 'center' }}>
+                <CircularProgress style={{ margin: '30px' }} />
+              </div>
+            )}
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
@@ -385,8 +376,8 @@ function ChallengePage() {
       </div>
     </div>
   ) : (
-    <Loading />
-  );
+      <Loading />
+    );
 }
 
 export default ChallengePage;

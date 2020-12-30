@@ -23,6 +23,7 @@ export const useModalStyles = makeStyles((theme) => ({
     position: 'absolute',
     width: 400,
     maxHeight: '90%',
+    minHeight: '400px',
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
@@ -35,3 +36,13 @@ export const useModalStyles = makeStyles((theme) => ({
     fontSize: '0.8em',
   },
 }));
+
+export function generateTime(date) {
+  if (!date) return '';
+  let today = new Date(date);
+  const dd = String(today.getDate()).padStart(2, '0');
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const yyyy = today.getFullYear();
+  today = `${yyyy}-${mm}-${dd}`;
+  return `${today}`;
+}

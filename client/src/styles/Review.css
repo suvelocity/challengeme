@@ -1,22 +1,31 @@
-.Reviews-H1 {
-  margin-left: 120px;
-}
-
-.Reviews-Container{
+.Reviews-Container {
   max-height: 500px;
   overflow-y: auto;
-  width:80%
+  width: 100%;
+  border: solid 1px black;
+  border-radius: 3px;
 }
 
 .Review {
   position: relative;
-  width: 90%;
-  margin-top: 30px;
+  width: 95%;
+  margin: 10px 1% 10px;
   height: 150px;
-  left: 80px;
   filter: drop-shadow(0px 15px 30px rgba(0, 0, 0, 0.15));
   border: 0.4px solid #cec7c7;
   border-radius: 13px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.Review-Empty{
+  position: relative;
+  width: 95%;
+  margin: 10px 1% 10px;
+  height: 150px;
+  filter: drop-shadow(0px 15px 30px rgba(0, 0, 0, 0.15));
   box-sizing: border-box;
   display: flex;
   flex-direction: row;

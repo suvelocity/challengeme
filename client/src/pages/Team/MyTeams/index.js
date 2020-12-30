@@ -3,6 +3,9 @@ import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
 import { Link, useHistory } from 'react-router-dom';
 import network from '../../../services/network';
+import Loading from '../../../components/Loading';
+import TeamSvg from '../../LandingPage/SvgComponents/Teams';
+import TeacherSvg from '../../LandingPage/SvgComponents/TeacherAnalytics';
 import './MyTeams.css';
 
 function TeamCard({ team }) {
@@ -17,10 +20,18 @@ function TeamCard({ team }) {
     <Link to={linkPath} className="my-team-link">
       <div className="my-team-card">
         <div className="my-team-name">{team.name}</div>
-        <div className="my-team-description">description</div>
-        {team.UserTeam.permission === 'teacher' && (
-          <div className="my-team-teacher">As Teacher</div>
-        )}
+        <div className='my-team-pic'>
+          {team.UserTeam.permission === 'teacher' ? (
+            <div>
+              <TeacherSvg />
+              <div className="my-team-teacher">
+                As Teacher</div>
+            </div>
+          ) :
+            (
+              <TeamSvg />
+            )}
+        </div>
       </div>
     </Link>
   );
@@ -30,6 +41,7 @@ function MyTeams() {
   const Location = useHistory();
 
   const [teamData, setTeamData] = useState();
+  const [loading, setLoading] = useState(true)
 
   const fetchUserTeam = useCallback(async () => {
     try {
@@ -40,7 +52,10 @@ function MyTeams() {
         const linkPath = team.UserTeam.permission === 'teacher' ? `/teams/teacher/${team.id}` : `/teams/${team.id}`;
         Location.push(linkPath);
       }
-    } catch (error) { }
+      setLoading(false)
+    } catch (error) {
+      setLoading(false)
+    }
     // eslint-disable-next-line
   }, [])
 
@@ -53,13 +68,16 @@ function MyTeams() {
     <div className="my-teams">
       <h1 className="my-teams-title">Teams Area</h1>
       <div className="my-teams-container">
-        {teamData && teamData.length > 0 ? teamData.map((team) => (
-          <TeamCard
-            key={team.id}
-            team={team}
-          />
-        ))
-          : <h1>Your not member in any team </h1>}
+        {!loading ?
+          teamData && teamData.length > 0 ? teamData.map((team) => (
+            <TeamCard
+              key={team.id}
+              team={team}
+            />
+          ))
+            : <h1>Your not member in any team </h1>
+          : <Loading />
+        }
       </div>
     </div>
   );

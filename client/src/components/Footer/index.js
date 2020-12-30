@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import '../../styles/LandingPage.css'
 
 const footerLabels = [
   {
     name: 'Contact Us',
-    link: '',
+    link: 'https://github.com/suvelocity/challengeme',
   },
   {
     name: '|',
@@ -12,39 +13,41 @@ const footerLabels = [
 
   {
     name: 'FAQ',
-    link: '',
+    link: 'https://suvelocity.github.io/challengeme',
   },
   {
     name: '|',
   },
   {
     name: 'Reviews',
-    link: '',
+    link: 'https://github.com/suvelocity/challengeme/issues',
   },
   {
     name: '|',
   },
   {
     name: 'Legal Stuff',
-    link: '',
+    link: 'https://github.com/suvelocity/challengeme',
   },
 ];
 
 export default function Footer({ color = 'white' }) {
   return (
-    <section className="Landing-page-Footer" style={{ color }}>
+    <section className="Landing-page-Footer" style={{ color,borderTop:`1px solid ${color}` }}>
       <div className="Landing-page-Footer-Labels" style={{ color }}>
         {footerLabels.map((label, index) => {
           if (label.name !== '|') {
             return (
-              <Link
-                key={label.name}
-                className="Landing-page-Footer-Single-Label"
-                style={{ color }}
-                to={`/${label.link}`}
-              >
-                {label.name}
-              </Link>
+              <a
+              key={label.name}
+              style={{ color }}
+              href={label.link}
+              target='_blank'
+              rel="noopener noreferrer"
+              className="Landing-page-Footer-Single-Label"
+            >
+              {label.name}
+            </a>
             );
           }
           return (

@@ -14,11 +14,6 @@ const letterColor = {
   color: 'black',
 };
 
-const SearchContainerStyle = {
-  backgroundColor: 'white',
-  color: 'black',
-};
-
 const Search = () => {
   const classes = useStyles();
   const [results, setResults] = useState([]);
@@ -94,7 +89,7 @@ const Search = () => {
         </div>
       </div>
       <div id="searchResults" className={results.length !== 0 ? 'open' : 'closed'}>
-        <div className="display" style={SearchContainerStyle}>
+        <div className="display" >
           <div className="background-black-to-search" />
           {resultsList}
         </div>
