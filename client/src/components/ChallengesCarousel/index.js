@@ -2,6 +2,8 @@ import React from 'react';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
 import ChallengeToCarousel from './ChallengeToCarousel';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 const responsive = {
   0: { items: 1 },
@@ -17,6 +19,7 @@ const responsive = {
 };
 
 function ChallengesCarousel({ challenges, setNewImg, main }) {
+
   const items = challenges.length > 0 ? challenges.map((challenge) => (
     <ChallengeToCarousel
       key={challenge.id + challenge.name}
@@ -30,6 +33,15 @@ function ChallengesCarousel({ challenges, setNewImg, main }) {
     />
   )) : [<h1>Not Found</h1>];
 
+  const renderPrevButton = ({ isDisabled }) => {
+    return <button className="Carousel-Prev-Button" ><ArrowBackIosIcon fontSize='large'/></button>;
+  };
+
+  const renderNextButton = () => {
+    return <button className="Carousel-Next-Button"><ArrowForwardIosIcon fontSize='large'/></button>;
+  };
+
+
   return (
     <div style={{ width: '80%', margin: 'auto' }}>
       <AliceCarousel
@@ -38,6 +50,8 @@ function ChallengesCarousel({ challenges, setNewImg, main }) {
         mouseTracking
         items={items}
         responsive={responsive}
+        renderPrevButton={renderPrevButton}
+        renderNextButton={renderNextButton}
       />
     </div>
   );

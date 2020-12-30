@@ -62,7 +62,7 @@ function TeacherAssignments({ teamName }) {
             </Button>
           </div>
           {allAssignments && allAssignments[0].Challenge ? (
-            <div className="assignments-flexbox">
+            <div className="assignments-flexBox">
               {allAssignments.map((challenge) => (
                 <div className="assignments-card-and-button" key={challenge.Challenge.id + challenge.Challenge.name}>
                   <ChallengeCard

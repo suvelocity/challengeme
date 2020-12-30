@@ -32,7 +32,7 @@ teamRouter.get('/team-page/:teamId', checkTeamPermission, async (req, res) => {
           model: User,
           attributes: ['id', 'userName', 'phoneNumber', 'email'],
           through: {
-            attributes: [],
+            attributes: ['permission'],
           },
         },
       ],

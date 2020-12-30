@@ -15,31 +15,35 @@ export const customStyles = {
 export const labelsChooserStyle = {
   option: (provided) => ({
     ...provided,
-    border: '1px solid black',
-    borderRadius: '3px',
     color: 'black',
     fontWeight: 'bold',
-    width: 100,
-    boxSizing: 'border-box',
-    margin: 3,
-    backgroundColor: 'rgba(30, 61, 91,0.5)',
+    width: 170,
+    backgroundColor: 'transparent',
+    cursor: 'pointer',
+    height: 30,
     ':hover': {
-      backgroundColor: '#1E3D5B',
-      color: 'white',
+      backgroundColor: 'transparent',
+      textDecoration: 'underline',
+      cursor: 'pointer'
     },
-    minHeight: 60,
   }),
   menu: (provided) => ({
     ...provided,
-    width: 350,
+    width: 400,
     paddingLeft: 10,
+    backgroundColor: 'rgba(255, 255, 255,0.8)',
+    paddingBottom:10
   }),
   menuList: (provided) => ({
     ...provided,
     display: 'flex',
     flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
   }),
   control: (provided) => ({
     ...provided,
+    width: 400
   }),
 };
