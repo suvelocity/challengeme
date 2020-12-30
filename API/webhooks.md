@@ -8,7 +8,20 @@ nav_order: 6
 <link rel='stylesheet' href='teams.css'>
 # Registering Webhooks
 {: .no_toc}
-In order to receive updates on events in the ChallengeMe system you have to register a webhook on our system that will send you updates as events happen, to a given address.
+In order to receive updates on events in the ChallengeMe system you have to register a webhook on our system that will send you updates as events happen, to a given address.  
+that adress will receive post requests from challengeMe with body as such: ('?' means contextually optional  
+
+{% highlight typescript %}
+{
+  eventName: "Submitted Challenge", // name of the event that occured
+  userName: "dannyDaKid", // name of the user who triggered the event  
+  userMail: "danny.boy@memail.com", // said user's email adresss 
+  challengeId: 34 ; // id of the challenge related to the event
+  challengeName: "do A thing";
+  submissionState?: "FAIL"|"SUCCESS" // if the event is a submission, wheter it was successful 
+  team: "Seans boys" // team name of the user
+}
+{% endhighlight %}
 
 ## Table Of Contents
 {: .no_toc}
@@ -32,8 +45,15 @@ GET http://35.239.15.221:8080/api/v1/webhooks/events/all
 ```
 With headers as such: 
 {% highlight javascript %}
-JavaScript
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // the word "Bearer" followed by your webhook token
+{
+      eventName: 'Submitted Challenge'|'Started Challenge';
+      userName: string;
+      userMail:string;
+      challengeId: number;
+      challengeName: string;
+      submissionState?: 'FAIL'|'SUCCESS';
+      team: string;
+    }
 {% endhighlight %}
 
 ### Response
