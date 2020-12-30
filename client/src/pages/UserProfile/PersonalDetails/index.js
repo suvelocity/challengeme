@@ -10,6 +10,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import ResetPassword from '../../../components/Modals/ChangePassword';
 import network from '../../../services/network';
+import { generateTime } from '../../../utils';
 
 const useStyles = makeStyles(() => ({
   info: {
@@ -29,16 +30,6 @@ const useStyles = makeStyles(() => ({
     margin: '20px 0px -20px 0px',
   },
 }));
-
-function generateTime(date) {
-  if (!date) return '';
-  let today = new Date(date);
-  const dd = String(today.getDate()).padStart(2, '0');
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const yyyy = today.getFullYear();
-  today = `${yyyy}-${mm}-${dd}`;
-  return `${today}`;
-}
 
 const generateName = (name) => {
   let changedName = '';
@@ -225,8 +216,8 @@ function UserInfo() {
       </div>
     </div>
   ) : (
-    <div />
-  );
+      <div />
+    );
 }
 
 export default UserInfo;

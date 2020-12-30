@@ -216,7 +216,30 @@ insightAdminRouter.get('/top-user', async (req, res) => {
       },
       order: [[Submission, 'createdAt', 'DESC']],
     });
-    return res.json(topUsers);
+
+    const formattedMembers = topUsers.map((member) => {
+      const filteredSubmissions = [];
+      let success = 0;
+      let fail = 0;
+      member.Submissions.forEach((submission) => {
+        if (filteredSubmissions.includes(submission.challengeId)) {
+        } else {
+          filteredSubmissions.push(submission.challengeId);
+          if (submission.state === 'SUCCESS') {
+            success++;
+          } else {
+            fail++;
+          }
+        }
+      });
+      return {
+        success,
+        fail,
+        userName: member.userName,
+      };
+    });
+
+    return res.json(formattedMembers);
   } catch (error) {
     console.error(error);
     return res.status(400).json({ message: 'Cannot process request' });

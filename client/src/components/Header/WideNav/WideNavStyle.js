@@ -79,7 +79,7 @@ export default makeStyles((theme) => ({
     fontWeight: 'bold',
     fontSize: '19px',
     lineHeight: '46px',
-    color: '#00AD98',
+    color: '#ffffff',
     textAlign: 'right',
     marginLeft: '10px',
   },

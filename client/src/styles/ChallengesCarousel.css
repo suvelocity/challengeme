@@ -2,28 +2,22 @@
     border-radius: 2.1613px;
     box-shadow: inset 0px 15px 30px rgba(0, 0, 0, 0.5);
     filter: drop-shadow(0px 15px 30px rgba(0, 0, 0, 0.15));
-    width: 210px;
+    margin-left:5px;
     height: 170.07px;
     background-repeat: no-repeat;
-    background-size: 100% 270.07px;
-    color:white;
-    display:flex;
-    align-items:flex-end;
+    background-size: 120% 100%;
+    color: white;
+    display: flex;
+    align-items: flex-end;
     justify-content: space-between;
-    padding-left:5px;
-    padding-bottom:5px;
-    text-shadow: 1px 1px rgba(0, 0, 0,0.9); 
-    transition: 0.1s;
+    padding-left: 5px;
+    padding-bottom: 5px;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.9);
 }
 
-.Challenge-To-Carousel:hover {
-    width: 220px;
-    height: 180.07px;
-    transition: 0.1s;
-}
 
 .Challenge-To-Carousel-Header {
-    margin-bottom:10px;
+    margin-bottom: 10px;
     font-family: Ubuntu;
     font-style: normal;
     font-weight: bold;
@@ -33,7 +27,7 @@
 }
 
 .Challenge-To-Carousel-Author {
-    margin-bottom:10px;
+    margin-bottom: 10px;
     font-family: Ubuntu;
     font-style: normal;
     font-weight: normal;
@@ -51,7 +45,7 @@
 }
 
 .Challenge-To-Carousel-Button {
-    width:100px;
+    width: 100px;
     background: rgba(0, 0, 0, 0.5);
     border: 0.801541px solid #FFFFFF;
     box-sizing: border-box;
@@ -69,10 +63,10 @@
 }
 
 .Challenge-To-Carousel-Button:hover {
+    color: black;
     background: linear-gradient(176.6deg, #FFFFFF -41.64%, rgba(255, 255, 255, 0) 207.73%);
     text-decoration: none;
-    text-shadow: 20px 30px 60px rgba(0, 0, 0,0.9); 
-
+    text-shadow: 20px 30px 60px rgba(0, 0, 0, 0.9);
 }
 
 .remove:hover {
@@ -93,4 +87,43 @@
 
 .remove:link {
     text-decoration: none;
+}
+
+.Carousel-Next-Button {
+    position: relative;
+    opacity: 1;
+    width: 80px;
+    float: right;
+    cursor: pointer;
+    margin-top: -185px;
+    margin-right: -6px;
+    height: 175px;
+    border: none;
+    font-size: 50px;
+    color:white;
+    background-color: rgb(0, 0, 0, 0.2);
+    outline: none;
+}
+
+.Carousel-Next-Button:hover {
+    background-color: rgb(0, 0, 0, 0.5);
+}
+
+.Carousel-Prev-Button {
+    position: relative;
+    opacity: 1;
+    width: 80px;
+    float: left;
+    cursor: pointer;
+    margin-top: -185px;
+    margin-left: -6px;
+    height: 175px;
+    background-color: rgb(0, 0, 0, 0.2);
+    border: none;
+    outline: none;
+    color:white;
+}
+
+.Carousel-Prev-Button:hover {
+    background-color: rgb(0, 0, 0, 0.5);
 }

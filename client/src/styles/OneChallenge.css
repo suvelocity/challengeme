@@ -65,12 +65,10 @@
 
 .One-Challenge-Page-Head ul {
     position: absolute;
-    /* width: 5200px; */
     height: 39px;
     left: 59px;
     top: 355px;
     font-weight: 500;
-    /* font-size: 15px; */
     font-family: Ubuntu;
     font-style: normal;
     line-height: 21px;
@@ -126,7 +124,6 @@
     left: 21.5%;
     position: absolute;
     display: flex;
-    /* justify-content: space-evenly; */
 }
 
 .One-Challenge-Page-Control-Panel-Rating-Container {
@@ -138,64 +135,47 @@
 
 .One-Challenge-Page-Control-Panel-Rating {
     display: flex;
+    flex-direction: column;
     justify-content: space-evenly;
-    padding-top: 3px;
-    padding-bottom: 3px;
+}
+
+.One-Challenge-Page-Control-Panel-Rating-Stars {
+    margin-top: 10%;
 }
 
 .One-Challenge-Page-Control-Panel-Rating-Text {
-    margin-left: 10px;
-    display: flex;
-    margin: auto;
-    flex-direction: column;
-    justify-content: space-evenly;
-    height: 50%;
-    font-family: Ubuntu;
-    font-style: normal;
-    font-weight: normal;
-    text-align: center;
-}
-
-.One-Challenge-Page-Control-Panel-Rating-Text p:first-child {
-    margin: 0;
-    font-size: 13px;
-    line-height: 20px;
-    align-content: center;
-}
-
-.One-Challenge-Page-Control-Panel-Rating-Text p b {
-    font-size: 20px;
-}
-
-.One-Challenge-Page-Control-Panel-Rating-Text p:last-child {
-    margin: 0;
-    font-size: 10px;
-    line-height: 9px;
-    width: 80px;
+    font-size: medium;
 }
 
 .One-Challenge-Page-Control-Panel-Start-Button-Container {
-    width: 35%;
+    width: 33%;
     display: flex;
     justify-content: space-around;
 }
 
 .One-Challenge-Page-Control-Panel-Start-Button {
-    border: none;
-    cursor: pointer;
-    width: 120px;
-    height: 100%;
-    font-family: Wendy One;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 30px;
-    line-height: 36px;
-    display: flex;
-    align-items: center;
+    width: 80%;
+    background: linear-gradient(270deg, rgba(55, 99, 192, 1) 0%, rgba(87, 159, 223, 1) 100%);
+    color: white;
+    height: 70%;
+    margin: 10%;
+    margin-top: 8%;
+    font-size: 20px;
+    font-weight: bold;
     text-align: center;
-    color: #00AD98;
-    text-decoration: none;
-    background-color: transparent;
+    /* font-family: Wendy One; */
+    /* font-style: normal; */
+    /* border: none; */
+    /* cursor: pointer; */
+    /* margin-bottom: 10px; */
+    /* line-height: 36px; */
+    /* display: flex; */
+    /* align-items: center; */
+    /* text-align: center; */
+    /* color: #00AD98; */
+    /* text-decoration: none; */
+    /* background-color: transparent; */
+    /* outline: none; */
 }
 
 .One-Challenge-Page-Control-Panel-Submit {
@@ -205,17 +185,31 @@
 }
 
 .One-Challenge-Page-Control-Panel-Submit-Button {
-    cursor: pointer;
-    font-family: Wendy One;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 15px;
-    line-height: 16px;
+    margin-top: 6%;
     display: flex;
-    align-items: center;
-    text-align: center;
-    color: #00AD98;
-    width: 40px;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.One-Challenge-Control-Panel-Submit-Button-Regular {
+    background: linear-gradient(270deg, rgba(55, 99, 192, 1) 0%, rgba(87, 159, 223, 1) 100%);
+    color: white;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.One-Challenge-Control-Panel-Submit-Button-Success {
+    background: linear-gradient(270deg, rgba(36, 193, 67, 1) 0%, rgba(130, 214, 95, 1) 100%);
+    color: white;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.One-Challenge-Control-Panel-Submit-Button-Fail {
+    background: linear-gradient(270deg, rgba(193, 36, 36, 1) 0%, rgba(214, 95, 95, 1) 100%);
+    color: white;
+    margin-bottom: 10px;
+    font-size: 15px;
 }
 
 .One-Challenge-Page-More {
@@ -246,13 +240,8 @@
 }
 
 .One-Challenge-Footer {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    color: white;
-    border-top: 1px solid white;
-    text-align: center;
-    margin-top: 20%;
+    display:block;
+    padding-top:80px;
     margin-left: auto;
     margin-right: auto;
     width: 50%;

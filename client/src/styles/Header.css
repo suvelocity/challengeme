@@ -21,6 +21,7 @@
   background: linear-gradient(180deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 350%);
   border: none !important;
   box-shadow: none !important;
+  /* mix-blend-mode: difference; */
   color: white !important;
 }
 

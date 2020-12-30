@@ -15,7 +15,8 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import "./style.css";
-const SuccessSubmissionsPerUsers = lazy(() => import("./Charts/SuccessSubmissionsPerUsers"));
+const TopSuccessUsers = lazy(() => import("../../../../components/Charts/SimpleBarChart"));
+
 const tableWidth = 40;
 const useStyles = makeStyles({
   table: {
@@ -35,6 +36,7 @@ function OneTeamPage() {
   const fetchTeamInfo = useCallback(async () => {
     try {
       const { data: members } = await network.get(`/api/v1/teams/team-page/${id}`);
+      console.log(members)
       setTeamMembers(members);
       setLoading(false);
     } catch (error) {
@@ -66,7 +68,12 @@ function OneTeamPage() {
         Team: <span className="team-info-title-page-name">{teamMembers.name}</span>{" "}
           </h1>
           <div className="team-info-paper-chart">
-            <SuccessSubmissionsPerUsers />
+            <TopSuccessUsers
+              path={`/api/v1/insights/student/top-user/${id}`}
+              title='Teams Success Submissions'
+              xKey="userName"
+              yKey="success"
+            />
           </div>
           <h2 style={{ marginLeft: tableWidth }} className="team-info-title-table">My Team Friends:</h2>
           <TableContainer component={Paper} className={classes.container}>
@@ -81,8 +88,8 @@ function OneTeamPage() {
               <TableBody>
                 {teamMembers.Users.map((user) => (
                   <TableRow key={user.id}>
-                    <TableCell component="th" scope="row">
-                      {user.userName}
+                    <TableCell  component="th" scope="row">
+                      {user.userName} {user.UserTeam&& user.UserTeam.permission === 'teacher'?'(Teacher)':''}
                     </TableCell>
                     <TableCell align="center">{user.phoneNumber}</TableCell>
                     <TableCell align="center">{user.email}</TableCell>
