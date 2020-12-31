@@ -15,12 +15,15 @@ function Index() {
 
     const { id } = useParams();
     const [teamName, setTeamName] = useState()
+    const [loading, setLoading] = useState(true);
 
     const getTeamNameFromDb = useCallback(async () => {
         try {
             const { data: teamNameFromDb } = await network.get(`/api/v1/teams/team-name/${id}`);
             setTeamName(teamNameFromDb.name);
+            setLoading(false);
         } catch (error) {
+            setLoading(false);
         }
         // eslint-disable-next-line
     }, [id])
@@ -38,35 +41,39 @@ function Index() {
     ];
 
     return (
-        teamName ?
-            <div>
-                <SecondHeader paths={paths} />
-                <Suspense fallback={<Loading />}>
-                    <ErrorBoundary>
-                        <Switch>
-                            <Route exact path="/teams/teacher/:id/TeamControl">
-                                <TeamControl teamName={teamName} />
-                            </Route>
-                            <Route exact path="/teams/teacher/:id/SubmissionsStatus">
-                                <SubmissionsStatus teamName={teamName} />
-                            </Route>
-                            <Route exact path="/teams/teacher/:id/Assignments">
-                                <Assignments teamName={teamName} />
-                            </Route>
-                            <Route exact path="/teams/teacher/:id">
-                                <DashBoard teamName={teamName} />
-                            </Route>
-                            <Route path="*">
-                                <NotFound />
-                            </Route>
+        !loading ? (
+            teamName ?
+                <div>
+                    <SecondHeader paths={paths} />
+                    <Suspense fallback={<Loading />}>
+                        <ErrorBoundary>
+                            <Switch>
+                                <Route exact path="/teams/teacher/:id/TeamControl">
+                                    <TeamControl teamName={teamName} />
+                                </Route>
+                                <Route exact path="/teams/teacher/:id/SubmissionsStatus">
+                                    <SubmissionsStatus teamName={teamName} />
+                                </Route>
+                                <Route exact path="/teams/teacher/:id/Assignments">
+                                    <Assignments teamName={teamName} />
+                                </Route>
+                                <Route exact path="/teams/teacher/:id">
+                                    <DashBoard teamName={teamName} />
+                                </Route>
+                                <Route path="*">
+                                    <NotFound />
+                                </Route>
 
-                        </Switch>
-                    </ErrorBoundary>
-                </Suspense>
-            </div>
-            : <NotFound />
-
-    );
+                            </Switch>
+                        </ErrorBoundary>
+                    </Suspense>
+                </div>
+                : <NotFound />
+        )
+            : (
+                <Loading />
+            )
+    )
 }
 
 export default Index;
