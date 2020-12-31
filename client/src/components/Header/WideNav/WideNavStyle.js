@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const drawerWidth = 240;
 export default makeStyles((theme) => ({
-  appBarRegolar: {
+  appBarRegular: {
     transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -18,6 +18,7 @@ export default makeStyles((theme) => ({
   },
   root: {
     display: 'flex',
+    justifyContent: 'space-between'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -96,12 +97,29 @@ export default makeStyles((theme) => ({
   menu: {
     marginTop: '49px',
   },
+  iconFlex: {
+    display: 'flex',
+    alignItems: 'center',
+    marginRight: '10px',
+  },
   title: {
     fontSize: '15px',
   },
-  middleFlex: {
-    width: '70%',
+  flexContainer: {
     display: 'flex',
     justifyContent: 'center',
   },
+  startFlex: {
+    width: '175px'
+  },
+  middleFlex: {
+    width: '80%',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  ebdFlex: {
+    width: '240px',
+    display: 'flex',
+    justifyContent: 'flex-end',
+  }
 }));

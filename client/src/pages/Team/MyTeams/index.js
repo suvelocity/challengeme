@@ -4,8 +4,8 @@ import mixpanel from 'mixpanel-browser';
 import { Link, useHistory } from 'react-router-dom';
 import network from '../../../services/network';
 import Loading from '../../../components/Loading';
-import TeamSvg from '../../LandingPage/SvgComponents/Teams';
-import TeacherSvg from '../../LandingPage/SvgComponents/TeacherAnalytics';
+import TeamSvg from '../../../images/reactSvg/Teams';
+import TeacherSvg from '../../../images/reactSvg/TeacherAnalytics';
 import './MyTeams.css';
 
 function TeamCard({ team }) {
