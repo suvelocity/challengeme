@@ -6,7 +6,7 @@ import network from '../../../../services/network';
 import Loading from '../../../../components/Loading';
 import NotFound from '../../../NotFound';
 import SecondHeader from '../../../../components/Header/SecondHeader';
-import ChallengeCard from '../../../../components/ChallengeCard';
+import ChallengeCard from '../../../../components/Cards/WideChallengeCard';
 import './style.css';
 
 function TeamAssignments() {
