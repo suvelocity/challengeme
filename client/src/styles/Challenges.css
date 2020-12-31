@@ -16,11 +16,11 @@
 }
 
 .All-Challenge-Image-Container {
-  width: 180vw;
-  height: 10000vh;
+  width: 100vw;
+  height: 100vh;
   box-shadow: inset 0px -200px 530px rgba(0, 0, 0, 0.9);
   padding-top: 530px;
-  background-image: url('../images/svg/allChallengesBackground.svg');
+  background-image: url('../images/allChallengesBackground.png');
   background-repeat: no-repeat;
   background-size: 100%;
   background-position: center;
