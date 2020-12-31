@@ -24,37 +24,35 @@ function ChallengeToCarousel({
       setChallengeImage(img);
     }
     // eslint-disable-next-line
-    }, [main, img, id])
+  }, [main, img, id])
 
   useEffect(() => {
     fetchChallengeImage();
     // eslint-disable-next-line
-    }, [img])
+  }, [img])
   return (
-    <div
-      className="Challenge-To-Carousel"
-      style={{
-        backgroundImage: `url('${challengeImage}')`,
-      }}
-    >
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
-        <div className="Challenge-To-Carousel-Header">{name}</div>
-        <div className="Challenge-To-Carousel-Author">
-          By
+    <Link className="remove" to={`/challenges/${id}`}>
+      <div
+        className="Challenge-To-Carousel"
+        style={{
+          backgroundImage: `url('${challengeImage}')`,
+        }}
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+          <div className="Challenge-To-Carousel-Header">{name}</div>
+          <div className="Challenge-To-Carousel-Author">
+            By{' '}
           {author}
-        </div>
-        <div className="Challenge-To-Carousel-Submission">
-          {submissionsCount}
-          {' '}
+          </div>
+          <div className="Challenge-To-Carousel-Submission">
+            {submissionsCount}
+            {' '}
           submissions
         </div>
-      </div>
-      <Link className="remove" to={`/challenges/${id}`}>
-        <div className="Challenge-To-Carousel-Button">
-          Go To Challenge
         </div>
-      </Link>
-    </div>
+
+      </div>
+    </Link>
   );
 }
 
