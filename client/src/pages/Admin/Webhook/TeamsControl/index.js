@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -49,27 +49,16 @@ function Row(props) {
   const [open, setOpen] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
 
-  //   const removeUserFromTeam = async (user) => {
-  //     try {
-  //       const isDeleteOk = prompt("What's your favorite cocktail drink?");
-  //       if (isDeleteOk != null) {
-  //         await network.delete(
-  //           `/api/v1/webhooks/admin/teams/${row.id}`
-  //         );
-  //         getAllTeams();
-  //       }
-  //     } catch (error) {}
-  //   };
-
-  const deleteTeam = async (team) => {
+  const deleteTeam = useCallback(async (team) => {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
         await network.delete(`/api/v1/webhooks/admin/teams/${team}`);
         getAllTeams();
       }
-    } catch (error) {}
-  };
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [])
 
   const classes = useRowStyles();
   return (
@@ -151,39 +140,42 @@ function Row(props) {
     </React.Fragment>
   );
 }
-function TeamsControl({ darkMode }) {
-  const [allTeams, setAllTeams] = useState([]);
-  const [openNewTeamModal, setOpenNewTeamModal] = useState(false);
+function TeamsControl() {
+  const [allWebhookTeams, setAllWebhookTeams] = useState([]);
+  const [openNewWebhookTeamModal, setOpenNewWebhookTeamModal] = useState(false);
 
-  async function getAllTeams() {
+  const getAllWebhookTeams = useCallback(async () => {
     try {
       const { data: allTeamsFromServer } = await network.get(
         '/api/v1/webhooks/admin/teams',
       );
-      setAllTeams(allTeamsFromServer);
-    } catch (error) {}
-  }
+      setAllWebhookTeams(allTeamsFromServer);
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [])
 
-  const addNewTeam = () => {
-    setOpenNewTeamModal(true);
-  };
+  const addNewWebhookTeam = useCallback(() => {
+    setOpenNewWebhookTeamModal(true);
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
-    getAllTeams();
+    getAllWebhookTeams();
+    // eslint-disable-next-line
   }, []);
 
   return (
     <div className="generic-page" style={{ textAlign: 'center' }}>
       <h1 className="team-control-title">Teams Management Area</h1>
       <AddWebhookTeam
-        open={openNewTeamModal}
-        setOpen={setOpenNewTeamModal}
-        getAllTeams={getAllTeams}
+        open={openNewWebhookTeamModal}
+        setOpen={setOpenNewWebhookTeamModal}
+        getAllTeams={getAllWebhookTeams}
       />
       <Button
-        variant={darkMode ? 'contained' : 'outlined'}
+        variant="outlined"
         style={{ marginBottom: '20px' }}
-        onClick={addNewTeam}
+        onClick={addNewWebhookTeam}
       >
         Add New Team
       </Button>
@@ -206,12 +198,12 @@ function TeamsControl({ darkMode }) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {allTeams
-              && allTeams.map((team) => (
+            {allWebhookTeams
+              && allWebhookTeams.map((team) => (
                 <Row
                   key={team.id}
                   row={team}
-                  getAllTeams={getAllTeams}
+                  getAllTeams={getAllWebhookTeams}
                 />
               ))}
           </TableBody>

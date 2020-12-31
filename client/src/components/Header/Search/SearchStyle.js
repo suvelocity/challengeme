@@ -44,7 +44,7 @@ export default makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: 'rgb(175, 175, 175)',
     },
-    marginRight: theme.spacing(2),
+    // marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
@@ -65,12 +65,9 @@ export default makeStyles((theme) => ({
     color: 'inherit',
   },
   inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    width: '0px',
-    transition: 'width 2s',
-    '&:focus': {
-      width: '100%',
-    },
+    width: '200px',
+    height: '13px',
+    paddingTop: '8px'
   },
 }));

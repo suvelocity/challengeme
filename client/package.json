@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080",
+  "proxy": "http://localhost:80",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
@@ -21,6 +21,7 @@
     "mixpanel-browser": "^2.39.0",
     "moment": "^2.29.1",
     "react": "^16.13.1",
+    "react-alice-carousel": "^2.2.0",
     "react-dark-mode-toggle": "0.0.10",
     "react-dom": "^16.13.1",
     "react-draggable": "^4.4.3",
@@ -53,7 +54,7 @@
     ]
   },
   "devDependencies": {
-    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-airbnb": "18.2.1",
     "nock": "^13.0.4",
     "nock-puppeteer": "^1.0.2",
     "puppeteer": "^5.3.1"

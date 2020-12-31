@@ -1,6 +1,7 @@
 require('dotenv').config();
 const app = require('./app');
-const port = process.env.PORT || 8080;
+
+const port = process.env.PORT || 80;
 const env = process.env.NODE_ENV || 'development';
 const getCurrentBranch = require('./helpers/getCurrentBranch');
 

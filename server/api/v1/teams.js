@@ -5,7 +5,7 @@ const { checkTeamPermission, checkTeacherPermission } = require('../../middlewar
 const { User, Team, UserTeam } = require('../../models');
 
 // get team name
-teamRouter.get('/team-name/:teamId', checkTeamPermission, async (req, res) => {
+teamRouter.get('/team-name/:teamId', checkTeacherPermission, async (req, res) => {
   const { teamId } = req.params;
   const teamName = await Team.findOne({
     where: {
@@ -32,7 +32,7 @@ teamRouter.get('/team-page/:teamId', checkTeamPermission, async (req, res) => {
           model: User,
           attributes: ['id', 'userName', 'phoneNumber', 'email'],
           through: {
-            attributes: [],
+            attributes: ['permission'],
           },
         },
       ],
@@ -111,12 +111,11 @@ teamRouter.post('/add-users/:teamId', checkTeacherPermission, async (req, res) =
   try {
     const { newUsers } = req.body;
     await Promise.all(newUsers.map(async (user) => (
-      UserTeam.update({ deletedAt: null }, {
+      UserTeam.restore({
         where: {
           userId: user.value,
           teamId: req.params.teamId,
         },
-        paranoid: false,
       })
     )));
     return res.status(201).json({ message: 'Team Users Created' });
@@ -164,12 +163,13 @@ teamRouter.delete('/remove-user/:teamId', checkTeacherPermission, async (req, re
   }
 });
 
-//= ============================= Admin Routes ======================================
-
-// get all teams
-teamRouter.get('/all-teams', checkAdmin, async (req, res) => {
+// get team information
+teamRouter.get('/single-team/:teamId', checkTeacherPermission, async (req, res) => {
   try {
     const userTeam = await Team.findAll({
+      where: {
+        id: req.params.teamId,
+      },
       attributes: [
         'id', 'name', 'createdAt', 'updatedAt',
       ],
@@ -178,7 +178,7 @@ teamRouter.get('/all-teams', checkAdmin, async (req, res) => {
           model: User,
           attributes: ['id', 'userName'],
           through: {
-            attributes: ['permission'],
+            attributes: [],
           },
         },
       ],
@@ -190,22 +190,21 @@ teamRouter.get('/all-teams', checkAdmin, async (req, res) => {
   }
 });
 
-// get team information
-teamRouter.get('/single-team/:id', checkAdmin, async (req, res) => {
+//= ============================= Admin Routes ======================================
+
+// get all teams
+teamRouter.get('/all-teams', checkAdmin, async (req, res) => {
   try {
     const userTeam = await Team.findAll({
-      where: {
-        id: req.params.id,
-      },
       attributes: [
-        'id', 'name', 'createdAt', 'updatedAt',
+        'id', 'name', 'createdAt', 'updatedAt', 'externalId',
       ],
       include: [
         {
           model: User,
-          attributes: ['id', 'userName', 'permission'],
+          attributes: ['id', 'userName'],
           through: {
-            attributes: [],
+            attributes: ['permission'],
           },
         },
       ],

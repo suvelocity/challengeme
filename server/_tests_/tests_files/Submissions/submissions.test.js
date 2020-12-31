@@ -41,14 +41,14 @@ describe('testing challenges endpoints', () => {
     done();
   });
 
-  test('Can get all submissions per challenge', async (done) => {
+  test('Can admin get all submissions per challenge', async (done) => {
     await Challenge.bulkCreate(challengesMock);
     await User.bulkCreate(usersMock);
     await Submission.bulkCreate(submissionsMock);
 
     const allSubmissionsChallenge = await request(app)
       .get(`/api/v1/submissions/${challengesMock[0].id}`)
-      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
+      .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(allSubmissionsChallenge.status).toBe(200);
     expect(allSubmissionsChallenge.body).toHaveLength(submissionsMock.filter((submission) => submission.challengeId === challengesMock[0].id).length);

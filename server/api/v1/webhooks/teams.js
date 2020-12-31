@@ -308,6 +308,7 @@ async function bulkCreateUsers(users, res) {
     const temporaryPassword = generatePassword();
     newUsersForResponse.push({
       userName: users[index].userName,
+      email: users[index].email,
       password: temporaryPassword,
     });
     const hashPassword = await bcrypt.hashSync(temporaryPassword, 10);

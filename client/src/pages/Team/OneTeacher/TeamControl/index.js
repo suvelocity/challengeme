@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
@@ -53,21 +53,22 @@ function Row(props) {
   } = props;
   const [open, setOpen] = useState(false);
 
-  const removeUserFromTeam = async (user) => {
+  const removeUserFromTeam = useCallback(async (user) => {
     try {
-      const isDeleteOk = window.confirm(`Are you sure you want to remove ${row.userName} from ${teamName} team ?`);
-      if (isDeleteOk != null) {
+      const isChangeOk = window.confirm(`Are you sure you want to remove ${row.userName} from ${teamName} team ?`);
+      if (isChangeOk) {
         await network.delete(`/api/v1/teams/remove-user/${teamId}?userId=${user}`);
         getAllTeams();
       }
     } catch (error) {
     }
-  };
+    // eslint-disable-next-line
+  }, [row, teamName, teamId])
 
-  const changeUserPermissionToBeTeacher = async (user, permission) => {
+  const changeUserPermissionToBeTeacher = useCallback(async (user) => {
     try {
-      const isDeleteOk = window.confirm(`Are you sure you want to give ${row.userName}, teacher permissions on ${teamName} team?`);
-      if (isDeleteOk != null) {
+      const isChangeOk = window.confirm(`Are you sure you want to give ${row.userName}, teacher permissions on ${teamName} team?`);
+      if (isChangeOk) {
         await network.patch(`/api/v1/teams/teacher-permission/${teamId}`, {
           userId: user,
         });
@@ -75,7 +76,8 @@ function Row(props) {
       }
     } catch (error) {
     }
-  };
+    // eslint-disable-next-line
+  }, [row, teamId, teamName])
 
   const classes = useRowStyles();
   return (
@@ -117,7 +119,7 @@ function Row(props) {
                     {row.UserTeam.permission === 'student' && (
                       <StyledTableCell component="th" scope="row">
                         <Button
-                          onClick={() => changeUserPermissionToBeTeacher(row.id, row.UserTeam.permission)}
+                          onClick={() => changeUserPermissionToBeTeacher(row.id)}
                         >
                           CLick
                         </Button>
@@ -136,25 +138,27 @@ function Row(props) {
     </React.Fragment>
   );
 }
-function TeamsControl({ teamName, darkMode }) {
+function TeamsControl({ teamName }) {
   const { id } = useParams();
 
   const [allMembers, setAllMembers] = useState([]);
   const [teamNameForMember, setTeamNameForMember] = useState(false);
   const [openAddMemberModal, setOpenAddMemberModal] = useState(false);
 
-  async function getAllTeamMembers() {
+  const getAllTeamMembers = useCallback(async () => {
     try {
       const { data: allTeamsFromServer } = await network.get(`/api/v1/teams/teacher-area/${id}`);
       setAllMembers(allTeamsFromServer.Users);
     } catch (error) {
     }
-  }
+    // eslint-disable-next-line
+  }, [id])
 
-  const handleAddMemberModal = (team) => {
+  const handleAddMemberModal = useCallback((team) => {
     setTeamNameForMember(team);
     setOpenAddMemberModal(true);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     getAllTeamMembers();
@@ -180,7 +184,7 @@ function TeamsControl({ teamName, darkMode }) {
       />
       <div className="team-control-add-members">
         <Button
-          variant={darkMode ? 'contained' : 'outlined'}
+          variant="outlined"
           onClick={() => handleAddMemberModal(id)}
         >
           Add Team Members

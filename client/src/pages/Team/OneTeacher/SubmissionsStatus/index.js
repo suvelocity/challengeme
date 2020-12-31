@@ -6,13 +6,13 @@ import SubmissionsByChallenges from './SubmissionsByChallenges';
 import SubmissionsByUsers from './SubmissionsByUsers';
 import './style.css';
 
-export default function Index({ teamName, darkMode }) {
+export default function Index({ teamName }) {
   const [showByChallengeOrUser, setShowByChallengeOrUser] = useState(true);
 
   useEffect(() => {
     const user = Cookies.get('userName');
     mixpanel.track('User On Team Submissions Teacher Area', { User: `${user}`, Team: teamName });
-  }, [teamName])
+  }, [teamName]);
 
   return (
     <div className="generic-page">
@@ -25,14 +25,14 @@ export default function Index({ teamName, darkMode }) {
           {' '}
         </h1>
         <Button
-          variant={darkMode ? 'contained' : 'outlined'}
+          variant="outlined"
           style={{ marginBottom: '20px' }}
           onClick={() => setShowByChallengeOrUser((prev) => !prev)}
         >
           {showByChallengeOrUser ? 'Show By User' : 'Show By Challenge'}
         </Button>
       </div>
-      {showByChallengeOrUser ? <SubmissionsByChallenges darkMode={darkMode} /> : <SubmissionsByUsers darkMode={darkMode} />}
+      {showByChallengeOrUser ? <SubmissionsByChallenges /> : <SubmissionsByUsers />}
       <div style={{ height: '50px' }} />
     </div>
   );

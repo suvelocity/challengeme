@@ -37,7 +37,7 @@ accessKeyAdminWebhookRouter.post('/', async (req, res) => {
   const { entityName, email } = req.body;
   try {
     const existEntityName = await entityNameIsExist(entityName);
-    if (existEntityName) return res.status(409).json({ message: existEntityName })
+    if (existEntityName) return res.status(409).json({ message: existEntityName });
     const key = generateId();
     const newKey = await WebhookAccessKey.create({ key, entityName, email });
     const hashedToken = await bcrypt.hashSync(key, 10);
@@ -97,7 +97,6 @@ accessKeyAdminWebhookRouter.delete('/:id', async (req, res) => {
 
 module.exports = accessKeyAdminWebhookRouter;
 
-
 // check in the DateBase if user is in the system
 async function entityNameIsExist(entityName) {
   try {
@@ -105,12 +104,12 @@ async function entityNameIsExist(entityName) {
       where: {
         entityName,
       },
-      paranoid: false
+      paranoid: false,
     });
     if (entityNameExist) {
-      const jsonEntityName = entityNameExist.toJSON()
-      if (jsonEntityName.deletedAt) return `entity name - '${entityName}' already exists and it's soft deleted`
-      return `entity name - '${entityName}' already exists`
+      const jsonEntityName = entityNameExist.toJSON();
+      if (jsonEntityName.deletedAt) return `entity name - '${entityName}' already exists and it's soft deleted`;
+      return `entity name - '${entityName}' already exists`;
     }
     return false;
   } catch (error) {

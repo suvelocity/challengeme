@@ -12,6 +12,7 @@ const {
   combineSubmissionToChallenge,
   combineSubmissionToUserWithChallenge,
   filterLastSubmissionsForAdminRoute,
+  countSuccessSubmissionsWithUserName,
   formatCreatedAtToMoment,
 } = require('../../utils');
 const {
@@ -264,11 +265,15 @@ describe('Testing admin insights routes', () => {
       .get('/api/v1/insights/admin/top-user')
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
-    const usersWithSubmissions = combineSubmissionToUserWithChallenge(usersMock, submissionsMock, challengesMock);
-
     expect(allUsersSubmissionsPerUsers.status).toBe(200);
+
+    const usersWithSubmissions = combineSubmissionToUserWithChallenge(usersMock, submissionsMock, challengesMock);
+    const formattedMembers = countSuccessSubmissionsWithUserName(usersWithSubmissions);
+
     allUsersSubmissionsPerUsers.body.forEach((user, index) => {
-      expect(user.Submissions).toHaveLength(usersWithSubmissions[index].Submissions.length);
+      expect(formattedMembers[index].userName).toBe(user.userName);
+      expect(formattedMembers[index].success).toBe(user.success);
+      expect(formattedMembers[index].fail).toBe(user.fail);
     });
 
     const unauthorized = await request(app)

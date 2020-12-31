@@ -1,0 +1,126 @@
+.Reviews-Container {
+  max-height: 500px;
+  overflow-y: auto;
+  width: 100%;
+  border: solid 1px black;
+  border-radius: 3px;
+}
+
+.Review {
+  position: relative;
+  width: 95%;
+  margin: 10px 1% 10px;
+  height: 150px;
+  filter: drop-shadow(0px 15px 30px rgba(0, 0, 0, 0.15));
+  border: 0.4px solid #cec7c7;
+  border-radius: 13px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.Review-Empty{
+  position: relative;
+  width: 95%;
+  margin: 10px 1% 10px;
+  height: 150px;
+  filter: drop-shadow(0px 15px 30px rgba(0, 0, 0, 0.15));
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.Review-Left {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  margin: auto;
+  text-align: center;
+  width: 20%;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.Review-Author {
+  font-family: Ubuntu;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.Review-Middle {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.Review-Title {
+  text-align: left;
+  font-family: Ubuntu;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 17px;
+  line-height: 28px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.Review-CreatedAt {
+  font-family: Ubuntu;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.49);
+}
+
+.Review-Content {
+  font-family: Ubuntu;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 20px;
+  color: #111111;
+}
+
+.Review-Right {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  margin: auto;
+  text-align: center;
+  width: 15%;
+}
+
+.Review-Rating-Number {
+  font-size: large;
+  font-weight: bold;
+  margin-bottom: 0px;
+}
+
+.Review-Rating-Part-Of {
+  font-family: Roboto Mono;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 10px;
+  line-height: 13px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+}

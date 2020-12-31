@@ -51,17 +51,17 @@ describe('Register & Login Tests', () => {
       .send(usersLoginMock[0]);
 
     expect(loginResponse.status).toBe(200);
-    expect(loginResponse.headers['set-cookie'][2].slice(0, 11)).toBe('accessToken');
-    expect(loginResponse.headers['set-cookie'][3].slice(0, 12)).toBe('refreshToken');
+    expect(loginResponse.headers['set-cookie'][1].slice(0, 11)).toBe('accessToken');
+    expect(loginResponse.headers['set-cookie'][2].slice(0, 12)).toBe('refreshToken');
 
-    const refreshTokenInDB = loginResponse.headers['set-cookie'][3].split('=')[1].split(';')[0];
+    const refreshTokenInDB = loginResponse.headers['set-cookie'][2].split('=')[1].split(';')[0];
     const validRefreshTokenInDB = await RefreshToken.findOne({
       where: {
         token: refreshTokenInDB,
       },
     });
     expect(validRefreshTokenInDB.userName).toBe(usersLoginMock[0].userName);
-    expect(loginResponse.body.userDetails.userName).toBe(
+    expect(loginResponse.body.userName).toBe(
       usersLoginMock[0].userName,
     );
 
@@ -74,8 +74,8 @@ describe('Register & Login Tests', () => {
       .send(usersLoginMock[0]);
     expect(loginResponse.status).toBe(200);
 
-    const refreshToken = loginResponse.headers['set-cookie'][3].split('=')[1].split(';')[0];
-    const accessToken = loginResponse.headers['set-cookie'][2].split('=')[1].split(';')[0];
+    const refreshToken = loginResponse.headers['set-cookie'][2].split('=')[1].split(';')[0];
+    const accessToken = loginResponse.headers['set-cookie'][1].split('=')[1].split(';')[0];
 
     const validateToken = await request(server)
       .get('/api/v1/auth/validate-token')
@@ -135,7 +135,7 @@ describe('Register & Login Tests', () => {
       .send(usersLoginMock[0]);
     expect(loginResponse.status).toBe(200);
 
-    const refreshToken = loginResponse.headers['set-cookie'][3].split('=')[1].split(';')[0];
+    const refreshToken = loginResponse.headers['set-cookie'][2].split('=')[1].split(';')[0];
 
     const logOutResponse = await request(server)
       .post('/api/v1/auth/logout')

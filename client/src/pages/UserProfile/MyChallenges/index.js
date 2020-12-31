@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import mixpanel from 'mixpanel-browser';
 import Cookies from 'js-cookie';
 import network from '../../../services/network';
@@ -7,7 +7,7 @@ import './MyChallenges.css';
 const UserProfileLanding = () => {
   const [allMyChallenges, setAllMyChallenges] = useState([]);
 
-  const getMyChallenges = async () => {
+  const getMyChallenges = useCallback(async () => {
     try {
       const { data: allMyChallengesFromServer } = await network.get(
         '/api/v1/challenges/user-challenges',
@@ -15,13 +15,17 @@ const UserProfileLanding = () => {
       setAllMyChallenges(allMyChallengesFromServer);
     } catch (error) {
     }
-  };
+    // eslint-disable-next-line
+  }, [])
+
   useEffect(() => {
     const username = Cookies.get('userName');
     mixpanel.track('User On My Challenges Page', { User: `${username}` });
     getMyChallenges();
+    // eslint-disable-next-line
   }, []);
-  const statusColor = (status) => {
+
+  const statusColor = useCallback((status) => {
     if (status === 'approved') {
       return {
         background:
@@ -38,7 +42,8 @@ const UserProfileLanding = () => {
       background:
         'linear-gradient(270deg, rgba(198,198,198,1) 0%, rgba(116,116,116,1) 100%)',
     };
-  };
+    // eslint-disable-next-line
+  }, [])
   return (
     <div className="generic-page">
       <h1 className="user-profile-my-challenges-title">

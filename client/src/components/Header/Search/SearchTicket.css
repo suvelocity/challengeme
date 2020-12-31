@@ -5,7 +5,8 @@
     align-items: center;
     padding: 2vh;
     border-radius: 3px;
-     
+     display: flex;
+     justify-content: space-between;
 }
 
 .SearchTicket:hover{

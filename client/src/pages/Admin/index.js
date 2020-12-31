@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, lazy, Suspense } from "react";
+import React, { useEffect, useContext, useCallback, lazy, Suspense } from "react";
 import { Switch, Route, useHistory } from "react-router-dom";
 import { Logged } from "../../context/LoggedInContext";
 import ErrorBoundary from "../../components/ErrorBoundary";
@@ -16,11 +16,21 @@ const TeamsControl = lazy(() => import("./TeamsControl"));
 const DashBoard = lazy(() => import("./DashBoard"));
 const Webhook = lazy(() => import("./Webhook"));
 
-function Index({ darkMode }) {
+const paths = [
+  { name: "DashBoard", URL: "/admin/DashBoard" },
+  { name: "Submissions Status", URL: `/admin/SubmissionsStatus` },
+  { name: "Challenges Management", URL: "/admin/ChallengesManagement" },
+  { name: "Users Control", URL: "/admin/UsersControl" },
+  { name: "Githhub Tokens", URL: "/admin/GithhubTokens" },
+  { name: "Teams Control", URL: "/admin/TeamsControl" },
+  { name: "Webhook Control", URL: "/admin/Webhook/AccessKey" },
+];
+
+function Index() {
   const location = useHistory();
   const loggedContext = useContext(Logged);
 
-  const checkAdminPermissions = async () => {
+  const checkAdminPermissions = useCallback(async () => {
     if (Cookies.get("accessToken")) {
       try {
         await network.get("/api/v1/auth/validate-admin");
@@ -44,48 +54,40 @@ function Index({ darkMode }) {
       loggedContext.setLogged(false);
       location.push("/");
     }
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     checkAdminPermissions();
     // eslint-disable-next-line
   }, []);
 
-  const paths = [
-    { name: "DashBoard", URL: "/admin/DashBoard" },
-    { name: "Submissions Status", URL: `/admin/SubmissionsStatus` },
-    { name: "Challenges Management", URL: "/admin/ChallengesManagement" },
-    { name: "Users Control", URL: "/admin/UsersControl" },
-    { name: "Githhub Tokens", URL: "/admin/GithhubTokens" },
-    { name: "Teams Control", URL: "/admin/TeamsControl" },
-    { name: "Webhook Control", URL: "/admin/Webhook/AccessKey" },
-  ];
   return (
     <>
-      <SecondHeader paths={paths} darkMode={darkMode} />
+      <SecondHeader paths={paths} />
       <Suspense fallback={<Loading />}>
         <ErrorBoundary>
           <Switch>
             <Route exact path="/admin/DashBoard">
-              <DashBoard darkMode={darkMode} />
+              <DashBoard />
             </Route>
             <Route exact path="/admin/SubmissionsStatus">
-              <SubmissionsByUsers darkMode={darkMode} />
+              <SubmissionsByUsers />
             </Route>
             <Route exact path="/admin/ChallengesManagement">
-              <ProposedChallenge darkMode={darkMode} />
+              <ProposedChallenge />
             </Route>
             <Route exact path="/admin/UsersControl">
-              <UsersControl darkMode={darkMode} />
+              <UsersControl />
             </Route>
             <Route exact path="/admin/GithhubTokens">
-              <GithubTokens darkMode={darkMode} />
+              <GithubTokens />
             </Route>
             <Route exact path="/admin/TeamsControl">
-              <TeamsControl darkMode={darkMode} />
+              <TeamsControl />
             </Route>
             <Route path="/admin/Webhook">
-              <Webhook darkMode={darkMode} />
+              <Webhook />
             </Route>
             <Route path="*">
               <NotFound />

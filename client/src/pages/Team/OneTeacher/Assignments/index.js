@@ -1,35 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
 import { useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import network from '../../../../services/network';
-import ChallengeCard from '../../../../components/ChallengeCardSmallVersion';
+import ChallengeCard from '../../../../components/Cards/SmallChallengeCard';
 import AddAssignment from '../../../../components/Modals/AddAssignment';
 import Loading from '../../../../components/Loading';
 import './style.css';
 
-function TeacherAssignments({ darkMode, teamName }) {
+function TeacherAssignments({ teamName }) {
   const { id } = useParams();
 
   const [allAssignments, setAllAssignments] = useState();
   const [openNewAssignmentModal, setOpenNewAssignmentModal] = useState(false);
 
-  const getAllAssignments = async () => {
+  const getAllAssignments = useCallback(async () => {
     try {
       const { data: assignments } = await network.get(`/api/v1/assignments/${id}`);
       setAllAssignments(assignments);
     } catch (error) {
     }
-  };
+    // eslint-disable-next-line
+  }, [id])
 
-  const removeAssignment = async (challengeId) => {
+  const removeAssignment = useCallback(async (challengeId) => {
     try {
       await network.delete(`/api/v1/assignments/${id}?challengeId=${challengeId}`);
       getAllAssignments();
     } catch (error) {
     }
-  };
+    // eslint-disable-next-line
+  }, [id])
 
   useEffect(() => {
     getAllAssignments();
@@ -55,12 +57,12 @@ function TeacherAssignments({ darkMode, teamName }) {
               {' '}
               Page
             </h1>
-            <Button variant={darkMode ? 'contained' : 'outlined'} onClick={() => setOpenNewAssignmentModal(true)}>
+            <Button variant="outlined" onClick={() => setOpenNewAssignmentModal(true)}>
               Add New Assignment
             </Button>
           </div>
           {allAssignments && allAssignments[0].Challenge ? (
-            <div className="assignments-flexbox">
+            <div className="assignments-flexBox">
               {allAssignments.map((challenge) => (
                 <div className="assignments-card-and-button" key={challenge.Challenge.id + challenge.Challenge.name}>
                   <ChallengeCard
@@ -81,10 +83,10 @@ function TeacherAssignments({ darkMode, teamName }) {
               ))}
             </div>
           ) : (
-              <h1 className="not-found">Not Found</h1>
-            )}
+            <h1 className="not-found">Not Found</h1>
+          )}
         </div>
-      ) : <Loading darkMode={darkMode} />
+      ) : <Loading />
   );
 }
 
