@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Rating from '@material-ui/lab/Rating';
+// import Rating from '@material-ui/lab/Rating';
 import { Link } from 'react-router-dom';
 import network from '../../services/network';
 import '../../styles/WideChallengeCard.css';
@@ -9,8 +9,8 @@ export default function ChallengeCard({
   description,
   labels,
   challengeId,
-  rating,
-  submissions,
+  // rating,
+  // submissions,
   authorName,
   createdAt,
 }) {
