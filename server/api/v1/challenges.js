@@ -1,10 +1,11 @@
 require('dotenv').config();
 const challengeRouter = require('express').Router();
 const { Sequelize, Op } = require('sequelize');
+const checkToken = require('../../middleware/checkToken');
 const checkAdmin = require('../../middleware/checkAdmin');
 const { newChallengeValidation } = require('../../helpers/validator');
 const {
-  Submission, User, Challenge, Label, Review,
+  Submission, User, Challenge, Label, Review, Image,
 } = require('../../models');
 
 // get all challenges with reviews and labels
@@ -18,7 +19,9 @@ challengeRouter.get('/', async (req, res) => {
           [Op.like]: `%${name}%`,
         },
         state: 'approved',
+
       },
+      attributes: ['id', 'name', 'description', 'type', 'createdAt'],
       include: [
         {
           model: User,
@@ -92,7 +95,7 @@ challengeRouter.get('/', async (req, res) => {
 });
 
 // get challenges that the user add to the system
-challengeRouter.get('/user-challenges', async (req, res) => {
+challengeRouter.get('/user-challenges', checkToken, async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
       where: {
@@ -125,6 +128,7 @@ challengeRouter.get('/info/:challengeId', async (req, res) => {
   try {
     const challenge = await Challenge.findOne({
       where: { id: req.params.challengeId, state: 'approved' },
+      attributes: ['id', 'name', 'description', 'type', 'createdAt'],
       include: [
         {
           model: Label,
@@ -136,7 +140,7 @@ challengeRouter.get('/info/:challengeId', async (req, res) => {
         {
           model: User,
           as: 'Author',
-          attributes: ['email', 'userName'],
+          attributes: ['userName'],
         },
       ],
     });
@@ -173,8 +177,21 @@ challengeRouter.get('/info/:challengeId', async (req, res) => {
   }
 });
 
+challengeRouter.get('/boiler-plate/:challengeId', checkToken, async (req, res) => {
+  try {
+    const challenge = await Challenge.findOne({
+      where: { id: req.params.challengeId, state: 'approved' },
+      attributes: ['boilerPlate'],
+    });
+    return res.json(challenge);
+  } catch (error) {
+    console.error(error.message);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
 // router Post - new challenge
-challengeRouter.post('/', async (req, res) => {
+challengeRouter.post('/', checkToken, async (req, res) => {
   try {
     const { repositoryName: newRepo } = req.body;
     const repoExists = await Challenge.findOne({
@@ -209,7 +226,7 @@ challengeRouter.post('/', async (req, res) => {
 //= ============================= Admin Routes ======================================//
 
 // get all challenges no matter the state
-challengeRouter.get('/no-matter-the-state', checkAdmin, async (req, res) => {
+challengeRouter.get('/no-matter-the-state', checkToken, checkAdmin, async (req, res) => {
   try {
     const allChallenges = await Challenge.findAll({
       include: [
@@ -235,7 +252,7 @@ challengeRouter.get('/no-matter-the-state', checkAdmin, async (req, res) => {
 });
 
 // update challenge state
-challengeRouter.patch('/state-update/:challengeId', checkAdmin, async (req, res) => {
+challengeRouter.patch('/state-update/:challengeId', checkToken, checkAdmin, async (req, res) => {
   try {
     const { challengeId } = req.params;
     const { state } = req.body;

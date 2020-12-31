@@ -1,0 +1,503 @@
+.Landing-page-main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #1E3D5B;
+    /* background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%); */
+}
+
+.Landing-page-Vector {
+    position: absolute;
+    background-image: url('../images/svg/WhiteVector.svg');
+    background-repeat: no-repeat;
+    background-size: 100%;
+    /* background-color: white; */
+    /* z-index: 30; */
+    /* mask-image: url('../images/svg/WhiteVector.svg') ; */
+    /* mask-repeat: no-repeat; */
+    height: 80%;
+    width: 100%;
+    top: 17%;
+    margin: 0;
+}
+
+.Landing-page-title {
+    display: flex;
+    justify-content: center;
+    padding-top: 20%;
+}
+
+.Landing-page-under-title-paragraph {
+    position: absolute;
+    width: 600px;
+    padding-top: 7%;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 59px;
+    text-align: center;
+    letter-spacing: 0.245em;
+    color: #FFFFFF;
+}
+
+.Landing-page-View {
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    padding-top: 35%;
+    height: 20%vh;
+    width: 100vw;
+}
+
+.Landing-page-View-content {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    height: 30%;
+    width: 37%;
+}
+
+.Landing-page-View-content h2 {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    height: 30%;
+    font-size: 2.8rem;
+    color: #FFFFFF;
+}
+
+.Landing-page-View-content p {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    color: #FFFFFF;
+}
+
+.Landing-page-View-Buttons {
+    display: flex;
+    width: auto;
+    padding-top: 10%;
+    padding-right: 30%;
+    width: 90%;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.Landing-page-View-GetStarted {
+    z-index: 1000;
+    height: 55px;
+    width: 45%;
+    font-size: 1.2rem;
+    line-height: 55px;
+    border: none;
+    color: white;
+    background-color: #00AD98;
+    text-decoration: none;
+    font-family: sans-serif;
+}
+
+.Landing-page-View-GetStarted:hover {
+    background-color: rgb(0, 173, 152, 70%);
+}
+
+.Landing-page-View-Learn-More {
+    z-index: 1000;
+    height: 55px;
+    line-height: 50px;
+    width: 45%;
+    font-size: 1.2rem;
+    text-decoration: none;
+    color: white;
+    border: 1px solid white;
+    font-family: sans-serif;
+}
+
+.Landing-page-View-Learn-More:hover {
+    background-color: rgb(255, 255, 255, 10%);
+}
+
+.Landing-page-View-Hacker-walks {
+    z-index: 1000;
+}
+
+.Landing-page-stripes {
+    position: absolute;
+    float: right;
+    padding-top: 25%;
+    padding-left: 70%;
+}
+
+.Landing-page-Watch-Video {
+    position: relative;
+    margin-top: 55%;
+    cursor: pointer;
+    margin-left: 37.5%;
+    width: 25%;
+    min-width: 250px;
+    height: 100px;
+    background: #FAFAFA;
+    border: 1px solid #00AD98;
+    box-sizing: border-box;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+    text-align: center;
+    color: #00AD98;
+    outline: none;
+}
+
+.Landing-page-Watch-Video:hover {
+    color: white;
+    background-color: rgb(0, 173, 152);
+}
+
+.Landing-page-Sections-Cards {
+    position: relative;
+    padding-top: 9%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.Landing-page-Sections-Single-Card {
+    position: relative;
+    box-shadow: 11px 10px 16px 0px #000000 34%;
+    width: 25%;
+    min-width: 350px;
+    height: 500px;
+    background-color: #1B3F55;
+    margin: 5% 2% auto 2%;
+    color: white;
+}
+
+.Landing-page-Sections-Head {
+    font-weight: bold;
+    font-family: Ubuntu;
+    font-size: 25px;
+}
+
+.Landing-page-Sections-Content {
+    margin-top: 35px;
+    font-family: Ubuntu;
+    letter-spacing: 0.1em;
+    color: #C6E9FF;
+}
+
+.Landing-page-Sections-Picture {
+    text-align: center;
+    margin-top: 10%;
+}
+
+.Landing-page-Sections-Learn-More {
+    position: absolute;
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    bottom: 10px;
+    left: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+.Landing-page-Sections-Learn-More:hover {
+    text-decoration: underline;
+}
+
+.Landing-page-Open-Source {
+    position: relative;
+    padding-top: 65%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-evenly;
+    color: white;
+}
+
+.Landing-page-Open-Source-H2 {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    height: 30%;
+    font-size: 2.8rem;
+    align-self: center;
+    color: #FFFFFF;
+}
+
+.Landing-page-Open-Source-P {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.2rem;
+    align-self: center;
+    line-height: 2rem;
+    color: #FFFFFF;
+    width: 40%;
+    text-align: center;
+}
+
+.Landing-page-Open-Source-Button {
+    width: 20%;
+    background-color: transparent;
+    min-width: 150px;
+    color: white;
+    border: 1px solid white;
+    align-self: center;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.Landing-page-Open-Source-Button:hover {
+    background-color: rgb(255, 255, 255, 10%);
+}
+
+.Landing-page-Project-Leaders {
+    position: relative;
+    padding-top: 25%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    color: white;
+}
+
+.Landing-page-Project-Leaders-H2 {
+    font-size: 3rem;
+}
+
+.Landing-page-Project-Leaders-Cards {
+    position: relative;
+    display: flex;
+    text-align: center;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.Landing-page-Project-Leaders-Root {
+    width: 25%;
+    min-width: 320px;
+    margin-top: 3%;
+    height: 400px;
+    color: black;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 5%
+}
+
+.Landing-page-Project-Leaders-Icon {
+    position: absolute;
+}
+
+.Landing-page-Project-Leaders-Image {
+    position: absolute;
+    margin: -50px auto auto 130px;
+    height: 70px;
+    width: 70px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.Landing-page-Project-Leaders-Name {
+    font-family: Ubuntu;
+    font-style: normal;
+    margin-top: 25px;
+    color: #034077;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.Landing-page-Project-Leaders-Rule {
+    margin-top: 5px;
+    font-size: 0.8rem;
+}
+
+.Landing-page-Project-Leaders-Content {
+    margin-top: 10px;
+    font-size: 1.0rem;
+    overflow: auto;
+    height: 275px;
+}
+
+.Landing-page-Contributors {
+    position: relative;
+    padding-top: 25%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-evenly;
+    color: white;
+}
+
+.Landing-page-Contributors-H2 {
+    font-size: 3rem;
+}
+
+.Landing-page-Contributors-Cards {
+    position: relative;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    display: flex;
+    text-align: center;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.Landing-page-Contributors-Root {
+    width: 25%;
+    min-width: 150px;
+    max-width: 250px;
+    height: 100%;
+    color: black;
+    background-color: transparent;
+    border: 2px solid white;
+    border-radius: 5%;
+    display: flex;
+    flex-direction: column;
+}
+
+.Landing-page-Contributors-Name {
+    color: white;
+    font-weight: bold;
+}
+
+.Landing-page-Contributors-Icon {
+    position: relative;
+    align-self: center;
+    margin-top: 10px;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+}
+
+.Landing-page-Contributors-Github-Icon {
+    position: relative;
+    margin-top: 3px;
+    height: 50px;
+    width: 50px;
+    color: white;
+}
+
+.Landing-page-Contributors-Github {
+    color: white;
+}
+
+.Landing-page-Build-Your-Own-Challenge {
+    display: flex;
+    justify-content: space-evenly;
+    align-content: center;
+    margin-top: 35%;
+    padding-bottom: 5%;
+    height: 20%vh;
+    width: 100vw;
+}
+
+.Landing-page-Build-Your-Own-Challenge-content {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    height: 30%;
+    width: 37%;
+}
+
+.Landing-page-Build-Your-Own-Challenge-content h2 {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: bold;
+    height: 30%;
+    font-size: 2.8rem;
+    color: #FFFFFF;
+}
+
+.Landing-page-Build-Your-Own-Challenge-content p {
+    font-family: Ubuntu;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+    color: #FFFFFF;
+}
+
+.Landing-page-Build-Your-Own-Challenge-Buttons {
+    display: flex;
+    width: auto;
+    padding-top: 10%;
+    padding-right: 30%;
+    width: 90%;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.Landing-page-Build-Your-Own-Challenge-GetStarted {
+    z-index: 1000;
+    height: 55px;
+    width: 45%;
+    font-size: 25px;
+    line-height: 55px;
+    border: none;
+    color: white;
+    background-color: #00AD98;
+    text-decoration: none;
+    font-family: sans-serif;
+}
+
+.Landing-page-Build-Your-Own-Challenge-GetStarted:hover {
+    background-color: rgb(0, 173, 152, 70%);
+}
+
+.Landing-page-Build-Your-Own-Challenge-Learn-More {
+    z-index: 1000;
+    height: 55px;
+    line-height: 50px;
+    width: 45%;
+    font-size: 25px;
+    text-decoration: none;
+    color: white;
+    border: 1px solid white;
+    font-family: sans-serif;
+}
+
+.Landing-page-Build-Your-Own-Challenge-Learn-More:hover {
+    background-color: rgb(255, 255, 255, 10%);
+}
+
+.Landing-page-Build-Your-Own-Challenge-Board {
+    margin: auto 0 auto 0;
+    z-index: 1000;
+}
+
+.Landing-page-Footer {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    color: white;
+    text-align: center;
+    margin-top: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
+
+.Landing-page-Footer-Labels {
+    padding-top: 2%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.Landing-page-Footer-Single-Label {
+    color: white;
+    text-decoration: none;
+}
+
+.Landing-page-Footer-Single-Label:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.Landing-page-Footer p {
+    padding-top: 1%;
+}

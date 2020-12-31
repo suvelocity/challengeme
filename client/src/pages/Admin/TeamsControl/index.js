@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -49,17 +49,18 @@ function Row(props) {
   const { row, getAllTeams, handleAddMemberModal } = props;
   const [open, setOpen] = useState(false);
 
-  const removeUserFromTeam = async (user) => {
+  const removeUserFromTeam = useCallback(async (user) => {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
         await network.delete(`/api/v1/teams/remove-user/${row.id}?userId=${user}`);
         getAllTeams();
       }
-    } catch (error) {}
-  };
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [row])
 
-  const changeUserPermissionOnTeam = async (user, permission) => {
+  const changeUserPermissionOnTeam = useCallback(async (user, permission) => {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
@@ -70,18 +71,20 @@ function Row(props) {
         });
         getAllTeams();
       }
-    } catch (error) {}
-  };
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [row])
 
-  const deleteTeam = async (team) => {
+  const deleteTeam = useCallback(async (team) => {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
         await network.delete(`/api/v1/teams/remove-team/${team}`);
         getAllTeams();
       }
-    } catch (error) {}
-  };
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [])
 
   const classes = useRowStyles();
   return (
@@ -96,10 +99,7 @@ function Row(props) {
           {row.id}
         </StyledTableCell>
         <StyledTableCell align="left">{row.name}</StyledTableCell>
-        <StyledTableCell align="left">{row.teachers}</StyledTableCell>
-        <StyledTableCell align="left">
-          {new Date(row.updatedAt).toString().substring(0, 24)}
-        </StyledTableCell>
+        <StyledTableCell align="left">{row.externalId}</StyledTableCell>
         <StyledTableCell align="left">
           {new Date(row.createdAt).toString().substring(0, 24)}
         </StyledTableCell>
@@ -162,30 +162,34 @@ function Row(props) {
     </React.Fragment>
   );
 }
-function TeamsControl({ darkMode }) {
+function TeamsControl() {
   const [allTeams, setAllTeams] = useState([]);
   const [openNewTeamModal, setOpenNewTeamModal] = useState(false);
   const [teamNameForMember, setTeamNameForMember] = useState(false);
   const [openAddMemberModal, setOpenAddMemberModal] = useState(false);
 
-  async function getAllTeams() {
+  const getAllTeams = useCallback(async () => {
     try {
       const { data: allTeamsFromServer } = await network.get('/api/v1/teams/all-teams');
       setAllTeams(allTeamsFromServer);
-    } catch (error) {}
-  }
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [])
 
-  const addNewTeam = () => {
+  const addNewTeam = useCallback(() => {
     setOpenNewTeamModal(true);
-  };
+    // eslint-disable-next-line
+  }, [])
 
-  const handleAddMemberModal = (team) => {
+  const handleAddMemberModal = useCallback((team) => {
     setTeamNameForMember(team);
     setOpenAddMemberModal(true);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     getAllTeams();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -200,7 +204,7 @@ function TeamsControl({ darkMode }) {
       />
 
       <Button
-        variant={darkMode ? 'contained' : 'outlined'}
+        variant="outlined"
         style={{ marginBottom: '20px' }}
         onClick={addNewTeam}
       >
@@ -214,9 +218,8 @@ function TeamsControl({ darkMode }) {
               <StyledTableCell />
               <StyledTableCell>Id</StyledTableCell>
               <StyledTableCell align="left">Name</StyledTableCell>
-              <StyledTableCell align="left">Teachers</StyledTableCell>
+              <StyledTableCell align="left">External Id</StyledTableCell>
               <StyledTableCell align="left">Created At</StyledTableCell>
-              <StyledTableCell align="left">Updated At</StyledTableCell>
               <StyledTableCell align="left" />
               <StyledTableCell align="left" />
             </TableRow>

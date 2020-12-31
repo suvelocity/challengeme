@@ -20,7 +20,7 @@ import { motion } from 'framer-motion';
 import { Logged } from '../../context/LoggedInContext';
 import network from '../../services/network';
 import Background from '../Background';
-import './styles/Login.css';
+import '../../styles/Login.css';
 
 const useStyles = makeStyles(() => ({
   userNameLoginInput: {
@@ -52,7 +52,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const location = useHistory();
 
-  const value = useContext(Logged);
+  const LoggedContext = useContext(Logged);
 
   useEffect(() => {
     mixpanel.track('User On Login Page');
@@ -84,13 +84,14 @@ export default function Login() {
     }
     // request to server
     try {
-      await network.post('/api/v1/auth/login', {
+      const { data } = await network.post('/api/v1/auth/login', {
         userName,
         password,
         rememberMe,
       });
-      value.setLogged(true);
-      mixpanel.track('User Logged In', { User: `${userName}`, 'Remember Me': `${rememberMe}` });
+      LoggedContext.setLogged(true);
+      LoggedContext.setIsAdmin(data.isAdmin);
+      mixpanel.track('User Logged In', { User: `${data.userName}`, 'Remember Me': `${rememberMe}` });
       location.push('/');
     } catch (error) {
       setError({ message: error.response.data.message });
@@ -156,6 +157,7 @@ export default function Login() {
                         aria-label="toggle password visibility"
                         onMouseDown={() => setShowPassword(true)}
                         onMouseUp={() => setShowPassword(false)}
+                        autoComplete="current-password"
                       >
                         {showPassword ? <Visibility /> : <VisibilityOff />}
                       </IconButton>

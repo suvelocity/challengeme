@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -46,19 +46,20 @@ const useRowStyles = makeStyles({
 
 function Row(props) {
   const { row, getAllTokens } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
-  const deleteToken = async (token) => {
+  const deleteToken = useCallback(async (token) => {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
         await network.delete(`/api/v1/git/${token}`);
         getAllTokens();
       }
-    } catch (error) {}
-  };
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [])
 
-  const updateToken = async (token, status) => {
+  const updateToken = useCallback(async (token, status) => {
     try {
       const isUpdateOk = prompt("Who's your favorite student?");
       if (isUpdateOk != null) {
@@ -66,8 +67,9 @@ function Row(props) {
         await network.patch('/api/v1/git/', { token, status: newStatus });
         getAllTokens();
       }
-    } catch (error) {}
-  };
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [])
 
   const classes = useRowStyles();
   return (
@@ -128,31 +130,34 @@ function Row(props) {
     </React.Fragment>
   );
 }
-function GithubTokens({ darkMode }) {
+function GithubTokens() {
   const [allTokens, setAllTokens] = useState([]);
   const [open, setOpen] = useState(false);
 
-  async function getAllTokens() {
+  const getAllTokens = useCallback(async () => {
     try {
       const { data: allTokensFromServer } = await network.get('/api/v1/git/');
       setAllTokens(allTokensFromServer);
-    } catch (error) {}
-  }
+    } catch (error) { }
+    // eslint-disable-next-line
+  }, [])
 
-  const addNewToken = () => {
+  const addNewToken = useCallback(() => {
     setOpen(true);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     getAllTokens();
+    // eslint-disable-next-line
   }, []);
 
   return (
     <div className="generic-page" style={{ textAlign: 'center' }}>
-      <h1 className="github-token-title">Githhub Tokens Management Area</h1>
+      <h1 className="github-token-title">Github Tokens Management Area</h1>
       <AddToken open={open} setOpen={setOpen} getAllTokens={getAllTokens} />
       <Button
-        variant={darkMode ? 'contained' : 'outlined'}
+        variant="outlined"
         style={{ marginBottom: '20px' }}
         onClick={addNewToken}
       >

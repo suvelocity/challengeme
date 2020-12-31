@@ -21,6 +21,84 @@ describe('Testing users routes', () => {
     done();
   });
 
+  test('Can user change his password', async (done) => {
+    await User.bulkCreate(usersMock);
+
+    const passwordIdentical = await request(app)
+      .patch('/api/v1/users/change-password')
+      .send({ oldPassword: '12345678', newPassword: '12345678' })
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
+
+    expect(passwordIdentical.status).toBe(409);
+    expect(passwordIdentical.body.message).toBe('You should choose new password');
+
+    const incorrectPassword = await request(app)
+      .patch('/api/v1/users/change-password')
+      .send({ oldPassword: '00000000', newPassword: '87654321' })
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
+
+    expect(incorrectPassword.status).toBe(400);
+    expect(incorrectPassword.body.message).toBe('Old Password Incorrect');
+
+    const changePasswordSuccessfully = await request(app)
+      .patch('/api/v1/users/change-password')
+      .send({ oldPassword: '12345678', newPassword: '87654321' })
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
+
+    expect(changePasswordSuccessfully.status).toBe(400);
+    expect(changePasswordSuccessfully.body.message).toBe('Old Password Incorrect');
+
+    const unauthorized = await request(app)
+      .patch('/api/v1/users/change-password')
+      .send({ oldPassword: '12345678', newPassword: '87654321' });
+
+    expect(unauthorized.status).toBe(401);
+
+    done();
+  });
+
+  test('Can user change his personal information about himself', async (done) => {
+    await User.bulkCreate(usersMock);
+
+    const {
+      firstName, lastName, birthDate, country, city, githubAccount,
+    } = usersMock[1];
+
+    const changePersonalDetailsSuccessfully = await request(app)
+      .patch('/api/v1/users/info')
+      .send({
+        firstName, lastName, birthDate, country, city, githubAccount,
+      })
+      .set('authorization', `bearer ${generateToken(usersMock[0])}`);
+
+    expect(changePersonalDetailsSuccessfully.status).toBe(200);
+    expect(changePersonalDetailsSuccessfully.body.message).toBe('Updated Personal Details Success');
+
+    const afterChangeUser = await User.findOne({
+      where: {
+        userName: usersMock[0].userName,
+      },
+    });
+
+    expect(afterChangeUser.userName).toBe(usersMock[0].userName);
+    expect(afterChangeUser.firstName).toBe(firstName);
+    expect(afterChangeUser.lastName).toBe(lastName);
+    expect(afterChangeUser.birthDate).toStrictEqual(birthDate);
+    expect(afterChangeUser.country).toBe(country);
+    expect(afterChangeUser.city).toBe(city);
+    expect(afterChangeUser.githubAccount).toBe(githubAccount);
+
+    const unauthorized = await request(app)
+      .patch('/api/v1/users/info')
+      .send({
+        firstName, lastName, birthDate, country, city, githubAccount,
+      });
+
+    expect(unauthorized.status).toBe(401);
+
+    done();
+  });
+
   test('Can admin get info about all users', async (done) => {
     await User.bulkCreate(usersMock);
 

@@ -7,119 +7,6 @@ const {
   Submission, Challenge, Review, User, Team,
 } = require('../../../models');
 
-//= ==================Not in use=========================================//
-
-// returns the 5 challenges with most submissions
-insightAdminRouter.get('/top-challenges', async (req, res) => {
-  try {
-    const topChallenges = await Submission.findAll({
-      attributes: {
-        include: [
-          [sequelize.fn('COUNT', sequelize.col('challenge_id')), 'countSub'],
-        ],
-      },
-      include: {
-        model: Challenge,
-        attributes: ['name'],
-      },
-      group: ['challenge_id'],
-      order: [[sequelize.fn('COUNT', sequelize.col('challenge_id')), 'DESC']],
-      limit: 5,
-    });
-
-    return res.json(topChallenges);
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({ message: 'Cannot process request' });
-  }
-});
-
-// returns the count of challenges from same type('type name' + 'count')
-insightAdminRouter.get('/challenges-type', async (req, res) => {
-  try {
-    const challengesByType = await Challenge.findAll({
-      attributes: [
-        'type',
-        [sequelize.fn('COUNT', sequelize.col('type')), 'countType'],
-      ],
-      group: ['type'],
-      order: [[sequelize.fn('COUNT', sequelize.col('type')), 'DESC']],
-      limit: 5,
-    });
-    return res.json(challengesByType);
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({ message: 'Cannot process request' });
-  }
-});
-
-// returns top 5 challenges ordered by rating average (from reviews)
-insightAdminRouter.get('/challenges-by-reviews', async (req, res) => {
-  try {
-    const challengesByRating = await Review.findAll({
-      attributes: [[sequelize.fn('AVG', sequelize.col('rating')), 'ratingAVG']],
-      include: {
-        model: Challenge,
-      },
-      group: ['challenge_id'],
-      order: [[sequelize.fn('AVG', sequelize.col('rating')), 'DESC']],
-      limit: 5,
-    });
-
-    // returns the average rating as number
-    const challengesTopRating = challengesByRating.map((element) => {
-      element.dataValues.ratingAVG = Number(element.dataValues.ratingAVG);
-      return element;
-    });
-
-    return res.json(challengesTopRating);
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({ message: 'Cannot process request' });
-  }
-});
-
-// returns the 5 teams with the most successful submissions
-insightAdminRouter.get('/top', async (req, res) => {
-  try {
-    const topTeams = await Team.findAll({
-      group: ['id'],
-      attributes: ['id', 'name'],
-      include: [
-        {
-          model: User,
-          attributes: ['userName'],
-          through: {
-            attributes: [],
-          },
-          include: {
-            model: Submission,
-            attributes: [
-              [
-                sequelize.fn('COUNT', sequelize.col('challenge_id')),
-                'teamSuccessSubmissions',
-              ],
-            ],
-            where: {
-              state: 'success',
-            },
-          },
-        },
-      ],
-      order: [[sequelize.fn('COUNT', sequelize.col('challenge_id')), 'DESC']],
-    });
-
-    const topFiveTeams = topTeams.slice(0, 5);
-
-    return res.json(topFiveTeams);
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({ message: 'Cannot process request' });
-  }
-});
-
-//= ======================================================================//
-
 // returns the submissions status(total amount, success, fail, not submitted)
 insightAdminRouter.get('/all-submissions/', async (req, res) => {
   try {
@@ -329,7 +216,141 @@ insightAdminRouter.get('/top-user', async (req, res) => {
       },
       order: [[Submission, 'createdAt', 'DESC']],
     });
-    return res.json(topUsers);
+
+    const formattedMembers = topUsers.map((member) => {
+      const filteredSubmissions = [];
+      let success = 0;
+      let fail = 0;
+      member.Submissions.forEach((submission) => {
+        if (filteredSubmissions.includes(submission.challengeId)) {
+        } else {
+          filteredSubmissions.push(submission.challengeId);
+          if (submission.state === 'SUCCESS') {
+            success++;
+          } else {
+            fail++;
+          }
+        }
+      });
+      return {
+        success,
+        fail,
+        userName: member.userName,
+      };
+    });
+
+    return res.json(formattedMembers);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+//= ==================Not in use=========================================//
+
+// returns the 5 challenges with most submissions
+insightAdminRouter.get('/top-challenges', async (req, res) => {
+  try {
+    const topChallenges = await Submission.findAll({
+      attributes: {
+        include: [
+          [sequelize.fn('COUNT', sequelize.col('challenge_id')), 'countSub'],
+        ],
+      },
+      include: {
+        model: Challenge,
+        attributes: ['name'],
+      },
+      group: ['challenge_id'],
+      order: [[sequelize.fn('COUNT', sequelize.col('challenge_id')), 'DESC']],
+      limit: 5,
+    });
+
+    return res.json(topChallenges);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+// returns the count of challenges from same type('type name' + 'count')
+insightAdminRouter.get('/challenges-type', async (req, res) => {
+  try {
+    const challengesByType = await Challenge.findAll({
+      attributes: [
+        'type',
+        [sequelize.fn('COUNT', sequelize.col('type')), 'countType'],
+      ],
+      group: ['type'],
+      order: [[sequelize.fn('COUNT', sequelize.col('type')), 'DESC']],
+      limit: 5,
+    });
+    return res.json(challengesByType);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+// returns top 5 challenges ordered by rating average (from reviews)
+insightAdminRouter.get('/challenges-by-reviews', async (req, res) => {
+  try {
+    const challengesByRating = await Review.findAll({
+      attributes: [[sequelize.fn('AVG', sequelize.col('rating')), 'ratingAVG']],
+      include: {
+        model: Challenge,
+      },
+      group: ['challenge_id'],
+      order: [[sequelize.fn('AVG', sequelize.col('rating')), 'DESC']],
+      limit: 5,
+    });
+
+    // returns the average rating as number
+    const challengesTopRating = challengesByRating.map((element) => {
+      element.dataValues.ratingAVG = Number(element.dataValues.ratingAVG);
+      return element;
+    });
+
+    return res.json(challengesTopRating);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+// returns the 5 teams with the most successful submissions
+insightAdminRouter.get('/top', async (req, res) => {
+  try {
+    const topTeams = await Team.findAll({
+      group: ['id'],
+      attributes: ['id', 'name'],
+      include: [
+        {
+          model: User,
+          attributes: ['userName'],
+          through: {
+            attributes: [],
+          },
+          include: {
+            model: Submission,
+            attributes: [
+              [
+                sequelize.fn('COUNT', sequelize.col('challenge_id')),
+                'teamSuccessSubmissions',
+              ],
+            ],
+            where: {
+              state: 'success',
+            },
+          },
+        },
+      ],
+      order: [[sequelize.fn('COUNT', sequelize.col('challenge_id')), 'DESC']],
+    });
+
+    const topFiveTeams = topTeams.slice(0, 5);
+
+    return res.json(topFiveTeams);
   } catch (error) {
     console.error(error);
     return res.status(400).json({ message: 'Cannot process request' });

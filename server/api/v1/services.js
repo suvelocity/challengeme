@@ -15,7 +15,7 @@ serviceRouter.get('/public-repo', async (req, res) => {
     if (!response.data.private) {
       return res.json(response.data.repo);
     }
-    return res.status(401).send('Repo is private');
+    return res.status(401).json({ message: 'Repo is private' });
   } catch (error) {
     handleGithubTokens(error.response.headers);
     return res.status(400).send('Repo does not exist');

@@ -1,152 +1,159 @@
 import React, {
-  useState, useEffect, useContext,
+  useState, useEffect, useContext, useCallback,
 } from 'react';
-import mixpanel from 'mixpanel-browser';
-import { Button } from '@material-ui/core';
-import Rating from '@material-ui/lab/Rating';
-import { makeStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { useParams, Link } from 'react-router-dom';
+import {
+  useParams, Link, useLocation, useHistory,
+} from 'react-router-dom';
+import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
-import './ChallengePage.css';
-import ReviewsTab from '../../components/InfoTable/Tabs/ReviewsTab';
+import mixpanel from 'mixpanel-browser';
+import { Button } from "@material-ui/core";
+import Rating from '@material-ui/lab/Rating';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import ReviewsTab from '../../components/Reviews';
 import SubmitModal from '../../components/Modals/SubmitModal';
 import network from '../../services/network';
 import Loading from '../../components/Loading';
 import FilteredLabels from '../../context/FilteredLabelsContext';
+import { Logged } from '../../context/LoggedInContext';
+import ChallengesCarousel from '../../components/ChallengesCarousel';
+import AllChallenges from '../../context/AllChallengesContext';
+import Footer from '../../components/Footer';
+import '../../styles/OneChallenge.css';
+import { generateTime } from '../../utils';
 
-const useStyles = makeStyles(() => ({
-  getStartedButton: {
-    background: 'linear-gradient(270deg, rgba(55,99,192,1) 0%, rgba(87,159,223,1) 100%)',
-    color: 'white',
-    marginBottom: '10px',
-  },
-  getStartedButtonContainer: {
-    marginTop: 'auto',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-  },
-  SubmitdButton: {
-    background: 'linear-gradient(270deg, rgba(55,99,192,1) 0%, rgba(87,159,223,1) 100%)',
-    color: 'white',
-    marginBottom: '10px',
-    fontSize: '15px',
-  },
-  SubmitdButtonFail: {
-    background: 'linear-gradient(270deg, rgba(193,36,36,1) 0%, rgba(214,95,95,1) 100%)',
-    color: 'white',
-    marginBottom: '10px',
-    fontSize: '15px',
-  },
-  SubmitdButtonSuccess: {
-    background: 'linear-gradient(270deg, rgba(36,193,67,1) 0%, rgba(130,214,95,1) 100%);',
-    color: 'white',
-    marginBottom: '10px',
-    fontSize: '15px',
-  },
-}));
-
-function generateTime(date) {
-  let today = new Date(date);
-  const dd = String(today.getDate()).padStart(2, '0');
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const yyyy = today.getFullYear();
-  today = `${yyyy}-${mm}-${dd}`;
-  return `${today}`;
-}
-
-function ChallengePage({ darkMode }) {
-  const classes = useStyles();
-  const [submissions, setSubmissions] = useState();
-  const [challenge, setChallenge] = useState(null);
+function ChallengePage() {
   const { id: challengeId } = useParams();
+  const filteredLabels = useContext(FilteredLabels);
+  const LoggedContext = useContext(Logged);
+  const allChallenges = useContext(AllChallenges).challenges;
+  const allChallengesWithImgState = allChallenges.map((challenge) => ({ ...challenge, img: false }));
+  const [challengesFiltered, setChallengesFiltered] = useState(allChallengesWithImgState);
+  const currentLocation = useLocation();
+  const currentHistory = useHistory();
+  const [challenge, setChallenge] = useState(null);
+  const [loadingPage, setLoadingPage] = useState(true);
   const [image, setImage] = useState('');
-  const [submissionStatus, setSubmissionStatus] = useState(null);
+  const [submissionStatus, setSubmissionStatus] = useState();
   const [rating, setRating] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loadingReq, setLoadingReq] = useState(false);
   const [ratingCount, setRatingCount] = useState('');
+  const [boilerPlate, setBoilerPlate] = useState('');
 
-  const filteredLabels = useContext(FilteredLabels);
+  const getBoilerPlate = useCallback(async () => {
+    const { data: boilerPlate } = await network.get(
+      `/api/v1/challenges/boiler-plate/${challengeId}`,
+    );
+    if (boilerPlate) {
+      setBoilerPlate(boilerPlate.boilerPlate);
+    }
+  }, [challengeId]);
 
   useEffect(() => {
-    const user = Cookies.get('userName');
-    mixpanel.track('User On Challenge Page', { User: `${user}`, ChallengeId: `${challengeId}` });
+    if (LoggedContext.logged) {
+      const user = Cookies.get('userName');
+      mixpanel.track('User On Challenge Page', {
+        User: `${user}`,
+        ChallengeId: `${challengeId}`,
+      });
+      getBoilerPlate();
+    }
     // eslint-disable-next-line
-  }, []);
+  }, [challengeId]);
+
+  const getLastSubmissions = useCallback(async () => {
+    try {
+      const { data: submission } = await network.get(
+        `/api/v1/submissions/by-user/${challengeId}`,
+      );
+      if (submission) {
+        setSubmissionStatus({
+          state: submission.state,
+          createdAt: submission.createdAt,
+        });
+        setLoadingReq(true);
+        return submission.state;
+      }
+      setSubmissionStatus(null);
+      setLoadingReq(true);
+      return false;
+    } catch (error) { }
+  }, [challengeId]);
+
+  const fetchChallenge = useCallback(async () => {
+    try {
+      const { data: challengeFromServer } = await network.get(
+        `/api/v1/challenges/info/${challengeId}`,
+      );
+      setChallenge(challengeFromServer);
+      setRating(
+        challengeFromServer.averageRaiting
+          ? challengeFromServer.averageRaiting
+          : 0,
+      );
+      const { data: reviewsArrayFromServer } = await network.get(
+        `/api/v1/reviews/${challengeId}`,
+      );
+      setRatingCount(reviewsArrayFromServer.length);
+      setLoadingPage(false);
+    } catch (error) { setLoadingPage(false); }
+  }, [challengeId]);
+
+  const setImg = useCallback(async () => {
+    try {
+      const { data } = await network.get(`/api/v1/images?id=${challengeId}`);
+      setImage(data.img);
+    } catch (error) { }
+  }, [challengeId]);
+
+  let getSubmissionInterval;
+
+  const updateSubmissionStatus = () => {
+    getSubmissionInterval = setInterval(async () => {
+      if (LoggedContext.logged) {
+        const status = await getLastSubmissions();
+        if (status === 'SUCCESS' || status === 'FAIL' || window.location.pathname !== currentLocation.pathname) clearInterval(getSubmissionInterval);
+      } else {
+        clearInterval(getSubmissionInterval);
+      }
+    }, 2000);
+  }
 
   useEffect(() => {
-    (async () => {
-      try {
-        const { data: submission } = await network.get(
-          `/api/v1/submissions/by-user/${challengeId}`,
-        );
-        if (submission) {
-          setSubmissionStatus({
-            state: submission.state,
-            createdAt: submission.createdAt,
-          });
-        } else {
-          setSubmissionStatus(null);
-        }
-        setLoadingReq(true);
-      } catch (error) {
-      }
-    })();
-    const getSubmissionInterval = setInterval(async () => {
-      try {
-        const { data: submission } = await network.get(
-          `/api/v1/submissions/by-user/${challengeId}`,
-        );
-        if (submission) {
-          setSubmissionStatus({
-            state: submission.state,
-            createdAt: submission.createdAt,
-          });
-        } else {
-          setSubmissionStatus(null);
-        }
-        setLoadingReq(true);
-      } catch (error) {
-      }
-    }, 5000);
-    const setImg = async () => {
-      try {
-        const { data } = await network.get(`/api/v1/images?id=${challengeId}`);
-        setImage(data.img);
-      } catch (error) {
-      }
-    };
-    const fetchChallenge = async () => {
-      try {
-        const { data: challengeFromServer } = await network.get(`/api/v1/challenges/info/${challengeId}`);
-        setChallenge(challengeFromServer);
-        setRating(
-          challengeFromServer.averageRaiting
-            ? Math.round(challengeFromServer.averageRaiting)
-            : 0,
-        );
-        setSubmissions(challengeFromServer.submissionsCount);
-      } catch (error) {
-      }
-    };
     setImg();
     fetchChallenge();
+    if (LoggedContext.logged) {
+      updateSubmissionStatus();
+    } else {
+      setLoadingReq(true);
+    }
     return () => clearInterval(getSubmissionInterval);
     // eslint-disable-next-line
   }, [challengeId]);
 
-  function handleModalClose() {
-    setIsModalOpen(false);
-  }
+  const setNewImg = useCallback((id, newImg) => {
+    setChallengesFiltered((prev) => {
+      const currentChallenges = prev.map((challenge) => {
+        if (challenge.id === id) {
+          challenge.img = newImg;
+          return challenge;
+        }
+        return challenge;
+      });
+      return currentChallenges;
+    });
+  }, [setChallengesFiltered])
 
-  const getSubmissionButton = () => {
+  const handleModalClose = useCallback(() => {
+    setIsModalOpen(false);
+  }, []);
+
+  const getSubmissionButton = useCallback(() => {
     if (!submissionStatus) {
       return (
         <Button
-          cy-test="submit-button"
-          className={classes.SubmitdButton}
+          className='One-Challenge-Control-Panel-Submit-Button-Regular'
           variant="contained"
           onClick={() => setIsModalOpen(true)}
         >
@@ -160,8 +167,7 @@ function ChallengePage({ darkMode }) {
     if (submissionStatus.state === 'SUCCESS') {
       return (
         <Button
-          cy-test="submit-again-button"
-          className={classes.SubmitdButtonSuccess}
+          className='One-Challenge-Control-Panel-Submit-Button-Success'
           variant="contained"
           onClick={() => setIsModalOpen(true)}
         >
@@ -171,177 +177,172 @@ function ChallengePage({ darkMode }) {
     }
     return (
       <Button
-        cy-test="submit-again-button"
-        className={classes.SubmitdButtonFail}
+        className='One-Challenge-Control-Panel-Submit-Button-Fail'
         variant="contained"
         onClick={() => setIsModalOpen(true)}
       >
         Submit again
       </Button>
     );
-  };
+  }
+    // eslint-disable-next-line
+    , [submissionStatus])
 
-  const getSubmissionStatus = () => {
-    if (!submissionStatus) {
-      return (
-        <div>
-          <p>
-            You have not submitted any solution to this challenge yet, challenger! Prove
-            your worth.
-          </p>
-        </div>
-      );
-    }
-    if (submissionStatus.state === 'SUCCESS') {
-      return (
-        <div style={{ textAlign: 'center' }} cy-test="success-submission">
-          <p>
-            <div style={{ fontSize: '25px', fontWeight: 'bold', marginBottom: '5px' }}>
-              SUCCESS
-            </div>
-            You have already solved this challenge on
-            {' '}
-            {generateTime(submissionStatus.createdAt)}
-            <br />
-            {' '}
-            You can submit another solution if you’d like:
-          </p>
-        </div>
-      );
-    }
-    if (submissionStatus.state === 'PENDING') {
-      return (
-        <div cy-test="pending-submission">
-          <p>Your submission is being tested</p>
-        </div>
-      );
-    }
-    return (
-      <div style={{ textAlign: 'center' }} cy-test="fail-submission">
-        <p>
-          <div style={{ fontSize: '25px', fontWeight: 'bold', marginBottom: '5px' }}>
-            FAIL
-          </div>
-          You tried to solved this challenge on
-          {' '}
-          {generateTime(submissionStatus.createdAt)}
-          {' '}
-          <br />
-          {' '}
-          You can try to submit again
-        </p>
-      </div>
-    );
-  };
-
-  return challenge ? (
-    <div style={{ overflowY: 'auto', height: '100vh', width: '100%' }}>
-      <div className="one-challenge-container">
-        <div className="one-challenge-challenge-container">
-          <h1 className="one-challenge-info-title" cy-test="challenge-name">
-            <b>{challenge.name}</b>
-          </h1>
-          <img className="one-challenge-info-image" src={image} alt="" />
-          <div className="one-challenge-info-container">
-            <div className="one-challenge-description-title">
-              <b>Description:</b>
-              <div className="challenge-label">
-                {challenge.Labels
-                  && challenge.Labels.map((label) => (
-                    <Link
-                      cy-test={`challenge-label-${label.name}`}
-                      className="link-rout"
-                      key={label.id}
-                      to="/"
-                      onClick={() => filteredLabels.setFilteredLabels([label.id])}
-                    >
-                      <div className="one-challenge-labels">{label.name}</div>
-                    </Link>
-                  ))}
-              </div>
-            </div>
-            <div className="one-challenge-description-body" cy-test="challenge-description">
-              {challenge.description}
-            </div>
-            <div className="one-challenge-author-uploaded-updated">
-              <div cy-test="challenge-submissions">
-                Submissions:
-                {submissions}
-              </div>
-              <div className="one-challenge-author" cy-test="challenge-createdBy">
-                Created by:
-                {' '}
-                {challenge.Author.userName}
-              </div>
-              <div className="one-challenge-uploaded-at" cy-test="challenge-createdAt">
-                Created At:
-                {' '}
-                {`${generateTime(challenge.createdAt)} `}
-              </div>
-            </div>
-            <div className="one-challenge-rating">
-              <p>
-                Rating:
-                {rating}
-                {' '}
-                / 5
-              </p>
-              <Rating name="half-rating-read" value={rating} readOnly size="large" />
-              <div>
-                Total Ratings :
-                {ratingCount}
-              </div>
-            </div>
-          </div>
-          <div className={classes.getStartedButtonContainer}>
-            <Button
-              cy-test="challenge-boilerPlate"
-              variant="contained"
-              className={classes.getStartedButton}
-              onClick={async () => {
-                const user = Cookies.get('userName');
-                mixpanel.track('User Started Challenge', {
-                  User: `${user}`,
-                  ChallengeId: `${challengeId}`,
-                });
-                try {
-                  await network.post('/api/v1/webhooks/trigger-events/start-challenge', { challengeName: challenge.name });
-                } catch (error) {
-                }
+  return !loadingPage
+    ? challenge
+      ? (
+        <div className="One-Challenge-Page">
+          <section className="One-Challenge-Page-Head">
+            <div
+              style={{
+                backgroundImage: `url('${image}')`,
               }}
-              href={`https://github.com/${challenge.boilerPlate}`}
-              target="_blank"
-            >
-              Start this challenge
-            </Button>
+              className="One-Challenge-Image-Container"
+            />
+            <h1>{challenge.name}</h1>
+            <h2>
+              <span>{challenge.Author.userName}</span>
+              <span>{generateTime(challenge.createdAt)}</span>
+              <span>
+                {ratingCount}
+                {' '}
+                submissions
+              </span>
+            </h2>
+            <p>{challenge.description}</p>
+            <ul>
+              {challenge.Labels
+                && challenge.Labels.map((label) => (
+                  <Link
+                    key={label.id}
+                    className="remove"
+                    to="/challenges"
+                    onClick={() => filteredLabels.setFilteredLabels([label.id])}
+                  >
+                    <span>{label.name}</span>
+                  </Link>
+                ))}
+            </ul>
+          </section>
+          <section className="One-Challenge-Page-Control-Panel">
+            <div className="One-Challenge-Page-Control-Panel-Rating-Container">
+              <div className="One-Challenge-Page-Control-Panel-Rating">
+                <Rating className='One-Challenge-Page-Control-Panel-Rating-Stars' name="half-rating-read" value={rating} readOnly size="large" />
+                <div className="One-Challenge-Page-Control-Panel-Rating-Text">
+                  {ratingCount}
+                  {' '}
+                    rates
+                </div>
+              </div>
+            </div>
+            <div className="One-Challenge-Page-Control-Panel-Start-Button-Container">
+              <div className="One-Challenge-Page-Control-Panel-Start">
+                {LoggedContext.logged
+                  ? (
+                    <Button
+                      variant="contained"
+                      className="One-Challenge-Page-Control-Panel-Start-Button"
+                      onClick={async () => {
+                        const user = Cookies.get('userName');
+                        mixpanel.track('User Started Challenge', {
+                          User: `${user}`,
+                          ChallengeId: `${challengeId}`,
+                        });
+                        try {
+                          await network.post(`/api/v1/webhooks/trigger-events/start-challenge/${challengeId}`, { challengeName: challenge.name });
+                        } catch (error) {
+                        }
+                      }}
+                      href={`https://github.com/${boilerPlate}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Start Challenge
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      className="One-Challenge-Page-Control-Panel-Start-Button"
+                      onClick={() => Swal.fire({
+                        icon: 'warning',
+                        title: 'You Must Login First!',
+                        showCancelButton: true,
+                        confirmButtonText: 'Login',
+                        cancelButtonText: 'OK',
+                      }).then((result) => {
+                        if (result.value) {
+                          currentHistory.push('/login');
+                        }
+                      })}
+                    >
+                      Start Challenge
+                    </Button>
+                  )}
+              </div>
+            </div>
+            <div className="One-Challenge-Page-Control-Panel-Submit">
+              {LoggedContext.logged ?
+                (loadingReq ? (
+                  <div className="One-Challenge-Page-Control-Panel-Submit-Button">
+                    {getSubmissionButton()}
+                  </div>
+                ) : (
+                    <div style={{ textAlign: 'center' }}>
+                      <CircularProgress style={{ margin: '30px' }} />
+                    </div>
+                  ))
+                :
+                <div className="One-Challenge-Page-Control-Panel-Submit-Button">
+                  <Button
+                    className='One-Challenge-Control-Panel-Submit-Button-Regular'
+                    variant="contained"
+                    onClick={() => Swal.fire({
+                      icon: 'warning',
+                      title: 'You Must Login First!',
+                      showCancelButton: true,
+                      confirmButtonText: 'Login',
+                      cancelButtonText: 'OK',
+                    }).then((result) => {
+                      if (result.value) {
+                        currentHistory.push('/login');
+                      }
+                    })}
+                  >
+                    Submit
+        </Button>
+                </div>
+              }
+
+
+              <SubmitModal
+                isOpen={isModalOpen}
+                handleClose={handleModalClose}
+                challengeParamId={challengeId}
+                submissionStatus={submissionStatus}
+                updateSubmissionStatus={updateSubmissionStatus}
+              />
+            </div>
+
+          </section>
+          <section className="One-Challenge-Page-More">
+            <h2>You might also be interested in:</h2>
+            <ChallengesCarousel challenges={challengesFiltered} setNewImg={setNewImg} main={true} />
+          </section>
+          <section className="One-Challenge-Page-Reviews">
+            <ReviewsTab challengeId={challenge.id} setRatingCount={setRatingCount} />
+          </section>
+          <div className="One-Challenge-Footer">
+            <Footer color="black" />
           </div>
-        </div>
-        <div className="one-challenge-submission-container">
-          {loadingReq ? (
-            <div className="one-challenge-submit-btn">
-              <div className="submission-status">{getSubmissionStatus()}</div>
-              {getSubmissionButton()}
-            </div>
-          ) : (
-            <div style={{ textAlign: 'center' }}>
-              <CircularProgress style={{ margin: '30px' }} />
-            </div>
-          )}
-          <SubmitModal
-            isOpen={isModalOpen}
-            handleClose={handleModalClose}
-            challengeParamId={challengeId}
-          />
-        </div>
-        <div className="one-challenge-reviews-container" cy-test="challenge-reviews">
-          <b className="one-challenge-reviews-title">Reviews :</b>
-          <ReviewsTab challengeId={challenge.id} setRatingCount={setRatingCount} />
-        </div>
-      </div>
-    </div>
-  ) : (
-    <Loading darkMode={darkMode} />
-  );
+        </div >
+
+      ) : (
+        <h1
+          style={{ textAlign: 'center', marginTop: '20%' }}
+        >
+          Not Found
+        </h1>
+      ) : (<Loading />);
 }
 
 export default ChallengePage;

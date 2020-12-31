@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
@@ -42,7 +42,7 @@ function Row(props) {
   const { row, getAllEvents } = props;
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
-  const deleteAccessKey = async (event) => {
+  const deleteAccessKey = useCallback(async (event) => {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
@@ -50,7 +50,8 @@ function Row(props) {
         getAllEvents();
       }
     } catch (error) { }
-  };
+    // eslint-disable-next-line
+  }, [])
 
   const classes = useRowStyles();
   return (
@@ -82,25 +83,28 @@ function Row(props) {
     </React.Fragment>
   );
 }
-function EventsControl({ darkMode }) {
+function EventsControl() {
   const [allEvents, setAllEvents] = useState([]);
   const [openNewEventsModal, setOpenNewEventsModal] = useState(false);
 
-  async function getAllEvents() {
+  const getAllEvents = useCallback(async () => {
     try {
       const { data: allEventsFromServer } = await network.get(
         '/api/v1/webhooks/admin/events',
       );
       setAllEvents(allEventsFromServer);
     } catch (error) { }
-  }
+    // eslint-disable-next-line
+  }, [])
 
-  const addNewEvents = () => {
+  const addNewEvents = useCallback(() => {
     setOpenNewEventsModal(true);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     getAllEvents();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -112,7 +116,7 @@ function EventsControl({ darkMode }) {
         getAllEvents={getAllEvents}
       />
       <Button
-        variant={darkMode ? 'contained' : 'outlined'}
+        variant="outlined"
         style={{ marginBottom: '20px' }}
         onClick={addNewEvents}
       >

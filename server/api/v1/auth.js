@@ -14,7 +14,6 @@ const {
   userValidation,
 } = require('../../helpers/validator');
 const mailer = require('../../helpers/communicator');
-const signupGithub = require('../../middleware/githubAuth');
 
 // Register
 authRouter.post('/register', async (req, res) => {
@@ -121,7 +120,10 @@ authRouter.post('/user-exist', async (req, res) => {
 });
 
 // Validate Token
-authRouter.get('/validate-token', checkToken, (req, res) => res.json({ valid: true }));
+authRouter.get('/validate-token', checkToken, async (req, res) => {
+  const isAdmin = await userIsAdmin(req.user.userName);
+  return res.json({ valid: true, isAdmin });
+});
 
 // Log In
 authRouter.post('/login', async (req, res) => {
@@ -172,12 +174,11 @@ authRouter.post('/login', async (req, res) => {
         },
       );
     }
-    res.cookie('name', currentUser.firstName);
     res.cookie('userName', currentUser.userName);
     res.cookie('accessToken', accessToken);
     res.cookie('refreshToken', refreshToken);
-    res.cookie('isAdmin', currentUser.permission);
-    return res.json({ userDetails: currentUser });
+    const isAdmin = currentUser.permission === 'admin';
+    return res.json({ userName: currentUser.userName, isAdmin });
   } catch (error) {
     console.error(error.message);
     return res.status(400).json({ message: 'Cannot process request' });
@@ -200,7 +201,7 @@ authRouter.post('/token', async (req, res) => {
       },
     });
     if (!validRefreshToken) return res.status(403).json({ message: 'Invalid Refresh Token' });
-    return jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (error, decoded) => {
+    return await jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, async (error, decoded) => {
       if (error) {
         console.error(error.message);
         return res.status(403).json({ message: 'Invalid Refresh Token' });
@@ -208,8 +209,10 @@ authRouter.post('/token', async (req, res) => {
       delete decoded.iat;
       delete decoded.exp;
       const accessToken = generateToken(decoded);
+      res.cookie('userName', decoded.userName);
       res.cookie('accessToken', accessToken);
-      return res.json({ message: 'token updated' });
+      const isAdmin = await userIsAdmin(decoded.userName);
+      return res.json({ message: 'token updated', isAdmin });
     });
   } catch (error) {
     console.error(error.message);
@@ -311,7 +314,7 @@ authRouter.patch('/password-update', async (req, res) => {
             },
           },
         );
-        return res.json({ message: 'Changed Password Sucsessfuly' });
+        return res.json({ message: 'Changed Password Successfully' });
       },
     );
   } catch (error) {
@@ -322,66 +325,6 @@ authRouter.patch('/password-update', async (req, res) => {
 
 // validate if user has admin permission
 authRouter.get('/validate-admin', checkToken, checkAdmin, (req, res) => res.json({ admin: true }));
-
-// Create User
-authRouter.post('/signup-with-github', signupGithub, (req, res) => {
-  const { login, node_id } = req.gitUser
-  try {
-    console.log('--------------', req.gitUser, '----------------');
-    const userGithub = {
-      username: login + node_id,
-      password: node_id
-    }
-    const checkUser = await userIsExist(login + node_id);
-    if (checkUser) return res.status(409).send('user name already exists');
-    await User.create(userGithub);
-    const currentUser = await userIsExist(login + node_id);
-    const expired = '365 days';
-    const infoForCookie = {
-      userId: currentUser.id,
-      userName: currentUser.userName,
-    };
-    const refreshToken = jwt.sign(
-      infoForCookie,
-      process.env.REFRESH_TOKEN_SECRET,
-      {
-        expiresIn: expired,
-      },
-    );
-    const accessToken = generateToken(infoForCookie);
-    const isTokenExist = await RefreshToken.findOne({
-      where: {
-        userName: currentUser.userName,
-      },
-    });
-    if (!isTokenExist) {
-      await RefreshToken.create({
-        userName: currentUser.userName,
-        token: refreshToken,
-      });
-    } else {
-      await RefreshToken.update(
-        { token: refreshToken },
-        {
-          where: {
-            userName: currentUser.userName,
-          },
-        },
-      );
-    }
-    res.cookie('name', currentUser.firstName);
-    res.cookie('userName', currentUser.userName);
-    res.cookie('accessToken', accessToken);
-    res.cookie('refreshToken', refreshToken);
-    res.cookie('isAdmin', currentUser.permission);
-    res.json({ userDetails: currentUser });
-    res.status(201).json({ message: 'Register With Github Success' });
-  } catch (error) {
-    console.error(error.message);
-    res.status(400).json({ message: 'Cannot process request' });
-  }
-});
-
 
 // check in the DateBase if user is in the system
 async function userIsExist(userName) {
@@ -401,10 +344,28 @@ async function userIsExist(userName) {
   }
 }
 
+async function userIsAdmin(userName) {
+  try {
+    const userIsAdmin = await User.findOne({
+      where: {
+        userName,
+        permission: 'admin',
+      },
+      attributes: ['userName'],
+    });
+    if (userIsAdmin) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+}
+
 // create an access token
 function generateToken(user) {
   return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '900s' });
 }
 
 module.exports = authRouter;
-

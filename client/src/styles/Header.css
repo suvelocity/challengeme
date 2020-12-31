@@ -1,0 +1,30 @@
+.header-link-title {
+  display: 'none';
+}
+
+.link-rout {
+  text-decoration: none;
+}
+
+#menu-appbar {
+  max-width: 213px;
+  margin-top: 49px;
+  margin-left: 38px;
+}
+
+.infoButton {
+  margin: 5px
+}
+
+.MuiAppBar-colorPrimary {
+  background-color: transparent !important;
+  background: linear-gradient(180deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 350%);
+  border: none !important;
+  box-shadow: none !important;
+  /* mix-blend-mode: difference; */
+  color: white !important;
+}
+
+.MuiToolbar-regular {
+  min-height: 60px !important;
+}

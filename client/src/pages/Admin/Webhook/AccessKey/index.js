@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
@@ -62,7 +61,7 @@ function Row(props) {
   const [open, setOpen] = useState(false);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
 
-  const deleteAccessKey = async (accessKey) => {
+  const deleteAccessKey = useCallback(async (accessKey) => {
     try {
       const isDeleteOk = prompt("What's your favorite cocktail drink?");
       if (isDeleteOk != null) {
@@ -70,7 +69,8 @@ function Row(props) {
         getAllAccessKeys();
       }
     } catch (error) { }
-  };
+    // eslint-disable-next-line
+  }, [])
 
   const classes = useRowStyles();
   return (
@@ -141,25 +141,28 @@ function Row(props) {
     </React.Fragment>
   );
 }
-function AccessKeyControl({ darkMode }) {
+function AccessKeyControl() {
   const [allAccessKeys, setAllAccessKeys] = useState([]);
   const [openNewAccessKeyModal, setOpenNewAccessKeyModal] = useState(false);
 
-  async function getAllAccessKeys() {
+  const getAllAccessKeys = useCallback(async () => {
     try {
       const { data: allAccessKeysFromServer } = await network.get(
         '/api/v1/webhooks/admin/access-key',
       );
       setAllAccessKeys(allAccessKeysFromServer);
     } catch (error) { }
-  }
+    // eslint-disable-next-line
+  }, [])
 
-  const addNewAccessKey = () => {
+  const addNewAccessKey = useCallback(() => {
     setOpenNewAccessKeyModal(true);
-  };
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     getAllAccessKeys();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -171,7 +174,7 @@ function AccessKeyControl({ darkMode }) {
         getAllAccessKeys={getAllAccessKeys}
       />
       <Button
-        variant={darkMode ? 'contained' : 'outlined'}
+        variant="outlined"
         style={{ marginBottom: '20px' }}
         onClick={addNewAccessKey}
       >
