@@ -24,6 +24,7 @@ const responsive = {
 function ChallengesCarousel({ challenges, setNewImg, main, random = false }) {
   const [orderedChallenges, setOrderedChallenges] = useState([]);
   const [loadingPage, setLoadingPage] = useState(true);
+  
   useEffect(() => {
     (async () => {
       if (random) {

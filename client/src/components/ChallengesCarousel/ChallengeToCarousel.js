@@ -31,7 +31,7 @@ function ChallengeToCarousel({
     // eslint-disable-next-line
   }, [img])
   return (
-    <Link className="remove" to={`/challenges/${id}`}>
+    <Link className="Challenge-To-Carousel-Link" to={`/challenges/${id}`}>
       <div
         className="Challenge-To-Carousel"
         style={{
