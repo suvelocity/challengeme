@@ -11,7 +11,8 @@
     margin-left:5px;
     height: 170.07px;
     background-repeat: no-repeat;
-    background-size: 120% 100%;
+    background-size: 180% 100%;
+    background-position: center;
     color: white;
     display: flex;
     align-items: flex-start;
@@ -25,7 +26,6 @@
 
 .Challenge-To-Carousel:hover {
     position: absolute;
-
     height: 182px;
     z-index: 10;
     width:300px;
