@@ -57,7 +57,7 @@ export default function ChallengeCard({
           </div>
 
           <div className="second-row-container">
-            <Rating
+            {/* <Rating
               readOnly
               name="disabled"
               value={rating ? Math.round(rating) : 0}
@@ -66,7 +66,7 @@ export default function ChallengeCard({
               {submissions}
               {' '}
               Submission
-            </div>
+            </div> */}
           </div>
 
           <div className="challenge-card-description-homepage">

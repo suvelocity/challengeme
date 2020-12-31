@@ -63,6 +63,7 @@ function TeamAssignments() {
                   labels={challenge.Challenge.Labels}
                   rating={challenge.Challenge.averageRaiting}
                   submissions={challenge.Challenge.submissionsCount}
+                  authorName={challenge.Challenge.Author.userName}
                   createdAt={challenge.Challenge.createdAt}
                 />
               ))
