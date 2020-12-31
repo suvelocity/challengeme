@@ -38,6 +38,7 @@ Status : 401
     message: "you don't have permission for team <teamId>" // you may only access teams for which you have permissions
 }
 {% endhighlight %}
+  
 ## Get All Available Events 
 to get a list of all the events you can register to, send a `GET` request to:
 ```
@@ -45,23 +46,15 @@ GET http://35.239.15.221:8080/api/v1/webhooks/events/all
 ```
 With headers as such: 
 {% highlight javascript %}
-{
-      eventName: 'Submitted Challenge'|'Started Challenge';
-      userName: string;
-      userMail:string;
-      challengeId: number;
-      challengeName: string;
-      submissionState?: 'FAIL'|'SUCCESS';
-      team: string;
-    }
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6Ikp // the word "Bearer" followed by your webhook token
 {% endhighlight %}
 
 ### Response
 A successful request will receive an array with event names
 
 
-## Get All Events registered to a Team 
-to get a list of all the events you can register to, send a `GET` request to:
+## Get All Events registered to a Teams on a token 
+to get a list of all the events that are registered by a tean, send a `GET` request to:
 ```
 GET http://35.239.15.221:8080/api/v1/webhooks/events/registered/:teamId
 ```
