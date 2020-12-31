@@ -4,7 +4,7 @@ import mixpanel from 'mixpanel-browser';
 import { useParams } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import network from '../../../../services/network';
-import ChallengeCard from '../../../../components/ChallengeCardSmallVersion';
+import ChallengeCard from '../../../../components/Cards/SmallChallengeCard';
 import AddAssignment from '../../../../components/Modals/AddAssignment';
 import Loading from '../../../../components/Loading';
 import './style.css';

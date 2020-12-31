@@ -6,7 +6,7 @@ import network from '../../../../services/network';
 import Loading from '../../../../components/Loading';
 import NotFound from '../../../NotFound';
 import SecondHeader from '../../../../components/Header/SecondHeader';
-import ChallengeCard from '../../../../components/ChallengeCard';
+import ChallengeCard from '../../../../components/Cards/WideChallengeCard';
 import './style.css';
 
 function TeamAssignments() {
@@ -63,6 +63,7 @@ function TeamAssignments() {
                   labels={challenge.Challenge.Labels}
                   rating={challenge.Challenge.averageRaiting}
                   submissions={challenge.Challenge.submissionsCount}
+                  authorName={challenge.Challenge.Author.userName}
                   createdAt={challenge.Challenge.createdAt}
                 />
               ))
