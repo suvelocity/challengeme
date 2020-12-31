@@ -43,10 +43,10 @@ function ChallengesCarousel({ challenges, setNewImg, main }) {
 
 
   return (
-    <div style={{ width: '80%', margin: 'auto' }}>
+    <div className='Carousel-Container'>
       <AliceCarousel
         disableDotsControls
-        infinite
+        // infinite
         mouseTracking
         items={items}
         responsive={responsive}

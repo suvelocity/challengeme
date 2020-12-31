@@ -1,3 +1,9 @@
+.Carousel-Container {
+    max-width: 80%;
+    margin: auto;
+    width: auto;
+}
+
 .Challenge-To-Carousel {
     border-radius: 2.1613px;
     box-shadow: inset 0px 15px 30px rgba(0, 0, 0, 0.5);
@@ -13,8 +19,12 @@
     padding-left: 5px;
     padding-bottom: 5px;
     text-shadow: 1px 1px rgba(0, 0, 0, 0.9);
+    max-width: 250px;
 }
 
+.alice-carousel__stage-item {
+    width: auto!important;
+}
 
 .Challenge-To-Carousel-Header {
     margin-bottom: 10px;
@@ -101,12 +111,12 @@
     border: none;
     font-size: 50px;
     color:white;
-    background-color: rgb(0, 0, 0, 0.2);
+    background-color: rgb(0, 0, 0, 0.4);
     outline: none;
 }
 
 .Carousel-Next-Button:hover {
-    background-color: rgb(0, 0, 0, 0.5);
+    background-color: rgb(0, 0, 0, 0.6);
 }
 
 .Carousel-Prev-Button {
@@ -118,12 +128,12 @@
     margin-top: -185px;
     margin-left: -6px;
     height: 175px;
-    background-color: rgb(0, 0, 0, 0.2);
+    background-color: rgb(0, 0, 0, 0.4);
     border: none;
     outline: none;
     color:white;
 }
 
 .Carousel-Prev-Button:hover {
-    background-color: rgb(0, 0, 0, 0.5);
+    background-color: rgb(0, 0, 0, 0.6);
 }
