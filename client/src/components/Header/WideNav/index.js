@@ -95,17 +95,11 @@ export default function WideNav() {
 
   return (
     <>
-      <AppBar position="fixed" className={clsx(classes.appBarRegolar)} style={{ backgroundColor: 'transport' }}>
-        <Toolbar>
-          <Typography variant="h6">
-            <NavLink to="/" exact className="link-rout">
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  marginRight: '10px',
-                }}
-              >
+      <AppBar position="fixed" className={clsx(classes.appBarRegular)} style={{ backgroundColor: 'transport' }}>
+        <Toolbar className={classes.flexContainer}>
+          <Typography variant="h6" className={classes.startFlex}>
+            <NavLink to="/" exact >
+              <div className={classes.iconFlex} >
                 <Cube style={letterColor} />
                 <ChallengeMeSmallTitle />
               </div>
@@ -180,32 +174,33 @@ export default function WideNav() {
               <Search />
             )}
           </div>
-          <div style={{ flex: 1 }} />
-
-          {LoggedContext.logged && Cookies.get('userName')
-            ? (
-              <Tooltip title={Cookies.get('userName')}>
-                <AccountCircleOutlinedIcon
-                  onClick={handleDrawerOpen}
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  color="inherit"
-                  style={{
-                    cursor: 'pointer',
-                  }}
-                >
-                  {Cookies.get('userName').slice(0, 2)}
-                </AccountCircleOutlinedIcon>
-              </Tooltip>
-            )
-            : (
-              <Link to="/login" className="link-rout">
-                <div className={classes.filterButton}>
-                  Login
+          {/* <div style={{ flex: 1 }} /> */}
+          <div className={classes.ebdFlex}>
+            {LoggedContext.logged && Cookies.get('userName')
+              ? (
+                <Tooltip title={Cookies.get('userName')}>
+                  <AccountCircleOutlinedIcon
+                    onClick={handleDrawerOpen}
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    color="inherit"
+                    style={{
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {Cookies.get('userName').slice(0, 2)}
+                  </AccountCircleOutlinedIcon>
+                </Tooltip>
+              )
+              : (
+                <Link to="/login" className="link-rout">
+                  <div className={classes.filterButton}>
+                    Login
                 </div>
-              </Link>
-            )}
+                </Link>
+              )}
+          </div>
         </Toolbar>
       </AppBar>
 

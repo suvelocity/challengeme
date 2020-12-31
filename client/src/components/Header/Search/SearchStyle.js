@@ -44,7 +44,7 @@ export default makeStyles((theme) => ({
     '&:hover': {
       backgroundColor: 'rgb(175, 175, 175)',
     },
-    marginRight: theme.spacing(2),
+    // marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
