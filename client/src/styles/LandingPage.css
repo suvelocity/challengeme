@@ -501,3 +501,154 @@
 .Landing-page-Footer p {
     padding-top: 1%;
 }
+
+@media (max-width: 480px) {
+    .Landing-page-main {
+        width: 100%;
+        height: 100%;
+    }
+    .Landing-page-Vector {
+        position: fixed;
+        z-index: -100;
+        display: none;
+    }
+    .Landing-page-title {
+        width: 80%;
+        padding: 75% 10%;
+    }
+    .Landing-page-under-title-paragraph {
+        padding-top: 0;
+        margin: 120px 10%;
+        font-size: 15px;
+        width: auto;
+    }
+    .Landing-page-View {
+        flex-direction: column;
+        width: 100%;
+    }
+    .Landing-page-View-content {
+        padding-top: 40%;
+    }
+    .Landing-page-View-content h2 {
+        position: absolute;
+        font-size: 30px;
+        padding-left: 10px;
+    }
+    .Landing-page-View-content p {
+        padding-top: 70px;
+        padding-left: 10px;
+        width: 90vw;
+        font-size: 15px;
+    }
+    .Landing-page-View-Buttons {
+        width: 70vw;
+        padding: 10px;
+    }
+    .Landing-page-View-GetStarted {
+        height: 45px;
+        width: 45%;
+        font-size: 15px;
+        line-height: 45px;
+    }
+    .Landing-page-View-Learn-More {
+        height: 45px;
+        width: 45%;
+        font-size: 15px;
+        line-height: 45px;
+    }
+    .Landing-page-View-Hacker-walks {
+        width: 70vw;
+        margin: 8%;
+    }
+    .Landing-page-Watch-Video {
+        display: none;
+    }
+    .Landing-page-Sections-Cards {
+        padding-top: 75%;
+    }
+    .Landing-page-stripes {
+        display: none;
+    }
+    .Landing-page-Open-Source-H2 {
+        padding-top: 75%;
+        font-size: 30px;
+        width: 80%;
+    }
+    .Landing-page-Open-Source-P {
+        width: 90vw;
+        font-size: 15px;
+    }
+    .Landing-page-Open-Source-Button {
+        margin-top: 5%;
+    }
+    .Landing-page-Project-Leaders-H2 {
+        padding-top: 75%;
+        font-size: 30px;
+        width: 80%;
+        margin: auto;
+    }
+    .Landing-page-Project-Leaders-Cards {
+        padding-top: 5%;
+    }
+    .Landing-page-Project-Leaders-Root {
+        margin-top: 15%;
+        height: 100%;
+    }
+    .Landing-page-Project-Leaders-Image {
+        margin: -200% auto auto 729%;
+    }
+    .Landing-page-Contributors {
+        padding-top: 75%;
+    }
+    .Landing-page-Contributors-H2 {
+        font-size: 30px;
+        width: 80%;
+        margin: auto;
+    }
+    .Landing-page-Contributors-Root {
+        margin-top: 15%;
+        width: 100%;
+    }
+    .Landing-page-Build-Your-Own-Challenge {
+        padding-top: 75%;
+        flex-direction: column;
+    }
+    .Landing-page-Build-Your-Own-Challenge-content h2 {
+        /* position: absolute; */
+        font-size: 26px;
+        margin-top: -270%;
+        width: 300%;
+    }
+    .Landing-page-Build-Your-Own-Challenge-Board {
+        display: inherit;
+        width: 70vw;
+        margin: 8%;
+        z-index: 0;
+    }
+    .Landing-page-Build-Your-Own-Challenge-content p {
+        width: 90vw;
+        font-size: 15px;
+        margin: 13%;
+        margin-top: 200%;
+        text-align: center;
+    }
+    .Landing-page-Build-Your-Own-Challenge-Buttons {
+        width: 100vw;
+        justify-content: space-evenly;
+    }
+    .Landing-page-Build-Your-Own-Challenge-GetStarted {
+        height: 45px;
+        width: 35%;
+        font-size: 15px;
+        line-height: 45px;
+    }
+    .Landing-page-Build-Your-Own-Challenge-Learn-More {
+        height: 45px;
+        width: 35%;
+        font-size: 15px;
+        line-height: 45px;
+    }
+    .Landing-page-Footer {
+        font-size: 6px;
+    }
+}
