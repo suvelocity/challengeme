@@ -15,6 +15,18 @@ const {
 } = require('../../helpers/validator');
 const mailer = require('../../helpers/communicator');
 
+// get client id for authentication with github
+authRouter.get('/client-id-github', (req, res) => {
+  res.json({ clientId: process.env.GITHUB_CLIENT_ID })
+});
+
+
+// authentication with github
+authRouter.post('/authentication-with-github', (req, res) => {
+  res.json({ cool: true })
+});
+
+
 // Register
 authRouter.post('/register', async (req, res) => {
   try {
