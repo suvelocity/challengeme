@@ -84,13 +84,19 @@ export default makeStyles((theme) => ({
     marginTop: '8px',
     marginLeft: '7px',
   },
-  filterButton: {
+  authButton: {
     backgroundColor: 'rgb(219,219,219)',
-    marginLeft: '10px',
+    // marginLeft: '10px',
   },
-  filterButtonDark: {
-    backgroundColor: 'rgb(81,81,81)',
-    color: 'white',
-    marginLeft: '10px',
+  narrowFlex: {
+    display: 'flex',
+    fontSize: '10px',
+    width: '225px',
+    maxWidth: '480px',
+    marginLeft: '-30px'
   },
+  title: {
+    fontSize: '10px',
+    width: '40%',
+  }
 }));
