@@ -167,7 +167,7 @@
     position: relative;
     box-shadow: 11px 10px 16px 0px #000000 34%;
     width: 25%;
-    min-width: 350px;
+    /* min-width: 350px; */
     height: 500px;
     background-color: #1B3F55;
     margin: 5% 2% auto 2%;
@@ -500,6 +500,7 @@
 .Landing-page-Footer p {
     padding-top: 1%;
 }
+
 @media (max-width: 768px) {
     .Landing-page-main {
         width: 100%;
@@ -611,26 +612,28 @@
         padding-top: 75%;
         flex-direction: column;
     }
+    .Landing-page-Build-Your-Own-Challenge-content {
+        width: 100%;
+        max-width: 100%;
+    }
     .Landing-page-Build-Your-Own-Challenge-content h2 {
-        font-size: 26px;
-        margin-top: -220%;
-        width: 300%;
+        font-size: 20px;
+        margin-top: -60vh;
+        width: 100%;
     }
     .Landing-page-Build-Your-Own-Challenge-Board {
         display: inherit;
-        width: 70vw;
         margin: 8%;
         z-index: 0;
     }
     .Landing-page-Build-Your-Own-Challenge-content p {
-        width: 90vw;
         font-size: 15px;
-        margin: 13%;
-        margin-top: 200%;
+        margin-top: 100%;
         text-align: center;
     }
     .Landing-page-Build-Your-Own-Challenge-Buttons {
         width: 100vw;
+        padding: 0px;
         justify-content: space-evenly;
     }
     .Landing-page-Build-Your-Own-Challenge-GetStarted {
@@ -761,10 +764,14 @@
         padding-top: 75%;
         flex-direction: column;
     }
+    .Landing-page-Build-Your-Own-Challenge-content {
+        width: 100%;
+        max-width: 100%;
+    }
     .Landing-page-Build-Your-Own-Challenge-content h2 {
-        font-size: 26px;
-        margin-top: -270%;
-        width: 300%;
+        font-size: 20px;
+        margin-top: -60vh;
+        width: 100%;
     }
     .Landing-page-Build-Your-Own-Challenge-Board {
         display: inherit;
@@ -773,14 +780,13 @@
         z-index: 0;
     }
     .Landing-page-Build-Your-Own-Challenge-content p {
-        width: 90vw;
         font-size: 15px;
-        margin: 13%;
-        margin-top: 200%;
+        margin-top: 100%;
         text-align: center;
     }
     .Landing-page-Build-Your-Own-Challenge-Buttons {
         width: 100vw;
+        padding: 0px;
         justify-content: space-evenly;
     }
     .Landing-page-Build-Your-Own-Challenge-GetStarted {
