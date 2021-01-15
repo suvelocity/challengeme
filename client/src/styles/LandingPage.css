@@ -568,6 +568,9 @@
     .Landing-page-stripes {
         display: none;
     }
+    .Landing-page-Sections-Single-Card {
+        min-width: 220px;
+    }
     .Landing-page-Open-Source-H2 {
         padding-top: 10%;
         font-size: 30px;
@@ -592,6 +595,7 @@
     .Landing-page-Project-Leaders-Root {
         margin-top: 15%;
         height: 100%;
+        min-width: 220px;
     }
     .Landing-page-Project-Leaders-Image {
         margin: -200% auto auto 729%;
