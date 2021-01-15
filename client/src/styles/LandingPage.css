@@ -167,7 +167,7 @@
     position: relative;
     box-shadow: 11px 10px 16px 0px #000000 34%;
     width: 25%;
-    /* min-width: 350px; */
+    min-width: 350px;
     height: 500px;
     background-color: #1B3F55;
     margin: 5% 2% auto 2%;
