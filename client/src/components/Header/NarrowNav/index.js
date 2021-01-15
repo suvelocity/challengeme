@@ -3,11 +3,14 @@ import Cookies from 'js-cookie';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
+import AppsIcon from '@material-ui/icons/Apps';
 import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
 import HomeIcon from '@material-ui/icons/Home';
 import IconButton from '@material-ui/core/IconButton';
+import DescriptionIcon from '@material-ui/icons/Description';
 import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -95,34 +98,75 @@ export default function NarrowNav() {
           >
             <MenuIcon style={letterColor} />
           </IconButton>
-          <Search />
-          <div
-            style={{
-              minWidth: '150px',
-              width: 'fit-content',
-              marginLeft: '10px',
-            }}
-          >
-            {currentLocation.pathname === '/' ? (
-              <ChooseLabels
-                labels={labels}
-                chooseLabels={chooseLabels}
-                setChooseLabels={setChooseLabels}
-                setLabels={setLabels}
-              />
+          <div className={classes.narrowFlex}>
+            {currentLocation.pathname === '/challenges' ? (
+              <Search />
             ) : null}
+            {currentLocation.pathname === '/'
+              && (
+                <>
+                  <Typography variant="h6" className={classes.title}>
+                    <Link to="/challenges" className="link-rout">
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '10px',
+                          marginLeft: '40px',
+                        }}
+                      >
+                        <AppsIcon style={letterColor} />
+                &nbsp;
+                        <span style={letterColor} className="header-link-title">
+                          Challenges
+                        </span>
+                      </div>
+                    </Link>
+                  </Typography>
+                  <Typography variant="h6" className={classes.title}>
+                    <Link to={LoggedContext.logged ? '/teams' : currentLocation.pathname} className="link-rout">
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '10px',
+                          marginLeft: '40px',
+                        }}
+                      >
+                        <GroupIcon style={letterColor} />
+                &nbsp;
+                        <span style={letterColor} className="header-link-title">
+                          Teams
+                        </span>
+                      </div>
+                    </Link>
+                  </Typography>
+                  <Typography variant="h6" className={classes.title}>
+                    <a
+                      href="https://suvelocity.github.io/challengeme/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-rout"
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '10px',
+                          marginLeft: '40px',
+                        }}
+                      >
+                        <DescriptionIcon style={letterColor} />
+                &nbsp;
+                        <span style={letterColor} className="header-link-title">
+                          Docs
+                        </span>
+                      </div>
+                    </a>
+                  </Typography>
+                </>
+              )}
           </div>
-          {currentLocation.pathname === '/' ? (
-            <Button
-              onClick={() => {
-                filteredLabels.setFilteredLabels(labels ? labels.map((label) => label.value) : []);
-              }}
-              variant="contained"
-              className={classes.filterButton}
-            >
-              filter
-            </Button>
-          ) : null}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -237,12 +281,12 @@ export default function NarrowNav() {
             ) : (
               <>
                 <Link to="/login" className="link-rout">
-                  <Button variant="contained" className={classes.filterButton}>
+                  <Button variant="contained" className={classes.authButton}>
                     Login
                   </Button>
                 </Link>
                 <Link to="/register" className="link-rout">
-                  <Button variant="contained" className={classes.filterButton}>
+                  <Button variant="contained" className={classes.authButton}>
                     Register
                   </Button>
                 </Link>
