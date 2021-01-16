@@ -14,6 +14,49 @@ const {
   userValidation,
 } = require('../../helpers/validator');
 const mailer = require('../../helpers/communicator');
+const githubAuth = require('../../middleware/githubAuth');
+const { generatePassword } = require('../../utils');
+
+// get client id for authentication with github
+authRouter.get('/client-id-github', (req, res) => {
+  res.json({ clientId: process.env.GITHUB_CLIENT_ID })
+});
+
+// authentication with github
+authRouter.post('/authentication-with-github', githubAuth, async (req, res) => {
+  const { login, name, email, id, node_id } = req.gitUser;
+  try {
+    const userName = login + 'github';
+    const checkUser = await userIsExist(userName);
+    if (checkUser) {
+      await giveCredentials(res, checkUser.userName, checkUser.id, rememberMe = false, withRefresh = true);
+      const isAdmin = checkUser.permission === 'admin';
+      return res.json({ userName: checkUser.userName, isAdmin, title: 'Login With Github Success' });
+    } else {
+      const splitName = name.split(' ');
+      const password = generatePassword()
+      const hashPassword = await bcrypt.hashSync(password, 10);
+      const newUser = await User.create({
+        userName,
+        firstName: splitName[0],
+        lastName: splitName[1],
+        email,
+        password: hashPassword,
+        githubAccount: login
+      });
+      await giveCredentials(res, newUser.userName, newUser.id, rememberMe = false, withRefresh = true);
+      return res.status(201).json({
+        userName: newUser.userName,
+        isAdmin: false,
+        title: 'Register With Github Success',
+        message: `This is your regular login password ${password}, Please save it somewhere safe for your next login`
+      });
+    }
+  } catch (error) {
+    console.error(error.message);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
 
 // Register
 authRouter.post('/register', async (req, res) => {
@@ -141,42 +184,7 @@ authRouter.post('/login', async (req, res) => {
       currentUser.password,
     );
     if (!validPass) return res.status(403).json({ message: 'User or Password incorrect' });
-    const expired = req.body.rememberMe ? '365 days' : '24h';
-    const infoForCookie = {
-      userId: currentUser.id,
-      userName: currentUser.userName,
-    };
-    const refreshToken = jwt.sign(
-      infoForCookie,
-      process.env.REFRESH_TOKEN_SECRET,
-      {
-        expiresIn: expired,
-      },
-    );
-    const accessToken = generateToken(infoForCookie);
-    const isTokenExist = await RefreshToken.findOne({
-      where: {
-        userName: currentUser.userName,
-      },
-    });
-    if (!isTokenExist) {
-      await RefreshToken.create({
-        userName: currentUser.userName,
-        token: refreshToken,
-      });
-    } else {
-      await RefreshToken.update(
-        { token: refreshToken },
-        {
-          where: {
-            userName: currentUser.userName,
-          },
-        },
-      );
-    }
-    res.cookie('userName', currentUser.userName);
-    res.cookie('accessToken', accessToken);
-    res.cookie('refreshToken', refreshToken);
+    await giveCredentials(res, currentUser.userName, currentUser.id, req.body.rememberMe, withRefresh = true)
     const isAdmin = currentUser.permission === 'admin';
     return res.json({ userName: currentUser.userName, isAdmin });
   } catch (error) {
@@ -206,11 +214,7 @@ authRouter.post('/token', async (req, res) => {
         console.error(error.message);
         return res.status(403).json({ message: 'Invalid Refresh Token' });
       }
-      delete decoded.iat;
-      delete decoded.exp;
-      const accessToken = generateToken(decoded);
-      res.cookie('userName', decoded.userName);
-      res.cookie('accessToken', accessToken);
+      await giveCredentials(res, decoded.userName, decoded.userId, rememberMe = false, withRefresh = false)
       const isAdmin = await userIsAdmin(decoded.userName);
       return res.json({ message: 'token updated', isAdmin });
     });
@@ -275,6 +279,7 @@ authRouter.post('/validate-answer', async (req, res) => {
     }
     const currentUser = await userIsExist(req.body.userName);
     if (!currentUser) return res.status(403).json({ message: 'Wrong Answer' });
+    if(!currentUser.securityAnswer) return res.status(403).json({ message: 'Wrong Answer' });
     const validAnswer = await bcrypt.compareSync(
       req.body.securityAnswer,
       currentUser.securityAnswer,
@@ -344,6 +349,7 @@ async function userIsExist(userName) {
   }
 }
 
+// check in the DateBase if user is an admin on the system
 async function userIsAdmin(userName) {
   try {
     const userIsAdmin = await User.findOne({
@@ -364,8 +370,54 @@ async function userIsAdmin(userName) {
 }
 
 // create an access token
-function generateToken(user) {
-  return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '900s' });
+function generateAccessToken(userName, userId) {
+  return jwt.sign({ userName, userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '900s' });
+}
+
+// create an refresh token
+async function generateRefreshToken(userName, userId, rememberMe) {
+  try {
+    const isTokenExist = await RefreshToken.findOne({
+      where: {
+        userName
+      },
+    });
+    const expired = rememberMe ? '365 days' : '24h';
+    const refreshToken = jwt.sign({ userId, userName },
+      process.env.REFRESH_TOKEN_SECRET, { expiresIn: expired });
+    if (!isTokenExist) {
+
+      await RefreshToken.create({
+        userName,
+        token: refreshToken,
+      });
+    } else {
+      await RefreshToken.update(
+        { token: refreshToken },
+        {
+          where: {
+            userName,
+          },
+        },
+      );
+    }
+    return refreshToken;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+}
+
+// generate access and refresh tokens and set cookies 
+async function giveCredentials(res, userName, userId, rememberMe, withRefresh) {
+  const accessToken = generateAccessToken(userName, userId);
+  if (withRefresh) {
+    const refreshToken = await generateRefreshToken(userName, userId, rememberMe)
+    res.cookie('refreshToken', refreshToken);
+  }
+  res.cookie('userName', userName);
+  res.cookie('accessToken', accessToken);
+  return;
 }
 
 module.exports = authRouter;

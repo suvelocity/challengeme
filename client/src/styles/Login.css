@@ -1,26 +1,35 @@
+body {
+    background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
+}
+
 .loginGeneral {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    /* background-color: #1E3D5B; */
+    background-color: transparent;
     background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
-    padding-top:85px;
+    padding-top: 0px;
 }
 
 .containerHeaderLogin {
-    margin-bottom: 450px;
+    margin: 60px 75px 0px 75px;
     position: absolute;
     border-radius: 4px;
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.356);
     text-align: center;
     color: white;
     width: 450px;
-    height: 160px;
+    height: 130px;
     background: linear-gradient( 90deg, rgb(49, 92, 171) 0%, rgb(69, 125, 199) 100%);
     display: flex;
     flex-direction: column;
+}
+
+.containerBodyLogin {
+    /* height: 47vh!important;
+    min-height: 10px !important; */
 }
 
 .loginTitle {
@@ -34,15 +43,43 @@
 }
 
 .loginBody {
-    margin-top: 20px;
+    margin-top: 20%;
     background-color: rgba(255, 255, 255, 0.972);
     border-radius: 5px;
     width: 600px;
-    height: 420px;
+    height: 75vh;
+    max-height: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-items: center;
+    justify-content: center;
+    align-content: center;
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.548);
+}
+
+.formBody {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.userNameLoginInput {
+    margin-top: 25% !important;
+    margin-bottom: 4% !important;
+    width: 100%;
+}
+
+.passwordLoginINput {
+    margin-bottom: 4% !important;
+    width: 100%;
+}
+
+.loginButton {
+    margin-bottom: 10px!important;
+    /* margin-top: 70px!important; */
+    background: linear-gradient(45deg, #447CC6 30%, #315CAB 90%)!important;
+    color: white !important;
 }
 
 a {
@@ -56,6 +93,16 @@ a {
     align-items: center;
 }
 
+.login-register-line {
+    margin-top: 45px!important;
+    height: 50px;
+    display: flex;
+    align-content: center;
+    line-height: 40px;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
 .forgotLabel {
     /* margin-bottom: 20px; */
     margin-left: 55px;
@@ -63,7 +110,7 @@ a {
 
 .containerErrorLogin {
     position: absolute;
-    margin-top: 300px;
+    margin-top: 250px;
     height: 30px;
     border-radius: 5px;
     width: 400px;
@@ -77,6 +124,73 @@ a {
     height: auto;
     margin-left: 5px;
     color: white;
+}
+
+.login-with-third-party {
+    margin-top: 1%;
+    margin-bottom: 1%;
+    height: 10vh;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border: 1px grey solid;
+}
+
+.orLoginWith-github {
+    border: 1px solid black;
+    width: 45%;
+    text-align: center;
+}
+
+.third-party-button {
+    user-select: none;
+    cursor: pointer;
+    height: 50% !important;
+    line-height: 50% !important;
+    min-height: 40px;
+    min-width: 120px;
+    font-size: 1rem;
+}
+
+.third-party-button:hover {
+    background-color: rgb(0, 0, 0, 10%);
+}
+
+.third-party-button:after {
+    content: "";
+    background-color: rgb(0, 0, 0, 80%);
+    display: block;
+    margin-top: -27.5%;
+    padding-top: 0.35vh;
+    height: 50% !important;
+    line-height: 50% !important;
+    min-height: 40px;
+    opacity: 0;
+    transition: all 0.8s;
+    margin-right: -1px;
+    margin-left: -1px;
+}
+
+.third-party-button:active:after {
+    padding: 0;
+    margin: 0;
+    margin-top: -27.5%;
+    padding-top: 0.35vh;
+    opacity: 1;
+    transition: 0s;
+    height: 50% !important;
+    line-height: 50% !important;
+    min-height: 40px;
+    transition: all 0.8s;
+    margin-right: -1px;
+    margin-left: -1px;
+}
+
+.orLoginWith-github-icon {
+    height: 30% !important;
+    width: 20px !important;
 }
 
 @media (max-width: 700px) {
@@ -93,4 +207,35 @@ a {
         width: 80vw;
         height: 50px;
     }
+    .userNameLoginInput {
+        margin-top: 220px;
+    }
+
+.third-party-button {
+    font-size: 0.7rem;
+}
+
+.third-party-button:after {
+    margin-top: -38%;
+}
+
+.third-party-button:active:after {
+    margin-top: -38%;
+}
+
+}
+
+@media (min-height: 700px) {
+    .third-party-button:after {
+        padding-top: 1vh;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+    
+    .third-party-button:active:after {
+        padding-top: 1vh;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+
 }
