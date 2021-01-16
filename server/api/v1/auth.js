@@ -42,6 +42,7 @@ authRouter.post('/authentication-with-github', githubAuth, async (req, res) => {
         lastName: splitName[1],
         email,
         password: hashPassword,
+        githubAccount: login
       });
       await giveCredentials(res, newUser.userName, newUser.id, rememberMe = false, withRefresh = true);
       return res.status(201).json({
@@ -278,6 +279,7 @@ authRouter.post('/validate-answer', async (req, res) => {
     }
     const currentUser = await userIsExist(req.body.userName);
     if (!currentUser) return res.status(403).json({ message: 'Wrong Answer' });
+    if(!currentUser.securityAnswer) return res.status(403).json({ message: 'Wrong Answer' });
     const validAnswer = await bcrypt.compareSync(
       req.body.securityAnswer,
       currentUser.securityAnswer,
@@ -347,6 +349,7 @@ async function userIsExist(userName) {
   }
 }
 
+// check in the DateBase if user is an admin on the system
 async function userIsAdmin(userName) {
   try {
     const userIsAdmin = await User.findOne({
@@ -371,6 +374,7 @@ function generateAccessToken(userName, userId) {
   return jwt.sign({ userName, userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '900s' });
 }
 
+// create an refresh token
 async function generateRefreshToken(userName, userId, rememberMe) {
   try {
     const isTokenExist = await RefreshToken.findOne({
@@ -404,6 +408,7 @@ async function generateRefreshToken(userName, userId, rememberMe) {
   }
 }
 
+// generate access and refresh tokens and set cookies 
 async function giveCredentials(res, userName, userId, rememberMe, withRefresh) {
   const accessToken = generateAccessToken(userName, userId);
   if (withRefresh) {
