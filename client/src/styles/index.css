@@ -62,3 +62,8 @@ background-size: cover; */
 .header-link-title:hover {
   text-decoration: underline;
 }
+
+.under-line-hover:hover {
+  text-decoration: underline;
+  text-decoration-color: white;
+}

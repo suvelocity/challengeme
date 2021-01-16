@@ -101,7 +101,6 @@ export default function Login() {
   const authGithub = async () => {
     try {
       const { data } = await network.get('/api/v1/auth/client-id-github');
-      console.log(data);
       window.location.assign(`https://github.com/login/oauth/authorize?client_id=${data.clientId}`)
     } catch (error) {
       setError({ message: error.message });

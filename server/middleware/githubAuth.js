@@ -1,4 +1,5 @@
 require('dotenv').config();
+const axios = require('axios');
 module.exports = async function githubAuth(req, res, next) {
     const data = {
         client_id: process.env.GITHUB_CLIENT_ID,
@@ -19,22 +20,21 @@ module.exports = async function githubAuth(req, res, next) {
     })
         .then(results => {
             const accessToken = results.data.split("&")[0].split("=")[1]
-            console.log('accessToken : ', accessToken)
             headers.authorization = `Bearer ${accessToken}`
-            // res.json({body : res.body})
             axios({
                 method: 'get',
                 url: 'https://api.github.com/user',
                 data: {},
                 headers,
-
-            }).then(async (results2) => {
-                req.body.gitUser = results2.data;
+            }).then((results2) => {
+                req.gitUser = results2.data;
                 next();
-            }).catch(() => {
-                res.status(400).json({ message: "Github Authentication failed" })
+            }).catch((error) => {
+                console.table({ message: "Github Authentication failed", error: `${error.message} - ${error.response.data.message}` })
+                return res.status(400).json({ message: "Github Authentication failed" })
             })
-        }).catch(() => {
-            res.status(400).json({ message: "Github Authentication failed, Invalid Temp Code" })
+        }).catch((error) => {
+            console.error("Github Authentication failed, Invalid Temp Code", error.message);
+            return res.status(400).json({ message: "Github Authentication failed, Invalid Temp Code" })
         })
 }
