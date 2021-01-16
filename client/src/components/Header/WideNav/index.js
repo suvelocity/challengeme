@@ -194,7 +194,7 @@ export default function WideNav() {
                 </Tooltip>
               )
               : (
-                <Link to="/login" className="link-rout">
+                <Link to="/login" className="link-rout under-line-hover">
                   <div className={classes.filterButton}>
                     Login
                 </div>

@@ -3,7 +3,6 @@ import { useHistory, Link } from 'react-router-dom';
 import mixpanel from 'mixpanel-browser';
 import IconButton from '@material-ui/core/IconButton';
 import FormControl from '@material-ui/core/FormControl';
-import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -19,32 +18,10 @@ import ErrorIcon from '@material-ui/icons/Error';
 import { motion } from 'framer-motion';
 import { Logged } from '../../context/LoggedInContext';
 import network from '../../services/network';
-import Background from '../Background';
 import '../../styles/Login.css';
 
-const useStyles = makeStyles(() => ({
-  userNameLoginInput: {
-    marginTop: '110px',
-    marginBottom: '20px',
-    width: '320px',
-    '@media (max-width: 700px) ': {
-      marginTop: '220px',
-    },
-  },
-  passwordLoginINput: {
-    marginBottom: '5px',
-    width: '320px',
-  },
-  loginButton: {
-    marginBottom: '10px',
-    marginTop: '70px',
-    background: 'linear-gradient(45deg, #447CC6 30%, #315CAB 90%)',
-    color: 'white',
-  },
-}));
 
 export default function Login() {
-  const classes = useStyles();
   const [userName, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
@@ -98,9 +75,18 @@ export default function Login() {
     }
   };
 
+  const authGithub = async () => {
+    try {
+      const { data } = await network.get('/api/v1/auth/client-id-github');
+      window.location.assign(`https://github.com/login/oauth/authorize?client_id=${data.clientId}`)
+    } catch (error) {
+      setError({ message: error.message });
+    }
+  }
+
+
   return (
     <>
-      <Background />
       <motion.div
         onMouseUp={() => setShowPassword(false)}
         initial={{ opacity: 0.2, scale: 0.8 }}
@@ -110,105 +96,107 @@ export default function Login() {
         }}
         className="loginGeneral"
       >
-        <div className="containerHeaderLogin">
-          <div className="loginTitle">
-            <b>Log in</b>
-          </div>
-          <div className="orLoginWith">
-            Or login with :
-            <IconButton>
-              <GitHubIcon style={{ color: 'white' }} />
-            </IconButton>
-          </div>
-        </div>
         <div className="containerBodyLogin">
-          <form className="loginForm" onSubmit={loginFunc}>
+          <div className="containerHeaderLogin">
+            <b className="loginTitle">Log in</b>
+          </div>
+          <div className="loginForm">
             <div className="loginBody">
-              <FormControl className={classes.userNameLoginInput}>
-                <InputLabel style={{ color: 'grey' }}>User Name</InputLabel>
-                <Input
-                  type="text"
-                  id="userNameField"
-                  name="userName"
-                  value={userName}
-                  required
-                  onChange={(e) => setUsername(e.currentTarget.value)}
-                  endAdornment={(
-                    <InputAdornment style={{ opacity: '0.7' }} position="end">
-                      <PeopleIcon />
-                    </InputAdornment>
-                  )}
-                />
-              </FormControl>
-              <FormControl className={classes.passwordLoginINput}>
-                <InputLabel style={{ color: 'grey' }}>Password</InputLabel>
-                <Input
-                  id="passwordField"
-                  name="password"
-                  value={password}
-                  required
-                  type={showPassword ? 'text' : 'password'}
-                  onChange={(e) => setPassword(e.currentTarget.value)}
-                  endAdornment={(
-                    <InputAdornment position="end">
-                      <IconButton
-                        id="reveal"
-                        style={{ opacity: '0.7' }}
-                        aria-label="toggle password visibility"
-                        onMouseDown={() => setShowPassword(true)}
-                        onMouseUp={() => setShowPassword(false)}
-                        autoComplete="current-password"
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                      <LockIcon style={{ opacity: '0.7' }} />
-                    </InputAdornment>
-                  )}
-                />
-              </FormControl>
-              <div className="RememberAndforgot">
-                <FormControlLabel
-                  htmlFor="rememberMe"
-                  value="start"
-                  control={<Checkbox color="primary" />}
-                  label="Remember me"
-                  labelPlacement="end"
-                  name="rememberMe"
-                  type="checkbox"
-                  onChange={() => setRememberMe((prevState) => !prevState)}
-                />
-                <Link to="/forgot" className="forgotLabel">
-                  Forgot Password ?
-                </Link>
-              </div>
-              {(error.userName || error.password || error.message) && (
-                <div className="containerErrorLogin">
-                  <ErrorIcon
-                    style={{
-                      color: 'white',
-                      marginLeft: '4px',
-                    }}
+              <form className="formBody" onSubmit={loginFunc}>
+                <FormControl className='userNameLoginInput'>
+                  <InputLabel style={{ color: 'grey' }}>User Name</InputLabel>
+                  <Input
+                    type="text"
+                    id="userNameField"
+                    name="userName"
+                    value={userName}
+                    required
+                    onChange={(e) => setUsername(e.currentTarget.value)}
+                    endAdornment={(
+                      <InputAdornment style={{ opacity: '0.7' }} position="end">
+                        <PeopleIcon />
+                      </InputAdornment>
+                    )}
                   />
-                  <div className="errorInput">
-                    {error.userName || error.password || error.message}
-                  </div>
-                </div>
-              )}
-              <Button
-                type="submit"
-                id="loginButton"
-                className={classes.loginButton}
-              >
-                Log in
-              </Button>
-              <div>
-                <span>don`t have an account yet?</span>
-                <Link to="/register" id="signUp">
-                  Sign up
+                </FormControl>
+                <FormControl className='passwordLoginINput'>
+                  <InputLabel style={{ color: 'grey' }}>Password</InputLabel>
+                  <Input
+                    id="passwordField"
+                    name="password"
+                    value={password}
+                    required
+                    type={showPassword ? 'text' : 'password'}
+                    onChange={(e) => setPassword(e.currentTarget.value)}
+                    endAdornment={(
+                      <InputAdornment position="end">
+                        <IconButton
+                          id="reveal"
+                          style={{ opacity: '0.7' }}
+                          aria-label="toggle password visibility"
+                          onMouseDown={() => setShowPassword(true)}
+                          onMouseUp={() => setShowPassword(false)}
+                          autoComplete="current-password"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                        <LockIcon style={{ opacity: '0.7' }} />
+                      </InputAdornment>
+                    )}
+                  />
+                </FormControl>
+                <div className="RememberAndforgot">
+                  <FormControlLabel
+                    htmlFor="rememberMe"
+                    value="start"
+                    control={<Checkbox color="primary" />}
+                    label="Remember me"
+                    labelPlacement="end"
+                    name="rememberMe"
+                    type="checkbox"
+                    onChange={() => setRememberMe((prevState) => !prevState)}
+                  />
+                  <Link to="/forgot" className="forgotLabel">
+                    Forgot Password ?
                 </Link>
-              </div>
+                </div>
+                {(error.userName || error.password || error.message) && (
+                  <div className="containerErrorLogin">
+                    <ErrorIcon
+                      style={{
+                        color: 'white',
+                        marginLeft: '4px',
+                      }}
+                    />
+                    <div className="errorInput">
+                      {error.userName || error.password || error.message}
+                    </div>
+                  </div>
+                )}
+                  <div className='login-register-line'>
+                <Button
+                  type="submit"
+                  id="loginButton"
+                  className='loginButton'
+                >
+                  Log in
+              </Button>
+                  <span>don`t have an account yet?</span>
+                  <Link to="/register" id="signUp">
+                    Sign up
+                </Link>
+                </div>
+              </form>
+              <section className='login-with-third-party'>
+                <div className="orLoginWith-github third-party-button" onClick={authGithub}>
+                  Login with Github
+            <IconButton >
+                    <GitHubIcon className="orLoginWith-github-icon" />
+                  </IconButton>
+                </div>
+              </section>
             </div>
-          </form>
+          </div>
         </div>
       </motion.div>
     </>

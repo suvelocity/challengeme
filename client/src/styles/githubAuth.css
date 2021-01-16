@@ -1,0 +1,40 @@
+.sign-in-github-row {
+    margin-top: -100px;
+    display: flex;
+    justify-content: space-around;
+    height: 117vh;
+}
+
+.sign-in-github-column {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.sign-in-github-icon {
+    justify-self: center;
+    align-self: center;
+    height: 200px !important;
+    width: 200px !important;
+}
+
+.sign-in-github-content {
+    margin-top: -200px;
+}
+
+@media (max-width: 768px) {
+    .sign-in-github-row {
+        margin-top: 0px;
+    }
+    .sign-in-github-content {
+        margin-top: -100px;
+    }
+    .sign-in-github-content h1 {
+        font-size: 20px;
+    }
+    .sign-in-github-icon {
+        height: 100px !important;
+        width: 100px !important;
+    }
+}
