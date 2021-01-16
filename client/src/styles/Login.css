@@ -163,25 +163,29 @@ a {
     background-color: rgb(0, 0, 0, 80%);
     display: block;
     margin-top: -27.5%;
-    padding-top: 0.5vh;
+    padding-top: 0.35vh;
     height: 50% !important;
     line-height: 50% !important;
     min-height: 40px;
     opacity: 0;
-    transition: all 0.8s
+    transition: all 0.8s;
+    margin-right: -1px;
+    margin-left: -1px;
 }
 
 .third-party-button:active:after {
     padding: 0;
     margin: 0;
     margin-top: -27.5%;
-    padding-top: 0.5vh;
+    padding-top: 0.35vh;
     opacity: 1;
     transition: 0s;
     height: 50% !important;
     line-height: 50% !important;
     min-height: 40px;
     transition: all 0.8s;
+    margin-right: -1px;
+    margin-left: -1px;
 }
 
 .orLoginWith-github-icon {
@@ -218,5 +222,20 @@ a {
 .third-party-button:active:after {
     margin-top: -38%;
 }
+
+}
+
+@media (min-height: 700px) {
+    .third-party-button:after {
+        padding-top: 1vh;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+    
+    .third-party-button:active:after {
+        padding-top: 1vh;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
 
 }
