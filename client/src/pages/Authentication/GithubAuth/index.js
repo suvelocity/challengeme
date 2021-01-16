@@ -1,8 +1,10 @@
 import React, { useEffect, useContext } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import network from '../../../services/network';
 import { Logged } from '../../../context/LoggedInContext';
+import '../../../styles/githubAuth.css';
 
 function GithubAuth() {
     const history = useHistory();
@@ -39,7 +41,25 @@ function GithubAuth() {
         // eslint-disable-next-line
     }, [history, code]);
 
-    return <div />;
+    return (
+        <div className='sign-in-github-row'>
+            <div className='sign-in-github-column'>
+                <GitHubIcon className='sign-in-github-icon' />
+                <section className='sign-in-github-content'>
+                    <h1>
+                        Checking your account before accessing ChallengeMe.
+        </h1>
+                    <p>
+                        This process is automatic. Your browser will redirect to your requested shortly.
+            </p>
+                    <p>
+                        please allow up to 5 seconds...
+            </p>
+                </section>
+            </div>
+
+        </div>
+    )
 }
 
 export default GithubAuth;

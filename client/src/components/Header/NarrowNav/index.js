@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import Cookies from 'js-cookie';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
@@ -25,8 +25,6 @@ import GroupIcon from '@material-ui/icons/Group';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LockIcon from '@material-ui/icons/Lock';
 import AddIcon from '@material-ui/icons/Add';
-import ChooseLabels from '../../Choosers/ChooseLabels';
-import FilteredLabels from '../../../context/FilteredLabelsContext';
 import useStyles from './NarrowNavStyled';
 import { Logged } from '../../../context/LoggedInContext';
 import Search from '../Search';
@@ -34,25 +32,10 @@ import network from '../../../services/network';
 
 export default function NarrowNav() {
   const classes = useStyles();
-  const filteredLabels = useContext(FilteredLabels);
-  const [labels, setLabels] = useState([]);
-  const [chooseLabels, setChooseLabels] = useState([]);
   const location = useHistory();
   const LoggedContext = useContext(Logged);
   const [openNavBar, setOpenNavBar] = useState(false);
   const currentLocation = useLocation();
-
-  useEffect(() => {
-    if (currentLocation.pathname !== '/') {
-      setLabels([]);
-    } else {
-      const newFilter = chooseLabels.filter(
-        (label) => label.value === (filteredLabels ? filteredLabels.filteredLabels[0] : null),
-      );
-      setLabels(newFilter);
-    }
-    // eslint-disable-next-line
-  }, [currentLocation]);
 
   const handleDrawerOpen = () => {
     setOpenNavBar(true);
