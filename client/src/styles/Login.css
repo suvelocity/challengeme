@@ -150,6 +150,7 @@ a {
     height: 50% !important;
     line-height: 50% !important;
     min-height: 40px;
+    min-width: 120px;
     font-size: 1rem;
 }
 
@@ -205,4 +206,17 @@ a {
     .userNameLoginInput {
         margin-top: 220px;
     }
+
+.third-party-button {
+    font-size: 0.7rem;
+}
+
+.third-party-button:after {
+    margin-top: -38%;
+}
+
+.third-party-button:active:after {
+    margin-top: -38%;
+}
+
 }
