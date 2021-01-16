@@ -7,8 +7,8 @@ const baseUrl = 'http://localhost:3000/';
 describe('Client Tests', () => {
   beforeAll(async () => {
     browser = await puppeteer.launch({
-      // headless: true,
-      // slowMo: 10
+      // headless: false,
+      // slowMo: 30
     });
     page = await browser.newPage();
     useNock(page, [baseUrl]);
