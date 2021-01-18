@@ -33,7 +33,7 @@ authRouter.post('/authentication-with-github', githubAuth, async (req, res) => {
       const isAdmin = checkUser.permission === 'admin';
       return res.json({ userName: checkUser.userName, isAdmin, title: 'Login With Github Success' });
     } else {
-      const splitName = name.split(' ');
+      const splitName = name ? name.split(' ') : [];
       const password = generatePassword()
       const hashPassword = await bcrypt.hashSync(password, 10);
       const newUser = await User.create({
