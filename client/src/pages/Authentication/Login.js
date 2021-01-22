@@ -173,13 +173,13 @@ export default function Login() {
                     </div>
                   </div>
                 )}
-                  <div className='login-register-line'>
-                <Button
-                  type="submit"
-                  id="loginButton"
-                  className='loginButton'
-                >
-                  Log in
+                <div className='login-register-line'>
+                  <Button
+                    type="submit"
+                    id="loginButton"
+                    className='loginButton'
+                  >
+                    Log in
               </Button>
                   <span>don`t have an account yet?</span>
                   <Link to="/register" id="signUp">
@@ -188,12 +188,10 @@ export default function Login() {
                 </div>
               </form>
               <section className='login-with-third-party'>
-                <div className="orLoginWith-github third-party-button" onClick={authGithub}>
+                <Button onClick={authGithub} variant="outlined" >
                   Login with Github
-            <IconButton >
-                    <GitHubIcon className="orLoginWith-github-icon" />
-                  </IconButton>
-                </div>
+                    <GitHubIcon className="or-login-with-icon" />
+                </Button>
               </section>
             </div>
           </div>
