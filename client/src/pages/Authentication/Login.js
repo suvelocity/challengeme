@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import GitHubIcon from '@material-ui/icons/GitHub';
+import GoogleIcon from '../../images/reactSvg/GoogleIcon';
 import ErrorIcon from '@material-ui/icons/Error';
 import { motion } from 'framer-motion';
 import { Logged } from '../../context/LoggedInContext';
@@ -84,6 +85,22 @@ export default function Login() {
     }
   }
 
+  const googleAuth = async () => {
+    try {
+      const { data } = await network.get('/api/v1/auth/client-id-google');
+      const url = new URL("https://accounts.google.com/o/oauth2/v2/auth")
+      const params = {
+        client_id: data.clientId,
+        scope: "https://www.googleapis.com/auth/userinfo.email",
+        include_granted_scopes: true,
+        response_type: "token",
+        redirect_uri: `http://${window.location.host}/google-auth`,
+      }
+      window.location.assign(url + "?" + new URLSearchParams(params).toString())
+    } catch (error) {
+      setError({ message: error.message });
+    }
+  }
 
   return (
     <>
@@ -173,13 +190,13 @@ export default function Login() {
                     </div>
                   </div>
                 )}
-                  <div className='login-register-line'>
-                <Button
-                  type="submit"
-                  id="loginButton"
-                  className='loginButton'
-                >
-                  Log in
+                <div className='login-register-line'>
+                  <Button
+                    type="submit"
+                    id="loginButton"
+                    className='loginButton'
+                  >
+                    Log in
               </Button>
                   <span>don`t have an account yet?</span>
                   <Link to="/register" id="signUp">
@@ -188,12 +205,18 @@ export default function Login() {
                 </div>
               </form>
               <section className='login-with-third-party'>
-                <div className="orLoginWith-github third-party-button" onClick={authGithub}>
+                <Button onClick={authGithub} variant="outlined" >
                   Login with Github
-            <IconButton >
-                    <GitHubIcon className="orLoginWith-github-icon" />
-                  </IconButton>
-                </div>
+                    <GitHubIcon className="or-login-with-icon" />
+                </Button>
+                <Button onClick={googleAuth} variant="outlined">
+                  <div>
+                    Login with Google
+                  </div>
+                  <div className="or-login-with-icon">
+                    <GoogleIcon />
+                  </div>
+                </Button>
               </section>
             </div>
           </div>
