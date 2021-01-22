@@ -28,7 +28,6 @@ authRouter.post('/authentication-with-google', googleAuth, async (req, res) => {
   const { id, email, verified_email, name, given_name, family_name, picture, locale } = req.googleUser;
   console.log('start authentication with google');
   try {
-
     const checkUser = await emailIsExist(email);
     if (checkUser) {
       await giveCredentials(res, checkUser.userName, checkUser.id, rememberMe = false, withRefresh = true);
@@ -36,7 +35,7 @@ authRouter.post('/authentication-with-google', googleAuth, async (req, res) => {
       return res.json({ userName: checkUser.userName, isAdmin, title: 'Login With Google Success' });
     } else {
       const googleUserName = email.split('@')[0];
-      let userName = googleUserName
+      let userName = googleUserName.replace(/\W/g, '')
       let userNameAvailable = true;
       let i = 1;
       while (userNameAvailable && i < 100) {
@@ -61,7 +60,7 @@ authRouter.post('/authentication-with-google', googleAuth, async (req, res) => {
         userName: newUser.userName,
         isAdmin: false,
         title: 'Register With Google Success',
-        message: `This is your regular login password ${password}, Please save it somewhere safe for your next login`
+        message: `This is your regular login username: "${newUser.userName}" and password: "${password}", Please save it somewhere safe for your next login`
       });
     }
   } catch (error) {
@@ -232,6 +231,8 @@ authRouter.post('/login', async (req, res) => {
     }
     const currentUser = await userIsExist(req.body.userName);
     if (!currentUser) return res.status(403).json({ message: 'User or Password are incorrect' });
+    console.log('request password', req.body.password);
+    console.log('DataBase password', currentUser.password);
     const validPass = await bcrypt.compareSync(
       req.body.password,
       currentUser.password,
