@@ -15,7 +15,60 @@ const {
 } = require('../../helpers/validator');
 const mailer = require('../../helpers/communicator');
 const githubAuth = require('../../middleware/githubAuth');
+const googleAuth = require('../../middleware/googleAuth');
 const { generatePassword } = require('../../utils');
+
+// get client id for authentication with google
+authRouter.get('/client-id-google', (req, res) => {
+  res.json({ clientId: process.env.GOOGLE_CLIENT_ID })
+});
+
+// authentication with google
+authRouter.post('/authentication-with-google', googleAuth, async (req, res) => {
+  const { id, email, verified_email, name, given_name, family_name, picture, locale } = req.googleUser;
+  console.log('start authentication with google');
+  try {
+
+    const checkUser = await emailIsExist(email);
+    if (checkUser) {
+      await giveCredentials(res, checkUser.userName, checkUser.id, rememberMe = false, withRefresh = true);
+      const isAdmin = checkUser.permission === 'admin';
+      return res.json({ userName: checkUser.userName, isAdmin, title: 'Login With Google Success' });
+    } else {
+      const googleUserName = email.split('@')[0];
+      let userName = googleUserName
+      let userNameAvailable = true;
+      let i = 1;
+      while (userNameAvailable && i < 100) {
+        userNameAvailable = await userIsExist(userName);
+        if (userNameAvailable) {
+          userName = googleUserName + i
+        }
+        i++
+      }
+      console.log('got an available one', userName);
+      const password = generatePassword()
+      const hashPassword = await bcrypt.hashSync(password, 10);
+      const newUser = await User.create({
+        userName,
+        firstName: given_name,
+        lastName: family_name,
+        email,
+        password: hashPassword,
+      });
+      await giveCredentials(res, newUser.userName, newUser.id, rememberMe = false, withRefresh = true);
+      return res.status(201).json({
+        userName: newUser.userName,
+        isAdmin: false,
+        title: 'Register With Google Success',
+        message: `This is your regular login password ${password}, Please save it somewhere safe for your next login`
+      });
+    }
+  } catch (error) {
+    console.error(error.message);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
 
 // get client id for authentication with github
 authRouter.get('/client-id-github', (req, res) => {
@@ -279,7 +332,7 @@ authRouter.post('/validate-answer', async (req, res) => {
     }
     const currentUser = await userIsExist(req.body.userName);
     if (!currentUser) return res.status(403).json({ message: 'Wrong Answer' });
-    if(!currentUser.securityAnswer) return res.status(403).json({ message: 'Wrong Answer' });
+    if (!currentUser.securityAnswer) return res.status(403).json({ message: 'Wrong Answer' });
     const validAnswer = await bcrypt.compareSync(
       req.body.securityAnswer,
       currentUser.securityAnswer,
@@ -331,12 +384,30 @@ authRouter.patch('/password-update', async (req, res) => {
 // validate if user has admin permission
 authRouter.get('/validate-admin', checkToken, checkAdmin, (req, res) => res.json({ admin: true }));
 
-// check in the DateBase if user is in the system
+// check in the DateBase if username is in the system
 async function userIsExist(userName) {
   try {
     const user = await User.findOne({
       where: {
         userName,
+      },
+    });
+    if (user) {
+      return user.toJSON();
+    }
+    return false;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+}
+
+// check in the DateBase if email is in the system
+async function emailIsExist(email) {
+  try {
+    const user = await User.findOne({
+      where: {
+        email,
       },
     });
     if (user) {
