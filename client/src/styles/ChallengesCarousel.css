@@ -167,7 +167,7 @@
     background-color: rgb(0, 0, 0, 0.6);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 950px) {
     .Carousel-Container {
         max-width: 95%;
     }
