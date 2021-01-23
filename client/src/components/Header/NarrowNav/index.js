@@ -82,7 +82,7 @@ export default function NarrowNav() {
             <MenuIcon style={letterColor} />
           </IconButton>
           <div className={classes.narrowFlex}>
-            {currentLocation.pathname === '/challenges' ? (
+            {currentLocation.pathname.includes('/challenges') ? (
               <Search />
             ) : null}
             {currentLocation.pathname === '/'
@@ -95,7 +95,6 @@ export default function NarrowNav() {
                           display: 'flex',
                           alignItems: 'center',
                           marginRight: '10px',
-                          marginLeft: '40px',
                         }}
                       >
                         <AppsIcon style={letterColor} />
@@ -113,7 +112,6 @@ export default function NarrowNav() {
                           display: 'flex',
                           alignItems: 'center',
                           marginRight: '10px',
-                          marginLeft: '40px',
                         }}
                       >
                         <GroupIcon style={letterColor} />
@@ -136,7 +134,6 @@ export default function NarrowNav() {
                           display: 'flex',
                           alignItems: 'center',
                           marginRight: '10px',
-                          marginLeft: '40px',
                         }}
                       >
                         <DescriptionIcon style={letterColor} />

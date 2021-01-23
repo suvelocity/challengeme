@@ -20,7 +20,7 @@
   justify-content: space-around;
 }
 
-.Review-Empty{
+.Review-Empty {
   position: relative;
   width: 95%;
   margin: 10px 1% 10px;
@@ -123,4 +123,53 @@
   align-items: center;
   text-align: center;
   color: rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 480px) {
+  .Review {
+    position: relative;
+    width: 95%;
+    margin: 10px 1% 10px;
+    height: 50px;
+  }
+  .Review-Avatar-Container>svg {
+    height: 25px;
+    width: 25px;
+  }
+  .Review-Author {
+    font-size: 5px;
+    line-height: 6px;
+  }
+  .Review-Middle {
+    width: 50%;
+  }
+  .Review-Title {
+    font-size: 8px !important;
+    line-height: 9px;
+  }
+  .Review-CreatedAt {
+    font-size: 6px;
+    line-height: 7px;
+  }
+  .Review-Content {
+    font-size: 7px;
+    line-height: 8px;
+  }
+  .Review-Rating-Number {
+    font-size: 7px;
+    line-height: 8px;
+  }
+  .Review-Rating-Part-Of {
+    font-size: 8px;
+    line-height: 8px;
+  }
+  .Review-Empty {
+    font-size: 6px;
+  }
+  .Review>svg {
+    width: 10px;
+    height: 15px;
+    margin-top: 5px;
+    margin-right: 5px;
+  }
 }
