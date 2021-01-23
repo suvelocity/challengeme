@@ -260,12 +260,12 @@ export default function NarrowNav() {
               </ListItem>
             ) : (
               <>
-                <Link to="/login" className="link-rout">
+                <Link to="/login" className="link-rout" onClick={handleDrawerClose}>
                   <Button variant="contained" className={classes.authButton}>
                     Login
                   </Button>
                 </Link>
-                <Link to="/register" className="link-rout">
+                <Link to="/register" className="link-rout" onClick={handleDrawerClose}>
                   <Button variant="contained" className={classes.authButton}>
                     Register
                   </Button>
