@@ -65,9 +65,31 @@
 }
 
 .All-Challenge-Footer {
-  display:block;
-  padding-top:80px;
+  display: block;
+  padding-top: 80px;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+}
+
+@media (max-width: 768px) {}
+
+@media (max-width: 480px) {
+  .All-Challenge-Image-Container {
+    padding-top: 235px;
+    box-shadow: inset 0px -80px 235px rgba(0, 0, 0, 0.9);
+  }
+  .All-Challenge-Title-Container {
+    width: 50%;
+    height: 100px;
+    left: 25%;
+    box-shadow: 0px 30px 60px rgb(0 0 0 / 25%);
+    top: 135px;
+    font-weight: normal;
+    font-size: 10px;
+    line-height: 30px;
+  }
+  .All-Challenge-Choose-Labels>div>div>div {
+    width: 100% !important;
+  }
 }

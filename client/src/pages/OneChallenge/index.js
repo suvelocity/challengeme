@@ -162,7 +162,7 @@ function ChallengePage() {
       );
     }
     if (submissionStatus.state === 'PENDING') {
-      return <CircularProgress style={{ marginBottom: '20px' }} />;
+      return <CircularProgress className='Circular-Progress' style={{ marginBottom: '20px' }} />;
     }
     if (submissionStatus.state === 'SUCCESS') {
       return (
@@ -288,7 +288,7 @@ function ChallengePage() {
                   </div>
                 ) : (
                     <div style={{ textAlign: 'center' }}>
-                      <CircularProgress style={{ margin: '30px' }} />
+                      <CircularProgress className='Circular-Progress' style={{ margin: '30px' }} />
                     </div>
                   ))
                 :

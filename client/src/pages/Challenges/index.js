@@ -103,7 +103,7 @@ export default function Challenges() {
         </div>
       </div>
       <div style={{ display: 'flex', gap: 10 }}>
-        <div style={{ minWidth: '150px', width: 'fit-content' }}>
+        <div className="All-Challenge-Choose-Labels" style={{ minWidth: '150px', width: 'fit-content' }}>
           <ChooseLabels
             labels={labels}
             chooseLabels={chooseLabels}
