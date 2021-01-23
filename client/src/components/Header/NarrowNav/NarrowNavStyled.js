@@ -86,17 +86,15 @@ export default makeStyles((theme) => ({
   },
   authButton: {
     backgroundColor: 'rgb(219,219,219)',
-    // marginLeft: '10px',
   },
   narrowFlex: {
     display: 'flex',
+    justifyContent: 'space-evenly',
     fontSize: '10px',
-    width: '225px',
-    maxWidth: '480px',
+    width: '100%',
     marginLeft: '0px'
   },
   title: {
     fontSize: '10px',
-    width: '40%',
   }
 }));
