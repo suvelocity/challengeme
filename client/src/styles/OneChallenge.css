@@ -253,9 +253,7 @@
     width: 50%;
 }
 
-@media (max-width: 950px) {}
-
-@media (max-width: 480px) {
+@media (max-width: 950px) {
     .One-Challenge-Image-Container {
         margin-top: 60px;
         box-shadow: inset 0px -70px 50px rgb(0 0 0 / 90%);

@@ -74,7 +74,8 @@
 
 @media (max-width: 768px) {}
 
-@media (max-width: 480px) {
+@media (max-width: 950px) {
+
   .All-Challenge-Image-Container {
     padding-top: 235px;
     box-shadow: inset 0px -80px 235px rgba(0, 0, 0, 0.9);
