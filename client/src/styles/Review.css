@@ -125,7 +125,8 @@
   color: rgba(0, 0, 0, 0.6);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 950px) {
+
   .Review {
     position: relative;
     width: 95%;
