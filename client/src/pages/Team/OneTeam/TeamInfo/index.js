@@ -36,7 +36,6 @@ function OneTeamPage() {
   const fetchTeamInfo = useCallback(async () => {
     try {
       const { data: members } = await network.get(`/api/v1/teams/team-page/${id}`);
-      console.log(members)
       setTeamMembers(members);
       setLoading(false);
     } catch (error) {
