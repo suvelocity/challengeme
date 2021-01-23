@@ -4,6 +4,7 @@ import {
 } from 'recharts';
 import Loading from '../Loading';
 import network from '../../services/network';
+import '../../styles/Charts.css';
 
 function DoubleBarChart({ path, title, xKey, yKey1, yKey2 }) {
     const [data, setData] = useState();
