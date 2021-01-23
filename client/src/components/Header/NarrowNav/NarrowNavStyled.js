@@ -93,7 +93,7 @@ export default makeStyles((theme) => ({
     fontSize: '10px',
     width: '225px',
     maxWidth: '480px',
-    marginLeft: '-30px'
+    marginLeft: '0px'
   },
   title: {
     fontSize: '10px',
