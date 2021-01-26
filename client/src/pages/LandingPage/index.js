@@ -89,15 +89,6 @@ export default function LandingPage() {
       linkedin: 'roy-shnitzer-1080671b7',
       github: 'RoyShnitzel',
     },
-    {
-      icon: GuySerfaty,
-      name: 'Guy Serfaty',
-      rule: 'Moderator',
-      content: `I'm just writing to thank you for this product. I had failed in so many technologies before, but I wanted to get into a top tech company so much that I even enrolled in a Master's program. Even then, I was unsure if I had what it takes to make it. From the moment I heard your first video explanation, I thought 'this is exactly the way to learn new technology' (plus the extra points you can grab by asking clarifying questions). After a few months of studying, mainly on ChallengeMe , I got offers to intern at Microsoft and Google!
-            `,
-      linkedin: 'guy-serfaty-aa34b413a',
-      github: 'GuySerfaty',
-    },
   ];
 
   const contributors = [
