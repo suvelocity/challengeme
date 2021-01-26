@@ -4,6 +4,7 @@ import {
 } from 'recharts';
 import Loading from '../Loading';
 import network from '../../services/network';
+import '../../styles/Charts.css';
 
 function SimpleBarChart({ path, title, xKey, yKey }) {
     const [data, setData] = useState();

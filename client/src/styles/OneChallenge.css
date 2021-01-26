@@ -212,6 +212,12 @@
     font-size: 15px;
 }
 
+.Circular-Progress {
+    width: 20px !important;
+    height: 20px !important;
+    margin-top: 12px;
+}
+
 .One-Challenge-Page-More {
     position: relative;
     top: 100px
@@ -240,9 +246,106 @@
 }
 
 .One-Challenge-Footer {
-    display:block;
-    padding-top:80px;
+    display: block;
+    padding-top: 80px;
     margin-left: auto;
     margin-right: auto;
     width: 50%;
+}
+
+@media (max-width: 950px) {
+    .One-Challenge-Image-Container {
+        margin-top: 60px;
+        box-shadow: inset 0px -70px 50px rgb(0 0 0 / 90%);
+        padding-top: 215px;
+        background-size: 100% 215px;
+    }
+    .One-Challenge-Page-Head h1 {
+        width: 90%;
+        height: 20px;
+        left: 5%;
+        top: 125px;
+        font-size: 22px;
+        line-height: 29px;
+    }
+    .One-Challenge-Page-Head h2 {
+        width: 55%;
+        height: 10px;
+        left: 3%;
+        top: 160px;
+        font-weight: 500;
+        font-size: 11px;
+        line-height: 10px;
+    }
+    .One-Challenge-Page-Head p {
+        width: 90%;
+        height: 96px;
+        left: 5%;
+        top: 140px;
+        font-size: 11px;
+        line-height: 12px;
+    }
+    .One-Challenge-Page-Head ul {
+        height: 21px;
+        padding: 0px;
+        left: 5%;
+        top: 195px;
+        line-height: 21px;
+    }
+    .One-Challenge-Page-Head ul span {
+        margin: 0px;
+        margin-left: 0px;
+        width: 100%;
+        padding: 2px;
+        height: 15px;
+        font-size: 8px;
+        line-height: 12px;
+    }
+    .One-Challenge-Page-Control-Panel {
+        width: 70%;
+        height: 50px;
+        top: 250px;
+        left: 15%;
+    }
+    .One-Challenge-Page-Control-Panel-Rating-Stars {
+        margin-top: -10%;
+        height: 10px;
+    }
+    .One-Challenge-Page-Control-Panel-Rating-Stars>span>span>svg {
+        width: 9px;
+    }
+    .One-Challenge-Page-Control-Panel-Rating-Text {
+        font-size: 9px;
+    }
+    .One-Challenge-Page-Control-Panel-Start-Button {
+        font-size: 9px;
+    }
+    .One-Challenge-Page-Control-Panel-Submit-Button>button {
+        margin: 0px;
+        padding: 4px 2px;
+        margin-top: -5px;
+        width: 20px;
+    }
+    .One-Challenge-Page-Control-Panel-Submit-Button>button>span {
+        font-size: 7px !important;
+    }
+    .One-Challenge-Page-More {
+        top: -10px;
+    }
+    .One-Challenge-Page-More h2 {
+        width: 100%;
+        height: 101px;
+        left: 0%;
+        top: 30px;
+        font-weight: 500;
+        font-size: 12px;
+        line-height: 28px;
+    }
+    .One-Challenge-Page-Reviews {
+        width: 80%;
+        top: 20px;
+    }
+    .One-Challenge-Page-Reviews>div>h1 {
+        font-size: 12px;
+    }
 }

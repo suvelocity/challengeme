@@ -8,8 +8,8 @@ import Loading from '../Loading';
 // import { shuffleArray } from '../../utils';
 
 const responsive = {
-  0: { items: 1 },
-  568: { items: 2 },
+  0: { items: 3 },
+  568: { items: 3 },
   868: { items: 3 },
   1228: { items: 4 },
   1500: { items: 5 },

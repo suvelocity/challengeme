@@ -8,6 +8,7 @@ import Login from "./Authentication/Login";
 import Cookies from "js-cookie";
 import Forgot from "../components/ForgotPassword";
 import ValidatingMail from "./Authentication/Register/ValidatingMail";
+import GithubAuth from "./Authentication/GithubAuth";
 import network from "../services/network";
 import Header from "../components/Header";
 import ErrorBoundary from "../components/ErrorBoundary";
@@ -81,6 +82,7 @@ export default function Router() {
                       <PublicRoute exact={true} path="/login" component={Login} />
                       <PublicRoute exact={true} path="/forgot" component={Forgot} />
                       <PublicRoute exact={true} path="/auth" component={ValidatingMail} />
+                      <PublicRoute exact={true} path="/github-auth" component={GithubAuth} />
                       <PrivateRoute exact={true} path="/addnewchallenge" component={NewChallengeForm}  />
                       <PrivateRoute path="/profile" component={UserProfile} />
                       <PrivateRoute path="/teams" component={Team}  />
