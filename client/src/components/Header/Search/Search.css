@@ -30,3 +30,11 @@
   background-color: black;
   z-index: 2;
 }
+
+@media (max-width: 480px) { 
+  .display {
+    width: 100%;
+    left: 0%;
+    right: 0%;
+  }
+}

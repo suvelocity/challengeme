@@ -23,3 +23,18 @@
 .dashboard-title-chart {
     text-align: center;
 }
+
+@media (max-width: 950px) {
+    .Simple-Bar-Chart {
+        width: 80vw !important;
+    }
+    .recharts-wrapper {
+        width: 80vw !important;
+    }
+    .recharts-surface {
+        width: 80vw !important;
+    }
+    .recharts-legend-wrapper {
+        width: 80vw !important;
+    }
+}

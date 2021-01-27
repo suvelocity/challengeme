@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import {
     PieChart, Pie, Tooltip, Cell, Legend,
 } from 'recharts';
-
+import '../../styles/Charts.css';
 import Loading from '../../components/Loading';
 import network from '../../services/network';
 
