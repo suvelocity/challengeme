@@ -34,18 +34,10 @@ authRouter.post('/authentication-with-google', googleAuth, async (req, res) => {
       const isAdmin = checkUser.permission === 'admin';
       return res.json({ userName: checkUser.userName, isAdmin, title: 'Login With Google Success' });
     } else {
-      const googleUserName = email.split('@')[0];
-      let userName = googleUserName.replace(/\W/g, '')
-      let userNameAvailable = true;
-      let i = 1;
-      while (userNameAvailable && i < 100) {
-        userNameAvailable = await userIsExist(userName);
-        if (userNameAvailable) {
-          userName = googleUserName + i
-        }
-        i++
-      }
-      console.log('got an available one', userName);
+      let googleUserName = email.split('@')[0];
+      googleUserName = googleUserName.replace(/\W/g, '')
+      const userName = await findAvailableUserName(googleUserName);
+      console.log('got an available userName', userName);
       const password = generatePassword()
       const hashPassword = await bcrypt.hashSync(password, 10);
       const newUser = await User.create({
@@ -78,13 +70,14 @@ authRouter.get('/client-id-github', (req, res) => {
 authRouter.post('/authentication-with-github', githubAuth, async (req, res) => {
   const { login, name, email, id, node_id } = req.gitUser;
   try {
-    const userName = login + 'github';
-    const checkUser = await userIsExist(userName);
+    const checkUser = await githubIsExist(login);
     if (checkUser) {
       await giveCredentials(res, checkUser.userName, checkUser.id, rememberMe = false, withRefresh = true);
       const isAdmin = checkUser.permission === 'admin';
       return res.json({ userName: checkUser.userName, isAdmin, title: 'Login With Github Success' });
     } else {
+      const userName = await findAvailableUserName(login);
+      console.log('got an available userName', userName);
       const splitName = name ? name.split(' ') : [];
       const password = generatePassword()
       const hashPassword = await bcrypt.hashSync(password, 10);
@@ -101,7 +94,7 @@ authRouter.post('/authentication-with-github', githubAuth, async (req, res) => {
         userName: newUser.userName,
         isAdmin: false,
         title: 'Register With Github Success',
-        message: `This is your regular login password ${password}, Please save it somewhere safe for your next login`
+        message: `This is your regular login username: "${newUser.userName}" and password: "${password}", Please save it somewhere safe for your next login`
       });
     }
   } catch (error) {
@@ -385,6 +378,8 @@ authRouter.patch('/password-update', async (req, res) => {
 // validate if user has admin permission
 authRouter.get('/validate-admin', checkToken, checkAdmin, (req, res) => res.json({ admin: true }));
 
+
+
 // check in the DateBase if username is in the system
 async function userIsExist(userName) {
   try {
@@ -419,6 +414,40 @@ async function emailIsExist(email) {
     console.error(error.message);
     return false;
   }
+}
+
+// check in the DateBase if github account is in the system
+async function githubIsExist(githubAccount) {
+  try {
+    const user = await User.findOne({
+      where: {
+        githubAccount,
+      },
+    });
+    if (user) {
+      return user.toJSON();
+    }
+    return false;
+  } catch (error) {
+    console.error(error.message);
+    return false;
+  }
+}
+
+
+// iterate usernames to find an available username
+async function findAvailableUserName(initUserName) {
+  let userName = initUserName;
+  let userNameAvailable = true;
+  let i = 1;
+  while (userNameAvailable && i < 100) {
+    userNameAvailable = await userIsExist(userName);
+    if (userNameAvailable) {
+      userName = initUserName + i;
+    }
+    i++;
+  }
+  return userName;
 }
 
 // check in the DateBase if user is an admin on the system
