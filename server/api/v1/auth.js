@@ -26,7 +26,6 @@ authRouter.get('/client-id-google', (req, res) => {
 // authentication with google
 authRouter.post('/authentication-with-google', googleAuth, async (req, res) => {
   const { id, email, verified_email, name, given_name, family_name, picture, locale } = req.googleUser;
-  console.log('start authentication with google');
   try {
     const checkUser = await emailIsExist(email);
     if (checkUser) {
@@ -37,7 +36,6 @@ authRouter.post('/authentication-with-google', googleAuth, async (req, res) => {
       let googleUserName = email.split('@')[0];
       googleUserName = googleUserName.replace(/\W/g, '')
       const userName = await findAvailableUserName(googleUserName);
-      console.log('got an available userName', userName);
       const password = generatePassword()
       const hashPassword = await bcrypt.hashSync(password, 10);
       const newUser = await User.create({
@@ -77,7 +75,6 @@ authRouter.post('/authentication-with-github', githubAuth, async (req, res) => {
       return res.json({ userName: checkUser.userName, isAdmin, title: 'Login With Github Success' });
     } else {
       const userName = await findAvailableUserName(login);
-      console.log('got an available userName', userName);
       const splitName = name ? name.split(' ') : [];
       const password = generatePassword()
       const hashPassword = await bcrypt.hashSync(password, 10);
@@ -224,8 +221,6 @@ authRouter.post('/login', async (req, res) => {
     }
     const currentUser = await userIsExist(req.body.userName);
     if (!currentUser) return res.status(403).json({ message: 'User or Password are incorrect' });
-    console.log('request password', req.body.password);
-    console.log('DataBase password', currentUser.password);
     const validPass = await bcrypt.compareSync(
       req.body.password,
       currentUser.password,
@@ -377,8 +372,6 @@ authRouter.patch('/password-update', async (req, res) => {
 
 // validate if user has admin permission
 authRouter.get('/validate-admin', checkToken, checkAdmin, (req, res) => res.json({ admin: true }));
-
-
 
 // check in the DateBase if username is in the system
 async function userIsExist(userName) {
