@@ -48,7 +48,7 @@ Status : 401
 
 To create a team on ChallengeMe send a `POST` request to:
 ```
-POST http://35.239.15.221/api/v1/webhooks/teams
+POST http://challengeme.suvelocity.org/api/v1/webhooks/teams
 ```
 With headers as such: 
 {% highlight JavaScript %}
@@ -238,7 +238,7 @@ Status: 207
 
 To add users to a team on ChallengeMe send a `POST` request to:
 ```
-POST http://35.239.15.221/api/v1/webhooks/teams/add-users/:userId
+POST http://challengeme.suvelocity.org/webhooks/teams/add-users/:userId
 ```
 - teamId on the requesting platform
 With headers as such: 
@@ -303,7 +303,7 @@ Status : 404
 
 To create a team on ChallengeMe send a `PATCH` request to:
 ```
-PATCH http://35.239.15.221/api/v1/webhooks/teams/change-permissions/:teamId
+PATCH http://challengeme.suvelocity.org/api/v1/webhooks/teams/change-permissions/:teamId
 ```
 - teamId = team uuid
 
