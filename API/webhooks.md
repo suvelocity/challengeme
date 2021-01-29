@@ -42,7 +42,7 @@ Status : 401
 ## Get All Available Events 
 to get a list of all the events you can register to, send a `GET` request to:
 ```
-GET http://35.239.15.221/api/v1/webhooks/events/all
+GET http://challengeme.suvelocity.org/api/v1/webhooks/events/all
 ```
 With headers as such: 
 {% highlight javascript %}
@@ -56,7 +56,7 @@ A successful request will receive an array with event names
 ## Get All Events registered to a Teams on a token 
 to get a list of all the events that are registered by a tean, send a `GET` request to:
 ```
-GET http://35.239.15.221/api/v1/webhooks/events/registered/:teamId
+GET http://challengeme.suvelocity.org/api/v1/webhooks/events/registered/:teamId
 ```
 With headers as such: 
 {% highlight javascript %}
@@ -91,7 +91,7 @@ A successful will be an array of objects, one for each registration. on team can
 ## Registering a Webhook
 to register a webhook you must send a `POST` request to:
 ```
-POST http://35.239.15.221/api/v1/webhooks/events/registration/:teamId
+POST http://challengeme.suvelocity.org/api/v1/webhooks/events/registration/:teamId
 ```
 With headers as such: 
 {% highlight javascript%}
@@ -123,7 +123,7 @@ Status:201
 ## Update Authorization Token
 to update your auth token, send a `PATCH` request to:
 ```
-PATCH http://35.239.15.221/api/v1/webhook/events/authorization/:teamId
+PATCH http://challengeme.suvelocity.org/api/v1/webhook/events/authorization/:teamId
 ```
 With headers as such: 
 {% highlight javascript%}
@@ -158,7 +158,7 @@ Status: 404
 ## Update Webhook URL
 to update the url you want updates sent to, send a `PATCH` request to:
 ```
-PATCH http://35.239.15.221/api/v1/webhooks/events/url/:teamId
+PATCH http://challengeme.suvelocity.org/api/v1/webhooks/events/url/:teamId
 ```
 With headers as such: 
 {% highlight javascript%}
@@ -195,7 +195,7 @@ Status:404
 ## Logout a Webhook
 to logout a Webhook, send a `DELETE` request to:
 ```
-DELETE http://35.239.15.221/api/v1/webhook/events/logout/:teamId
+DELETE http://challengeme.suvelocity.org/api/v1/webhook/events/logout/:teamId
 ```
 With headers as such: 
 {% highlight javascript%}
