@@ -19,9 +19,9 @@ Can't wait to try? [Get Started!](Guides/getting-started.md)
 ## About
 <span style="color:red">ChallengeMe </span> was created by Cyber4s 2020 class,  
 and Developed by:  
-🥾 [David Bootstrap](https://github.com/david35008)  
-🍗 [Roy Schnitzel](https://github.com/RoyShnitzel)  
-🎨 [Dor Vinchi](https://github.com/DorKachlon)
+ [David Diamant](https://github.com/david35008)  
+ [Roy Shnitzer](https://github.com/RoyShnitzel)  
+ [Dor Kachlon](https://github.com/DorKachlon)
 
 ## Contact us
 Have a really great idea? want to work with us?
