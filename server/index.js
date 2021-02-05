@@ -15,8 +15,8 @@ if (env === 'development') {
 
 if(env !== 'development') {
 const options = {
- key: fs.readFileSync('./0018_key-certbot.pem'),
-  cert: fs.readFileSync('./0018_csr-certbot.pem')
+ key: fs.readFileSync('./private-key.pem'),
+  cert: fs.readFileSync('./certificate.pem')
 };
 
 https.createServer(options, app).listen(443);
