@@ -6,11 +6,9 @@ const getCurrentBranch = () => new Promise((resolve, reject) => {
     if (err != null) {
       console.error(`COULD NOT GET CURRENT BRANCH RESOLVING TO ${DEFAULT_BRANCH}`);
       resolve(DEFAULT_BRANCH);
-      // reject(new Error(err))
     } else if (typeof (stderr) !== 'string') {
       console.error(`COULD NOT GET CURRENT BRANCH RESOLVING TO ${DEFAULT_BRANCH}`);
       resolve(DEFAULT_BRANCH);
-      // reject(new Error(stderr))
     } else {
       resolve(stdout.replace('\n', ''));
     }

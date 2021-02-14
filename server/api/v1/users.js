@@ -2,7 +2,7 @@ const userRouter = require('express').Router();
 const bcrypt = require('bcryptjs');
 const checkAdmin = require('../../middleware/checkAdmin');
 const { checkTeacherPermission } = require('../../middleware/checkTeamPermission');
-const { User, Team } = require('../../models');
+const { User, Challenge, Submission, Review, UserTeam, Team } = require('../../models');
 const { editUserValidation, changePasswordValidation } = require('../../helpers/validator');
 
 // get information about user
@@ -166,5 +166,77 @@ userRouter.patch('/permission', checkAdmin, async (req, res) => {
     return res.status(400).json({ message: 'Cannot process request' });
   }
 });
+
+// bind user with the same email
+userRouter.put('/bind', checkAdmin, async (req, res) => {
+  const { email } = req.body;
+  try {
+    const allUsersSameEmail = await User.findAll({
+      where: {
+        email,
+      },
+    });
+    bindUsers(allUsersSameEmail[0], allUsersSameEmail)
+    return res.json(allUsersSameEmail);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+async function bindUsers(main, list) {
+  const jsonMap = list.map(user => user.toJSON()).splice(1)
+  const jsonMain = main.toJSON()
+  console.log('-------------------------------------------------------------');
+  const idList = jsonMap.map(user => user.id)
+  await Challenge.update({ authorId: jsonMain.id }, {
+    where: {
+      authorId: idList
+    }
+  })
+  await Submission.update({ userId: jsonMain.id }, {
+    where: {
+      userId: idList
+    }
+  })
+  await Review.update({ userId: jsonMain.id }, {
+    where: {
+      userId: idList
+    }
+  })
+  await UserTeam.update({ userId: jsonMain.id }, {
+    where: {
+      userId: idList
+    }
+  })
+  const allUserTeamsByUser = await UserTeam.findAll({
+    where: {
+      userId: jsonMain.id
+    }
+  })
+  const jsonUserTeam = allUserTeamsByUser.map(a => a.toJSON())
+  let chicken = {};
+  jsonUserTeam.forEach((i) => {
+    if (!chicken[i.userId + '_' + i.teamId]) {
+      chicken[i.userId + '_' + i.teamId] = i
+    }
+  })
+  const toRecover = Object.values(chicken)
+  const elementsIds = jsonUserTeam.map(a => a.id)
+  await UserTeam.destroy({
+    where: {
+      id: elementsIds
+    },
+    force: true
+  })
+  await UserTeam.bulkCreate(toRecover)
+  await User.destroy({
+    where: {
+      id: idList
+    },
+    force: true
+  })
+  console.log('-------------------------------------------------------------');
+}
 
 module.exports = userRouter;

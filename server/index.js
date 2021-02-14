@@ -1,25 +1,28 @@
 require('dotenv').config();
 const app = require('./app');
-
+const https = require('https');
+const fs = require('fs');
 const port = process.env.PORT || 80;
+const httpsPort = process.env.SECURE_PORT || 443;
+const spliceIpAddress = process.env.IP_ADDRESS.lastIndexOf(':')
+const ipAddress = process.env.IP_ADDRESS.substr(0, spliceIpAddress + 1)
 const env = process.env.NODE_ENV || 'development';
-const getCurrentBranch = require('./helpers/getCurrentBranch');
+const establishNgrokConnection = require('./helpers/ngrokConnection');
 
-async function establishConnection() {
-  process.env.MY_BRANCH = await getCurrentBranch();
-  console.log('current branch', process.env.MY_BRANCH);
-
-  if (env === 'development') {
-    const ngrok = require('ngrok');
-    const url = await ngrok.connect(port);
-    process.env.MY_URL = url;
-    console.log('MY_URL', process.env.MY_URL);
-  }
-  console.log('Client Ip Address', process.env.IP_ADDRESS);
+if (env === 'development') {
+  establishNgrokConnection();
 }
 
-establishConnection();
+if(env !== 'development') {
+const options = {
+ key: fs.readFileSync('./private-key.pem'),
+  cert: fs.readFileSync('./certificate.pem')
+};
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+https.createServer(options, app).listen(443);
+
+}
+ app.listen(port, () => {
+  console.log(`ChallengeMe listening at ${ipAddress}${port}`);
+ });
+
