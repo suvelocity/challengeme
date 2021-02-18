@@ -134,16 +134,25 @@ authRouter.post('/register', async (req, res) => {
     const mailedToken = jwt.sign(newUser, process.env.EMAIL_TOKEN_SECRET);
     return mailer.sendHTMLMail(
       req.body.email,
-      'Validate your E-mail',
-      `<p>
-  Conregulation Challenger, and welcome! You are now offically a part of challenge me
-  community! To start challenging your friends and undertake challenges
-  yourself, click on the buttom bellow.
-</p>
-<form action="${process.env.IP_ADDRESS}/auth">
-<input name="token" value="${mailedToken}" type="hidden">
-  <button style="width: 200px; background-color: purple; color: white;">Get Schwifty</button>
-</form>`,
+      'Activate ChallengeMe Account',
+      `<body style="text-align: center;"><h3>Dear user,</h3><br/>
+    <h4>Thanks for creating a ChallengeMe account.<br/><br/>
+    Please click the link below to activate your account.<br/>
+    <br/>This link will expire in 24 hours.</h4><a 
+    href="${process.env.IP_ADDRESS}/auth?token=${mailedToken}" 
+    target="_blank"style="background: #208fe8;height: 46px;margin: 10px 0;
+    padding: 0 40px;line-height: 46px;border-radius: 4px;font-size: 18px;
+    color: #fff;display: inline-block;text-decoration: none;">
+    Activate Account</a><p>If this button does not work, please try 
+    copying this URL to the address bar in your browser path:<a 
+    href="${process.env.IP_ADDRESS}/auth?token=${mailedToken}" target="_blank">
+    ${process.env.IP_ADDRESS}/auth?token=${mailedToken}</a><br/><br/>
+    Once you have activated your ChallengeMe account,<br/>you can 
+    use your email ${req.body.email} to access ChallengeMe, ${process.env.IP_ADDRESS}.
+    <br/><br/>Sincerely,<br/>Team ChallengeMe<br /><br/><br/>This 
+    message was created automatically. Please do not reply to this message.
+    </p></body>
+`,
       (error, info) => {
         if (error) {
           console.error(error.message);
