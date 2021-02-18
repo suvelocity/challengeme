@@ -13,16 +13,14 @@ if (env === 'development') {
   establishNgrokConnection();
 }
 
-if(env !== 'development') {
-const options = {
- key: fs.readFileSync('./private-key.pem'),
-  cert: fs.readFileSync('./certificate.pem')
-};
-
-https.createServer(options, app).listen(443);
-
+if (env !== 'development') {
+  const options = {
+    key: fs.readFileSync('./private-key.pem'),
+    cert: fs.readFileSync('./certificate.pem')
+  };
+  https.createServer(options, app).listen(443);
 }
- app.listen(port, () => {
+app.listen(port, () => {
   console.log(`ChallengeMe listening at ${ipAddress}${port}`);
- });
+});
 
