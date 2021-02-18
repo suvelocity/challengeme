@@ -5,19 +5,18 @@ const axios = require('axios');
 const registerValidation = (data) => {
   data.birthDate = new Date(data.birthDate).valueOf();
   const schema = Joi.object({
-    firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
-    lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
-    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
-      .required(),
+    firstName: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
+    lastName: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
+    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
     email: Joi.string().min(6).email().required(),
-    country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
-    city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
-    birthDate: Joi.number().max((new Date()).valueOf()).required(),
-    phoneNumber: Joi.string().regex(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/).required(),
+    country: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
+    city: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
+    birthDate: [Joi.number().max((new Date()).valueOf()).optional(), Joi.allow(null), Joi.allow('')],
+    phoneNumber: [Joi.string().regex(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/).optional(), Joi.allow(null), Joi.allow('')],
     securityQuestion: Joi.string().valid('When you were young, what did you want to be when you grew up?', 'Who was your childhood hero?', 'Where was your best family vacation as a kid?', 'What is the name, breed, and color of your favorite pet?', 'What was the first concert you attended?').required(),
     securityAnswer: Joi.string().min(8).regex(/^[\w\s]*$/).required(),
-    reasonOfRegistration: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).required(),
-    githubAccount: Joi.string().min(1).regex(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i).required(),
+    reasonOfRegistration: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
+    githubAccount: [Joi.string().min(1).regex(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i).optional(), Joi.allow(null), Joi.allow('')],
     password: Joi.string().min(8).required(),
   });
 
