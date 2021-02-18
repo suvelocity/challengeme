@@ -56,13 +56,13 @@ function Register() {
 
     const tempErrs = [];
     if (step === 1) {
-      if (firstName.length < 1 || !onlyLettersAndSpacesRegex.test(firstName)) {
+      if (firstName !== '' && (firstName.length < 1 || !onlyLettersAndSpacesRegex.test(firstName))) {
         tempErrs.push({
           field: 'firstName',
           message: 'First name must contain only letters.',
         });
       }
-      if (lastName.length < 1 || !onlyLettersAndSpacesRegex.test(lastName)) {
+      if (lastName !== '' && (lastName.length < 1 || !onlyLettersAndSpacesRegex.test(lastName))) {
         tempErrs.push({
           field: 'lastName',
           message: 'Last name must contain only letters.',
@@ -95,31 +95,32 @@ function Register() {
       if (email.length < 1) tempErrs.push({ field: 'email', message: 'Email required.' });
       if (!validateEmailRegex.test(email)) tempErrs.push({ field: 'email', message: 'Email invalid.' });
     } else if (step === 2) {
-      if (country.length < 1 || !onlyLettersAndSpacesRegex.test(country)) {
+      if (country !== '' && (country.length < 1 || !onlyLettersAndSpacesRegex.test(country))) {
         tempErrs.push({
           field: 'country',
           message: 'Country must contain only letters',
         });
       }
-      if (city.length < 1 || !onlyLettersAndSpacesRegex.test(city)) {
+      if (city !== '' && (city.length < 1 || !onlyLettersAndSpacesRegex.test(city))) {
         tempErrs.push({
           field: 'city',
           message: 'City must contain only letters',
         });
       }
-      if (birthDate.length < 1) {
+      if (birthDate !== '' && birthDate.length < 1) {
         tempErrs.push({
           field: 'birthDate',
           message: 'Birth date required',
         });
       }
-      if (new Date(birthDate).valueOf() > new Date().valueOf()) {
+      if (birthDate !== '' && new Date(birthDate).valueOf() > new Date().valueOf()) {
         tempErrs.push({
           field: 'birthDate',
           message: 'Birth date must be in the past.',
         });
       }
-      if (phoneNumber.length < 1 || !phoneNumberRegex.test(phoneNumber)) {
+      if (phoneNumber !== '' && (phoneNumber.length < 1 || !phoneNumberRegex.test(phoneNumber))) {
+        debugger
         tempErrs.push({
           field: 'phoneNumber',
           message: 'Invalid phone number',
@@ -157,13 +158,7 @@ function Register() {
         });
       }
     } else if (step === 4) {
-      if (signUpReason === '') {
-        tempErrs.push({
-          field: 'signUpReason',
-          message: 'Sign up reason must be chosen.',
-        });
-      }
-      if (gitHub.length < 1 || !githubAccountRegex.test(gitHub)) {
+      if (gitHub !== '' && (gitHub.length < 1 || !githubAccountRegex.test(gitHub))) {
         tempErrs.push({
           field: 'gitHub',
           message: 'GitHub account is invalid.',
@@ -370,23 +365,34 @@ function Register() {
                 </div>
               </>
             ) : (
+                <div className="containerButtonsRegister">
+                  {step > 1 && (
+                    <Button id="prevButton" onClick={prevStep}>
+                      Back
+                    </Button>
+                  )}
+                  <Button
+                    id="nextButton"
+                    className={classes.nextButton}
+                    variant="contained"
+                    onClick={nextStep}
+                  >
+                    Back To Login Page
+                </Button>
+                </div>
+              )}
+            {/* {step === 2 && (
               <div className="containerButtonsRegister">
-                {step > 1 && (
-                  <Button id="prevButton" onClick={prevStep}>
-                    Back
-                  </Button>
-                )}
                 <Button
                   id="nextButton"
                   className={classes.nextButton}
                   variant="contained"
                   onClick={nextStep}
                 >
-                  Back To Login Page
+                  skip
                 </Button>
               </div>
-            )}
-
+            )} */}
             <p>
               Have an existing account?
               {' '}
