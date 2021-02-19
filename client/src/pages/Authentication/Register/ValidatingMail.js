@@ -23,14 +23,15 @@ function ValidatingMail() {
           location.push('/');
           Swal.fire({
             icon: 'success',
-            title: 'Registration Completed'
+            title: 'Registration Completed',
+            timer: 3000
           })
         })
         .catch(() => {
           Swal.fire({
             icon: 'error',
-            title: 'Oops...',
-            text: 'Email Confirmation Failed !',
+            title: 'Sorry',
+            text: 'Email Confirmation Failed, Please try again later.',
           }).then(() => {
             location.push('/login');
           });

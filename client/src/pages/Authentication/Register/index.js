@@ -185,11 +185,13 @@ function Register() {
           });
           mixpanel.track('User Finished Registertion');
           setLoading(false);
-        } catch (err) {
+        } catch (error) {
           tempErrs.push({
             field: 'server',
-            message: err.message,
+            message: error.response.data.message,
           });
+          setLoading(false);
+          setStep(1)
         }
       }
     } else if (step === 5) {
