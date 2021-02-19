@@ -1,30 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import { Logged } from '../../../context/LoggedInContext';
+import mixpanel from 'mixpanel-browser';
 import Swal from 'sweetalert2';
 import network from '../../../services/network';
 
 function ValidatingMail() {
-  const history = useHistory();
+  const location = useHistory();
   const url = useLocation();
+  const LoggedContext = useContext(Logged);
+
   const query = new URLSearchParams(url.search);
   const token = query.get('token');
   useEffect(() => {
     try {
       network
         .post('/api/v1/auth/create-user', { token })
-        .then(() => history.push('/login'))
+        .then((data) => {
+          LoggedContext.setLogged(true);
+          LoggedContext.setIsAdmin(data.isAdmin);
+          mixpanel.track('User Logged In', { User: `${data.userName}`, firstLogin: true });
+          location.push('/');
+          Swal.fire({
+            icon: 'success',
+            title: 'Registration Completed'
+          })
+        })
         .catch(() => {
           Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: 'Email Confirmation Failed !',
           }).then(() => {
-            history.push('/login');
+            location.push('/login');
           });
         });
     } catch (error) {
     }
-  }, [history, token]);
+    // eslint-disable-next-line
+  }, [location, token]);
 
   return <div />;
 }
