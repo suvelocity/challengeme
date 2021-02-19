@@ -6,7 +6,6 @@
     height: 100vh;
     /* background: linear-gradient(60deg, rgba(58, 106, 183, 0.7) 0%, rgba(213, 240, 255, 0.5) 100%); */
     background: linear-gradient(171.52deg, #1E3D5B 4.43%, rgba(30, 61, 91, 0) 149.79%);
-
 }
 
 .containerHeaderRegister {
@@ -21,11 +20,7 @@
     color: white;
     width: 450px;
     height: 160px;
-    background: linear-gradient(
-        90deg,
-        rgb(49, 92, 171) 0%,
-        rgb(69, 125, 199) 100%
-    );
+    background: linear-gradient( 90deg, rgb(49, 92, 171) 0%, rgb(69, 125, 199) 100%);
     display: flex;
     flex-direction: column;
 }
@@ -47,23 +42,24 @@
     box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.548);
 }
 
-.containerUserDetails,
-.containerPersonalDetails,
-.containerSecurity,
-.containerExtra {
+.containerUserDetails, .containerPersonalDetails, .containerSecurity, .containerExtra {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+
 .MuiPaper-root.MuiStepper-root.MuiStepper-horizontal {
     background-color: transparent;
 }
+
 span.MuiTypography-root.MuiStepLabel-label.MuiStepLabel-alternativeLabel.MuiTypography-body2.MuiTypography-displayBlock {
     font-size: 10px;
 }
+
 span.MuiStepConnector-line.MuiStepConnector-lineHorizontal {
     background-color: rgb(182, 182, 182);
 }
+
 .containerButtonsRegister {
     display: flex;
     justify-content: center;
@@ -81,30 +77,31 @@ span.MuiStepConnector-line.MuiStepConnector-lineHorizontal {
     display: flex;
     align-items: center;
 }
+
 .errorInputRegister {
     height: auto;
     margin-left: 5px;
     color: white;
 }
-.confirmMessage{
-    font-size:20px;
-    margin-top:140px;
+
+.confirmMessage {
+    font-size: 20px;
+    margin-top: 140px;
     line-height: 50px;
-    letter-spacing: 2px; 
+    letter-spacing: 2px;
     text-align: center;
 }
+
 @media (max-width: 700px) {
-    .registerHeader,.containerHeaderRegister {
-        /* position:static; */
-        top:0;
-        margin:0px;
+    .registerHeader, .containerHeaderRegister {
+        top: 0;
+        margin: 0px;
         width: 100vw;
     }
     .registerBody {
-    position: absolute;
-    top:130px;
-    width:100vw;
-    z-index: -1;
-        /* margin-top: 300px; */
+        margin-top: 31px;
+        position: absolute;
+        top: 130px;
+        width: 100vw;
     }
 }
