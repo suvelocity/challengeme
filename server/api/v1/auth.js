@@ -107,7 +107,7 @@ authRouter.post('/register', async (req, res) => {
     const { error } = registerValidation(req.body);
     if (error) {
       console.error(error.message);
-      return res.status(400).json({ success: false, message: "Don't mess with me" });
+      return res.status(400).json({ success: false, message: "email doesn't exist" });
     }
     // if user name already exist return error
     const checkUser = await userIsExist(req.body.userName);
