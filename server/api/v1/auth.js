@@ -187,7 +187,7 @@ authRouter.post('/create-user', (req, res) => {
       if (checkUser) return res.status(409).send('user name already exists');
       const newUser = await User.create(decoded);
       await giveCredentials(res, newUser.userName, newUser.id, false, withRefresh = true)
-      return res.json({ userName: newUser.userName, isAdmin: false });
+      return res.status(201).json({ userName: newUser.userName, isAdmin: false });
     });
   } catch (error) {
     console.error(error.message);
