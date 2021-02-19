@@ -9,7 +9,8 @@ import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
 import { Button } from "@material-ui/core";
 import Rating from '@material-ui/lab/Rating';
-import CircularProgress from '@material-ui/core/CircularProgress';
+// import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import ReviewsTab from '../../components/Reviews';
 import SubmitModal from '../../components/Modals/SubmitModal';
 import network from '../../services/network';
@@ -162,7 +163,7 @@ function ChallengePage() {
       );
     }
     if (submissionStatus.state === 'PENDING') {
-      return <CircularProgress className='Circular-Progress' style={{ marginBottom: '20px' }} />;
+      return <LinearProgress className='Circular-Progress' />;
     }
     if (submissionStatus.state === 'SUCCESS') {
       return (
@@ -288,7 +289,7 @@ function ChallengePage() {
                   </div>
                 ) : (
                     <div style={{ textAlign: 'center' }}>
-                      <CircularProgress className='Circular-Progress' style={{ margin: '30px' }} />
+                      <LinearProgress className='Circular-Progress' />
                     </div>
                   ))
                 :

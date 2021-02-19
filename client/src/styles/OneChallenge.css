@@ -213,9 +213,10 @@
 }
 
 .Circular-Progress {
-    width: 20px !important;
-    height: 20px !important;
-    margin-top: 12px;
+    width: 150px !important;
+    height: 5px !important;
+    min-height: 1px !important;
+    margin-top: 35%;
 }
 
 .One-Challenge-Page-More {
@@ -328,6 +329,9 @@
     }
     .One-Challenge-Page-Control-Panel-Submit-Button>button>span {
         font-size: 7px !important;
+    }
+    .Circular-Progress {
+        width: 55px !important;
     }
     .One-Challenge-Page-More {
         top: -10px;
