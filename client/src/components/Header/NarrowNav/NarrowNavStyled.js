@@ -92,9 +92,9 @@ export default makeStyles((theme) => ({
     justifyContent: 'space-evenly',
     fontSize: '10px',
     width: '100%',
-    marginLeft: '0px'
+    marginLeft: '0px',
   },
   title: {
     fontSize: '10px',
-  }
+  },
 }));

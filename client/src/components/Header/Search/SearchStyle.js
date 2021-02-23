@@ -68,6 +68,6 @@ export default makeStyles((theme) => ({
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
     width: '200px',
     height: '13px',
-    paddingTop: '8px'
+    paddingTop: '8px',
   },
 }));

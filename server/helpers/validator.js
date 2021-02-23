@@ -7,7 +7,8 @@ const registerValidation = (data) => {
   const schema = Joi.object({
     firstName: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
     lastName: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
-    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
+    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
+      .required(),
     email: Joi.string().min(6).email().required(),
     country: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
     city: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
@@ -27,12 +28,15 @@ const registerValidation = (data) => {
 const editUserValidation = (data) => {
   data.birthDate ? data.birthDate = new Date(data.birthDate).valueOf() : null;
   const schema = Joi.object({
-    firstName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-    lastName: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-    country: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-    city: Joi.string().min(1).regex(/^[a-zA-Z\s]*$/),
-    birthDate: Joi.number().max((new Date()).valueOf()),
-    githubAccount: Joi.string().min(1).regex(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i),
+    firstName: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
+    lastName: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
+    email: Joi.string().min(6).email(),
+    country: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
+    city: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
+    phoneNumber: [Joi.string().regex(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/).optional(), Joi.allow(null), Joi.allow('')],
+    birthDate: [Joi.number().max((new Date()).valueOf()).optional(), Joi.allow(null), Joi.allow('')],
+    githubAccount: [Joi.string().min(1).regex(/^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i).optional(), Joi.allow(null), Joi.allow('')],
+
   });
 
   return schema.validate(data);

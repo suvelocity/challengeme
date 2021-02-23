@@ -98,8 +98,8 @@ export default function WideNav() {
       <AppBar position="fixed" className={clsx(classes.appBarRegular)} style={{ backgroundColor: 'transport' }}>
         <Toolbar className={classes.flexContainer}>
           <Typography variant="h6" className={classes.startFlex}>
-            <NavLink to="/" exact >
-              <div className={classes.iconFlex} >
+            <NavLink to="/" exact>
+              <div className={classes.iconFlex}>
                 <Cube style={letterColor} />
                 <ChallengeMeSmallTitle />
               </div>
@@ -197,7 +197,7 @@ export default function WideNav() {
                 <Link to="/login" className="link-rout under-line-hover">
                   <div className={classes.filterButton}>
                     Login
-                </div>
+                  </div>
                 </Link>
               )}
           </div>

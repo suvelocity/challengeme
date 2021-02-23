@@ -128,7 +128,7 @@ export default function Challenges() {
             challenges={challengesFiltered}
             setNewImg={setNewImg}
             main
-            random={true}
+            random
           />
         </div>
         <div className="All-Challenge-Carousel">

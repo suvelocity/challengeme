@@ -10,7 +10,7 @@ import SecondHeader from "../../components/Header/SecondHeader";
 const GithubTokens = lazy(() => import("./GithhubTokens"));
 const SubmissionsByUsers = lazy(() => import("./SubmissionsStatus"));
 const ProposedChallenge = lazy(() => import("./ChallengeApproval"));
-const UsersControl = lazy(() => import("../../components/Tables/MultipleRowSelection"));
+const UsersControl = lazy(() => import("../../components/Tables/UsersControl"));
 // const UsersControl = lazy(() => import("./UsersControl"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
 const TeamsControl = lazy(() => import("./TeamsControl"));
