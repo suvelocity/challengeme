@@ -120,7 +120,6 @@ function Register() {
         });
       }
       if (phoneNumber !== '' && (phoneNumber.length < 1 || !phoneNumberRegex.test(phoneNumber))) {
-        debugger
         tempErrs.push({
           field: 'phoneNumber',
           message: 'Invalid phone number',
