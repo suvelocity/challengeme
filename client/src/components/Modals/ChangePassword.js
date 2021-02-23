@@ -34,7 +34,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ResetPassword({ open = false, setOpen, path, notAdmin = true }) {
+export default function ResetPassword({
+  open = false, setOpen, path, notAdmin = true,
+}) {
   const classes = useStyles();
 
   const [modalStyle] = useState(getModalStyle);
@@ -78,8 +80,8 @@ export default function ResetPassword({ open = false, setOpen, path, notAdmin = 
         return;
       }
     } catch (error) {
-      const response = error.response.data
-      const message = response.message ? response.message : response.error
+      const response = error.response.data;
+      const message = response.message ? response.message : response.error;
       Swal.fire({
         icon: 'error',
         text: message,

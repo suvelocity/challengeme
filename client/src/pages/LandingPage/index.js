@@ -197,7 +197,7 @@ export default function LandingPage() {
       </section>
       <section className="Landing-page-Project-Leaders">
         <h2 className="Landing-page-Project-Leaders-H2">Project Leaders</h2>
-        <div id='Landing-page-Project-Leaders' className="Landing-page-Project-Leaders-Cards">
+        <div id="Landing-page-Project-Leaders" className="Landing-page-Project-Leaders-Cards">
           {projectLeaders.map((elem) => (
             <ProjectLeader
               key={elem.content}

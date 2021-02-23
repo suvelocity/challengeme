@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import useDebounceHook from './debounceHook';
 import shuffleArrayFunc from './ShuffleArray';
 
-export const shuffleArray = shuffleArrayFunc
+export const shuffleArray = shuffleArrayFunc;
 export const useDebounce = useDebounceHook;
 
 export function randomLocation() {

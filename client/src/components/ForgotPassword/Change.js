@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { FormControl, InputLabel, Input, InputAdornment, IconButton } from '@material-ui/core';
+import {
+  FormControl, InputLabel, Input, InputAdornment, IconButton,
+} from '@material-ui/core';
 import { Visibility, VisibilityOff, Lock } from '@material-ui/icons';
 import Swal from 'sweetalert2';
 import Timer from './TImer';
@@ -24,7 +26,9 @@ const useStyles = makeStyles(() => ({
 
 const limit = 5;
 
-export default function Change({ data, handleChange, changePassword = false, notAdmin = true }) {
+export default function Change({
+  data, handleChange, changePassword = false, notAdmin = true,
+}) {
   const classes = useStyles();
 
   const [showOldPassword, setShowOldPassword] = useState(false);
@@ -68,22 +72,22 @@ export default function Change({ data, handleChange, changePassword = false, not
   return redirect ? (
     <Redirect to="/" />
   ) : (
-      <div className={classes.ForogotPassContainer}>
-        {!changePassword && notAdmin && (
-          <>
-            {' '}
-            <b> Attention!</b>
-            {' '}
+    <div className={classes.ForogotPassContainer}>
+      {!changePassword && notAdmin && (
+        <>
+          {' '}
+          <b> Attention!</b>
+          {' '}
           You have
-            {' '}
-            <Timer limit={limit} unit="minutes" />
-            {' '}
+          {' '}
+          <Timer limit={limit} unit="minutes" />
+          {' '}
           to change your password.
-            <br />
+          <br />
           Enter new password :
-          </>
-        )}
-        {changePassword
+        </>
+      )}
+      {changePassword
           && (
             <FormControl className={classes.ForogotPasspassword}>
               <InputLabel
@@ -109,8 +113,8 @@ export default function Change({ data, handleChange, changePassword = false, not
                       {showOldPassword ? (
                         <Visibility />
                       ) : (
-                          <VisibilityOff />
-                        )}
+                        <VisibilityOff />
+                      )}
                     </IconButton>
                     <Lock style={{ opacity: '0.7' }} />
                   </InputAdornment>
@@ -118,70 +122,70 @@ export default function Change({ data, handleChange, changePassword = false, not
               />
             </FormControl>
           )}
-        <FormControl className={classes.ForogotPasspassword}>
-          <InputLabel
-            style={{ color: 'grey' }}
-            className={classes.labelPass}
-            htmlFor="standard-adornment-password"
-          >
-            Password
+      <FormControl className={classes.ForogotPasspassword}>
+        <InputLabel
+          style={{ color: 'grey' }}
+          className={classes.labelPass}
+          htmlFor="standard-adornment-password"
+        >
+          Password
         </InputLabel>
-          <Input
-            name="newP"
-            id="newPassword"
-            value={data.password}
-            type={showPassword ? 'text' : 'password'}
-            onChange={handleChange('newP')}
-            endAdornment={(
-              <InputAdornment position="end">
-                <IconButton
-                  style={{ opacity: '0.7' }}
-                  aria-label="toggle password visibility"
-                  onMouseDown={() => setShowPassword(true)}
-                >
-                  {showPassword ? (
-                    <Visibility />
-                  ) : (
-                      <VisibilityOff />
-                    )}
-                </IconButton>
-                <Lock style={{ opacity: '0.7' }} />
-              </InputAdornment>
-            )}
-          />
-        </FormControl>
-        <FormControl className={classes.ForogotPassconfirmPassword}>
-          <InputLabel
-            style={{ color: 'grey' }}
-            className={classes.labelPass}
-            htmlFor="standard-adornment-password"
-          >
-            Confirm Password
+        <Input
+          name="newP"
+          id="newPassword"
+          value={data.password}
+          type={showPassword ? 'text' : 'password'}
+          onChange={handleChange('newP')}
+          endAdornment={(
+            <InputAdornment position="end">
+              <IconButton
+                style={{ opacity: '0.7' }}
+                aria-label="toggle password visibility"
+                onMouseDown={() => setShowPassword(true)}
+              >
+                {showPassword ? (
+                  <Visibility />
+                ) : (
+                  <VisibilityOff />
+                )}
+              </IconButton>
+              <Lock style={{ opacity: '0.7' }} />
+            </InputAdornment>
+          )}
+        />
+      </FormControl>
+      <FormControl className={classes.ForogotPassconfirmPassword}>
+        <InputLabel
+          style={{ color: 'grey' }}
+          className={classes.labelPass}
+          htmlFor="standard-adornment-password"
+        >
+          Confirm Password
         </InputLabel>
-          <Input
-            id="confirmNewPassword"
-            name="confirmP"
-            value={data.confirmPassword}
-            type={showConfirmPassword ? 'text' : 'password'}
-            onChange={handleChange('confirmP')}
-            endAdornment={(
-              <InputAdornment position="end">
-                <IconButton
-                  style={{ opacity: '0.7' }}
-                  aria-label="toggle password visibility"
-                  onMouseDown={() => setShowConfirmPassword(true)}
-                >
-                  {showConfirmPassword ? (
-                    <Visibility />
-                  ) : (
-                      <VisibilityOff />
-                    )}
-                </IconButton>
-                <Lock style={{ opacity: '0.7' }} />
-              </InputAdornment>
-            )}
-          />
-        </FormControl>
-      </div>
-    );
+        <Input
+          id="confirmNewPassword"
+          name="confirmP"
+          value={data.confirmPassword}
+          type={showConfirmPassword ? 'text' : 'password'}
+          onChange={handleChange('confirmP')}
+          endAdornment={(
+            <InputAdornment position="end">
+              <IconButton
+                style={{ opacity: '0.7' }}
+                aria-label="toggle password visibility"
+                onMouseDown={() => setShowConfirmPassword(true)}
+              >
+                {showConfirmPassword ? (
+                  <Visibility />
+                ) : (
+                  <VisibilityOff />
+                )}
+              </IconButton>
+              <Lock style={{ opacity: '0.7' }} />
+            </InputAdornment>
+          )}
+        />
+      </FormControl>
+    </div>
+  );
 }

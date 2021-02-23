@@ -14,13 +14,12 @@ import Button from '@material-ui/core/Button';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import GitHubIcon from '@material-ui/icons/GitHub';
-import GoogleIcon from '../../images/reactSvg/GoogleIcon';
 import ErrorIcon from '@material-ui/icons/Error';
 import { motion } from 'framer-motion';
+import GoogleIcon from '../../images/reactSvg/GoogleIcon';
 import { Logged } from '../../context/LoggedInContext';
 import network from '../../services/network';
 import '../../styles/Login.css';
-
 
 export default function Login() {
   const [userName, setUsername] = useState('');
@@ -79,28 +78,28 @@ export default function Login() {
   const authGithub = async () => {
     try {
       const { data } = await network.get('/api/v1/auth/client-id-github');
-      window.location.assign(`https://github.com/login/oauth/authorize?client_id=${data.clientId}`)
+      window.location.assign(`https://github.com/login/oauth/authorize?client_id=${data.clientId}`);
     } catch (error) {
       setError({ message: error.message });
     }
-  }
+  };
 
   const googleAuth = async () => {
     try {
       const { data } = await network.get('/api/v1/auth/client-id-google');
-      const url = new URL("https://accounts.google.com/o/oauth2/v2/auth")
+      const url = new URL('https://accounts.google.com/o/oauth2/v2/auth');
       const params = {
         client_id: data.clientId,
-        scope: "https://www.googleapis.com/auth/userinfo.email",
+        scope: 'https://www.googleapis.com/auth/userinfo.email',
         include_granted_scopes: true,
-        response_type: "token",
+        response_type: 'token',
         redirect_uri: `http://${window.location.host}/google-auth`,
-      }
-      window.location.assign(url + "?" + new URLSearchParams(params).toString())
+      };
+      window.location.assign(`${url}?${new URLSearchParams(params).toString()}`);
     } catch (error) {
       setError({ message: error.message });
     }
-  }
+  };
 
   return (
     <>
@@ -120,7 +119,7 @@ export default function Login() {
           <div className="loginForm">
             <div className="loginBody">
               <form className="formBody" onSubmit={loginFunc}>
-                <FormControl className='userNameLoginInput'>
+                <FormControl className="userNameLoginInput">
                   <InputLabel style={{ color: 'grey' }}>User Name</InputLabel>
                   <Input
                     type="text"
@@ -136,7 +135,7 @@ export default function Login() {
                     )}
                   />
                 </FormControl>
-                <FormControl className='passwordLoginINput'>
+                <FormControl className="passwordLoginINput">
                   <InputLabel style={{ color: 'grey' }}>Password</InputLabel>
                   <Input
                     id="passwordField"
@@ -175,7 +174,7 @@ export default function Login() {
                   />
                   <Link to="/forgot" className="forgotLabel">
                     Forgot Password ?
-                </Link>
+                  </Link>
                 </div>
                 {(error.userName || error.password || error.message) && (
                   <div className="containerErrorLogin">
@@ -190,24 +189,24 @@ export default function Login() {
                     </div>
                   </div>
                 )}
-                <div className='login-register-line'>
+                <div className="login-register-line">
                   <Button
                     type="submit"
                     id="loginButton"
-                    className='loginButton'
+                    className="loginButton"
                   >
                     Log in
-              </Button>
+                  </Button>
                   <span>don`t have an account yet?</span>
                   <Link to="/register" id="signUp">
                     Sign up
-                </Link>
+                  </Link>
                 </div>
               </form>
-              <section className='login-with-third-party'>
-                <Button onClick={authGithub} variant="outlined" >
+              <section className="login-with-third-party">
+                <Button onClick={authGithub} variant="outlined">
                   Login with Github
-                    <GitHubIcon className="or-login-with-icon" />
+                  <GitHubIcon className="or-login-with-icon" />
                 </Button>
                 <Button onClick={googleAuth} variant="outlined">
                   <div>

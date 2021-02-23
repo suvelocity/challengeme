@@ -117,7 +117,7 @@ function UserInfo() {
               <ResetPassword
                 open={resetPasswordModal}
                 setOpen={setResetPasswordModal}
-                path='/api/v1/users/change-password'
+                path="/api/v1/users/change-password"
               />
             )}
           <Button onClick={startEditInfo}><Edit /></Button>
@@ -216,8 +216,8 @@ function UserInfo() {
       </div>
     </div>
   ) : (
-      <div />
-    );
+    <div />
+  );
 }
 
 export default UserInfo;

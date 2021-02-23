@@ -190,7 +190,7 @@ function Register() {
             message: error.response.data.message,
           });
           setLoading(false);
-          setStep(1)
+          setStep(1);
         }
       }
     } else if (step === 5) {
@@ -366,22 +366,22 @@ function Register() {
                 </div>
               </>
             ) : (
-                <div className="containerButtonsRegister">
-                  {step > 1 && (
-                    <Button id="prevButton" onClick={prevStep}>
-                      Back
-                    </Button>
-                  )}
-                  <Button
-                    id="nextButton"
-                    className={classes.nextButton}
-                    variant="contained"
-                    onClick={nextStep}
-                  >
-                    Back To Login Page
+              <div className="containerButtonsRegister">
+                {step > 1 && (
+                  <Button id="prevButton" onClick={prevStep}>
+                    Back
+                  </Button>
+                )}
+                <Button
+                  id="nextButton"
+                  className={classes.nextButton}
+                  variant="contained"
+                  onClick={nextStep}
+                >
+                  Back To Login Page
                 </Button>
-                </div>
-              )}
+              </div>
+            )}
             {/* {step === 2 && (
               <div className="containerButtonsRegister">
                 <Button
