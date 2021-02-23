@@ -1,7 +1,7 @@
 const assignmentsRouter = require('express').Router();
 const { checkTeacherPermission, checkTeamPermission } = require('../../middleware/checkTeamPermission');
 const {
-  Assignment, Challenge, Label, Team, User
+  Assignment, Challenge, Label, Team, User,
 } = require('../../models');
 
 // get assignments with challenge per team
@@ -32,7 +32,7 @@ assignmentsRouter.get('/:teamId', checkTeamPermission, async (req, res) => {
       ],
 
     });
-    
+
     if (assignments.length === 0) {
       const teamName = await Team.findOne({
         where: {

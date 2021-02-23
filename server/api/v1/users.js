@@ -2,7 +2,9 @@ const userRouter = require('express').Router();
 const bcrypt = require('bcryptjs');
 const checkAdmin = require('../../middleware/checkAdmin');
 const { checkTeacherPermission } = require('../../middleware/checkTeamPermission');
-const { User, Challenge, Submission, Review, UserTeam, Team } = require('../../models');
+const {
+  User, Challenge, Submission, Review, UserTeam, Team,
+} = require('../../models');
 const { editUserValidation, changePasswordValidation } = require('../../helpers/validator');
 
 // get information about user
@@ -138,7 +140,11 @@ userRouter.get('/teacher/:teamId', checkTeacherPermission, async (req, res) => {
 // get information about all the users
 userRouter.get('/admin', checkAdmin, async (req, res) => {
   try {
-    const allUsers = await User.findAll({});
+    let query = req.query.id ? { where: { id: req.query.id }, paranoid: false } : { paranoid: false };
+    query = req.query.name
+      ? { where: { entityName: { [Op.like]: `%${req.query.name}%` } } }
+      : query;
+    const allUsers = await User.findAll(query);
     const filtterdUsersSensitiveData = allUsers.map((user) => {
       delete user.dataValues.password;
       delete user.dataValues.securityAnswer;
@@ -151,16 +157,96 @@ userRouter.get('/admin', checkAdmin, async (req, res) => {
   }
 });
 
-// edit user permission
-userRouter.patch('/permission', checkAdmin, async (req, res) => {
-  const { permission, userName } = req.body;
+// change user data
+userRouter.patch('/admin/:id', checkAdmin, async (req, res) => {
+  const { id } = req.params;
+  const {
+    firstName, lastName, birthDate, country, city, githubAccount,
+    email, phoneNumber,
+  } = req.body;
   try {
-    const updatedUser = await User.update({ permission }, {
-      where: {
-        userName,
-      },
-    });
+    const editedUser = {};
+    firstName ? editedUser.firstName = firstName : null;
+    lastName ? editedUser.lastName = lastName : null;
+    email ? editedUser.email = email : null;
+    birthDate ? editedUser.birthDate = birthDate : null;
+    country ? editedUser.country = country : null;
+    city ? editedUser.city = city : null;
+    phoneNumber ? editedUser.phoneNumber = phoneNumber : null;
+    githubAccount ? editedUser.githubAccount = githubAccount : null;
+    const { error } = editUserValidation(editedUser);
+    if (error) {
+      console.error(error.message);
+      const onlyLetters = 'must be only letters';
+      const validator = {
+        firstName: `first name ${onlyLetters}`,
+        lastName: `last name ${onlyLetters}`,
+        birthDate: 'invalid date',
+        country: `country ${onlyLetters}`,
+        city: `city ${onlyLetters}`,
+        email: `email ${onlyLetters}`,
+        githubAccount: 'invalid github account',
+      };
+      const myMessage = validator[error.details[0].context.key];
+      const responseMessage = myMessage || "Don't mess with me!";
+      return res.status(400).json({ success: false, message: responseMessage });
+    }
+    await User.update(editedUser, { where: { id } });
+    return res.json({ message: 'Updated Personal Details Success' });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+// change user password
+userRouter.patch('/admin-password/:id', checkAdmin, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { newPassword } = req.body;
+    if (!newPassword) return res.status(409).json({ message: 'You should choose new password' });
+    const hashPassword = await bcrypt.hashSync(newPassword, 10);
+    await User.update({ password: hashPassword }, { where: { id } });
+    return res.json({ message: 'Updated Password Success' });
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+// edit user permission
+userRouter.patch('/permission/:id', checkAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { permission } = req.body;
+  try {
+    const updatedUser = await User.update({ permission }, { where: { id }, paranoid: false });
     return res.json(updatedUser);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+// delete user
+userRouter.delete('/:id', checkAdmin, async (req, res) => {
+  const { id } = req.params;
+  const { hardDelete } = req.query;
+  const force = hardDelete === 'true';
+  try {
+    await User.destroy({ where: { id }, force });
+    return res.sendStatus(204);
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Cannot process request' });
+  }
+});
+
+// restore deleted user
+userRouter.put('/restore/:id', checkAdmin, async (req, res) => {
+  const { id } = req.params;
+  try {
+    await User.restore({ where: { id } });
+    return res.status(201).json({ message: 'User Restore Successfully' });
   } catch (error) {
     console.error(error);
     return res.status(400).json({ message: 'Cannot process request' });
@@ -176,7 +262,7 @@ userRouter.put('/bind', checkAdmin, async (req, res) => {
         email,
       },
     });
-    bindUsers(allUsersSameEmail[0], allUsersSameEmail)
+    bindUsers(allUsersSameEmail[0], allUsersSameEmail);
     return res.json(allUsersSameEmail);
   } catch (error) {
     console.error(error);
@@ -185,57 +271,57 @@ userRouter.put('/bind', checkAdmin, async (req, res) => {
 });
 
 async function bindUsers(main, list) {
-  const jsonMap = list.map(user => user.toJSON()).splice(1)
-  const jsonMain = main.toJSON()
+  const jsonMap = list.map((user) => user.toJSON()).splice(1);
+  const jsonMain = main.toJSON();
   console.log('-------------------------------------------------------------');
-  const idList = jsonMap.map(user => user.id)
+  const idList = jsonMap.map((user) => user.id);
   await Challenge.update({ authorId: jsonMain.id }, {
     where: {
-      authorId: idList
-    }
-  })
+      authorId: idList,
+    },
+  });
   await Submission.update({ userId: jsonMain.id }, {
     where: {
-      userId: idList
-    }
-  })
+      userId: idList,
+    },
+  });
   await Review.update({ userId: jsonMain.id }, {
     where: {
-      userId: idList
-    }
-  })
+      userId: idList,
+    },
+  });
   await UserTeam.update({ userId: jsonMain.id }, {
     where: {
-      userId: idList
-    }
-  })
+      userId: idList,
+    },
+  });
   const allUserTeamsByUser = await UserTeam.findAll({
     where: {
-      userId: jsonMain.id
-    }
-  })
-  const jsonUserTeam = allUserTeamsByUser.map(a => a.toJSON())
-  let chicken = {};
+      userId: jsonMain.id,
+    },
+  });
+  const jsonUserTeam = allUserTeamsByUser.map((a) => a.toJSON());
+  const chicken = {};
   jsonUserTeam.forEach((i) => {
-    if (!chicken[i.userId + '_' + i.teamId]) {
-      chicken[i.userId + '_' + i.teamId] = i
+    if (!chicken[`${i.userId}_${i.teamId}`]) {
+      chicken[`${i.userId}_${i.teamId}`] = i;
     }
-  })
-  const toRecover = Object.values(chicken)
-  const elementsIds = jsonUserTeam.map(a => a.id)
+  });
+  const toRecover = Object.values(chicken);
+  const elementsIds = jsonUserTeam.map((a) => a.id);
   await UserTeam.destroy({
     where: {
-      id: elementsIds
+      id: elementsIds,
     },
-    force: true
-  })
-  await UserTeam.bulkCreate(toRecover)
+    force: true,
+  });
+  await UserTeam.bulkCreate(toRecover);
   await User.destroy({
     where: {
-      id: idList
+      id: idList,
     },
-    force: true
-  })
+    force: true,
+  });
   console.log('-------------------------------------------------------------');
 }
 

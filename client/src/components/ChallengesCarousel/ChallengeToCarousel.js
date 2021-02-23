@@ -41,14 +41,15 @@ function ChallengeToCarousel({
         <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
           <div className="Challenge-To-Carousel-Header">{name}</div>
           <div className="Challenge-To-Carousel-Author">
-            By{' '}
-          {author}
+            By
+            {' '}
+            {author}
           </div>
           <div className="Challenge-To-Carousel-Submission">
             {submissionsCount}
             {' '}
-          submissions
-        </div>
+            submissions
+          </div>
         </div>
 
       </div>
