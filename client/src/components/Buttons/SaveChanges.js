@@ -52,6 +52,7 @@ export default function CircularIntegration({
         if (success) {
             setEditMode(false)
         }
+        // eslint-disable-next-line
     }, [success])
 
     const handleButtonClick = useCallback(() => {
@@ -72,6 +73,7 @@ export default function CircularIntegration({
         } else {
             setEditMode(true)
         }
+        // eslint-disable-next-line
     }, [editMode, loading])
 
     useEffect(() => {

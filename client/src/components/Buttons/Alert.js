@@ -30,6 +30,7 @@ export default function CustomizedSnackbars({
             return;
         }
         setOpen(false);
+        // eslint-disable-next-line
     }, [])
 
     return (

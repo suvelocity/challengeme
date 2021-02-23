@@ -51,10 +51,12 @@ function ResponsiveDrawer({ window, items = ['None'], setDrawerNum }) {
 
     const handleDrawerToggle = useCallback(() => {
         setMobileOpen((state) => !state);
+        // eslint-disable-next-line
     }, [])
 
     const ItemCLicked = useCallback((text, index) => {
         setDrawerNum(index)
+        // eslint-disable-next-line
     }, [])
 
     const drawer = (

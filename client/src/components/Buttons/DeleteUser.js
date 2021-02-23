@@ -54,6 +54,7 @@ export default function CircularIntegration({
 
     const deleteClick = useCallback(() => {
         setOpenDeleteDialog(true)
+        // eslint-disable-next-line
     }, [])
 
     const handleRestore = useCallback(async () => {
@@ -70,6 +71,7 @@ export default function CircularIntegration({
             setAlertMessage(message)
             setSaveAlert(true)
         }
+        // eslint-disable-next-line
     }, [selectedUser])
 
     const restoreClick = useCallback(async () => {
@@ -86,6 +88,7 @@ export default function CircularIntegration({
                 }, 2000);
             }
         }
+        // eslint-disable-next-line
     }, [userInfo, loading])
 
     useEffect(() => {
