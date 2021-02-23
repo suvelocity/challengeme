@@ -30,7 +30,7 @@ const editUserValidation = (data) => {
   const schema = Joi.object({
     firstName: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
     lastName: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
-    email: Joi.string().min(6).email().required(),
+    email: Joi.string().min(6).email(),
     country: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
     city: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
     phoneNumber: [Joi.string().regex(/^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/).optional(), Joi.allow(null), Joi.allow('')],

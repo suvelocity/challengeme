@@ -122,14 +122,15 @@ describe('Testing users routes', () => {
     await User.bulkCreate(usersMock);
 
     const beforePermission = await request(app)
-      .patch('/api/v1/users/permission')
+      .patch(`/api/v1/users/permission/${usersMock[0].id}`)
+      .send({ permission: 'admin' })
       .set('authorization', `bearer ${generateToken(usersMock[0])}`);
 
     expect(beforePermission.status).toBe(401);
 
     const changePermission = await request(app)
-      .patch('/api/v1/users/permission')
-      .send({ permission: 'admin', userName: usersMock[0].userName })
+      .patch(`/api/v1/users/permission/${usersMock[0].id}`)
+      .send({ permission: 'admin' })
       .set('authorization', `bearer ${generateToken(usersMock[2])}`);
 
     expect(changePermission.status).toBe(200);
