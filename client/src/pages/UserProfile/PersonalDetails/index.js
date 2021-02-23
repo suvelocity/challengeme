@@ -1,16 +1,15 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-import EditIcon from '@material-ui/icons/Edit';
-import './UserInfo.css';
-import { Button } from '@material-ui/core';
 import moment from 'moment';
 import Swal from 'sweetalert2';
-import ResetPassword from '../../../components/Modals/ChangePassword';
+import { makeStyles } from '@material-ui/core/styles';
+import { TextField, Button } from '@material-ui/core';
+import { Edit } from '@material-ui/icons';
 import network from '../../../services/network';
 import { generateTime } from '../../../utils';
+import ResetPassword from '../../../components/Modals/ChangePassword';
+import '../../../styles/UserInfo.css';
 
 const useStyles = makeStyles(() => ({
   info: {
@@ -118,9 +117,10 @@ function UserInfo() {
               <ResetPassword
                 open={resetPasswordModal}
                 setOpen={setResetPasswordModal}
+                path='/api/v1/users/change-password'
               />
             )}
-          <Button onClick={startEditInfo}><EditIcon /></Button>
+          <Button onClick={startEditInfo}><Edit /></Button>
           {!isReadOnly
             && (
               <Button onClick={changePassword}>

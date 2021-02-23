@@ -1,0 +1,49 @@
+.generic-page-admin {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-data-header {
+    align-self: center;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.user-data-permission {
+    display: flex;
+    justify-content: space-between;
+    width: 20vw;
+}
+
+.change-password-admin {
+    align-self: center;
+}
+
+.user-page-admin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user-info-container-admin {
+    width: 70vw;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    height: 70vh !important;
+}
+
+.edit-mode-container {
+    /* margin-left: 25px; */
+}
+
+.edit-icon {
+    margin-top: 30px;
+}
+
+@media (max-width: 700px) {
+    .user-info-container {
+        width: 95vw;
+    }
+}
