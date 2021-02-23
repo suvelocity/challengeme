@@ -7,7 +7,8 @@ const registerValidation = (data) => {
   const schema = Joi.object({
     firstName: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
     lastName: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
-    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/).required(),
+    userName: Joi.string().min(1).max(32).regex(/^[a-zA-Z0-9]*$/)
+      .required(),
     email: Joi.string().min(6).email().required(),
     country: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
     city: [Joi.string().min(1).regex(/^[a-zA-Z\s]*$/).optional(), Joi.allow(null), Joi.allow('')],
