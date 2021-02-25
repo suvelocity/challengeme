@@ -1,5 +1,5 @@
 import React from 'react';
-import '../../styles/LandingPage.css'
+import '../../styles/LandingPage.css';
 
 const footerLabels = [
   {
@@ -32,21 +32,21 @@ const footerLabels = [
 
 export default function Footer({ color = 'white' }) {
   return (
-    <section className="Landing-page-Footer" style={{ color,borderTop:`1px solid ${color}` }}>
+    <section className="Landing-page-Footer" style={{ color, borderTop: `1px solid ${color}` }}>
       <div className="Landing-page-Footer-Labels" style={{ color }}>
         {footerLabels.map((label, index) => {
           if (label.name !== '|') {
             return (
               <a
-              key={label.name}
-              style={{ color }}
-              href={label.link}
-              target='_blank'
-              rel="noopener noreferrer"
-              className="Landing-page-Footer-Single-Label"
-            >
-              {label.name}
-            </a>
+                key={label.name}
+                style={{ color }}
+                href={label.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="Landing-page-Footer-Single-Label"
+              >
+                {label.name}
+              </a>
             );
           }
           return (

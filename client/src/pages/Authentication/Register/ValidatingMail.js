@@ -1,8 +1,8 @@
 import React, { useEffect, useContext } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Logged } from '../../../context/LoggedInContext';
 import mixpanel from 'mixpanel-browser';
 import Swal from 'sweetalert2';
+import { Logged } from '../../../context/LoggedInContext';
 import network from '../../../services/network';
 
 function ValidatingMail() {
@@ -24,8 +24,8 @@ function ValidatingMail() {
           Swal.fire({
             icon: 'success',
             title: 'Registration Completed',
-            timer: 3000
-          })
+            timer: 3000,
+          });
         })
         .catch(() => {
           Swal.fire({

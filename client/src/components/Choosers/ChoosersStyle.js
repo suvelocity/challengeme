@@ -24,7 +24,7 @@ export const labelsChooserStyle = {
     ':hover': {
       backgroundColor: 'transparent',
       textDecoration: 'underline',
-      cursor: 'pointer'
+      cursor: 'pointer',
     },
   }),
   menu: (provided) => ({
@@ -32,7 +32,7 @@ export const labelsChooserStyle = {
     width: 400,
     paddingLeft: 10,
     backgroundColor: 'rgba(255, 255, 255,0.8)',
-    paddingBottom:10
+    paddingBottom: 10,
   }),
   menuList: (provided) => ({
     ...provided,
@@ -44,6 +44,6 @@ export const labelsChooserStyle = {
   }),
   control: (provided) => ({
     ...provided,
-    width: 400
+    width: 400,
   }),
 };
