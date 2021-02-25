@@ -1,13 +1,16 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import Cookies from 'js-cookie';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import clsx from 'clsx';
 import AppBar from '@material-ui/core/AppBar';
+import AppsIcon from '@material-ui/icons/Apps';
 import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Avatar from '@material-ui/core/Avatar';
 import HomeIcon from '@material-ui/icons/Home';
 import IconButton from '@material-ui/core/IconButton';
+import DescriptionIcon from '@material-ui/icons/Description';
 import MenuIcon from '@material-ui/icons/Menu';
 import Drawer from '@material-ui/core/Drawer';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -22,8 +25,6 @@ import GroupIcon from '@material-ui/icons/Group';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LockIcon from '@material-ui/icons/Lock';
 import AddIcon from '@material-ui/icons/Add';
-import ChooseLabels from '../../Choosers/ChooseLabels';
-import FilteredLabels from '../../../context/FilteredLabelsContext';
 import useStyles from './NarrowNavStyled';
 import { Logged } from '../../../context/LoggedInContext';
 import Search from '../Search';
@@ -31,25 +32,10 @@ import network from '../../../services/network';
 
 export default function NarrowNav() {
   const classes = useStyles();
-  const filteredLabels = useContext(FilteredLabels);
-  const [labels, setLabels] = useState([]);
-  const [chooseLabels, setChooseLabels] = useState([]);
   const location = useHistory();
   const LoggedContext = useContext(Logged);
   const [openNavBar, setOpenNavBar] = useState(false);
   const currentLocation = useLocation();
-
-  useEffect(() => {
-    if (currentLocation.pathname !== '/') {
-      setLabels([]);
-    } else {
-      const newFilter = chooseLabels.filter(
-        (label) => label.value === (filteredLabels ? filteredLabels.filteredLabels[0] : null),
-      );
-      setLabels(newFilter);
-    }
-    // eslint-disable-next-line
-  }, [currentLocation]);
 
   const handleDrawerOpen = () => {
     setOpenNavBar(true);
@@ -95,34 +81,72 @@ export default function NarrowNav() {
           >
             <MenuIcon style={letterColor} />
           </IconButton>
-          <Search />
-          <div
-            style={{
-              minWidth: '150px',
-              width: 'fit-content',
-              marginLeft: '10px',
-            }}
-          >
-            {currentLocation.pathname === '/' ? (
-              <ChooseLabels
-                labels={labels}
-                chooseLabels={chooseLabels}
-                setChooseLabels={setChooseLabels}
-                setLabels={setLabels}
-              />
+          <div className={classes.narrowFlex}>
+            {currentLocation.pathname.includes('/challenges') ? (
+              <Search />
             ) : null}
+            {currentLocation.pathname === '/'
+              && (
+                <>
+                  <Typography variant="h6" className={classes.title}>
+                    <Link to="/challenges" className="link-rout">
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '10px',
+                        }}
+                      >
+                        <AppsIcon style={letterColor} />
+                &nbsp;
+                        <span style={letterColor} className="header-link-title">
+                          Challenges
+                        </span>
+                      </div>
+                    </Link>
+                  </Typography>
+                  <Typography variant="h6" className={classes.title}>
+                    <Link to={LoggedContext.logged ? '/teams' : currentLocation.pathname} className="link-rout">
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '10px',
+                        }}
+                      >
+                        <GroupIcon style={letterColor} />
+                &nbsp;
+                        <span style={letterColor} className="header-link-title">
+                          Teams
+                        </span>
+                      </div>
+                    </Link>
+                  </Typography>
+                  <Typography variant="h6" className={classes.title}>
+                    <a
+                      href="https://suvelocity.github.io/challengeme/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="link-rout"
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '10px',
+                        }}
+                      >
+                        <DescriptionIcon style={letterColor} />
+                &nbsp;
+                        <span style={letterColor} className="header-link-title">
+                          Docs
+                        </span>
+                      </div>
+                    </a>
+                  </Typography>
+                </>
+              )}
           </div>
-          {currentLocation.pathname === '/' ? (
-            <Button
-              onClick={() => {
-                filteredLabels.setFilteredLabels(labels ? labels.map((label) => label.value) : []);
-              }}
-              variant="contained"
-              className={classes.filterButton}
-            >
-              filter
-            </Button>
-          ) : null}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -236,13 +260,13 @@ export default function NarrowNav() {
               </ListItem>
             ) : (
               <>
-                <Link to="/login" className="link-rout">
-                  <Button variant="contained" className={classes.filterButton}>
+                <Link to="/login" className="link-rout" onClick={handleDrawerClose}>
+                  <Button variant="contained" className={classes.authButton}>
                     Login
                   </Button>
                 </Link>
-                <Link to="/register" className="link-rout">
-                  <Button variant="contained" className={classes.filterButton}>
+                <Link to="/register" className="link-rout" onClick={handleDrawerClose}>
+                  <Button variant="contained" className={classes.authButton}>
                     Register
                   </Button>
                 </Link>

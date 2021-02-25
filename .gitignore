@@ -12,3 +12,6 @@ Grequests/getUserSucces.rest
 client/debug.log
 docker-compose.yml
 Dockerfile.server
+LocalTools
+server/certificate.pem
+server/private-key.pem

@@ -1,0 +1,41 @@
+.sign-in-google-row {
+    margin-top: -100px;
+    display: flex;
+    justify-content: space-around;
+    height: 117vh;
+}
+
+.sign-in-google-column {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+.sign-in-google-icon {
+    justify-self: center;
+    align-self: center;
+    height: 200px !important;
+    width: 200px !important;
+    margin-top: 80px;
+}
+
+.sign-in-google-content {
+    margin-top: -70px;
+}
+
+@media (max-width: 768px) {
+    .sign-in-google-row {
+        margin-top: 0px;
+    }
+    .sign-in-google-content {
+        margin-top: -100px;
+    }
+    .sign-in-google-content h1 {
+        font-size: 20px;
+    }
+    .sign-in-google-icon {
+        height: 100px !important;
+        width: 100px !important;
+    }
+}

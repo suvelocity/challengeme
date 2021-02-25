@@ -166,3 +166,52 @@
 .Carousel-Prev-Button:hover {
     background-color: rgb(0, 0, 0, 0.6);
 }
+
+@media (max-width: 950px) {
+    .Carousel-Container {
+        max-width: 95%;
+    }
+    .Challenge-To-Carousel {
+        margin-left: 5px;
+        height: 100px;
+        margin-right: 0px;
+        padding: 0px;
+        max-width: 150px;
+    }
+
+    .alice-carousel__stage-item {
+        width: 50px!important;
+        min-width: 150px;
+    }
+    .Challenge-To-Carousel-Link:hover {
+        height: 100px;
+        width: 150px;
+    }
+    .Challenge-To-Carousel-Header {
+        margin-bottom: 10px;
+        font-size: 12px;
+    }
+    .Challenge-To-Carousel-Author {
+        margin-bottom: 10px;
+        font-size: 8px;
+        line-height: 144%;
+    }
+    .Challenge-To-Carousel-Submission {
+        font-size: 9px;
+        line-height: 144%;
+    }
+    .Carousel-Next-Button {
+        opacity: 1;
+        width: 40px;
+        margin-top: -110px;
+        margin-right: -6px;
+        height: 100px;
+        font-size: 50px;
+    }
+    .Carousel-Prev-Button {
+        width: 40px;
+        margin-top: -110px;
+        margin-left: -6px;
+        height: 100px;
+    }
+}
