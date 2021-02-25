@@ -11,7 +11,7 @@ function validNum(data) {
   if (isNaN(parsedInt)) {
     return Date.now()
   } else {
-  return  parsedInt
+    return parsedInt
   }
 }
 
@@ -47,7 +47,6 @@ mixpanelRoute.get("/started-challenge/:teamId",
       const onlySingleQuotes = removeLastComma.replace(/'/g, '"');
       const insideArray = `[${onlySingleQuotes}]`
       const result = JSON.parse(insideArray)
-        console.log(new Date(result[0].properties.time *1000).toDateString());
       res.json(result);
     } catch (error) {
       console.error(error.message);
