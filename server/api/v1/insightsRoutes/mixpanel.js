@@ -8,10 +8,10 @@ const axios = require("axios");
 
 function validNum(data) {
   const parsedInt = parseInt(data)
-  if (!isNaN(parsedInt)) {
+  if (isNaN(parsedInt)) {
     return Date.now()
   } else {
-    parsedInt
+  return  parsedInt
   }
 }
 
@@ -25,15 +25,9 @@ mixpanelRoute.get("/started-challenge/:teamId",
       const usersNames = await getTeamUsersNames(teamId);
       const fromDate = validNum(from)
       const toDate = validNum(to)
-      console.log(fromDate);
-      console.log(toDate);
       const formattedFrom = new Date(fromDate).toISOString().slice(0, 10);
       const formattedTo = new Date(toDate).toISOString().slice(0, 10);
       todayDate = new Date().toISOString().slice(0, 10);
-      console.log('todayDate', todayDate);
-      oneMonth = 30 * 24 * 60 * 60 * 1000;
-      oneMonthAgoDate = new Date(Date.now() - oneMonth).toISOString().slice(0, 10);
-      console.log('oneMonthAgoDate', oneMonthAgoDate);
       // the mixpanel return string !!
       const response = await axios.get(
         `https://data.mixpanel.com/api/2.0/export?to_date=${formattedTo}&from_date=${formattedFrom}&event=%5B%22User%20Started%20Challenge%22%5D`,
@@ -49,11 +43,11 @@ mixpanelRoute.get("/started-challenge/:teamId",
       const regex = /}}/ig
       const commaEndOfObjects = response.data.replace(regex, '}},');
       const lastCommaToRemove = commaEndOfObjects.lastIndexOf('}},') + 2
-      const removeLastComma = commaEndOfObjects.slice(0, lastCommaToRemove) + commaEndOfObjects.slice(lastCommaToRemove +1);
+      const removeLastComma = commaEndOfObjects.slice(0, lastCommaToRemove) + commaEndOfObjects.slice(lastCommaToRemove + 1);
       const onlySingleQuotes = removeLastComma.replace(/'/g, '"');
       const insideArray = `[${onlySingleQuotes}]`
       const result = JSON.parse(insideArray)
-        
+        console.log(new Date(result[0].properties.time *1000).toDateString());
       res.json(result);
     } catch (error) {
       console.error(error.message);
