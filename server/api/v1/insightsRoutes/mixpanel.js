@@ -13,7 +13,7 @@ const cachedEvents = {}
 function queryDiff(presentQuery, cachedQuery) {
   if (presentQuery.from != cachedQuery.from) return false
   if (presentQuery.to != cachedQuery.to) return false
-  if (!(presentQuery.limit <= cachedQuery.limit)) return false
+  if (!(parseInt(presentQuery.limit) <= parseInt(cachedQuery.limit))) return false
   return true
 }
 
@@ -28,7 +28,10 @@ function isAlreadyCached(event, query) {
 }
 
 function manipulateEvents(array) {
-  return array.map(event => event.properties)
+  return array.map(event => {
+    event.properties.id = event.properties['$insert_id']
+    return event.properties
+  })
 }
 
 // get all team users start challenge time of the last month
