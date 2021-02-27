@@ -18,7 +18,6 @@ import CreateChallenge from '../../images/reactSvg/CreateChallenge';
 import Footer from '../../components/Footer';
 import RoyShnitzer from '../../images/profilePictures/RoySnitzer.jpg';
 import DavidDiamant from '../../images/profilePictures/DavidDiamant.jpg';
-import GuySerfaty from '../../images/profilePictures/GuySerfaty.jpg';
 import DorKachlon from '../../images/profilePictures/DorKachlon.jpg';
 import TsachOvadia from '../../images/profilePictures/TsachOvadia.jpg';
 import '../../styles/LandingPage.css';
