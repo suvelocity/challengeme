@@ -20,15 +20,16 @@ function TeamCard({ team }) {
     <Link to={linkPath} className="my-team-link">
       <div className="my-team-card">
         <div className="my-team-name">{team.name}</div>
-        <div className='my-team-pic'>
+        <div className="my-team-pic">
           {team.UserTeam.permission === 'teacher' ? (
             <div>
               <TeacherSvg />
               <div className="my-team-teacher">
-                As Teacher</div>
+                As Teacher
+              </div>
             </div>
-          ) :
-            (
+          )
+            : (
               <TeamSvg />
             )}
         </div>
@@ -41,7 +42,7 @@ function MyTeams() {
   const Location = useHistory();
 
   const [teamData, setTeamData] = useState();
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
 
   const fetchUserTeam = useCallback(async () => {
     try {
@@ -52,9 +53,9 @@ function MyTeams() {
         const linkPath = team.UserTeam.permission === 'teacher' ? `/teams/teacher/${team.id}` : `/teams/${team.id}`;
         Location.push(linkPath);
       }
-      setLoading(false)
+      setLoading(false);
     } catch (error) {
-      setLoading(false)
+      setLoading(false);
     }
     // eslint-disable-next-line
   }, [])
@@ -68,16 +69,15 @@ function MyTeams() {
     <div className="my-teams">
       <h1 className="my-teams-title">Teams Area</h1>
       <div className="my-teams-container">
-        {!loading ?
-          teamData && teamData.length > 0 ? teamData.map((team) => (
+        {!loading
+          ? teamData && teamData.length > 0 ? teamData.map((team) => (
             <TeamCard
               key={team.id}
               team={team}
             />
           ))
             : <h1>Your not member in any team </h1>
-          : <Loading />
-        }
+          : <Loading />}
       </div>
     </div>
   );

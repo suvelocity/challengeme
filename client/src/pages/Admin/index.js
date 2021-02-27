@@ -10,12 +10,13 @@ import SecondHeader from "../../components/Header/SecondHeader";
 const GithubTokens = lazy(() => import("./GithhubTokens"));
 const SubmissionsByUsers = lazy(() => import("./SubmissionsStatus"));
 const ProposedChallenge = lazy(() => import("./ChallengeApproval"));
-const UsersControl = lazy(() => import("../../components/Tables/MultipleRowSelection"));
+const UsersControl = lazy(() => import("../../components/Tables/UsersControl"));
 // const UsersControl = lazy(() => import("./UsersControl"));
 const NotFound = lazy(() => import("../../pages/NotFound"));
 const TeamsControl = lazy(() => import("./TeamsControl"));
 const DashBoard = lazy(() => import("./DashBoard"));
 const Webhook = lazy(() => import("./Webhook"));
+const MixpanelDashBoard = lazy(() => import("./Mixpanel/DashBoard"));
 
 const paths = [
   { name: "DashBoard", URL: "/admin/DashBoard" },
@@ -25,6 +26,7 @@ const paths = [
   { name: "Githhub Tokens", URL: "/admin/GithhubTokens" },
   { name: "Teams Control", URL: "/admin/TeamsControl" },
   { name: "Webhook Control", URL: "/admin/Webhook/AccessKey" },
+  { name: "Mixpanel", URL: "/admin/Mixpanel" },
 ];
 
 function Index() {
@@ -89,6 +91,9 @@ function Index() {
             </Route>
             <Route path="/admin/Webhook">
               <Webhook />
+            </Route>
+            <Route path="/admin/Mixpanel">
+              <MixpanelDashBoard />
             </Route>
             <Route path="*">
               <NotFound />

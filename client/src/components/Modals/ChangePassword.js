@@ -2,11 +2,10 @@ import React, { useState, useCallback } from 'react';
 import Swal from 'sweetalert2';
 import { motion } from 'framer-motion';
 import { makeStyles } from '@material-ui/core/styles';
-import Modal from '@material-ui/core/Modal';
-import Button from '@material-ui/core/Button';
+import { Modal, Button } from '@material-ui/core';
 import ErrorIcon from '@material-ui/icons/Error';
-import Change from '../ForgotPassword/Change';
 import network from '../../services/network';
+import Change from '../ForgotPassword/Change';
 
 function getModalStyle() {
   const top = '16vh';
@@ -35,7 +34,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ResetPassword({ open = false, setOpen, getAllTeams }) {
+export default function ResetPassword({
+  open = false, setOpen, path, notAdmin = true,
+}) {
   const classes = useStyles();
 
   const [modalStyle] = useState(getModalStyle);
@@ -45,7 +46,7 @@ export default function ResetPassword({ open = false, setOpen, getAllTeams }) {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
   const resetPassword = useCallback((passwordForReset, confirmPasswordForReset, oldPasswordForReset) => {
-    if (oldPasswordForReset.length < 8) {
+    if (oldPasswordForReset && oldPasswordForReset.length < 8 && notAdmin) {
       setError('old password should be at least 8 characters');
       return false;
     }
@@ -57,19 +58,19 @@ export default function ResetPassword({ open = false, setOpen, getAllTeams }) {
       setError('passwords do not match');
       return false;
     }
-    if (passwordForReset === oldPasswordForReset) {
+    if (passwordForReset === oldPasswordForReset && notAdmin) {
       setError('You should choose new password');
       return false;
     }
     return true;
     // eslint-disable-next-line
-    }, [])
+  }, [])
 
   const handleSubmitNewWebhookTeam = useCallback(async () => {
     try {
       const passAllChecks = resetPassword(newPassword, confirmNewPassword, oldPassword);
       if (passAllChecks) {
-        const { data: response } = await network.patch('/api/v1/users/change-password', { oldPassword, newPassword });
+        const { data: response } = await network.patch(path, { oldPassword, newPassword });
         Swal.fire({
           icon: 'success',
           text: response.message,
@@ -79,14 +80,21 @@ export default function ResetPassword({ open = false, setOpen, getAllTeams }) {
         return;
       }
     } catch (error) {
+      const response = error.response.data;
+      const message = response.message ? response.message : response.error;
+      Swal.fire({
+        icon: 'error',
+        text: message,
+        timer: 3000,
+      });
     }
     // eslint-disable-next-line
-    }, [newPassword, confirmNewPassword, oldPassword])
+  }, [newPassword, confirmNewPassword, oldPassword])
 
   const handleClose = useCallback(() => {
     setOpen(false);
     // eslint-disable-next-line
-    }, [])
+  }, [])
 
   const handleChange = useCallback((field) => (e) => {
     switch (field) {
@@ -103,7 +111,7 @@ export default function ResetPassword({ open = false, setOpen, getAllTeams }) {
         break;
     }
     // eslint-disable-next-line
-    }, [])
+  }, [])
 
   return (
     <Modal
@@ -146,7 +154,8 @@ export default function ResetPassword({ open = false, setOpen, getAllTeams }) {
           <Change
             data={{ oldPassword, password: newPassword, confirmPassword: confirmNewPassword }}
             handleChange={handleChange}
-            changePassword
+            changePassword={notAdmin}
+            notAdmin={notAdmin}
           />
         </div>
 

@@ -31,7 +31,10 @@ function ReviewsTab({ challengeId, setRatingCount }) {
   }, [challengeId]);
 
   return (
-    <div style={{display:'flex',flexDirection:'column',alignItems:'flex-start',width:'80%',margin:'auto'}}>
+    <div style={{
+      display: 'flex', flexDirection: 'column', alignItems: 'flex-start', width: '80%', margin: 'auto',
+    }}
+    >
       <h1 className="Reviews-H1">Reviews:</h1>
       <ul className="Reviews-Container">
         {!loading ? reviews.length > 0 ? reviews.map((review) => {

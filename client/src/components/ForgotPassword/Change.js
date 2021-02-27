@@ -1,14 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
-import FormControl from '@material-ui/core/FormControl';
 import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import IconButton from '@material-ui/core/IconButton';
-import LockIcon from '@material-ui/icons/Lock';
+import {
+  FormControl, InputLabel, Input, InputAdornment, IconButton,
+} from '@material-ui/core';
+import { Visibility, VisibilityOff, Lock } from '@material-ui/icons';
 import Swal from 'sweetalert2';
 import Timer from './TImer';
 
@@ -30,7 +26,9 @@ const useStyles = makeStyles(() => ({
 
 const limit = 5;
 
-export default function Change({ data, handleChange, changePassword = false }) {
+export default function Change({
+  data, handleChange, changePassword = false, notAdmin = true,
+}) {
   const classes = useStyles();
 
   const [showOldPassword, setShowOldPassword] = useState(false);
@@ -53,7 +51,7 @@ export default function Change({ data, handleChange, changePassword = false }) {
   }, []);
 
   useEffect(() => {
-    if (!changePassword) {
+    if (!changePassword && notAdmin) {
       const timer = setTimeout(() => {
         Swal.fire({
           icon: 'error',
@@ -68,13 +66,14 @@ export default function Change({ data, handleChange, changePassword = false }) {
         clearTimeout(timer);
       };
     }
+    // eslint-disable-next-line
   }, [changePassword]);
 
   return redirect ? (
     <Redirect to="/" />
   ) : (
     <div className={classes.ForogotPassContainer}>
-      {!changePassword && (
+      {!changePassword && notAdmin && (
         <>
           {' '}
           <b> Attention!</b>
@@ -117,7 +116,7 @@ export default function Change({ data, handleChange, changePassword = false }) {
                         <VisibilityOff />
                       )}
                     </IconButton>
-                    <LockIcon style={{ opacity: '0.7' }} />
+                    <Lock style={{ opacity: '0.7' }} />
                   </InputAdornment>
                 )}
               />
@@ -150,7 +149,7 @@ export default function Change({ data, handleChange, changePassword = false }) {
                   <VisibilityOff />
                 )}
               </IconButton>
-              <LockIcon style={{ opacity: '0.7' }} />
+              <Lock style={{ opacity: '0.7' }} />
             </InputAdornment>
           )}
         />
@@ -182,7 +181,7 @@ export default function Change({ data, handleChange, changePassword = false }) {
                   <VisibilityOff />
                 )}
               </IconButton>
-              <LockIcon style={{ opacity: '0.7' }} />
+              <Lock style={{ opacity: '0.7' }} />
             </InputAdornment>
           )}
         />
