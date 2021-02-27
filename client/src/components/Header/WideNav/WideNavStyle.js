@@ -18,7 +18,7 @@ export default makeStyles((theme) => ({
   },
   root: {
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -110,7 +110,7 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
   },
   startFlex: {
-    width: '175px'
+    width: '175px',
   },
   middleFlex: {
     width: '80%',
@@ -121,5 +121,5 @@ export default makeStyles((theme) => ({
     width: '240px',
     display: 'flex',
     justifyContent: 'flex-end',
-  }
+  },
 }));

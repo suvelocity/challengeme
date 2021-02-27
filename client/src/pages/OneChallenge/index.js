@@ -7,9 +7,10 @@ import {
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
 import mixpanel from 'mixpanel-browser';
-import { Button } from "@material-ui/core";
+import { Button } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
-import CircularProgress from '@material-ui/core/CircularProgress';
+// import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import ReviewsTab from '../../components/Reviews';
 import SubmitModal from '../../components/Modals/SubmitModal';
 import network from '../../services/network';
@@ -118,7 +119,7 @@ function ChallengePage() {
         clearInterval(getSubmissionInterval);
       }
     }, 2000);
-  }
+  };
 
   useEffect(() => {
     setImg();
@@ -143,7 +144,7 @@ function ChallengePage() {
       });
       return currentChallenges;
     });
-  }, [setChallengesFiltered])
+  }, [setChallengesFiltered]);
 
   const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
@@ -153,7 +154,7 @@ function ChallengePage() {
     if (!submissionStatus) {
       return (
         <Button
-          className='One-Challenge-Control-Panel-Submit-Button-Regular'
+          className="One-Challenge-Control-Panel-Submit-Button-Regular"
           variant="contained"
           onClick={() => setIsModalOpen(true)}
         >
@@ -162,12 +163,12 @@ function ChallengePage() {
       );
     }
     if (submissionStatus.state === 'PENDING') {
-      return <CircularProgress className='Circular-Progress' style={{ marginBottom: '20px' }} />;
+      return <LinearProgress className="Circular-Progress" />;
     }
     if (submissionStatus.state === 'SUCCESS') {
       return (
         <Button
-          className='One-Challenge-Control-Panel-Submit-Button-Success'
+          className="One-Challenge-Control-Panel-Submit-Button-Success"
           variant="contained"
           onClick={() => setIsModalOpen(true)}
         >
@@ -177,7 +178,7 @@ function ChallengePage() {
     }
     return (
       <Button
-        className='One-Challenge-Control-Panel-Submit-Button-Fail'
+        className="One-Challenge-Control-Panel-Submit-Button-Fail"
         variant="contained"
         onClick={() => setIsModalOpen(true)}
       >
@@ -185,7 +186,7 @@ function ChallengePage() {
       </Button>
     );
   }
-    // eslint-disable-next-line
+  // eslint-disable-next-line
     , [submissionStatus])
 
   return !loadingPage
@@ -227,11 +228,11 @@ function ChallengePage() {
           <section className="One-Challenge-Page-Control-Panel">
             <div className="One-Challenge-Page-Control-Panel-Rating-Container">
               <div className="One-Challenge-Page-Control-Panel-Rating">
-                <Rating className='One-Challenge-Page-Control-Panel-Rating-Stars' name="half-rating-read" value={rating} readOnly size="large" />
+                <Rating className="One-Challenge-Page-Control-Panel-Rating-Stars" name="half-rating-read" value={rating} readOnly size="large" />
                 <div className="One-Challenge-Page-Control-Panel-Rating-Text">
                   {ratingCount}
                   {' '}
-                    rates
+                  rates
                 </div>
               </div>
             </div>
@@ -281,38 +282,37 @@ function ChallengePage() {
               </div>
             </div>
             <div className="One-Challenge-Page-Control-Panel-Submit">
-              {LoggedContext.logged ?
-                (loadingReq ? (
+              {LoggedContext.logged
+                ? (loadingReq ? (
                   <div className="One-Challenge-Page-Control-Panel-Submit-Button">
                     {getSubmissionButton()}
                   </div>
                 ) : (
-                    <div style={{ textAlign: 'center' }}>
-                      <CircularProgress className='Circular-Progress' style={{ margin: '30px' }} />
-                    </div>
-                  ))
-                :
-                <div className="One-Challenge-Page-Control-Panel-Submit-Button">
-                  <Button
-                    className='One-Challenge-Control-Panel-Submit-Button-Regular'
-                    variant="contained"
-                    onClick={() => Swal.fire({
-                      icon: 'warning',
-                      title: 'You Must Login First!',
-                      showCancelButton: true,
-                      confirmButtonText: 'Login',
-                      cancelButtonText: 'OK',
-                    }).then((result) => {
-                      if (result.value) {
-                        currentHistory.push('/login');
-                      }
-                    })}
-                  >
-                    Submit
-        </Button>
-                </div>
-              }
-
+                  <div style={{ textAlign: 'center' }}>
+                    <LinearProgress className="Circular-Progress" />
+                  </div>
+                ))
+                : (
+                  <div className="One-Challenge-Page-Control-Panel-Submit-Button">
+                    <Button
+                      className="One-Challenge-Control-Panel-Submit-Button-Regular"
+                      variant="contained"
+                      onClick={() => Swal.fire({
+                        icon: 'warning',
+                        title: 'You Must Login First!',
+                        showCancelButton: true,
+                        confirmButtonText: 'Login',
+                        cancelButtonText: 'OK',
+                      }).then((result) => {
+                        if (result.value) {
+                          currentHistory.push('/login');
+                        }
+                      })}
+                    >
+                      Submit
+                    </Button>
+                  </div>
+                )}
 
               <SubmitModal
                 isOpen={isModalOpen}
@@ -326,7 +326,7 @@ function ChallengePage() {
           </section>
           <section className="One-Challenge-Page-More">
             <h2>You might also be interested in:</h2>
-            <ChallengesCarousel challenges={challengesFiltered} setNewImg={setNewImg} main={true} />
+            <ChallengesCarousel challenges={challengesFiltered} setNewImg={setNewImg} main />
           </section>
           <section className="One-Challenge-Page-Reviews">
             <ReviewsTab challengeId={challenge.id} setRatingCount={setRatingCount} />
@@ -334,7 +334,7 @@ function ChallengePage() {
           <div className="One-Challenge-Footer">
             <Footer color="black" />
           </div>
-        </div >
+        </div>
 
       ) : (
         <h1

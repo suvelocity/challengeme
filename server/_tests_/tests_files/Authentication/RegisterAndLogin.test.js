@@ -140,7 +140,7 @@ describe('Register & Login Tests', () => {
     const logOutResponse = await request(server)
       .post('/api/v1/auth/logout')
       .send({ token: refreshToken });
-    
+
     expect(logOutResponse.status).toBe(200);
 
     const deleteToken = await RefreshToken.findOne({

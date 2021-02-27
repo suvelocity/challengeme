@@ -15,6 +15,7 @@ import SubmitModal from '../../components/Modals/SubmitModal';
 import Loading from '../../components/Loading';
 import '../../styles/OldOneChallenge.css';
 import { generateTime } from '../../utils';
+
 const useStyles = makeStyles(() => ({
   getStartedButton: {
     background: 'linear-gradient(270deg, rgba(55,99,192,1) 0%, rgba(87,159,223,1) 100%)',
@@ -359,10 +360,10 @@ function ChallengePage() {
               {getSubmissionButton()}
             </div>
           ) : (
-              <div style={{ textAlign: 'center' }}>
-                <CircularProgress style={{ margin: '30px' }} />
-              </div>
-            )}
+            <div style={{ textAlign: 'center' }}>
+              <CircularProgress style={{ margin: '30px' }} />
+            </div>
+          )}
           <SubmitModal
             isOpen={isModalOpen}
             handleClose={handleModalClose}
@@ -376,8 +377,8 @@ function ChallengePage() {
       </div>
     </div>
   ) : (
-      <Loading />
-    );
+    <Loading />
+  );
 }
 
 export default ChallengePage;

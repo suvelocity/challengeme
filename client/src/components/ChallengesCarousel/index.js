@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import AliceCarousel from 'react-alice-carousel';
 import 'react-alice-carousel/lib/alice-carousel.css';
-import ChallengeToCarousel from './ChallengeToCarousel';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ChallengeToCarousel from './ChallengeToCarousel';
 import Loading from '../Loading';
 // import { shuffleArray } from '../../utils';
 
@@ -20,23 +20,24 @@ const responsive = {
   3000: { items: 10 },
 };
 
-
-function ChallengesCarousel({ challenges, setNewImg, main, random = false }) {
+function ChallengesCarousel({
+  challenges, setNewImg, main, random = false,
+}) {
   const [orderedChallenges, setOrderedChallenges] = useState([]);
   const [loadingPage, setLoadingPage] = useState(true);
-  
+
   useEffect(() => {
     (async () => {
       if (random) {
         const newChallenges = [...challenges].reverse();
-        setOrderedChallenges(newChallenges)
+        setOrderedChallenges(newChallenges);
       } else {
-        setOrderedChallenges(challenges)
+        setOrderedChallenges(challenges);
       }
-      setLoadingPage(false)
+      setLoadingPage(false);
     }
-    )()
-  }, [random, challenges])
+    )();
+  }, [random, challenges]);
 
   const items = orderedChallenges.length > 0 ? orderedChallenges.map((challenge) => (
     <ChallengeToCarousel
@@ -51,28 +52,25 @@ function ChallengesCarousel({ challenges, setNewImg, main, random = false }) {
     />
   )) : [<h1>Not Found</h1>];
 
-  const renderPrevButton = ({ isDisabled }) => {
-    return !isDisabled ? <button className="Carousel-Prev-Button" ><ArrowBackIosIcon fontSize='large' /></button> : <div />;
-  };
+  const renderPrevButton = ({ isDisabled }) => (!isDisabled ? <button className="Carousel-Prev-Button"><ArrowBackIosIcon fontSize="large" /></button> : <div />);
 
-  const renderNextButton = ({ isDisabled }) => {
-    return !isDisabled ? <button className="Carousel-Next-Button"><ArrowForwardIosIcon fontSize='large' /></button> : <div />;
-  };
-
+  const renderNextButton = ({ isDisabled }) => (!isDisabled ? <button className="Carousel-Next-Button"><ArrowForwardIosIcon fontSize="large" /></button> : <div />);
 
   return (
-    !loadingPage ?
-      <div className='Carousel-Container'>
-        <AliceCarousel
-          disableDotsControls
-          // infinite
-          mouseTracking
-          items={items}
-          responsive={responsive}
-          renderPrevButton={renderPrevButton}
-          renderNextButton={renderNextButton}
-        />
-      </div>
+    !loadingPage
+      ? (
+        <div className="Carousel-Container">
+          <AliceCarousel
+            disableDotsControls
+            // infinite
+            mouseTracking
+            items={items}
+            responsive={responsive}
+            renderPrevButton={renderPrevButton}
+            renderNextButton={renderNextButton}
+          />
+        </div>
+      )
       : <Loading />
   );
 }

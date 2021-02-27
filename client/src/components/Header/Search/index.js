@@ -89,7 +89,7 @@ const Search = () => {
         </div>
       </div>
       <div id="searchResults" className={results.length !== 0 ? 'open' : 'closed'}>
-        <div className="display" >
+        <div className="display">
           <div className="background-black-to-search" />
           {resultsList}
         </div>
