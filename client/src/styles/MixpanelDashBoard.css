@@ -1,0 +1,18 @@
+.Mixpanel-DashBoard-container {
+    height: calc(100vh - 182px);
+    width: '100%';
+}
+
+.not-found {
+    margin-top: 10%;
+    text-align: center;
+}
+
+.circle-process-container {
+    width: 100vw;
+    height: 100vh;
+}
+
+.circle-process{
+    margin: 15% 50%;
+}
