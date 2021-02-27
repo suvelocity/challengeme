@@ -92,7 +92,7 @@ function Row(props) {
                         </StyledTableCell>
                         <StyledTableCell>
                           {' '}
-                          {userBySubmission.User.userName}
+                          {userBySubmission.User && userBySubmission.User.userName}
                           {' '}
                         </StyledTableCell>
                         <StyledTableCell>

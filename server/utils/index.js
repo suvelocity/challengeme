@@ -9,6 +9,14 @@ function generatePassword() {
   return retVal;
 }
 
+function validDateNum(data) {
+  const parsedInt = parseInt(data);
+  if (isNaN(parsedInt)) {
+    return Date.now();
+  }
+  return parsedInt;
+}
+
 module.exports = {
-  generatePassword,
+  generatePassword, validDateNum,
 };
