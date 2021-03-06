@@ -1,15 +1,17 @@
-{
+require('dotenv').config();
+
+module.exports = {
   "swagger": "2.0",
   "info": {
     "version": "1.0.0",
     "title": "Challenges",
-    "description": "challenges route",
+    "description": "Back to ChallengeMe",
     "license": {
-      "name": "Challenges",
-      "url": "http://localhost:8080/docs"
+      "name": process.env.SWAGGER_IP,
+      "url": process.env.IP_ADDRESS
     }
   },
-  "host": "localhost:8080",
+  "host": process.env.SWAGGER_IP,
   "basePath": "/",
   "tags": [
     {
@@ -495,6 +497,13 @@
     "/api/v1/reviews/:reviewId": {
       "delete": {
         "tags": ["Reviews"],
+        "parameters": {
+          "name": "reviewId",
+          "in": "path",
+          "description": "ID of the requested review",
+          "required": true,
+          "type": "string"
+        },
         "summary": "delete review for challenge- admin access",
         "responses": {
           "200": {
@@ -932,7 +941,7 @@
       }
     }
   },
-  "schemes": ["http"],
+  "schemes": ["http", "https"],
   "securityDefinitions": {
     "Bearer": {
       "type": "apiKey",
