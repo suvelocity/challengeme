@@ -16,48 +16,61 @@ module.exports = {
   "tags": [
     {
       "name": "Auth",
-      "description": "API for Auth in the system"
+      "description": "Auth API for Authentication users"
     },
     {
       "name": "Challenges",
-      "description": "API for Challenges in the system"
+      "description": "Challenges API"
     },
     {
-      "name": "Git Tokens",
-      "description": "API for Git Tokens in the system- only admin access"
-    },
-    {
-      "name": "Image",
-      "description": "API for challenge images"
-    },
-    {
-      "name": "Labels",
-      "description": "API for labels per challenge"
-    },
-    {
-      "name": "Reviews",
-      "description": "API for reviews per challenge"
-    },
-    {
-      "name": "Submissions",
-      "description": "API for submissions per challenge"
-    },
-    {
-      "name": "Teams",
-      "description": "API for team area"
+      "name": "Images",
+      "description": "Images API for challenges images"
     },
     {
       "name": "Types",
-      "description": "API get challenge type ???"
+      "description": "Types API for challenges types"
+    },
+    {
+      "name": "Labels",
+      "description": "Labels API for challenges labels"
+    },
+    {
+      "name": "Submissions",
+      "description": "Submissions API for challenges submissions"
+    },
+    {
+      "name": "Reviews",
+      "description": "Reviews API for challenges reviews"
+    },
+    {
+      "name": "Teams",
+      "description": "Teams API for teams controls and info"
+    },
+    {
+      "name": "Assignments",
+      "description": "Assignments API for attach assignments to teams"
+    },
+    {
+      "name": "Insights",
+      "decryption": "Insights API for statistics insights"
     },
     {
       "name": "Users",
-      "description": "API for users in the system"
+      "description": "Users API for managing users and info"
     },
     {
-      "name": "Webhook",
-      "description": "API gitub webhook"
+      "name": "Webhooks",
+      "description": "Webhooks API for ChallengeMe Developers tools"
+    },
+    {
+      "name": "Git Tokens",
+      "description": "Github Tokens API for challenges test using CI platform(actions) on github  - only admin access"
+    },
+    {
+      "name": "Services",
+      "description": "API Services"
     }
+
   ],
   "paths": {
     "/api/v1/auth/validate-admin": {
@@ -239,7 +252,7 @@ module.exports = {
     "/api/v1/webhook/:id": {
       "get": {
         "tags": [
-          "Webhook"
+          "Webhooks"
         ],
         "summary": "get the status for certain submission",
         "responses": {
@@ -612,7 +625,7 @@ module.exports = {
     "/api/v1/image": {
       "get": {
         "tags": [
-          "Image"
+          "Images"
         ],
         "summary": "get all challenge images by request query",
         "responses": {
@@ -626,7 +639,7 @@ module.exports = {
       },
       "post": {
         "tags": [
-          "Image"
+          "Images"
         ],
         "summary": "add new image for challenge",
         "responses": {
@@ -905,7 +918,7 @@ module.exports = {
         }
       }
     },
-    "Image": {
+    "Images": {
       "required": [
         "challengeId",
         "img"
