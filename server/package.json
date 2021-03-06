@@ -57,7 +57,6 @@
     "jest": "^26.6.0",
     "ngrok": "^3.3.0",
     "nock": "^13.0.4",
-
     "start-server-and-test": "^1.11.5",
     "supertest": "^4.0.2"
   }
