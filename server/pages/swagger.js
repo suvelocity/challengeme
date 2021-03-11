@@ -1116,26 +1116,6 @@ module.exports = {
         }
       }
     },
-    "examples": {
-      "Gittoken": {
-        "summary": "An example of a Token",
-        "type": "object",
-        "properties": {
-          "type": "object",
-          "properties": {
-            "token": {
-              "type": "string"
-            },
-            "gitAccount": {
-              "type": "string"
-            },
-            "actionsLimit": {
-              "type": "number"
-            }
-          }
-        }
-      }
-    }
   },
   "schemes": [
     "http",
