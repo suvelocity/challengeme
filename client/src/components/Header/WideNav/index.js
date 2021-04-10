@@ -171,7 +171,7 @@ export default function WideNav() {
                   </Typography>
                   <Typography variant="h6" className={classes.title}>
                     <a
-                      href={window.location.protocol + '//' + window.location.hostname + '/api-references'}
+                      href={window.location.protocol + '//' + window.location.hostname + '/api-references/'}
                       className="link-rout"
                     >
                       <div
