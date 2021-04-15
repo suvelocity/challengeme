@@ -1102,7 +1102,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Update webhook",
+                "summary": "Github Update Submission status",
                 "parameters": [
                     {
                         "in": "path",
@@ -1118,10 +1118,15 @@ module.exports = {
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "Update webhook",
+                        "description": "Submission result",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "success": {
+                                    "type": "boolean"
+                                }
+                            }
                         }
                     }
                 ],
@@ -1129,7 +1134,7 @@ module.exports = {
                     "202": {
                         "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "$ref": "#/definitions/Submissions"
                         }
                     },
                     "400": {
@@ -1149,31 +1154,204 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Add a webhook",
+                "summary": "Create a team using webhook",
                 "parameters": [
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "Add a webhook",
+                        "description": "New Team Data",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "teamName": {
+                                    "type": "string"
+                                },
+                                "leaders": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "userName": {
+                                                "type": "string"
+                                            },
+                                        }
+                                    }
+                                },
+                                "usersToCreate": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Users"
+                                    }
+                                },
+                                "eventsRegistration": {
+                                    "type": "object",
+                                    "properties": {
+                                        "webhookUrl": {
+                                            "type": "string"
+                                        },
+                                        "events": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                            }
+                                        },
+                                        "authorizationToken": {
+                                            "type": "string"
+                                        },
+                                    }
+                                },
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "OK",
+                        "description": "Create Team Success",
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Create <team name> Team With <number> New Users Success"
+                                },
+                                "leaders": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "userName": {
+                                                "type": "string"
+                                            },
+                                        }
+                                    }
+                                },
+                                "teamId": {
+                                    "type": "string",
+                                },
+                                "newUsers": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "userName": {
+                                                "type": "string"
+                                            },
+                                            "password": {
+                                                "type": "string"
+                                            },
+                                        }
+                                    }
+                                },
+                                "eventRegistrationStatus": {
+                                    "type": "number",
+                                    "example": 201
+                                },
+                                "eventRegistrationMessage": {
+                                    "type": "string",
+                                    "example": "Events Registration Success"
+                                },
+                            }
+                        }
+                    },
+                    "207": {
+                        "description": "Create Team Success, But error with the events",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Create <team name> Team With <number> New Users Success"
+                                },
+                                "leaders": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "userName": {
+                                                "type": "string"
+                                            },
+                                        }
+                                    }
+                                },
+                                "teamId": {
+                                    "type": "string",
+                                },
+                                "newUsers": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "userName": {
+                                                "type": "string"
+                                            },
+                                            "password": {
+                                                "type": "string"
+                                            },
+                                        }
+                                    }
+                                },
+                                "eventRegistrationStatus": {
+                                    "type": "number",
+                                    "example": 404
+                                },
+                                "eventRegistrationMessage": {
+                                    "type": "string",
+                                    "example": "There is no such events"
+                                },
+                            }
                         }
                     },
                     "400": {
                         "description": "Cannot Process Request"
                     },
                     "401": {
-                        "description": "Access Token Required / Unauthorized"
+                        "description": "you don't have permission for team <teamId>"
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "There are usernames that already exists"
+                                },
+                                "userNamesTakenAlready": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "romy, billie, harry"
+                                    }
+                                },
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Bad teamId",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "There is no such team with 77d2ccb6-e6e2-4e85-92b2-73bf7c642ada team id"
+                                },
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Missing usernames",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "romy,billie,harry do not Exist In The System, Please Add Them Inside 'usersToCreate' Array"
+                                },
+                            }
+                        }
                     }
+
                 }
             }
         },
@@ -1182,31 +1360,109 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Add a webhook",
+                "summary": "Add users to team using webhook",
                 "parameters": [
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "Add a webhook",
+                        "description": "Users Data",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "usersToCreate": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/definitions/Users"
+                                    }
+                                },
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "OK",
+                        "description": "Create Team Success",
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Add <number> users to MyTeam team Success"
+                                },
+                                "leaders": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                    }
+                                },
+                                "newUsers": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "userName": {
+                                                "type": "string"
+                                            },
+                                            "password": {
+                                                "type": "string"
+                                            },
+                                        }
+                                    }
+                                },
+                            }
                         }
                     },
                     "400": {
                         "description": "Cannot Process Request"
                     },
                     "401": {
-                        "description": "Access Token Required / Unauthorized"
+                        "description": "you don't have permission for team <teamId>"
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "There are usernames that already exists"
+                                },
+                                "userNamesTakenAlready": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "romy, billie, harry"
+                                    }
+                                },
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Bad teamId",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "There is no such team with 77d2ccb6-e6e2-4e85-92b2-73bf7c642ada team id"
+                                },
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Missing usernames",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "romy,billie,harry do not Exist In The System, Please Add Them Inside 'usersToCreate' Array"
+                                },
+                            }
+                        }
                     }
+
                 }
             }
         },
@@ -1231,19 +1487,27 @@ module.exports = {
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "Update webhook",
+                        "description": "Update Users permissions",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "externalId": {
+                                    "type": "string",
+                                },
+                                "usersToBeLeaders": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "202": {
-                        "description": "Updated",
-                        "schema": {
-                            "$ref": "#/definitions/Webhooks"
-                        }
+                        "description": "Update <number> Users Permission"
                     },
                     "400": {
                         "description": "Cannot Process Request"
@@ -1262,7 +1526,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Get webhook",
+                "summary": "Get All events are available in the system ",
                 "parameters": [
                     {
                         "in": "query",
@@ -1278,15 +1542,15 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     },
                     "401": {
                         "description": "Access Token Required / Unauthorized"
                     },
-                    "404": {
-                        "description": "Not found"
-                    }
                 }
             }
         },
@@ -1295,7 +1559,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Get webhook",
+                "summary": "Get all events of team",
                 "parameters": [
                     {
                         "in": "path",
@@ -1307,22 +1571,16 @@ module.exports = {
                             "format": "int64",
                             "minimum": 1
                         }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     },
                     "401": {
@@ -1339,30 +1597,44 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Add a webhook",
+                "summary": "Register new events to a team",
                 "parameters": [
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "Add a webhook",
+                        "description": "Registration information",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "webhookUrl": {
+                                    "type": "string"
+                                },
+                                "events": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                    }
+                                },
+                                "authorizationToken": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Webhooks"
-                        }
+                        "description": "Events Registration Success"
                     },
                     "400": {
                         "description": "Cannot Process Request"
                     },
                     "401": {
                         "description": "Access Token Required / Unauthorized"
+                    },
+                    "404": {
+                        "description": "No such events"
                     }
                 }
             }
@@ -1372,7 +1644,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Update webhook",
+                "summary": "Update webhook authorization token",
                 "parameters": [
                     {
                         "in": "path",
@@ -1391,16 +1663,23 @@ module.exports = {
                         "description": "Update webhook",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "webhookUrl": {
+                                    "type": "string"
+                                },
+                                "authorizationToken": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "202": {
-                        "description": "Updated",
-                        "schema": {
-                            "$ref": "#/definitions/Webhooks"
-                        }
+                        "201": {
+                            "description": "Update Authorization Token Success"
+                        },
                     },
                     "400": {
                         "description": "Cannot Process Request"
@@ -1419,7 +1698,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Update webhook",
+                "summary": "Update webhook url",
                 "parameters": [
                     {
                         "in": "path",
@@ -1438,16 +1717,21 @@ module.exports = {
                         "description": "Update webhook",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "oldWebhookUrl": {
+                                    "type": "string"
+                                },
+                                "newWebhookUrl": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "202": {
-                        "description": "Updated",
-                        "schema": {
-                            "$ref": "#/definitions/Webhooks"
-                        }
+                        "description": "Update Url Success",
                     },
                     "400": {
                         "description": "Cannot Process Request"
@@ -1478,11 +1762,31 @@ module.exports = {
                             "format": "int64",
                             "minimum": 1
                         }
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Logout Events",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "webhookUrl": {
+                                    "type": "string"
+                                },
+                                "events": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                            }
+                        }
                     }
                 ],
                 "responses": {
                     "204": {
-                        "description": "Deleted"
+                        "description": "Logout from Events Success"
                     },
                     "401": {
                         "description": "Access Token Required / Unauthorized"
@@ -1498,7 +1802,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Get webhook",
+                "summary": "Get webhook access-key",
                 "parameters": [
                     {
                         "in": "query",
@@ -1508,13 +1812,25 @@ module.exports = {
                         "schema": {
                             "type": "string"
                         }
+                    },
+                    {
+                        "in": "query",
+                        "name": "id",
+                        "description": "Data query",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     },
                     "401": {
@@ -1529,7 +1845,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Add a webhook",
+                "summary": "Add a webhook access-key",
                 "parameters": [
                     {
                         "in": "body",
@@ -1537,7 +1853,15 @@ module.exports = {
                         "description": "Add a webhook",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "entityName": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
@@ -1545,7 +1869,13 @@ module.exports = {
                     "201": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "accessKey": {
+                                    "type": "string"
+                                },
+
+                            }
                         }
                     },
                     "400": {
@@ -1562,7 +1892,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Update webhook",
+                "summary": "Update webhook access-key",
                 "parameters": [
                     {
                         "in": "path",
@@ -1581,16 +1911,24 @@ module.exports = {
                         "description": "Update webhook",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "updateKey": {
+                                    "type": "string"
+                                },
+                                "entityName": {
+                                    "type": "string"
+                                },
+                                "email": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "202": {
                         "description": "Updated",
-                        "schema": {
-                            "$ref": "#/definitions/Webhooks"
-                        }
                     },
                     "400": {
                         "description": "Cannot Process Request"
@@ -1607,7 +1945,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Delete webhook",
+                "summary": "Delete webhook access-key",
                 "parameters": [
                     {
                         "in": "path",
@@ -1639,11 +1977,20 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Get webhook",
+                "summary": "Get webhook events",
                 "parameters": [
                     {
                         "in": "query",
                         "name": "name",
+                        "description": "Data query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "id",
                         "description": "Data query",
                         "required": true,
                         "schema": {
@@ -1655,7 +2002,10 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     },
                     "401": {
@@ -1670,7 +2020,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Add a webhook",
+                "summary": "Add a webhook events",
                 "parameters": [
                     {
                         "in": "body",
@@ -1678,7 +2028,12 @@ module.exports = {
                         "description": "Add a webhook",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
@@ -1686,7 +2041,12 @@ module.exports = {
                     "201": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     },
                     "400": {
@@ -1703,7 +2063,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Update webhook",
+                "summary": "Update webhook events",
                 "parameters": [
                     {
                         "in": "path",
@@ -1722,16 +2082,18 @@ module.exports = {
                         "description": "Update webhook",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "202": {
                         "description": "Updated",
-                        "schema": {
-                            "$ref": "#/definitions/Webhooks"
-                        }
                     },
                     "400": {
                         "description": "Cannot Process Request"
@@ -1748,7 +2110,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Delete webhook",
+                "summary": "Delete webhook events",
                 "parameters": [
                     {
                         "in": "path",
@@ -1780,7 +2142,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Get webhook",
+                "summary": "Get webhook teams",
                 "parameters": [
                     {
                         "in": "query",
@@ -1796,7 +2158,10 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                            }
                         }
                     },
                     "401": {
@@ -1811,7 +2176,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Add a webhook",
+                "summary": "Add a webhook teams",
                 "parameters": [
                     {
                         "in": "body",
@@ -1819,16 +2184,31 @@ module.exports = {
                         "description": "Add a webhook",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "teamId": {
+                                    "type": "string"
+                                },
+                                "authorizationToken": {
+                                    "type": "string"
+                                },
+                                "webhookUrl": {
+                                    "type": "string"
+                                },
+                                "events": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Webhooks"
-                        }
+                        "description": "Created",
                     },
                     "400": {
                         "description": "Cannot Process Request"
@@ -1844,7 +2224,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Update webhook",
+                "summary": "Update webhook teams",
                 "parameters": [
                     {
                         "in": "path",
@@ -1863,16 +2243,21 @@ module.exports = {
                         "description": "Update webhook",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "webhookUrl": {
+                                    "type": "string"
+                                },
+                                "authorizationToken": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "202": {
                         "description": "Updated",
-                        "schema": {
-                            "$ref": "#/definitions/Webhooks"
-                        }
                     },
                     "400": {
                         "description": "Cannot Process Request"
@@ -1889,7 +2274,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Delete webhook",
+                "summary": "Delete webhook teams",
                 "parameters": [
                     {
                         "in": "path",
@@ -1925,7 +2310,7 @@ module.exports = {
                 "parameters": [
                     {
                         "in": "query",
-                        "name": "name",
+                        "name": "id",
                         "description": "Data query",
                         "required": true,
                         "schema": {
@@ -1937,7 +2322,34 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "id": {
+                                        "type": "string"
+                                    },
+                                    "webhookId": {
+                                        "type": "string"
+                                    },
+                                    "team": {
+                                        "type": "string"
+                                    },
+                                    "entity": {
+                                        "type": "string"
+                                    },
+                                    "statusCode": {
+                                        "type": "number",
+                                        "example": 500
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "date": {
+                                        "type": "object",
+                                    },
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -1986,7 +2398,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Add a webhook",
+                "summary": "Trigger a webhook user started challenge",
                 "parameters": [
                     {
                         "in": "body",
@@ -1994,16 +2406,18 @@ module.exports = {
                         "description": "Add a webhook",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Webhooks"
+                            "type": "object",
+                            "properties": {
+                                "challengeName": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
                 "responses": {
                     "201": {
                         "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Webhooks"
-                        }
                     },
                     "400": {
                         "description": "Cannot Process Request"
