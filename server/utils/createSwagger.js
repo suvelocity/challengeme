@@ -135,7 +135,7 @@ function addPostParams(route, description, schema) {
     route['parameters'] = [{
         in: "body",
         name: "body",
-        description: description,
+        description: params + ' data',
         required: true,
         schema: {
             "$ref": `#/definitions/${schema}`
@@ -163,7 +163,7 @@ function addPatchOrPutParams(route, description, schema, needParams, params) {
     route['parameters'] = [{
         in: "body",
         name: "body",
-        description: description,
+        description: params + ' data',
         required: true,
         schema: {
             "$ref": `#/definitions/${schema}`
