@@ -1471,7 +1471,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Update webhook",
+                "summary": "Update webhook team permissions",
                 "parameters": [
                     {
                         "in": "path",
@@ -1750,7 +1750,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Delete webhook",
+                "summary": "logout from webhook events",
                 "parameters": [
                     {
                         "in": "path",
@@ -2306,7 +2306,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Get webhook",
+                "summary": "Get webhook errors",
                 "parameters": [
                     {
                         "in": "query",
@@ -2366,7 +2366,7 @@ module.exports = {
                 "tags": [
                     "Webhooks"
                 ],
-                "summary": "Delete webhook",
+                "summary": "Delete webhook error",
                 "parameters": [
                     {
                         "in": "path",
@@ -2433,7 +2433,7 @@ module.exports = {
                 "tags": [
                     "Submissions"
                 ],
-                "summary": "Get submission",
+                "summary": "Get user submissions",
                 "parameters": [
                     {
                         "in": "path",
@@ -2445,22 +2445,16 @@ module.exports = {
                             "format": "int64",
                             "minimum": 1
                         }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Submissions"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Submissions"
+                            }
                         }
                     },
                     "401": {
@@ -2477,12 +2471,12 @@ module.exports = {
                 "tags": [
                     "Submissions"
                 ],
-                "summary": "Add a submission",
+                "summary": "User submit a challenge solution",
                 "parameters": [
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "Add a submission",
+                        "description": "Submission Information",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/Submissions"
@@ -2510,7 +2504,7 @@ module.exports = {
                 "tags": [
                     "Submissions"
                 ],
-                "summary": "Get submission",
+                "summary": "Get submissions by challenge",
                 "parameters": [
                     {
                         "in": "path",
@@ -2522,22 +2516,16 @@ module.exports = {
                             "format": "int64",
                             "minimum": 1
                         }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Submissions"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Submissions"
+                            }
                         }
                     },
                     "401": {
@@ -2554,18 +2542,7 @@ module.exports = {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Get user",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get user information (only his own)",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -2585,12 +2562,12 @@ module.exports = {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Update user",
+                "summary": "Update user information",
                 "parameters": [
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "Update user",
+                        "description": "new user information",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/Users"
@@ -2601,7 +2578,13 @@ module.exports = {
                     "202": {
                         "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Updated Personal Details Success"
+                                },
+                            }
                         }
                     },
                     "400": {
@@ -2621,15 +2604,23 @@ module.exports = {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Update user",
+                "summary": "Update user password",
                 "parameters": [
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "Update user",
+                        "description": "user passwords",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "type": "object",
+                            "properties": {
+                                "oldPassword": {
+                                    "type": "string"
+                                },
+                                "newPassword": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
@@ -2637,11 +2628,23 @@ module.exports = {
                     "202": {
                         "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Updated Password Success"
+                                },
+                            }
                         }
                     },
                     "400": {
+                        "description": "Old Password Incorrect"
+                    },
+                    "400": {
                         "description": "Cannot Process Request"
+                    },
+                    "409": {
+                        "description": "You should choose new password"
                     },
                     "401": {
                         "description": "Access Token Required / Unauthorized"
@@ -2657,26 +2660,17 @@ module.exports = {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Get user",
+                "summary": "Get users by team",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "userId",
-                        "description": "Id of Users",
+                        "name": "teamId",
+                        "description": "Id of team",
                         "required": true,
                         "schema": {
                             "type": "integer",
                             "format": "int64",
                             "minimum": 1
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 ],
@@ -2684,7 +2678,12 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Users"
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -2701,8 +2700,17 @@ module.exports = {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Get user",
+                "summary": "Get user as admin",
                 "parameters": [
+                    {
+                        "in": "query",
+                        "name": "id",
+                        "description": "Data query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "in": "query",
                         "name": "name",
@@ -2717,7 +2725,10 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Users"
+                            }
                         }
                     },
                     "401": {
@@ -2738,7 +2749,7 @@ module.exports = {
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "userId",
+                        "name": "id",
                         "description": "Id of user",
                         "required": true,
                         "schema": {
@@ -2761,7 +2772,13 @@ module.exports = {
                     "202": {
                         "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Updated Personal Details Success"
+                                },
+                            }
                         }
                     },
                     "400": {
@@ -2781,11 +2798,11 @@ module.exports = {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Update user",
+                "summary": "Update user password as admin",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "userId",
+                        "name": "id",
                         "description": "Id of user",
                         "required": true,
                         "schema": {
@@ -2800,7 +2817,12 @@ module.exports = {
                         "description": "Update user",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "type": "object",
+                            "properties": {
+                                "newPassword": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
@@ -2808,7 +2830,13 @@ module.exports = {
                     "202": {
                         "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Updated Password Success"
+                                },
+                            }
                         }
                     },
                     "400": {
@@ -2847,7 +2875,12 @@ module.exports = {
                         "description": "Update user",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "type": "object",
+                            "properties": {
+                                "permission": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
@@ -2878,8 +2911,17 @@ module.exports = {
                 "summary": "Delete user",
                 "parameters": [
                     {
+                        "in": "query",
+                        "name": "hardDelete",
+                        "description": "Data query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "in": "path",
-                        "name": "userId",
+                        "name": "id",
                         "description": "Id of user",
                         "required": true,
                         "schema": {
@@ -2907,11 +2949,11 @@ module.exports = {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Update user",
+                "summary": "Restore deleted user",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "userId",
+                        "name": "id",
                         "description": "Id of user",
                         "required": true,
                         "schema": {
@@ -2919,22 +2961,19 @@ module.exports = {
                             "format": "int64",
                             "minimum": 1
                         }
-                    },
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Update user",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Users"
-                        }
                     }
                 ],
                 "responses": {
                     "202": {
                         "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "User Restore Successfully"
+                                },
+                            }
                         }
                     },
                     "400": {
@@ -2954,7 +2993,7 @@ module.exports = {
                 "tags": [
                     "Users"
                 ],
-                "summary": "Update user",
+                "summary": "A very dangerous endpoint that bind all users with same email (only for admin)",
                 "parameters": [
                     {
                         "in": "body",
@@ -2962,7 +3001,12 @@ module.exports = {
                         "description": "Update user",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
@@ -2970,7 +3014,10 @@ module.exports = {
                     "202": {
                         "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/Users"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Users"
+                            }
                         }
                     },
                     "400": {
