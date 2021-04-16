@@ -15,8 +15,8 @@ module.exports = {
     "basePath": "/",
     "tags": [
         {
-            "name": "Auth",
-            "description": "Auth API for Authentication users"
+            "name": "Authentication",
+            "description": "API for Authentication users"
         },
         {
             "name": "Challenges",
@@ -78,7 +78,7 @@ module.exports = {
                 "tags": [
                     "Challenges"
                 ],
-                "summary": "Get challenge",
+                "summary": "Get all challenges",
                 "parameters": [
                     {
                         "in": "query",
@@ -106,7 +106,7 @@ module.exports = {
                 "tags": [
                     "Challenges"
                 ],
-                "summary": "Add a challenge",
+                "summary": "Create new challenge",
                 "parameters": [
                     {
                         "in": "body",
@@ -139,7 +139,7 @@ module.exports = {
                 "tags": [
                     "Challenges"
                 ],
-                "summary": "Get challenge",
+                "summary": "Get challenges that create by the logged in user",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -161,7 +161,7 @@ module.exports = {
                 "tags": [
                     "Challenges"
                 ],
-                "summary": "Get challenge",
+                "summary": "Get challenge information",
                 "parameters": [
                     {
                         "in": "path",
@@ -193,7 +193,7 @@ module.exports = {
                 "tags": [
                     "Challenges"
                 ],
-                "summary": "Get challenge",
+                "summary": "Get the challenge boiler-plate when logged in",
                 "parameters": [
                     {
                         "in": "path",
@@ -228,7 +228,7 @@ module.exports = {
                 "tags": [
                     "Challenges"
                 ],
-                "summary": "Get challenge",
+                "summary": "Get all challenges even the not approves (admin only)",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -250,7 +250,7 @@ module.exports = {
                 "tags": [
                     "Challenges"
                 ],
-                "summary": "Update challenge",
+                "summary": "Approve challenge as admin",
                 "parameters": [
                     {
                         "in": "path",
@@ -523,9 +523,9 @@ module.exports = {
         "/api/v1/auth/client-id-google": {
             "get": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Get auth",
+                "summary": "Get google client id third party for authentication",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -550,9 +550,9 @@ module.exports = {
         "/api/v1/auth/authentication-with-google": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Add a auth",
+                "summary": "Execute third party authentication with google",
                 "parameters": [
                     {
                         "in": "body",
@@ -588,9 +588,9 @@ module.exports = {
         "/api/v1/auth/client-id-github": {
             "get": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Get auth",
+                "summary": "Get github client id third party for authentication",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -615,9 +615,9 @@ module.exports = {
         "/api/v1/auth/authentication-with-github": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Add a auth",
+                "summary": "Execute third party authentication with github",
                 "parameters": [
                     {
                         "in": "body",
@@ -653,9 +653,9 @@ module.exports = {
         "/api/v1/auth/register": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Add a auth",
+                "summary": "Register to the system",
                 "parameters": [
                     {
                         "in": "body",
@@ -691,9 +691,9 @@ module.exports = {
         "/api/v1/auth/create-user": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Add a auth",
+                "summary": "Create user using the token authentication",
                 "parameters": [
                     {
                         "in": "body",
@@ -729,9 +729,9 @@ module.exports = {
         "/api/v1/auth/user-exist": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Add a auth",
+                "summary": "Check if username already exist in the system",
                 "parameters": [
                     {
                         "in": "body",
@@ -772,9 +772,9 @@ module.exports = {
         "/api/v1/auth/validate-token": {
             "get": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Get auth",
+                "summary": "Validate token is still valid",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -802,9 +802,9 @@ module.exports = {
         "/api/v1/auth/login": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Add a auth",
+                "summary": "Login authentication",
                 "parameters": [
                     {
                         "in": "body",
@@ -846,9 +846,9 @@ module.exports = {
         "/api/v1/auth/token": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Add a auth",
+                "summary": "Get new access token using refresh token",
                 "parameters": [
                     {
                         "in": "body",
@@ -892,9 +892,9 @@ module.exports = {
         "/api/v1/auth/logout": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Add a auth",
+                "summary": "Logout from system",
                 "parameters": [
                     {
                         "in": "body",
@@ -935,9 +935,9 @@ module.exports = {
         "/api/v1/auth/get-question": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Add a auth",
+                "summary": "Get authentication question for reset password season",
                 "parameters": [
                     {
                         "in": "body",
@@ -978,9 +978,9 @@ module.exports = {
         "/api/v1/auth/validate-answer": {
             "post": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Add a auth",
+                "summary": "Validate authentication answer for reset password",
                 "parameters": [
                     {
                         "in": "body",
@@ -1024,9 +1024,9 @@ module.exports = {
         "/api/v1/auth/password-update": {
             "patch": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Update auth",
+                "summary": "Update logged in user password",
                 "parameters": [
                     {
                         "in": "body",
@@ -1073,9 +1073,9 @@ module.exports = {
         "/api/v1/auth/validate-admin": {
             "get": {
                 "tags": [
-                    "Auth"
+                    "Authentication"
                 ],
-                "summary": "Get auth",
+                "summary": "Validate the requested user is admin",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -3037,23 +3037,12 @@ module.exports = {
                 "tags": [
                     "Services"
                 ],
-                "summary": "Get service",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Check with Github if its a public/exist repository",
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "repository exist and public",
                         "schema": {
-                            "$ref": "#/definitions/Services"
+                            "type": "string",
                         }
                     },
                     "401": {
@@ -3070,23 +3059,15 @@ module.exports = {
                 "tags": [
                     "Types"
                 ],
-                "summary": "Get type",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get the types that support on the system",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Types"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Types"
+                            }
                         }
                     },
                     "401": {
@@ -4405,11 +4386,11 @@ module.exports = {
                 "tags": [
                     "Assignments"
                 ],
-                "summary": "Get assignment",
+                "summary": "Get all assignments by team",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "assignmentId",
+                        "name": "teamId",
                         "description": "Id of Assignments",
                         "required": true,
                         "schema": {
@@ -4417,22 +4398,16 @@ module.exports = {
                             "format": "int64",
                             "minimum": 1
                         }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Assignments"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Assignments"
+                            }
                         }
                     },
                     "401": {
@@ -4447,7 +4422,7 @@ module.exports = {
                 "tags": [
                     "Assignments"
                 ],
-                "summary": "Add a assignment",
+                "summary": "Add new assignment for team",
                 "parameters": [
                     {
                         "in": "body",
@@ -4455,7 +4430,10 @@ module.exports = {
                         "description": "Add a assignment",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Assignments"
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     }
                 ],
@@ -4463,7 +4441,13 @@ module.exports = {
                     "201": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Assignments"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Uploaded new assignment!"
+                                },
+                            }
                         }
                     },
                     "400": {
@@ -4478,7 +4462,7 @@ module.exports = {
                 "tags": [
                     "Assignments"
                 ],
-                "summary": "Delete assignment",
+                "summary": "Remove assignment from team",
                 "parameters": [
                     {
                         "in": "path",
@@ -4490,7 +4474,16 @@ module.exports = {
                             "format": "int64",
                             "minimum": 1
                         }
-                    }
+                    },
+                    {
+                        "in": "query",
+                        "name": "challengeId",
+                        "description": "Data query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                 ],
                 "responses": {
                     "204": {
@@ -4508,25 +4501,17 @@ module.exports = {
         "/api/v1/git/": {
             "get": {
                 "tags": [
-                    "Git"
+                    "Git Tokens"
                 ],
-                "summary": "Get git",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get all git token are in the system",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Git"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/GitTokens"
+                            }
                         }
                     },
                     "401": {
@@ -4539,9 +4524,9 @@ module.exports = {
             },
             "post": {
                 "tags": [
-                    "Git"
+                    "Git Tokens"
                 ],
-                "summary": "Add a git",
+                "summary": "Add new git token",
                 "parameters": [
                     {
                         "in": "body",
@@ -4549,16 +4534,13 @@ module.exports = {
                         "description": "Add a git",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Git"
+                            "$ref": "#/definitions/GitTokens"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/Git"
-                        }
+                        "description": "Created",
                     },
                     "400": {
                         "description": "Cannot Process Request"
@@ -4570,9 +4552,9 @@ module.exports = {
             },
             "patch": {
                 "tags": [
-                    "Git"
+                    "Git Tokens"
                 ],
-                "summary": "Update git",
+                "summary": "Update git token",
                 "parameters": [
                     {
                         "in": "body",
@@ -4580,7 +4562,7 @@ module.exports = {
                         "description": "Update git",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Git"
+                            "$ref": "#/definitions/GitTokens"
                         }
                     }
                 ],
@@ -4588,7 +4570,7 @@ module.exports = {
                     "202": {
                         "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/Git"
+                            "$ref": "#/definitions/GitTokens"
                         }
                     },
                     "400": {
@@ -4606,13 +4588,13 @@ module.exports = {
         "/api/v1/git/{token}": {
             "delete": {
                 "tags": [
-                    "Git"
+                    "Git Tokens"
                 ],
-                "summary": "Delete git",
+                "summary": "Delete git token",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "gitId",
+                        "name": "token",
                         "description": "Id of git",
                         "required": true,
                         "schema": {
