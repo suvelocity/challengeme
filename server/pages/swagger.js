@@ -4,8 +4,8 @@ module.exports = {
     "swagger": "2.0",
     "info": {
         "version": "1.0.0",
-        "title": "Challenges",
-        "description": "Back to ChallengeMe",
+        "title": "ChallengeMe",
+        "description": "Back to ChallengeMe:",
         "license": {
             "name": process.env.SWAGGER_IP,
             "url": process.env.IP_ADDRESS
