@@ -3084,12 +3084,12 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
+                "summary": "Get insight of users submissions",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "insightId",
-                        "description": "Id of Insights",
+                        "name": "teamId",
+                        "description": "Id of Team",
                         "required": true,
                         "schema": {
                             "type": "integer",
@@ -3099,11 +3099,13 @@ module.exports = {
                     },
                     {
                         "in": "query",
-                        "name": "name",
-                        "description": "Data query",
+                        "name": "challenge",
+                        "description": "Id of Challenge",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "integer",
+                            "format": "int64",
+                            "minimum": 1
                         }
                     }
                 ],
@@ -3111,7 +3113,10 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Submissions"
+                            }
                         }
                     },
                     "401": {
@@ -3128,26 +3133,17 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
+                "summary": "Get insight of  the top challenges, with the most successful submissions in the team",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "insightId",
-                        "description": "Id of Insights",
+                        "name": "teamId",
+                        "description": "Id of Team",
                         "required": true,
                         "schema": {
                             "type": "integer",
                             "format": "int64",
                             "minimum": 1
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 ],
@@ -3155,7 +3151,24 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "challengeId": {
+                                        "type": "number"
+                                    },
+                                    "Submissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Submissions"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3172,26 +3185,17 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
+                "summary": "Get insight of last week team submissions count",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "insightId",
-                        "description": "Id of Insights",
+                        "name": "teamId",
+                        "description": "Id of Team",
                         "required": true,
                         "schema": {
                             "type": "integer",
                             "format": "int64",
                             "minimum": 1
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 ],
@@ -3199,7 +3203,24 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "submissionsCount": {
+                                        "type": "number"
+                                    },
+                                    "Submissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Submissions"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3216,11 +3237,11 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
+                "summary": "Get insight of all the team submissions per challenge",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "insightId",
+                        "name": "teamId",
                         "description": "Id of Insights",
                         "required": true,
                         "schema": {
@@ -3231,11 +3252,11 @@ module.exports = {
                     },
                     {
                         "in": "query",
-                        "name": "name",
+                        "name": "onlyLast",
                         "description": "Data query",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "boolean"
                         }
                     }
                 ],
@@ -3243,7 +3264,24 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "challengeId": {
+                                        "type": "number"
+                                    },
+                                    "Submissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Submissions"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3260,11 +3298,11 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
+                "summary": "Get insight of all the team submissions per user",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "insightId",
+                        "name": "teamId",
                         "description": "Id of Insights",
                         "required": true,
                         "schema": {
@@ -3275,11 +3313,11 @@ module.exports = {
                     },
                     {
                         "in": "query",
-                        "name": "name",
+                        "name": "onlyLast",
                         "description": "Data query",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "boolean"
                         }
                     }
                 ],
@@ -3287,7 +3325,21 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "userName": {
+                                        "type": "string"
+                                    },
+                                    "Submissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Submissions"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3304,34 +3356,26 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
-                "parameters": [
-                    {
-                        "in": "path",
-                        "name": "insightId",
-                        "description": "Id of Insights",
-                        "required": true,
-                        "schema": {
-                            "type": "integer",
-                            "format": "int64",
-                            "minimum": 1
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get insight of all the users in the team with ordered submissions by date",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "userName": {
+                                        "type": "string"
+                                    },
+                                    "Submissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Submissions"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3348,15 +3392,15 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
+                "summary": "Get insight of the submissions status(total amount, success, fail, not submitted)",
                 "parameters": [
                     {
                         "in": "query",
-                        "name": "name",
-                        "description": "Data query",
+                        "name": "challenge",
+                        "description": "Id of challenge",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "number"
                         }
                     }
                 ],
@@ -3364,7 +3408,24 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "object",
+                            "properties": {
+                                "total": {
+                                    "type": "number"
+                                },
+                                "amount": {
+                                    "type": "number"
+                                },
+                                "success": {
+                                    "type": "number"
+                                },
+                                "fail": {
+                                    "type": "number"
+                                },
+                                "not submitted": {
+                                    "type": "number"
+                                },
+                            }
                         }
                     },
                     "401": {
@@ -3381,23 +3442,29 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get insight of the top challenges, with the most successful submissions",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "challengeId": {
+                                        "type": "number"
+                                    },
+                                    "Submissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Submissions"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3414,23 +3481,29 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get insight of last week submissions count",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "submissionsCount": {
+                                        "type": "number"
+                                    },
+                                    "Submissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Submissions"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3447,15 +3520,15 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
+                "summary": "Get insight of all the submissions per challenge",
                 "parameters": [
                     {
                         "in": "query",
-                        "name": "name",
+                        "name": "onlyLast",
                         "description": "Data query",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "boolean"
                         }
                     }
                 ],
@@ -3463,7 +3536,24 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "challengeId": {
+                                        "type": "number"
+                                    },
+                                    "Submissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Submissions"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3480,15 +3570,15 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
+                "summary": "Get insight of all the submissions per user",
                 "parameters": [
                     {
                         "in": "query",
-                        "name": "name",
+                        "name": "onlyLast",
                         "description": "Data query",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "boolean"
                         }
                     }
                 ],
@@ -3496,7 +3586,21 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "userName": {
+                                        "type": "string"
+                                    },
+                                    "Submissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Submissions"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3513,23 +3617,26 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get insight of all the users with ordered submissions by date",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "userName": {
+                                        "type": "string"
+                                    },
+                                    "Submissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Submissions"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3546,23 +3653,32 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get insight of the 5 challenges with most submissions",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "challengeId": {
+                                        "type": "number"
+                                    },
+                                    "submissionsCount": {
+                                        "type": "number"
+                                    },
+                                    "Submissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "$ref": "#/definitions/Submissions"
+                                        }
+                                    }
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3579,23 +3695,17 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get insight count of challenges from same type('type name' + 'count')",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "object",
+                            "properties": {
+                                "type": {
+                                    "type": "number"
+                                },
+                            }
                         }
                     },
                     "401": {
@@ -3612,23 +3722,20 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get insight of top 5 challenges ordered by rating average (from reviews)",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "object",
+                            "properties": {
+                                "ratingAVG": {
+                                    "type": "number"
+                                },
+                                "challenge": {
+                                    "$ref": "#/definitions/Challenges"
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3645,23 +3752,23 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get insight of the 5 teams with the most successful submissions",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "number"
+                                },
+                                "teamName": {
+                                    "type": "string"
+                                },
+                                "teamSuccessSubmissions": {
+                                    "type": "number"
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3678,26 +3785,17 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
+                "summary": "Get insight of the 5 users with the most successful submissions",
                 "parameters": [
                     {
                         "in": "path",
-                        "name": "insightId",
-                        "description": "Id of Insights",
+                        "name": "teamId",
+                        "description": "Id of Team",
                         "required": true,
                         "schema": {
                             "type": "integer",
                             "format": "int64",
                             "minimum": 1
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 ],
@@ -3705,7 +3803,15 @@ module.exports = {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "object",
+                            "properties": {
+                                "userName": {
+                                    "type": "string"
+                                },
+                                "success": {
+                                    "type": "number"
+                                },
+                            }
                         }
                     },
                     "401": {
@@ -3722,23 +3828,29 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get insight of the amount of successful and failed submissions from all submissions",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "CountByUserID": {
+                                        "type": "number"
+                                    },
+                                    "userId": {
+                                        "type": "number"
+                                    },
+                                    "userName": {
+                                        "type": "string"
+                                    },
+                                    "Submissions": {
+                                        "$ref": "#/definitions/Submissions"
+                                    }
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3755,23 +3867,24 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get insight of the submissions per day from the last 5 days",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                    "CountSubByDate": {
+                                        "type": "number"
+                                    },
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3788,23 +3901,23 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get insight of the count of submissions with the same challenge type",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "type": {
+                                        "type": "string"
+                                    },
+                                    "CountByType": {
+                                        "type": "number"
+                                    },
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -3821,31 +3934,23 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get insight count of unsolved challenges",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Submissions"
+                            }
                         }
-                    },
-                    "401": {
-                        "description": "Access Token Required / Unauthorized"
-                    },
-                    "404": {
-                        "description": "Not found"
                     }
+                },
+                "401": {
+                    "description": "Access Token Required / Unauthorized"
+                },
+                "404": {
+                    "description": "Not found"
                 }
             }
         },
@@ -3854,23 +3959,121 @@ module.exports = {
                 "tags": [
                     "Insights"
                 ],
-                "summary": "Get insight",
+                "summary": "Get mixpanel events insights on the system",
                 "parameters": [
                     {
                         "in": "query",
-                        "name": "name",
+                        "name": "from",
+                        "description": "Data query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "to",
+                        "description": "Data query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "event",
                         "description": "Data query",
                         "required": true,
                         "schema": {
                             "type": "string"
                         }
-                    }
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "description": "Data query",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Insights"
+                            "type": "array",
+                            "items": {
+                                "type": 'object',
+                                "properties": {
+                                    "$browser": {
+                                        "type": "string",
+                                    },
+                                    "$browser_version": {
+                                        "type": "number",
+                                    },
+                                    "$city": {
+                                        "type": "string",
+                                    },
+                                    "$current_url": {
+                                        "type": "string",
+                                    },
+                                    "$device": {
+                                        "type": "string",
+                                    },
+                                    "$device_id": {
+                                        "type": "string",
+                                    },
+                                    "$initial_referrer": {
+                                        "type": "string",
+                                    },
+                                    "$initial_referring_domain": {
+                                        "type": "string",
+                                    },
+                                    "$insert_id": {
+                                        "type": "string",
+                                    },
+                                    "$lib_version": {
+                                        "type": "number",
+                                    },
+                                    "$mp_api_endpoint": {
+                                        "type": "string",
+                                    },
+                                    "$os": {
+                                        "type": "string",
+                                    },
+                                    "$region": {
+                                        "type": "string",
+                                    },
+                                    "$screen_height": {
+                                        "type": "number",
+                                    },
+                                    "$screen_width": {
+                                        "type": "number",
+                                    },
+                                    "distinct_id": {
+                                        "type": "string",
+                                    },
+                                    "id": {
+                                        "type": "string",
+                                    },
+                                    "mp_country_code": {
+                                        "type": "string",
+                                    },
+                                    "mp_lib": {
+                                        "type": "string",
+                                    },
+                                    "mp_processing_time_ms": {
+                                        "type": "number",
+                                    },
+                                    "time": {
+                                        "type": "string",
+                                        "format": "date-time"
+                                    },
+                                }
+                            }
                         }
                     },
                     "401": {
@@ -4632,7 +4835,7 @@ module.exports = {
             }
         }
     },
-    "definitions": { //MAMA
+    "definitions": {
         "Assignments": {
             "required": [
                 "challenge_id"
