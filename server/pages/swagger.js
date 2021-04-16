@@ -3887,7 +3887,7 @@ module.exports = {
                 "tags": [
                     "Teams"
                 ],
-                "summary": "Get team",
+                "summary": "Get team name",
                 "parameters": [
                     {
                         "in": "path",
@@ -3899,22 +3899,19 @@ module.exports = {
                             "format": "int64",
                             "minimum": 1
                         }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": ""
+                                },
+                            }
                         }
                     },
                     "401": {
@@ -3931,7 +3928,7 @@ module.exports = {
                 "tags": [
                     "Teams"
                 ],
-                "summary": "Get team",
+                "summary": "Get users from same team",
                 "parameters": [
                     {
                         "in": "path",
@@ -3943,22 +3940,16 @@ module.exports = {
                             "format": "int64",
                             "minimum": 1
                         }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Users"
+                            }
                         }
                     },
                     "401": {
@@ -3975,23 +3966,15 @@ module.exports = {
                 "tags": [
                     "Teams"
                 ],
-                "summary": "Get team",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get all teams user logged in participates in",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Teams"
+                            }
                         }
                     },
                     "401": {
@@ -4008,7 +3991,7 @@ module.exports = {
                 "tags": [
                     "Teams"
                 ],
-                "summary": "Get team",
+                "summary": "Get team users as leader of team",
                 "parameters": [
                     {
                         "in": "path",
@@ -4020,22 +4003,16 @@ module.exports = {
                             "format": "int64",
                             "minimum": 1
                         }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Users"
+                            }
                         }
                     },
                     "401": {
@@ -4052,7 +4029,7 @@ module.exports = {
                 "tags": [
                     "Teams"
                 ],
-                "summary": "Add a team",
+                "summary": "Bring back user that was in the team",
                 "parameters": [
                     {
                         "in": "body",
@@ -4060,7 +4037,10 @@ module.exports = {
                         "description": "Add a team",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Users"
+                            }
                         }
                     }
                 ],
@@ -4068,7 +4048,12 @@ module.exports = {
                     "201": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     },
                     "400": {
@@ -4085,7 +4070,7 @@ module.exports = {
                 "tags": [
                     "Teams"
                 ],
-                "summary": "Update team",
+                "summary": "Make users to be Leaders permissions on the team",
                 "parameters": [
                     {
                         "in": "path",
@@ -4104,7 +4089,12 @@ module.exports = {
                         "description": "Update team",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "type": "object",
+                            "properties": {
+                                "userId": {
+                                    "type": "number"
+                                },
+                            }
                         }
                     }
                 ],
@@ -4112,7 +4102,7 @@ module.exports = {
                     "202": {
                         "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "$ref": "#/definitions/UsersTeams"
                         }
                     },
                     "400": {
@@ -4132,7 +4122,7 @@ module.exports = {
                 "tags": [
                     "Teams"
                 ],
-                "summary": "Delete team",
+                "summary": "Remove user from team",
                 "parameters": [
                     {
                         "in": "path",
@@ -4144,7 +4134,16 @@ module.exports = {
                             "format": "int64",
                             "minimum": 1
                         }
-                    }
+                    },
+                    {
+                        "in": "query",
+                        "name": "userId",
+                        "description": "Data query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                 ],
                 "responses": {
                     "204": {
@@ -4164,7 +4163,7 @@ module.exports = {
                 "tags": [
                     "Teams"
                 ],
-                "summary": "Get team",
+                "summary": "Get team information",
                 "parameters": [
                     {
                         "in": "path",
@@ -4175,15 +4174,6 @@ module.exports = {
                             "type": "integer",
                             "format": "int64",
                             "minimum": 1
-                        }
-                    },
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 ],
@@ -4208,23 +4198,15 @@ module.exports = {
                 "tags": [
                     "Teams"
                 ],
-                "summary": "Get team",
-                "parameters": [
-                    {
-                        "in": "query",
-                        "name": "name",
-                        "description": "Data query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
+                "summary": "Get all teams as admin",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Teams"
+                            }
                         }
                     },
                     "401": {
@@ -4241,12 +4223,12 @@ module.exports = {
                 "tags": [
                     "Teams"
                 ],
-                "summary": "Add a team",
+                "summary": "Create a team",
                 "parameters": [
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "Add a team",
+                        "description": "Team data",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/Teams"
@@ -4257,7 +4239,12 @@ module.exports = {
                     "201": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     },
                     "400": {
@@ -4274,15 +4261,29 @@ module.exports = {
                 "tags": [
                     "Teams"
                 ],
-                "summary": "Add a team",
+                "summary": "Add users to team",
                 "parameters": [
+                    {
+                        "in": "path",
+                        "name": "teamId",
+                        "description": "Id of Teams",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "minimum": 1
+                        }
+                    },
                     {
                         "in": "body",
                         "name": "body",
-                        "description": "Add a team",
+                        "description": "Users and team data",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Users"
+                            }
                         }
                     }
                 ],
@@ -4290,7 +4291,12 @@ module.exports = {
                     "201": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     },
                     "400": {
@@ -4307,7 +4313,7 @@ module.exports = {
                 "tags": [
                     "Teams"
                 ],
-                "summary": "Update team",
+                "summary": "Change user permissions on a team",
                 "parameters": [
                     {
                         "in": "path",
@@ -4326,7 +4332,15 @@ module.exports = {
                         "description": "Update team",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "type": "object",
+                            "properties": {
+                                "userId": {
+                                    "type": "number"
+                                },
+                                "permission": {
+                                    "type": "string"
+                                },
+                            }
                         }
                     }
                 ],
@@ -4334,7 +4348,7 @@ module.exports = {
                     "202": {
                         "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/Teams"
+                            "$ref": "#/definitions/UsersTeams"
                         }
                     },
                     "400": {
