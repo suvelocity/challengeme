@@ -1,0 +1,556 @@
+{
+  "api": {
+    "v1": {
+      "challenges": {
+        "routes": [
+          {
+            "path": "/",
+            "method": "get"
+          },
+          {
+            "path": "/user-challenges",
+            "method": "get"
+          },
+          {
+            "path": "/info/{challengeId}",
+            "method": "get"
+          },
+          {
+            "path": "/boiler-plate/{challengeId}",
+            "method": "get"
+          },
+          {
+            "path": "/",
+            "method": "post"
+          },
+          {
+            "path": "/no-matter-the-state",
+            "method": "get"
+          },
+          {
+            "path": "/state-update/{challengeId}",
+            "method": "patch"
+          }
+        ]
+      },
+      "images": {
+        "routes": [
+          {
+            "path": "/",
+            "method": "get"
+          },
+          {
+            "path": "/",
+            "method": "post"
+          }
+        ]
+      },
+      "labels": {
+        "routes": [
+          {
+            "path": "/",
+            "method": "get"
+          },
+          {
+            "path": "/{challengeId}",
+            "method": "post"
+          }
+        ]
+      },
+      "reviews": {
+        "routes": [
+          {
+            "path": "/{challengeId}",
+            "method": "get"
+          },
+          {
+            "path": "/{challengeId}",
+            "method": "post"
+          },
+          {
+            "path": "/{reviewId}",
+            "method": "delete"
+          }
+        ]
+      },
+      "auth": {
+        "routes": [
+          {
+            "path": "/client-id-google",
+            "method": "get"
+          },
+          {
+            "path": "/authentication-with-google",
+            "method": "post"
+          },
+          {
+            "path": "/client-id-github",
+            "method": "get"
+          },
+          {
+            "path": "/authentication-with-github",
+            "method": "post"
+          },
+          {
+            "path": "/register",
+            "method": "post"
+          },
+          {
+            "path": "/create-user",
+            "method": "post"
+          },
+          {
+            "path": "/user-exist",
+            "method": "post"
+          },
+          {
+            "path": "/validate-token",
+            "method": "get"
+          },
+          {
+            "path": "/login",
+            "method": "post"
+          },
+          {
+            "path": "/token",
+            "method": "post"
+          },
+          {
+            "path": "/logout",
+            "method": "post"
+          },
+          {
+            "path": "/get-question",
+            "method": "post"
+          },
+          {
+            "path": "/validate-answer",
+            "method": "post"
+          },
+          {
+            "path": "/password-update",
+            "method": "patch"
+          },
+          {
+            "path": "/validate-admin",
+            "method": "get"
+          }
+        ]
+      },
+      "webhooks": {
+        "submissions": {
+          "routes": [
+            {
+              "path": "/{id}",
+              "method": "patch"
+            }
+          ]
+        },
+        "teams": {
+          "routes": [
+            {
+              "path": "/",
+              "method": "post"
+            },
+            {
+              "path": "/add-users/{externalId}",
+              "method": "post"
+            },
+            {
+              "path": "/change-permissions/{externalId}",
+              "method": "patch"
+            }
+          ]
+        },
+        "events": {
+          "routes": [
+            {
+              "path": "/all",
+              "method": "get"
+            },
+            {
+              "path": "/registered/{externalId}",
+              "method": "get"
+            },
+            {
+              "path": "/registration/{externalId}",
+              "method": "post"
+            },
+            {
+              "path": "/authorization/{externalId}",
+              "method": "patch"
+            },
+            {
+              "path": "/url/{externalId}",
+              "method": "patch"
+            },
+            {
+              "path": "/logout/{externalId}",
+              "method": "delete"
+            }
+          ]
+        },
+        "admin": {
+          "access-key": {
+            "routes": [
+              {
+                "path": "/",
+                "method": "get"
+              },
+              {
+                "path": "/",
+                "method": "post"
+              },
+              {
+                "path": "/{id}",
+                "method": "patch"
+              },
+              {
+                "path": "/{id}",
+                "method": "delete"
+              }
+            ]
+          },
+          "events": {
+            "routes": [
+              {
+                "path": "/",
+                "method": "get"
+              },
+              {
+                "path": "/",
+                "method": "post"
+              },
+              {
+                "path": "/{id}",
+                "method": "patch"
+              },
+              {
+                "path": "/{id}",
+                "method": "delete"
+              }
+            ]
+          },
+          "teams": {
+            "routes": [
+              {
+                "path": "/",
+                "method": "get"
+              },
+              {
+                "path": "/",
+                "method": "post"
+              },
+              {
+                "path": "/{id}",
+                "method": "patch"
+              },
+              {
+                "path": "/{id}",
+                "method": "delete"
+              }
+            ]
+          },
+          "errors": {
+            "routes": [
+              {
+                "path": "/",
+                "method": "get"
+              },
+              {
+                "path": "/{id}",
+                "method": "delete"
+              }
+            ]
+          }
+        },
+        "trigger-events": {
+          "routes": [
+            {
+              "path": "/start-challenge/{id}",
+              "method": "post"
+            }
+          ]
+        }
+      },
+      "submissions": {
+        "routes": [
+          {
+            "path": "/by-user/{challengeId}",
+            "method": "get"
+          },
+          {
+            "path": "/apply/{challengeId}",
+            "method": "post"
+          },
+          {
+            "path": "/{challengeId}",
+            "method": "get"
+          }
+        ]
+      },
+      "users": {
+        "routes": [
+          {
+            "path": "/info",
+            "method": "get"
+          },
+          {
+            "path": "/change-password",
+            "method": "patch"
+          },
+          {
+            "path": "/info",
+            "method": "patch"
+          },
+          {
+            "path": "/teacher/{teamId}",
+            "method": "get"
+          },
+          {
+            "path": "/admin",
+            "method": "get"
+          },
+          {
+            "path": "/admin/{id}",
+            "method": "patch"
+          },
+          {
+            "path": "/admin-password/{id}",
+            "method": "patch"
+          },
+          {
+            "path": "/permission/{id}",
+            "method": "patch"
+          },
+          {
+            "path": "/{id}",
+            "method": "delete"
+          },
+          {
+            "path": "/restore/{id}",
+            "method": "put"
+          },
+          {
+            "path": "/bind",
+            "method": "put"
+          }
+        ]
+      },
+      "services": {
+        "routes": [
+          {
+            "path": "/public-repo",
+            "method": "get"
+          }
+        ]
+      },
+      "types": {
+        "routes": [
+          {
+            "path": "/",
+            "method": "get"
+          }
+        ]
+      },
+      "insights": {
+        "teacher": {
+          "routes": [
+            {
+              "path": "/team-submissions/{teamId}",
+              "method": "get"
+            },
+            {
+              "path": "/success-challenge/{teamId}",
+              "method": "get"
+            },
+            {
+              "path": "/last-week-submissions/{teamId}",
+              "method": "get"
+            },
+            {
+              "path": "/challenges-submissions/{teamId}",
+              "method": "get"
+            },
+            {
+              "path": "/users-submissions/{teamId}",
+              "method": "get"
+            },
+            {
+              "path": "/top-user/{teamId}",
+              "method": "get"
+            }
+          ]
+        },
+        "admin": {
+          "routes": [
+            {
+              "path": "/all-submissions/",
+              "method": "get"
+            },
+            {
+              "path": "/success-challenge",
+              "method": "get"
+            },
+            {
+              "path": "/last-week-submissions",
+              "method": "get"
+            },
+            {
+              "path": "/challenges-submissions",
+              "method": "get"
+            },
+            {
+              "path": "/users-submissions",
+              "method": "get"
+            },
+            {
+              "path": "/top-user",
+              "method": "get"
+            },
+            {
+              "path": "/top-challenges",
+              "method": "get"
+            },
+            {
+              "path": "/challenges-type",
+              "method": "get"
+            },
+            {
+              "path": "/challenges-by-reviews",
+              "method": "get"
+            },
+            {
+              "path": "/top",
+              "method": "get"
+            }
+          ]
+        },
+        "student": {
+          "routes": [
+            {
+              "path": "/top-user/{teamId}",
+              "method": "get"
+            },
+            {
+              "path": "/user-success",
+              "method": "get"
+            },
+            {
+              "path": "/sub-by-date",
+              "method": "get"
+            },
+            {
+              "path": "/sub-by-type",
+              "method": "get"
+            },
+            {
+              "path": "/unsolved-challenges",
+              "method": "get"
+            }
+          ]
+        },
+        "mixpanel": {
+          "routes": [
+            {
+              "path": "/",
+              "method": "get"
+            }
+          ]
+        }
+      },
+      "teams": {
+        "routes": [
+          {
+            "path": "/team-name/{teamId}",
+            "method": "get"
+          },
+          {
+            "path": "/team-page/{teamId}",
+            "method": "get"
+          },
+          {
+            "path": "/all-teams-by-user",
+            "method": "get"
+          },
+          {
+            "path": "/teacher-area/{teamId}",
+            "method": "get"
+          },
+          {
+            "path": "/add-users/{teamId}",
+            "method": "post"
+          },
+          {
+            "path": "/teacher-permission/{teamId}",
+            "method": "patch"
+          },
+          {
+            "path": "/remove-user/{teamId}",
+            "method": "delete"
+          },
+          {
+            "path": "/single-team/{teamId}",
+            "method": "get"
+          },
+          {
+            "path": "/all-teams",
+            "method": "get"
+          },
+          {
+            "path": "/create-team",
+            "method": "post"
+          },
+          {
+            "path": "/admin-add-users/{teamId}",
+            "method": "post"
+          },
+          {
+            "path": "/permission/{teamId}",
+            "method": "patch"
+          },
+          {
+            "path": "/remove-team/{id}",
+            "method": "delete"
+          }
+        ]
+      },
+      "assignments": {
+        "routes": [
+          {
+            "path": "/{teamId}",
+            "method": "get"
+          },
+          {
+            "path": "/{teamId}",
+            "method": "post"
+          },
+          {
+            "path": "/{teamId}",
+            "method": "delete"
+          }
+        ]
+      },
+      "git": {
+        "routes": [
+          {
+            "path": "/",
+            "method": "get"
+          },
+          {
+            "path": "/",
+            "method": "post"
+          },
+          {
+            "path": "/",
+            "method": "patch"
+          },
+          {
+            "path": "/{token}",
+            "method": "delete"
+          }
+        ]
+      }
+    }
+  }
+}

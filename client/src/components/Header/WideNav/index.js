@@ -23,6 +23,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import LockIcon from '@material-ui/icons/Lock';
 import Menu from '@material-ui/core/Menu';
 import AddIcon from '@material-ui/icons/Add';
+import Code from '@material-ui/icons/Code';
 import { withStyles } from '@material-ui/core/styles';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import ChallengeMeSmallTitle from '../../../images/reactSvg/ChallengeMeSmallTitle';
@@ -165,6 +166,27 @@ export default function WideNav() {
                         <span style={letterColor} className="header-link-title">
                           Docs
                         </span>
+                      </div>
+                    </a>
+                  </Typography>
+                  <Typography variant="h6" className={classes.title}>
+                    <a
+                      href={window.location.protocol + '//' + window.location.hostname + '/api-references/'}
+                      className="link-rout"
+                    >
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          marginRight: '10px',
+                          marginLeft: '40px',
+                        }}
+                      >
+                        <Code style={letterColor} />
+                &nbsp;
+                        <span style={letterColor} className="header-link-title">
+                          Api
+                      </span>
                       </div>
                     </a>
                   </Typography>
