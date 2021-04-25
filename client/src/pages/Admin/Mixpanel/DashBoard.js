@@ -10,6 +10,10 @@ import { events } from '../../../config/Events';
 import Alert from '../../../components/Buttons/Alert';
 import '../../../styles/MixpanelDashBoard.css';
 
+function isObject(element) {
+  return Object.getPrototypeOf(element) === Object.getPrototypeOf(new Object());
+}
+
 export default function MixPanelDashBoard() {
   const [loading, setLoading] = useState(false);
   const [event, setEvent] = useState('User On Forgot Password Page 2');
@@ -21,11 +25,28 @@ export default function MixPanelDashBoard() {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('Error Occurred');
 
+  const editData = useCallback((data) => {
+    data.forEach(event => {
+      const object = event
+      for (const key in object) {
+        if (Object.hasOwnProperty.call(object, key)) {
+          const element = object[key];
+          if (isObject(element)) {
+            event[key] = JSON.stringify(element, null, 2)
+          }
+        }
+      }
+    })
+    return data
+    // eslint-disable-next-line
+  }, [])
+
   const fetchEvents = useCallback(async () => {
     try {
       setLoading(true);
       const { data } = await network.get(`/api/v1/insights/mixpanel?from=${startDate}&to=${endDate}&event=${event}&limit=${limit}`);
-      setEventsData(data);
+      const editedData = editData(data)
+      setEventsData(editedData);
       setLoading(false);
       setAlertType('success');
       setAlertMessage(`Fond ${data.length} Events`);
@@ -36,7 +57,7 @@ export default function MixPanelDashBoard() {
       setShowAlert(true);
     }
     // eslint-disable-next-line
-    }, [event, startDate, endDate, limit])
+  }, [event, startDate, endDate, limit])
 
   const data = eventsData.length ? {
     columns: Object.keys(eventsData[0]).map((event) => ({
