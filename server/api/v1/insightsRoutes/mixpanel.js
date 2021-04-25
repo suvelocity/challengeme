@@ -28,7 +28,9 @@ function manipulateRowData(string) {
   const lastCommaToRemove = commaEndOfObjects.lastIndexOf('}},') + 2;
   const removeLastComma = commaEndOfObjects.slice(0, lastCommaToRemove) + commaEndOfObjects.slice(lastCommaToRemove + 1);
   const onlySingleQuotes = removeLastComma.replace(/'/g, '"');
-  const insideArray = `[${onlySingleQuotes}]`;
+  const noDoubleComa = onlySingleQuotes.replace(/,,/g, ',');
+  const noComaInTheMidel = noDoubleComa.replace(/},}/g, '}}');
+  const insideArray = `[${noComaInTheMidel}]`;
   const parsedEvents = JSON.parse(insideArray);
   return parsedEvents;
 }
