@@ -14,7 +14,7 @@ FROM node:14-slim as server-builder
 
 WORKDIR /server
 
-COPY ./server/pacakge.json ./server/package-lock.json ./
+COPY ./server/package.json ./server/package-lock.json ./
 
 RUN npm install --only=production
 
