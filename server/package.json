@@ -8,13 +8,17 @@
     "coverage": "jest --detectOpenHandles --forceExit --runInBand --coverage",
     "debugTest": "jest --detectOpenHandles --forceExit --runInBand --bail",
     "initDB": "node_modules/.bin/sequelize db:create",
+    "dropDB": "node_modules/.bin/sequelize db:drop",
     "migrate": "node_modules/.bin/sequelize db:migrate",
     "migrateUndo": "node_modules/.bin/sequelize db:migrate:undo",
     "seed": "node_modules/.bin/sequelize db:seed:all",
     "seedUndo": "node_modules/.bin/sequelize db:seed:undo:all",
     "dev": "nodemon index.js",
     "initProject": "node_modules/.bin/sequelize db:create && node_modules/.bin/sequelize db:migrate && node_modules/.bin/sequelize db:seed:all && nodemon index.js",
-    "devTest": "NODE_ENV=test nodemon index.js"
+    "devTest": "NODE_ENV=test nodemon index.js",
+    "start": "node index.js",
+    "spinup:production": "npm run migrate && npm start",
+    "spinup:staging": "npm run migrate && npm run seedUndo && npm run seed && npm start"
   },
   "repository": {
     "type": "git",
