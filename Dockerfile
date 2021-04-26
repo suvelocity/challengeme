@@ -22,9 +22,9 @@ COPY ./server .
 
 # Remove redundant files and directories
 
-RUN rm -r _tests_ pages 
+# RUN rm -r _tests_ pages 
 
-RUN rm .eslintrc.js .example.env readme.md
+# RUN rm .eslintrc.js .example.env readme.md
 
 FROM node:12
 
