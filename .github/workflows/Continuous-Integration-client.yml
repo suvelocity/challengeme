@@ -6,8 +6,8 @@ name: CI-Client
 # events but only for the main branch
 on:
   pull_request:
-    branches: [master,staging] # if github changes the 'master' to 'main'
-    
+    branches: [master, staging, cloudrun-staging] # if github changes the 'master' to 'main'
+
     # we will change that name to 'main'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -34,4 +34,4 @@ jobs:
         working-directory: ./client
       - name: Jest run
         run: npm run test
-        working-directory: ./client    
+        working-directory: ./client

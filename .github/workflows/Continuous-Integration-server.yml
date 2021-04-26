@@ -6,7 +6,7 @@ name: CI-SERVER
 # events but only for the main branch
 on:
   pull_request:
-    branches: [master,staging] # if github changes the 'master' to 'main'
+    branches: [master, staging, cloudrun-staging] # if github changes the 'master' to 'main'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
