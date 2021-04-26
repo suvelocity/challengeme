@@ -26,8 +26,6 @@ RUN rm -r _tests_ pages
 
 RUN rm .eslintrc.js .example.env readme.md
 
-RUN npm run build
-
 FROM node:12
 
 WORKDIR /client/build
