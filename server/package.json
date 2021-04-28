@@ -17,8 +17,7 @@
     "initProject": "node_modules/.bin/sequelize db:create && node_modules/.bin/sequelize db:migrate && node_modules/.bin/sequelize db:seed:all && nodemon index.js",
     "devTest": "NODE_ENV=test nodemon index.js",
     "start": "node index.js",
-    "spinup:production": "npm run migrate && npm start",
-    "spinup:staging": "npm run migrate && npm run seedUndo && npm run seed && npm start"
+    "spinup:production": "npm run migrate && npm start"
   },
   "repository": {
     "type": "git",

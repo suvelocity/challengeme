@@ -4,7 +4,7 @@ WORKDIR /client
 
 COPY ./client/package.json ./client/package-lock.json ./ 
 
-RUN npm install --only=production
+RUN npm ci --production 
 
 COPY ./client .
 
@@ -16,7 +16,7 @@ WORKDIR /server
 
 COPY ./server/package.json ./server/package-lock.json ./
 
-RUN npm install --only=production
+RUN npm ci --production 
 
 COPY ./server .
 
