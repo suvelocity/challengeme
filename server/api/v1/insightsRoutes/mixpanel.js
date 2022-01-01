@@ -40,6 +40,7 @@ function manipulateEvents(array) {
     return array.map((event) => {
       event.properties.id = event.properties.$insert_id;
       event.properties.time = new Date(event.properties.time * 1000).toString();
+      event.properties.event_name = event.event
       return event.properties;
     });
   }
