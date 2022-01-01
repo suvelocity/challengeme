@@ -16,7 +16,7 @@ function isObject(element) {
 
 export default function MixPanelDashBoard() {
   const [loading, setLoading] = useState(false);
-  const [event, setEvent] = useState('User On Forgot Password Page 2');
+  const [event, setEvent] = useState('App Launched');
   const [startDate, setStartDate] = useState(Date.now() - 1000 * 60 * 60 * 24 * 7);
   const [endDate, setEndDate] = useState(Date.now());
   const [limit, setLimit] = useState(5);

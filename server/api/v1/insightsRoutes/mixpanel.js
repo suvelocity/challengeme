@@ -54,19 +54,24 @@ mixpanelRoute.get('/', checkAdmin, async (req, res) => {
     from, to, event, limit,
   } = req.query;
   try {
-    const encodedEvent = encodeURIComponent(`["${event}"]`);
+    
     const fromDate = validDateNum(from);
     const toDate = validDateNum(to);
     const formattedFrom = new Date(fromDate).toISOString().slice(0, 10);
     const formattedTo = new Date(toDate).toISOString().slice(0, 10);
     const verifiedLimit = parseInt(limit) >= 2 ? parseInt(limit) : '';
-    const eventsExist = isAlreadyCached(event, req.query);
-    if (eventsExist) {
-      return res.json(eventsExist.data);
+    let query = `?to_date=${formattedTo}&from_date=${formattedFrom}&limit=${verifiedLimit}`
+    if (event !== 'All Events') {
+      const encodedEvent = encodeURIComponent(`["${event}"]`);
+      query += `&event=${encodedEvent}`
+      const eventsExist = isAlreadyCached(event, req.query);
+      if (eventsExist) {
+        return res.json(eventsExist.data);
+      }
     }
     // the mixpanel return string !!
     const response = await axios.get(
-      `https://data.mixpanel.com/api/2.0/export?to_date=${formattedTo}&from_date=${formattedFrom}&event=${encodedEvent}&limit=${verifiedLimit}`,
+      `https://data.mixpanel.com/api/2.0/export${query}`,
       {
         headers: {
           'Content-Type': 'application/json',
