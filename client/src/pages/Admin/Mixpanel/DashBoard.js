@@ -31,7 +31,7 @@ export default function MixPanelDashBoard() {
       for (const key in object) {
         if (Object.hasOwnProperty.call(object, key)) {
           const element = object[key];
-          if (isObject(element)) {
+          if (element && isObject(element)) {
             event[key] = JSON.stringify(element, null, 2)
           }
         }
@@ -53,7 +53,7 @@ export default function MixPanelDashBoard() {
       setShowAlert(true);
     } catch (error) {
       setLoading(false);
-      setAlertMessage(error.response.data.message);
+      setAlertMessage(error.response ? error.response.data.message : error);
       setShowAlert(true);
     }
     // eslint-disable-next-line
