@@ -51,10 +51,9 @@ function manipulateEvents(array) {
 // on development just team 3 have started events (suvelocity user)
 mixpanelRoute.get('/', checkAdmin, async (req, res) => {
   const {
-    from, to, event, limit,
+    from, to, event, limit, userName
   } = req.query;
   try {
-    
     const fromDate = validDateNum(from);
     const toDate = validDateNum(to);
     const formattedFrom = new Date(fromDate).toISOString().slice(0, 10);
@@ -69,6 +68,11 @@ mixpanelRoute.get('/', checkAdmin, async (req, res) => {
         return res.json(eventsExist.data);
       }
     }
+    if (userName) {
+      const encodedUser = encodeURIComponent(`properties["User"] in ["${userName}"]`)
+      query += `&where=${encodedUser}`
+    }
+    console.log('Mixpanel query = ', query);
     // the mixpanel return string !!
     const response = await axios.get(
       `https://data.mixpanel.com/api/2.0/export${query}`,
