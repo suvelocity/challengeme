@@ -35,6 +35,13 @@ function manipulateRowData(string) {
   return parsedEvents;
 }
 
+function jsonlParser(jsonl) {
+  return jsonl
+    .split("\n")
+    .filter(function (s) { return s !== ""; })
+    .map(function (str) { return JSON.parse(str); });
+};
+
 function manipulateEvents(array) {
   if (Array.isArray(array)) {
     return array.map((event) => {
@@ -84,7 +91,8 @@ mixpanelRoute.get('/', checkAdmin, async (req, res) => {
       },
     );
 
-    const eventsArray = manipulateRowData(response.data);
+    // const eventsArray = manipulateRowData(response.data);    
+    const eventsArray = jsonlParser(response.data)
     const results = manipulateEvents(eventsArray);
     if (results && Array.isArray(results) && results.length) {
       cachedEvents[event] = { data: results, lastCached: Date.now(), query: req.query };
