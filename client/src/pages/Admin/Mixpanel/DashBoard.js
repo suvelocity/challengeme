@@ -24,6 +24,8 @@ export default function MixPanelDashBoard({ userName, headers }) {
   const [alertType, setAlertType] = useState('error');
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState('Error Occurred');
+  const [limitValid, setLimitValid] = useState(true);
+  const [limitError, setLimitError] = useState('');
 
   const editData = useCallback((data) => {
     data.forEach(event => {
@@ -38,6 +40,30 @@ export default function MixPanelDashBoard({ userName, headers }) {
       }
     })
     return data
+    // eslint-disable-next-line
+  }, [])
+
+  const validateIsNumber = useCallback((input, callBack) => {
+    setLimitValid(true)
+    setLimitError('')
+    let hasError = false
+    if (!input.length) {
+      setLimitValid(false)
+      setLimitError('Limit must have at list 1 number')
+      hasError = true
+    }
+    const numbersRegex = new RegExp('^[0-9]*$')
+    if (!hasError && !numbersRegex.test(input)) {
+      setLimitValid(false)
+      setLimitError('Limit must be a number')
+      hasError = true
+    }
+    if (!hasError && (parseInt(input) < 2 || parseInt(input) > 100_000)) {
+      setLimitValid(false)
+      setLimitError('Limit must be between 2 - 100,000')
+      hasError = true
+    }
+    callBack(input)
     // eslint-disable-next-line
   }, [])
 
@@ -73,12 +99,12 @@ export default function MixPanelDashBoard({ userName, headers }) {
       }
     }
     const arrayKeys = headers || [...keysSet].sort().reverse()
-  
+
     return arrayKeys.map((event) => ({
-        field: event,
-        headerName: event,
-        width: 150,
-      }))
+      field: event,
+      headerName: event,
+      width: 150,
+    }))
     // eslint-disable-next-line
   }, [])
 
@@ -138,9 +164,16 @@ export default function MixPanelDashBoard({ userName, headers }) {
         </MuiPickersUtilsProvider>
         <div>
           <InputLabel htmlFor="limit">Limit</InputLabel>
-          <Input id="limit" placeholder="limit of events" value={limit} onChange={(event) => setLimit(event.target.value)} />
+          <TextField
+            id="limit"
+            placeholder="limit of events"
+            value={limit}
+            onChange={(event) => validateIsNumber(event.target.value, setLimit)}
+            error={!limitValid}
+            helperText={limitError}
+          />
         </div>
-        <Button onClick={fetchEvents}>Search</Button>
+        <Button disabled={!limitValid} onClick={fetchEvents}>Search</Button>
       </Grid>
       {!loading
         ? eventsData.length
