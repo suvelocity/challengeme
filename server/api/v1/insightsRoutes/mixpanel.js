@@ -99,7 +99,7 @@ mixpanelRoute.get('/', checkAdmin, async (req, res) => {
     }
     res.json(results);
   } catch (error) {
-    console.error(error.response.data ? error.response.data : error.message);
+    console.error(error.response ? error.response.data ? error.response.data : error.message : error);
     res.status(400).json({ message: 'Cannot process request' });
   }
 });
