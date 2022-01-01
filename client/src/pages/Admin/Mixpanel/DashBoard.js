@@ -59,12 +59,26 @@ export default function MixPanelDashBoard() {
     // eslint-disable-next-line
   }, [event, startDate, endDate, limit])
 
+  const getAllKeys = useCallback((events) => {
+    const keysSet = new Set()
+    for (let i = 0; i < events.length; i++) {
+      const event = events[i];
+      const eventKeys = Object.keys(event)
+      for (let j = 0; j < eventKeys.length; j++) {
+        keysSet.add(eventKeys[j])
+      }
+    }
+    const arrayKeys = [...keysSet].sort().reverse()
+    return arrayKeys.map((event) => ({
+        field: event,
+        headerName: event,
+        width: 150,
+      }))
+    // eslint-disable-next-line
+  }, [])
+
   const data = eventsData.length ? {
-    columns: Object.keys(eventsData[0]).map((event) => ({
-      field: event,
-      headerName: event,
-      width: 150,
-    })),
+    columns: getAllKeys(eventsData),
     rows: [...eventsData],
   } : [];
 
