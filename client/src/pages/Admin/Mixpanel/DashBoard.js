@@ -14,7 +14,7 @@ function isObject(element) {
   return Object.getPrototypeOf(element) === Object.getPrototypeOf(new Object());
 }
 
-export default function MixPanelDashBoard() {
+export default function MixPanelDashBoard({ userName, headers }) {
   const [loading, setLoading] = useState(false);
   const [event, setEvent] = useState('App Launched');
   const [startDate, setStartDate] = useState(Date.now() - 1000 * 60 * 60 * 24 * 7);
@@ -44,7 +44,11 @@ export default function MixPanelDashBoard() {
   const fetchEvents = useCallback(async () => {
     try {
       setLoading(true);
-      const { data } = await network.get(`/api/v1/insights/mixpanel?from=${startDate}&to=${endDate}&event=${event}&limit=${limit}`);
+      let url = `/api/v1/insights/mixpanel?from=${startDate}&to=${endDate}&event=${event}&limit=${limit}`
+      if (userName) {
+        url += `&userName=${userName}`
+      }
+      const { data } = await network.get(url);
       const editedData = editData(data)
       setEventsData(editedData);
       setLoading(false);
@@ -68,7 +72,8 @@ export default function MixPanelDashBoard() {
         keysSet.add(eventKeys[j])
       }
     }
-    const arrayKeys = [...keysSet].sort().reverse()
+    const arrayKeys = headers || [...keysSet].sort().reverse()
+  
     return arrayKeys.map((event) => ({
         field: event,
         headerName: event,
